@@ -1,0 +1,128 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnCreateGeoLocationString]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnCreateGeoLocationString]
+GO
+
+
+--##SUMMARY Creates text representation of geolocation depending on geolocation type.
+--##SUMMARY Geolocation template is defined by @LangID parameter.
+--##SUMMARY Can be used in detail forms where there is no need to display multipe rows with geolocation string.
+--##SUMMARY All text parameters should be in the language defined by @LangID.
+
+--##REMARKS Author: Zurin M.
+--##REMARKS Create date: 28.11.2009
+
+--##RETURNS Doesn't use
+
+
+/*
+--Example of a call of procedure:
+
+SELECT dbo.fnCreateGeoLocationString (
+   'en'
+  ,10036003 --'lctExactPoint'
+  ,'Georgia' --@Country
+  ,'Gali' --@Region
+  ,N'' --@Rayon
+  ,'20' --@Latitude
+  ,'30' --@Longitude
+  ,N'' --@Description
+  ,N'' --@PostalCode
+  ,N'' --@SettlementType
+  ,N'' --@Settlement
+  ,N'' --@Street
+  ,N'' --@House
+  ,N'' --@Building
+  ,N'' --@Appartment
+  ,N'' --@ResidentType
+  ,N'' --@Alignment
+  ,N'' --@Distance
+  ,N'' --@GroundType
+)
+
+*/
+
+
+CREATE        function fnCreateGeoLocationString(
+						@LangID				nvarchar(50), --##PARAM @LangID  - language ID
+						@GeoLocationType	bigint, --##PARAM @GeoLocationType  - Geolocation type
+						@Country			nvarchar(200), --##PARAM @Country  - Country name
+						@Region				nvarchar(200), --##PARAM @Region  - Region name
+						@Rayon				nvarchar(200), --##PARAM @Rayon  - Rayon name
+						@Latitude			nvarchar(200), --##PARAM @Latitude  - Latitude
+						@Longitude			nvarchar(200), --##PARAM @Longitude  - Longitude
+						@Description		nvarchar(200), --##PARAM @Description  - Grolocation description
+						@PostalCode			nvarchar(200), --##PARAM @PostalCode  - Postal code for address
+						@SettlementType		nvarchar(200), --##PARAM @SettlementType  - Settlement type for address
+						@Settlement			nvarchar(200), --##PARAM @Settlement - Settlement name
+						@Street				nvarchar(200), --##PARAM @Street  - Street name
+						@House				nvarchar(200), --##PARAM @House  - Number of house
+						@Building			nvarchar(200), --##PARAM @Building  - Number of building
+						@Appartment			nvarchar(200), --##PARAM @Appartment  - Number of appartment
+						@ResidentType		nvarchar(200), --##PARAM @ResidentType - Address type
+						@Alignment			nvarchar(200), --##PARAM @Alignment  - Azimuth of direction from nearest settlement for relative geolocation
+						@Distance			nvarchar(200), --##PARAM @Distance  - Distance from nearest settlement for relative geolocation
+						@GroundType			nvarchar(200)  --##PARAM @LangID  - Ground type of relative geolocation
+						)
+returns nvarchar(1000)
+as
+begin
+
+declare @TempStr nvarchar(1000)
+select	@TempStr =
+		case @GeoLocationType
+			when 10036003 --'lctExactPoint'
+				then dbo.fnCreateExactPointString	(
+							@LangID, 
+							@Country,
+							@Region,
+							@Rayon,
+							@Latitude,
+							@Longitude,
+							@Description
+													)
+			when 10036004--'lctRelativePoint'
+				then dbo.fnCreateRelativePointString	(
+							@LangID,
+							@Country,
+							@Region,
+							@Rayon,
+							@SettlementType,
+							@Settlement,
+							@Alignment,
+							@Distance,
+							@Description,
+							@GroundType
+														)
+			when 10036001 --'lctAddress'
+				then dbo.fnCreateAddressString	(
+							@LangID, 
+							@Country,
+							@Region,
+							@Rayon,
+							@PostalCode,
+							@SettlementType,
+							@Settlement,
+							@Street,
+							@House,
+							@Building,
+							@Appartment,
+							@ResidentType
+												)
+			else null
+		end
+
+return @TempStr
+end
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

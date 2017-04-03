@@ -1,0 +1,57 @@
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fn_Sample_SelectList]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[fn_Sample_SelectList]
+GO
+
+CREATE           function [dbo].[fn_Sample_SelectList](@LangID as nvarchar(50))
+returns table
+as
+return
+select
+				Container.idfContainer,
+				Container.strFieldBarcode,
+				Container.idfMaterial,
+				--Material.strSpecial_Name,
+				Container.strBarcode, 
+				Container.idfsContainerStatus,
+				Container.idfInDepartment,
+				--Container.ContainerStatus,
+				--Material.strBarcode as MaterialBarcode,
+				--Material.dblQuantity,
+				Container.idfsSpecimenType,
+				Container.SpecimenType,
+				Container.idfCase,
+				Container.idfMonitoringSession,
+
+				Container.CaseID,
+				--Container.CaseStatus,
+				--Container.CaseType,
+				--Material.datRegistration_Date,
+				Container.datFieldCollectionDate,
+				--Container.idfFieldCollectedByOffice,
+				--Container.idfFieldCollectedByPerson,
+				Container.idfsShowDiagnosis,
+
+				Container.DiagnosisName,
+				Container.strNationalName,
+
+				-- Added
+				--tlbMaterial.datReceiveDate as AccessionDate,
+				Container.datCreationDate,
+				Container.DepartmentName,
+				Container.HumanName,
+				Container.AnimalName,
+				null as [Path],
+				--Container.OriginalBarcode,
+				Container.TestsCount,
+				--Container.SpeciesCode,
+				--SpecimenType.intHA_Code as HACode --BaseReference.intHA_Code as HACode
+				Container.HACode
+
+from		fnSampleListOptimized(@LangID) Container
+

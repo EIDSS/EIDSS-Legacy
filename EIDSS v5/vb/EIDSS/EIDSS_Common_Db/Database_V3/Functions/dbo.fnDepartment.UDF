@@ -1,0 +1,48 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnDepartment]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnDepartment]
+GO
+
+
+
+
+
+
+
+CREATE       function fnDepartment(@LangID nvarchar(50))
+returns table
+as
+return(
+ 
+select			tlbOffice.idfOffice as idfDepartment,
+				tlbOffice.idfParentOffice as idfInstitution,
+				trtBaseReference.strDefault as DefaultName,
+				IsNull(trtStringNameTranslation.strTextString, trtBaseReference.strDefault) as [Name],
+				trtBaseReference.intHACode,
+				trtBaseReference.strDefault,
+				trtBaseReference.intRowStatus
+
+from		tlbOffice
+
+left join	dbo.trtBaseReference
+on			tlbOffice.idfsOfficeName = trtBaseReference.idfsBaseReference
+			and trtBaseReference.intRowStatus = 0
+
+left join	dbo.trtStringNameTranslation
+on			tlbOffice.idfsOfficeName = trtStringNameTranslation.idfsBaseReference
+			and trtStringNameTranslation.idfsLanguage = dbo.fnGetLanguageCode(@LangID)
+
+where		tlbOffice.intRowStatus = 0
+			and tlbOffice.idfsOfficeType=10062001 --oftDepartment
+)
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

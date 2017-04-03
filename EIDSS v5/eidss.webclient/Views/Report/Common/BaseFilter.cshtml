@@ -1,0 +1,35 @@
+﻿@using eidss.webclient.Utils
+@model eidss.model.Reports.Common.BaseModel
+           
+<table id="BaseFilterTable">
+    <tr>        
+        <td class="sectionName" colspan="3">      
+            @Translator.GetMessageString("titleParameters")  
+        </td>
+    </tr>
+
+    <tr>
+        <td class="medium">
+            @Html.LabelFor(m => m.Language)
+        </td>
+        <td class="large">
+            @{
+                @(Html.Telerik().ComboBox()
+                      .Name("Language")
+                      .BindTo(Model.SupportedLanguages.ConvertToSelectListItem())
+                      .HtmlAttributes(new {@class = "requiredField"})
+                      )
+            }
+        </td>
+        <td>
+            @{
+                if (@Model.ShowUseArchiveDataCheckbox)
+                {
+                    @Html.CheckBoxFor(m => m.UseArchive)
+                    @Html.LabelFor(m => m.UseArchive)
+                }
+            }
+             
+        </td>
+    </tr>
+</table>

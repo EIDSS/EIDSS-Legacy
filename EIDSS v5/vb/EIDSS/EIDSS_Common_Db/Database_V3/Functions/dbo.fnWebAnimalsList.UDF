@@ -1,0 +1,51 @@
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fnWebAnimalsList]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[fnWebAnimalsList]
+GO
+
+/*
+select * from fnWebAnimalsList('en')
+*/
+
+CREATE FUNCTION dbo.fnWebAnimalsList
+(
+	@LangID nvarchar(50)
+)
+RETURNS TABLE 
+AS
+RETURN 
+(
+	select		tlbCase.strCaseID,
+				tlbHerd.strHerdCode,
+				tlbSpecies.idfsSpeciesType	as [idfsSpeciesType.ID],
+				SpeciesType.Name			as [idfsSpeciesType.Name],
+				tlbAnimal.strAnimalCode
+
+	from		tlbVetCase
+	inner join	tlbCase
+	on			tlbCAse.idfCase=tlbVetCase.idfVetCase and tlbCase.intRowStatus=0
+	inner join	tlbParty HerdParty
+	on			HerdParty.idfCase=tlbVetCase.idfVetCase and HerdPArty.intRowStatus=0
+	inner join	tlbHerd
+	on			tlbHerd.idfHerd=HerdParty.idfParty
+	left join	(
+				tlbSpecies
+				inner join	tlbParty SpeciesParty
+				on			SpeciesParty.idfParty=tlbSpecies.idfSpecies and SpeciesParty.intRowStatus=0
+				left join	fnReference_Full(@LangID) SpeciesType
+				on			SpeciesType.idfsReference=tlbSpecies.idfsSpeciesType
+				left join	(
+							tlbAnimal
+							inner join	tlbParty AnimalParty
+							on			AnimalParty.idfParty=tlbAnimal.idfSpecies and AnimalParty.intRowStatus=0
+							)
+				on			tlbAnimal.idfSpecies=tlbSpecies.idfSpecies
+				)
+	on			tlbSpecies.idfHerd=tlbHerd.idfHerd
+)
+GO

@@ -1,0 +1,239 @@
+﻿@model eidss.model.Schema.FarmPanel           
+@{
+    ViewBag.Title = @Translator.GetMessageString("Details");
+    Layout = null;
+}
+@using eidss.webclient.Utils
+@using eidss.webclient.Areas.Address
+@functions
+{   
+    HtmlString HideBlock(bool? visible)
+    {
+        if (visible.HasValue && visible.Value) return new HtmlString("");
+        else return  new HtmlString("style='display:none'");        
+    }
+}
+<script language="javascript" type="text/javascript">
+    function FarmOfAvianType(chbId) {
+        var flag = $("#" + chbId).is(':checked');
+        FarmOfType(flag, 'AvianDetails', 2);
+        if (flag) {
+            ReloadHerdFlockGridToolbar("Flocks");
+        }
+    }
+
+
+    function FarmOfType(flag, key, index) {
+        if (flag) {
+            $('#' + key).show();
+            Enable(index);
+        }
+        else {
+            $('#' + key).hide();
+            Disable(index);
+        }
+    }
+    function Disable(index) {
+        var tabstrip = $("#Farm").data("tTabStrip");
+        var item = $("li", tabstrip.element)[index];
+       tabstrip.disable(item);
+    }
+
+    function Enable(index) {
+        var tabstrip = $("#Farm").data("tTabStrip");
+        var item = $("li", tabstrip.element)[index];
+        tabstrip.enable(item);
+    }
+
+    function FarmOfLvstkType(chbId) {
+        var flag = $("#" + chbId).is(':checked');
+        FarmOfType(flag, 'LiveStockDetails', 1);
+        if (flag) {
+            ReloadHerdFlockGridToolbar("Herds");
+        }
+    }
+
+</script>
+<table class="bordered">
+    <tr>
+        <td colspan="4" class="sectionName">
+            @Translator.GetMessageString("titleContactInfo")
+        </td>
+    </tr>
+    <tr>
+        <td class="medium">
+            @Html.LabelFor(m => m.strFarmCode)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strFarmCode")
+        </td>        
+        <td class="fillAll">
+        </td>
+        <td rowspan="7" valign="top">
+            @Html.Action("Coordinates", "GeoLocation", new { root = Model.idfFarm, location = Model.Location })
+            @Html.AddressWithCountry(Model.idfFarmAddress.Value, Model.Address)
+        </td>
+    </tr>
+    <tr>
+        <td class="medium">
+            @Html.LabelFor(m => m.strNationalName)
+        </td>
+        <td class="xlarge">
+            @Html.BvEditbox(Model, "strNationalName")
+        </td>
+        <td class="fillAll">
+        </td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(m => m.idfOwner)
+        </td>
+        <td class="xlarge noIndent">
+            <table>
+                <tr>
+                    <td>
+                        @Html.BvEditbox(Model, "strOwnerLastName", false)
+                    </td>
+                    <td>
+                        @Html.BvEditbox(Model, "strOwnerFirstName", false)
+                    </td>
+                    <td>
+                        @Html.BvEditbox(Model, "strOwnerMiddleName", false)
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="fillAll">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.strContactPhone)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strContactPhone")
+        </td>
+        <td class="fillAll">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.strFax)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strFax")
+        </td>
+        <td class="fillAll">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.strEmail)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strEmail")
+        </td>
+        <td class="fillAll">
+        </td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td></td>
+        <td class="fillAll">
+        </td>
+    </tr>
+</table>
+@*<br />
+    <table class="bordered">
+    <tr>
+        <td class="sectionName" colspan="4">
+            @Translator.GetMessageString("sectionTitleFarmKind")
+        </td>
+    </tr>
+        <tr>
+            <td>@Html.BvCheckBox(Model, "blnIsLivestock", false, "FarmOfLvstkType") </td>
+            <td>@Html.BvCheckBox(Model, "blnIsAvian", false, "FarmOfAvianType")</td>
+        </tr>
+    </table>
+<br />*@
+<div  id='LiveStockDetails'>
+<table class="bordered fourParts">
+    <tr>
+        <td class="sectionName">
+            @Html.LabelFor(m => m.idfsOwnershipStructure)
+        </td>
+     @*   <td class="sectionName">
+            @Html.LabelFor(m => m.idfsLivestockProductionType)
+        </td>
+        <td class="sectionName">
+            @Html.LabelFor(m => m.idfsMovementPattern)
+        </td>
+        <td class="sectionName">
+            @Html.LabelFor(m => m.idfsGrazingPattern)
+        </td>*@
+    </tr>
+    <tr>
+        <td valign='top'>
+            @Html.BvRadioButtonGroup(Model, "OwnershipStructure")
+        </td>
+       @* <td valign='top'>
+            @Html.BvRadioButtonGroup(Model, "LivestockProductionType")
+        </td>
+        <td valign='top'>
+            @Html.BvRadioButtonGroup(Model, "MovementPattern")
+        </td>
+        <td valign='top'>
+            @Html.BvRadioButtonGroup(Model, "GrazingPattern")
+        </td>*@
+    </tr>
+</table>
+</div>
+
+@*<div id='AvianDetails' @HideBlock(Model.blnIsAvian)>
+<table class="bordered fourParts" >
+    <tr>
+        <td class="sectionName">
+            @Html.LabelFor(m => m.idfsAvianFarmType)
+        </td>
+        <td class="sectionName">
+            @Html.LabelFor(m => m.idfsAvianProductionType)
+        </td>
+        <td class="sectionName">
+            @Html.LabelFor(m => m.idfsIntendedUse)
+        </td>
+        <td class="sectionName">
+            @Translator.GetMessageString("titleFarmDetails")
+        </td>
+    </tr>
+    <tr>
+        <td valign="top">
+            @Html.BvRadioButtonGroup(Model, "AvianFarmType")
+        </td>
+        <td valign="top">
+            @Html.BvRadioButtonGroup(Model, "AvianFarmProductionType")
+        </td>
+        <td valign="top">
+            @Html.BvRadioButtonGroup(Model, "FarmIntendedUse")
+        </td>
+        <td valign="top">
+            <table>
+                <tr>
+                    <td>
+                        @Html.LabelFor(m => m.intBuidings)
+                    </td>
+                    <td>
+                        @Html.BvNumeric(Model, "intBuidings", 0)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(m => m.intBirdsPerBuilding)
+                    </td>
+                    <td>
+                        @Html.BvNumeric(Model, "intBirdsPerBuilding", 0)
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</div>*@

@@ -1,0 +1,69 @@
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fn_SiteActivationServer_SelectList]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fn_SiteActivationServer_SelectList]
+GO
+
+
+
+
+--##SUMMARY Returns the list of availbale EIDSS sites.
+--##SUMMARY Used by SiteActivationServerList form.
+
+--##REMARKS Author: Zurin M.
+--##REMARKS Create date: 24.02.2010
+
+--##RETURNS Doesn't use
+
+
+/*
+--Example of procedure call:
+SELECT * FROM fn_SiteActivationServer_SelectList ('en')
+
+*/
+
+
+
+CREATE          function dbo.fn_SiteActivationServer_SelectList(
+			@LangID as nvarchar(50)--##PARAM @LangID  - language ID
+)
+returns table 
+as
+return
+select			tstSite.idfsSite, 
+				tstSite.strSiteName, 
+				SiteType.[Name] as strSiteType, 
+				Country.[Name] as Country,
+				fnInstitution.[Abbreviation], 
+				tstSite.strServerName,
+				tstSite.strHASCsiteID,
+				tstSite.strSiteID
+from			tstSite
+inner join		fnGisReference(@LangID, 19000001/*'rftCountry'*/)  Country
+on				Country.idfsReference = tstSite.idfsCountry
+inner join	fnReference(@LangID, 19000085/*'rftSiteType'*/) as SiteType
+on				SiteType.idfsReference = tstSite.idfsSiteType
+left outer join	fnInstitution(@LangID)
+on				fnInstitution.idfOffice = tstSite.idfOffice
+
+where			(	dbo.fnSiteType() = 10085003 /*GDR*/
+					or tstSite.idfsCountry = (
+							select	idfsCountry 
+							from	tstSite 
+							where	idfsSite = dbo.fnSiteID()))
+				and tstSite.intRowStatus = 0 
+
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

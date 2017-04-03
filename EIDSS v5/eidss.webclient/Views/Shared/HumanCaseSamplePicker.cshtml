@@ -1,0 +1,142 @@
+﻿@model eidss.model.Schema.HumanCaseSample
+@{
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+@using eidss.webclient.Utils;
+
+<script type="text/javascript">
+    function onFilterByDiagnosisClick(name) {
+        ModelFieldChangedCheckbox(name);
+        var ObjectIdent = name.substring(0, name.lastIndexOf("_") + 1);
+        var SampleType = $("#" + ObjectIdent + "SampleType").data("tComboBox");
+        SampleType.reload();
+        SampleType.value(null);
+//        var curValue = SampleType.value();
+//        $.each(SampleType.data, function (key, value) {
+//            if (value.Value == curValue) {
+//                SampleType.select(key);
+//                return;
+//            }
+//        });
+    }
+
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+<input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        @Html.Hidden("idfMaterial", Model.idfMaterial)                                               
+        <table>    
+            <tr>
+                <td class="medium">
+                </td>
+                <td>
+                    @Html.BvCheckBox(Model, "FilterByDiagnosis", false, "onFilterByDiagnosisClick")
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.strSpecimenName)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, "SampleType", false).DataBinding(b => b.Ajax().Select("SelectSampleType", "Sample", new RouteValueDictionary { { "area", "Sample" }, { "idfMaterial", Model.idfMaterial } }))
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.strFieldBarcode)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, "strFieldBarcode")
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.datFieldCollectionDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, "datFieldCollectionDate")
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.idfSendToOffice)
+                </td>
+                <td class="noIndent">                     
+                    @Html.Action("InlineOrganizationPicker", "Organization", new { obj = Model, objectId = Model.idfMaterial, idfsOrganizationPropertyName = "idfSendToOffice",
+                                                                               strOrganizationPropertyName = "strSendToOffice", idfsEmployeePropertyName = "",
+                                                                               strEmployeePropertyName = "", showInInternalWindow = true })     
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.datFieldSentDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, "datFieldSentDate")
+                </td>                            
+            </tr>
+            
+
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.idfTesting)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, "Testing")
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.strTestResult)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, "strTestResult")
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.datTestPerformedDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, "datTestPerformedDate")
+                </td>                            
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.strFieldCollectedByOffice)
+                </td>
+                <td class="noIndent">                     
+                    @Html.Action("InlineOrganizationPicker", "Organization", new { obj = Model, objectId = Model.idfMaterial, idfsOrganizationPropertyName = "idfFieldCollectedByOffice",
+                                                                               strOrganizationPropertyName = "strFieldCollectedByOffice", idfsEmployeePropertyName = "idfFieldCollectedByPerson",
+                                                                               strEmployeePropertyName = "strFieldCollectedByPerson", showInInternalWindow = true })     
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.strFieldCollectedByPerson)
+                </td>
+                <td class="noIndent">
+                    @Html.Action("InlineEmployeePicker", "Employee", new { obj = Model, objectId = Model.idfMaterial, idfsEmployeePropertyName = "idfFieldCollectedByPerson", 
+                                                                            strEmployeePropertyName = "strFieldCollectedByPerson", idfsOrganizationPropertyName = "idfFieldCollectedByOffice",
+                                                                            strOrganizationPropertyName = "strFieldCollectedByOffice", showInInternalWindow = true  })                     
+                </td>                            
+            </tr>
+        </table>             
+        <div class="popupBottomButtonPanel">                   
+            <input type="button" class="popupButton" onclick="
+                var o = '@(Model.CaseObjectIdent)';
+                var ObjectIdent = o.substring(0, o.lastIndexOf('_') + 1);
+                CloseMessageWindow(); 
+                $('#' + ObjectIdent + 'Samples').data('tGrid').ajaxRequest();
+                SelectFirstGridRow(ObjectIdent + 'Samples');" value="@Translator.GetMessageString("Cancel")"/>                          
+            <input type="button" class="popupButton" onclick="onHumanSamplePickerChanged('@(Model.CaseObjectIdent)');" value="@Translator.GetMessageString("Ok")"/>     
+        </div>   
+    }           
+</div>

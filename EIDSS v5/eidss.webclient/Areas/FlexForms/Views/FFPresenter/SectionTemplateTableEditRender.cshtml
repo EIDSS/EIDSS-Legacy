@@ -1,0 +1,33 @@
+﻿@using eidss.webclient.Utils
+@model eidss.model.Model.FlexibleForms.FlexNodes.FlexNode
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        <div class="yScrollable ffPopupContent">
+            <h2>@Model.GetSectionTemplate().NationalName</h2>
+            @{
+                var parameterList = Model.GetParameterTemplateNodesForDataTable();
+
+                foreach (var node in parameterList)
+                {
+                    //выводим полный заголовок
+                    node.UseFullPath = true;
+                    node.idfRow = Model.idfRow;
+                    Html.RenderPartial("~/Areas/FlexForms/Views/FFPresenter/FlexNodeRender.ascx", node);
+                    <br/>
+                }
+            }
+        </div>
+        <div class="popupBottomButtonPanel">
+            <input type="button" class="popupButton" onclick="onCancelEditFFTableRow('@ViewBag.IsNew', '@ViewBag.IdfsSection', '@ViewBag.IdfRow', '@ViewBag.FFKey', '@ViewBag.FFPresenterId');" value="@Translator.GetMessageString("Cancel")" />
+            <input type="button" class="popupButton" onclick="onEditFFGridRowComplete('@ViewBag.IdfsSection', '@ViewBag.FFKey', '@ViewBag.FFPresenterId');" value="@Translator.GetMessageString("Ok")"/>
+        </div>
+    }
+</div> 

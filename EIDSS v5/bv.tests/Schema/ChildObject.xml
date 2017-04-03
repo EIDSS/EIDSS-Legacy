@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="ChildObject"
+        connection="TestConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get type="detaillist" />
+    </storage>
+
+    <tables>
+        <table name="ChildObject">
+            <keys>
+                <key name="ChildID" />
+            </keys>
+            <fields>
+                <storage name="TextFieldFromMaster" type="string" />
+            </fields>
+            <storage>
+            </storage>
+          <actions>
+            <action name="Create" type="Create">
+              <run>
+                <params>
+                  <param name="MasterID" type="long" />
+                </params>
+                <creating>
+                  <lambda_extender target="ChildID" type="long" lambda='c => MasterID' />
+                </creating>
+              </run>
+            </action>
+          </actions>
+        </table>
+    </tables>
+
+</object>

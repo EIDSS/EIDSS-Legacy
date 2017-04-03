@@ -1,0 +1,63 @@
+﻿@model eidss.model.Schema.AsSession
+@using bv.common.Configuration
+@using eidss.webclient.Utils
+@using eidss.model.Schema
+@using eidss.webclient.Areas.ActiveSurveillence
+@using eidss.webclient.Areas.Sample;
+@(Html.Telerik().TabStrip()
+    .Name("DetailedInfo")
+    .Items(items =>
+    {
+
+        items.Add()
+            .Text(Translator.GetMessageString("tabTitleFarmsAnimalsSamples"))
+            .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleFarmsAnimalsSamples" } : new { })
+            .Content(
+                    @<text>
+                    <div class="yScrollable smallTabPanelContent">
+                        @Html.SamplesTableView(Model.idfMonitoringSession, Model.ObjectIdent + "ASSamples", Model.DetailsTableView, Model.IsReadOnly("ASSamples"))
+                        <table class="fourColumns">
+                            <tr>
+                                <td>@Html.LabelFor(m => m.intTotalDiagnosedAnimals)
+                                </td>
+                                <td>@Html.BvEditbox(Model, "intTotalDiagnosedAnimals")
+                                </td>
+                                <td>@Html.LabelFor(m => m.intTotalSamplesInDetails)
+                                </td>
+                                <td>@Html.BvEditbox(Model, "intTotalSamplesInDetails")
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    </text>);
+        items.Add()
+            .Text(Translator.GetMessageString("tabTitleTests"))
+            .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleTests" } : new { })
+            .Content(
+                    @<text>
+                    <div class="yScrollable smallTabPanelContent">
+                        <table class="bordered">
+                            <tr>    
+                                <td class="sectionName" colspan="3">
+                                    @Translator.GetMessageString("tabTitleTests")
+                                </td>
+                            </tr>  
+                            </table>
+                            
+                            @Html.CaseTestsGrid(Model.idfMonitoringSession, Model.ObjectIdent + "CaseTests", Model.CaseTests, Model.IsReadOnly("CaseTests") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit || !Model.GetPermissions().CanExecute("CanAddTestResults")), (int)eidss.model.Enums.HACode.None, true)
+                                
+                            <table class="bordered"> 
+                            <tr>        
+                                <td class="sectionName" colspan="3">
+                                    @Translator.GetMessageString("titleResultSummary")
+                                </td>
+                            </tr>   
+                            </table> 
+                            
+                            @Html.CaseTestValidationsGrid(Model.idfMonitoringSession, Model.ObjectIdent + "CaseTestValidations", Model.CaseTestValidations, Model.IsReadOnly("CaseTestValidations") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit || (!Model.GetPermissions().CanExecute("CanValidateTestInterpretation") && !Model.GetPermissions().CanExecute("CanValidateTestResult"))))
+                                
+                    </div>
+                    </text>);
+
+    })
+        .SelectedIndex(0))

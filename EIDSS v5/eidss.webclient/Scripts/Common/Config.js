@@ -1,0 +1,3 @@
+﻿var Config = {
+    AutoTestingVersion: false
+};

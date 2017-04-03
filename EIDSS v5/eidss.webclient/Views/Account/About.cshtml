@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <title>@Translator.GetMessageString("About")</title>
+    <link href="@Url.Content("~/Content/Styles/Common.css")" rel="stylesheet" type="text/css" />
+
+</head>
+
+@{    
+    Layout = null;
+}
+@using eidss.webclient.Utils
+
+    <body style="background-color:White">    
+        @using (Html.BeginForm())
+        {                
+            <img src="/Content/Images/Web_Login_Title_About.png" class="headerImg" border="0" alt='@Translator.GetMessageString("WelcomeTitle")' title='@Translator.GetMessageString("WelcomeTitle")'/>
+            <div class="versionLabel">
+                Version: @typeof(eidss.webclient.MvcApplication).Assembly.GetName().Version
+            </div>        
+            <div class="copyrightLabel">                       
+                @string.Format(Translator.GetMessageString("CopyrightText"), DateTime.Now.Date.Year)
+            </div>                                 
+            <div class="aboutButtonPanel" >      
+                <input type="button" value='@Translator.GetString("Ok")' onclick="window.close();" />                       
+            </div>  
+        }
+    </body>
+</html>
+

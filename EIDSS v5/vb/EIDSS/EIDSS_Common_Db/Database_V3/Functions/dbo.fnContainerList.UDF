@@ -1,0 +1,134 @@
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fnContainerList]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[fnContainerList]
+GO
+
+/*
+select *from fnContainerList('en')
+*/
+
+CREATE           function [dbo].[fnContainerList](@LangID as nvarchar(50))
+returns table
+as
+return
+select			
+				tlbContainer.idfContainer,
+				tlbContainer.idfSubdivision,
+				tlbContainer.strBarcode,
+				tlbContainer.idfsContainerStatus,
+				tlbContainer.idfInDepartment,
+				tlbContainer.datCreationDate,
+				tlbContainer.idfMaterial,
+				tlbContainer.idfParentContainer,
+				tlbContainer.idfsSite,
+				tlbContainer.strNote,
+				Department.Name as DepartmentName,
+
+				tlbMaterial.strFieldBarcode,
+				tlbMaterial.idfRootParentMaterial,
+				tlbMaterial.idfsSpecimenType,
+				tlbMaterial.datFieldCollectionDate,
+				tlbMaterial.datFieldSentDate,
+				tlbMaterial.idfFieldCollectedByOffice,
+				tlbMaterial.idfFieldCollectedByPerson,
+				--Material.strSpecial_Name,
+				--Container_Status.Name as ContainerStatus,
+				--Material.strBarcode as MaterialBarcode,
+				--Material.dblQuantity, 
+				--SpecimenType.[Name] as SpecimenType,
+				tlbMaterial.SpecimenType,
+
+				tlbMonitoringSession.idfMonitoringSession,
+				tlbMonitoringSession.strMonitoringSessionID,
+
+				tlbCase.idfCase,
+				tlbCase.strCaseID,
+				isnull(tlbCase.strCaseID,tlbMonitoringSession.strMonitoringSessionID) as CaseID,
+				tlbCase.idfsCaseType,
+				tlbCase.idfsShowDiagnosis,
+				--Case_Status_List.Name as CaseStatus,
+				--CaseType.Name as CaseType,
+				--Material.datRegistration_Date,
+				Diagnosis.Name as DiagnosisName,
+
+				tlbFarm.strNationalName,
+
+				-- Added
+				--isnull(dbo.Specimen_Type.strCode,'') as SpecimenCode,
+				--SpeciesList.strCode as PartyCode,
+				--tlbMaterial.datReceiveDate as AccessionDate,
+/*
+				case when Patient.idfHuman is NULL
+					then IsNull(FarmOwner.strLastName + ' ', '')+IsNull(FarmOwner.strFirstName + ' ', '') + IsNull(FarmOwner.strSecondName, '')
+					else IsNull(Patient.strLastName + ' ', '')+IsNull(Patient.strFirstName + ' ', '') + IsNull(Patient.strSecondName, '')
+				end as HumanName,
+*/
+				IsNull(HumanFromCase.strLastName + ' ', '')+IsNull(HumanFromCase.strFirstName + ' ', '') + IsNull(HumanFromCase.strSecondName, '')
+				as HumanName,
+				Animal.SpeciesName,
+				Animal.strAnimalCode,
+				Animal.AnimalName,
+				Animal.idfsSpeciesType,
+				--RepositorySchema.[Path],
+				--Original.strBarcode as OriginalBarcode,
+				--trtSpeciesType.strCode as SpeciesCode,
+				--SpecimenType.intHA_Code as HACode --BaseReference.intHA_Code as HACode
+				CASE WHEN tlbMonitoringSession.idfMonitoringSession IS NULL THEN
+					CASE tlbCase.idfsCaseType
+					WHEN 10012001 THEN 2 -- cstRoutineHumanCaseReport
+					--WHEN 10012005 THEN 1 --animal
+					WHEN 10012003 THEN 33 --livestock
+					WHEN 10012004 THEN 65 --avian
+					END --as HACode
+				ELSE
+					10012003 --livestock
+				END as HACode
+
+				-- Update!!!!!!!!!!!!!!!!!!!!! CODES and ALIQUOTES
+
+from		tlbContainer
+inner join	fnMaterialList(@LangID) tlbMaterial
+on			tlbContainer.idfMaterial=tlbMaterial.idfMaterial
+left join	tlbMonitoringSession
+on			tlbMonitoringSession.idfMonitoringSession=tlbMaterial.idfMonitoringSession
+left join	tlbCase
+on			tlbCase.idfCase=tlbMaterial.idfCase
+left join
+		(
+			tlbFarm
+			inner join	tlbParty FarmParty
+			on			FarmParty.idfParty=tlbFarm.idfFarm and FarmParty.intRowStatus=0
+			inner join	tlbParty FarmOwner
+			on			FarmOwner.idfParty=tlbFarm.idfHuman and FarmOwner.intRowStatus=0
+		)
+on			FarmParty.idfCase=tlbCase.idfCase
+left join	tlbHuman HumanFromCase
+on			HumanFromCase.idfHuman=tlbFarm.idfHuman or
+			HumanFromCase.idfHuman=tlbMaterial.idfParty
+left join	fnAnimalList(@LangID) Animal
+on			tlbMaterial.idfParty=Animal.idfParty
+left join	fnDepartment(@LangID) Department
+on			Department.idfDepartment=tlbContainer.idfInDepartment
+left join	dbo.fnReference(@LangID, 19000019 ) Diagnosis --rftDiagnosis
+on			tlbCase.idfsShowDiagnosis = Diagnosis.idfsReference
+
+where		tlbContainer.intRowStatus = 0 -- and
+			--tlbContainer.idfsSite = dbo.fnSiteID() and
+			--Container.idfContainer = Container.idfBaseID and
+			--Container.idfsContainer_Status = 'cotInRepository'
+--------------------------
+			/*and ((OA.intPermission in (2, 4))
+				 or OA.intPermission is null and 
+				dbo.fn_ObjectTypePermission('objSample', dbo.fnPersonID(), 'ObjectOperationRead')<> 1)*/
+
+
+
+
+
+GO
+

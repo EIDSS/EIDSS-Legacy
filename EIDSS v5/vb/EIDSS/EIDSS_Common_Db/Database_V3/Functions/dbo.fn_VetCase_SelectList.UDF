@@ -1,0 +1,192 @@
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fn_VetCase_SelectList]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fn_VetCase_SelectList]
+GO
+
+--##SUMMARY Returns the list of veterinary case.
+--##SUMMARY Used by VetCaseList form.
+
+--##REMARKS Author: Zurin M.
+--##REMARKS Create date: 28.11.2009 
+
+--##RETURNS Doesn't use
+
+
+/*
+--Example of a call of procedure:
+SELECT * FROM fn_VetCase_SelectList ('en') where (fn_VetCase_SelectList.idfsCaseProgressStatus = 10109002)
+
+*/
+
+
+CREATE              Function	fn_VetCase_SelectList(
+		@LangID as nvarchar(50) --##PARAM @LangID  - language ID
+)
+RETURNS TABLE
+--returns @res table  (
+--	idfCase				bigint,
+--	datAssignedDate			datetime, 
+--	datEnteringDate			datetime,  
+--	strCaseID				nvarchar(200), 
+--	datReportDate			datetime, 
+--	datInvestigationDate	datetime,
+--	idfsDiagnosis			bigint,
+--	idfsTentativeDiagnosis	bigint,
+--	idfsTentativeDiagnosis1	bigint,
+--	idfsTentativeDiagnosis2	bigint,
+--	idfsFinalDiagnosis		bigint,
+--	idfsCaseStatus			bigint,  
+--	DiagnosisName			nvarchar(200), 
+--	CaseStatusName			nvarchar(200), 
+--	strCaseType				nvarchar(200),
+--	idfsCaseType			bigint,
+--	idfAddress  			bigint,
+--	AddressName				nvarchar(1000),
+--	idfFarm					bigint,
+--	FarmName				nvarchar(200), 
+--	idfGeoLocation			bigint,
+--	idfsAvianFarmType		bigint,
+--	idfsAvianProductionType	bigint,
+--	idfsFarmCategory		bigint,
+--	idfsOwnershipStructure	bigint,
+--	idfsMovementPattern		bigint,
+--	idfsIntendedUse			bigint,
+--	idfsGrazingPattern		bigint,
+--	idfsLivestockProductionType	bigint,
+--	strInternationalName	nvarchar(200),
+--	strNationalName			nvarchar(200),
+--	strFarmCode				nvarchar(200),
+--	strFax					nvarchar(200),
+--	strEmail				nvarchar(200),
+--	strContactPhone			nvarchar(200),
+--	strOwnerFirstName		nvarchar(200),
+--	strOwnerMiddleName		nvarchar(200),
+--	strOwnerLastName		nvarchar(200),
+--	intSickAnimalQty		int,
+--	intTotalAnimalQty		int,
+--	intDeadAnimalQty		int
+--
+--					)
+as
+--begin
+
+--declare @TypePer int
+--set @TypePer = dbo.fn_ObjectTypePermission('objVetCase', null, 'ObjectOperationRead')
+--insert into @res
+RETURN 
+select			tlbCase.idfCase, 
+				tlbVetCase.datAssignedDate, 
+				tlbCase.datEnteredDate ,  
+				tlbCase.strCaseID, 
+				tlbVetCase.datReportDate, 
+				tlbVetCase.datInvestigationDate,
+				tlbCase.idfsShowDiagnosis as idfsDiagnosis,
+				tlbVetCase.idfsTentativeDiagnosis,
+				tlbVetCase.idfsTentativeDiagnosis1,
+				tlbVetCase.idfsTentativeDiagnosis2,
+				tlbVetCase.idfsFinalDiagnosis,
+				tlbCase.idfsCaseStatus,  
+				tlbCase.idfsCaseProgressStatus,  
+				Diagnosis.Name as DiagnosisName, 
+				CaseStatus.Name as CaseStatusName, 
+				CaseClassification.Name as CaseClassificationName, 
+				CaseType.[Name] as strCaseType,
+				tlbCase.idfsCaseType,
+				tlbFarm.idfFarmAddress as idfAddress,
+				dbo.fnCreateAddressString	(
+									@LangID,
+									[Address].Country,
+									[Address].Region,
+									[Address].Rayon,
+									[Address].PostalCode,
+									[Address].SettlementType,
+									[Address].Settlement,
+									[Address].Street,
+									[Address].House,
+									[Address].Building,
+									[Address].Appartment,
+									[Address].ResidentType
+										) as AddressName ,
+				tlbGeoLocation.idfsCountry,
+				tlbGeoLocation.idfsRegion,
+				tlbGeoLocation.idfsRayon,
+				tlbGeoLocation.idfsSettlement,
+				tlbFarm.idfFarm,
+				IsNull(tlbFarm.strNationalName, tlbFarm.strInternationalName) as FarmName, 
+				tlbFarm.idfFarmLocation AS idfGeoLocation,
+				tlbFarm.idfsAvianFarmType,
+				tlbFarm.idfsAvianProductionType,
+				tlbFarm.idfsFarmCategory,
+				tlbFarm.idfsOwnershipStructure,
+				tlbFarm.idfsMovementPattern,
+				tlbFarm.idfsIntendedUse,
+				tlbFarm.idfsGrazingPattern,
+				tlbFarm.idfsLivestockProductionType,
+				tlbFarm.strInternationalName,
+				tlbFarm.strNationalName,
+				tlbFarm.strFarmCode,
+				tlbFarm.strFax,
+				tlbFarm.strEmail,
+				tlbFarm.strContactPhone,
+				tlbFarm.strOwnerFirstName,
+				tlbFarm.strOwnerMiddleName,
+				tlbFarm.strOwnerLastName,
+				CASE WHEN tlbCase.idfsCaseType= 10012004/*avian*/ THEN tlbFarm.intAvianSickAnimalQty ELSE  tlbFarm.intLivestockSickAnimalQty END AS  intSickAnimalQty ,
+				CASE WHEN tlbCase.idfsCaseType= 10012004/*avian*/ THEN tlbFarm.intAvianTotalAnimalQty ELSE  tlbFarm.intLivestockTotalAnimalQty END AS  intTotalAnimalQty ,
+				CASE WHEN tlbCase.idfsCaseType= 10012004/*avian*/ THEN tlbFarm.intAvianDeadAnimalQty ELSE  tlbFarm.intLivestockDeadAnimalQty END AS  intDeadAnimalQty 
+				
+ 
+from			(
+	tlbVetCase
+	inner join		(
+		tlbCase
+					left join	dbo.fnReference(@LangID,19000019) as Diagnosis --'rftDiagnosis'
+					on			tlbCase.idfsShowDiagnosis = Diagnosis.idfsReference
+					left join	dbo.fnReference(@LangID,19000011) as CaseClassification --'rftCaseStatus'
+					on			tlbCase.idfsCaseStatus = CaseClassification.idfsReference
+					left join	dbo.fnReference(@LangID,19000111) as CaseStatus --'rftCaseProgressStatus'
+					on			tlbCase.idfsCaseProgressStatus = CaseStatus.idfsReference
+					left join	dbo.fnReference(@LangID,19000012) as CaseType --'rftCaseType'
+					on			tlbCase.idfsCaseType = CaseType.idfsReference
+					)
+	on				tlbCase.idfCase = tlbVetCase.idfVetCase
+--	left outer join	dbo.fn_ObjectDirectPermission_VetCase('ObjectOperationRead', null) as OA
+--	on				OA.idfActivity = Animal_Case_Table.idfActivity
+				)
+
+
+left join	tlbParty
+on			tlbCase.idfCase = tlbParty.idfCase
+			and tlbParty.idfsPartyType = 10072005 --Farm
+			and tlbParty.intRowStatus = 0
+left join	tlbFarm
+on			tlbFarm.idfFarm = tlbParty.idfParty
+left join	fnAddressAsRow(@LangID) [Address]
+on			[Address].idfGeoLocation = tlbFarm.idfFarmAddress
+left join	tlbGeoLocation
+on			tlbGeoLocation.idfGeoLocation = tlbFarm.idfFarmAddress
+
+JOIN fnGetPermissionOnVetCase(NULL, NULL) GetPermission ON
+	GetPermission.idfVetCase = tlbVetCase.idfVetCase
+	AND GetPermission.intPermission = 2
+
+where	tlbCase.intRowStatus = 0
+		--and tlbVetCase.intRowStatus = 0		
+	--and (OA.intPermission in (2,4) or (OA.intPermission is null and @TypePer <> 1))
+
+
+--return
+
+--end
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

@@ -1,0 +1,44 @@
+﻿@model eidss.model.Schema.HumanCaseDeduplicationListItem.Accessor
+@{
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+
+@using eidss.webclient.Utils
+@using eidss.model.Schema
+
+<script language="javascript" type="text/javascript">
+    function ViewCase() {
+        var id = GetSelectedItemId();
+        if (id) {
+            CloseMessageWindow();
+            OpenPopup('../HumanCase/Details?id=' + id, ' ');
+        }
+    }
+
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    }); 
+</script>
+
+<div class="popupContent">
+    <input type="hidden" id="grid_selecteditem" />
+    @using (Html.BeginForm())
+    {                                                  
+        using (var manager = bv.model.BLToolkit.DbManagerFactory.Factory.Create(eidss.model.Core.EidssUserContext.Instance))
+        {
+            var list = Model.SelectListT(manager, (bv.model.Model.Core.FilterParams)ViewBag.Filter);
+
+            Html.BvSelectGrid<HumanCaseDeduplicationListItem.HumanCaseDeduplicationListItemGridModel, HumanCaseDeduplicationListItem.HumanCaseDeduplicationListItemGridModelList>(
+                    Session.SessionID,
+                    new HumanCaseDeduplicationListItem.HumanCaseDeduplicationListItemGridModelList(AutoGridRoots.HumanCaseDeduplicationList, list),
+                    eidss.webclient.Configurations.GridDisplayRowsSettings.HUMAN_CASE_DEDUPLICATION_LIST
+                    )
+                .Render();
+        } 
+
+        <div class="popupBottomButtonPanel">    
+            <input type="button" class="popupButton" onclick="CloseMessageWindow();" value="@Translator.GetMessageString("Close")"/> 
+            <input type="button" class="popupButton" onclick="ViewCase();" value="@Translator.GetMessageString("View")"/>                                                      
+        </div>   
+    }
+</div>  

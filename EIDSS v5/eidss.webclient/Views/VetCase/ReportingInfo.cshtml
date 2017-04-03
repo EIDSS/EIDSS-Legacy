@@ -1,0 +1,16 @@
+﻿@model eidss.model.Schema.VetCase
+@using eidss.webclient.Utils
+
+<table class="threeParts">
+    <tr>
+        <td valign="top">
+            @(Html.Partial("../Personnel/ReportedBy", Model))
+        </td>
+        <td valign="top">
+            @(Html.Partial("../Personnel/InvestigatedBy", Model))
+        </td>
+        <td valign="top">
+            @(Html.Partial("../Personnel/EnteredBy", Model))
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,66 @@
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnAggregateSettings]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnAggregateSettings]
+GO
+
+
+--##SUMMARY Returns table with system aggregate settings
+--##SUMMARY that defines minimal adninistrative unit and period type for different aggregate cases types.
+--##SUMMARY If NULL is passed as input aggregate case type, settings for this type only is selected.
+--##SUMMARY In other case all settings are selected.
+
+--##REMARKS Author: Zurin M.
+--##REMARKS Create date: 01.12.2009
+
+--##RETURNS Doesn't use
+
+
+
+/*
+--Example of function call:
+DECLARE @idfsAggrCaseType bigint
+SET  @idfsAggrCaseType = 10102001
+SELECT * FROM fnAggregateSettings(@idfsAggrCaseType)
+
+*/
+
+CREATE          function fnAggregateSettings(
+	@idfsAggrCaseType bigint --##PARAM @idfsAggrCaseType - aggregate case type
+)
+returns table
+as
+return(
+
+SELECT fnReference.idfsReference as idfsAggrCaseType
+      ,tstSite.idfsCountry
+      ,ISNULL(tstAggrSetting.idfsStatisticAreaType,10089004/*Settlement*/) AS idfsStatisticAreaType 
+      ,ISNULL(tstAggrSetting.idfsStatisticPeriodType,10091002/*Day*/) AS idfsStatisticPeriodType
+--      ,tstAggrSetting.strValue
+  FROM fnReference('en',19000102 /*Aggregate case type*/) 
+LEFT OUTER JOIN tstAggrSetting ON
+	fnReference.idfsReference = tstAggrSetting.idfsAggrCaseType
+INNER JOIN tstSite ON
+	tstSite.idfsSite = dbo.fnSiteID()
+WHERE 
+	(@idfsAggrCaseType IS NULL OR fnReference.idfsReference = @idfsAggrCaseType)
+)
+
+
+
+
+
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

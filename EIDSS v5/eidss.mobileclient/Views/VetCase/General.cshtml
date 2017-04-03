@@ -1,0 +1,126 @@
+﻿@model eidss.model.Schema.VetCase
+@{    
+    Layout = "~/Views/Shared/_VetCaseDetailsLayout.cshtml";
+}
+
+@using eidss.mobileclient.Utils
+
+<script src="@Url.Content("~/Scripts/EIDSS.Organization.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm())
+{
+    <table> 
+        <tr>                                                               
+            <td>
+                @Html.LabelFor(m => m.strCaseID)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.BvEditBox(Model, "strCaseID")
+            </td>
+        </tr>
+        <tr>                                                               
+            <td>
+                @Html.LabelFor(m => m.idfsCaseReportType)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.BvDropDownList(Model, "CaseReportType")
+            </td>
+        </tr>
+        <tr>                
+            <td>
+                @Translator.GetString("strInvestigatedByOffice")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.Action("InlineOrganizationPicker", "Organization", new { obj = Model, objectId = Model.idfCase, 
+                idfsOrganizationPropertyName = "idfInvestigatedByOffice", strOrganizationPropertyName = "strInvestigatedByOffice",
+                returnUrl = "/VetCase/General?id=" + Session["IdfCase"], currentControllerName = "VetCase" })
+            </td>            
+        </tr>
+        <tr>                                                               
+            <td>
+                <label>@Translator.GetString("strInvestigatorName"):</label>                
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.BvDropDownList(Model, "PersonInvestigatedBy")
+            </td>
+        </tr>
+        <tr>                                                                       
+            <td>
+                @Html.LabelFor(m => m.datInvestigationDate)                
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.BvDateBox(Model, "datInvestigationDate")
+            </td>
+        </tr>
+        <tr>                
+            <td>
+                @Html.LabelFor(m => m.idfsTentativeDiagnosis)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.BvDropDownList(Model, "TentativeDiagnosis")
+            </td>
+        </tr>
+        <tr>                
+            <td>
+                @Html.LabelFor(m => m.datTentativeDiagnosisDate)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.BvDateBox(Model, "datTentativeDiagnosisDate")
+            </td>
+        </tr>
+        <tr>                
+            <td>
+                @Html.LabelFor(m => m.idfsTentativeDiagnosis1)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.BvDropDownList(Model, "TentativeDiagnosis1")
+            </td>
+        </tr>
+        <tr>                
+            <td>
+                @Html.LabelFor(m => m.datTentativeDiagnosis1Date)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.BvDateBox(Model, "datTentativeDiagnosis1Date")
+            </td>
+        </tr>
+        <tr>                
+            <td>
+                @Html.LabelFor(m => m.idfsTentativeDiagnosis2)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.BvDropDownList(Model, "TentativeDiagnosis2")
+            </td>
+        </tr>
+        <tr>                
+            <td>
+                @Html.LabelFor(m => m.datTentativeDiagnosis2Date)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.BvDateBox(Model, "datTentativeDiagnosis2Date")
+            </td>
+        </tr>
+    </table>
+}

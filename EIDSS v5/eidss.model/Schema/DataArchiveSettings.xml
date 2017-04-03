@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="Vector"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spDataArchiveSettings_SelectDetail" type= "detailone" />
+  </storage>
+
+  <tables>
+    <table name="DataArchiveSettings">
+       <help win="Data_Archiving_Settings"/>
+      <readonly>
+        <fields name="*" predicate="c => true" />
+      </readonly>
+     <storage>
+      </storage>
+      <postorder>
+      </postorder>
+      <deleteorder>
+      </deleteorder>
+      <extenders>
+        <creating>
+        </creating>
+        <created>
+          
+        </created>
+        <loaded>
+          <lambda_extender target="strSchedule" type="string"
+                           lambda='c => (c.strSchedule == "msgDataArchivingNotApplicable") ?eidss.model.Resources.EidssMessages.Get("msgDataArchivingNotApplicable", "Not Applicable") :c.strSchedule'/>
+        </loaded>
+        <posting>
+        </posting>
+        <posted>
+        </posted>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+        </fieldhandler>
+      </handlers>
+
+      <validators>
+
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <remove type="Delete"/>
+        </standard>
+      </actions>
+    </table>
+
+  </tables>
+</object>

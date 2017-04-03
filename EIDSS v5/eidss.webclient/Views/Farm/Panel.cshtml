@@ -1,0 +1,202 @@
+﻿@model eidss.model.Schema.FarmPanel
+           
+@{
+    ViewBag.Title = @Translator.GetMessageString("Details");
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+
+@using eidss.webclient.Utils
+@using eidss.webclient.Areas.Address
+<script src='@Url.Content("~/Scripts/jquery.watermark.js")' type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript">
+    function ShowFarmPicker() {
+        ShowSearchPicker('@Url.Action("Select", "Farm")', EIDSS.BvMessages['titleSelectFarm']);
+    }
+
+    function FarmIdSelected(id) {
+        if (id.length > 0) {
+            var idfarm = $("input[type='hidden'][name$='idfRootFarm']");
+            idfarm.val(id);
+            ApplyContainer.argument = 'FarmTree';
+            ApplyContainer.onAjaxSuccess = gridItemAdded;
+            ModelFieldChanged(idfarm.attr('name'), id);            					
+            $('#Message').data('tWindow').close();
+			
+        }
+    }
+
+    $(document).ready(function () {
+        var lastname = $('input[name$="strOwnerLastName"]');
+        var firstname = $('input[name$="strOwnerFirstName"]');
+        var middlename = $('input[name$="strOwnerMiddleName"]');
+
+        if (lastname.val() == '') {
+            lastname.watermark(EIDSS.BvMessages['LastName'], { className: 'waterMarkClass' });
+        }
+        if (firstname.val() == '') {
+            firstname.watermark(EIDSS.BvMessages['FirstName'], { className: 'waterMarkClass' });
+        }
+        if (middlename.val() == '') {
+            middlename.watermark(EIDSS.BvMessages['MiddleName'], { className: 'waterMarkClass' });
+        }
+        
+        var buttonSelect = $("#buttonSelectFarm");
+        var isButtonsReadOnly = $("#hdnIsReadOnly").val().toLowerCase() == "true";
+        if (isButtonsReadOnly) {
+            buttonSelect.attr('disabled', 'disabled');
+        }
+        else {
+            buttonSelect.removeAttr('disabled');
+        }
+    });
+</script>
+
+@Html.BvHidden(Model, "idfRootFarm")
+<input type="hidden" id="hdnIsReadOnly" value="@Model.IsReadOnly("buttonSelectFarm")"/>
+
+<table class="bordered">
+    <tr>
+        <td colspan="4" class="sectionName">            
+            @Translator.GetMessageString("titleFarmContactInformation")                
+        </td>
+    </tr>
+    <tr>
+        <td class="medium">
+            @Html.LabelFor(m => m.strFarmCode)
+        </td>
+        <td class="xlarge noIndent">
+            <table>
+                <tr>
+                    <td class="fillAll">
+                        @Html.BvEditbox(Model, "strFarmCode")
+                    </td>
+                    <td>
+                        @if (!Model.IsReadOnlyParent && !Model.IsHiddenPersonalData("strFarmCode"))
+                        {
+                            <button id="buttonSelectFarm" onclick="ShowFarmPicker();" type="button" class="magnifierButton" >
+                                <img src="@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/ActionsPanelButtons/Search.png"))" alt="Select" />
+                            </button>                            
+                        }
+                    </td>
+                </tr>
+            </table>                    
+        </td>   
+        <td class="fillAll"></td>     
+        <td rowspan="6" valign="top">                  
+           @Html.Action("Coordinates", "GeoLocation", new { root = Model.idfFarm, location = Model.Location })
+           @Html.AddressInTwoColumns(Model.idfFarm, Model.Address, true)
+          @* @Html.Address(Model.idfFarm, Model.Address, true, false, true)*@
+        </td>
+    </tr>
+    <tr>
+        <td class="medium">
+            @Html.LabelFor(m => m.strNationalName)
+        </td>
+        <td class="xlarge">
+            @Html.BvEditbox(Model, "strNationalName")
+        </td>
+        <td class="fillAll"></td>    
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(m => m.idfOwner)
+        </td>
+        <td class="xlarge noIndent">
+            <table>
+                <tr>
+                    <td>
+                        @Html.BvEditbox(Model, "strOwnerLastName", false)
+                    </td>
+                    <td>
+                        @Html.BvEditbox(Model, "strOwnerFirstName", false)
+                    </td>
+                    <td>
+                        @Html.BvEditbox(Model, "strOwnerMiddleName", false)
+                    </td>
+                </tr>
+            </table>                    
+        </td>  
+        <td class="fillAll"></td>             
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.strContactPhone)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strContactPhone")
+        </td>
+        <td class="fillAll"></td>    
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.strFax)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strFax")
+        </td>
+        <td class="fillAll"></td>    
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.strEmail)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strEmail")
+        </td>
+        <td class="fillAll"></td>    
+    </tr>
+</table>
+<br />
+@if (Model.blnIsLivestock.HasValue && Model.blnIsLivestock.Value)
+{
+<table class="bordered fourParts">
+    <tr>
+        <td class="sectionName">
+            @Html.LabelFor(m => m.idfsOwnershipStructure)            
+        </td>       
+    </tr>
+    <tr>
+        <td valign="top">
+            @Html.BvRadioButtonGroup(Model, "OwnershipStructure", false)
+        </td>
+    </tr>
+</table> 
+}
+@if (Model.blnIsAvian.HasValue && Model.blnIsAvian.Value)
+{
+    <table class="bordered fourParts">
+        <tr>
+            <td class="sectionName">                
+                @Html.LabelFor(m => m.idfsAvianFarmType)                        
+            </td>
+            <td class="sectionName">
+                @Translator.GetMessageString("titleFarmDetails")              
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">
+                @Html.BvRadioButtonGroup(Model, "AvianFarmType")
+            </td>
+            <td valign="top">
+                <table>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m=>m.intBuidings)
+                        </td>
+                        <td>
+                            @Html.BvNumeric(Model, "intBuidings", 0)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m=>m.intBirdsPerBuilding)
+                        </td>
+                        <td>
+                            @Html.BvNumeric(Model, "intBirdsPerBuilding", 0)
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table> 
+}

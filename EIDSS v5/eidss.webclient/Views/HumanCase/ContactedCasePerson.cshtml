@@ -1,0 +1,51 @@
+﻿@model eidss.model.Schema.ContactedCasePerson
+@{
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+@using eidss.webclient.Utils;
+@using eidss.webclient.Areas.Patient;
+
+<input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+
+@Html.Hidden("idfContactedCasePerson", Model.idfContactedCasePerson)          
+<table class="bordered">      
+    <tr>
+        <td class="sectionName">
+            @Translator.GetMessageString("titlePersonDetails")  
+        </td>
+    </tr>
+    <tr>
+        <td class="noIndent">
+            @Html.Patient(Model.idfHuman, Model.Person, false)      
+        </td>        
+    </tr>
+</table>
+                               
+<table class="bordered">  
+    <tr>
+        <td colspan="7" class="sectionName">
+            @Translator.GetMessageString("titleContactInformation")  
+        </td>
+    </tr>    
+    <tr>
+        <td class="small">
+            @Html.LabelFor(m => m.idfsPersonContactType)
+        </td>
+        <td class="medium">
+            @Html.BvCombobox(Model, "PersonContactType")
+        </td>            
+        <td class="small">
+            @Html.LabelFor(m => m.datDateOfLastContact)
+        </td>
+        <td class="medium">
+            @Html.BvDatebox(Model, "datDateOfLastContact")
+        </td>           
+        <td class="small">
+            @Html.LabelFor(m => m.strPlaceInfo)
+        </td>
+        <td class="medium">
+            @Html.BvEditbox(Model, "strPlaceInfo")
+        </td>  
+        <td class="fillAll"></td>                          
+    </tr>          
+</table>            

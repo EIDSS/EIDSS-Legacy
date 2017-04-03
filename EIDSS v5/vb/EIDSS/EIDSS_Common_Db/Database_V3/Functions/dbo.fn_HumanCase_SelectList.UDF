@@ -1,0 +1,151 @@
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO 
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fn_HumanCase_SelectList]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fn_HumanCase_SelectList]
+GO
+
+--##SUMMARY Returns the list of human cases.
+--##SUMMARY Used by HumanCaseList form.
+
+--##REMARKS Author: Mirnaya O.
+--##REMARKS Create date: 25.12.2009
+
+--##RETURNS Function returns the list of human cases
+
+
+/*
+--Example of a call of function:
+select * from fn_HumanCase_SelectList ('en')
+
+*/
+
+
+create	function	fn_HumanCase_SelectList
+(
+	@LangID as nvarchar(50) --##PARAM @LangID  - language ID
+)
+returns table
+--returns @res table	(
+--	idfCase				uniqueidentifier,
+--	idfsDiagnosis		bigint,
+--	DiagnosisName		nvarchar(300),
+--	idfsCaseStatus		bigint,
+--	CaseStatusName		nvarchar(300),
+--	datEnteredDate		datetime, 
+--	strCaseID			nvarchar(200),
+--	strLocalIdentifier	nvarchar(200),
+--	idfHuman			uniqueidentifier,
+--	strLastName			nvarchar(200),
+--	strFirstName		nvarchar(200),
+--	strSecondName		nvarchar(200),
+--	PatientName			nvarchar(1000),
+--	datDateofBirth		datetime,
+--	intPatientAge		int,
+--	idfsHumanAgeType	bigint,	
+--	Age					nvarchar(400),
+--	idfGeoLocation		uniqueidentifier,
+--	GeoLocationName		nvarchar(2000),
+--						)
+as
+--begin
+
+--declare @TypePer int
+--set @TypePer = dbo.fn_ObjectTypePermission('objHumanCase', null, 'ObjectOperationRead')
+--insert into @res
+return
+select			tlbCase.idfCase,
+				tlbCase.idfsShowDiagnosis as idfsDiagnosis,
+				Diagnosis.[Name] as DiagnosisName,
+				tlbCase.idfsCaseStatus,
+				tlbCase.idfsCaseProgressStatus,
+				CaseStatus.[Name] as CaseStatusName,
+				CasepRrogressStatus.[Name] as CaseProgressStatusName,
+				tlbCase.datEnteredDate,
+				tlbCase.strCaseID,
+				tlbCase.idfsSite,
+				tlbHumanCase.strLocalIdentifier,
+				tlbHuman.idfHuman,
+				tlbHuman.strLastName,
+				tlbHuman.strFirstName,
+				tlbHuman.strSecondName,
+				(	tlbHuman.strLastName + 
+					IsNull(' ' + tlbHuman.strFirstName, '') +
+					IsNull(' ' + tlbHuman.strSecondName, '')
+				) as PatientName,
+				tlbHuman.datDateofBirth,
+				tlbHumanCase.intPatientAge,
+				tlbHumanCase.idfsHumanAgeType,
+				IsNull(	str(tlbHumanCase.intPatientAge) + 
+						' (' + HumanAgeType.[Name] + ')', '') as Age,
+				tlbHuman.idfCurrentResidenceAddress as idfAddress, --needed for OutbreakDetail form
+				tlbHumanCase.idfPointGeoLocation as idfGeoLocation,
+				dbo.fnCreateAddressString
+				(	@LangID,
+					CurrentResidenceAddress.Country,
+					CurrentResidenceAddress.Region,
+					CurrentResidenceAddress.Rayon,
+					CurrentResidenceAddress.PostalCode,
+					CurrentResidenceAddress.SettlementType,
+					CurrentResidenceAddress.Settlement,
+					CurrentResidenceAddress.Street,
+					CurrentResidenceAddress.House,
+					CurrentResidenceAddress.Building,
+					CurrentResidenceAddress.Appartment,
+					CurrentResidenceAddress.ResidentType
+				) as GeoLocationName,
+				tlbHumanCase.idfEpiObservation,
+				tlbHumanCase.idfCSObservation,
+			    tlbHumanCase.idfsTentativeDiagnosis
+
+from			(
+	tlbHumanCase
+	left join	dbo.fnReference(@LangID, 19000042) as HumanAgeType
+	on			HumanAgeType.idfsReference = tlbHumanCase.idfsHumanAgeType
+				)
+inner join		(
+	tlbCase
+	left join	dbo.fnReference(@LangID, 19000019) as Diagnosis		--'rftDiagnosis'
+	on			Diagnosis.idfsReference = tlbCase.idfsShowDiagnosis
+	left join	dbo.fnReference(@LangID,19000111) as CasepRrogressStatus --'rftCaseProgressStatus'
+	on			tlbCase.idfsCaseProgressStatus = CasepRrogressStatus.idfsReference
+	left join	dbo.fnReference(@LangID, 19000011) as CaseStatus	--'rftCaseStatus'
+	on			CaseStatus.idfsReference = tlbCase.idfsCaseStatus
+				)
+on				tlbCase.idfCase = tlbHumanCase.idfHumanCase
+				and tlbCase.intRowStatus = 0
+inner join		(
+	tlbParty
+	inner join	tlbHuman
+	on			tlbHuman.idfHuman = tlbParty.idfParty
+				)
+on				tlbParty.idfCase = tlbHumanCase.idfHumanCase
+				and tlbParty.idfsPartyType = 10072006				-- Human
+				and tlbParty.intRowStatus = 0
+
+left join		fnAddressAsRow(@LangID) CurrentResidenceAddress
+on				CurrentResidenceAddress.idfGeoLocation = tlbHuman.idfCurrentResidenceAddress
+
+JOIN fnGetPermissionOnHumanCase(NULL, NULL) GetPermission ON
+	GetPermission.idfHumanCase = tlbHumanCase.idfHumanCase
+	AND GetPermission.intPermission = 2
+
+--left join	dbo.fn_ObjectDirectPermission_HumanCase('ObjectOperationRead', null) op
+--on			op.idfActivity = a.idfActivity
+
+--where			(	(op.intPermission in (2, 4))
+--						or (op.intPermission is null and @TypePer <> 1))
+
+
+--return
+--end
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

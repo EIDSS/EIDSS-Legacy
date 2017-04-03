@@ -1,0 +1,142 @@
+ SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF  EXISTS (SELECT TOP 1 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fnRepGetVetCaseProperties]')) 
+Drop Function [dbo].[fnRepGetVetCaseProperties]
+GO
+ 
+-- =============================================
+-- Author:		Vasilyev I.
+-- Create date: 
+-- Description:
+-- =============================================
+
+
+--##SUMMARY Select Human case properties from different tables.
+--##REMARKS Author: Vasilyev I.
+--##REMARKS Create date: 08.12.2009
+
+--##RETURNS Doesn't use
+
+/*
+--Example of a call of function:
+select * from dbo.fnRepGetVetCaseProperties ('ru')
+
+*/
+
+Create Function dbo.fnRepGetVetCaseProperties
+(
+	@LangID as nvarchar(50) = 'en'
+)
+Returns	 Table
+AS
+return
+	select  
+	
+		tCase.idfCase,					
+		tCase.strCaseID,
+		
+		tVetCase.strFieldAccessionID,	
+		tVetCase.datInvestigationDate,	
+		tCase.datEnteredDate,			
+		tVetCase.datReportDate,			
+		tVetCase.datAssignedDate,		
+		dbo.fnSiteID()					as idfSiteID,
+		dbo.fnCreateNameString(	tPersonEntered.strFamilyName, 
+								tPersonEntered.strFirstName, 
+								tPersonEntered.strSecondName)		as strEnteredName,
+		dbo.fnCreateNameString(	tPersonInvestigated.strFamilyName, 
+								tPersonInvestigated.strFirstName, 
+								tPersonInvestigated.strSecondName)	as strInvestigationName,
+		dbo.fnCreateNameString(	tPersonReported.strFamilyName, 
+								tPersonReported.strFirstName, 
+								tPersonReported.strSecondName)		as strReportedName,
+		tFarm.idfFarm,					
+		tFarm.strFarmCode,	
+		tFarm.strNote,			
+		tFarm.strNationalName,			
+		dbo.fnCreateNameString(	tHuman.strLastName, 
+								tHuman.strFirstName, 
+								tHuman.strSecondName)			as strFarmerName,
+		tFarm.strContactPhone,			
+		tFarm.strFax,					
+		tFarm.strEmail,					
+		tFarmLocation.dblLongitude,		
+		tFarmLocation.dblLatitude,		
+		dbo.fnAddressString (@LangID,	tFarmAddress.idfGeoLocation)as strFarmLocation,
+		rfFarmRegion.[Name]				as strFarmRegion,
+		rfFarmRayon.[Name]				as strFarmRayon,
+		rfFarmSettlement.[Name]			as strSettlement,
+		dbo.fnAddressString (@LangID,	tFarmAddress.idfGeoLocation) as strFarmAddress
+
+
+	from		dbo.tlbCase as tCase
+	-- get vet case
+	inner join	dbo.tlbVetCase	as tVetCase
+			on	tCase.idfCase = tVetCase.idfVetCase
+		   and  tCase.intRowStatus = 0
+	-- Get Farm
+	 left join	
+	 (
+					dbo.tlbParty	as tFarmParty
+		inner join	dbo.tlbFarm		as tFarm
+				on	tFarmParty.idfParty = tFarm.idfFarm
+			   and  tFarmParty.intRowStatus = 0
+		-- Get Farm Owner
+		left join	dbo.tlbHuman		as tHuman
+				on	tHuman.idfHuman = tFarm.idfHuman
+				
+		-- Get Farm Location	   
+		 left join	dbo.tlbGeoLocation	as tFarmLocation
+				on	tFarmLocation.idfGeoLocation = tFarm.idfFarmLocation
+			   and  tFarmLocation.intRowStatus = 0
+			   
+		-- Get Farm Address
+		 left join	
+				(				dbo.tlbGeoLocation	as tFarmAddress
+					inner join	fnGisReference(@LangID, 19000003 /*'rftRegion'*/)  rfFarmRegion 
+							on	rfFarmRegion.idfsReference = tFarmAddress.idfsRegion
+					inner join	fnGisReference(@LangID, 19000002 /*'rftRayon'*/)   rfFarmRayon 
+							on	rfFarmRayon.idfsReference = tFarmAddress.idfsRayon
+					inner join	fnGisReference(@LangID, 19000004 /*'rftSettlement'*/) rfFarmSettlement
+							on	rfFarmSettlement.idfsReference = tFarmAddress.idfsSettlement
+				)
+				on	tFarmAddress.idfGeoLocation = tFarm.idfFarmAddress
+			   and  tFarmAddress.intRowStatus = 0
+		)
+		on	tVetCase.idfVetCase = tFarmParty.idfCase
+			
+	-- Get Person Entered By
+	 left join	(
+								dbo.tlbPerson	as tPersonEntered
+					inner join	dbo.tlbEmployee as tEmployeeEntered
+							on	tEmployeeEntered.idfEmployee = tPersonEntered.idfPerson
+						   and  tEmployeeEntered.intRowStatus = 0
+				)
+			on	tPersonEntered.idfPerson = tVetCase.idfPersonEnteredBy
+		   
+	-- Get Person Reported By
+	 left join	(
+								dbo.tlbPerson as tPersonReported
+					inner join	dbo.tlbEmployee as tEmployeeReported
+							on	tEmployeeReported.idfEmployee = tPersonReported.idfPerson
+						   and  tEmployeeReported.intRowStatus = 0
+				)
+			on	tPersonReported.idfPerson = tVetCase.idfPersonReportedBy
+	-- Get Person Investigated By
+	 left join	(
+								dbo.tlbPerson as tPersonInvestigated
+					inner join	dbo.tlbEmployee as tEmployeeInvestigated
+							on	tEmployeeInvestigated.idfEmployee = tPersonInvestigated.idfPerson
+						   and  tEmployeeInvestigated.intRowStatus = 0
+				)
+			on	tPersonInvestigated.idfPerson = tVetCase.idfPersonInvestigatedBy
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

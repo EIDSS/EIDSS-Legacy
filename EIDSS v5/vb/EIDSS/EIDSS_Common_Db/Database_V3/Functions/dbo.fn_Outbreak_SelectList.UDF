@@ -1,0 +1,90 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fn_Outbreak_SelectList]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fn_Outbreak_SelectList]
+GO
+
+
+
+
+--##SUMMARY Returns the list of outbreaks.
+--##SUMMARY Used by OutbreakList form.
+
+--##REMARKS Author: Zurin M.
+--##REMARKS Create date: 11.12.2009
+
+--##RETURNS Doesn't use
+
+
+/*
+--Example of procedure call:
+SELECT * FROM fn_Outbreak_SelectList ('en')
+
+*/
+
+
+CREATE    Function fn_Outbreak_SelectList(
+	@LangID as nvarchar(50)--##PARAM @LangID  - language ID
+)
+returns table 
+as
+return
+select		tlbOutbreak.idfOutbreak, 
+			tlbOutbreak.strOutbreakID,
+			tlbOutbreak.datStartDate, 
+			tlbOutbreak.datFinishDate,
+			Diagnosis.[Name] as strDiagnosis,
+			OutbreakStatus.[Name] as strOutbreakStatus,
+			tlbOutbreak.idfGeoLocation,			
+			dbo.fnCreateGeoLocationString	(
+									@LangID,
+									GeoLocation.idfsGeoLocationType, 
+									GeoLocation.Country,
+									GeoLocation.Region,
+									GeoLocation.Rayon,
+									GeoLocation.Latitude,
+									GeoLocation.Longitude,
+									GeoLocation.Description,
+									GeoLocation.PostalCode,
+									GeoLocation.SettlementType,
+									GeoLocation.Settlement,
+									GeoLocation.Street,
+									GeoLocation.House,
+									GeoLocation.Building,
+									GeoLocation.Appartment,
+									GeoLocation.ResidentType,
+									GeoLocation.Alignment,
+									GeoLocation.Distance,
+									GeoLocation.GroundType
+											) as strGeoLocationName
+
+from	(	
+	tlbOutbreak 
+
+	left join	dbo.fnReference(@LangID,19000019) as Diagnosis --'rftDiagnosis'
+	on			tlbOutbreak.idfsDiagnosis = Diagnosis.idfsReference
+
+	left join	dbo.fnReference(@LangID,19000063) as OutbreakStatus --'rftOutbreakStatus'
+	on			tlbOutbreak.idfsOutbreakStatus = OutbreakStatus.idfsReference
+		)
+	left join	fnGeoLocationAsRow(@LangID) as GeoLocation
+	on			GeoLocation.idfGeoLocation = tlbOutbreak.idfGeoLocation
+
+	JOIN fnGetPermissionOnOutbreak(NULL, NULL) GetPermission ON
+		GetPermission.idfOutbreak = tlbOutbreak.idfOutbreak
+		AND GetPermission.intPermission = 2					
+		
+where
+				tlbOutbreak.intRowStatus = 0
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

@@ -1,0 +1,23 @@
+﻿@model eidss.model.Schema.LabTest
+           
+@using eidss.webclient.Utils;
+@using eidss.webclient.Areas.Sample;
+@using eidss.model.Schema;
+
+<div class="largeTabPanelContent">
+    <table>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.strOriginalTestResult)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, "strOriginalTestResult")
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                @Html.LabTestAmendmentHistoryGrid(Model.idfTesting, Model.ObjectIdent + "AmendmentHistory", Model.AmendmentHistory, Model.IsReadOnly("AmendmentHistory") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit))
+            </td>
+        </tr>
+    </table>
+</div>

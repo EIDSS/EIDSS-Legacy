@@ -1,0 +1,137 @@
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fn_RepositorySchema]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fn_RepositorySchema]
+GO
+
+/*
+select * from fn_RepositorySchema('en',null,null)
+*/
+
+CREATE   FUNCTION dbo.fn_RepositorySchema(
+					@LanguageID as nvarchar(50),
+					@idfFreezer as bigint, 
+					@idfSubdivision as bigint
+)
+returns @Tree table
+		(
+			ID			bigint,
+			idfFreezer 	bigint,
+			strFreezerName		nvarchar(200),
+			idfsStorageType		bigint,
+			FreezerBarcode		nvarchar(200),
+			idfSubdivision		bigint,
+			idfParentSubdivision	bigint,
+			SubdivisionBarcode	nvarchar(200),
+			SubdivisionName	nvarchar(200),
+			[Path]			nvarchar(200),
+			[Level]			int,
+			intCapacity		int
+		)
+as
+begin
+--declare @Path 		varchar(200)
+declare @Level 		int
+declare @Inserted 	int
+--declare @LevelID 	varchar(36)
+
+	insert into @Tree(
+				ID,
+				idfFreezer,
+				strFreezerName,
+				idfsStorageType,
+				FreezerBarcode,
+				--idfSubdivision,
+				--idfParentSubdivision,
+				--SubdivisionBarcode,
+				--SubdivisionName,
+				[Path],
+				[Level]
+			)
+	(
+	select		distinct
+				tlbFreezer.idfFreezer,
+				tlbFreezer.idfFreezer,
+				tlbFreezer.strFreezerName,
+				tlbFreezer.idfsStorageType,
+				tlbFreezer.strBarcode,
+				--tlbFreezerSubdivision.idfSubdivision,
+				--tlbFreezerSubdivision.idfParentSubdivision,
+				--tlbFreezerSubdivision.strBarcode,
+				--tlbFreezerSubdivision.strNameChars,
+				tlbFreezer.strFreezerName,-- + N'.' + tlbFreezerSubdivision.strNameChars,
+				0
+	from		tlbFreezer
+	left join	tlbFreezerSubdivision
+	on			tlbFreezer.idfFreezer = tlbFreezerSubdivision.idfFreezer and
+				tlbFreezerSubdivision.intRowStatus=0
+	where
+				(
+					((@idfSubdivision is null) and (tlbFreezerSubdivision.idfParentSubdivision is null))
+					or
+					((@idfSubdivision is not null) and (tlbFreezerSubdivision.idfSubdivision = @idfSubdivision))
+				)
+				and
+				((@idfFreezer is null) or (tlbFreezer.idfFreezer = @idfFreezer))
+				and tlbFreezer.intRowStatus = 0
+				and tlbFreezer.idfsSite=dbo.fnSiteID()
+	)
+	set @Inserted = @@ROWCOUNT
+	set @Level = 0
+
+	while(@Inserted > 0)
+	begin
+		set @Inserted = 0
+		insert into @Tree(
+					ID,
+					idfFreezer,
+					strFreezerName,
+					idfsStorageType,
+					FreezerBarcode,
+					idfSubdivision,
+					idfParentSubdivision,
+					SubdivisionBarcode,
+					SubdivisionName,
+					[Path],
+					[Level],
+					intCapacity
+				)
+		(
+		select		tlbFreezerSubdivision.idfSubdivision,
+					tlbFreezer.idfFreezer,
+					tlbFreezer.strFreezerName,
+					tlbFreezer.idfsStorageType,
+					tlbFreezer.strBarcode,
+					tlbFreezerSubdivision.idfSubdivision,
+					isnull(tlbFreezerSubdivision.idfParentSubdivision,tlbFreezer.idfFreezer),
+					tlbFreezerSubdivision.strBarcode,
+					tlbFreezerSubdivision.strNameChars,
+					Tree.[Path] + N'.' + tlbFreezerSubdivision.strNameChars,
+					@Level + 1,
+					tlbFreezerSubdivision.intCapacity
+		from		@Tree as Tree
+		inner join	tlbFreezer
+		on			tlbFreezer.idfFreezer = Tree.idfFreezer
+		inner join	tlbFreezerSubdivision
+		on			tlbFreezerSubdivision.idfParentSubdivision = Tree.idfSubdivision or
+					(tlbFreezerSubdivision.idfParentSubdivision is null and tlbFreezerSubdivision.idfFreezer=Tree.idfFreezer and 0=@Level)
+		where		Tree.[Level] = @Level
+					and tlbFreezer.intRowStatus = 0
+					and tlbFreezerSubdivision.intRowStatus = 0
+		)
+		set @Inserted = @@ROWCOUNT
+		set @Level = @Level + 1
+
+	end
+return
+end
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

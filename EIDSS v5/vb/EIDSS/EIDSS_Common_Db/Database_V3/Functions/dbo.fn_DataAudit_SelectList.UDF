@@ -1,0 +1,64 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fn_DataAudit_SelectList]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fn_DataAudit_SelectList]
+GO
+
+--##SUMMARY Returns list of data audit events.
+
+--##REMARKS Author: Zurin M.
+--##REMARKS Create date: 12.04.2010
+
+--##RETURNS Returns list of data audit events.
+
+
+
+/*
+Example of function call:
+
+SELECT * FROM fn_DataAudit_SelectList ('en')
+
+*/
+
+
+CREATE   FUNCTION dbo.fn_DataAudit_SelectList(
+	@LangID as nvarchar(50) --##PARAM @LangID - language ID
+)
+returns table 
+as
+return
+
+SELECT idfDataAuditEvent
+      ,ObjectType.Name AS strObjectType
+      ,EventType.Name AS strActionName
+      ,tstSite.strSiteID
+      ,datEnteringDate
+	  ,IsNull(tlbPerson.strFirstName, '') + ' ' + 
+	   IsNull(tlbPerson.strSecondName, '') + ' ' + 
+	   IsNull(tlbPerson.strFamilyName, '')  AS strPersonName
+FROM tauDataAuditEvent
+INNER JOIN		fnReference(@LangID,19000016) AS EventType --'rftDataAuditEventType'
+	ON				tauDataAuditEvent.idfsDataAuditEventType = EventType.idfsReference
+				
+INNER JOIN		fnReference(@LangID,19000017) AS ObjectType --'rftDataAuditObjectType'
+	ON				tauDataAuditEvent.idfsDataAuditObjectType = ObjectType.idfsReference
+				
+LEFT OUTER JOIN	(
+	tstUserTable 
+	INNER JOIN		tlbPerson 
+	ON				tlbPerson.idfPerson = tstUserTable.idfPerson
+				)
+ON				tstUserTable.idfUserID = tauDataAuditEvent.idfUserID
+
+INNER JOIN tstSite
+	ON	tauDataAuditEvent.idfsSite = tstSite.idfsSite
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

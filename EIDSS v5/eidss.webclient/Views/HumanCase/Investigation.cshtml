@@ -1,0 +1,68 @@
+﻿@model eidss.model.Schema.HumanCase
+@using bv.common.Configuration
+@using eidss.webclient.Utils;
+@*functions
+{
+    MvcHtmlString ShowCsFF()
+    {
+        MvcHtmlString result = new MvcHtmlString(String.Empty);
+        if ((Model.CsFormTemplate != null) && (Model.idfCSObservation != null))
+        {
+            result = eidss.webclient.Areas.FlexForms.Extenders.ShowFlexibleFormHTML(Html, Model.idfCase, Model.CsFormTemplate, Model.idfCSObservation, Model.CsActivityParameters);
+        }
+        return result;
+    }
+
+    MvcHtmlString ShowEpiFF()
+    {
+        MvcHtmlString result = new MvcHtmlString(String.Empty);
+        if ((Model.EpiFormTemplate != null) && (Model.idfEpiObservation != null))
+        {
+            result = eidss.webclient.Areas.FlexForms.Extenders.ShowFlexibleFormHTML(Html, Model.idfCase, Model.EpiFormTemplate, Model.idfEpiObservation, Model.EpiActivityParameters);
+        }
+        return result;
+    }
+}*@
+@(Html.Telerik().TabStrip()
+    .Name("TabStrip1")
+    .ClientEvents(events => events.OnSelect("function(e){ onHumanCaseTabSelect(e, '" + Model.idfCase + "', 'TabStrip1'); }"))
+    .Items(tabstrip1 =>
+    {
+        @*tabstrip1.Add()
+            .Text(Translator.GetMessageString("titleDemographicInformation"))
+            .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "titleDemographicInformation" } : new {})
+            .Content(Html.Partial(@"../HumanCase/DemographicInformation", Model).ToHtmlString());*@
+        tabstrip1.Add()
+            .Text(Translator.GetMessageString("titleClinicalInformation"))
+            .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "titleClinicalInformation" } : new { })
+            .Content(Html.Partial(@"../HumanCase/ClinicalInformation", Model).ToHtmlString());
+        tabstrip1.Add()
+            .Text(Translator.GetMessageString("tabTitleSamplesCollection"))
+            .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleSamplesCollection" } : new { })
+            .Content(Html.Partial(@"../HumanCase/SamplesCollection", Model).ToHtmlString());
+        tabstrip1.Add()
+            .Text(Translator.GetMessageString("tabTitleContactList"))
+            .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleContactList" } : new { })
+            .Content(Html.Partial(@"../HumanCase/ContactList", Model).ToHtmlString());
+        tabstrip1.Add()
+            .Text(Translator.GetMessageString("tabTitleCaseClassification"))
+            .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleCaseClassification" } : new { })
+            .Content(
+            @<text>
+                <div class="yScrollable smallTabPanelContent" id="CaseClassificationFlexForm"></div>                
+            </text>
+            );
+        tabstrip1.Add()
+            .Text(Translator.GetMessageString("tabTitleEpidemiologicalLinksAndRiskFactors"))
+            .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleEpidemiologicalLinksAndRiskFactors" } : new { })
+            .Content(
+            @<text>
+                <div class="yScrollable smallTabPanelContent" id="EpiLinksFlexForm"></div>
+            </text>
+            );
+        tabstrip1.Add()
+            .Text(Translator.GetMessageString("tabTitleFinalCaseClassificationAndOutcome"))
+            .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleFinalCaseClassificationAndOutcome" } : new { })
+            .Content(Html.Partial(@"../HumanCase/FinalCaseClassificationAndOutcome", Model).ToHtmlString());
+    }).SelectedIndex(0)
+)

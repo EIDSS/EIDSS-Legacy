@@ -1,0 +1,60 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnIsCaseInOutbreak]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnIsCaseInOutbreak]
+GO
+
+--##SUMMARY Checks if case is related with other outbreak already
+--##SUMMARY We consider that case is related with other outbreak if it exists and refers to outbreak other then passed @OutbreakID
+
+
+--##REMARKS Author: Zurin M.
+--##REMARKS Create date: 24.11.2009
+
+--##RETURNS 1 if case is related with other outbreak, 0 in other case
+
+/*
+--Example of function call:
+DECLARE @result bit
+DECLARE @idfCase bigint
+SET @result = dbo.fnCanCaseBeAddedToOutbreak(@idfCase)
+
+*/
+
+CREATE function [dbo].[fnIsCaseInOutbreak]	(
+						@CaseID bigint,
+						@OutbreakID bigint = null)
+returns bit
+as
+begin
+
+declare @res bit
+set @res = 0
+
+if	(@CaseID is not null)
+	and exists	(
+		select		*
+		from		tlbCase
+		where		idfCase = @CaseID
+					and (@OutbreakID IS NULL or (idfOutbreak IS NOT NULL AND idfOutbreak <> @OutbreakID))
+					and (intRowStatus = 0)
+				)
+begin
+	set @res = 1
+end
+
+return @res
+
+end
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

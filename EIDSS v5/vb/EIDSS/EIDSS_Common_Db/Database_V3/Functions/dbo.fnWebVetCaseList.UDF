@@ -1,0 +1,97 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fnWebVetCaseList]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[fnWebVetCaseList]
+GO
+
+/*
+	select * from fnWebVetCaseList('en')
+	select * from dbo.fn_VetCase_SelectList('en')
+*/
+
+
+CREATE FUNCTION dbo.fnWebVetCaseList
+(
+	@LangID nvarchar(50)
+)
+RETURNS TABLE 
+AS
+RETURN 
+(
+	select		tlbCase.idfCase,
+				tlbCase.strCaseID,
+				tlbVetCase.strFieldAccessionID,
+				tlbCase.idfsCaseStatus	as [idfsCaseStatus.ID],
+				CaseClassification.Name	as [idfsCaseStatus.Name],
+				tlbPerson.strFamilyName as ReportedByFirstName,
+				tlbPerson.strSecondName as ReportedBySecondName,
+				tlbPerson.strFirstName as ReportedByLastName,
+				tlbVetCase.datReportDate,
+				tlbFarm.strNationalName,
+				tlbFarm.strFarmCode,
+				tlbHuman.strFirstName,
+				tlbHuman.strSecondName,
+				tlbHuman.strLastName,
+
+				FarmAddress.[idfsCountry.ID]	as [FarmAddress.idfsCountry.ID],
+				FarmAddress.[idfsCountry.Name]	as [FarmAddress.idfsCountry.Name],
+				FarmAddress.[idfsRegion.ID]		as [FarmAddress.idfsRegion.ID],
+				FarmAddress.[idfsRegion.Name]	as [FarmAddress.idfsRegion.Name],
+				FarmAddress.[idfsRayon.ID]		as [FarmAddress.idfsRayon.ID],
+				FarmAddress.[idfsRayon.Name]	as [FarmAddress.idfsRayon.Name],
+				FarmAddress.[idfsSettlement.ID]	as [FarmAddress.idfsSettlement.ID],
+				FarmAddress.[idfsSettlement.Name]as [FarmAddress.idfsSettlement.Name],
+				--'*****'								as [CurrentResidence.Street],
+				FarmAddress.strPostCode		as [FarmAddress.strPostCode],
+
+				isnull(tlbFarm.intAvianTotalAnimalQty,tlbFarm.intLivestockTotalAnimalQty) as intTotalAnimalQty,
+				isnull(tlbFarm.intLivestockSickAnimalQty,tlbFarm.intAvianSickAnimalQty) as intSickAnimalQty,
+				isnull(tlbFarm.intLivestockDeadAnimalQty,tlbFarm.intAvianDeadAnimalQty) as intDeadAnimalQty,
+
+				tlbVetCase.idfsTentativeDiagnosis	as [idfsTentativeDiagnosis.ID],
+				Diagnosis1.Name						as [idfsTentativeDiagnosis.Name],
+
+				tlbVetCase.idfsTentativeDiagnosis1	as [idfsTentativeDiagnosis1.ID],
+				Diagnosis2.Name						as [idfsTentativeDiagnosis1.Name],
+
+				tlbVetCase.idfsTentativeDiagnosis2	as [idfsTentativeDiagnosis2.ID],
+				Diagnosis3.Name						as [idfsTentativeDiagnosis2.Name],
+
+				tlbVetCase.idfsFinalDiagnosis	as [idfsFinalDiagnosis.ID],
+				FinalDiagnosis.Name						as [idfsFinalDiagnosis.Name]
+
+	from		tlbCase
+	inner join	tlbVetCase
+	on			tlbVetCase.idfvetCase=tlbCase.idfCase and
+				tlbCase.intRowStatus=0
+	left join	fnReference_Full(@LangID) CaseClassification
+	on			CaseClassification.idfsReference=tlbCase.idfsCaseStatus
+	left join	tlbPerson
+	on			tlbPerson.idfPerson=tlbVetCase.idfPersonReportedBy
+	left join	(
+				tlbFarm
+				inner join	tlbParty PartyFarm
+				on PartyFarm.idfParty=tlbFarm.idfFarm and PartyFarm.intRowStatus=0
+				left join	(
+							tlbHuman
+							inner join	tlbParty tlbPartyOwner
+							on			tlbPartyOwner.idfParty=tlbHuman.idfHuman and tlbPartyOwner.intRowStatus=0
+				)
+				on tlbHuman.idfHuman=tlbFarm.idfHuman
+				left join	fnWebAddressTable(@LangID) FarmAddress
+				on			tlbFarm.idfFarmLocation=FarmAddress.idfGeoLocation
+	)
+	on			PartyFarm.idfCase=tlbCase.idfCase
+	left join	fnReference_Full(@LangID) Diagnosis1
+	on			Diagnosis1.idfsReference=tlbVetCase.idfsTentativeDiagnosis
+	left join	fnReference_Full(@LangID) Diagnosis2
+	on			Diagnosis2.idfsReference=tlbVetCase.idfsTentativeDiagnosis1
+	left join	fnReference_Full(@LangID) Diagnosis3
+	on			Diagnosis3.idfsReference=tlbVetCase.idfsTentativeDiagnosis2
+	left join	fnReference_Full(@LangID) FinalDiagnosis
+	on			FinalDiagnosis.idfsReference=tlbVetCase.idfsFinalDiagnosis
+)
+GO

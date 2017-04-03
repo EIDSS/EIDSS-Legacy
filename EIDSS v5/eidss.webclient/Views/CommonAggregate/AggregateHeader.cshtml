@@ -1,0 +1,306 @@
+﻿@model eidss.model.Schema.AggregateCaseHeader
+
+@using bv.common.Configuration
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+@using eidss.model.Enums;
+@using bv.model.Model.Core;
+
+<table class="bordered">
+    <tr>
+        <td class="sectionName" colspan="7">
+            @Translator.GetMessageString("titleNotificationInfo") 
+        </td>
+    </tr>
+    <tr>
+        <td class="medium">
+            @Translator.GetMessageString("titleNotificationSendBy"):
+        </td>
+        <td class="small">
+            @Html.LabelFor(m => m.strSentByOffice)
+        </td>
+        <td class="noIndent">                
+            @Html.Action("InlineOrganizationPicker", "Organization", new { obj = Model, objectId = Model.idfAggrCase, idfsOrganizationPropertyName = "idfSentByOffice",
+                                                                            strOrganizationPropertyName = "strSentByOffice", idfsEmployeePropertyName = "idfSentByPerson",
+                                                                            strEmployeePropertyName = "strSentByPerson", showInInternalWindow = true})                                 
+        </td>
+        <td class="small">
+            @Html.LabelFor(m => m.idfSentByPerson)
+        </td>
+        <td class="noIndent">
+            @Html.Action("InlineEmployeePicker", "Employee", new { obj = Model, objectId = Model.idfAggrCase, idfsEmployeePropertyName = "idfSentByPerson", 
+                                                                    strEmployeePropertyName = "strSentByPerson", idfsOrganizationPropertyName = "idfSentByOffice", 
+                                                                    strOrganizationPropertyName = "strSentByOffice", showInInternalWindow = true })           
+                                                                                    
+        </td>                  
+        <td>
+            @Html.LabelFor(m => m.datSentByDate)
+        </td>
+        <td class="large">
+            @Html.BvDatebox(Model, "datSentByDate")
+        </td>
+    </tr>
+    <tr>
+        <td class="small">
+            @Translator.GetMessageString("titleNotificationReceivedBy"):
+        </td>
+        <td class="small">
+            @Html.LabelFor(m => m.strReceivedByOffice)
+        </td>
+        <td class="noIndent">                
+            @Html.Action("InlineOrganizationPicker", "Organization", new { obj = Model, objectId = Model.idfAggrCase, idfsOrganizationPropertyName = "idfReceivedByOffice",
+                                                                            strOrganizationPropertyName = "strReceivedByOffice", idfsEmployeePropertyName = "idfReceivedByPerson",
+                                                                            strEmployeePropertyName = "strReceivedByPerson", showInInternalWindow = true})                                  
+        </td>
+        <td class="small">
+            @Html.LabelFor(m => m.idfReceivedByPerson)
+        </td>
+        <td class="noIndent">
+            @Html.Action("InlineEmployeePicker", "Employee", new { obj = Model, objectId = Model.idfAggrCase, idfsEmployeePropertyName = "idfReceivedByPerson", 
+                                                                    strEmployeePropertyName = "strReceivedByPerson", idfsOrganizationPropertyName = "idfReceivedByOffice", 
+                                                                    strOrganizationPropertyName = "strReceivedByOffice", showInInternalWindow = true })                  
+        </td>                  
+        <td>
+            @Html.LabelFor(m => m.datReceivedByDate)
+        </td>
+        <td class="large">
+            @Html.BvDatebox(Model, "datReceivedByDate")
+        </td>
+    </tr>
+    <tr>
+        <td class="small">
+            @Translator.GetMessageString("titleNotificationEnteredBy"):
+        </td>
+        <td class="small">
+            @Html.LabelFor(m => m.strEnteredByOffice)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strEnteredByOffice")
+        </td>
+        <td>
+            @Html.LabelFor(m => m.strEnteredByPerson)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strEnteredByPerson")
+        </td>                  
+        <td>
+            @Html.LabelFor(m => m.datEnteredByDate)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strReadOnlyEnteredByDate")
+        </td>
+    </tr>
+</table>
+<table class="bordered">
+    <tr>
+        <td class="sectionName" colspan="8">
+            @Translator.GetMessageString("titleGeneralInfo") 
+        </td>
+    </tr>
+    <tr>
+        <td class="medium">
+            @if (Model.idfsAggrCaseType == (long)AggregateCaseType.VetAggregateAction)
+            {
+                @Translator.GetMessageString("strActionID") 
+            }
+            else
+            {
+                @Html.LabelFor(m => m.strCaseID)
+            }
+        </td>
+        <td class="small">
+            @Html.BvEditbox(Model, "strCaseID")
+        </td>                            
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+    </tr>
+    <tr>
+        <td class="medium">
+            @switch (Model.Settings.idfsStatisticPeriodType)
+            {
+                case (long)StatisticPeriodType.Year:
+                case (long)StatisticPeriodType.Quarter:
+                case (long)StatisticPeriodType.Month:
+                case (long)StatisticPeriodType.Week:
+                    @Html.LabelFor(m => m.YearForAggr)
+                    break;
+                case (long)StatisticPeriodType.Day:
+                    @Html.LabelFor(m => m.DayForAggr);
+                    break;
+                default:
+                    break;
+            }
+        </td>
+        <td>
+            @switch (Model.Settings.idfsStatisticPeriodType)
+            {
+                case (long)StatisticPeriodType.Year:
+                case (long)StatisticPeriodType.Quarter:
+                case (long)StatisticPeriodType.Month:
+                case (long)StatisticPeriodType.Week:
+                    @(Html.BvCombobox(Model, "YearForAggr", false)
+                        .DataBinding(b => b.Ajax()
+                        .Select("SelectYear", "AggregateCase", new RouteValueDictionary { { "idfAggrCase", Model.idfAggrCase } })))                           
+                    break;
+                case (long)StatisticPeriodType.Day:
+                    @Html.BvDatebox(Model, "DayForAggr");
+                    break;
+                default:
+                    break;
+            }
+        </td>                            
+        <td>
+            @switch (Model.Settings.idfsStatisticPeriodType)
+            {
+                case (long)StatisticPeriodType.Quarter:
+                    @Html.LabelFor(m => m.QuarterForAggr);
+                    break;
+                case (long)StatisticPeriodType.Month:
+                    @Html.LabelFor(m => m.MonthForAggr);
+                    break;
+                case (long)StatisticPeriodType.Week:
+                    @Html.LabelFor(m => m.WeekForAggr);
+                    break;
+                default:
+                    break;
+            }
+        </td>
+        <td>
+            @switch (Model.Settings.idfsStatisticPeriodType)
+            {
+                case (long)StatisticPeriodType.Quarter:
+                    @(Html.BvCombobox(Model, "QuarterForAggr", false)
+                        .DataBinding(b => b.Ajax()
+                        .Select("SelectQuarter", "AggregateCase", new RouteValueDictionary { { "idfAggrCase", Model.idfAggrCase } })));
+                    break;
+                case (long)StatisticPeriodType.Month:
+                    @(Html.BvCombobox(Model, "MonthForAggr", false)
+                        .DataBinding(b => b.Ajax()
+                        .Select("SelectMonth", "AggregateCase", new RouteValueDictionary { { "idfAggrCase", Model.idfAggrCase } })));
+                    break;
+                case (long)StatisticPeriodType.Week:
+                    @(Html.BvCombobox(Model, "WeekForAggr", false)
+                        .DataBinding(b => b.Ajax()
+                        .Select("SelectWeek", "AggregateCase", new RouteValueDictionary { { "idfAggrCase", Model.idfAggrCase } })));
+                    break;
+                default:
+                    break;
+            }
+        </td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td class="medium">
+            @Html.LabelFor(m => m.idfsCountry)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, "Country", true, "onCountryChanged")
+        </td>                            
+        <td>
+            @if (Model.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Region || 
+                  Model.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Rayon || 
+                  Model.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Settlement)
+            { @Html.LabelFor(m => m.idfsRegion); }
+        </td>
+        <td>
+            @if (Model.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Region || 
+                  Model.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Rayon || 
+                  Model.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Settlement) 
+            { @(Html.BvCombobox(Model, "Region", false, "onRegionChanged")
+                    .DataBinding(b => b.Ajax()
+                    .Select("SelectRegion", "AggregateCase", new RouteValueDictionary { { "idfAggrCase", Model.idfAggrCase } }))); }
+        </td>
+        <td>
+            @if (Model.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Rayon || 
+                  Model.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Settlement) 
+            { @Html.LabelFor(m => m.idfsRayon); }
+        </td>
+        <td>
+            @if (Model.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Rayon || 
+                  Model.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Settlement) 
+            { @(Html.BvCombobox(Model, "Rayon", false, "onRayonChanged")
+                    .DataBinding(b => b.Ajax()
+                    .Select("SelectRayon", "AggregateCase", new RouteValueDictionary { { "idfAggrCase", Model.idfAggrCase } }))); }
+        </td>
+        <td>
+            @if (Model.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Settlement) 
+            { @Html.LabelFor(m => m.Settlement); }
+        </td>
+        <td>
+            @if (Model.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Settlement) 
+            { @(Html.BvCombobox(Model, "Settlement", false, "onSettlementChanged")
+                    .DataBinding(b => b.Ajax()
+                    .Select("SelectSettlement", "AggregateCase", new RouteValueDictionary { { "idfAggrCase", Model.idfAggrCase } }))); }
+        </td>
+    </tr>
+</table>
+<table class="bordered">
+    <tr>
+        <td class="sectionName">
+            @Translator.GetMessageString("tabTitleDetailedInfo") 
+        </td>
+    </tr>    
+</table>
+<div class="smallFFPanel fFPanel">
+    @switch (Model.idfsAggrCaseType)
+    {
+        case (long)AggregateCaseType.HumanAggregateCase:
+            <div>
+                @Html.Action("ShowFlexibleForm", "FFPresenter", new { area = "FlexForms", root = Model.idfAggrCase, key = Model.idfAggrCase, ffpresenterId = Model.FFPresenterCase.CurrentObservation.Value })
+            </div>
+            break;
+        case (long)AggregateCaseType.VetAggregateCase:
+            <div>
+                @Html.Action("ShowFlexibleForm", "FFPresenter", new { area = "FlexForms", root = Model.idfAggrCase, key = Model.idfAggrCase, ffpresenterId = Model.FFPresenterCase.CurrentObservation.Value, isVetAggrCase = true })
+            </div>
+            break;
+        case (long)AggregateCaseType.VetAggregateAction:
+            @(Html.Telerik().TabStrip()
+                .Name("tabDetailedInfo")
+                .Items(items =>
+                {
+                    items.Add()
+                        .Text(Translator.GetMessageString("titleDiagnosticInvestigation"))
+                        .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "titleDiagnosticInvestigation" } : new { })
+                        .Content(
+                            @<text>
+                                <div>
+                                    @Html.Action("ShowFlexibleForm", "FFPresenter", new { area = "FlexForms", root = Model.idfAggrCase, key = Model.idfAggrCase, ffpresenterId = Model.FFPresenterDiagnostic.CurrentObservation.Value, isVetAggrCase = true })
+                                </div>
+                            </text>);
+                    items.Add()
+                        .Text(Translator.GetMessageString("tabTitleTreatmentProphylacticMeasures"))
+                        .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleTreatmentProphylacticMeasures" } : new { })
+                        .Content(
+                            @<text>
+                                <div>
+                                    @Html.Action("ShowFlexibleForm", "FFPresenter", new { area = "FlexForms", root = Model.idfAggrCase, key = Model.idfAggrCase, ffpresenterId = Model.FFPresenterProphylactic.CurrentObservation.Value, isVetAggrCase = true })
+                                </div>
+                            </text>);
+                    items.Add()
+                        .Text(Translator.GetMessageString("tabTitleVeterinarySanitaryMeasures"))
+                        .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleVeterinarySanitaryMeasures" } : new { })
+                        .Content(
+                            @<text>
+                                <div>
+                                    @Html.Action("ShowFlexibleForm", "FFPresenter", new { area = "FlexForms", root = Model.idfAggrCase, key = Model.idfAggrCase, ffpresenterId = Model.FFPresenterSanitary.CurrentObservation.Value, isVetAggrCase = true })
+                                </div>
+                            </text>);
+                })
+                .SelectedIndex(0))                
+            break;
+    }
+</div>              

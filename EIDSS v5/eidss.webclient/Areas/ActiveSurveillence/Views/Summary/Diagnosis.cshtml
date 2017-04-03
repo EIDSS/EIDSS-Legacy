@@ -1,0 +1,33 @@
+﻿@using eidss.webclient.Utils
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.popupContent form').ajaxForm(function (data) {
+                parent.diagnosisSelected(data);
+            });
+        });
+    
+        $(".popupContent").ready(function () {
+            ChangeMessageWindowHeigth();
+        });
+</script>
+<div class="popupContent" style='height: 570px; overflow: auto'>
+    @using (Html.BeginForm())
+    {
+        foreach (var diagnosis in ((Dictionary<long, string>)ViewBag.DiagnosisList))
+        {
+            if ((ViewBag.Diagnosis as long[]).Contains(diagnosis.Key))
+            {
+        <input type="checkbox" id="@diagnosis.Key" name="Diagnosis" checked value="@diagnosis.Key" />
+            }
+            else
+            {
+        <input type="checkbox" id="@diagnosis.Key" name="Diagnosis" value="@diagnosis.Key" />
+            }
+        <label for="@diagnosis.Key">@diagnosis.Value</label><br />
+        }
+        <div class="popUpBottomButtonPanel">
+            <input type="button" class="popupButton" onclick="parent.cancelSelection();" value="@Translator.GetMessageString("Cancel")" />
+            <input type="submit" class="popupButton" value="@Translator.GetMessageString("Ok")" />
+        </div>   
+    }
+</div>

@@ -1,0 +1,937 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B3E5BA6B-FAA3-4A7D-8236-3F8842D61CD4}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>bvwin_common</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyMode>None</AssemblyOriginatorKeyMode>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionStrict>On</OptionStrict>
+    <RootNamespace>bv.common.win</RootNamespace>
+    <StartupObject>bv.common.win.%28None%29</StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <MyType>Windows</MyType>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <PublishUrl>http://localhost/bvwin_common/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>..\..\..\eidss.main\bin\Debug\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>PROTOTYPE_MODE=False</DefineConstants>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>..\..\..\eidss.main\bin\Release\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032,42353,42354,42355</NoWarn>
+    <DebugType>Full</DebugType>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Printing.v11.1.Core">
+      <Name>DevExpress.Printing.v11.1.Core</Name>
+      <AssemblyFolderKey>hklm\devexpress.net.v3</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="DevExpress.Data.v11.1">
+      <Name>DevExpress.Data.v11.1</Name>
+      <AssemblyFolderKey>hklm\devexpress.net.v3</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v11.1">
+      <Name>DevExpress.Utils.v11.1</Name>
+      <AssemblyFolderKey>hklm\devexpress.net.v3</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v11.1">
+      <Name>DevExpress.XtraBars.v11.1</Name>
+      <AssemblyFolderKey>hklm\devexpress.net.v3</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="DevExpress.Charts.v11.1.Core, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraCharts.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v11.1">
+      <Name>DevExpress.XtraEditors.v11.1</Name>
+      <AssemblyFolderKey>hklm\devexpress.net.v3</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v11.1">
+      <Name>DevExpress.XtraGrid.v11.1</Name>
+      <AssemblyFolderKey>hklm\devexpress.net.v3</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="DevExpress.XtraNavBar.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPivotGrid.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.PivotGrid.v11.1.Core, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPrinting.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Reports.v11.1.Designer, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraReports.v11.1.Extensions, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraReports.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraTreeList.v11.1">
+      <Name>DevExpress.XtraTreeList.v11.1</Name>
+      <AssemblyFolderKey>hklm\devexpress.net.v3</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="Help2">
+      <HintPath>..\..\..\dlls\Help2.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\..\..\bv.common\bv.common.csproj">
+      <Project>{BEE76B17-720D-4B65-996A-5712912B3ACF}</Project>
+      <Name>bv.common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\bv.model\bv.model.csproj">
+      <Project>{9067327E-1960-4326-ACB9-D982DDBEAA76}</Project>
+      <Name>bv.model</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\bv.winclient\bv.winclient.csproj">
+      <Project>{B0163672-F328-4D02-9B71-FB698EDAF815}</Project>
+      <Name>bv.winclient</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\bv_common\bvcommon.vbproj">
+      <Project>{BA2844A8-F629-4B02-ACD6-B60063E4D27F}</Project>
+      <Name>bvcommon</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\bv_dbcommon\bvdb_common.vbproj">
+      <Name>bvdb_common</Name>
+      <Project>{6C48BB93-277D-4804-B280-F6130E29EB81}</Project>
+      <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="bv.common.Configuration" />
+    <Import Include="bv.common.Core" />
+    <Import Include="bv.common.db.Core" />
+    <Import Include="bv.common.Diagnostics" />
+    <Import Include="bv.common.Objects" />
+    <Import Include="bv.common.win" />
+    <Import Include="bv.common.win.Core" />
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\BV_AssemblyInfo.vb">
+      <Link>BV_AssemblyInfo.vb</Link>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BaseForms\BaseDetailForm.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BaseForms\BaseDetailList.Designer.vb">
+      <DependentUpon>BaseDetailList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="BaseForms\BaseDetailList.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BaseForms\BaseDetailPanel.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BaseForms\BaseForm.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BaseForms\BaseFormGarbageCollector.vb" />
+    <Compile Include="BaseForms\BaseListForm.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BaseForms\BaseLookupForm.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BaseForms\BasePagedDataGridForm.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BaseForms\BasePagedListForm.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BaseForms\BasePagedXtraListForm.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BaseForms\BaseReportForm.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BaseForms\BaseXtraListForm.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BaseForms\BindingHelper.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BaseForms\BaseRamDetailPanel.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BaseForms\DataEventManager.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BaseForms\IRelatedForm.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BaseForms\TagHelper.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BaseForms\ValidatingEventArgs.vb" />
+    <Compile Include="BaseForms\WaitDialog.vb" />
+    <Compile Include="Common\AboutForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\BarcodeButton.Designer.vb">
+      <DependentUpon>BarcodeButton.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Common\BarcodeButton.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Common\ErrorForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\ErrorFormShowMode.vb" />
+    <Compile Include="Common\LabelContolPair.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\MemoryMappedFile.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\PopUpButton.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Common\PopupMenuWrapper.vb" />
+    <Compile Include="Core\WinClient.vb" />
+    <Compile Include="Core\WinIdleManager.vb" />
+    <Compile Include="Core\WinIdleManagerFactory.vb" />
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="PagedGrid\BasePagedGrid.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PagedGrid\BaseSearchPanel.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PagedGrid\DefaultGridDataProvider.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PagedGrid\DefaultGridStyle.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PagedGrid\GridColumnResizer.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PagedGrid\PagedGrid.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PagedGrid\PagedXtraGrid.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PagedGrid\PagerPanel.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PagedGrid\SearchPanel.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PagedGrid\SortProxy.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PagedGrid\XtraSearchPanel.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TopDockPanel.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <EmbeddedResource Include="BaseForms\BaseDetailForm.ar-IQ.resx">
+      <DependentUpon>BaseDetailForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseDetailForm.az-Latn-AZ.resx">
+      <DependentUpon>BaseDetailForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseDetailForm.hy-am.resx">
+      <DependentUpon>BaseDetailForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseDetailForm.ka-GE.resx">
+      <DependentUpon>BaseDetailForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseDetailForm.kk-KZ.resx">
+      <DependentUpon>BaseDetailForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseDetailForm.resx">
+      <DependentUpon>BaseDetailForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseDetailForm.ru-RU.resx">
+      <DependentUpon>BaseDetailForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseDetailForm.uk-UA.resx">
+      <DependentUpon>BaseDetailForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseDetailForm.uz-Cyrl-UZ.resx">
+      <DependentUpon>BaseDetailForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseDetailForm.uz-Latn-UZ.resx">
+      <DependentUpon>BaseDetailForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseDetailPanel.az-Latn-AZ.resx">
+      <DependentUpon>BaseDetailPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseDetailPanel.hy-am.resx">
+      <DependentUpon>BaseDetailPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseDetailPanel.ka-GE.resx">
+      <DependentUpon>BaseDetailPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseDetailPanel.kk-kz.resx">
+      <DependentUpon>BaseDetailPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseDetailPanel.resx">
+      <DependentUpon>BaseDetailPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseDetailPanel.ru-RU.resx">
+      <DependentUpon>BaseDetailPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseDetailPanel.uk-ua.resx">
+      <DependentUpon>BaseDetailPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseForm.az-Latn-AZ.resx">
+      <DependentUpon>BaseForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseForm.hy-am.resx">
+      <DependentUpon>BaseForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseForm.ka-GE.resx">
+      <DependentUpon>BaseForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseForm.kk-kz.resx">
+      <DependentUpon>BaseForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseForm.resx">
+      <DependentUpon>BaseForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseForm.ru-RU.resx">
+      <DependentUpon>BaseForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseForm.uk-ua.resx">
+      <DependentUpon>BaseForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseListForm.az-Latn-AZ.resx">
+      <DependentUpon>BaseListForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseListForm.hy-am.resx">
+      <DependentUpon>BaseListForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseListForm.ka-GE.resx">
+      <DependentUpon>BaseListForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseListForm.kk-kz.resx">
+      <DependentUpon>BaseListForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseListForm.resx">
+      <DependentUpon>BaseListForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseListForm.ru-RU.resx">
+      <DependentUpon>BaseListForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseListForm.uk-ua.resx">
+      <DependentUpon>BaseListForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseLookupForm.ar-IQ.resx">
+      <DependentUpon>BaseLookupForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseLookupForm.az-Latn-AZ.resx">
+      <DependentUpon>BaseLookupForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseLookupForm.hy-am.resx">
+      <DependentUpon>BaseLookupForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseLookupForm.ka-GE.resx">
+      <DependentUpon>BaseLookupForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseLookupForm.kk-KZ.resx">
+      <DependentUpon>BaseLookupForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseLookupForm.resx">
+      <DependentUpon>BaseLookupForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseLookupForm.ru-RU.resx">
+      <DependentUpon>BaseLookupForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseLookupForm.uk-UA.resx">
+      <DependentUpon>BaseLookupForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseLookupForm.uz-Cyrl-UZ.resx">
+      <DependentUpon>BaseLookupForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseLookupForm.uz-Latn-UZ.resx">
+      <DependentUpon>BaseLookupForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BasePagedDataGridForm.ar-IQ.resx">
+      <DependentUpon>BasePagedDataGridForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BasePagedDataGridForm.az-Latn-AZ.resx">
+      <DependentUpon>BasePagedDataGridForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BasePagedDataGridForm.hy-am.resx">
+      <DependentUpon>BasePagedDataGridForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BasePagedDataGridForm.ka-GE.resx">
+      <DependentUpon>BasePagedDataGridForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BasePagedDataGridForm.kk-KZ.resx">
+      <DependentUpon>BasePagedDataGridForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BasePagedDataGridForm.resx">
+      <DependentUpon>BasePagedDataGridForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BasePagedDataGridForm.ru-RU.resx">
+      <DependentUpon>BasePagedDataGridForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BasePagedDataGridForm.uk-UA.resx">
+      <DependentUpon>BasePagedDataGridForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BasePagedListForm.az-Latn-AZ.resx">
+      <DependentUpon>BasePagedListForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BasePagedListForm.hy-am.resx">
+      <DependentUpon>BasePagedListForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BasePagedListForm.ka-GE.resx">
+      <DependentUpon>BasePagedListForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BasePagedListForm.kk-kz.resx">
+      <DependentUpon>BasePagedListForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BasePagedListForm.resx">
+      <DependentUpon>BasePagedListForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BasePagedListForm.ru-RU.resx">
+      <DependentUpon>BasePagedListForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BasePagedListForm.uk-ua.resx">
+      <DependentUpon>BasePagedListForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BasePagedXtraListForm.ar-IQ.resx">
+      <DependentUpon>BasePagedXtraListForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BasePagedXtraListForm.az-Latn-AZ.resx">
+      <DependentUpon>BasePagedXtraListForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BasePagedXtraListForm.hy-am.resx">
+      <DependentUpon>BasePagedXtraListForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BasePagedXtraListForm.ka-GE.resx">
+      <DependentUpon>BasePagedXtraListForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BasePagedXtraListForm.kk-KZ.resx">
+      <DependentUpon>BasePagedXtraListForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BasePagedXtraListForm.resx">
+      <DependentUpon>BasePagedXtraListForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BasePagedXtraListForm.ru-RU.resx">
+      <DependentUpon>BasePagedXtraListForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BasePagedXtraListForm.uk-UA.resx">
+      <DependentUpon>BasePagedXtraListForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BasePagedXtraListForm.uz-Cyrl-UZ.resx">
+      <DependentUpon>BasePagedXtraListForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BasePagedXtraListForm.uz-Latn-UZ.resx">
+      <DependentUpon>BasePagedXtraListForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseReportForm.ar-IQ.resx">
+      <DependentUpon>BaseReportForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseReportForm.az-Latn-AZ.resx">
+      <DependentUpon>BaseReportForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseReportForm.hy-am.resx">
+      <DependentUpon>BaseReportForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseReportForm.ka-GE.resx">
+      <DependentUpon>BaseReportForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseReportForm.kk-KZ.resx">
+      <DependentUpon>BaseReportForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseReportForm.resx">
+      <DependentUpon>BaseReportForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseReportForm.ru-RU.resx">
+      <DependentUpon>BaseReportForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseReportForm.uk-UA.resx">
+      <DependentUpon>BaseReportForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseXtraListForm.ar-IQ.resx">
+      <DependentUpon>BaseXtraListForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseXtraListForm.az-Latn-AZ.resx">
+      <DependentUpon>BaseXtraListForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseXtraListForm.hy-am.resx">
+      <DependentUpon>BaseXtraListForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseXtraListForm.ka-GE.resx">
+      <DependentUpon>BaseXtraListForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseXtraListForm.kk-KZ.resx">
+      <DependentUpon>BaseXtraListForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseXtraListForm.resx">
+      <DependentUpon>BaseXtraListForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseXtraListForm.ru-RU.resx">
+      <DependentUpon>BaseXtraListForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseXtraListForm.uk-UA.resx">
+      <DependentUpon>BaseXtraListForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseRamDetailPanel.az-Latn-AZ.resx">
+      <DependentUpon>BaseRamDetailPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseRamDetailPanel.hy-am.resx">
+      <DependentUpon>BaseRamDetailPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseRamDetailPanel.ka-GE.resx">
+      <DependentUpon>BaseRamDetailPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseRamDetailPanel.kk-kz.resx">
+      <DependentUpon>BaseRamDetailPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseRamDetailPanel.resx">
+      <DependentUpon>BaseRamDetailPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseRamDetailPanel.ru-RU.resx">
+      <DependentUpon>BaseRamDetailPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\BaseRamDetailPanel.uk-ua.resx">
+      <DependentUpon>BaseRamDetailPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\AboutForm.ar-IQ.resx">
+      <DependentUpon>AboutForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\AboutForm.az-Latn-AZ.resx">
+      <DependentUpon>AboutForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\AboutForm.hy-am.resx">
+      <DependentUpon>AboutForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\AboutForm.ka-GE.resx">
+      <DependentUpon>AboutForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\AboutForm.kk-KZ.resx">
+      <DependentUpon>AboutForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\AboutForm.resx">
+      <DependentUpon>AboutForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\AboutForm.ru-RU.resx">
+      <DependentUpon>AboutForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\AboutForm.uk-UA.resx">
+      <DependentUpon>AboutForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\AboutForm.uz-Cyrl-UZ.resx">
+      <DependentUpon>AboutForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\AboutForm.uz-Latn-UZ.resx">
+      <DependentUpon>AboutForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\BarcodeButton.ar-IQ.resx">
+      <DependentUpon>BarcodeButton.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\BarcodeButton.az-Latn-AZ.resx">
+      <DependentUpon>BarcodeButton.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\BarcodeButton.hy-am.resx">
+      <DependentUpon>BarcodeButton.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\BarcodeButton.ka-GE.resx">
+      <DependentUpon>BarcodeButton.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\BarcodeButton.kk-KZ.resx">
+      <DependentUpon>BarcodeButton.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\BarcodeButton.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>BarcodeButton.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\BarcodeButton.ru-RU.resx">
+      <DependentUpon>BarcodeButton.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\BarcodeButton.uk-UA.resx">
+      <DependentUpon>BarcodeButton.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\ErrorForm.ar-IQ.resx">
+      <DependentUpon>ErrorForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\ErrorForm.az-Latn-AZ.resx">
+      <DependentUpon>ErrorForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\ErrorForm.hy-am.resx">
+      <DependentUpon>ErrorForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\ErrorForm.ka-GE.resx">
+      <DependentUpon>ErrorForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\ErrorForm.kk-KZ.resx">
+      <DependentUpon>ErrorForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\ErrorForm.resx">
+      <DependentUpon>ErrorForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\ErrorForm.ru-RU.resx">
+      <DependentUpon>ErrorForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\ErrorForm.uk-UA.resx">
+      <DependentUpon>ErrorForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\ErrorForm.uz-Cyrl-UZ.resx">
+      <DependentUpon>ErrorForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\ErrorForm.uz-Latn-UZ.resx">
+      <DependentUpon>ErrorForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\PopUpButton.ar-IQ.resx">
+      <DependentUpon>PopUpButton.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\PopUpButton.az-Latn-AZ.resx">
+      <DependentUpon>PopUpButton.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\PopUpButton.hy-am.resx">
+      <DependentUpon>PopUpButton.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\PopUpButton.ka-GE.resx">
+      <DependentUpon>PopUpButton.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\PopUpButton.kk-KZ.resx">
+      <DependentUpon>PopUpButton.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\PopUpButton.resx">
+      <DependentUpon>PopUpButton.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\PopUpButton.ru-RU.resx">
+      <DependentUpon>PopUpButton.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\PopUpButton.uk-UA.resx">
+      <DependentUpon>PopUpButton.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="licenses.licx" />
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <SubType>Designer</SubType>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\BasePagedGrid.az-Latn-AZ.resx">
+      <DependentUpon>BasePagedGrid.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\BasePagedGrid.hy-am.resx">
+      <DependentUpon>BasePagedGrid.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\BasePagedGrid.ka-GE.resx">
+      <DependentUpon>BasePagedGrid.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\BasePagedGrid.kk-kz.resx">
+      <DependentUpon>BasePagedGrid.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\BasePagedGrid.resx">
+      <DependentUpon>BasePagedGrid.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\BasePagedGrid.ru-RU.resx">
+      <DependentUpon>BasePagedGrid.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\BasePagedGrid.uk-ua.resx">
+      <DependentUpon>BasePagedGrid.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\BaseSearchPanel.resx">
+      <DependentUpon>BaseSearchPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\PagedGrid.az-Latn-AZ.resx">
+      <DependentUpon>PagedGrid.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\PagedGrid.hy-am.resx">
+      <DependentUpon>PagedGrid.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\PagedGrid.ka-GE.resx">
+      <DependentUpon>PagedGrid.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\PagedGrid.kk-kz.resx">
+      <DependentUpon>PagedGrid.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\PagedGrid.resx">
+      <DependentUpon>PagedGrid.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\PagedGrid.ru-RU.resx">
+      <DependentUpon>PagedGrid.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\PagedGrid.uk-ua.resx">
+      <DependentUpon>PagedGrid.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\PagedXtraGrid.ar-IQ.resx">
+      <DependentUpon>PagedXtraGrid.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\PagedXtraGrid.az-Latn-AZ.resx">
+      <DependentUpon>PagedXtraGrid.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\PagedXtraGrid.hy-am.resx">
+      <DependentUpon>PagedXtraGrid.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\PagedXtraGrid.ka-GE.resx">
+      <DependentUpon>PagedXtraGrid.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\PagedXtraGrid.kk-kz.resx">
+      <DependentUpon>PagedXtraGrid.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\PagedXtraGrid.resx">
+      <DependentUpon>PagedXtraGrid.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\PagedXtraGrid.ru-RU.resx">
+      <DependentUpon>PagedXtraGrid.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\PagedXtraGrid.uk-ua.resx">
+      <DependentUpon>PagedXtraGrid.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\PagerPanel.az-Latn-AZ.resx">
+      <DependentUpon>PagerPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\PagerPanel.hy-am.resx">
+      <DependentUpon>PagerPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\PagerPanel.ka-GE.resx">
+      <DependentUpon>PagerPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\PagerPanel.kk-kz.resx">
+      <DependentUpon>PagerPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\PagerPanel.resx">
+      <DependentUpon>PagerPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\PagerPanel.ru-RU.resx">
+      <DependentUpon>PagerPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\PagerPanel.uk-ua.resx">
+      <DependentUpon>PagerPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\SearchPanel.ar-IQ.resx">
+      <DependentUpon>SearchPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\SearchPanel.az-Latn-AZ.resx">
+      <DependentUpon>SearchPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\SearchPanel.hy-am.resx">
+      <DependentUpon>SearchPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\SearchPanel.ka-GE.resx">
+      <DependentUpon>SearchPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\SearchPanel.kk-KZ.resx">
+      <DependentUpon>SearchPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\SearchPanel.resx">
+      <DependentUpon>SearchPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\SearchPanel.ru-RU.resx">
+      <DependentUpon>SearchPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\SearchPanel.uk-UA.resx">
+      <DependentUpon>SearchPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\SearchPanel.uz-Cyrl-UZ.resx">
+      <DependentUpon>SearchPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\SearchPanel.uz-Latn-UZ.resx">
+      <DependentUpon>SearchPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\XtraSearchPanel.ar-IQ.resx">
+      <DependentUpon>XtraSearchPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\XtraSearchPanel.az-Latn-AZ.resx">
+      <DependentUpon>XtraSearchPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\XtraSearchPanel.hy-am.resx">
+      <DependentUpon>XtraSearchPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\XtraSearchPanel.ka-GE.resx">
+      <DependentUpon>XtraSearchPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\XtraSearchPanel.kk-KZ.resx">
+      <DependentUpon>XtraSearchPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\XtraSearchPanel.resx">
+      <DependentUpon>XtraSearchPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\XtraSearchPanel.ru-RU.resx">
+      <DependentUpon>XtraSearchPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagedGrid\XtraSearchPanel.uk-UA.resx">
+      <DependentUpon>XtraSearchPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TopDockPanel.resx">
+      <DependentUpon>TopDockPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="Common\Resources\Barcode.bmp" />
+    <Content Include="Common\Resources\Report.ico" />
+    <Content Include="Common\Resources\Report.png" />
+    <None Include="Migrated rules for bvwin_common.ruleset" />
+    <None Include="Resources\print-Barcodes1.png" />
+    <None Include="Resources\Search.png" />
+    <None Include="Resources\add.png" />
+    <None Include="Resources\Delete_Remove.png" />
+    <None Include="Resources\Show_Hide-Search.png" />
+    <None Include="Resources\Select2.png" />
+    <None Include="Resources\Save.png" />
+    <None Include="Resources\refresh.png" />
+    <None Include="Resources\edit.png" />
+    <None Include="Resources\Close.png" />
+    <None Include="Resources\Clear_Cancel-Changes1.png" />
+    <None Include="Resources\View1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

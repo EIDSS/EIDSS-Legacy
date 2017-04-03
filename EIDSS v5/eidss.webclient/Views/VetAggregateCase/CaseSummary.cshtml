@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = Translator.GetMessageString("titleVetAggregateCaseSummaryForm");
+    ViewBag.FormCode = "V11";
+    Layout = "~/Views/Shared/_AggregateSummaryLayout.cshtml";    
+}
+@using eidss.webclient.Utils;
+
+<div>
+    @using (Html.BeginForm())
+    {
+        @Html.Action("AggregateSummaryHeader", "CommonAggregate", new { caseType = eidss.model.Enums.AggregateCaseType.VetAggregateCase })
+        <table class="bordered">
+            <tr>
+                <td class="sectionName">
+                    @Translator.GetMessageString("titleSummaryInfo") 
+                </td>
+            </tr>            
+        </table>   
+        <div class="ffSummaryInfo" id="divFfSummary">
+                    
+        </div>          
+    }
+</div>

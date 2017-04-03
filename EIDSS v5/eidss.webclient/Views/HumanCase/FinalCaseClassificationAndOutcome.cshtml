@@ -1,0 +1,94 @@
+﻿@model eidss.model.Schema.HumanCase
+           
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+
+<div class="smallTabPanelContent">        
+    <table class="bordered">
+        <tr>        
+            <td class="sectionName" colspan="4">      
+                @Translator.GetMessageString("titleGeneralInformation")  
+            </td>
+        </tr> 
+        <tr>
+            <td class="large">
+                @Html.LabelFor(m => m.idfsFinalCaseStatus)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, "FinalCaseStatus")
+            </td>
+            <td colspan="2">                           
+            </td>                        
+        </tr>
+        <tr>
+            <td class="large">
+                @Html.LabelFor(m => m.strReadOnlyDiagnosis)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, "strReadOnlyDiagnosis")
+            </td>
+            <td class="large">
+                @Html.LabelFor(m => m.strReadOnlyDiagnosisDate)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, "strReadOnlyFinalDiagnosisDate")
+            </td>
+        </tr>
+        <tr>
+            <td class="large">                
+                @Translator.GetMessageString("chbTitleBasisOfDiagnosis")
+            </td>
+            <td>
+                <ul class="checkBox">
+                    @Html.BvCheckBox(Model, "blnClinicalDiagBasis", true)
+                    @Html.BvCheckBox(Model, "blnEpiDiagBasis", true)
+                    @Html.BvCheckBox(Model, "blnLabDiagBasis", true)                                
+                </ul>                            
+            </td>
+            <td colspan="2">                           
+            </td>   
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.idfsOutcome)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, "Outcome")
+            </td>
+            <td>
+                @Html.BvLabel(Model, "datDischargeDate")
+                @Html.BvLabel(Model, "datDateOfDeath")
+            </td>
+            <td>
+                @Html.BvDatebox(Model, "datDischargeDate")
+                @Html.BvDatebox(Model, "datDateOfDeath")
+            </td>
+        </tr>       
+        <tr>
+            <td class="sectionName" colspan="4">
+                @Html.LabelFor(m=>m.strSummaryNotes)                
+            </td>        
+        </tr>                
+        <tr>
+            <td colspan="4">                            
+                @Html.BvTextArea(Model, "strSummaryNotes")
+            </td>
+        </tr>
+        <tr>
+            <td class="sectionName" colspan="4">
+                @Translator.GetMessageString("titleEpidemiologists")       
+            </td>        
+        </tr>  
+        <tr>
+            <td class="large">
+                @Html.LabelFor(m => m.strEpidemiologistsName)         
+            </td>            
+            <td class="noIndent">
+                @Html.Action("InlineEmployeePicker", "Employee", new { obj = Model, objectId = Model.idfCase, idfsEmployeePropertyName = "idfInvestigatedByPerson", 
+                                                                        strEmployeePropertyName = "strInvestigatedByPerson", idfsOrganizationPropertyName = "idfInvestigatedByOffice",
+                                                                        strOrganizationPropertyName = "strInvestigatedByOffice" })                              
+            </td>  
+            <td colspan="2"></td>                              
+        </tr>
+    </table> 
+</div>

@@ -1,0 +1,38 @@
+set ANSI_NULLS ON
+set QUOTED_IDENTIFIER ON
+GO
+
+IF  EXISTS (SELECT TOP 1 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].fnFFCheckForRemoveParameter')) Drop Function [dbo].fnFFCheckForRemoveParameter
+GO
+
+-- =============================================
+-- Author:		Leonov E.N.
+-- Create date:
+-- Description:
+-- =============================================
+Create Function dbo.fnFFCheckForRemoveParameter
+(
+	@idfsParameter BigInt	
+)
+RETURNS @ResultTable Table
+(
+		[ErrorMessage] nvarchar(400)	
+)
+AS
+BEGIN
+	
+	declare	@ErrorMessage nvarchar(400)
+		
+	-- должны быть удалены все зависимые записи
+	--If Exists(Select Top 1 1 From dbo.ffParameterDesignOption Where idfsParameter = @idfsParameter) Exec dbo.spThrowException 'ParameterRemove_Has_ffParameterDesignOption_Rows';
+	If Exists(Select Top 1 1 From dbo.tasQuerySearchField Where idfsParameter = @idfsParameter) Set  @ErrorMessage	=  'ParameterRemove_Has_tasQuerySearchField_Rows';
+	If Exists(Select Top 1 1 From dbo.ffParameterForTemplate Where idfsParameter = @idfsParameter And intRowStatus = 0) Set  @ErrorMessage	= 'ParameterRemove_Has_ffParameterForTemplate_Rows';
+	If Exists(Select Top 1 1 From dbo.tlbActivityParameters Where idfsParameter = @idfsParameter And intRowStatus = 0) Set  @ErrorMessage	= 'ParameterRemove_Has_tlbActivityParameters_Rows';
+	If Exists(Select Top 1 1 From dbo.tlbAggrMatrixVersion Where idfsParameter = @idfsParameter And intRowStatus = 0) Set  @ErrorMessage	= 'ParameterRemove_Has_tlbAggrMatrixVersion_Rows';
+	If Exists(Select Top 1 1 From dbo.ffParameterForFunction Where idfsParameter = @idfsParameter And intRowStatus = 0) Set  @ErrorMessage	= 'ParameterRemove_ParameterForFunction';
+	
+	
+	Insert into @ResultTable(ErrorMessage) Values (@ErrorMessage);	
+	Return;
+End
+Go

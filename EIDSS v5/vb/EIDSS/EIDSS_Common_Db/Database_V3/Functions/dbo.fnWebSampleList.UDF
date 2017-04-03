@@ -1,0 +1,38 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fnWebSampleList]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[fnWebSampleList]
+GO
+
+/*
+select * from fn_WebSample_SelectList('en')
+*/
+
+CREATE FUNCTION dbo.fnWebSampleList
+(	
+	@LangID nvarchar(100)
+)
+RETURNS TABLE 
+AS
+RETURN 
+(
+	select		Containers.strFieldBarcode,
+				Containers.idfsSpecimenType as [idfsSpecimenType.ID],
+				Containers.SpecimenType as [idfsSpecimenType.Name],
+				Containers.datFieldCollectionDate,
+				Containers.strBarcode,
+				Containers.CaseID,
+				--Containers.idfCase,
+				Containers.AnimalName,
+				tlbAccessionIn.datAccession,
+				tlbContainer.strBarcode as ParentBarcode
+	from		fnContainerList(@LangID) Containers
+	left join	tlbAccessionIn
+	on			Containers.idfMaterial=tlbAccessionIn.idfMaterial
+	left join	tlbContainer
+	on			tlbContainer.idfContainer=Containers.idfParentContainer
+)
+GO

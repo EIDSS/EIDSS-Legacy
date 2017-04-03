@@ -1,0 +1,81 @@
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnGetPermissionOnVetCase]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnGetPermissionOnVetCase]
+GO
+
+
+CREATE FUNCTION [dbo].[fnGetPermissionOnVetCase](
+	@ObjectOperation BIGINT
+	, @Employee BIGINT
+)
+RETURNS TABLE 
+AS
+RETURN
+/* test
+DECLARE @ObjectOperation BIGINT
+DECLARE @Employee BIGINT
+
+SET @Employee = 3
+*/
+
+
+SELECT
+	idfVetCase
+	, CASE
+		WHEN m_diag <= m_site AND m_diag <= m_out THEN m_diag
+		WHEN m_site <= m_diag AND m_site <= m_out THEN m_site
+		ELSE m_out
+	END intPermission
+FROM (
+	SELECT
+		tvc.idfVetCase
+		, MIN(CASE 
+				WHEN ot1.idfsStatus = 10107003 
+					THEN ISNULL(Diagnosis.intPermission, 2)
+				ELSE 2
+			END) m_diag
+		, MIN(CASE 
+				WHEN ot2.idfsStatus = 10107003 
+					THEN ISNULL(Site.intPermission, 2)
+				ELSE 2
+			END) m_site
+		, MIN(CASE 
+				WHEN ot3.idfsStatus = 10107003 
+					THEN ISNULL(Outbreak.intPermission, 2)
+				ELSE 2
+			END) m_out
+	FROM tlbVetCase tvc
+	JOIN tlbCase tc2 ON
+		tc2.idfCase = tvc.idfVetCase
+		AND tc2.intRowStatus = 0
+	--rights on diagnosis
+	LEFT JOIN dbo.fnGetPermissionOnDiagnosis(@ObjectOperation, @Employee) AS Diagnosis ON
+		Diagnosis.idfsDiagnosis = tc2.idfsShowDiagnosis
+	LEFT JOIN dbo.trtObjectTypeToObjectType ot1 ON
+		ot1.idfsRelatedObjectType = 10060013
+		AND ot1.idfsParentObjectType = 10060001
+	--rights on site
+	LEFT JOIN dbo.fnGetPermissionOnSite(@ObjectOperation, @Employee) AS [Site] ON
+		Site.idfsSite = tvc.idfsSite
+	LEFT JOIN dbo.trtObjectTypeToObjectType ot2 ON
+		ot2.idfsRelatedObjectType = 10060013
+		AND ot2.idfsParentObjectType = 10060011
+	--rights on Outbreak
+	LEFT JOIN dbo.fnGetPermissionOnOutbreak(@ObjectOperation, @Employee) AS [Outbreak] ON
+		Outbreak.idfOutbreak = tc2.idfOutbreak
+	LEFT JOIN dbo.trtObjectTypeToObjectType ot3 ON
+		ot3.idfsRelatedObjectType = 10060013
+		AND ot3.idfsParentObjectType = 10060014
+	GROUP BY tvc.idfVetCase
+) vc
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO

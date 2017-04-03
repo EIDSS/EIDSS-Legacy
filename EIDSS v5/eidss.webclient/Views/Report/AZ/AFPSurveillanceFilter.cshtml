@@ -1,0 +1,55 @@
+﻿@using eidss.webclient.Utils
+@model eidss.model.Reports.AZ.AFPModel
+
+
+<table id="AFPSurveillanceTable" >
+    <tr>
+        <td class="medium">
+            @Html.LabelFor(m => m.Year)
+        </td>
+        <td class="large">
+            <div class='tdContainer'>
+                @{
+                    @(Html.Telerik().NumericTextBoxFor(m => m.Year)
+                          .Name("Year")
+                          .Value(Model.Year)
+                          .DecimalDigits(0)
+                          .NumberGroupSeparator("")
+                          .MinValue(2000)
+                          .MaxValue(2030)
+                          .HtmlAttributes(new {@class = "requiredField"})
+                          )
+                }
+            </div>
+        </td>
+        <td colspan="3"></td>
+    </tr>
+        
+    <tr>
+        <td class="medium">
+            @Html.LabelFor(m => m.PeriodType)
+        </td>
+        <td class="large">
+            @{
+                @(Html.Telerik().ComboBox()
+                      .Name("PeriodType")
+                      .BindTo(Model.PeriodTypeList.ConvertToSelectListItem())
+                      .ClientEvents(c => c.OnChange("paperForm.OnPeriodTypeChanged"))
+                      .HtmlAttributes(new {@class = "requiredField"})
+                      )
+            }
+        </td>
+        <td class="medium">
+            @Html.LabelFor(m => m.Period)
+        </td>
+        <td class="large">
+            @{
+                @(Html.Telerik().ComboBox()
+                      .Name("Period")
+                      .Enable(false)
+                      )
+            }
+        </td>
+        <td></td>
+    </tr>
+</table>

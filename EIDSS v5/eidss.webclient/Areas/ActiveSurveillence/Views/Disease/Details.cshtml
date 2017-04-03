@@ -1,0 +1,70 @@
+﻿@model eidss.model.Schema.AsDisease
+@{    
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+<link href="../../../../Content/Styles/PopupWindow.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('form').ajaxForm(function (data) {
+            if (data == 'ok')
+                parent.gridItemAdded('@ViewData["name"]'); 
+            else
+                ShowEidssErrorNotification(data, function () { });            
+        });
+
+    });
+
+    function EnableSpecies() {
+        if ($("#" + '@Model.ObjectIdent' + "Diagnosis").data("tComboBox").value() == '') {
+            $("#" + '@Model.ObjectIdent' + "SpeciesType").data("tComboBox").disable();
+            $("#" + '@Model.ObjectIdent' + "SpeciesType").data("tComboBox").value('');
+        }
+        else
+            $("#" + '@Model.ObjectIdent' + "SpeciesType").data("tComboBox").enable();
+    }
+
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });
+</script>
+@using eidss.webclient.Utils
+<h2>@Translator.GetMessageString("AddDiseaseWindowTitle")</h2>
+<div class="popupContent">
+@using (Html.BeginForm())
+{              
+    <table>
+        <tr>
+            <td class="medium">
+                @Html.LabelFor(model => model.strDiagnosis)
+            </td>
+            <td>
+                @(Html.BvCombobox(Model, "Diagnosis", true, "EnableSpecies")
+                    //.ClientEvents(events => events.OnLoad("setIdfSpeciesValue"))
+                  //  .BindTo(ViewBag.SpeciesSelection)                    
+                )
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.strSpecies)
+            </td>
+            <td>
+                 @(Html.BvCombobox(Model, "SpeciesType"))
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.intPlannedNumber)
+            </td>
+            <td>
+                @Html.BvNumeric(Model, "intPlannedNumber", 0)
+            </td>
+        </tr>
+    </table>
+    <div class="popupBottomButtonPanel">
+        <input type="button" class="popupButton" onclick="parent.cancelItemAdding();" value="@Translator.GetMessageString("Cancel")" />
+        <input type="submit" class="popupButton" value="@Translator.GetMessageString("Ok")" />
+    </div>  
+}
+</div>

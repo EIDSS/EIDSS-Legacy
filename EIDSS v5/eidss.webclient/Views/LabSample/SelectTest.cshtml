@@ -1,0 +1,75 @@
+﻿@model eidss.model.Schema.LabTest
+@{
+    ViewBag.Title = @Translator.GetMessageString("titleSelectTestTitle");
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+}
+@using bv.common.Configuration
+@using eidss.webclient.Utils;
+
+<script src="../../Scripts/Sample/CommonScript.js" type="text/javascript"></script>
+<script src="../../Scripts/Common/FormRefresh.js" type="text/javascript"></script>
+<script src="../../Scripts/Common/BvGrid.js" type="text/javascript"></script>
+<script src="../../Scripts/Common/Dialogs.js" type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript">
+    $(window).load(function () {
+        if ($("#ErrorMessage").val()) {
+            $("#ShowTestResultReportClick").val('');
+        }
+        if ($("#ShowTestResultReportClick") && $("#ShowTestResultReportClick").val() == '1') {
+            var lang = GetSiteLanguage();
+            var url = "/" + lang + "/LabSample/TestResultReport";
+            ShowTestResultReport(url);
+        }
+    });
+</script>
+
+@using (Html.BeginForm())
+{
+    <input id='SaveAndExitClick' name='SaveAndExitClick' type='hidden' value='@ViewData["SaveAndExitClick"]' />
+    <input type="hidden" id="ShowTestResultReportClick" name='ShowTestResultReportClick' value="@ViewBag.ShowTestResultReportClick" />    
+    <input id='idfObservation' name='idfObservation' type='hidden' value='@Model.idfObservation' />
+    <input id='idfsTestType' name='idfsTestType' type='hidden' value='@Model.idfsTestType' />
+       
+    @Html.IdentificationAndHeartbeat("idfTesting", Model.idfTesting)
+
+    <div class="detailsWindow smallDetailsWindow"> 
+        <div class="detailsTitle">
+			<table class="detailsTitleContent">
+				<tr>						
+					<td class="titleImage">
+                        <img src="../../Content/Images/Test-(large).png" alt="" />
+                    </td>
+                    <td class="titleText">
+                        @Translator.GetMessageString("titleSelectTestTitle")
+                    </td>
+                    <td class="titleText titleFormCode">
+                        L04
+                    </td>
+				</tr>
+			</table>
+		</div>      
+               
+        @(Html.Telerik().TabStrip()
+            .Name("TabStrip")
+            .Items(items =>
+            {
+                items.Add()
+                .Text(Translator.GetMessageString("tabTitleGeneral"))
+                .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleGeneral" } : new { })
+                .Content(Html.Partial(@"../LabSample/TestGeneral", Model).ToHtmlString());
+                items.Add()
+                .Text(Translator.GetMessageString("titleTestDetails"))
+                .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "titleTestDetails" } : new { })
+                .Content(Html.Partial(@"../LabSample/TestDetails", Model).ToHtmlString());
+                items.Add()
+                .Text(Translator.GetMessageString("titleSampleDetails"))
+                .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "titleSampleDetails" } : new { })
+                .Content(Html.Partial(@"../LabSample/TestSampleDetails", Model.SampleInfo).ToHtmlString());
+                items.Add()
+                .Text(Translator.GetMessageString("tabTitleAmendmentHistory"))
+                .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleAmendmentHistory" } : new { })
+                .Content(Html.Partial(@"../LabSample/TestAmendmentHistory", Model).ToHtmlString());
+            }).SelectedIndex(0))
+    </div>    
+}

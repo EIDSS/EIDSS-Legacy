@@ -1,0 +1,36 @@
+﻿@model eidss.model.Schema.ContactedCasePerson
+           
+@using eidss.mobileclient.Utils
+
+<table> 
+    <tr>                                                               
+        <td>
+            @Html.LabelFor(m => m.idfsPersonContactType)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvDropDownList(Model, "PersonContactType")
+        </td>
+    </tr>
+    <tr>                                                               
+        <td>
+            @Html.LabelFor(m => m.datDateOfLastContact)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvDateBox(Model, "datDateOfLastContact")
+        </td>
+    </tr>
+    <tr>                                                               
+        <td>
+            @Html.LabelFor(m => m.strPlaceInfo)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvEditBox(Model, "strPlaceInfo")
+        </td>
+    </tr>                        
+</table>

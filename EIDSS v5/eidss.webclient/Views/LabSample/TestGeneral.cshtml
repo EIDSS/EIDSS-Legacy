@@ -1,0 +1,168 @@
+﻿@model eidss.model.Schema.LabTest
+           
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+
+<div class="yScrollable largeTabPanelContent">
+    <table>
+        <tr>
+            <td class="large">
+                @Html.LabelFor(m => m.idfsTestType)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, "TestTypeRef", true, "onTestTypeChanged")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.idfsTestForDiseaseType)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, "TestForDiseaseType")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.idfsDiagnosis)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, "Diagnosis")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.idfsTestStatus)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, "TestStatus")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.idfsTestResult)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, "TestResultRef", false).DataBinding(b => b.Ajax().Select("SelectTestResult", "LabSample", new RouteValueDictionary { { "idfTesting", Model.idfTesting } }))
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.strNote)
+            </td>
+            <td>
+                @Html.BvTextArea(Model, "strNote")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.idfTestedByPerson)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, "TestedByPerson")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.ResultEnteredByPerson)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, "ResultEnteredByPerson")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.datStartedDate)
+            </td>
+            <td>
+                @Html.BvDatebox(Model, "datStartedDate")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.datConcludedDate)
+            </td>
+            <td>
+                @Html.BvDatebox(Model, "datConcludedDate")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.idfValidatedByPerson)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, "ValidatedByPerson")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.BatchTestCode)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, "BatchTestCode")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.DepartmentName)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, "DepartmentName")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.strCaseID)
+            </td>            
+            <td class="noIndent">                            
+                <table>
+                    <tr>                                                                       
+                        <td class="fillAll">
+                            @Html.BvEditbox(Model, "strCaseID")
+                        </td>
+                        <td class="selectButton">
+                            @if (Model.idfCase.HasValue)
+                            {
+                                if (Model.idfsCaseType == (long)eidss.model.Enums.CaseTypeEnum.Human)
+                                {
+                                    <input class="coloredButton" type="button" onclick="OpenPopup('../HumanCase/Details?id=' + @Model.idfCase, ' ');" value="..." />   
+                                }
+                                else
+                                {
+                                    <input class="coloredButton" type="button" onclick="OpenPopup('../VetCase/Details?id=' + @Model.idfCase, ' ');" value="..." />   
+                                }
+                            }
+                            else
+                            {
+                                <input class="coloredButton" type="button" value="..." />
+                            }
+                        </td>
+                    </tr>                                
+                </table> 
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.strMonitoringSessionID)
+            </td>
+            <td class="noIndent">                            
+                <table>
+                    <tr>                                                                       
+                        <td class="fillAll">
+                            @Html.BvEditbox(Model, "strMonitoringSessionID")
+                        </td>
+                        <td class="selectButton">
+                            @if (Model.idfMonitoringSession.HasValue)
+                            {
+                                <input class="coloredButton" type="button" onclick="OpenPopup('../ASSession/Details?id=' + @Model.idfMonitoringSession, ' ');" value="..." />
+                            }
+                            else
+                            {
+                                <input class="coloredButton" type="button" value="..." />
+                            }
+                        </td>                                                       
+                    </tr>                                
+                </table>                     					
+            </td>
+        </tr>
+    </table> 
+</div>

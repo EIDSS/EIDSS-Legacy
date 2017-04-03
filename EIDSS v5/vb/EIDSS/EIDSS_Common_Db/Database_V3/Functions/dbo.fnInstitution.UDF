@@ -1,0 +1,80 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnInstitution]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnInstitution]
+GO
+
+
+
+
+
+/****** Object:  User Defined Function dbo.fnInstitution    Script Date: 15.03.2006 12:31:22 ******/
+
+
+
+--select * from dbo.fnInstitution('ru')
+
+
+CREATE       function fnInstitution(@LangID  nvarchar(50))
+returns table
+as
+return( 
+
+select			tlbOffice.idfOffice, 
+				IsNull(s3.strTextString, b1.strDefault) as EnglishName,
+				IsNull(s4.strTextString, b2.strDefault) as EnglishAbbreviation,
+				IsNull(s1.strTextString, b1.strDefault) as [Name],
+				IsNull(s2.strTextString, b2.strDefault) as [Abbreviation],
+				tlbOffice.idfsOfficeName,
+				tlbOffice.idfsOfficeAbbreviation,
+				tlbOffice.idfLocation,
+				tlbOffice.strContactPhone,
+				b1.intHACode, 
+				b1.strDefault, 
+				b1.intRowStatus
+
+from			dbo.tlbOffice
+left outer join	dbo.trtBaseReference as b1 
+on				tlbOffice.idfsOfficeName = b1.idfsBaseReference
+				and b1.intRowStatus = 0
+left join		dbo.trtStringNameTranslation as s1 
+on				b1.idfsBaseReference = s1.idfsBaseReference
+				and s1.idfsLanguage = dbo.fnGetLanguageCode(@LangID)
+left join		dbo.trtStringNameTranslation as s3 
+on				b1.idfsBaseReference = s3.idfsBaseReference
+				and s3.idfsLanguage = dbo.fnGetLanguageCode('en')
+
+left outer join	dbo.trtBaseReference as b2 
+on				tlbOffice.idfsOfficeAbbreviation = b2.idfsBaseReference
+				and b2.intRowStatus = 0
+left join		dbo.trtStringNameTranslation as s2 
+on				b2.idfsBaseReference = s2.idfsBaseReference
+				and s2.idfsLanguage = dbo.fnGetLanguageCode(@LangID)
+left join		dbo.trtStringNameTranslation as s4 
+on				b2.idfsBaseReference = s4.idfsBaseReference
+				and s4.idfsLanguage = dbo.fnGetLanguageCode('en')
+
+where			tlbOffice.intRowStatus = 0
+				and idfsOfficeType = 10062002 --Institution
+
+)
+
+
+
+
+
+
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

@@ -1,0 +1,84 @@
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+ 
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fn_ASSession_SelectList]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fn_ASSession_SelectList]
+GO
+
+
+
+--##SUMMARY Returns list of AS sessions.
+
+--##REMARKS Author: Zurin M.
+--##REMARKS Create date: 15.06.2010
+
+--##RETURNS Returns list of AS campaigns.
+
+
+
+/*
+--Example of function call:
+
+SELECT * FROM fn_ASSession_SelectList ('en')
+
+*/
+
+
+CREATE     Function fn_ASSession_SelectList(
+	@LangID as nvarchar(50) --##PARAM @LangID - language ID
+)
+returns table 
+as
+return
+SELECT idfMonitoringSession
+      ,[Status].Name as strStatus
+      ,idfsMonitoringSessionStatus
+      ,Region.Name as strRegion
+      ,idfsRegion
+      ,Rayon.Name as strRayon
+      ,idfsRayon
+      ,Settlement.Name as strSettlement
+      ,idfsSettlement
+      ,datEnteredDate
+      ,idfPersonEnteredBy
+      ,strMonitoringSessionID
+	  ,CAST(NULL as NVARCHAR(1000)) as strDisease
+      ,tlbCampaign.strCampaignID
+      ,tlbCampaign.strCampaignName
+      ,tlbCampaign.datCampaignDateStart
+      ,tlbCampaign.datCampaignDateEnd
+      ,tlbCampaign.idfsCampaignType
+  FROM tlbMonitoringSession
+Left JOIN tlbCampaign 
+	ON tlbMonitoringSession.idfCampaign = tlbCampaign.idfCampaign
+		AND tlbCampaign.intRowStatus = 0
+LEFT JOIN fnGisReference(@LangID,19000003) Region
+	ON	Region.idfsReference = tlbMonitoringSession.idfsRegion
+LEFT JOIN fnGisReference(@LangID,19000002) Rayon
+	ON	Rayon.idfsReference = tlbMonitoringSession.idfsRayon
+LEFT JOIN fnGisReference(@LangID,19000004) Settlement
+	ON	Settlement.idfsReference = tlbMonitoringSession.idfsSettlement
+LEFT JOIN fnReference(@LangID,19000117) [Status]
+	ON	[Status].idfsReference = tlbMonitoringSession.idfsMonitoringSessionStatus
+WHERE
+	tlbMonitoringSession.intRowStatus = 0
+
+
+
+
+
+
+
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

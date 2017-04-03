@@ -1,0 +1,36 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fnWebHumanCaseList]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[fnWebHumanCaseList]
+GO
+
+/*
+select* from dbo.fnWebHumanCaseList('ru')
+*/
+
+CREATE FUNCTION dbo.fnWebHumanCaseList
+(
+	@LangID nvarchar(20)
+
+)
+RETURNS TABLE 
+AS
+RETURN 
+(
+/*
+	select		*
+	from		fn_HumanCase_SelectList(@LangID) HC
+	left join	tstSite
+	on			tstSite.idfsSite=HC
+	where	HC.idfsSite=dbo.fnSiteID()
+*/
+	select		HC.*
+	from		fn_HumanCase_SelectList(@LangID) HC
+	inner join	tstSite
+	on			tstSite.idfsSite=dbo.fnSiteID()
+	where		tstSite.idfsSiteType<>10085007 or HC.idfsSite=tstSite.idfsSite
+)
+GO

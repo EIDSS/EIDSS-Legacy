@@ -1,0 +1,105 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fn_UsersAndGroups_SelectList]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fn_UsersAndGroups_SelectList]
+GO
+
+/*
+select * from dbo.fn_UsersAndGroups_SelectList('ru')
+*/
+
+CREATE   function dbo.fn_UsersAndGroups_SelectList(@LanguageID as nvarchar(50))
+returns table 
+as
+return
+
+	select		tlbEmployee.idfEmployee,
+				tlbEmployee.idfsEmployeeType,
+				IsNull(ISNULL(GroupName.Name,tlbEmployeeGroup.strName),dbo.fnCreateNameString(tlbPerson.strFamilyName,tlbPerson.strFirstName,tlbPerson.strSecondName))as strName,
+				tlbEmployeeGroup.strDescription,
+				Actor.Name as [Type]--,
+				--tstSite.strSiteName as [Site],
+				--tstUserTable.idfsSite,
+				--tstSite.strSiteID
+--*
+	from		tlbEmployee
+	left join	
+				--(
+				tlbPerson
+/*				inner join	tstUserTable
+				on			tstUserTable.idfPerson=tlbPerson.idfPerson and
+							tlbPerson.intRowStatus=0 and tstUserTable.intRowStatus=0
+				inner join	tstSite
+				on			tstUserTable.idfsSite=tstSite.idfsSite and tstSite.intRowStatus=0*/
+				--)
+	on			tlbEmployee.idfEmployee = tlbPerson.idfPerson
+	left join	tlbEmployeeGroup
+	on			tlbEmployee.idfEmployee = tlbEmployeeGroup.idfEmployeeGroup 
+	left join	fnReference(@LanguageID,19000023) Actor --rftEmployeeType
+	on			Actor.idfsReference=tlbEmployee.idfsEmployeeType
+	left join	fnReference(@LanguageID, 19000022) GroupName -- translated group name
+	on			GroupName.idfsReference = tlbEmployeeGroup.idfsEmployeeGroupName
+	where		tlbEmployee.intRowStatus=0 and 
+				--tlbEmployee.idfEmployee<>-1 and
+				tlbEmployee.idfsEmployeeType in (10023001,10023002) -- user or group
+/*				(tlbEmployee.idfEmployee = tlbPerson.idfPerson or
+				tlbEmployee.idfEmployee = tlbEmployeeGroup.idfEmployeeGroup)*/
+/*
+
+
+	select TOP 100 PERCENT 
+				EE.idfEmployee, 
+				EE.idfsEmployee_Type, 
+				EG.strName as [Name], 
+				EG.strDescription as [Description], 
+				rf.Name as Type, 
+				'acrGroup' as TypeID, 
+				null as [Site]
+
+	from		EmployeeGroup EG,
+				Employee EE,
+				fnReference(@LanguageID, 'rftObjectActorType') as rf
+
+	where		EE.idfEmployee = EG.idfEmployee
+				--
+				and IsNull(EE.intRowStatus, 0) = 0 
+				and rf.idfsReference = 'acrGroup'
+	union 
+	select TOP 100 PERCENT  
+				EE.idfEmployee, 
+				EE.idfsEmployee_Type, 
+				IsNull(PE.strFirstName, '') + ' ' + 
+				IsNull(PE.strSecondName, '') + ' ' + 
+				IsNull(PE.strFamilyName, '')  as [Name], 
+				PE.strBarcode as [Description],
+				rf.Name as [Type], 
+				'acrPerson' as TypeID, 
+				UT.idfsSite as [Site]
+
+	from		Person PE,
+				Employee EE,
+				UserTable UT,
+				fnReference(@LanguageID, 'rftObjectActorType') as rf
+
+	where		EE.idfEmployee = PE.idfEmployee
+				and UT.idfEmployee = PE.idfEmployee
+				--
+				and IsNull(EE.intRowStatus, 0) = 0 
+				and IsNull(UT.intRowStatus, 0) = 0 
+				and rf.idfsReference = 'acrPerson'
+
+	order by	[Type], [Name]
+*/
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

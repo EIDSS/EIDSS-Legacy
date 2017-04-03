@@ -1,0 +1,99 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fn_Statistic_SelectList]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fn_Statistic_SelectList]
+GO
+
+
+
+
+
+--##SUMMARY Selects list of statistic records for StatisticList form
+
+--##REMARKS Author: Zurin M.
+--##REMARKS Create date: 24.11.2009
+
+--##RETURNS Doesn't use
+
+/*
+--Example of function call:
+
+SELECT * FROM fn_Statistic_SelectList('en')
+*/
+
+
+
+CREATE                      Function	fn_Statistic_SelectList(
+		@LangID as nvarchar(50)--##PARAM @LangID - language ID
+)
+returns table
+as
+return
+select			tlbStatistic.idfStatistic,
+				tlbStatistic.idfsStatisticDataType,
+				tlbStatistic.[idfsStatisticAreaType],
+				DataType.[strDefault] as defDataTypeName,
+				Cast(tlbStatistic.[varValue] as float) as [varValue],
+				tlbStatistic.[idfsMainBaseReference],
+				tlbStatistic.[idfsStatisticPeriodType],
+				tlbStatistic.[idfsArea],
+				tlbStatistic.datStatisticStartDate,
+				DataType.[Name] as setnDataTypeName,
+				ParamType.[Name] as ParameterType,
+				Main.[strDefault] as defParameterName,
+				IsNull(cMain.strTextString, Main.strDefault) as setnParameterName,
+				AreaType.[strDefault] as defAreaTypeName,
+				AreaType.[Name] as setnAreaTypeName,
+				PeriodType.[strDefault] as defPeriodTypeName,
+				PeriodType.[Name] as setnPeriodTypeName,
+				--b.idfsGISReferenceType as RefTypeForArea,
+				--'b.strDefault as defArea,
+				--'IsNull(c.strTextString, b.strDefault) as setnArea
+				area.strAreaName  as setnArea
+
+from			tlbStatistic
+
+left outer join	fnReference(@LangID, 19000090/*'rftStatisticDataType'*/) DataType
+on				DataType.[idfsReference] = tlbStatistic.[idfsStatisticDataType]
+left outer join	fnReference(@LangID, 19000089/*'rftStatisticAreaType'*/) AreaType
+on				AreaType.[idfsReference] = tlbStatistic.[idfsStatisticAreaType]
+left outer join	fnReference(@LangID, 19000091/*'rftStatisticPeriodType'*/) PeriodType
+on				PeriodType.[idfsReference] = tlbStatistic.[idfsStatisticPeriodType]
+left outer join	trtStatisticDataType sdt
+on				sdt.[idfsStatisticDataType] = tlbStatistic.[idfsStatisticDataType]
+left outer join	trtReferenceType rt
+on				rt.idfsReferenceType = sdt.idfsReferenceType
+left outer join	fnReference(@LangID, 19000076/*'rftReferenceTypeName'*/) ParamType
+on				ParamType.[idfsReference] = rt.idfsReferenceType
+left outer join	(
+	dbo.trtBaseReference as Main 
+	left join	dbo.trtStringNameTranslation as cMain 
+	on			Main.idfsBaseReference = cMain.idfsBaseReference
+				and cMain.idfsLanguage = dbo.fnGetLanguageCode(@LangID)
+				)
+on				Main.idfsBaseReference = tlbStatistic.[idfsMainBaseReference]
+				and IsNull(Main.intRowStatus, 0) = 0
+left outer join vwAreaInfo area 
+on				area.idfsArea = tlbStatistic.[idfsArea]
+				and area.idfsLanguage = dbo.fnGetLanguageCode(@LangID)
+--left outer join	(
+--	dbo.gisBaseReference as b 
+--	left join	dbo.gisStringNameTranslation as c 
+--	on			b.idfsGISBaseReference = c.idfsGISBaseReference
+--				and c.idfsLanguage = dbo.fnGetLanguageCode(@LangID)
+--				)
+--on				b.idfsGISBaseReference = tlbStatistic.[idfsArea]
+--				and IsNull(b.intRowStatus, 0) = 0
+
+WHERE 
+	tlbStatistic.intRowStatus = 0
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

@@ -1,0 +1,26 @@
+﻿@model eidss.model.Schema.Person
+@{
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+@using eidss.webclient.Utils;
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        @Html.Hidden("idfPerson")
+        
+        @Html.Partial("../Employee/PersonDetails", Model)
+                
+        <div class="popupBottomButtonPanel">                   
+            <input type="button" class="popupButton" onclick="CloseEmployeeCreator('@ViewBag.ShowInInternalWindow');" value="@Translator.GetMessageString("Cancel")"/>                          
+            <input type="button" class="popupButton" onclick="onEmployeeCreatorOkClick('@ViewBag.NewEmployeeId', '@ViewBag.ObjectId', '@ViewBag.idfsEmployeePropertyName', 
+                '@ViewBag.strEmployeePropertyName', '@ViewBag.IdfsOrganizationPropertyName', '@ViewBag.ShowInInternalWindow');" value="@Translator.GetMessageString("Ok")"/>     
+        </div>   
+    }           
+</div>

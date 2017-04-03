@@ -1,0 +1,1155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://bv.com/eidss" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://bv.com/eidss" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://bv.com/eidss">
+      <s:element name="GetHumanCaseList">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="filter" type="tns:HumanCaseListInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="HumanCaseListInfo">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="CaseID" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="EnteredDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="Diagnosis" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="CaseClassification" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="CaseStatus" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="1" maxOccurs="1" name="DateOfBirth" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="Location" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PatientAge" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="PatientAgeType" type="tns:BaseReferenceItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="BaseReferenceItem">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" nillable="true" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetHumanCaseListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetHumanCaseListResult" type="tns:ArrayOfHumanCaseListInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfHumanCaseListInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="HumanCaseListInfo" nillable="true" type="tns:HumanCaseListInfo" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetVetCaseList">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="filter" type="tns:VetCaseListInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="VetCaseListInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="CaseID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CaseClassification" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="1" maxOccurs="1" name="ReportedDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="FarmName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FarmID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FarmAddress" type="tns:AddressInfo" />
+          <s:element minOccurs="1" maxOccurs="1" name="TotalAnimals" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="SickAnimals" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="DeadAnimals" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Diagnosis" type="tns:BaseReferenceItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AddressInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Country" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="Region" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="Rayon" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="Settlement" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="Building" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="House" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Apartment" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Street" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ZipCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="HomePhone" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetVetCaseListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetVetCaseListResult" type="tns:ArrayOfVetCaseListInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfVetCaseListInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="VetCaseListInfo" nillable="true" type="tns:VetCaseListInfo" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetDiagnosisList">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="code" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDiagnosisListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDiagnosisListResult" type="tns:ArrayOfDiagnosisLookupItem" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfDiagnosisLookupItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DiagnosisLookupItem" nillable="true" type="tns:DiagnosisLookupItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DiagnosisLookupItem">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" nillable="true" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetRayonList">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="region" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetRayonListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetRayonListResult" type="tns:ArrayOfRayonLookupItem" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfRayonLookupItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="RayonLookupItem" nillable="true" type="tns:RayonLookupItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RayonLookupItem">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" nillable="true" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetRegionList">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetRegionListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetRegionListResult" type="tns:ArrayOfRegionLookupItem" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfRegionLookupItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="RegionLookupItem" nillable="true" type="tns:RegionLookupItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RegionLookupItem">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" nillable="true" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetBaseReferenceList">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="type" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetBaseReferenceListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetBaseReferenceListResult" type="tns:ArrayOfBaseReferenceItem" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfBaseReferenceItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="BaseReferenceItem" nillable="true" type="tns:BaseReferenceItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetHumanCase">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="id" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetHumanCaseResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetHumanCaseResult" type="tns:HumanCaseInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="HumanCaseInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="OfflineCaseID" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="CaseID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LocalID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LocalIdentifier" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CompletionPaperFormDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="FacilityLastVisitDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="OnsetDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="NotificationDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="TentativeDiagnosis" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="1" maxOccurs="1" name="TentativeDiagnosisDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="FinalDiagnosis" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="1" maxOccurs="1" name="FinalDiagnosisDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="PatientAge" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="FirstName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="MiddleName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LastName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PatientAgeType" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="PatientGender" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="CaseStatus" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="RelatedToOutbreak" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="CurrentLocation" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="Hospitalization" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="CaseClassification" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="FinalCaseStatus" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="PatientState" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="1" maxOccurs="1" name="DateOfBirth" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="Citizenship" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="AdditionalComment" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Outcome" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="CurrentResidence" type="tns:AddressInfo" />
+          <s:element minOccurs="0" maxOccurs="1" name="EmployerAddress" type="tns:AddressInfo" />
+          <s:element minOccurs="0" maxOccurs="1" name="EmployerName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CurrentLocationName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NotificationSentBy" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="NotificationSentByPerson" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="NotificationSentByFirstName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NotificationSentByPatronymicName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NotificationSentByLastName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NotificationReceivedBy" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="NotificationReceivedByFirstName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NotificationReceivedByPatronymicName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NotificationReceivedByLastName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PhoneNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LastErrorDescription" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="MarkedToDelete" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetVetCase">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="id" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetVetCaseResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetVetCaseResult" type="tns:VetCaseInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="VetCaseInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="CaseID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FieldID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CaseClassification" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="ReportedByPerson" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ReportedDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="FarmName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FarmID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FarmOwnerFirstName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FarmOwnerSecondName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FarmOwnerLastName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FarmAddress" type="tns:AddressInfo" />
+          <s:element minOccurs="1" maxOccurs="1" name="TotalAnimals" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="SickAnimals" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="DeadAnimals" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Diagnosis1" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="Diagnosis2" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="Diagnosis3" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="FinalDiagnosis" type="tns:BaseReferenceItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CreateHumanCase">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="hc" type="tns:HumanCaseInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateHumanCaseResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CreateHumanCaseResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EditHumanCase">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="hc" type="tns:HumanCaseInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EditHumanCaseResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetSampleList">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="filter" type="tns:SampleInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="SampleInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="SampleID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FieldID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Type" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="1" maxOccurs="1" name="CollectionDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="CaseID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ParentSampleID" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccessionDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="AnimalID" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetSampleListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSampleListResult" type="tns:ArrayOfSampleInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfSampleInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SampleInfo" nillable="true" type="tns:SampleInfo" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetTestList">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="filter" type="tns:TestInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TestInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Type" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="SampleID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Category" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="Diagnosis" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="Status" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="Result" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="1" maxOccurs="1" name="PerformedDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="PerformedByOffice" type="tns:BaseReferenceItem" />
+          <s:element minOccurs="0" maxOccurs="1" name="PerformedByPerson" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BatchID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CaseID" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetTestListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTestListResult" type="tns:ArrayOfTestInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfTestInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="TestInfo" nillable="true" type="tns:TestInfo" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Login">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Organization" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="User" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Language" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoginResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="SaveHumanCases">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Organization" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="User" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Language" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="hc_in" type="tns:ArrayOfHumanCaseInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfHumanCaseInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="HumanCaseInfo" nillable="true" type="tns:HumanCaseInfo" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SaveHumanCasesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SaveHumanCasesResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="hc_out" type="tns:ArrayOfHumanCaseInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoadReferences">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Organization" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="User" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="types" type="tns:ArrayOfLong" />
+            <s:element minOccurs="0" maxOccurs="1" name="langs" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfLong">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="long" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="LoadReferencesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="LoadReferencesResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="refs" type="tns:ArrayOfBaseReferenceRaw" />
+            <s:element minOccurs="0" maxOccurs="1" name="refs_trans" type="tns:ArrayOfBaseReferenceTranslationRaw" />
+            <s:element minOccurs="0" maxOccurs="1" name="gis_refs" type="tns:ArrayOfGisBaseReferenceRaw" />
+            <s:element minOccurs="0" maxOccurs="1" name="gis_refs_trans" type="tns:ArrayOfGisBaseReferenceTranslationRaw" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfBaseReferenceRaw">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="BaseReferenceRaw" nillable="true" type="tns:BaseReferenceRaw" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="BaseReferenceRaw">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="idfsBaseReference" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="idfsReferenceType" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="intHACode" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="strDefault" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfBaseReferenceTranslationRaw">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="BaseReferenceTranslationRaw" nillable="true" type="tns:BaseReferenceTranslationRaw" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="BaseReferenceTranslationRaw">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="idfsBaseReference" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="strTranslation" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="strLanguage" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfGisBaseReferenceRaw">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="GisBaseReferenceRaw" nillable="true" type="tns:GisBaseReferenceRaw" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="GisBaseReferenceRaw">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="idfsBaseReference" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="idfsReferenceType" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="idfsCountry" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="idfsRegion" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="idfsRayon" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="strDefault" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfGisBaseReferenceTranslationRaw">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="GisBaseReferenceTranslationRaw" nillable="true" type="tns:GisBaseReferenceTranslationRaw" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="GisBaseReferenceTranslationRaw">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="idfsBaseReference" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="strTranslation" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="strLanguage" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SaveHumanCases2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Organization" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="User" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Language" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="hc_in" type="tns:ArrayOfHumanCaseInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveHumanCases2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SaveHumanCases2Result" type="tns:ArrayOfHumanCaseInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoadReference">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Organization" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="User" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="type" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoadReferenceResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LoadReferenceResult" type="tns:ArrayOfBaseReferenceRaw" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoadReferenceTranslation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Organization" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="User" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="type" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="lang" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoadReferenceTranslationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LoadReferenceTranslationResult" type="tns:ArrayOfBaseReferenceTranslationRaw" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoadGisReference">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Organization" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="User" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoadGisReferenceResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LoadGisReferenceResult" type="tns:ArrayOfGisBaseReferenceRaw" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoadGisReferenceTranslation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Organization" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="User" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="lang" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoadGisReferenceTranslationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LoadGisReferenceTranslationResult" type="tns:ArrayOfGisBaseReferenceTranslationRaw" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetHumanCaseListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetHumanCaseList" />
+  </wsdl:message>
+  <wsdl:message name="GetHumanCaseListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetHumanCaseListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetVetCaseListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetVetCaseList" />
+  </wsdl:message>
+  <wsdl:message name="GetVetCaseListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetVetCaseListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDiagnosisListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDiagnosisList" />
+  </wsdl:message>
+  <wsdl:message name="GetDiagnosisListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDiagnosisListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetRayonListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetRayonList" />
+  </wsdl:message>
+  <wsdl:message name="GetRayonListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetRayonListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetRegionListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetRegionList" />
+  </wsdl:message>
+  <wsdl:message name="GetRegionListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetRegionListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetBaseReferenceListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetBaseReferenceList" />
+  </wsdl:message>
+  <wsdl:message name="GetBaseReferenceListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetBaseReferenceListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetHumanCaseSoapIn">
+    <wsdl:part name="parameters" element="tns:GetHumanCase" />
+  </wsdl:message>
+  <wsdl:message name="GetHumanCaseSoapOut">
+    <wsdl:part name="parameters" element="tns:GetHumanCaseResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetVetCaseSoapIn">
+    <wsdl:part name="parameters" element="tns:GetVetCase" />
+  </wsdl:message>
+  <wsdl:message name="GetVetCaseSoapOut">
+    <wsdl:part name="parameters" element="tns:GetVetCaseResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreateHumanCaseSoapIn">
+    <wsdl:part name="parameters" element="tns:CreateHumanCase" />
+  </wsdl:message>
+  <wsdl:message name="CreateHumanCaseSoapOut">
+    <wsdl:part name="parameters" element="tns:CreateHumanCaseResponse" />
+  </wsdl:message>
+  <wsdl:message name="EditHumanCaseSoapIn">
+    <wsdl:part name="parameters" element="tns:EditHumanCase" />
+  </wsdl:message>
+  <wsdl:message name="EditHumanCaseSoapOut">
+    <wsdl:part name="parameters" element="tns:EditHumanCaseResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSampleListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSampleList" />
+  </wsdl:message>
+  <wsdl:message name="GetSampleListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSampleListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTestListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTestList" />
+  </wsdl:message>
+  <wsdl:message name="GetTestListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTestListResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoginSoapIn">
+    <wsdl:part name="parameters" element="tns:Login" />
+  </wsdl:message>
+  <wsdl:message name="LoginSoapOut">
+    <wsdl:part name="parameters" element="tns:LoginResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveHumanCasesSoapIn">
+    <wsdl:part name="parameters" element="tns:SaveHumanCases" />
+  </wsdl:message>
+  <wsdl:message name="SaveHumanCasesSoapOut">
+    <wsdl:part name="parameters" element="tns:SaveHumanCasesResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoadReferencesSoapIn">
+    <wsdl:part name="parameters" element="tns:LoadReferences" />
+  </wsdl:message>
+  <wsdl:message name="LoadReferencesSoapOut">
+    <wsdl:part name="parameters" element="tns:LoadReferencesResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveHumanCases2SoapIn">
+    <wsdl:part name="parameters" element="tns:SaveHumanCases2" />
+  </wsdl:message>
+  <wsdl:message name="SaveHumanCases2SoapOut">
+    <wsdl:part name="parameters" element="tns:SaveHumanCases2Response" />
+  </wsdl:message>
+  <wsdl:message name="LoadReferenceSoapIn">
+    <wsdl:part name="parameters" element="tns:LoadReference" />
+  </wsdl:message>
+  <wsdl:message name="LoadReferenceSoapOut">
+    <wsdl:part name="parameters" element="tns:LoadReferenceResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoadReferenceTranslationSoapIn">
+    <wsdl:part name="parameters" element="tns:LoadReferenceTranslation" />
+  </wsdl:message>
+  <wsdl:message name="LoadReferenceTranslationSoapOut">
+    <wsdl:part name="parameters" element="tns:LoadReferenceTranslationResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoadGisReferenceSoapIn">
+    <wsdl:part name="parameters" element="tns:LoadGisReference" />
+  </wsdl:message>
+  <wsdl:message name="LoadGisReferenceSoapOut">
+    <wsdl:part name="parameters" element="tns:LoadGisReferenceResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoadGisReferenceTranslationSoapIn">
+    <wsdl:part name="parameters" element="tns:LoadGisReferenceTranslation" />
+  </wsdl:message>
+  <wsdl:message name="LoadGisReferenceTranslationSoapOut">
+    <wsdl:part name="parameters" element="tns:LoadGisReferenceTranslationResponse" />
+  </wsdl:message>
+  <wsdl:portType name="EidssServiceSoap">
+    <wsdl:operation name="GetHumanCaseList">
+      <wsdl:input message="tns:GetHumanCaseListSoapIn" />
+      <wsdl:output message="tns:GetHumanCaseListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetVetCaseList">
+      <wsdl:input message="tns:GetVetCaseListSoapIn" />
+      <wsdl:output message="tns:GetVetCaseListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDiagnosisList">
+      <wsdl:input message="tns:GetDiagnosisListSoapIn" />
+      <wsdl:output message="tns:GetDiagnosisListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRayonList">
+      <wsdl:input message="tns:GetRayonListSoapIn" />
+      <wsdl:output message="tns:GetRayonListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRegionList">
+      <wsdl:input message="tns:GetRegionListSoapIn" />
+      <wsdl:output message="tns:GetRegionListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetBaseReferenceList">
+      <wsdl:input message="tns:GetBaseReferenceListSoapIn" />
+      <wsdl:output message="tns:GetBaseReferenceListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetHumanCase">
+      <wsdl:input message="tns:GetHumanCaseSoapIn" />
+      <wsdl:output message="tns:GetHumanCaseSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetVetCase">
+      <wsdl:input message="tns:GetVetCaseSoapIn" />
+      <wsdl:output message="tns:GetVetCaseSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateHumanCase">
+      <wsdl:input message="tns:CreateHumanCaseSoapIn" />
+      <wsdl:output message="tns:CreateHumanCaseSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="EditHumanCase">
+      <wsdl:input message="tns:EditHumanCaseSoapIn" />
+      <wsdl:output message="tns:EditHumanCaseSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSampleList">
+      <wsdl:input message="tns:GetSampleListSoapIn" />
+      <wsdl:output message="tns:GetSampleListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTestList">
+      <wsdl:input message="tns:GetTestListSoapIn" />
+      <wsdl:output message="tns:GetTestListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <wsdl:input message="tns:LoginSoapIn" />
+      <wsdl:output message="tns:LoginSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveHumanCases">
+      <wsdl:input message="tns:SaveHumanCasesSoapIn" />
+      <wsdl:output message="tns:SaveHumanCasesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LoadReferences">
+      <wsdl:input message="tns:LoadReferencesSoapIn" />
+      <wsdl:output message="tns:LoadReferencesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveHumanCases2">
+      <wsdl:input message="tns:SaveHumanCases2SoapIn" />
+      <wsdl:output message="tns:SaveHumanCases2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LoadReference">
+      <wsdl:input message="tns:LoadReferenceSoapIn" />
+      <wsdl:output message="tns:LoadReferenceSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LoadReferenceTranslation">
+      <wsdl:input message="tns:LoadReferenceTranslationSoapIn" />
+      <wsdl:output message="tns:LoadReferenceTranslationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LoadGisReference">
+      <wsdl:input message="tns:LoadGisReferenceSoapIn" />
+      <wsdl:output message="tns:LoadGisReferenceSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LoadGisReferenceTranslation">
+      <wsdl:input message="tns:LoadGisReferenceTranslationSoapIn" />
+      <wsdl:output message="tns:LoadGisReferenceTranslationSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="EidssServiceSoap" type="tns:EidssServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetHumanCaseList">
+      <soap:operation soapAction="http://bv.com/eidss/GetHumanCaseList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVetCaseList">
+      <soap:operation soapAction="http://bv.com/eidss/GetVetCaseList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDiagnosisList">
+      <soap:operation soapAction="http://bv.com/eidss/GetDiagnosisList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRayonList">
+      <soap:operation soapAction="http://bv.com/eidss/GetRayonList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRegionList">
+      <soap:operation soapAction="http://bv.com/eidss/GetRegionList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBaseReferenceList">
+      <soap:operation soapAction="http://bv.com/eidss/GetBaseReferenceList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetHumanCase">
+      <soap:operation soapAction="http://bv.com/eidss/GetHumanCase" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVetCase">
+      <soap:operation soapAction="http://bv.com/eidss/GetVetCase" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateHumanCase">
+      <soap:operation soapAction="http://bv.com/eidss/CreateHumanCase" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EditHumanCase">
+      <soap:operation soapAction="http://bv.com/eidss/EditHumanCase" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSampleList">
+      <soap:operation soapAction="http://bv.com/eidss/GetSampleList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTestList">
+      <soap:operation soapAction="http://bv.com/eidss/GetTestList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <soap:operation soapAction="http://bv.com/eidss/Login" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveHumanCases">
+      <soap:operation soapAction="http://bv.com/eidss/SaveHumanCases" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoadReferences">
+      <soap:operation soapAction="http://bv.com/eidss/LoadReferences" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveHumanCases2">
+      <soap:operation soapAction="http://bv.com/eidss/SaveHumanCases2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoadReference">
+      <soap:operation soapAction="http://bv.com/eidss/LoadReference" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoadReferenceTranslation">
+      <soap:operation soapAction="http://bv.com/eidss/LoadReferenceTranslation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoadGisReference">
+      <soap:operation soapAction="http://bv.com/eidss/LoadGisReference" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoadGisReferenceTranslation">
+      <soap:operation soapAction="http://bv.com/eidss/LoadGisReferenceTranslation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="EidssServiceSoap12" type="tns:EidssServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetHumanCaseList">
+      <soap12:operation soapAction="http://bv.com/eidss/GetHumanCaseList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVetCaseList">
+      <soap12:operation soapAction="http://bv.com/eidss/GetVetCaseList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDiagnosisList">
+      <soap12:operation soapAction="http://bv.com/eidss/GetDiagnosisList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRayonList">
+      <soap12:operation soapAction="http://bv.com/eidss/GetRayonList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRegionList">
+      <soap12:operation soapAction="http://bv.com/eidss/GetRegionList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBaseReferenceList">
+      <soap12:operation soapAction="http://bv.com/eidss/GetBaseReferenceList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetHumanCase">
+      <soap12:operation soapAction="http://bv.com/eidss/GetHumanCase" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVetCase">
+      <soap12:operation soapAction="http://bv.com/eidss/GetVetCase" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateHumanCase">
+      <soap12:operation soapAction="http://bv.com/eidss/CreateHumanCase" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EditHumanCase">
+      <soap12:operation soapAction="http://bv.com/eidss/EditHumanCase" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSampleList">
+      <soap12:operation soapAction="http://bv.com/eidss/GetSampleList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTestList">
+      <soap12:operation soapAction="http://bv.com/eidss/GetTestList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <soap12:operation soapAction="http://bv.com/eidss/Login" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveHumanCases">
+      <soap12:operation soapAction="http://bv.com/eidss/SaveHumanCases" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoadReferences">
+      <soap12:operation soapAction="http://bv.com/eidss/LoadReferences" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveHumanCases2">
+      <soap12:operation soapAction="http://bv.com/eidss/SaveHumanCases2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoadReference">
+      <soap12:operation soapAction="http://bv.com/eidss/LoadReference" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoadReferenceTranslation">
+      <soap12:operation soapAction="http://bv.com/eidss/LoadReferenceTranslation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoadGisReference">
+      <soap12:operation soapAction="http://bv.com/eidss/LoadGisReference" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoadGisReferenceTranslation">
+      <soap12:operation soapAction="http://bv.com/eidss/LoadGisReferenceTranslation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="EidssService">
+    <wsdl:port name="EidssServiceSoap" binding="tns:EidssServiceSoap">
+      <soap:address location="http://192.168.10.34:8080/EIDSSService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="EidssServiceSoap12" binding="tns:EidssServiceSoap12">
+      <soap12:address location="http://192.168.10.34:8080/EIDSSService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,76 @@
+ SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF  EXISTS (SELECT TOP 1 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fnRepGetHumanCaseForAge]')) 
+Drop Function [dbo].[fnRepGetHumanCaseForAge]
+GO
+
+-- =============================================
+-- Author:		Vasilyev I.
+-- Create date: 
+-- Description:
+-- =============================================
+
+
+--##SUMMARY Select Human cases for given age diapazon.
+--##REMARKS Author: Vasilyev I.
+--##REMARKS Create date: 23.12.2009
+
+--##RETURNS Doesn't use
+
+/*
+--Example of a call of function:
+select * from dbo.fnRepGetHumanCaseForAge (2009-01-01, '2011-01-01', 1, 2147483647, null)
+*/
+
+Create Function dbo.fnRepGetHumanCaseForAge
+(
+	@StartDate		as datetime, 
+	@EndDate		as datetime,
+	@StartAge		as int,
+	@EndAge			as int,
+	@FinalState		as bigint = null
+)
+Returns	 Table
+AS
+
+return
+	select		tCase.idfsShowDiagnosis			as idfsDiagnosis,
+				count(tHumanCase.idfHumanCase)	as intCount
+	
+	from		dbo.tlbCase as tCase
+	inner join  dbo.tlbHumanCase as tHumanCase
+			on	tCase.idfCase = tHumanCase.idfHumanCase
+		   and  tCase.datEnteredDate >= @StartDate
+		   and  tCase.datEnteredDate < @EndDate
+
+		   and  tCase.intRowStatus = 0
+		   and  (@FinalState is null or tHumanCase.idfsFinalState = @FinalState)
+		 where  (	(@StartAge = 0 and @EndAge = 0)
+					or
+					(
+						(tHumanCase.idfsHumanAgeType=10042003 /*Years*/ or tHumanCase.idfsHumanAgeType is null) and
+						(tHumanCase.intPatientAge between @StartAge and @EndAge) 
+					)
+					or
+					(
+						(@StartAge <= 1 and @EndAge <= 1) and 
+						(
+							(tHumanCase.intPatientAge<=12 and tHumanCase.idfsHumanAgeType=10042002 /*Month*/) or 
+							(tHumanCase.intPatientAge<=31 and tHumanCase.idfsHumanAgeType=10042001 /*Days*/)
+						)
+					)
+				)
+				
+	  group by	tCase.idfsShowDiagnosis	
+	  
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

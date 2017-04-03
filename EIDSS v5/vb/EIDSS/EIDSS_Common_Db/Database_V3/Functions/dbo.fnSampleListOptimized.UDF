@@ -1,0 +1,113 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fnSampleListOptimized]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[fnSampleListOptimized]
+GO
+
+
+
+--##SUMMARY Returns list of all samples performed on any site.
+--##REMARKS Author: Vdovin.
+--##REMARKS Create date: 01.10.2010
+
+-- select * from fnSampleListOptimized('en')
+
+
+create function [dbo].[fnSampleListOptimized](@LangID as nvarchar(50))
+returns table
+as
+return
+select			
+				tlbContainer.idfContainer,
+				tlbContainer.idfMaterial,
+				tlbContainer.idfInDepartment,
+				tlbContainer.idfsContainerStatus,
+				tlbMonitoringSession.idfMonitoringSession,
+				tlbContainer.datCreationDate,
+				Diagnosis.Name as DiagnosisName,
+				tlbContainer.strBarcode,
+				SpecimenType.Name as SpecimenType,
+				tlbMaterial.strCalculatedCaseID as CaseID, 
+				Department.Name as DepartmentName,
+				tlbMaterial.datFieldCollectionDate,
+				tlbMaterial.strFieldBarcode,
+				tlbMaterial.strCalculatedHumanName as HumanName, 
+				tlbMaterial.idfsSpecimenType,
+				Animal.AnimalName,
+				tlbFarm.strNationalName,
+				tlbCase.idfCase,
+				tlbCase.idfsShowDiagnosis,
+
+				CASE WHEN tlbMonitoringSession.idfMonitoringSession IS NULL THEN
+					CASE tlbCase.idfsCaseType
+					WHEN 10012001 THEN 2 -- cstRoutineHumanCaseReport
+					--WHEN 10012005 THEN 1 --animal
+					WHEN 10012003 THEN 33 --livestock
+					WHEN 10012004 THEN 65 --avian
+					END --as HACode
+				ELSE
+					33 --10012003 --livestock
+				END as HACode,
+
+				ISNULL(Tests.TestsCount,0) TestsCount
+
+from		tlbContainer
+
+inner join	tlbMaterial
+on			tlbContainer.idfMaterial=tlbMaterial.idfMaterial
+
+inner join	tlbParty tlbPartyMaterial
+on			tlbPartyMaterial.idfParty=tlbMaterial.idfParty and
+			tlbPartyMaterial.intRowStatus=0
+
+left join	tlbMonitoringSession
+on			tlbMonitoringSession.idfMonitoringSession=tlbPartyMaterial.idfMonitoringSession
+
+inner join	tlbParty
+on			tlbParty.idfParty = tlbMaterial.idfParty
+			and tlbParty.intRowStatus=0
+left join	dbo.fnReference(@LangID,19000087) SpecimenType --rftSpecimenType
+on			SpecimenType.idfsReference = tlbMaterial.idfsSpecimenType
+
+left join	tlbCase
+on			tlbCase.idfCase=tlbPartyMaterial.idfCase
+left join	fnReference(@LangID, 19000019 ) Diagnosis --rftTestForDiseaseType
+on			Diagnosis.idfsReference = tlbCase.idfsShowDiagnosis
+
+left join
+		(
+			tlbFarm
+			inner join	tlbParty FarmParty
+			on			FarmParty.idfParty=tlbFarm.idfFarm and FarmParty.intRowStatus=0
+		)
+on			FarmParty.idfCase=tlbCase.idfCase
+
+left join	fnAnimalList(@LangID) Animal
+on			tlbMaterial.idfParty=Animal.idfParty
+
+left join	fnDepartment(@LangID) Department
+on			Department.idfDepartment=tlbContainer.idfInDepartment
+
+left join
+			(
+			select		tlbTesting.idfContainer, COUNT(*) as TestsCount
+			from		tlbTesting
+			where		tlbTesting.intRowStatus=0
+			group by	tlbTesting.idfContainer
+			) Tests 
+on			Tests.idfContainer = tlbContainer.idfContainer
+
+JOIN fnGetPermissionOnSample(NULL, NULL) GetPermission ON
+	GetPermission.idfMaterial = tlbMaterial.idfMaterial
+	AND GetPermission.intPermission = 2
+
+where		tlbContainer.intRowStatus = 0
+			and tlbMaterial.intRowStatus=0
+			and tlbContainer.idfsSite=dbo.fnSiteID()
+
+
+

@@ -1,0 +1,46 @@
+--##SUMMARY Returns list of sites than resived information from any site.
+--##SUMMARY Used by other "filtered" sp.
+
+--##REMARKS Author: Zhdanova A.
+--##REMARKS Create date: 21.09.2010
+
+--##RETURNS Function returns the list parent sites + site itself.
+
+
+/*
+--Example of a call of function:
+select * from fnFiltered_FullSiteList ()
+order by parentSiteID
+*/
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[fnFiltered_FullSiteList]') AND xtype in (N'FN', N'IF', N'TF'))
+DROP FUNCTION [dbo].[fnFiltered_FullSiteList]
+GO 
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE FUNCTION [dbo].[fnFiltered_FullSiteList]()
+RETURNS TABLE 
+AS 
+RETURN 
+SELECT DISTINCT 
+	parent.[strSiteID] parentSiteID, 
+	parent.[idfsSite] parentSite, 
+	related.[strSiteID] relatedSiteID, 
+	related.[idfsSite] relatedSite,
+	a.[idfsSiteRelationType]
+FROM [tstSiteRelation] AS a
+INNER JOIN [tstSite] AS parent
+ON a.[idfsParentSite] = parent.[idfsSite] AND parent.[intRowStatus] = 0
+INNER JOIN [tstSite] AS related
+ON a.[idfsRelativeSite] = related.[idfsSite] AND related.[intRowStatus] = 0
+WHERE a.[intRowStatus] = 0
+UNION 
+SELECT [strSiteID],[idfsSite],[strSiteID],[idfsSite],10084001
+FROM [tstSite]
+WHERE [intRowStatus] = 0
+
+GO 

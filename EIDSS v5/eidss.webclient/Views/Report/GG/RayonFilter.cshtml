@@ -1,0 +1,22 @@
+﻿@using eidss.webclient.Utils
+@model eidss.model.Reports.GG.RayonModel
+
+<table id="RayonTable" >
+    <tr>
+        <td class="medium">
+            @Html.LabelFor(m => m.RegionRayonComplexId)
+        </td>
+        <td class="large">
+                
+            @{
+                @(Html.Telerik().ComboBox()
+                      .Name("RayonFilter.RegionRayonComplexId")
+                      .BindTo(Model.RayonList.ConvertToSelectListItem())
+                      .HtmlAttributes(new {@class = "requiredField"})
+                      )
+            }
+                
+        </td>
+        <td></td>
+    </tr>
+</table>

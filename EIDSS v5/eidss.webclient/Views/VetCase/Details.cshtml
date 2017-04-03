@@ -1,0 +1,234 @@
+﻿@model eidss.model.Schema.VetCase
+@{
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+}
+@using bv.common.Configuration
+@using eidss.webclient.Utils
+@using eidss.model.Schema
+@using eidss.webclient.Areas.Animals
+<script src='@Url.Content("~/Scripts/jquery.form.js")' type="text/javascript"></script>
+<script src='@Url.Content("~/Scripts/Address/Lookups.js")' type="text/javascript"></script>
+<script src='@Url.Content("~/Scripts/Common/GridAreaHelpers.js")' type="text/javascript"></script>
+<script src='@Url.Content("~/Scripts/Sample/CommonScript.js")' type="text/javascript"></script>
+<script src='@Url.Content("~/Scripts/Organization/CommonScript.js")' type="text/javascript"></script>
+<script src='@Url.Content("~/Scripts/Employee/CommonScript.js")' type="text/javascript"></script>
+<script src='@Url.Content("~/Scripts/Common/SearchPicker.js")' type="text/javascript"></script>
+<script src='@Url.Content("~/Scripts/VetCase/Script.js")' type="text/javascript"></script>
+<script src='@Url.Content("~/Scripts/VetCase/HerdEpi.js")' type="text/javascript"></script>
+<script src='@Url.Content("~/Scripts/Common/AjaxFormSubmit.js")' type="text/javascript"></script>
+<script language="javascript" type="text/javascript">
+    var asSessionOpened = false;
+    $(window).load(function () {
+        $('#bMainPanel_Create').hide();
+        if ($("#ErrorMessage").val()) {
+            $("#ShowCIVetCaseReportClick").val('');
+        }
+        if ($("#ShowCIVetCaseReportClick") && $("#ShowCIVetCaseReportClick").val() == '1') {
+            var lang = GetSiteLanguage();
+            var url = "/" + lang + "/VetCase/VetInvestigationReport";
+            ShowCIVetCaseReport(url);
+        }
+    });
+
+    $(document).ready(function () {
+        $("#bMainPanel_Save").removeAttr("onclick");
+        $("#bMainPanel_Ok").removeAttr("onclick");
+        $("#bMainPanel_VetInvestigationReport").removeAttr("onclick"); 
+
+        $("#bMainPanel_Save").unbind("click").click(SaveClick);
+        $("#bMainPanel_Ok").unbind("click").click(OKClick);
+        $("#bMainPanel_VetInvestigationReport").unbind("click").click(ReportClick);
+    });
+
+    function GetCaseId() {
+        var hidden = $('input[type="hidden"][name$="idfCase"]');
+        if (hidden)
+            return hidden.val();
+        else
+            return null;
+    }
+
+
+    function ReloadEpi(fname) {
+        var query = '@Url.Action("GetEpiFlexForm", "VetCase")';
+        showLoading();
+        reloadPartialDiv(query, fname, GetCaseId());
+    }
+
+    function ReloadCM() {
+        var query = '@Url.Action("GetCMFlexForm", "VetCase")';
+        showLoading();
+        reloadPartialDiv(query, "CMFlexForm", GetCaseId());
+    }
+
+    function reloadLvstkTab(e) {
+        var item = $(e.item);
+        if (item.index() == 1) {
+            ReloadEpi("LvstckEpiFlexForm");
+        }
+        if (item.index() == 2) {
+            ReloadCM();
+        }
+    }
+
+    function StoreVetCase(onSuccess, onSuccessArgs) {
+        var contentData = $("form").serialize(true);
+        var lang = GetSiteLanguage();
+        var postUrl = "/" + lang + "/VetCase/StoreCase";
+        $.ajax({
+            url: postUrl,
+            cache: false,
+            dataType: "json",
+            type: "POST",
+            data: contentData,
+            success: function () {
+                if (onSuccess) {
+                    onSuccess(onSuccessArgs);
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(jqXHR.status);
+            }
+        });
+    }
+
+    function onAvianTabSelect(e) {
+        var item = $(e.item);
+        if (item.index() == 1) {
+            ReloadEpi("AvianEpiFlexForm");
+            return;
+        }
+
+        var activeTabContent = "#EpiSection .t-content.t-state-active ";
+        if ($(activeTabContent + "#AvianEpiFlexForm").length == 1) {
+            StoreVetCase();
+        }
+    }
+
+    function onLvstkTabSelect(e) {
+        var activeTabContent = "#EpiSection .t-content.t-state-active ";
+        if ($(activeTabContent + "#LvstckEpiFlexForm").length == 1 || $(activeTabContent + "#CMFlexForm").length == 1) {
+            StoreVetCase(reloadLvstkTab, e);
+        }
+        else {
+            reloadLvstkTab(e);
+        }
+    }
+
+</script>
+<input type="hidden" id="DiagnosisId" value="@ViewBag.DiagnosisId" />
+<input type="hidden" id="grid_selecteditem" value="@Model.idfCase" />
+@using (Html.BeginForm())
+{
+   @* <input type="button" id="AjaxSubmit" value="ajax submit" />*@
+    <input id='SaveAndExitClick' name='SaveAndExitClick' type='hidden' value='@ViewData["SaveAndExitClick"]' /> 
+    <input type="hidden" id="ShowCIVetCaseReportClick" name='ShowCIVetCaseReportClick' value="@ViewBag.ShowCIVetCaseReportClick" />    
+    
+    @Html.IdentificationAndHeartbeat("idfCase", Model.idfCase)	
+    @Html.BvHidden(Model, "strIdfsDiagnosis")  
+    
+    <div class="detailsWindow largeDetailsWindow">
+        <div class="detailsTitle">
+            <table class="detailsTitleContent">
+                <tr>
+                    <td class="titleImage">
+                        <img src='@Url.Content(String.Format("~/Content/Images/New{0}.png", Model._HACode == (int)eidss.model.Enums.HACode.Avian ? "Avian" : "Lvstk"))'  alt=""/>
+                    </td>
+                    <td class="titleText">
+                        @ViewBag.Title @*idfCase=@Model.idfCase*@
+                    </td>
+                    @if (Model._HACode == (int)eidss.model.Enums.HACode.Avian)
+                    {
+                        <td class="titleText titleFormCode">
+                            V03
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="titleText titleFormCode">
+                            V02
+                        </td>
+                    }
+                </tr>
+            </table>
+        </div>
+        @(Html.Partial("../VetCase/CaseSummary", Model))
+        @(Html.Telerik().TabStrip()
+            .Name("FullInvestigation")
+            .Items(items =>
+            {
+                items.Add()
+                    .Text(Translator.GetMessageString("titleFarmDetails"))
+                    .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "titleFarmDetails" } : new { })
+                    .Content(
+                        @<text>
+        <div class="yScrollable smallTabPanelContent">
+            @Html.Partial("../VetCase/ReportingInfo", Model)
+            @Html.Partial("../Farm/Panel", Model.Farm)
+        </div>
+        </text>);
+
+                items.Add()
+                    .Text(Translator.GetMessageString((Model._HACode == (int)eidss.model.Enums.HACode.Livestock) ? "titleHerdEpiClinicalSigns" : "tabTitleFlockSpeciesSigns"))
+                    .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = (Model._HACode == (int)eidss.model.Enums.HACode.Livestock) ? "titleHerdEpiClinicalSigns" : "tabTitleFlockSpeciesSigns" } : new { })
+                    .Content(
+                    @<text>
+        @if (Model._HACode == (int)eidss.model.Enums.HACode.Livestock)
+        {                                   
+            @Html.Partial("HerdEpi", Model);
+        }
+        else
+        {
+            @Html.Partial("FlockEpi", Model);
+        }
+        </text>);
+
+                items.Add()
+                    .Text(Translator.GetMessageString("tabTitleClinicalDiagnosis"))
+                    .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleClinicalDiagnosis" } : new { })
+                    .Content(Html.Partial(@"../VetCase/ClinicalDiagnosis", Model).ToHtmlString());
+                if (Model._HACode == (int)eidss.model.Enums.HACode.Livestock)
+                {
+                    items.Add()
+                        .Text(Translator.GetMessageString("tabTitleVetCaseAnimals"))
+                        .Content(
+                            @<text>
+        <div class="smallTabPanelContent">
+            @Html.AnimalList(Model.idfCase, Model.ObjectIdent + "AnimalList", Model.AnimalList, Model.IsClosed || Model.IsReadOnly("AnimalList") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit))
+        </div>
+        </text>);
+                }
+                items.Add()
+                    .Text(Translator.GetMessageString("tabTitleVetCaseSamples"))
+                    .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleVetCaseSamples" } : new { })
+                    .Content(Html.Partial(@"../VetCase/SamplesCollection", Model).ToHtmlString());
+                items.Add()
+                    .Text(Translator.GetMessageString("tabTitleVetCasePensideTests"))
+                    .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleVetCasePensideTests" } : new { })
+                    .Content(Html.Partial(@"../VetCase/PensideTests", Model).ToHtmlString());
+                items.Add()
+                    .Text(Translator.GetMessageString("tabTitleVetCaseLabTests"))
+                    .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleVetCaseLabTests" } : new { })
+                    .Content(Html.Partial(@"../VetCase/Tests", Model).ToHtmlString());
+                items.Add()
+                    .Text(Translator.GetMessageString("tabTitleComments"))
+                    .Content(
+                        @<text>
+        <div class="smallTabPanelContent">
+            <table class="bordered">
+                <tr>
+                    <td class="sectionName">@Html.LabelFor(m => m.strClinicalNotes)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.BvTextArea(Model, "strClinicalNotes")
+                    </td>
+                </tr>
+            </table>
+        </div>
+        </text>);
+            })
+                                                    .SelectedIndex(0)
+                                                )
+    </div>    
+}

@@ -1,0 +1,53 @@
+﻿@model object
+
+@{
+    ViewBag.Title = Translator.GetMessageString("titleLaboratorySampleLogBook");
+    ViewBag.FormCode = "L25";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script language="javascript" type="text/javascript">
+    function SwitchView(flag) {
+        if (!flag) {
+            window.location = '@Url.Action("Index")'
+        }
+    }
+</script>
+
+@using eidss.webclient.Utils
+@using eidss.model.Schema
+<input type="hidden" id="grid_selecteditem" />
+
+<table class="listForm">
+    <tr>
+        <td class="lfSearchPanelTd">
+            @if ((Model as bv.model.Model.Core.IObjectMeta).SearchPanelMeta != null)
+            {
+            <div id="searchpanel" class="customSearchPanel">
+                @using (Html.BeginForm())
+                {                
+                    <input name="chkShowMyPref" id="chkShowMyPref" checked="checked" type="checkbox" value="false" onclick="SwitchView(this.checked);">Show My Preferences</input>
+                    
+                    @Html.SearchPanel(Model as bv.model.Model.Core.IObjectAccessor, (bv.model.Model.Core.FilterParams)ViewBag.Filter, (bv.model.Model.Core.IObject)ViewBag.InitObject)                  
+                    <input type="button" value="@Translator.GetMessageString("Search")" class="spSearchButton" id="AltSearch"/>
+                    <input type="button" value="@Translator.GetMessageString("Clear")" onclick="ClearSearch();" />                                                 
+                }
+            </div>
+            }
+        </td>
+        <td class="lfButtonTd">
+            <input type="button" id="btHideListFormSearch" value="<<" onclick="onHideListFormSearchPanel();" class="lfButton" />
+            <input type="button" id="btShowListFormSearch" value=">>" onclick="onShowListFormSearchPanel();" class="lfButton invisible" />
+        </td>
+        <td class="lfGridTd">   
+        @using (var manager = bv.model.BLToolkit.DbManagerFactory.Factory.Create(eidss.model.Core.EidssUserContext.Instance))
+        {            
+            Html.BvFullGrid<LabSampleLogBookMyPrefListItem.LabSampleLogBookMyPrefListItemGridModel, LabSampleLogBookMyPrefListItem.LabSampleLogBookMyPrefListItemGridModelList>(
+                Session.SessionID,
+                new LabSampleLogBookMyPrefListItem.LabSampleLogBookMyPrefListItemGridModelList(AutoGridRoots.LabSampleBookPreference, (Model as eidss.model.Schema.LabSampleLogBookMyPrefListItem.Accessor).SelectListT(manager, (bv.model.Model.Core.FilterParams)ViewBag.Filter))
+                )
+            .Render();
+        }
+        </td>
+    </tr>
+</table>
+

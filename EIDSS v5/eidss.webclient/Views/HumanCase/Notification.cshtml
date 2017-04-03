@@ -1,0 +1,254 @@
+﻿@model eidss.model.Schema.HumanCase
+           
+@using eidss.webclient.Utils;
+@using eidss.webclient.Areas.Patient;
+@using eidss.webclient.Areas.Address;
+
+<input type="hidden" id="DiagnosisChangedForPrevious" value="" /> 
+
+<div class="yScrollable mediumTabPanelContent">
+    <table class="bordered">
+        <tr>        
+            <td class="sectionName" colspan="5">      
+                @Translator.GetMessageString("titleGeneralInformation")  
+            </td>
+        </tr> 
+        <tr>
+            <td colspan="2">
+                @Html.LabelFor(m => m.datCompletionPaperFormDate)
+            </td>
+            <td>
+                @Html.BvDatebox(Model, "datCompletionPaperFormDate")
+            </td>
+            <td>
+                @Html.LabelFor(m => m.strLocalIdentifier)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, "strLocalIdentifier", true)
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                @Html.LabelFor(m => m.idfsTentativeDiagnosis)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, "TentativeDiagnosis", true, "onTentativeDiagnosisChange")
+            </td>
+            <td>
+                @Html.LabelFor(m => m.datTentativeDiagnosisDate)
+            </td>
+            <td>
+                @Html.BvDatebox(Model, "datTentativeDiagnosisDate")
+            </td>
+        </tr>    
+        <tr>
+            <td colspan="2">
+                @Html.LabelFor(m => m.datNotificationDate)
+            </td>
+            <td colspan="3">
+                @Html.BvDatebox(Model, "datNotificationDate")
+            </td>
+        </tr>
+        <tr>
+            <td class="medium">
+                @Translator.GetMessageString("titleNotificationSendBy"):
+            </td>
+            <td class="small">
+                @Html.LabelFor(m => m.idfSentByOffice)
+            </td>
+            <td class="noIndent">                
+                @Html.Action("InlineOrganizationPicker", "Organization", new { obj = Model, objectId = Model.idfCase, idfsOrganizationPropertyName = "idfSentByOffice",
+                                                                               strOrganizationPropertyName = "strSentByOffice", idfsEmployeePropertyName = "idfSentByPerson",
+                                                                               strEmployeePropertyName = "strSentByPerson"})                                  
+            </td>
+            <td class="medium">
+                @Html.LabelFor(m => m.strSentByPerson)
+            </td>
+            <td class="noIndent">
+                @Html.Action("InlineEmployeePicker", "Employee", new { obj = Model, objectId = Model.idfCase, idfsEmployeePropertyName = "idfSentByPerson", 
+                                                                        strEmployeePropertyName = "strSentByPerson", idfsOrganizationPropertyName = "idfSentByOffice",
+                                                                        strOrganizationPropertyName = "strSentByOffice"})                  
+            </td>                  
+        </tr>
+        <tr>
+            <td>
+                @Translator.GetMessageString("titleNotificationReceivedBy"):
+            </td>
+            <td>
+                @Html.LabelFor(m => m.idfReceivedByOffice)
+            </td>
+            <td class="noIndent">                
+                @Html.Action("InlineOrganizationPicker", "Organization", new { obj = Model, objectId = Model.idfCase, idfsOrganizationPropertyName = "idfReceivedByOffice",
+                                                                               strOrganizationPropertyName = "strReceivedByOffice", idfsEmployeePropertyName = "idfReceivedByPerson",
+                                                                               strEmployeePropertyName = "strReceivedByPerson" })                 
+            </td>
+            <td>
+                @Html.LabelFor(m => m.strReceivedByPerson)
+            </td>
+            <td class="noIndent">
+                @Html.Action("InlineEmployeePicker", "Employee", new { obj = Model, objectId = Model.idfCase, idfsEmployeePropertyName = "idfReceivedByPerson", 
+                                                                        strEmployeePropertyName = "strReceivedByPerson", idfsOrganizationPropertyName = "idfReceivedByOffice",
+                                                                        strOrganizationPropertyName = "strReceivedByOffice"})                
+            </td>                    
+        </tr> 
+        <tr>
+            <td colspan="5">
+                @Translator.GetMessageString("titleInvestigation"):
+            </td>
+        </tr> 
+        <tr>            
+            <td colspan="2">
+                @Html.LabelFor(m => m.idfInvestigatedByOffice)
+            </td>
+            <td class="noIndent">                                
+                @Html.Action("InlineOrganizationPicker", "Organization", new { obj = Model, objectId = Model.idfCase, idfsOrganizationPropertyName = "idfInvestigatedByOffice",
+                                                                               strOrganizationPropertyName = "strInvestigatedByOffice", idfsEmployeePropertyName = "idfInvestigatedByPerson",
+                                                                               strEmployeePropertyName = "strInvestigatedByPerson" })     
+            </td>
+            <td>
+                @Html.LabelFor(m => m.datInvestigationStartDate)
+            </td>
+            <td>
+                @Html.BvDatebox(Model, "datInvestigationStartDate")
+            </td>
+        </tr>      
+    </table>     
+    <table class="bordered">
+        <tr>        
+            <td class="sectionName" colspan="3">      
+                @Translator.GetMessageString("titleDemographicInformation")   
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="noIndent"> 
+                @Html.Patient(Model.idfCase, Model.Patient, true, true)
+            </td>
+            <td class="multiRowColumn">                
+                <input class="coloredButton noIndent" id="btnSearchforDuplicates" type="button" onclick="GetDuplicates();" value="@Translator.GetMessageString("btTitleSearchforDuplicates")" />               
+            </td>
+        </tr>    
+        <tr>
+            <td colspan="3" class="noIndent">
+                <table>
+                    <tr>
+                        <td class="small">
+                            @Html.LabelFor(m => m.strWorkPhone)
+                        </td>
+                        <td class="medium">
+                            @Html.BvEditbox(Model, "strWorkPhone")
+                        </td>
+                        <td class="small">
+                            @Html.LabelFor(m => m.idfsOccupationType)
+                        </td>
+                        <td class="medium">
+                            @Html.BvCombobox(Model, "OccupationType")
+                        </td> 
+                        <td class="fillAll">
+                        </td> 
+                    </tr>
+                </table>
+            </td>                       
+        </tr>   
+        <tr>
+            <td colspan="2" class="noIndent">
+                <table>
+                    <tr>
+                        <td class="xxlarge">
+                            @Html.LabelFor(m => m.datFacilityLastVisit)
+                        </td>                    
+                        <td class="medium">
+                            @Html.BvDatebox(Model, "datFacilityLastVisit")
+                        </td> 
+                        <td class="fillAll"></td>          
+                    </tr>
+                </table>
+            </td>            
+            <td class="fillAll"></td>                            
+        </tr>   
+        <tr>        
+            <td colspan="3">  
+                @Html.LabelFor(m => m.idfRegistrationAddress):                               
+            </td>
+        </tr>
+        <tr>
+            <td colspan="7" class="noIndent">
+                @Html.Address(Model.idfCase, Model.RegistrationAddress, true, true, true, true)
+            </td>
+        </tr>
+        <tr>    
+            <td colspan="2" class="noIndent">
+                <table>
+                    <tr>
+                        <td class="xxlarge">
+                            @Html.LabelFor(m => m.strRegistrationPhone)
+                        </td>                    
+                        <td class="medium">
+                            @Html.BvEditbox(Model, "strRegistrationPhone")
+                        </td> 
+                        <td class="fillAll"></td>          
+                    </tr>
+                </table>
+            </td>            
+            <td class="fillAll"></td>                                                      
+        </tr>                                  
+    </table>
+    <table class="bordered">
+        <tr>        
+            <td class="sectionName" colspan="4">      
+                @Translator.GetMessageString("titleClinicalInformation") 
+            </td>
+        </tr>
+        <tr>            
+            <td class="large">
+                @Html.LabelFor(m => m.datOnSetDate)
+            </td>
+            <td class="large">
+                @Html.BvDatebox(Model, "datOnSetDate")
+            </td>
+            <td class="large">
+                @Html.LabelFor(m => m.idfsFinalState)
+            </td>
+            <td class="large">
+                @Html.BvCombobox(Model, "PatientState")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Translator.GetString("lblChangedDiagnosis")                   
+            </td>
+            <td>            
+                @Html.BvCombobox(Model, "FinalDiagnosis", true, "function(e){ onFinalDiagnosisChange(e, '" + Model.idfCase + "'); }")
+            </td>
+            <td>
+                @Translator.GetString("lblDatChangedDiagnosis")                
+            </td>
+            <td>
+                @Html.BvDatebox(Model, "datFinalDiagnosisDate")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.idfsHospitalizationStatus)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, "PatientLocationType")                                                          
+            </td>
+            <td>
+                @Html.LabelFor(m => m.strCurrentLocation)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, "strCurrentLocation")          
+            </td>                    
+        </tr>
+        <tr>
+            <td colspan="4">
+                @Html.LabelFor(m => m.strNote)
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">                                        
+                @Html.BvTextArea(Model, "strNote")
+            </td>                    
+        </tr>  
+    </table>       
+</div>

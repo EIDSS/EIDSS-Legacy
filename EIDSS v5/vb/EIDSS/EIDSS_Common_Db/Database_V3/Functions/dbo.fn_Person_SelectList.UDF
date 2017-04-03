@@ -1,0 +1,57 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fn_Person_SelectList]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fn_Person_SelectList]
+GO
+
+
+
+--##SUMMARY Selects list of employees for PersonList form
+
+--##REMARKS Author: Zurin M.
+--##REMARKS Update date: 19.01.2010
+
+--##RETURNS Doesn't use
+
+/*
+--Example of a call of procedure:
+
+SELECT * FROM fn_Person_SelectList('en')
+*/
+
+
+CREATE    FUNCTION fn_Person_SelectList(
+	@LangID AS NVARCHAR(50) --##PARAM @LangID - language ID
+)
+RETURNS TABLE 
+AS
+RETURN
+
+SELECT		tlbPerson.idfPerson AS idfEmployee, 
+			tlbPerson.strFirstName,
+			tlbPerson.strSecondName,
+			tlbPerson.strFamilyName,
+			Organization.[Name] AS Organization,
+			tlbPerson.idfInstitution,
+			Position.[Name] AS strRankName
+
+FROM	tlbPerson
+INNER JOIN	tlbEmployee
+	ON		tlbEmployee.idfEmployee = tlbPerson.idfPerson
+			AND tlbEmployee.intRowStatus = 0		
+LEFT JOIN fnReference(@LangID, 19000073 /*rftPosition*/) Position	
+	ON		tlbPerson.idfsStaffPosition = Position.idfsReference
+LEFT JOIN	fnInstitution(@LangID) AS Organization
+	ON		Organization.idfOffice = tlbPerson.idfInstitution
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

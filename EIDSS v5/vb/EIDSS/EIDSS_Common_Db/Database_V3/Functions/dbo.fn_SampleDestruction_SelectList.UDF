@@ -1,0 +1,66 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fn_SampleDestruction_SelectList]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[fn_SampleDestruction_SelectList]
+GO
+
+CREATE FUNCTION [dbo].[fn_SampleDestruction_SelectList]
+(	
+	@LangID nvarchar(20)
+)
+RETURNS TABLE 
+AS
+RETURN 
+(
+	select
+				tlbContainer.idfContainer,
+				tlbContainer.strBarcode,
+				tlbContainer.idfsContainerStatus,
+				ST.Name as SpecimenType,
+				CS.Name as ContainerStatus
+	from		tlbContainer
+	inner join	tlbMaterial
+	on			tlbContainer.idfMaterial=tlbMaterial.idfMaterial and
+				tlbContainer.intRowStatus=0 and
+				tlbMaterial.intRowStatus=0
+	left join	fnReference(@LangID,19000087) ST --rftSpecimenType
+	on			ST.idfsReference=tlbMaterial.idfsSpecimenType
+	left join	fnReference(@LangID,19000015) CS--rftContainerStatus
+	on			CS.idfsReference=tlbContainer.idfsContainerStatus
+	JOIN fnGetPermissionOnSample(NULL, NULL) GetPermission ON
+		GetPermission.idfMaterial = tlbMaterial.idfMaterial
+		AND GetPermission.intPermission = 2
+	where		tlbContainer.idfsContainerStatus in (10015003,10015002) and--cotDestroy,cotDelete
+				tlbContainer.idfsSite=dbo.fnSiteID()
+/*
+	SELECT 
+		Activity.idfActivity,
+		Container.idfContainer,
+		Container.strBarcode,
+		--Container.idfOffice,
+		Specimen.idfsSpecimen_Type,
+		Container.idfsContainer_Status,
+		ST.Name as SpecimenType,
+		CS.Name as ContainerStatus
+		--Office_For_Activity.idfOffice,
+		--Department.Name as DepartmentName
+	FROM 
+		Activity INNER JOIN
+		Container_Participation ON Activity.idfActivity=Container_Participation.idfActivity INNER JOIN
+		Container ON Container.idfContainer=Container_Participation.idfContainer INNER JOIN
+		Specimen ON Container.idfMaterial=Specimen.idfMaterial LEFT OUTER JOIN
+		--Office_For_Activity ON Office_For_Activity.idfActivity=Activity.idfActivity AND idfsOffice_For_Activity_Type='oatToDepartment' AND Office_For_Activity.intRowStatus=0  LEFT OUTER JOIN
+		fnReference(@LangID,'rftSpecimenType') ST ON ST.idfsReference=Specimen.idfsSpecimen_Type LEFT OUTER JOIN
+		--fnDepartment(@LangID) Department on Department.idfDepartment=Office_For_Activity.idfOffice
+		fnReference(@LangID,'rftContainerStatus') CS ON CS.idfsReference=Container.idfsContainer_Status
+	WHERE
+		Activity.idfsActivity_Type='actDestruction' AND
+		Activity.idfsActivity_Status='acsUndefined' AND
+		Activity.intRowStatus=0	AND
+		Container.idfsContainer_Status in ('cotDestroy','cotDelete')
+*/
+)
+GO

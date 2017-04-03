@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="CountryLookup"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="spCountry_SelectLookup" type="lookuplist" cache="true"/>
+    </storage>
+
+    <tables>
+        <table name="CountryLookup" tostring="c => c.strCountryName" lookupcachename="Country">
+        </table>
+    </tables>
+
+</object>
+

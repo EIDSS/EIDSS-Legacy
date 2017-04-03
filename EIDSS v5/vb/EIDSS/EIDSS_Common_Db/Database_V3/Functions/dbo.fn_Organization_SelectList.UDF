@@ -1,0 +1,74 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fn_Organization_SelectList]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fn_Organization_SelectList]
+GO
+
+
+--##SUMMARY Selects list of organizations for OrganizationList form
+
+--##REMARKS Author: Zurin M.
+--##REMARKS Create date: 21.11.2009
+
+--##RETURNS Doesn't use
+
+/*
+--Example of a call of procedure:
+
+SELECT * FROM fn_Organization_SelectList('en')
+*/
+
+
+
+
+
+
+CREATE    Function fn_Organization_SelectList(
+	@LangID as nvarchar(50) --##PARAM @LangID - language ID
+)
+returns table 
+as
+return
+select	
+			Organization.idfOffice as idfInstitution,
+			Organization.[Name],
+			Organization.Abbreviation,
+			dbo.fnCreateAddressString	(
+					@LangID,
+					Address.Country,
+					Address.Region,
+					Address.Rayon,
+					Address.PostalCode,
+					Address.SettlementType,
+					Address.Settlement,
+					Address.Street,
+					Address.House,
+					Address.Building,
+					Address.Appartment,
+					Address.ResidentType
+										) as [Address]
+
+from		dbo.fnInstitution(@LangID) Organization
+left join	dbo.fnAddressAsRow(@LangID) [Address]
+on			Address.idfGeoLocation = Organization.idfLocation
+
+
+
+
+
+
+
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

@@ -1,0 +1,34 @@
+﻿@model List<BaseReference>
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {                                        
+        <table>    
+            <tr>
+                <td class="medium">
+                    @Translator.GetMessageString("titleChangeDiagnosis") 
+                </td>                                          
+            </tr>
+            <tr>
+                <td>
+                    @(Html.Telerik().ComboBox()
+                        .Name("ChangeDiagnosisReason")
+                        .BindTo(new SelectList(Model, "idfsBaseReference", "name"))
+                    )
+                </td>                
+            </tr>                    
+        </table>           
+        <div class="popupBottomButtonPanel">    
+            <input type="button" class="popupButton" onclick="CancelChangeDiagnosis('@ViewBag.CbFinalDiagnosisId', '@ViewBag.PreviousDiagnosis');" value="@Translator.GetMessageString("Cancel")"/> 
+            <input type="button" class="popupButton" onclick="onChangeDiagnosisReasonChange('@ViewBag.HumanCaseId', '@ViewBag.NewDiagnosis');" value="@Translator.GetMessageString("Ok")"/>                                                      
+        </div>                          
+    }
+</div>

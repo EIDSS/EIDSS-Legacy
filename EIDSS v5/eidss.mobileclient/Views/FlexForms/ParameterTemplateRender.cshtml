@@ -1,0 +1,100 @@
+﻿@model FlexNode
+           
+@using bv.common.Core
+@using eidss.model.Enums;
+@using eidss.model.Schema;
+@using eidss.model.Model.FlexibleForms.Helpers;
+@using eidss.model.Model.FlexibleForms.FlexNodes;
+@using eidss.mobileclient.Utils;
+
+<table>
+    <tr>        
+        @{ 
+            var parameterTemplate = Model.GetParameterTemplate();
+            var parameterCaption = Model.UseFullPath ? Model.GetFullPathForNode(true) : parameterTemplate.NationalName;
+        }
+        <td>@parameterCaption</td>
+    </tr>
+    <tr>
+        <td>               
+        @{           
+            var htmlAttributes = new Dictionary<string, object> { { "class", "control" } };
+            var activityParameter = Model.GetParameterValue();
+            var idObservation = Model.FFModel.CurrentObservation.HasValue ? Model.FFModel.CurrentObservation.Value : 0;
+            if (activityParameter == null)
+            {
+                //создаём новый АП, чтобы сформировать ключ
+                activityParameter = Model.ActivityParameters.SetActivityParameterValue(Model.FFModel.CurrentTemplate, idObservation, parameterTemplate.idfsParameter, DBNull.Value);
+                activityParameter.varValue = null;
+            }
+            var idRow = activityParameter.idfRow.HasValue ? activityParameter.idfRow.Value : 0;
+            var controlName = HelperFunctions.GetParameterKey(idObservation, parameterTemplate.idfsParameter, idRow);
+            var isReadOnly = Model.FFModel.ReadOnly;
+            if (isReadOnly)
+            {
+                htmlAttributes.Add("readonly", "readonly");
+                htmlAttributes.Add("disabled", "disabled");
+            }
+        }
+               
+            @switch (parameterTemplate.Editor)
+            {
+                case FFParameterEditors.TextBox:
+                    @(Html.TextBox(controlName, ActivityParameter.ToString(activityParameter), htmlAttributes))                    
+                    break;
+                case FFParameterEditors.ComboBox:
+                    int index = 0;
+                    var idValue = ActivityParameter.ToLong(activityParameter);
+                    var selected = parameterTemplate.SelectList.Where(c => c.idfsValue == idValue).FirstOrDefault();
+                    if (selected != null)
+                    {
+                        for (int i = 0; i < parameterTemplate.SelectList.Count; i++)
+                        {
+                            if (parameterTemplate.SelectList[i].strValueCaption == selected.strValueCaption)
+                            {
+                                index = i;
+                                break;
+                            }
+                        }
+                    }
+                    var cbItems = new List<SelectListItem>();
+                    cbItems.AddRange(parameterTemplate.SelectList.Select(t =>
+                        new SelectListItem
+                        {
+                            Value = t.idfsValue.Value.ToString(),
+                            Text = t.strValueCaption
+                        }).ToList());
+                    if (parameterTemplate.SelectList.Count > 0) 
+                    {
+                        cbItems[index].Selected = true;                   
+                    }
+            
+                    @(Html.BvSimpleDropDownList(controlName, cbItems, false, null, isReadOnly))                                                           
+                    break;
+                case FFParameterEditors.CheckBox:
+                    @(Html.CheckBox(controlName, ActivityParameter.ToBool(activityParameter), htmlAttributes))      
+                    break;
+                case FFParameterEditors.Date:
+                    var date = (!Utils.IsEmpty(activityParameter.varValue) && !activityParameter.varValue.Equals(DateTime.MinValue)) ?
+                        (DateTime?)ActivityParameter.ToDate(activityParameter): null;                      
+                    @(Html.BvSimpleDateBox(controlName, date))             
+                break;
+                case FFParameterEditors.DateTime:
+                var dateTime = activityParameter.varValue != null && !activityParameter.varValue.Equals(DateTime.MinValue) ?
+                        (DateTime?)ActivityParameter.ToDateTime(activityParameter) : null;  
+                    @(Html.BvSimpleDateBox(controlName, dateTime))                  
+                break;
+                case FFParameterEditors.Memo:
+                    @(Html.TextArea(controlName, ActivityParameter.ToString(activityParameter), htmlAttributes))                   
+                    break;
+                case FFParameterEditors.UpDown:
+                    @(Html.BvSimpleNumeric(controlName, ActivityParameter.ToInt(activityParameter)))                                      
+                break;
+                default:
+                    //это крайне маловероятно, но всё же
+                    @(Html.TextBox(controlName, ActivityParameter.ToString(activityParameter), htmlAttributes))                   
+                    break;
+            }
+        </td>
+    </tr>    
+</table>

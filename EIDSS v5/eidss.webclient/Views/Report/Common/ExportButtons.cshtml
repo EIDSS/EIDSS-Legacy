@@ -1,0 +1,41 @@
+﻿@using eidss.webclient.Utils
+@model eidss.model.Reports.Common.BaseModel
+
+<table id="ExportButtonsTable">
+    <tr>        
+        <td  colspan="3">      
+            &nbsp;
+        </td>
+    </tr>
+    <tr>        
+        <td class="sectionName" colspan="3">      
+            @Translator.GetMessageString("titleExport")  
+        </td>
+    </tr>
+    <tr>
+        <td class="medium">
+            @Html.LabelFor(m => m.ExportFormat)
+        </td>
+        <td class="large">
+            @{
+                @(Html.Telerik().ComboBox().Name("ExportFormat")
+                      .BindTo(Model.SupportedExportFormats.ConvertToSelectListItem())
+                      .HtmlAttributes(new {@class = "requiredField"})
+                      )
+            }
+        </td>
+        <td>
+            <button id="btOpen" name="btOpen" type="button" onclick=" paperForm.OpenInNewWindow('@ViewBag.GetReportActionName') ">
+                @Translator.GetMessageString("Open")
+            </button> 
+            <button id="btSave" name="btSave" type="button" onclick=" paperForm.ShowSaveDialog('@ViewBag.GetReportActionName') ">
+                @Translator.GetMessageString("Save")
+            </button>  
+        </td>
+    </tr>
+    <tr>        
+        <td  colspan="3">      
+            &nbsp;
+        </td>
+    </tr>
+</table>

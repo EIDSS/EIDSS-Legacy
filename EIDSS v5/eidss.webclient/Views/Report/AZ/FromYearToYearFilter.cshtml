@@ -1,0 +1,48 @@
+﻿
+@model eidss.model.Reports.AZ.FromYearToYearModel
+
+<table id="FromYearToYearTable" >
+    <tr>
+        <td class="medium">
+            @Html.LabelFor(m => m.Year1)
+        </td>
+        <td class="large">
+                    <div class='tdContainer'>
+                @{
+                    @(Html.Telerik().NumericTextBoxFor(m => m.Year2)
+                          .Name("YearModel.Year2")
+                          .Value(Model.Year2)
+                          .DecimalDigits(0)
+                          .NumberGroupSeparator("")
+                          .MinValue(2000)
+                          .MaxValue(2040)
+                          .HtmlAttributes(new {@class = "requiredField"})
+                          .ClientEvents(c => c.OnChange("paperForm.OnEndYearChanged"))
+                          )
+                }
+            </div>
+
+        </td>
+        <td class="medium">
+            @Html.LabelFor(m => m.Year2)
+        </td>
+        <td class="large">
+                        <div class='tdContainer'>
+                @{
+                    @(Html.Telerik().NumericTextBoxFor(m => m.Year1)
+                          .Name("YearModel.Year1")
+                          .Value(Model.Year1)
+                          .DecimalDigits(0)
+                          .NumberGroupSeparator("")
+                          .MinValue(2000)
+                          .MaxValue(2040)
+                          .HtmlAttributes(new {@class = "requiredField"})
+                          .ClientEvents(c => c.OnChange("paperForm.OnStartYearChanged"))
+                              
+                          )
+                }
+            </div>
+        </td>
+        <td ></td>
+    </tr>
+</table>

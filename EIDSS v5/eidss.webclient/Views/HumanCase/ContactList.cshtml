@@ -1,0 +1,9 @@
+﻿@model eidss.model.Schema.HumanCase
+           
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+@using eidss.webclient.Areas.ContactedPerson;
+
+<div class="smallTabPanelContent">                                           
+    @Html.HumanContactedPerson(Model.idfCase, Model.ObjectIdent + "ContactedPerson", Model.ContactedPerson, Model.IsReadOnly("ContactedPerson") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit))          
+</div>

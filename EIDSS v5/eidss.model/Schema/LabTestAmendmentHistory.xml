@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="LabTestAmendment"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spLabTestAmendmentHistory_SelectDetail"  type="detaillist" />
+  </storage>
+  <tables>
+    <table name="LabTestAmendment">
+      <grid>
+        <item name="idfTestAmendmentHistory" key="true" visible="false"/>
+        <item name="datAmendmentDate" />
+        <item name="strName" type="string"  />
+        <item name="strOffice" type="string"  />
+        <!--<item name="strOldTestResult" type="string" />-->
+        <item name="strNewTestResult" type="string"  />
+        <!--<item name="strOldNote" type="string"  />-->
+        <item name="strReason" type="string"  />
+      </grid>
+      <labels>
+        <item name="strName" labelId="strAmendByPerson"/>
+        <item name="strOffice" labelId="strOfficeAmendedBy"/>
+     </labels>
+      <keys>
+        <key name="idfTestAmendmentHistory"/>
+      </keys>
+      <readonly>
+        <fields name="*" predicate="c => true" />
+      </readonly>
+      <lookups>
+        <lookup name="OldTestResult" table="BaseReference" section="rftTestResult" source="idfsOldTestResult" target="idfsBaseReference" />
+        <lookup name="NewTestResult" table="BaseReference" section="rftTestResult" source="idfsNewTestResult" target="idfsBaseReference" />
+      </lookups>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <remove type="Edit"/>
+          <remove type="Delete"/>
+          <remove type="Cancel"/>
+        </standard>
+      </actions>
+    </table>
+  </tables>
+
+</object>

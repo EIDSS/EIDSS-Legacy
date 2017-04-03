@@ -1,0 +1,45 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fn_SecurityEventLog_SelectList]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fn_SecurityEventLog_SelectList]
+GO
+
+CREATE   FUNCTION dbo.fn_SecurityEventLog_SelectList(@LangID as nvarchar(50))
+returns table 
+as
+return
+Select 
+	  [idfSecurityAudit]
+      ,[idfsAction]
+      ,Act.strDefault As [strActionDefaultName]
+      ,Act.LongName As [strActionNationalName]
+      ,[idfsResult]
+      ,Res.strDefault As [strResultDefaultName]
+      ,Res.LongName As [strResultNationalName]
+      ,[idfsProcessType]
+      ,ProcessType.strDefault As [strProcessTypeDefaultName]
+      ,ProcessType.LongName As [strProcessTypeNationalName]
+      ,[idfAffectedObjectType]
+      ,[idfObjectID]
+      ,SA.[idfUserID]
+      ,UT.strAccountName
+      ,[idfDataAuditEvent]
+      ,[datActionDate]
+      ,[strErrorText]
+      ,[strProcessID]
+      ,[strDescription]
+  From [dbo].[tstSecurityAudit] SA
+  Inner Join dbo.fnReference(@LangID, 19000112) Act On SA.idfsAction = Act.idfsReference
+  Inner Join dbo.fnReference(@LangID, 19000113) Res On SA.idfsResult = Res.idfsReference
+  Inner Join dbo.fnReference(@LangID, 19000114) ProcessType On SA.idfsProcessType = ProcessType.idfsReference
+  Left Outer Join dbo.tstUserTable UT On SA.idfUserID = UT.idfUserID
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

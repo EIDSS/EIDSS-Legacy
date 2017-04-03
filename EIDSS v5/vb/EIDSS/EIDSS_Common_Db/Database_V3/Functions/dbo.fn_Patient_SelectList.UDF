@@ -1,0 +1,71 @@
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fn_Patient_SelectList]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fn_Patient_SelectList]
+GO
+
+--##SUMMARY Returns the list of patients, contact persons and farm owners.
+--##SUMMARY Used by PatientList form.
+
+--##REMARKS Author: Mirnaya O.
+--##REMARKS Create date: 25.01.2010
+
+--##RETURNS Function returns the list of patients, contact persons and farm owners
+
+
+/*
+--Example of a call of function:
+select * from fn_Patient_SelectList ('en')
+
+*/
+
+
+create	function	fn_Patient_SelectList
+(
+	@LangID as nvarchar(50) --##PARAM @LangID  - language ID
+)
+returns table
+as
+return
+select			tlbHuman.idfHuman,
+				tlbHuman.strFirstName,
+				tlbHuman.strSecondName,
+				tlbHuman.strLastName,
+				tlbHuman.datDateofBirth,
+				tlbHuman.idfCurrentResidenceAddress,
+				dbo.fnCreateAddressString	
+				(	@LangID,
+					[Address].Country,
+					[Address].Region,
+					[Address].Rayon,
+					[Address].PostalCode,
+					[Address].SettlementType,
+					[Address].Settlement,
+					[Address].Street,
+					[Address].House,
+					[Address].Building,
+					[Address].Appartment,
+					[Address].ResidentType
+				) as AddressName
+
+from		tlbHuman
+
+inner join	tlbParty
+on			tlbParty.idfParty = tlbHuman.idfHuman
+			and tlbParty.idfRootParty is null
+			and tlbParty.idfCase is null
+			and tlbParty.intRowStatus = 0
+
+left join	fnAddressAsRow(@LangID) [Address]
+on			[Address].idfGeoLocation = tlbHuman.idfCurrentResidenceAddress
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

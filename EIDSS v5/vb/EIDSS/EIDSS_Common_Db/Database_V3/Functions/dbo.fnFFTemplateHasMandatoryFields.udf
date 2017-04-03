@@ -1,0 +1,32 @@
+set ANSI_NULLS ON
+set QUOTED_IDENTIFIER ON
+GO
+
+IF  EXISTS (SELECT TOP 1 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].fnFFTemplateHasMandatoryFields')) Drop Function [dbo].fnFFTemplateHasMandatoryFields
+GO
+
+-- =============================================
+-- Author:		Leonov E.N.
+-- Create date:
+-- Description:
+-- =============================================
+Create Function dbo.fnFFTemplateHasMandatoryFields
+(
+	@idfsFormTemplate BigInt	
+)
+RETURNS @ResultTable Table
+(
+		[Result] Bit
+)
+AS
+BEGIN
+	
+	Declare @result Bit
+	Set @result = 0
+	
+	If Exists(Select Top 1 1 From dbo.ffParameterForTemplate Where idfsEditMode = 10068003 And idfsFormTemplate = @idfsFormTemplate) Set @result = 1
+		
+	Insert into @ResultTable([Result]) Values (@result);	
+	Return;
+End
+Go

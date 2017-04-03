@@ -1,0 +1,76 @@
+﻿@model eidss.model.Schema.AsSessionAction
+@{    
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+<link href="../../../../Content/Styles/PopupWindow.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('form').ajaxForm(function (data) {
+            if (data == 'ok')
+                parent.gridItemAdded('@ViewData["name"]');
+            else
+                ShowEidssErrorNotification(data, function () { });            
+        });
+
+    });
+
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });
+
+</script>
+
+@using eidss.webclient.Utils
+<h2>@Translator.GetMessageString("AddActionWindowTitle")</h2>
+<div class="popupContent">
+@using (Html.BeginForm())
+{              
+    <table>
+        <tr>
+            <td class="medium">
+                @Html.LabelFor(model => model.idfsMonitoringSessionActionType)
+            </td>
+            <td>
+                @(Html.BvCombobox(Model, "MonitoringSessionActionType"))
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.datActionDate)
+            </td>
+            <td>
+                 @(Html.BvDatebox(Model, "datActionDate"))
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.idfPersonEnteredBy)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, "strPersonEnteredBy")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.strComments)
+            </td>
+            <td>
+                @Html.BvTextArea(Model, "strComments")
+            </td>
+        </tr>
+        <tr>
+            <td class="medium">
+                @Html.LabelFor(model => model.idfsMonitoringSessionActionStatus)
+            </td>
+            <td valign="top">
+                @(Html.BvRadioButtonGroup(Model, "MonitoringSessionActionStatus"))
+            </td>
+        </tr>
+    </table>
+    <div class="popupBottomButtonPanel">
+        <input type="button" class="popupButton" onclick="parent.cancelItemAdding();" value='@Translator.GetMessageString("Cancel")' />
+        <input type="submit" class="popupButton" value='@Translator.GetMessageString("Ok")' />
+    </div>  
+}
+</div>

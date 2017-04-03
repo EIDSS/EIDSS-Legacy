@@ -1,0 +1,40 @@
+﻿@model IEnumerable<eidss.model.Schema.BaseReference>
+@using eidss.webclient.Utils
+@*<script language="javascript" src='@Url.Content("~/Scripts/jquery.form.js")' type="text/javascript"></script>*@
+<script src="../../../../Scripts/jquery.form.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.t-window-content form').ajaxForm(function (data) {            
+            parent.samplesSelected(data);
+        });
+    });
+    
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });
+</script>
+
+
+@using (Html.BeginForm())
+{
+    <div class="popupContent" style='height:570px; overflow:auto;' >
+    @foreach (var sampleType in Model)
+    {
+        if ((ViewBag.Samples as long[]).Contains(sampleType.idfsBaseReference))
+        {
+            <input type="checkbox" id="@sampleType.idfsBaseReference" name="SampleType" checked value="@sampleType.idfsBaseReference" />
+        }
+        else
+        {
+            <input type="checkbox" id="@sampleType.idfsBaseReference" name="SampleType" value="@sampleType.idfsBaseReference" />
+        }
+        <label for="@sampleType.idfsBaseReference">@sampleType.name</label><br />
+    }    
+    </div>
+    <br />
+    <div class="popUpBottomButtonPanel">
+        <input type="button" class="popupButton" onclick="parent.cancelSelection();" value="@Translator.GetMessageString("Cancel")" />
+        <input type="submit" class="popupButton" value="@Translator.GetMessageString("Ok")" />
+    </div>
+@*    </form>   *@
+}

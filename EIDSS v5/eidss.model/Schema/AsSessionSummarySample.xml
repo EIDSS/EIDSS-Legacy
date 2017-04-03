@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="AsSessionSummarySample"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spASSessionSummarySamples_SelectDetail" type="detaillist" />
+  </storage>
+
+  <tables>
+    <table name="AsSessionSummarySample">
+      <fields>
+        <calculated name="strSampleType" type="string" lambda='c=>c.SampleType == null ? "" : c.SampleType.name' depends='idfsSampleType'/>
+      </fields>
+      <lookups>
+        <lookup name="SampleType" table="BaseReference" section="rftSpecimenType" source="idfsSampleType" target="idfsBaseReference">
+          <filters>
+            <filter predicate="c => (c.intHACode &amp; (int)HACode.Livestock) != 0"/>
+            <filter predicate="c => c.idfsBaseReference != (long)SampleTypeEnum.Unknown"/>
+          </filters>
+        </lookup>
+      </lookups>
+      <storage>
+        <post name="spASSessionSummarySample_Post"/>
+      </storage>      
+    </table>
+  </tables>
+
+</object>

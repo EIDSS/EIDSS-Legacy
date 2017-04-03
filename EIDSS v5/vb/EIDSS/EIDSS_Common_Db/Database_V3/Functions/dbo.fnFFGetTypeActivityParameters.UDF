@@ -1,0 +1,52 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF  EXISTS (SELECT TOP 1 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fnFFGetTypeActivityParameters]')) Drop Function [dbo].fnFFGetTypeActivityParameters
+GO
+
+-- =============================================
+-- Author:		Leonov E.N.
+-- Create date: 
+-- Description:
+-- =============================================
+Create Function dbo.fnFFGetTypeActivityParameters
+(
+	@idfsParameter Bigint
+)
+Returns Bigint
+Begin
+	Declare @Result Bigint
+	
+	Declare @idfsSection Bigint, @blnGrid Bit
+	
+	Select @idfsSection = P.[idfsSection], @blnGrid = [blnGrid] From dbo.ffParameter P
+		Left Join dbo.ffSection S On P.idfsSection = S.idfsSection And (S.intRowStatus = 0)
+		Where idfsParameter = @idfsParameter
+					And (P.intRowStatus = 0)					
+	
+	 Select @Result = Case
+		When @idfsSection Is Null 
+			Then 0
+		When @idfsSection In
+			(
+				71090000000
+				,71460000000
+				,71300000000
+				,71190000000
+				,71260000000
+			)									
+			Then @idfsSection
+		When @blnGrid = 0 Then 0
+		When @blnGrid = 1 Then 1
+	End;
+	
+	Return @Result
+END
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

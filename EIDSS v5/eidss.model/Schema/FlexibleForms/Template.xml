@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="Template" 
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+    <storage>
+        <get name="spFFGetTemplates" type="detailone" cache="true" />
+    </storage>
+    <tables>
+        <table name="Template">
+            <relations>
+                <relation name="FormType" table="FormType" internal="false" type="link" source="idfsFormType" target="idfsFormType" />
+                <relation name="SectionTemplates" table="SectionTemplate" internal="false" type="child" source="idfsFormTemplate" target="idfsFormTemplate" paramsonly="true">
+                    <params>
+                        <param name="idfsSection" type="Int64?" lambda="c => null" />
+                        <param name="idfsFormTemplate" type="Int64?" lambda="c => c.idfsFormTemplate" />
+                    </params>
+                </relation>
+                <relation name="ParameterTemplates" table="ParameterTemplate" internal="false" type="child" source="idfsFormTemplate" target="idfsFormTemplate" paramsonly="true">
+                    <params>
+                        <param name="idfsParameter" type="Int64?" lambda="c => null" />
+                        <param name="idfsFormTemplate" type="Int64?" lambda="c => c.idfsFormTemplate" />
+                    </params>
+                </relation>
+                <relation name="Labels" table="Label" internal="false" type="child" source="idfsFormTemplate" target="idfsFormTemplate" paramsonly="true">
+                    <params>
+                        <param name="idfsFormTemplate" type="Int64?" lambda="c => c.idfsFormTemplate" />
+                    </params>
+                </relation>
+                <relation name="Lines" table="Line" internal="false" type="child" source="idfsFormTemplate" target="idfsFormTemplate" paramsonly="true">
+                  <params>
+                    <param name="idfsFormTemplate" type="Int64?" lambda="c => c.idfsFormTemplate" />
+                  </params>
+                </relation>
+            </relations>
+        </table>
+    </tables>
+</object>

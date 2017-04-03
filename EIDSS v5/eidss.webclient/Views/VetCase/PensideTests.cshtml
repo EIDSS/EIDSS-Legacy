@@ -1,0 +1,17 @@
+﻿@model eidss.model.Schema.VetCase
+           
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+@using eidss.webclient.Areas.Sample;
+
+
+<div class="yScrollable mediumTabPanelContent">
+    <table class="bordered">
+        <tr>    
+            <td class="sectionName">
+                @Translator.GetMessageString("tabTitleVetCasePensideTests")
+            </td>
+        </tr>  
+    </table> 
+    @Html.PensideTestsGrid(Model.idfCase, Model.ObjectIdent + "PensideTests", Model.PensideTests, Model.IsReadOnly("PensideTests") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit), Model._HACode.HasValue ? Model._HACode.Value : 0)                  
+</div>

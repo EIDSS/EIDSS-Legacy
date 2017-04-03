@@ -1,0 +1,61 @@
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnHumanCaseCount]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnHumanCaseCount]
+GO
+
+--##SUMMARY Returns the count of human cases entered at the specified site.
+
+--##REMARKS Author: Mirnaya O.
+--##REMARKS Create date: 28.01.2010
+
+--##RETURNS Function returns the count of human cases entered at the specified site.
+
+
+/*
+--Example of a call of function:
+declare @idfsSite	bigint
+select dbo.fnHumanCaseCount (@idfsSite)
+
+*/
+
+
+create	function	fnHumanCaseCount
+(
+	@idfsSite as bigint --##PARAM @idfsSite Site Id
+)
+returns int
+as
+begin
+
+declare @res int
+set @res = 0
+
+select			@res = count(*)
+from			tlbHumanCase
+inner join		tlbCase
+on				tlbCase.idfCase = tlbHumanCase.idfHumanCase
+				and tlbCase.intRowStatus = 0
+inner join		(
+	tlbParty
+	inner join	tlbHuman
+	on			tlbHuman.idfHuman = tlbParty.idfParty
+				)
+on				tlbParty.idfCase = tlbHumanCase.idfHumanCase
+				and tlbParty.idfsPartyType = 10072006			-- Human
+				and tlbParty.intRowStatus = 0
+where			tlbCase.idfsSite = @idfsSite
+
+return @res
+end
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

@@ -1,0 +1,46 @@
+﻿@model eidss.model.Schema.OrganizationListItem.Accessor
+@{
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+
+<script src='@Url.Content("~/Scripts/Common/SearchPicker.js")' type="text/javascript"></script>
+<script src='@Url.Content("~/Scripts/Search/Panel.js")' type="text/javascript"></script>
+
+<div class="popupContent searchPopupContent">    
+    <input type="hidden" id="grid_selecteditem" />    
+    <div class="fillAll">
+        <div class="collapsePanel collapsePanelRight">                                                                      
+            <input type="button" id="btHideSearch" value="<<" onclick="onHideSearchPanel();" class="popupButton lfButton" />
+            <input type="button" id="btShowSearch" value=">>" onclick="onShowSearchPanel();" class="popupButton lfButton invisible" />                
+        </div>
+        <div class="searchContentTop">
+            <!--div class="titleNumber">A06</div-->
+            <input type="button" value="@Translator.GetMessageString("Select")" class="popupButton" 
+                    onclick="onOrganizationSearchPickerSelect('@ViewBag.ObjectId', '@ViewBag.IdfsOrganizationPropertyName', '@ViewBag.strOrganizationPropertyName', 
+                '@ViewBag.idfsEmployeePropertyName', '@ViewBag.strEmployeePropertyName', '@ViewBag.ShowInInternalWindow');" />                               
+        </div>
+        <div class="searchContentLeft">
+            <div id="searchpanel" class="customSearchPanel popupSearchPanel">
+                @using (Html.BeginForm())
+                { 
+                    @Html.SearchPanel(Model, (bv.model.Model.Core.FilterParams)ViewBag.Filter, (bv.model.Model.Core.IObject)ViewBag.InitObject)                       
+                    <input type="button" value="@Translator.GetMessageString("Search")" onclick="onOrganizationPickerSearchAndOrder('@ViewBag.ShowInInternalWindow');"
+                        class="popupButton" />
+                    <input type="button" value="@Translator.GetMessageString("Clear")" onclick="ClearSearch(true);" />                                              
+                }
+            </div>
+        </div>
+        <div class="mainSearchContent searchLeftIndent">
+            @(Html.BvSelectGrid<OrganizationListItem.OrganizationListItemGridModel, OrganizationListItem.OrganizationListItemGridModelList>(
+                Session.SessionID,
+                (OrganizationListItem.OrganizationListItemGridModelList)ViewBag.GridItems,
+                eidss.webclient.Configurations.GridDisplayRowsSettings.ORGANIZATION_LIST)
+                .Sortable(sorting => sorting.OrderBy(ordering => ordering.Add("name"))))   
+        </div>
+        <div class="searchContentBottom">
+            <input type="button" onclick="CloseOrganizationPicker('@ViewBag.ShowInInternalWindow');" value="@Translator.GetMessageString("Close")" class="popupButton" />
+        </div>
+    </div>                                  
+</div>

@@ -1,0 +1,92 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnGeoLocationAsRow]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnGeoLocationAsRow]
+GO
+--##SUMMARY Selects all geolocation recodrs converting geolocation fields into the text fields in the passed language.
+--##SUMMARY Can be used in list forms for displaying geolocation information in one text field.
+--##SUMMARY Standard scenario of this function using is joining with main list object on idfGeolocation field
+--##SUMMARY and futher output of returned geolocation string parts using fnCreateGeolocationString function
+
+--##SUMMARY All text parameters should be in the language defined by @LangID.
+
+--##REMARKS Author: Zurin M.
+--##REMARKS Create date: 11.12.2009
+
+--##RETURNS Doesn't use
+
+
+/*
+--Example of a call of procedure:
+
+select * from fnGeoLocationAsRow ('en')
+
+*/
+CREATE        function fnGeoLocationAsRow(
+@LangID nvarchar(50) --##PARAM @LangID  - language ID
+)
+returns table
+as
+return(
+
+select		tlbGeoLocation.idfGeoLocation,
+			tlbGeoLocation.idfsGeoLocationType,
+
+			IsNull(Country.[Name], '') as Country,
+			IsNull(Region.[Name], '') as Region,
+			IsNull(Rayon.[Name], '') as Rayon,
+			IsNull(SettlementType.[Name], '') as SettlementType,
+			IsNull(Settlement.[Name], '') as Settlement,
+			IsNull(tlbGeoLocation.dblLatitude, '') as Latitude,
+			IsNull(tlbGeoLocation.dblLongitude, '') as Longitude,
+			IsNull(tlbGeoLocation.strDescription, '') as Description,
+			IsNull(tlbGeoLocation.strPostCode, '') as PostalCode,
+			IsNull(tlbGeoLocation.strStreetName, '') as Street,
+			IsNull(tlbGeoLocation.strHouse, '') as House,
+			IsNull(tlbGeoLocation.strBuilding, '') as Building,
+			IsNull(tlbGeoLocation.strApartment, '') as Appartment,
+			IsNull(ResidentType.[Name], '') as ResidentType,
+			IsNull(tlbGeoLocation.dblAlignment, '') as Alignment,
+			IsNull(tlbGeoLocation.dblDistance, '') as Distance,
+			IsNull(GroundType.[Name], '') as GroundType
+
+
+from		(
+		tlbGeoLocation 
+
+		left join	fnGisReference(@LangID,19000001 ) Country --'rftCountry'
+		on			Country.idfsReference = tlbGeoLocation.idfsCountry
+		left join	fnGisReference(@LangID, 19000003) Region --'rftRegion'
+		on			Region.idfsReference = tlbGeoLocation.idfsRegion
+		left join	fnGisReference(@LangID, 19000002) Rayon --'rftRayon'
+		on			Rayon.idfsReference = tlbGeoLocation.idfsRayon
+		left join	fnGisReference(@LangID, 19000004) Settlement --'rftSettlement'
+		on			Settlement.idfsReference = tlbGeoLocation.idfsSettlement
+
+		left join	fnReference(@LangID, 19000078) ResidentType --'rftResidentType'
+		on			ResidentType.idfsReference = tlbGeoLocation.idfsResidentType
+
+		left join	fnReference(@LangID, 19000038) GroundType --'rftGroundType'
+		on			GroundType.idfsReference = tlbGeoLocation.idfsGroundType
+	)
+	left join	(
+		gisSettlement 
+		inner join fnGisReference(@LangID, 19000005) SettlementType --'rftSettlementType'
+		on			SettlementType.idfsReference = gisSettlement.idfsSettlementType
+	)on			gisSettlement.idfsSettlement = tlbGeoLocation.idfsSettlement
+			and (gisSettlement.intRowStatus = 0)
+
+where		tlbGeoLocation.intRowStatus = 0
+
+)
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

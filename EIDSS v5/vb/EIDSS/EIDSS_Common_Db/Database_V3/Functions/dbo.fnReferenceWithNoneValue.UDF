@@ -1,0 +1,57 @@
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnReferenceWithNoneValue]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnReferenceWithNoneValue]
+GO
+
+
+-- select * from fnReferenceWithNoneValue('ru',19000040)
+
+CREATE          function fnReferenceWithNoneValue(@LangID  nvarchar(50), @type bigint)
+returns table
+as
+return(
+
+select
+			b.idfsBaseReference as idfsReference, 
+			IsNull(c.strTextString, b.strDefault) as [Name],
+			b.idfsReferenceType, 
+			b.intHACode, 
+			b.strDefault, 
+			IsNull(c.strTextString, b.strDefault) as LongName,
+			b.intOrder
+
+from		dbo.trtBaseReference as b with(index=IX_trtBaseReference_RR)
+left join	dbo.trtStringNameTranslation as c with(index=IX_trtStringNameTranslation_BL)
+on			b.idfsBaseReference = c.idfsBaseReference and c.idfsLanguage = dbo.fnGetLanguageCode(@LangID)
+
+where		b.idfsReferenceType = @type and b.intRowStatus = 0 
+
+union
+
+select		-1 as idfsReference,
+			IsNull(snt_none.strTextString, br_none.strDefault) as [Name],
+			@type as idfsReferenceType, 
+			null as intHACode, 
+			br_none.strDefault, 
+			IsNull(snt_none.strTextString, br_none.strDefault) as LongName,
+			0 as intOrder
+
+from		dbo.trtBaseReference as br_none with(index=IX_trtBaseReference_RR)
+left join	dbo.trtStringNameTranslation as snt_none with(index=IX_trtStringNameTranslation_BL)
+on			br_none.idfsBaseReference = snt_none.idfsBaseReference and snt_none.idfsLanguage = dbo.fnGetLanguageCode(@LangID)
+where		br_None.idfsBaseReference = 10044002			-- (none)
+			and br_None.idfsReferenceType = 19000044	-- rftInformationString
+
+)
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

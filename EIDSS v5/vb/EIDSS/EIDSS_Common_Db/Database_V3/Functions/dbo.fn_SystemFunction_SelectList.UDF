@@ -1,0 +1,88 @@
+/****** Object:  UserDefinedFunction [dbo].[fn_SystemFunction_SelectList]    Script Date: 04/18/2008 12:52:11 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fn_SystemFunction_SelectList]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[fn_SystemFunction_SelectList]
+GO
+
+CREATE FUNCTION [dbo].[fn_SystemFunction_SelectList] 
+(	
+	-- Add the parameters for the function here
+	@LangID nvarchar(100),
+	@ModuleName varchar(36)
+)
+RETURNS TABLE 
+AS
+RETURN 
+(
+/*
+select Ref.idfsReference,Ref.Name, SF.idfsObjecttype from fnReference(@LangID,'rftSystemFunction') Ref INNER JOIN 
+system_function SF ON Ref.idfsReference=SF.idfsSystem_Function
+*/
+SELECT 
+		SF.idfsSystemFunction,
+		SF.idfsObjectType,
+		SFName.Name as SystemFunction
+--isnull(Module.Name+', '+Module1.Name,isnull(Module.Name,'')+isnull(Module1.Name,'')) as Modules
+FROM		trtSystemFunction SF 
+LEFT JOIN	fnReference(@LangID,19000094) SFName
+ON			SFName.idfsReference=SF.idfsSystemFunction
+/*LEFT OUTER JOIN
+BaseReferenceRelation BRR on BRR.idfsParentBaseReference=SF.idfsSystem_Function and BRR.idfsRelatedBaseReference='smdEIDSS' and BRR.intRowStatus <>1 LEFT OUTER JOIN
+BaseReferenceRelation BRR1 on BRR1.idfsParentBaseReference=SF.idfsSystem_Function and BRR1.idfsRelatedBaseReference='smdPACS' and BRR1.intRowStatus <>1 LEFT OUTER JOIN
+fnReference(@LangID,'rftSystemModule') Module on Module.idfsReference=BRR.idfsRelatedBaseReference LEFT OUTER JOIN
+fnReference(@LangID,'rftSystemModule') Module1 on Module1.idfsReference=BRR1.idfsRelatedBaseReference INNER JOIN
+fnReference(@LangID,'rftSystemFunction') SFName on SFName.idfsReference=SF.idfsSystem_Function
+*/
+WHERE SF.intRowStatus=0
+--@ModuleName IS NULL OR Module.idfsReference= @ModuleName OR Module1.idfsReference= @ModuleName
+)
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+/*
+Select * from fn_SystemFunction_SelectList('en',NULL)
+ WHERE idfsSystem_Function  in ('sfnHumanCase',
+'sfnHumanCaseDeduplication',
+'sfnPatient',
+'sfnVetCase',
+'sfnTest',
+'sfnVialDetail',
+'sfnVialDestruction',
+'sfnCanValidateSampleDestruction',
+'sfnVialTransfer',
+'sfnRepositoryScheme',
+'sfnSample',
+'sfnSampleTransfer',
+'sfnReference',
+'sfnAggregateSettings',
+'sfnBarcode',
+'sfnDocumentNumbering',
+'sfnOrganization',
+'sfnPerson',
+'sfnEIDSSSite',
+'sfnStatistic',
+'sfnSystemFunction',
+'sfnEventLog',
+'sfnNotification',
+'sfnNotificationSubscription',
+'sfnFlexibleForm',
+'sfnOutbreak',
+'sfnDataAccess',
+'sfnUserGroup'
+) AND idfsSystem_Function NOT IN (SELECT idfsSystem_Function from fn_SystemFunction_SelectList('en','smdEIDSS'))
+Select * from fn_SystemFunction_SelectList('en','smdPACS')
+Select * from fn_SystemFunction_SelectList('en',NULL)
+
+sfnVialDetail,
+sfnVialDestruction,
+sfnCanValidateSampleDestruction,
+sfnAccessionIn1
+*/

@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="AsSessionSummary"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spASSessionSummary_SelectDetail" type="detaillist" />
+  </storage>
+
+  <tables>
+    <table name="AsSessionSummary">
+      <grid>
+        <item name="idfMonitoringSessionSummary" key="true" visible="false"/>
+        <item name="strFarmCode" type="string"/>
+        <item name="strSpecies"  type="string"/>        
+        <item name="strGender"  type="string"/>
+        <item name="intSampledAnimalsQty" />
+        <item name="strSamples"  type="string"/>
+        <item name="intSamplesQty" />
+        <item name="datCollectionDate"/>
+        <item name="intPositiveAnimalsQty"/>
+        <item name="strDiagnosis"  type="string"/>
+      </grid>
+      <labels>
+        <item name="strSamples" labelId="AsSessionSummary.strSamples"/>
+      </labels>
+      <fields>
+        <calculated name="strGender" type="string" depends="idfsAnimalSex" lambda='c=>c.AnimalSex == null ? "" : c.AnimalSex.name'/>
+        <storage name="ASFarms" type="EditableList&lt;AsSessionFarm&gt;"/>
+        <calculated name='Farm' depends='idfFarm' type='FarmPanel' lambda='c=>c.ASFarms.Count == 0 || c.idfFarm == 0 ? null : c.ASFarms.Single(x=>x.idfFarm == c.idfFarm).Farm'/>
+      </fields>
+      <readonly>
+        <fields name="idfSpecies" predicate="c=>c.Farm == null"/>
+        <fields name="AnimalSex,intSampledAnimalsQty,intSamplesQty,datCollectionDate,intPositiveAnimalsQty" predicate="c=>!c.idfSpecies.HasValue"/>
+        <fields name="Samples" predicate="c=>c.intSampledAnimalsQty.HasValue &amp;&amp; c.intSampledAnimalsQty.Value > 0"/>
+        <fields name="Diagnosis" predicate="c=>c.Samples.Count > 0 &amp;&amp; c.intPositiveAnimalsQty.HasValue &amp;&amp; c.intPositiveAnimalsQty.Value > 0"/>
+      </readonly>
+      <relations>        
+        <relation name="Samples" table="AsSessionSummarySample" internal="false" lazy="true" source="idfMonitoringSessionSummary" target="idfMonitoringSessionSummary" type="child"/>
+        <relation name="Diagnosis" table="AsSessionSummaryDiagnosis" internal="false" lazy="true" source="idfMonitoringSessionSummary" target="idfMonitoringSessionSummary" type="child"/>        
+      </relations>
+      <lookups>
+        <lookup name="AnimalSex" table="BaseReference" section="rftAnimalGenderList" source="idfsAnimalSex" target="idfsBaseReference" />                        
+      </lookups>      
+      <storage>
+        <post name="spASSessionSummary_Post"/>
+      </storage>
+      <postorder>
+        <item name="this"/>
+        <item name="Samples"/>
+        <item name="Diagnosis"/>        
+      </postorder>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfMonitoringSessionSummary" class="GetNewIDExtender"/>
+          <value_extender target="blnNewFarm" value="true"/>
+        </creating>
+        <posting>
+        </posting>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <custom_handler field="idfFarm">
+            <text>
+              if (obj.Farm != null)
+              {
+              obj.idfFarmActual = obj.Farm.idfRootFarm;
+              obj.strFarmCode = obj.Farm.strFarmCode;
+              }
+            </text>
+          </custom_handler>          
+          <lambda_handler target='strFarmCode' type='string' field='Farm' lambda='c=>c.Farm == null ? "" : c.Farm.strFarmCode'/>
+        </fieldhandler>        
+      </handlers>
+      <validators>
+        <post>
+          <required_validator field="idfFarm" target="idfFarm" />
+          <predicate_validator field="intPositiveAnimalsQty" predicate="c=>c.intPositiveAnimalsQty == null || c.intPositiveAnimalsQty &lt;= c.intSamplesQty" message="AsSessionSummary_PositiveGreaterThanSampled"/>
+        </post>
+      </validators>
+      <actions>
+        <action name="CreateFromSession" type="Create">
+          <run>
+            <params>
+              <param name="session" type="AsSession"/>
+            </params>
+            <creating>
+              <value_extender target="idfMonitoringSession" value="session.idfMonitoringSession"/>
+              <value_extender target="ASFarms" value="session.ASFarms"/>
+            </creating>
+          </run>
+        </action>
+      </actions>
+    </table>
+  </tables>
+
+</object>

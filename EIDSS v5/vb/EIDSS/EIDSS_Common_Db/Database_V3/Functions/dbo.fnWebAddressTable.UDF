@@ -1,0 +1,47 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fnWebAddressTable]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[fnWebAddressTable]
+GO
+
+/*
+	select * from fnWebAddressTable('en')
+*/
+
+CREATE FUNCTION dbo.fnWebAddressTable
+(
+	@LangID nvarchar(20)
+)
+RETURNS TABLE 
+AS
+RETURN 
+(
+	select	tlbGeoLocation.idfGeoLocation,
+			
+			tlbGeoLocation.idfsCountry		as [idfsCountry.ID],
+			Country.Name					as [idfsCountry.Name],
+			tlbGeoLocation.idfsRegion		as [idfsRegion.ID],
+			Region.Name						as [idfsRegion.Name],
+			tlbGeoLocation.idfsRayon		as [idfsRayon.ID],
+			Rayon.Name						as [idfsRayon.Name],
+			tlbGeoLocation.idfsSettlement	as[idfsSettlement.ID],
+			Settlement.Name					as[idfsSettlement.Name],
+
+			tlbGeoLocation.strStreetName,
+			tlbGeoLocation.strPostCode
+	from	tlbGeoLocation
+	left join	fnGisReference(@LangID,19000001) Country
+	on			Country.idfsReference=tlbGeoLocation.idfsCountry
+	left join	fnGisReference(@LangID,19000003) Region
+	on			Region.idfsReference=tlbGeoLocation.idfsRegion
+	left join	fnGisReference(@LangID,19000002) Rayon
+	on			Rayon.idfsReference=tlbGeoLocation.idfsRayon
+	left join	fnGisReference(@LangID,19000004) Settlement
+	on			Settlement.idfsReference=tlbGeoLocation.idfsSettlement
+
+	
+)
+GO

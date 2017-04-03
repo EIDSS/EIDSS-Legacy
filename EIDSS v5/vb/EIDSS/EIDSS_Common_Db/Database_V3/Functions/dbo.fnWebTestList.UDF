@@ -1,0 +1,60 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fnWebTestList]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[fnWebTestList]
+GO
+
+/*
+	select * from fnWebTestList('en')
+*/
+
+CREATE FUNCTION dbo.fnWebTestList
+(
+	@LangID nvarchar(200)
+)
+RETURNS TABLE 
+AS
+RETURN 
+(
+	select	
+			Tests.strBarcode,
+			--tlbPerson.*,
+			IsNull(tlbPerson.strFamilyName,'') + 
+			IsNull(' ' + tlbPerson.strFirstName, '') +
+			IsNull(' ' + tlbPerson.strSecondName, '')
+			as PerformedByPerson,
+
+			--Tests.strFieldBarcode,
+
+			Tests.idfsTestType	as [idfsTestType.ID],
+			Tests.TestType		as [idfsTestType.Name],
+
+			Tests.idfsTestForDiseaseType	as [idfsTestForDiseaseType.ID],
+			Tests.TestCategory			as [idfsTestForDiseaseType.Name],
+
+			Tests.idfsDiagnosis			as [idfsDiagnosis.ID],
+			Tests.DiagnosisName			as [idfsDiagnosis.Name],
+			
+			Tests.idfsTestStatus			as [idfsTestStatus.ID],
+			Tests.[Status]				as [idfsTestStatus.Name],
+
+			Tests.idfsTestResult	as [idfsTestResult.ID],
+			Tests.TestResult		as [idfsTestResult.Name],
+
+			Tests.datPerformedDate,
+			Tests.BatchTestCode,
+
+			Tests.idfPerformedByOffice	as [idfPerformedByOffice.ID],
+			Org.Name					as [idfPerformedByOffice.Name],
+			
+			Tests.strCaseID
+	from	fnTestList(@LangID) Tests
+	left join	fnInstitution(@LangID) Org
+	on			Org.idfOffice=Tests.idfPerformedByOffice
+	left join	tlbPerson
+	on			tlbPerson.idfPerson=Tests.idfPerformedByPerson
+)
+GO

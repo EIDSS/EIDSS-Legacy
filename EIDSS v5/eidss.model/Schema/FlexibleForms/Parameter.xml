@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="Parameter"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+    <storage>
+        <get name="spFFGetParameters" type="simplelist" cache="true" />
+    </storage>
+    <tables>
+        <table name="Parameter">
+            <relations>
+                <relation name="FormType" table="FormType" internal="false" type="link" source="idfsFormType" target="idfsFormType" />
+                <relation name="SelectList" table="ParameterSelect" internal="false" type="child" source="idfsParameter" target="idfsParameter" paramsonly="true">
+                    <params>
+                        <param name="idfsParameter" type="Int64?" lambda="c => c.idfsParameter" />
+                        <param name="idfsParameterType" type="Int64?" lambda="c => c.idfsParameterType" />
+                        <param name="intHACode" type="Int64?" lambda="c => c.intHACode" />
+                    </params>
+                </relation>
+            </relations>
+
+          <actions>
+            <action name="SelectDetailList" type="Loadlist" />
+          </actions>
+        </table>
+    </tables>
+</object>

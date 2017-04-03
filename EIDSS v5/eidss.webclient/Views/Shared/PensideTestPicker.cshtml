@@ -1,0 +1,83 @@
+﻿@model eidss.model.Schema.PensideTest
+@{
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+@using eidss.webclient.Utils;
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        @Html.Hidden("idfPensideTest", Model.idfPensideTest)                                               
+        <table>    
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.strPensideTestTypeName)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, "PensideTestType")
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.strFieldBarcode)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, "Samples")
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.SampleType)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, "SampleType")
+                </td>                            
+            </tr>
+            @if (Model._HACode == (int)eidss.model.Enums.HACode.Livestock)
+            {
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.AnimalID)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, "AnimalID")
+                </td>                            
+            </tr>
+            }
+            else
+            {
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.Species)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, "Species")
+                </td>                            
+            </tr>
+            }
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.strPensideTestResultName)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, "PensideTestResult")
+                </td>                            
+            </tr>
+        </table>
+        <div class="popupBottomButtonPanel">                   
+            <input type="button" class="popupButton" onclick="
+                var o = '@(Model.CaseObjectIdent)';
+                var ObjectIdent = o.substring(0, o.lastIndexOf('_') + 1);
+                CloseMessageWindow(); 
+                $('#' + ObjectIdent + 'PensideTests').data('tGrid').ajaxRequest();
+                SelectFirstGridRow(ObjectIdent + 'PensideTests');" value="@Translator.GetMessageString("Cancel")"/>                          
+            <input type="button" class="popupButton" onclick="onPensideTestPickerChanged('@(Model.CaseObjectIdent)');" value="@Translator.GetMessageString("Ok")"/>     
+        </div>   
+    }           
+</div>

@@ -1,0 +1,178 @@
+﻿@model eidss.model.Schema.HumanCase
+           
+@using eidss.webclient.Utils;
+@using eidss.webclient.Areas.Address;
+@using eidss.model.Schema;
+
+<div class="yScrollable smallTabPanelContent">
+    <table>
+        <tr>
+            <td class="small">
+                @Html.LabelFor(m => m.strLocalIdentifier)
+            </td>
+            <td class="large">                            
+                @Html.BvEditbox(Model, "strReadOnlyLocalIdentifier")
+            </td>
+            <td class="small">
+                @Html.LabelFor(m => m.idfSentByOffice)
+            </td>
+            <td class="large">
+                @Html.BvEditbox(Model, "strReadOnlySentByOffice")
+            </td>
+            <td class="small">
+                @Html.LabelFor(m => m.datNotificationDate)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, "strReadOnlyNotificationDate")
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td>
+                @Html.LabelFor(m => m.idfInvestigatedByOffice)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, "InvestigatedByOffice")
+            </td>
+            <td>
+                @Html.LabelFor(m => m.datInvestigationStartDate)
+            </td>
+            <td>
+                @Html.BvDatebox(Model, "datInvestigationStartDate")
+            </td>
+        </tr>
+    </table>
+    <table class="bordered">
+        <tr>        
+            <td class="sectionName" colspan="7">      
+                @Translator.GetMessageString("titleDemographicInformation")
+            </td>
+        </tr>
+        <tr>                       
+            <td class="small">
+                Name:&nbsp;&nbsp;@Html.LabelFor(m => m.Patient.strLastName)
+            </td>
+            <td class="medium">                           
+                @Html.BvEditbox(Model.Patient, "strReadOnlyLastName")
+            </td>
+            <td class="small>
+                @Html.LabelFor(m => m.Patient.strFirstName)
+            </td>
+            <td class="medium">
+                @Html.BvEditbox(Model.Patient, "strReadOnlyFirstName")
+            </td>
+            <td class="small">
+                @Html.LabelFor(m => m.Patient.strSecondName)
+            </td>
+            <td class="medium">
+                @Html.BvEditbox(Model.Patient, "strReadOnlySecondName")
+            </td>  
+            <td></td>                                               
+        </tr>
+        <tr>                        
+            <td>
+                @Html.LabelFor(m => m.Patient.datDateofBirth)
+            </td>
+            <td>
+                @Html.BvEditbox(Model.Patient, "strReadOnlyDateofBirth")
+            </td>
+            <td>
+                [Age]
+            </td>
+            <td>
+                <div class='tdContainer'>
+                    @Html.TextBox("tbAge")                 
+                </div>                                 
+            </td>
+            <td>
+                @Html.LabelFor(m => m.Patient.idfsHumanGender)
+            </td>
+            <td>
+                @Html.BvEditbox(Model.Patient, "strReadOnlyHumanGender")   
+            </td> 
+            <td></td>                                   
+        </tr>
+        <tr>                        
+            <td>
+                @Html.LabelFor(m => m.Patient.idfsNationality)
+            </td>
+            <td>
+                @Html.BvEditbox(Model.Patient, "strReadOnlyNationality")   
+            </td>
+            <td colspan="5"></td>                                  
+        </tr>
+        <tr>        
+            <td colspan="7">      
+                <span>@Translator.GetMessageString("titleCurrentResidence"):</span>      
+            </td>
+        </tr>
+        <tr>
+            <td colspan="7" class="noIndent">
+                @Html.ReadOnlyAddress(Model.Patient.idfCase.Value, Model.Patient.CurrentResidenceAddress)
+            </td>
+        </tr>
+        <tr>        
+            <td colspan="7">      
+                <span>@Translator.GetMessageString("titlePermanentResidence"):</span>      
+            </td>
+        </tr>
+        <tr>
+            <td colspan="7" class="noIndent">
+                @Html.Address(Model.idfCase, Model.RegistrationAddress)
+            </td>
+        </tr>
+        <tr>                        
+            <td>
+                @Html.LabelFor(m => m.strRegistrationPhone)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, "strRegistrationPhone")
+            </td>
+            <td colspan="5"></td>                                
+        </tr>
+        <tr>                        
+            <td colspan="3">
+                @Html.LabelFor(m => m.Patient.strEmployerName)
+            </td>
+            <td>
+                @Html.BvEditbox(Model.Patient, "strReadOnlyEmployerName")
+            </td> 
+            <td colspan="3"></td>                                                                  
+        </tr>
+        <tr>                        
+            <td colspan="3">
+                @Html.LabelFor(m => m.datFacilityLastVisit)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, "strReadOnlyFacilityLastVisit")
+            </td>    
+            <td colspan="3"></td>                                                                  
+        </tr>
+        <tr>                        
+            <td colspan="4">
+                @Html.LabelFor(m => m.Patient.strEmployerName)
+            </td>
+            <td>
+                @Html.LabelFor(m => m.idfsOccupationType)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, "OccupationType")
+            </td>  
+            <td></td>                                                    
+        </tr>
+        <tr>
+            <td colspan="7" class="noIndent">
+                @Html.ReadOnlyAddress(Model.Patient.idfCase.Value, Model.Patient.EmployerAddress)
+            </td>
+        </tr>
+        <tr>                        
+            <td>
+                @Html.LabelFor(m => m.strWorkPhone)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, "strWorkPhone")
+            </td>
+            <td colspan="5"></td>                                
+        </tr>
+    </table>
+</div>

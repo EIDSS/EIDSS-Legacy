@@ -1,0 +1,168 @@
+﻿@model eidss.model.Schema.CaseTest
+@{
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+@using eidss.webclient.Utils;
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+<input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        @Html.Hidden("idfTesting", Model.idfTesting)
+        <table>
+            <tr>
+                <td class="medium">
+                    @if (Model.HumanCaseSamples != null)
+                    {
+                        @Html.LabelFor(m => m.strFieldBarcode2)
+                    }
+                    else
+                    {
+                        @Html.LabelFor(m => m.strFieldBarcode)
+                    }
+                </td>
+                <td>
+                    @if (Model.HumanCaseSamples != null)
+                    {
+                        @Html.BvCombobox(Model, "HumanCaseSample");
+                    }
+                    else if (Model.VetCaseSamples != null)
+                    {
+                        @Html.BvCombobox(Model, "VetCaseSample");
+                    }
+                    else if (Model.AsSessionSamples != null)
+                    {
+                        @Html.BvCombobox(Model, "AsSessionSample");
+                    }
+                </td>                            
+            </tr>
+            @if (Model.AsSessionSamples != null)
+            {
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.strFarmCode)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, "strFarmCode")
+                </td>                            
+            </tr>
+            }
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.SpecimenType)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, "SpecimenType")
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.idfsTestType)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, "TestTypeRef", true, "onTestTypeChanged")
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.DiagnosisName)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, "Diagnosis", false).DataBinding(b => b.Ajax().Select("SelectDiagnosisForTest", "LabSample", new RouteValueDictionary { { "area", null }, { "idfTesting", Model.idfTesting } }))
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.datConcludedDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, "datConcludedDate")
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.TestType)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, "TestForDiseaseType")
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.TestStatus)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, "TestStatus")
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.TestResult)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, "TestResultRef", false).DataBinding(b => b.Ajax().Select("SelectTestResult", "LabSample", new RouteValueDictionary { { "area", null }, { "idfTesting", Model.idfTesting } }))
+                </td>                            
+            </tr>
+        </table>
+        if (Model.HumanCaseSamples != null)
+        {
+        <table class="bordered">
+            <tr>        
+                <td class="sectionName" colspan="2">      
+                    @Translator.GetMessageString("titleExternal")   
+                </td>
+            </tr>
+            <tr>
+                <td class="large">
+                    @Html.LabelFor(m => m.idfPerformedByOffice)
+                </td>
+                <td class="noIndent">                     
+                    @Html.Action("InlineOrganizationPicker", "Organization", new
+               {
+                   obj = Model,
+                   objectId = Model.idfTesting,
+                   idfsOrganizationPropertyName = "idfPerformedByOffice",
+                   strOrganizationPropertyName = "strPerformedByOffice",
+                   idfsEmployeePropertyName = "",
+                   strEmployeePropertyName = "",
+                   showInInternalWindow = true
+               })     
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.strContactPerson)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, "strContactPerson")
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.datReceivedDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, "datReceivedDate")
+                </td>                            
+            </tr>
+        </table>      
+        }
+        
+        <div class="popupBottomButtonPanel">    
+            <input type="button" onclick="
+                var o = '@(Model.CaseObjectIdent)';
+                var ObjectIdent = o.substring(0, o.lastIndexOf('_') + 1);
+                CloseMessageWindow(); 
+                $('#' + ObjectIdent + 'CaseTests').data('tGrid').ajaxRequest();
+                " value="@Translator.GetMessageString("Cancel")" class="popupButton"/> 
+            <input type="button" onclick="onCaseTestPickerChanged('@(Model.CaseObjectIdent)');" value="@Translator.GetMessageString("Ok")" class="popupButton"/>      
+        </div>                       
+    }           
+</div>

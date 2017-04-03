@@ -1,0 +1,32 @@
+﻿set ANSI_NULLS ON
+set QUOTED_IDENTIFIER ON
+GO
+
+IF  EXISTS (SELECT TOP 1 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].fnFFCheckForRemoveTemplate')) Drop Function [dbo].fnFFCheckForRemoveTemplate
+GO
+
+-- =============================================
+-- Author:		Leonov E.N.
+-- Create date:
+-- Description:
+-- =============================================
+Create Function dbo.fnFFCheckForRemoveTemplate
+(
+	@idfsFormTemplate BigInt	
+)
+RETURNS @ResultTable Table
+(
+		[ErrorMessage] nvarchar(400)	
+)
+AS
+BEGIN
+	
+	declare	@ErrorMessage nvarchar(400)
+		
+	-- если на шаблон завязаны какие-то данные, то удалять шаблон нельзя
+	If Exists(Select Top 1 1 From dbo.fnFFCheckForTemplateHasObservations(@idfsFormTemplate)) Set  @ErrorMessage = 'TemplateRemove_Has_Observation'
+		
+	Insert into @ResultTable(ErrorMessage) Values (@ErrorMessage);	
+	Return;
+End
+Go

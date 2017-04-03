@@ -1,0 +1,200 @@
+﻿@model bv.model.Model.Core.IObjectAccessor
+@{
+    ViewBag.Title = "FilterTest";
+}
+@using bv.model.Model.Core;
+@using eidss.webclient.Utils;
+
+@functions
+{   
+    String SessionKey()
+    {
+        return String.Format("SearchPanelItemsCaching{0}", Model.GetType());
+    }
+
+    String ModelToSession()
+    {
+        if (Session[SessionKey()] == null)
+            Session[SessionKey()] = Model;
+        return "";
+    }
+
+    byte GetComboCount()
+    {
+        return 4;
+    }
+
+    
+    ViewDataDictionary GetDataForItem(string fieldName, IEnumerable<SelectListItem> lookuplist = null, bool isdependant = false)
+    {
+
+        var vd = new ViewDataDictionary();
+        foreach(var item in    GetValuePair(fieldName))
+        {
+            if (!vd.ContainsKey(item.Key))
+                vd.Add(item);
+        }
+        if (lookuplist != null)
+        {
+            vd.Add("LookupList", lookuplist);
+            vd.Add("IsDependant", isdependant);
+            vd.Add("SessionKey", SessionKey());
+        }
+        return vd;
+    }
+    
+    
+    List<KeyValuePair<string,object>> GetValuePair(string fieldName)
+    {
+        
+        var list = new List<KeyValuePair<string,object>>();
+
+        FilterParams values = null;
+        if (ViewBag.Filter == null)
+        {
+            if (Session["DefaultFilter" + SessionKey()] == null)
+                Session["DefaultFilter" + SessionKey()] = SearchPanelHelper.GetDefaultFilter((Model as IObjectMeta).SearchPanelMeta);
+            values = (FilterParams)Session["DefaultFilter" + SessionKey()];
+        }
+        else
+            values = ((FilterParams)ViewBag.Filter);
+
+        //ViewData["Value"] = null;
+        if (values.Contains(fieldName))
+        {
+            for(int i=0;i<values.ValueCount(fieldName);i++)
+            {
+                string viewDataField = "Value";
+                                                       
+                object value = values.Value(fieldName, i);
+                var operation = values.Operation(fieldName, i);
+                if (operation == null && value == null)
+                {
+                    value = "true";
+                }
+                else
+                {
+                    if ((operation == ">" || operation == ">=") && values.ValueCount(fieldName) == 2)
+                        viewDataField += "From";
+                    else
+                        if ((operation == "<"|| operation == "<=") && values.ValueCount(fieldName) == 2)
+                            viewDataField += "To";
+                        else
+                            if (operation.Equals("like", StringComparison.InvariantCultureIgnoreCase))
+                                if (value.ToString().StartsWith("%") && value.ToString().EndsWith("%"))
+                                    value = value.ToString().Substring(1, value.ToString().Length - 2);
+                }
+               list.Add(new KeyValuePair<string, object>(viewDataField, value));
+            }
+        }
+                
+        return list;        
+    }
+    
+}
+<script type="text/javascript" language="javascript">
+    function ReloadPartial(e) {
+        var query = '@Url.Action("SearchPanelMetaItem", "Search")';
+        var index = e.target.id.substring(e.target.id.lastIndexOf("_") + 1);
+        $.get(
+                query,
+                {
+                    valueFieldName: e.value,
+                    objIndex: index
+                },
+                function (data) {
+                    $("#combocontainer" + index).html(data);
+                }
+            );
+            }
+
+                   
+
+    
+
+//    /*if combobox has a value reload the editor control*/
+//    $(function () {
+//        var cboxes= $("input[name^='CBox.Item']");
+////        for(c in cboxes) {
+////        if (c.val().length > 0)
+////            alert(c.val());
+////            }
+//    });    
+</script>
+<script type="text/javascript" language="javascript" src="/Scripts/Search/Panel.js" ></script>
+@ModelToSession()
+@if ((Model as IObjectMeta).SearchPanelMeta.Where(m => m.Location == SearchPanelLocation.Additional || m.Location == SearchPanelLocation.Combobox).Count() > 0)
+{    
+    <a href="#" class="searchOptions" onclick="Show('Additional');">advanced search >></a>
+}
+<div class="spMainContainer">
+    <div id="MainSearchPanel">
+        <table class="spTableContainer">
+            @foreach (var t in (Model as IObjectMeta).SearchPanelMeta.Where(m => m.Location == SearchPanelLocation.Main))
+            {
+                <tr>
+                    <td>
+                        @if (t.EditorType == EditorType.Lookup)
+                        {
+                            @Html.Partial("../Search/SearchPanelMetaItem",
+                                t,
+                                GetDataForItem(
+                                    t.Name,  
+                                    SearchPanelHelper.GetLookup((Model as IObjectCreator), t), 
+                                    ((Model as IObjectMeta).SearchPanelMeta.Where(m => m.Dependent == t.Name && m.Location == SearchPanelLocation.Main).Count() > 0)
+                                )
+                            )
+                        }
+                        else
+                        {                                                
+                            @Html.Partial("../Search/SearchPanelMetaItem", t, GetDataForItem(t.Name))  
+                        }
+                    </td>
+                </tr>                                           
+            }
+        </table>    
+    </div>
+@*    <div id="AdditionalSearchPanel" class="invisible">
+        <table class="spTableContainer spAdditionalContainer">
+            @foreach (var t in (Model as IObjectMeta).SearchPanelMeta.Where(m => m.Location == SearchPanelLocation.Additional))
+            {
+                <tr>
+                    <td>
+                        @Html.Partial("../Search/SearchPanelMetaItem", t, GetDataForItem(t.Name))
+                    </td>
+                </tr>
+            }
+        </table>
+        @if ((Model as IObjectMeta).SearchPanelMeta.Where(m => m.Location == SearchPanelLocation.Combobox).Count() > 0)
+        {
+        <table class="spTableContainer">
+            @for (byte i = 0; i < GetComboCount(); i++)
+            {
+                <tr>
+                    <td>
+                        @(Html.Telerik().ComboBox()
+                            .Name("CBox.Item." + i.ToString())
+                            .BindTo(SearchPanelHelper.GetComboSource((Model as IObjectMeta).SearchPanelMeta)).ClientEvents(events => events
+                            .OnChange("ReloadPartial")
+                            )
+                        .HtmlAttributes(new { style = "width:132px" })
+                        )
+                    </td>
+                    <td nowrap="nowrap">
+                        <div id="@String.Format("combocontainer{0}", i)" class="spComboContainer">                    
+                            @Html.Partial("../Search/SearchPanelMetaItem",
+                                (Model as IObjectMeta).SearchPanelMeta.Where(m => m.Location == SearchPanelLocation.Combobox).FirstOrDefault(),
+                                    new ViewDataDictionary { 
+                                         new KeyValuePair<string, object>("ObjNameIndex", i.ToString()) 
+                                    }
+                                )
+                        </div>
+                    </td>
+                </tr>
+            }
+        </table>
+        }*@
+        @*<a href="#" class="searchOptions" onclick="Hide('Additional');">&lt;&lt; hide</a><br/>*@
+        @*<a href="#" class="searchOptions" onclick="Hide('Combo');">&lt;&lt; hide</a>*@
+    </div>
+</div>

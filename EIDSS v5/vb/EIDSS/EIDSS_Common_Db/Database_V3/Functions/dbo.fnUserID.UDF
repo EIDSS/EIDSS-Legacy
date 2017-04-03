@@ -1,0 +1,52 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnUserID]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnUserID]
+GO
+
+/****** Object:  UserDefinedFunction [dbo].[fnUserID]    Script Date: 03/27/2008 16:44:01 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+/*
+
+*/
+
+CREATE  function [dbo].[fnUserID]()
+returns bigint
+as
+begin
+
+declare @user bigint
+select @user = idfUserID 
+from tstLocalConnectionContext
+where strConnectionContext = dbo.fnGetContext()
+
+if @user is null
+begin
+	select @user = idfUserID from tstUserTable 
+	where strAccountName = suser_sname()
+	and idfsSite = dbo.fnSiteID()
+end
+
+return @user
+end
+
+GO
+
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

@@ -1,0 +1,121 @@
+﻿@model eidss.model.Schema.AsSessionDisease
+@{    
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+<link href="../../../../Content/Styles/PopupWindow.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+
+    function SubmitForm() {
+        AjaxFormSubmit(function (data) {            
+            if (data == 'ok') {
+                parent.gridItemAdded('@ViewData["name"]');
+            }
+            else
+                ShowEidssErrorNotification(data, function () { });
+        });
+    }
+    function EnableSpecies() {
+        if ($("#" + '@Model.ObjectIdent' + "Diagnosis").data("tComboBox").value() == '') {
+            $("#" + '@Model.ObjectIdent' + "SpeciesType").data("tComboBox").disable();
+            $("#" + '@Model.ObjectIdent' + "SpeciesType").data("tComboBox").value('');
+        }
+        else
+            $("#" + '@Model.ObjectIdent' + "SpeciesType").data("tComboBox").enable(); 
+    }
+
+    function OnDiagnosisChange(e) {
+        if (e.previousValue == e.value) { return; }
+        //get list for species list if session has campaign
+        var ObjectIdent = e.target.id.substring(0, e.target.id.lastIndexOf("_") + 1);
+        var Species = $("#" + ObjectIdent + "SpeciesType").data("tComboBox");        
+        var url = '@Url.Action("GetSpeciesList", "Disease", new RouteValueDictionary { { "area", "ActiveSurveillence" }})';
+        url = url.replace('&amp;', '&');
+        $.ajax({
+            url: url,
+            cache: false,
+            dataType: "json",
+            type: "GET",
+            data: {
+                key: '@Model.idfMonitoringSession',
+                idfSessionDisease: '@Model.idfMonitoringSessionToDiagnosis',
+                idfAsCampaign: '@ViewBag.idfAsCampaign',
+                idfsDiagnosis: e.value
+            },
+            success: function (data) {
+                if (data != 'error') {
+                    Species.dataBind(data);                    
+                    EnableSpecies();
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(jqXHR.status);
+            }
+        });        
+    }
+
+    function SpeciesLoad(obj, source) 
+    {
+        obj.dataBind(source);
+    }
+
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });
+</script>
+@using eidss.webclient.Utils
+<h2>@Translator.GetMessageString("AddDiseaseWindowTitle")</h2>
+<div class="popupContent">
+
+@using (Html.BeginForm())
+{          
+    <table>
+        <tr>
+            <td class="medium">
+                @Html.LabelFor(model => model.strDiagnosis)
+            </td>
+            <td>
+                @if (Convert.ToBoolean(ViewBag.FullDiagnosisList))
+                {                    
+                    @(Html.BvCombobox(Model, "Diagnosis",true,"EnableSpecies"))
+                }
+                else
+                {
+                    @(Html.Telerik().ComboBox()
+                        .Name(String.Format("{0}Diagnosis", Model.ObjectIdent))
+                        .BindTo((SelectList)ViewBag.Diagnosis)
+                        .ClientEvents(events => events.OnChange("OnDiagnosisChange"))
+                    )
+                }
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.strSpecies)
+            </td>
+           <td>
+                @if (Convert.ToBoolean(ViewBag.FullDiagnosisList))
+                {                    
+                    @(Html.BvCombobox(Model, "SpeciesType"))
+                }
+                else
+                {
+                    @(Html.Telerik().ComboBox()
+                        .Name(String.Format("{0}SpeciesType", Model.ObjectIdent))
+                        .HtmlAttributes(new {@readonly="readonly"})
+                        //.DataBinding(binding => binding.Ajax()
+                        //    .Select("SpeciesList", "Disease", new RouteValueDictionary { {"area", "ActiveSurveillence"}, { "idfDisease", Model.idfMonitoringSessionToDiagnosis } })
+                        //    )
+                    )
+                }
+            </td>
+
+        </tr>
+    </table>
+    <div class="popUpBottomButtonPanel">
+        <input type="button" class="popupButton" onclick="parent.cancelItemAdding();" value="@Translator.GetMessageString("Cancel")" />
+        @*<input type="submit" class="popupButton" value="@Translator.GetMessageString("Ok")" />*@
+        <input type="button" class="popupButton" onclick="SubmitForm();" value="@Translator.GetMessageString("Ok")" />
+    </div>  
+}
+</div>

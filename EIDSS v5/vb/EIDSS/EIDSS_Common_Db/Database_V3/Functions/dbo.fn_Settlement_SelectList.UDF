@@ -1,0 +1,226 @@
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+ 
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fn_Settlement_SelectList]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fn_Settlement_SelectList]
+GO
+
+
+
+--##SUMMARY 
+
+--##REMARKS Author: 
+--##REMARKS Create date: 
+
+--##RETURNS 
+
+
+
+/*
+select * from fn_Settlement_SelectList ('en')
+*/
+
+Create  Function dbo.fn_Settlement_SelectList(
+	@LangID as nvarchar(50) --##PARAM @LangID - language ID
+)
+Returns @Table Table
+(
+		[idfsSettlement] Bigint
+		,[SettlementDefaultName] Nvarchar(255)
+		,[SettlementNationalName] Nvarchar(255)
+		,[idfsSettlementType] Bigint
+		,[SettlementTypeDefaultName] Nvarchar(255)
+		,[SettlementTypeNationalName] Nvarchar(255)
+		,[idfsCountry] Bigint
+		,[CountryDefaultName] Nvarchar(255)
+		,[CountryNationalName] Nvarchar(255)
+		,[idfsRegion] Bigint
+		,[RegionDefaultName] Nvarchar(255)
+		,[RegionNationalName] Nvarchar(255)
+		,[idfsRayon] Bigint
+		,[RayonDefaultName] Nvarchar(255)
+		,[RayonNationalName] Nvarchar(255)
+		,[strSettlementCode] Nvarchar(200)
+		,[dblLongitude] Float
+		,[dblLatitude] Float
+) 
+As
+Begin	
+	Declare @LangID_int Bigint
+	Set @LangID_int = dbo.fnGetLanguageCode(@LangID);
+
+	Declare @SettlementTypes Table (
+			idfsSettlementType Bigint
+			,SettlementTypeDefaultName Nvarchar(255)
+			,SettlementTypeNationalName Nvarchar(255)			
+	)
+	
+	Insert into @SettlementTypes
+	(
+		idfsSettlementType,
+		SettlementTypeDefaultName,
+		SettlementTypeNationalName
+	)
+	Select 
+		BR.idfsGisBaseReference, 
+		BR.strDefault, 
+		IsNull(SNT.strTextString, BR.strDefault)
+	From dbo.gisBaseReference BR
+		Left Outer Join dbo.gisStringNameTranslation SNT On BR.idfsGisBaseReference = SNT.idfsGISBaseReference And SNT.idfsLanguage = @LangID_int
+	Where BR.idfsGisBaseReference In (Select Distinct idfsSettlementType From dbo.gisSettlement)
+	
+
+	Declare @GRCountry Table 
+	(
+			idfsReference Bigint
+			,DefaultName Nvarchar(255)
+			,NationalName Nvarchar(255)			
+	)
+	Insert into @GRCountry
+	(
+		idfsReference,
+		DefaultName,
+		NationalName
+	)
+	select
+				b.idfsGISBaseReference, 
+				b.strDefault, 
+				IsNull(c.strTextString, b.strDefault)
+	from		dbo.gisBaseReference as b 
+	left join	dbo.gisStringNameTranslation as c 
+	on			b.idfsGISBaseReference = c.idfsGISBaseReference and c.idfsLanguage = @LangID_int
+	where		b.idfsGISReferenceType = 19000001 and b.intRowStatus = 0 
+
+
+
+	Declare @GRRayon Table 
+	(
+			idfsReference Bigint
+			,DefaultName Nvarchar(255)
+			,NationalName Nvarchar(255)			
+	)
+	Insert into @GRRayon
+	(
+		idfsReference,
+		DefaultName,
+		NationalName
+	)
+	select
+				b.idfsGISBaseReference, 
+				b.strDefault, 
+				IsNull(c.strTextString, b.strDefault)
+	from		dbo.gisBaseReference as b 
+	left join	dbo.gisStringNameTranslation as c 
+	on			b.idfsGISBaseReference = c.idfsGISBaseReference and c.idfsLanguage = @LangID_int
+	where		b.idfsGISReferenceType = 19000002 and b.intRowStatus = 0 
+
+
+
+	Declare @GRRegion Table 
+	(
+			idfsReference Bigint
+			,DefaultName Nvarchar(255)
+			,NationalName Nvarchar(255)			
+	)
+	Insert into @GRRegion
+	(
+		idfsReference,
+		DefaultName,
+		NationalName
+	)
+	select
+				b.idfsGISBaseReference, 
+				b.strDefault, 
+				IsNull(c.strTextString, b.strDefault)
+	from		dbo.gisBaseReference as b 
+	left join	dbo.gisStringNameTranslation as c 
+	on			b.idfsGISBaseReference = c.idfsGISBaseReference and c.idfsLanguage = @LangID_int
+	where		b.idfsGISReferenceType = 19000003 and b.intRowStatus = 0 
+
+
+
+
+	Declare @GRidfsSettlement Table 
+	(
+			idfsReference Bigint
+			,DefaultName Nvarchar(255)
+			,NationalName Nvarchar(255)			
+	)
+	Insert into @GRidfsSettlement
+	(
+		idfsReference,
+		DefaultName,
+		NationalName
+	)
+	select
+				b.idfsGISBaseReference, 
+				b.strDefault, 
+				IsNull(c.strTextString, b.strDefault)
+	from		dbo.gisBaseReference as b 
+	left join	dbo.gisStringNameTranslation as c 
+	on			b.idfsGISBaseReference = c.idfsGISBaseReference and c.idfsLanguage = @LangID_int
+	where		b.idfsGISReferenceType = 19000004 and b.intRowStatus = 0 
+
+
+
+
+
+	Insert into @Table
+	(
+		idfsSettlement,
+		SettlementDefaultName,
+		SettlementNationalName,
+		idfsSettlementType,
+		SettlementTypeDefaultName,
+		SettlementTypeNationalName,
+		idfsCountry,
+		CountryDefaultName,
+		CountryNationalName,
+		idfsRegion,
+		RegionDefaultName,
+		RegionNationalName,
+		idfsRayon,
+		RayonDefaultName,
+		RayonNationalName,
+		strSettlementCode,
+		dblLongitude,
+		dblLatitude
+	)
+	Select  
+		[idfsSettlement]
+		,GRidfsSettlement.DefaultName
+		,GRidfsSettlement.NationalName
+		,GS.[idfsSettlementType]
+		,ST.SettlementTypeDefaultName
+		,ST.SettlementTypeNationalName
+		,[idfsCountry]
+		,GRCountry.DefaultName
+		,GRCountry.NationalName
+		,[idfsRegion]
+		,GRRegion.DefaultName
+		,GRRegion.NationalName
+		,[idfsRayon]
+		,GRRayon.DefaultName
+		,GRRayon.NationalName
+		,[strSettlementCode]
+		,[dblLongitude]
+		,[dblLatitude]
+	From dbo.gisSettlement GS
+	Inner Join @SettlementTypes ST On GS.[idfsSettlementType] = ST.idfsSettlementType
+	Inner Join @GRCountry GRCountry On GS.[idfsCountry] = GRCountry.idfsReference
+	Inner Join @GRRayon GRRayon On GS.[idfsRayon] = GRRayon.idfsReference
+	Inner Join @GRRegion GRRegion On GS.[idfsRegion] = GRRegion.idfsReference
+	Inner Join @GRidfsSettlement GRidfsSettlement On GS.[idfsSettlement] = GRidfsSettlement.idfsReference
+
+	Return
+End
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

@@ -1,0 +1,89 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnCreateExactPointString]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnCreateExactPointString]
+GO
+
+
+--##SUMMARY Builds exact point geoplocation string from passed compound parts basing on template specific for passed @LangID.
+--##SUMMARY This function is designed for maximum speed execution so it assumes that passed compound parts is NOT NULL.
+--##SUMMARY The statement that calls this function must provide NOT NULL values for exact point geoplocation string compound parts,
+--##SUMMARY in other case NULL will be returned
+
+
+--##REMARKS Author: Zurin M.
+--##REMARKS Create date: 25.11.2009
+
+--##RETURNS String representation of exact point geoplocation
+
+
+/*
+--Example of function call:
+
+SELECT dbo.fnCreateExactPointString (
+  'en'
+  ,'Georgia'
+  ,'Imereti'
+  ,'Khoni'
+  ,'20,1'
+  ,'46,345'
+  ,'0,01'
+  ,'')
+
+*/
+
+
+
+Create    function fnCreateExactPointString(
+	@LangID			nvarchar(50),  --##PARAM @LangID - lanquage ID
+	@Country		nvarchar(200) = '', --##PARAM @Country - Country name
+	@Region			nvarchar(200) = '', --##PARAM @Region - Region name
+	@Rayon			nvarchar(200) = '', --##PARAM @Rayon - Rayon name
+	@Latitude		nvarchar(200) = '', --##PARAM @Latitude - Latitude
+	@Longitude		nvarchar(200) = '', --##PARAM @Longitude - Longitude
+	@Description	nvarchar(200) = '' --##PARAM @Description - description
+)
+returns nvarchar(1000)
+as
+begin
+
+declare @TempStr nvarchar(1000)
+
+select	@TempStr = strExecPointString 
+from	trtLanguageFormat
+where	idfsLanguage = dbo.fnGetLanguageCode(@LangID)
+
+IF (LEN(@Country)>0 OR LEN(@Region)>0 OR LEN(@Rayon)>0 OR LEN(@Latitude)>0
+OR LEN(@Longitude)>0  OR LEN(@Description)>0) 
+BEGIN 
+set @TempStr = REPLACE(@TempStr, '@Country', @Country)
+set @TempStr = REPLACE(@TempStr, '@Region', @Region)
+set @TempStr = REPLACE(@TempStr, '@Rayon', @Rayon)
+set @TempStr = REPLACE(@TempStr, '@Latitude', @Latitude)
+set @TempStr = REPLACE(@TempStr, '@Longitude', @Longitude)
+set @TempStr = REPLACE(@TempStr, '@Descriprion', @Description)
+END
+ELSE
+SET @TempStr = ''
+
+return @TempStr
+
+end
+
+
+
+
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

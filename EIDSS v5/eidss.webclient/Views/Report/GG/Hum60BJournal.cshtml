@@ -1,0 +1,33 @@
+﻿@using eidss.webclient.Utils
+@model eidss.model.Reports.GG.Hum60BJournalModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/BaseFilter", Model)
+
+    @Html.Partial("Common/BaseIntervalFilter", Model)
+
+    <table id="DiagnosisTable" >
+        <tr>
+            <td class="medium">
+                @Html.LabelFor(m => m.Diagnosis)
+            </td>
+            <td class="large">
+                @{
+                    @(Html.Telerik().ComboBox()
+                          .Name("Diagnosis")
+                          .BindTo(Model.DiagnosisList.ConvertToSelectListItem())
+                          )
+                }
+            </td>
+            <td></td>
+        </tr>
+    </table>
+
+    @Html.Partial("Common/ExportButtons", Model)
+}

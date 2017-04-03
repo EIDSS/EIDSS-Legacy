@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="VetCaseSample"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="spCaseSamples_SelectDetail" type="detaillist" />
+    </storage>
+
+    <tables>
+        <table name="VetCaseSample" hacodable="true" tostring='c => c.strSpecimenName + " / " + c.strFieldBarcode'>
+            <grid>
+              <item name="idfMaterial" visible="false" key="true"/>
+              <item name="strSpecimenName" type="string" />
+              <item name="strFieldBarcode" type="string" />
+              <item name="AnimalID" type="string" />
+              <item name="Species" type="string" />
+              <item name="strBirdStatus" type="string" />
+              <item name="datFieldCollectionDate" />
+              <item name="strSendToOffice" type="string" />
+              <item name="datAccession" />
+              <item name="strAccessionCondition" type="string" />
+              <item name="strNote" type="string" />
+              <item name="strFieldCollectedByOffice" type="string" />
+              <item name="strFieldCollectedByPerson" type="string" />
+            </grid>
+            <labels>
+              <item name="strSpecimenName" labelId="idfsSpecimenType"/>
+              <item name="strFieldBarcode" labelId="strFieldBarcodeField"/>
+              <item name="strFieldCollectedByOffice" labelId="CollectedbyInstitution"/>
+              <item name="strFieldCollectedByPerson" labelId="CollectedbyOfficer"/>
+              <item name="idfSendToOffice" labelId="strSendToOrganization"/>
+              <item name="idfInDepartment" labelId="DepartmentName"/>
+              <item name="strAccessionCondition" labelId="idfsAccessionCondition"/>
+              <item name="strNote" labelId="strComment"/>
+            </labels>
+            <fields>
+              <storage name="FilterByDiagnosis" type="bool"/>
+              <storage name="NewObject" type="bool"/>
+              <!--prnt storage name="idfsFinalDiagnosisFromCase" type="long?"/>
+              <storage name="idfsTentativeDiagnosis2FromCase" type="long?"/>
+              <storage name="idfsTentativeDiagnosis1FromCase" type="long?"/>
+              <storage name="idfsTentativeDiagnosisFromCase" type="long?"/>
+              <storage name="AnimalListFromCase" type="EditableList&lt;AnimalListItem&gt;"/>
+              <storage name="VetFarmTreeFromCase" type="List&lt;VetFarmTree&gt;"/>
+              <storage name="CaseTests" type="EditableList&lt;CaseTest&gt;"/>
+              <storage name="PensideTests" type="EditableList&lt;PensideTest&gt;"/-->
+              <calculated name="idfsFinalDiagnosisFromCase" type="long?" depends="Parent" lambda="c => (c.Parent as VetCase).idfsFinalDiagnosis"/>
+              <calculated name="idfsTentativeDiagnosis2FromCase" type="long?" depends="Parent" lambda="c => (c.Parent as VetCase).idfsTentativeDiagnosis2"/>
+              <calculated name="idfsTentativeDiagnosis1FromCase" type="long?" depends="Parent" lambda="c => (c.Parent as VetCase).idfsTentativeDiagnosis1"/>
+              <calculated name="idfsTentativeDiagnosisFromCase" type="long?" depends="Parent" lambda="c => (c.Parent as VetCase).idfsTentativeDiagnosis"/>
+              <calculated name="AnimalListFromCase" type="EditableList&lt;AnimalListItem&gt;" depends="Parent" lambda="c => (c.Parent as VetCase).AnimalList"/>
+              <calculated name="VetFarmTreeFromCase" type="List&lt;VetFarmTree&gt;" depends="Parent" lambda="c => (c.Parent as VetCase).Farm.FarmTree.Where(a => a.idfsPartyType == (long)PartyTypeEnum.Species).ToList()"/>
+              <calculated name="CaseTests" type="EditableList&lt;CaseTest&gt;" depends="Parent" lambda="c => (c.Parent as VetCase).CaseTests"/>
+              <calculated name="PensideTests" type="EditableList&lt;PensideTest&gt;" depends="Parent" lambda="c => (c.Parent as VetCase).PensideTests"/>
+
+              <calculated name="strAccessionCondition" type="string" depends="idfsAccessionCondition"
+                          lambda='c => c.AccessionCondition == null ? "" : c.AccessionCondition.name' />
+              <calculated name="CaseObjectIdent" type="string" depends="idfCase" lambda='c => "VetCase_" + c.idfCase + "_"' />
+              <calculated name="AnimalID" type="string" depends="idfParty,AnimalListFromCase"
+                          lambda='c => c.AnimalListFromCase == null || c.AnimalListFromCase.Count == 0 || c.idfParty == null ? "" : c.AnimalListFromCase.Where(a => a.idfAnimal == c.idfParty).Single().strAnimalCode' />
+              <calculated name="Species" type="string" depends="idfParty,AnimalListFromCase"
+                          lambda='c => c.idfParty == null ? "" :
+                              (c.AnimalListFromCase == null || c.AnimalListFromCase.Count(a => a.idfAnimal == c.idfParty) == 0 ? 
+                                  (c.VetFarmTreeFromCase == null || c.VetFarmTreeFromCase.Count(a => a.idfParty == c.idfParty) == 0 ? "" : c.VetFarmTreeFromCase.Single(a => a.idfParty == c.idfParty).strSpeciesName) 
+                              : c.AnimalListFromCase.Single(a => a.idfAnimal == c.idfParty).strSpecies)
+                              ' />
+              <calculated name='strBirdStatus' type='string' depends='idfsBirdStatus' lambda='c => c.BirdStatus == null ? "" : c.BirdStatus.name'/>
+            </fields>
+            <readonly>
+                <fields name="strCondition,strAccessionCondition,datAccession,Species" predicate="c => true" />
+                <fields name="strFieldCollectedByOffice,strFieldCollectedByPerson,strSendToOffice" predicate="c => true" />
+                <fields name="*" predicate="c => c.idfsAccessionCondition != null" />
+            </readonly>
+            <relations>
+            </relations>
+            <lookups>
+                <lookup name="SampleType" table="SampleTypeForDiagnosisLookup" source="idfsSpecimenType" target="idfsReference">
+                    <filters>
+                      <filter predicate="c => (c.intHACode &amp; obj._HACode) != 0 || c.idfsReference == obj.idfsSpecimenType"/>
+                      <filter predicate="c => !obj.FilterByDiagnosis ? 
+                              (
+                                  c.idfsDiagnosis == 0
+                              )
+                              :
+                              (
+                                  c.idfsDiagnosis == obj.idfsFinalDiagnosisFromCase ||
+                                  c.idfsDiagnosis == obj.idfsTentativeDiagnosis2FromCase ||
+                                  c.idfsDiagnosis == obj.idfsTentativeDiagnosis1FromCase ||
+                                  c.idfsDiagnosis == obj.idfsTentativeDiagnosisFromCase
+                              )"/>
+                      <filter predicate="c => c.idfsReference != (long)SampleTypeEnum.Unknown"/>
+                      <filter distinct="SampleTypeForDiagnosisLookupComparator" />
+                    </filters>
+                </lookup>
+                <lookup name="AccessionCondition" table="BaseReference" section="rftAccessionCondition" source="idfsAccessionCondition" target="idfsBaseReference" />
+              <lookup name="BirdStatus" table="BaseReference" section="rftAnimalCondition" source="idfsBirdStatus" target="idfsBaseReference">
+                <filters>
+                  <filter predicate="c => (c.intHACode &amp; obj._HACode) != 0"/>
+                </filters>
+              </lookup>
+              <lookup name="Animal" table="AnimalListItem" existinglookup="AnimalListFromCase" source="idfParty" target="idfAnimal">
+                <filters>
+                  <filter predicate="c => !c.IsMarkedToDelete"/>
+                </filters>
+              </lookup>
+              <lookup name="FarmTree" table="VetFarmTree" existinglookup="VetFarmTreeFromCase" source="idfParty" target="idfParty">
+                <filters>
+                  <filter predicate="c => !c.IsMarkedToDelete"/>
+                </filters>
+              </lookup>
+            </lookups>
+            <storage>
+                <insert name="spLabSample_Create" />
+                <update name="spLabSample_Update" />
+                <delete name="spLabSample_Delete" />
+            </storage>
+            <extenders>
+              <creating>
+                <lambda_extender target="FilterByDiagnosis" type="bool" lambda="c => false"/>
+                <scalar_extender target="idfMaterial" class="GetNewIDExtender" />
+                <lambda_extender target="datFieldCollectionDate" type="DateTime?" lambda="c => DateTime.Now.Date" />
+              </creating>
+              <loading>
+                <lambda_extender target="FilterByDiagnosis" type="bool" lambda="c => false"/>
+              </loading>
+            </extenders>
+            <handlers>
+                <fieldhandler>
+                    <lambda_handler target="strSpecimenName" field="idfsSpecimenType" type="string" lambda='c => c.SampleType == null ? "" : c.SampleType.name' />
+                    <lookup_handler lookup="SampleType" field="FilterByDiagnosis" />
+                </fieldhandler>
+            </handlers>
+            <validators>
+                <change>
+                  <!-- FieldCollectionDate≤CurDate -->
+                  <predicate_validator field="datFieldCollectionDate" predicate="c => PredicateValidator.CompareDates(c.datFieldCollectionDate, DateTime.Now)" message="Collection Date_Current date" />
+                </change>
+                <post>
+                    <required_validator target="SampleType" />
+                    <required_validator target="idfParty" property="Animal" label="AnimalID" predicate="c => c.idfsAccessionCondition == null &amp;&amp; c._HACode == (int)eidss.model.Enums.HACode.Livestock" />
+                    <required_validator target="idfParty" property="FarmTree" label="Species" predicate="c => c.idfsAccessionCondition == null &amp;&amp; c._HACode == (int)eidss.model.Enums.HACode.Avian" />
+                    <!--required_validator target="Animal" predicate="c => c._HACode == (int)eidss.model.Enums.HACode.Livestock" />
+                    <required_validator target="FarmTree" predicate="c => c._HACode == (int)eidss.model.Enums.HACode.Avian" /-->
+                </post>
+              <delete>
+                <predicate_validator predicate="c => c.idfsAccessionCondition == null" message="msgCantDeleteRecord" />
+                <predicate_validator predicate="c => c.CaseTests.Where(i => !i.IsMarkedToDelete &amp;&amp; i.idfContainerVet == c.idfMaterial).Count() == 0"
+                                     message="msgCantDeleteRecord" />
+                <predicate_validator predicate="c => c.PensideTests.Where(i => !i.IsMarkedToDelete &amp;&amp; i.idfMaterial == c.idfMaterial).Count() == 0"
+                                     message="msgCantDeleteRecord" />
+                <predicate_validator predicate='c => {
+                                     using (DbManagerProxy manager = DbManagerFactory.Factory.Create(ModelUserContext.Instance))
+                                     {
+                                        return manager.SetSpCommand("spLabSample_CheckAccession", manager.Parameter("@idfMaterial", c.idfMaterial)).ExecuteScalar&lt;long&gt;(ScalarSourceType.DataReader, "idfMaterial") == 0;
+                                     }}' message="msgCantDeleteRecord" />
+              </delete>
+            </validators>
+            <actions>
+                <action name="Create" type="Create">
+                  <run>
+                    <params>
+                      <!--prnt param name="idfCase" type="long" />
+                      <param name="CaseHACode" type="int?" />
+                      <param name="idfsFinalDiagnosis" type="long?" />
+                      <param name="idfsTentativeDiagnosis2" type="long?" />
+                      <param name="idfsTentativeDiagnosis1" type="long?" />
+                      <param name="idfsTentativeDiagnosis" type="long?" />
+                      <param name="AnimalList" type="EditableList&lt;AnimalListItem&gt;"/>
+                      <param name="FarmTree" type="List&lt;VetFarmTree&gt;"/>
+                      <param name="CaseTests" type="EditableList&lt;CaseTest&gt;"/>
+                      <param name="PensideTests" type="EditableList&lt;PensideTest&gt;"/-->
+                      <param name="idfSendToOffice" type="long?" />
+                      <param name="idfFieldCollectedByOffice" type="long?" />
+                      <param name="idfFieldCollectedByPerson" type="long?" />
+                      <param name="strSendToOffice" type="string" />
+                      <param name="strFieldCollectedByOffice" type="string" />
+                      <param name="strFieldCollectedByPerson" type="string" />
+                    </params>
+                    <creating>
+                      <lambda_extender target="idfCase" type="long" lambda='c => (Parent as VetCase).idfCase' />
+                      <lambda_extender target="_HACode" type="int?" lambda='c => (Parent as VetCase)._HACode' />
+                      <!--prnt lambda_extender target="idfsFinalDiagnosisFromCase" type="long?" lambda='c => idfsFinalDiagnosis' />
+                      <lambda_extender target="idfsTentativeDiagnosis2FromCase" type="long?" lambda='c => idfsTentativeDiagnosis2' />
+                      <lambda_extender target="idfsTentativeDiagnosis1FromCase" type="long?" lambda='c => idfsTentativeDiagnosis1' />
+                      <lambda_extender target="idfsTentativeDiagnosisFromCase" type="long?" lambda='c => idfsTentativeDiagnosis' />
+                      <lambda_extender target="AnimalListFromCase" type="EditableList&lt;AnimalListItem&gt;" lambda='c => AnimalList' />
+                      <lambda_extender target="VetFarmTreeFromCase" type="List&lt;VetFarmTree&gt;" lambda='c => FarmTree' />
+                      <lambda_extender target="CaseTests" type="EditableList&lt;CaseTest&gt;" lambda='c => CaseTests' />
+                      <lambda_extender target="PensideTests" type="EditableList&lt;PensideTest&gt;" lambda='c => PensideTests' /-->
+                      <lambda_extender target="idfSendToOffice" type="long?" lambda='c => idfSendToOffice' />
+                      <lambda_extender target="idfFieldCollectedByOffice" type="long?" lambda='c => idfFieldCollectedByOffice' />
+                      <lambda_extender target="idfFieldCollectedByPerson" type="long?" lambda='c => idfFieldCollectedByPerson' />
+                      <lambda_extender target="strSendToOffice" type="string" lambda='c => strSendToOffice' />
+                      <lambda_extender target="strFieldCollectedByOffice" type="string" lambda='c => strFieldCollectedByOffice' />
+                      <lambda_extender target="strFieldCollectedByPerson" type="string" lambda='c => strFieldCollectedByPerson' />
+                    </creating>
+                  </run>
+                </action>
+            </actions>
+        </table>
+        <table name="VetCaseSampleTest">
+        </table>
+        <!--table name="HumanCaseSampleNote">
+        </table-->
+    </tables>
+
+</object>

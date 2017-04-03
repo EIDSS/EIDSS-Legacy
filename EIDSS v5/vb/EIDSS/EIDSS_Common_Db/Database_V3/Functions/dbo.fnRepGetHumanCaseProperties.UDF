@@ -1,0 +1,135 @@
+ SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF  EXISTS (SELECT TOP 1 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fnRepGetHumanCaseProperties]')) 
+Drop Function [dbo].[fnRepGetHumanCaseProperties]
+GO
+
+-- =============================================
+-- Author:		Vasilyev I.
+-- Create date: 
+-- Description:
+-- ============================================= 
+
+
+--##SUMMARY Select Human case properties from different tables.
+--##REMARKS Author: Vasilyev I.
+--##REMARKS Create date: 08.12.2009
+
+--##RETURNS Doesn't use
+
+/*
+--Example of a call of function:
+select * from dbo.fnRepGetHumanCaseProperties ('ru')
+*/
+
+Create Function dbo.fnRepGetHumanCaseProperties
+(
+	@LangID as nvarchar(50) = 'en'
+)
+Returns	 Table
+AS
+return
+	select 
+	tCase.idfCase							as idfCase,
+	tCase.idfsCaseStatus					as idfsCaseStatus,
+	tCase.idfsCaseType						as idfsCaseType,
+	tCase.idfOutbreak						as idfOutbreak,
+	tHuman.idfsOccupationType				as idfsOccupationType,
+	tHuman.idfCurrentResidenceAddress		as idfCurrentResidenceAddress,
+	tHuman.idfEmployerAddress				as idfEmployerAddress,
+	tHuman.idfRegistrationAddress			as idfRegistrationAddress,
+	tHuman.idfsNationality					as idfsNationality,
+	tHumanCase.idfsInitialCaseStatus		as idfsInitialCaseStatus,
+	tHumanCase.idfsHospitalizationStatus	as idfsHospitalizationStatus,
+	tHumanCase.idfsYNAntimicrobialTherapy	as idfsYNAntimicrobialTherapy,
+	tHumanCase.idfsYNHospitalization		as idfsYNHospitalization,
+	tHumanCase.idfsYNSpecimenCollected		as idfsYNSpecimenCollected,
+	tHumanCase.idfsYNRelatedToOutbreak		as idfsYNRelatedToOutbreak,
+	tHumanCase.idfsOutcome					as idfsOutcome,
+	tHumanCase.idfSentByOffice				as idfSentByOffice,
+	tHumanCase.idfReceivedByOffice			as idfReceivedByOffice,
+	tHumanCase.idfInvestigatedByOffice		as idfInvestigatedByOffice,
+	tHumanCase.datNotificationDate			as datNotificationDate,
+	tHumanCase.datCompletionPaperFormDate	as datCompletionPaperFormDate,
+	tHumanCase.datFirstSoughtCareDate		as datFirstSoughtCareDate,
+	tHumanCase.datModificationDate			as datModificationDate,
+	tHumanCase.datHospitalizationDate		as datHospitalizationDate,
+	tHumanCase.datFacilityLastVisit			as datFacilityLastVisit,
+	tHumanCase.datExposureDate				as datExposureDate,
+	tHumanCase.datDischargeDate				as datDischargeDate,
+	tHumanCase.datOnSetDate					as datOnSetDate,
+	tHumanCase.datInvestigationStartDate	as datInvestigationStartDate,
+	tHumanCase.datTentativeDiagnosisDate	as datTentativeDiagnosisDate,
+	tHumanCase.datFinalDiagnosisDate		as datFinalDiagnosisDate,
+	tHuman.datDateOfBirth					as datDateOfBirth,
+	tHuman.datDateOfDeath					as datDateOfDeath,
+	tCase.strCaseId							as strCaseId,
+	tHumanCase.strLocalIdentifier			as strLocalIdentifier,
+	rfGender.[Name]							as strPatientGender,
+	rfDiagnosis.[Name]						as strTentetiveDiagnosis,
+	rfChangedDiagnosis.[Name]				as strFinalDiagnosis,
+	tHumanCase.strClinicalDiagnosis			as strClinicalDiagnosis,
+	tHumanCase.strHospitalizationPlace		as strHospitalizationPlace,
+	tHumanCase.strCurrentLocation			as strCurrentLocation,
+	tHuman.strEmployerName					as strEmployerName,
+	tHuman.strRegistrationPhone				as strRegistrationPhone,
+	tHuman.strHomePhone						as strHomePhone,
+	tHuman.strWorkPhone						as strWorkPhone,
+	isnull(tHuman.strLastName,'')+'  '+isnull(tHuman.strFirstName,'')+'  '+isnull(tHuman.strSecondName,'') as strPatientFullName,
+	isnull(tHumanCase.strReceivedByLastName,'')+'  '+isnull(tHumanCase.strReceivedByFirstName,'')+'  '+isnull(tHumanCase.strReceivedByPatronymicName,'') as strReceivedByFullName,
+	isnull(tHumanCase.strSentByLastName,'')+'  '+isnull(tHumanCase.strSentByFirstName,'')+'  '+isnull(tHumanCase.strSentByPatronymicName,'') as strSentByFullName,
+	rfFinalState.[Name]						as strFinalState,
+	tHumanCase.strSoughtCareFacility		as strSoughtCareFacility,
+	tHumanCase.strNotCollectedReason		as strNotCollectedReason,
+	tHumanCase.strNote						as strNote,
+	tHumanCase.strSummaryNotes				as strSummaryNotes,
+	tHumanCase.strClinicalNotes				as strClinicalNotes,
+	tHumanCase.strEpidemiologistsName		as strEpidemiologistsName,
+	rfAgeType.[Name]						as strPatientAgeType,
+	tHumanCase.intPatientAge				as intPatientAge,
+	tHumanCase.blnClinicalDiagBasis			as blnClinicalDiagBasis,
+	tHumanCase.blnLabDiagBasis				as blnLabDiagBasis,
+	tHumanCase.blnEpiDiagBasis				as blnEpiDiagBasis
+	-- get case
+		  from 
+			 ( 
+						dbo.tlbCase as tCase
+			inner join  dbo.tlbHumanCase as tHumanCase
+					on	tCase.idfCase = tHumanCase.idfHumanCase
+				   and  tCase.intRowStatus = 0
+			 )
+	-- Get patient
+	 left join
+			 ( 
+						dbo.tlbParty as tParty
+			 left join	dbo.tlbHuman as tHuman
+					on	tParty.idfParty = tHuman.idfHuman
+				   and  tParty.intRowStatus = 0
+			 )
+			on	tCase.idfCase = tParty.idfCase
+	-- Get Age type 
+	 left join	fnReference(@LangID, 19000042 /* rftHumanAgeType*/) rfAgeType
+			on	tHumanCase.idfsHumanAgeType	= rfAgeType.idfsReference
+	-- Get Gender
+	 left join	fnReference(@LangID, 19000043 /* rftHumanGender*/) rfGender
+			on	tHuman.idfsHumanGender	= rfGender.idfsReference
+	-- Get Diagnosis
+	 left join	fnReference(@LangID, 19000019/*'rftDiagnosis' */) as rfDiagnosis
+			on	rfDiagnosis.idfsReference=tHumanCase.idfsTentativeDiagnosis
+	-- Get Final Diagnosis
+	 left join	fnReference(@LangID, 19000019/*'rftDiagnosis' */) as rfChangedDiagnosis
+			on	rfChangedDiagnosis.idfsReference=tHumanCase.idfsFinalDiagnosis
+	-- Get Final State
+	 left join	fnReference(@LangID, 19000035/*'rftFinalState' */) as rfFinalState
+			on  rfFinalState.idfsReference=tHumanCase.idfsFinalState
+	  
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

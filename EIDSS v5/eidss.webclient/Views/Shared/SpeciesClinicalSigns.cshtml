@@ -1,0 +1,73 @@
+﻿@model eidss.model.Schema.VetFarmTree
+@using eidss.webclient.Areas.FlexForms
+@using eidss.webclient.Utils
+@{
+    Layout = null;
+}
+<script src="../../Scripts/jquery.form.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('form').ajaxForm(function (data) {
+            if (data == 'ok')
+                $('#Message').data('tWindow').close();
+            else
+                ShowEidssErrorNotification(data, function () { });            
+        });
+    });
+
+    function requestChanges(url, refresh) {        
+        $.ajax({
+            url: url,
+            cache: false,
+            dataType: "json",
+            type: "GET",
+            success: function (data) {
+                if (refresh) {
+                    var query = '@Url.Action("ShowFlexibleForm", "FFPresenter", new RouteValueDictionary { { "area", "FlexForms" },{"root", Model.idfCase},{ "key", Model.idfParty }, {"ffpresenterId", Model.FFPresenterCs.CurrentObservation} })';                    
+                    reloadPartialDiv(query.replace('&amp;', '&').replace('&amp;', '&'), 'FFContainer', '@Model.idfCase');
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(jqXHR.status);
+            }
+        });
+    }
+
+    function onClear() {
+        var url = '@Url.Action("ClearFFPresenter", "FFPresenter", new RouteValueDictionary { { "area", "FlexForms" }, { "idfCase", Model.idfCase }, { "idfParty", Model.idfParty } })';
+        requestChanges(url.replace('&amp;', '&'), true);
+    }
+
+    function onCopy() {
+        var url = '@Url.Action("CopyFFPresenter", "FFPresenter", new RouteValueDictionary { { "area", "FlexForms" }, { "idfCase", Model.idfCase }, { "idfParty", Model.idfParty } })';
+        requestChanges(url.replace('&amp;', '&'), false);
+    }
+
+    function onPaste() {
+        var url = '@Url.Action("PasteFFPresenter", "FFPresenter", new RouteValueDictionary { { "area", "FlexForms" }, { "idfCase", Model.idfCase }, { "idfParty", Model.idfParty } })';
+        requestChanges(url.replace('&amp;', '&'), true);
+    }
+
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+<div class="popupContent" style="overflow: auto">
+    <div>
+        <input type="button" value='@Translator.GetMessageString("Clear")' onclick="onClear();" id='Clear'/>
+        <input type="button" value='@Translator.GetMessageString("Copy")' onclick="onCopy();" id='Copy'/>
+        <input type="button" value='@Translator.GetMessageString("Paste")' onclick="onPaste();" id='Paste'/>
+    </div>
+    @using (Html.BeginForm())
+    {  
+        <div id="FFContainer" class="yScrollable ffPopupContentSmall">
+        @Html.ShowFlexibleFormHTML(Model.idfParty, Model.FFPresenterCs)
+        </div>
+        <div class="popupBottomButtonPanel">
+            <input type="button" class="popupButton" onclick="parent.cancelItemAdding();" value="@Translator.GetMessageString("Cancel")" />
+            <input type="submit" class="popupButton" value="@Translator.GetMessageString("Ok")"/>
+        </div>
+
+    }
+</div>

@@ -1,0 +1,80 @@
+﻿@model eidss.model.Schema.FFPresenterModel
+@using eidss.webclient.Areas.FlexForms
+@using eidss.webclient.Utils
+@{
+    Layout = null;
+}
+<script src="../../../../Scripts/jquery.form.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('form').ajaxForm(function (data) {
+            if (data == 'ok') {
+                var name = '@ViewData["GridName"]';
+                if (name.length > 0)
+                    parent.gridItemAdded(name);
+                $('#Message').data('tWindow').close();
+            }
+            else
+                ShowEidssErrorNotification(data, function () { });            
+        });
+    });
+
+    function requestChanges(url, refresh) {
+        $.ajax({
+            url: url,
+            cache: false,
+            dataType: "json",
+            type: "GET",
+            success: function (data) {
+                if (data == "Error") return;
+                if (refresh) {
+                    var query = '@Url.Action("ShowFlexibleForm", "FFPresenter", new RouteValueDictionary { { "area", "FlexForms" },{"root", ViewData["root"]},{ "key", ViewData["root"] }, {"ffpresenterId", Model.CurrentObservation} })';
+                    reloadPartialDiv(query.replace('&amp;', '&').replace('&amp;', '&'), 'FFContainer', '@ViewData["root"]');
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(jqXHR.status);
+            }
+        });
+    }
+
+    function onClear() {
+        var url = '@Url.Action("ClearFFPresenter", "FFPresenter", new RouteValueDictionary { { "area", "FlexForms" }, { "root", ViewData["root"]}, { "idfObservation", Model.CurrentObservation} })';
+        requestChanges(url.replace('&amp;', '&'), true);
+    }
+
+    function onCopy() {
+        var url = '@Url.Action("CopyFFPresenter", "FFPresenter", new RouteValueDictionary { { "area", "FlexForms" }, { "root", ViewData["root"]}, { "idfObservation", Model.CurrentObservation} })';
+        requestChanges(url.replace('&amp;', '&'), false);
+    }
+
+    function onPaste() {
+        var url = '@Url.Action("PasteFFPresenter", "FFPresenter", new RouteValueDictionary { { "area", "FlexForms" }, { "root", ViewData["root"] }, { "idfObservation", Model.CurrentObservation} })';
+        requestChanges(url.replace('&amp;', '&'), true);
+    }
+
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });
+</script>
+<div class="popupContent" style="overflow: auto">
+    @using (Html.BeginForm())
+    {  
+        <div id="FFContainer" class="yScrollable ffPopupContentSmall">
+        @foreach (var node in Model.TemplateFlexNode.ChildList)
+        {
+            Html.RenderPartial("~/Areas/FlexForms/Views/FFPresenter/FlexNodeRender.ascx", node);
+        }
+        </div>
+        <div class="popupBottomButtonPanel">
+            
+                <input type="button" class="popupButtonLeft" value='@Translator.GetMessageString("Clear")' onclick="onClear();" id='Clear'/>
+                <input type="button" class="popupButtonLeft" value='@Translator.GetMessageString("Copy")' onclick="onCopy();" id='Copy'/>
+                <input type="button" class="popupButtonLeft" value='@Translator.GetMessageString("Paste")' onclick="onPaste();" id='Paste'/>
+            
+            <input type="button" class="popupButton" onclick="parent.cancelItemAdding();" value="@Translator.GetMessageString("Cancel")" />
+            <input type="submit" class="popupButton" value="@Translator.GetMessageString("Ok")"/>
+        </div>
+
+    }
+</div>

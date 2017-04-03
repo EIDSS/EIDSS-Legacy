@@ -1,0 +1,17 @@
+﻿@model eidss.model.Reports.KZ.DiagnosticInvestigationModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/BaseFilter", Model)
+
+    @Html.Partial("Common/BaseIntervalFilter", Model)
+
+    @Html.Partial("KZ/DiagnosticInvestigationFilter", Model)
+
+    @Html.Partial("Common/ExportButtons", Model)
+}

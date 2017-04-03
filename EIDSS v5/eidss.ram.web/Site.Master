@@ -1,0 +1,46 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="eidss.ram.web.SiteMaster" %>
+
+<%@ Register assembly="DevExpress.Web.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.ASPxPanel" tagprefix="dx" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head runat="server">
+    <title></title>
+    <link href="~/Styles/Site.css" rel="stylesheet" type="text/css" />
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form runat="server">
+    <div class="page">
+        <div class="header">
+            <div class="title">
+            <a href = "~/Default.aspx" runat="server">
+                <h1 runat="server" ID="SiteHeader">
+                    <asp:Literal runat="server" Text="<%$ Resources: Common, ModuleTitle%>" />                    
+                </h1>                
+            </a>
+            </div>
+            <div class="clear hideSkiplink">
+                <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="false" IncludeStyleBlock="false" Orientation="Horizontal">
+                    <Items>
+                        <asp:MenuItem NavigateUrl="~/Report.aspx" Text="<%$ Resources: Common, Report %>"/>
+                        <asp:MenuItem NavigateUrl="~/Chart.aspx" Text="<%$ Resources: Common, Chart %>"/>
+                        <asp:MenuItem NavigateUrl="~/Map.aspx" Text="<%$ Resources: Common, Map %>"/>
+                    </Items>
+                </asp:Menu>
+            </div>
+        </div>
+        <div class="main">
+            <asp:HiddenField runat="server" ID="QueryPath" Value="AVR"/>
+        <h1 runat="server" ID="LayoutHeader">Analysis, Visualization, and Reporting Module</h1>
+        <h2 runat="server" ID="LayoutWarning"></h2>
+            <asp:ContentPlaceHolder ID="MainContent" runat="server"/>
+        </div>
+    </div>
+    <div class="footer">
+        
+</div>
+    </form>
+</body>
+</html>

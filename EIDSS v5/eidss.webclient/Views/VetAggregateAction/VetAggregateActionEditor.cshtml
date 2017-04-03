@@ -1,0 +1,26 @@
+﻿@model eidss.model.Schema.VetAggregateAction           
+@{
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+
+@using eidss.webclient.Utils
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        <input type="hidden" id="idfAggrCase" name="idfAggrCase" value="@Model.idfAggrCase" /> 
+        
+        @Html.Partial("../VetAggregateAction/DetailsContent", Model)
+                   
+        <div class="popupBottomButtonPanel">                
+            <input type="button" class="popupButton" onclick="CloseMessageWindow();" value="@Translator.GetMessageString("Cancel")"/> 
+            <input type="button" class="popupButton" onclick="SaveAggregateCase('VetAggregateCase', '@Model.idfAggrCase', '@Model.IsNew');" value="@Translator.GetMessageString("Ok")"/>                                                   
+        </div>                         
+    }
+</div>        

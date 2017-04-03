@@ -1,0 +1,70 @@
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fn_CaseSamples]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[fn_CaseSamples]
+GO
+
+/*
+select * from fn_CaseSamples(0,'en')
+*/
+
+--##SUMMARY Returns the list material in case.
+
+--##REMARKS Author: KLETKIN.
+--##REMARKS Create date: 10.02.2010
+
+--##RETURNS Doesn't use
+
+
+CREATE FUNCTION [dbo].[fn_CaseSamples]
+(
+	@idfCase bigint,
+	@LangID nvarchar(20)
+)
+RETURNS TABLE 
+AS
+RETURN 
+(
+	select
+				--Material.*,
+				Material.idfMaterial,
+				Material.idfsSpecimenType,
+				Material.idfRootParentMaterial,
+				--Material.idfParentMaterial,
+				Material.idfParty,
+				Material.idfFieldCollectedByPerson,
+				Material.idfFieldCollectedByOffice,
+				Material.idfTesting,
+				--Material.idfsSite,
+				Material.datFieldCollectionDate,
+				Material.datFieldSentDate,
+				Material.strFieldBarcode,
+				Material.idfCase,
+				Material.SpecimenType as strSpecimenName,
+				--tlbAccessionIn.idfAccessionIn,
+				tlbAccessionIn.idfsSite,
+				tlbAccessionIn.datAccession,
+				tlbAccessionIn.idfContainer,
+				tlbAccessionIn.strCondition,
+				tlbAccessionIn.idfsAccessionCondition,
+				tlbAccessionIn.idfAccesionByPerson,
+				case when MaterialOnSite.Used>0 then 1 else 0 end as Used
+				--case when tlbAccessionIn.idfMaterial is null then 0 else 1 end as Used
+	from		fnMaterialList(@LangID) Material
+	left join	(
+				select idfMaterial, count(*) as Used
+				from tlbMaterialOnSite
+				group by idfMaterial
+				)MaterialOnSite
+	on			MaterialOnSite.idfMaterial=Material.idfMaterial
+	left join	tlbAccessionIn
+	on			tlbAccessionIn.idfMaterial=Material.idfMaterial
+	where		Material.idfCase=@idfCase or MAterial.idfMonitoringSession=@idfCase
+)
+
+GO
+

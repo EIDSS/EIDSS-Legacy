@@ -1,0 +1,20 @@
+﻿@model eidss.model.Reports.AZ.MultipleDiagnosisModel
+
+<table id="DiagnosisTable" >
+    <tr>
+        <td class="medium">
+            @Html.LabelFor(m => m.CheckedDiagnosis)
+        </td>
+        <td >
+            <div class="scrollable xxxlargeInternal" >
+                @foreach (var item in Model.DiagnosisList)
+                {
+                    <input type="checkbox" id="@item.Value" value="@item.Value" name="MultipleDiagnosisFilter.CheckedDiagnosis" />
+                    @Html.Label(item.Text)
+                    <br />
+                }
+            </div>
+        </td>
+        <td></td>
+    </tr>
+</table>

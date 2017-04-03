@@ -1,0 +1,85 @@
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnHumanCaseIDByNumber]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnHumanCaseIDByNumber]
+GO
+
+--##SUMMARY Returns id of the human case with the specified number in the list of human cases entered at the specified site.
+
+--##REMARKS Author: Mirnaya O.
+--##REMARKS Create date: 28.01.2010
+
+--##RETURNS Function returns id of the human case with the specified number in the list of human cases entered at the specified site.
+
+
+/*
+--Example of a call of function:
+declare @Number		bigint
+declare @idfsSite	bigint
+select dbo.fnHumanCaseIDByNumber (@Number, @idfsSite)
+
+*/
+
+
+create	function	fnHumanCaseIDByNumber
+(
+	@Number		as int,		--##PARAM @Number  Number of the human case
+	@idfsSite	as	bigint	--##PARAM @idfsSite  Site Id
+)
+returns bigint
+as
+begin
+
+declare @res bigint
+set @res = null
+
+select			@res = tlbCurrentHumanCase.idfHumanCase
+from			tlbHumanCase as tlbCurrentHumanCase
+inner join		tlbCase as tlbCurrentCase
+on				tlbCurrentCase.idfCase = tlbCurrentHumanCase.idfHumanCase
+				and tlbCurrentCase.intRowStatus = 0
+inner join		(
+	tlbParty as tlbCurrentParty
+	inner join	tlbHuman as tlbCurrentHuman
+	on			tlbCurrentHuman.idfHuman = tlbCurrentParty.idfParty
+				)
+on				tlbCurrentParty.idfCase = tlbCurrentHumanCase.idfHumanCase
+				and tlbCurrentParty.idfsPartyType = 10072006			-- Human
+				and tlbCurrentParty.intRowStatus = 0
+where			tlbCurrentCase.idfsSite = @idfsSite
+and (	
+	select	count(*)
+	from tlbHumanCase as tlbMinHumanCase
+	inner join		tlbCase as tlbMinCase
+	on				tlbMinCase.idfCase = tlbMinHumanCase.idfHumanCase
+					and tlbMinCase.intRowStatus = 0
+	inner join		(
+		tlbParty as tlbMinParty
+		inner join	tlbHuman as tlbMinHuman
+		on			tlbMinHuman.idfHuman = tlbMinParty.idfParty
+					)
+	on				tlbMinParty.idfCase = tlbMinHumanCase.idfHumanCase
+					and tlbMinParty.idfsPartyType = 10072006		-- Human
+					and tlbMinParty.intRowStatus = 0
+	where			tlbMinCase.idfsSite = @idfsSite
+					and	(	(tlbMinCase.datEnteredDate < tlbCurrentCase.datEnteredDate)
+							or ((tlbMinCase.datEnteredDate = tlbCurrentCase.datEnteredDate)
+								and (tlbMinCase.strCaseID <= tlbCurrentCase.strCaseID))
+						)
+) = @Number
+
+
+
+return @res
+end
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

@@ -1,0 +1,46 @@
+/****** Object:  UserDefinedFunction [dbo].[fnDateCutTime]    Script Date: 05/24/2007 21:38:12 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fnDateCutTime]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[fnDateCutTime]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+--##SUMMARY Returns the date without time part.
+--##REMARKS Author: Zurin M.
+--##REMARKS Create date: 06.04.2010
+
+--##RETURNS Returns the date without time part
+
+
+
+/*
+Example of function call:
+
+SELECT dbo.fnDateCutTime(GetDate())
+
+*/
+
+
+CREATE       FUNCTION [dbo].[fnDateCutTime](
+	@Date DateTime --##PARAM @Date - date to convert
+)
+RETURNS DateTime 
+AS
+BEGIN
+	RETURN CONVERT(datetime,CONVERT(varchar,@Date,1),1)
+END	
+
+
+
+
+
+
+
+
+
+
+
+

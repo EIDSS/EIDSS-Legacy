@@ -1,0 +1,34 @@
+﻿@model eidss.model.Schema.VetCase           
+
+@using eidss.webclient.Utils;
+@using eidss.model.Schema
+@{
+    Layout = null;
+}
+
+<table>
+    <tr>
+        <td class="small">
+            @Translator.GetString(ViewBag.StrOfficePropertyName.ToString())
+        </td>
+        <td class="noIndent">                       
+            @Html.Action("InlineOrganizationPicker", "Organization", new { obj = Model, objectId = Model.idfCase, idfsOrganizationPropertyName = ViewBag.IdfsOfficePropertyName.ToString(),
+                                                                           strOrganizationPropertyName = ViewBag.StrOfficePropertyName.ToString(), 
+                                                                           idfsEmployeePropertyName = ViewBag.IdfsPersonPropertyName.ToString(),
+                                                                           strEmployeePropertyName = ViewBag.StrPersonPropertyName.ToString() })  
+        </td>
+    </tr>
+    <tr>
+        <td class="small">
+            @Translator.GetString(ViewBag.StrPersonPropertyName.ToString()) 
+        </td>
+        <td class="noIndent">   
+            @Html.Action("InlineEmployeePicker", "Employee", new { obj = Model, objectId = Model.idfCase, idfsEmployeePropertyName = ViewBag.IdfsPersonPropertyName.ToString(), 
+                                                                    strEmployeePropertyName = ViewBag.StrPersonPropertyName.ToString(), 
+                                                                    idfsOrganizationPropertyName = ViewBag.IdfsOfficePropertyName.ToString(),
+                                                                    strOrganizationPropertyName = ViewBag.StrOfficePropertyName.ToString(),})                                                                                  
+            
+        </td>
+    </tr>
+</table>
+

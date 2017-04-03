@@ -1,0 +1,137 @@
+﻿
+@using eidss.webclient.Utils
+@model eidss.webclient.Models.Reports.VetCasesModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/BaseFilter", Model)
+
+    <table id="VetCaseFilterTable" >
+        <tr>
+            <td class="medium">
+                @Html.LabelFor(m => m.StartYear)
+            </td>
+            <td class="medium">
+                <div class='tdContainer'>
+                    @{
+                        @(Html.Telerik().NumericTextBoxFor(m => m.StartYear)
+                              .Name("StartYear")
+                              .Value(Model.StartYear)
+                              .DecimalDigits(0)
+                              .NumberGroupSeparator("")
+                              .MinValue(2000)
+                              .MaxValue(2040)
+                              .HtmlAttributes(new {@class = "requiredField"})
+                              .ClientEvents(c => c.OnChange("paperForm.OnVetStartYearChanged"))
+                              )
+                    }
+                </div>
+            </td>
+            <td class="medium">
+                @Html.LabelFor(m => m.StartMonth)
+            </td>
+            <td class="medium">
+                
+                @{
+                    @(Html.Telerik().ComboBox()
+                          .Name("StartMonth")
+                          .BindTo(Model.SelectedCurrentMonthList.ConvertToSelectListItem())
+                          .ClientEvents(c => c.OnChange("paperForm.OnVetMonthChanged"))
+                          )
+                }
+                
+            </td>
+            <td></td>
+        </tr>
+        
+        <tr>
+            <td class="medium">
+                @Html.LabelFor(m => m.EndYear)
+            </td>
+            <td class="medium">
+                <div class='tdContainer'>
+                    @{
+                        @(Html.Telerik().NumericTextBoxFor(m => m.EndYear)
+                              .Name("EndYear")
+                              .Value(Model.EndYear)
+                              .DecimalDigits(0)
+                              .NumberGroupSeparator("")
+                              .MinValue(2000)
+                              .MaxValue(2040)
+                              .HtmlAttributes(new {@class = "requiredField"})
+                              .ClientEvents(c => c.OnChange("paperForm.OnVetEndYearChanged"))
+                              )
+                    }
+                </div>
+            </td>
+            <td class="medium">
+                @Html.LabelFor(m => m.EndMonth)
+            </td>
+            <td class="medium">
+                
+                @{
+                    @(Html.Telerik().ComboBox()
+                          .Name("EndMonth")
+                          .BindTo(Model.SelectedCurrentMonthList.ConvertToSelectListItem())
+                          .ClientEvents(c => c.OnChange("paperForm.OnVetMonthChanged"))
+                          )
+                }
+                
+            </td>
+            <td></td>
+        </tr>
+        
+        <tr>
+            <td class="medium">
+                @Html.LabelFor(m => m.Address.RegionId) 
+            </td>
+            <td class="medium">
+                @{
+                    @(Html.Telerik().ComboBox()
+                          .Name("Address.RegionId")
+                          .BindTo(Model.Address.GetSelectedRegions().ConvertToSelectListItem())
+                          .ClientEvents(c => c.OnChange("paperForm.OnRegionChanged"))
+                          )
+                }
+            </td>
+            <td class="medium">
+                @Html.LabelFor(m => m.Address.RayonId)
+            </td>
+            <td class="medium">
+                @{
+                    @(Html.Telerik().ComboBox()
+                          .Name("Address.RayonId")
+                          .BindTo(Model.Address.GetRayons().ConvertToSelectListItem())
+                          )
+                }
+            </td>
+            <td></td>
+        </tr>
+        
+        <tr>
+            <td class="medium">
+                @Html.LabelFor(m => m.OrganizationEnteredById)
+            </td>
+            <td class="large">
+                
+                @{
+                    @(Html.Telerik().ComboBox()
+                          .Name("OrganizationEnteredById")
+                          .BindTo(Model.OrganizationList.ConvertToSelectListItem())
+                          
+                          )
+                }
+                
+            </td>
+            <td colspan="3"></td>
+        </tr>
+        
+  
+    </table>
+
+    @Html.Partial("Common/ExportButtons", Model)
+}

@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="SiblingObject"
+        connection="TestConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="spSiblingObject_SelectDetail" />
+    </storage>
+
+    <tables>
+        <table name="SiblingObject">
+            <keys>
+                <key name="MasterSiblingID" />
+            </keys>
+            <storage>
+                <post name="spSiblingObject_Post"/>
+            </storage>
+          <actions>
+            <action name="Create" type="Create">
+              <run>
+                <params>
+                  <param name="MasterID" type="long" />
+                </params>
+                <creating>
+                  <lambda_extender target="MasterSiblingID" type="long" lambda='c => MasterID' />
+                </creating>
+              </run>
+            </action>
+          </actions>
+        </table>
+    </tables>
+
+</object>

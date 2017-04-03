@@ -1,0 +1,54 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fnMaterialList]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[fnMaterialList]
+GO
+
+/*
+select * from fnMaterialList('en')
+*/
+
+--##SUMMARY Returns the list of materials with cases.
+
+--##REMARKS Author: KLETKIN.
+--##REMARKS Create date: 16.02.2010
+
+--##RETURNS Doesn't use
+
+
+CREATE FUNCTION [dbo].[fnMaterialList]
+(
+	@LangID nvarchar(20)
+)
+RETURNS TABLE
+AS
+RETURN
+
+	select
+				--tlbMaterial.*,
+				tlbMaterial.idfMaterial,
+				tlbMaterial.idfTesting,
+				tlbMaterial.strFieldBarcode,
+				tlbMaterial.idfRootParentMaterial,
+				tlbMaterial.idfsSpecimenType,
+				tlbMaterial.datFieldCollectionDate,
+				tlbMaterial.datFieldSentDate,
+				tlbMaterial.idfFieldCollectedByOffice,
+				tlbMaterial.idfFieldCollectedByPerson,
+				tlbMaterial.idfParty,
+				tlbParty.idfCase,
+				tlbParty.idfMonitoringSession,
+				dbo.fnReference.Name AS SpecimenType
+	from		tlbMaterial
+	inner join	tlbParty
+	on			tlbParty.idfParty=tlbMaterial.idfParty and
+				tlbParty.intRowStatus=0
+	left join	dbo.fnReference(@LangID,19000087) --rftSpecimenType
+	on			dbo.fnReference.idfsReference = tlbMaterial.idfsSpecimenType
+	where		tlbMaterial.intRowStatus=0
+
+GO

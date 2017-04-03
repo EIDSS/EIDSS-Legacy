@@ -1,0 +1,153 @@
+﻿@model List<SmallHumanCaseListItem>
+@{
+    ViewBag.Title = Translator.GetMessageString("titleHumanCaseList"); 
+    Layout = "~/Views/Shared/_ListFormLayout.cshtml";
+}
+
+@using bv.model.Model.Core
+@using eidss.mobileclient.Utils
+@using eidss.model.Schema;
+
+<script language="javascript" type="text/javascript">
+    $(window).load(function () {
+        var page = $("div.content");
+        page.removeClass("content");
+        page.addClass("defaultContent");
+        SelectGridRadioButtonByRowNum("HumanCasesList", 0);     
+        if (@(ViewBag.ItemsCount) == 0) {
+            $("#btEdit1").attr('disabled', 'disabled');      
+            $("#btEdit2").attr('disabled', 'disabled');  
+            $("#btReport1").attr('disabled', 'disabled');      
+            $("#btReport2").attr('disabled', 'disabled');  
+        } 
+    });         
+</script>
+
+<script src="@Url.Content("~/Scripts/EIDSS.ListForm.js")" type="text/javascript"></script>
+
+@{ var editButtonName =  (bool)ViewBag.IsEditButtonVisible ? Translator.GetMessageString("Edit") : Translator.GetMessageString("View"); }
+
+<table class="threeParts">
+    <tr>
+        @if ((bool)ViewBag.isExtendedSearch)
+        {
+            <td>
+                <input type="button" class="smallButton" value="@Translator.GetMessageString("titleExtendedSearch")" onclick="document.location.href='@Url.Action("ExtendedSearch", "HumanCase")';" />
+            </td>
+        }
+        else
+        { 
+            <td>
+                <input type="button" class="smallButton" value="@Translator.GetMessageString("titleSearchMenu")" onclick="document.location.href='@Url.Action("SearchModeMenu", "HumanCase")';" />
+            </td>
+        }
+        <td>
+            <input type="button" class="smallButton" id="btReport1" value="@Translator.GetMessageString("titlePaperForms")" onclick="onOpenHumanReportClick();"/>
+        </td>
+        <td>
+            <input type="button" class="smallButton" id="btEdit1" value="@editButtonName" onclick="onEditHumanCaseClick();"/>
+        </td>
+    </tr>
+</table>
+
+<br />
+
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{ 
+    <p>
+        @ViewBag.ErrorMessage
+    </p>
+}
+else
+{
+    using (Html.BeginForm())
+    {
+        if (ViewBag.ItemsCount > 100)
+        {
+            <label>@Translator.GetMessageString("msgFirstHundredRecords")</label> 
+        }        
+        <table class="bvGrid" id="HumanCasesList">        
+            @if (ViewBag.ItemsCount == 0)
+            {
+                <tr>
+                    <td colspan="5">
+                        @Translator.GetMessageString("msgNoRecords")
+                    </td>
+                </tr>
+            }   
+            @{ var i = 1; }      
+            @foreach (SmallHumanCaseListItem item in Model)
+            {
+                var className = i % 2 == 0 ? "alternate" : "general";
+                <tr class="@className">
+                    <td>
+                        <input type="radio" onclick="SelectGridRadioButton('HumanCasesList', this);" />
+                        <input type="hidden" value="@item.idfCase" />
+                    </td>
+                    <td>
+                        @item.strCaseID
+                    </td>                
+                    <td>
+                        @if (item.datEnteredDate.HasValue)
+                        {
+                            <text>
+                                @item.datEnteredDate.Value.ToString("dd/MM/yyyy")
+                            </text>                        
+                        }
+                    </td>
+                    <td>
+                        @item.DiagnosisName
+                    </td>
+                </tr>
+                <tr class="@className">
+                    <td colspan="4">
+                        @if (((IObject)ViewBag.InitObject).IsHiddenPersonalData("PatientName"))
+                        {
+                            <text>
+                                ***
+                            </text> 
+                        }
+                        else
+                        {
+                            @item.PatientName
+                        }
+                    </td>
+                </tr>
+                <tr class="@className">
+                    <td colspan="4">
+                        @item.GeoLocationName
+                    </td>
+                </tr>
+                if (i == 100)
+                {
+                    break;
+                }
+                { i++; }
+            }        
+        </table>     
+    }
+}
+<br />
+
+<table class="threeParts">
+    <tr>
+        @if ((bool)ViewBag.isExtendedSearch)
+        {
+            <td>
+                <input type="button" class="smallButton" value="@Translator.GetMessageString("titleExtendedSearch")" onclick="document.location.href='@Url.Action("ExtendedSearch", "HumanCase")';" />
+            </td>
+        }
+        else
+        { 
+            <td>
+                <input type="button" class="smallButton" value="@Translator.GetMessageString("titleSearchMenu")" onclick="document.location.href='@Url.Action("SearchModeMenu", "HumanCase")';" />
+            </td>
+        }
+        <td>
+            <input type="button" class="smallButton" id="btReport2" value="@Translator.GetMessageString("titlePaperForms")" onclick="onOpenHumanReportClick();"/>
+        </td>
+        <td>
+            <input type="button" class="smallButton" id="btEdit2" value="@editButtonName" onclick="onEditHumanCaseClick();"/>
+        </td>
+    </tr>
+</table>

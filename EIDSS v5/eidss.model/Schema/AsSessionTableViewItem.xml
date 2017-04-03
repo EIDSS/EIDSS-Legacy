@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="AsSessionTableViewItem"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spASSessionTableView_SelectDetail" type="detaillist" />
+  </storage>
+
+  <tables>
+    <table name="AsSessionTableViewItem">
+      <grid>
+        <item name="id" key="true" visible="false"/>
+        <item name="strFarmCode" />
+        <item name="strSpeciesType" type="string" />        
+        <item name="strAnimalCode" />        
+        <item name="strAnimalAge" type="string"/>        
+        <item name="strColor"/>
+        <item name="strAnimalGender" type="string" />
+        <item name="strName"/>
+        <item name="strSpecimenName"/>
+        <item name="strFieldBarcode"/>
+        <item name="datFieldCollectionDate"/>
+        <item name="idfFarm" visible="false"/>
+      </grid>
+      <labels>
+        <item name="strSpecimenName" labelId="AsSessionTableViewItem.strSpecimenName"/>
+        <item name="strFieldBarcode" labelId="AsSessionTableViewItem.strFieldBarcode"/>
+        <item name="idfsAnimalAge" labelId="AsSessionTableViewItem.AnimalAge"/>
+        <item name="idfsSpecimenType" labelId="AsSessionTableViewItem.SampleType"/>
+      </labels>
+      <fields>
+        <calculated name="strAnimalAge" depends="idfsAnimalAge" type="string" lambda='c=>c.AnimalAge == null? "" : AnimalAge.name'/>
+        <calculated name="strAnimalGender" depends="idfsAnimalGender" type="string" lambda='c=>c.AnimalGender == null? "" : AnimalGender.name'/>
+        <calculated name="strSpeciesType" depends="idfsSpeciesType" type="string" lambda='c=>c.SpeciesType == null? "" : SpeciesType.name'/>
+        <storage name='ASAnimals' type='EditableList&lt;AsSessionAnimal&gt;'/>
+        <storage name='ASFarms' type='EditableList&lt;AsSessionFarm&gt;'/>
+        <storage name='ASSpecies' type='EditableList&lt;AsSessionFarmSpeciesListItem&gt;'/>
+        <storage name="ASSamples" type="EditableList&lt;AsSessionSample&gt;"/>
+        <storage name="CaseTests" type="EditableList&lt;CaseTest&gt;"/>
+        <calculated name='Animal' depends='idfAnimal' lambda='c=>(c.ASAnimals == null || c.ASAnimals.Count == 0  || !c.idfAnimal.HasValue) ? null : c.ASAnimals.Single(x=>x.idfAnimal == c.idfAnimal)' type='AsSessionAnimal'/>
+        <calculated name='Farm' depends='idfFarm' type='FarmPanel' lambda='c=>(c.ASFarms == null || c.ASFarms.Count == 0 || c.idfFarm == 0) ? null : c.ASFarms.Single(x=>x.idfFarm == c.idfFarm).Farm'/>
+        <calculated name='Sample' depends='idfMaterial' type='AsSessionSample' lambda='c=>(c.ASSamples == null || c.ASSamples.Count == 0 || !c.idfMaterial.HasValue) ? null : c.ASSamples.Single(x=>x.idfMaterial == c.idfMaterial)'/>
+      </fields>
+      <readonly>
+        <fields name="idfSpecies" predicate="c=>c.Farm == null"/>
+        <fields name="idfAnimal,AnimalAge,strColor,AnimalGender,strName,SampleType" predicate="c=>c.idfSpecies == null"/>
+        <fields name="strFieldBarcode,datFieldCollectionDate" predicate="c=>c.SampleType==null"/>
+      </readonly>
+      <relations>        
+        <!--<relation name="Farm" table="FarmPanel" internal="false" lazy="false" source="idfFarm" target="idfFarm" type="link" />-->
+      </relations>
+      <lookups>
+        <!--<lookup name="AnimalGender" table="BaseReference" section="rftAnimalGenderList" source="idfsAnimalGender" target="idfsBaseReference" />-->
+        <!--<lookup name="AnimalAge" table="BaseReference" section="rftAnimalAgeList" source="idfsAnimalAge" target="idfsBaseReference" />-->
+        <lookup name="AnimalGender" table="BaseReference" section="rftAnimalGenderList" source="idfsAnimalGender" target="idfsBaseReference" >
+          <filters>
+            <filter predicate="c => ((c.intHACode.GetValueOrDefault() &amp; (int)HACode.Livestock) != 0) || !c.intHACode.HasValue" />
+          </filters>
+        </lookup>
+        <lookup name="AnimalAge" table="AnimalAgeLookup" source="idfsAnimalAge" target="idfsReference"  >
+          <params>
+            <param name="HACode" lambda='c => c.idfsSpeciesType.ToString()' type="string" />
+          </params>
+        </lookup>
+        <lookup name="SampleType" table="BaseReference" section="rftSpecimenType" source="idfsSpecimenType" target="idfsBaseReference">
+          <filters>
+            <filter predicate="c => (c.intHACode &amp; (int)HACode.Livestock) != 0"/>
+            <filter predicate="c => c.idfsBaseReference != (long)SampleTypeEnum.Unknown"/>
+          </filters>
+        </lookup>
+        <lookup name="SpeciesType" table="BaseReference" section="rftSpeciesList" source="idfsSpeciesType" target="idfsBaseReference">
+          <filters>
+            <filter predicate="c => (c.intHACode.GetValueOrDefault() &amp; ((int?)HACode.Livestock).GetValueOrDefault()) != 0 || c.idfsBaseReference == obj.idfsSpeciesType" />
+          </filters>
+        </lookup>
+        <!--lookup name="SpeciesType" table="SpeciesTypeLookup" source="idfsSpeciesType" target="idfsBaseReference">
+          <filters>
+            <filter predicate="c => (c.intHACode.GetValueOrDefault() &amp; ((int?)HACode.Livestock).GetValueOrDefault()) != 0 || c.idfsBaseReference == obj.idfsSpeciesType" />
+          </filters>
+        </lookup-->
+      </lookups>      
+      <storage>
+        <post name="spASSessionTableView_Post"/>
+      </storage>
+      <postorder>
+        <item name="this"/>
+      </postorder>
+      <extenders>
+        <posting>
+          <custom_extender>
+            <text>
+            //  if (obj.blnNewFarm.Value)
+              //  FarmAccessor.Post(manager, obj.Farm);
+            </text>
+          </custom_extender>
+        </posting>
+        <!--<deleted>
+          <custom_extender>
+            if (obj.Sample != null)
+              obj.Sample.MarkToDelete();
+          </custom_extender>
+        </deleted>-->
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <scalar_handler class="SetScalarHandler" target="AnimalAge" field="idfsSpeciesType" lambda="(o, fld, prev_fld) => null" />
+          <lookup_handler lookup="AnimalAge" field="idfsSpeciesType" />
+          <custom_handler field="idfAnimal">
+            <text>
+              if (obj.Animal != null)
+              {
+                obj.UpdateLineAnimal();       
+              }
+            </text>
+          </custom_handler>
+          <custom_handler field="idfMaterial">
+            <text>
+              if (obj.Sample != null)
+              {
+              obj.UpdateLineSample();
+              }
+            </text>
+          </custom_handler>
+          <custom_handler field="idfFarm">
+            <text>
+              if (obj.Farm != null)
+              {
+              obj.UpdateLineFarm();
+              }
+            </text>
+          </custom_handler>
+          <lambda_handler field="SampleType" target="strSpecimenName" type="string" lambda='c=>c.SampleType == null ? "" : c.SampleType.name'/>
+        </fieldhandler>    
+      </handlers>
+      <validators>
+        <post>
+          <required_validator field="idfFarm" property="idfFarm" target="idfFarm"/>
+          <predicate_validator field="idfFarm" property="idfFarm" predicate="c=>c.idfFarm > 0" message="ErrMandatoryFieldRequired"/>
+        </post>
+        <delete>
+          <predicate_validator predicate="c => c.CaseTests.Where(i => !i.IsMarkedToDelete &amp;&amp; i.idfContainerAsSession == c.idfMaterial).Count() == 0"
+                               message="msgCantDeleteRecord" />
+        </delete>
+      </validators>
+
+      <actions>
+        <action name="CreateFromSession" type="Create">
+          <run>
+            <params>
+              <param name="session" type="AsSession"/>
+            </params>
+            <creating>
+              <value_extender target="idfMonitoringSession" value="session.idfMonitoringSession"/>
+              <value_extender target="ASFarms" value="session.ASFarms"/>
+              <value_extender target="ASSpecies" value="session.ASSpecies"/>
+              <value_extender target="ASAnimals" value="session.ASAnimals"/>
+              <value_extender target="ASSamples" value="session.ASSamples"/>
+              <value_extender target="CaseTests" value="session.CaseTests"/>
+            </creating>
+          </run>
+        </action>
+        <action name="CreateCopy" type="Create">
+          <run>
+          <params>
+            <param name="original" type="AsSessionTableViewItem"/>
+            <param name="idfAnimal" type="long?"/>
+            <param name="idfMaterial" type="long?"/>
+          </params>
+          <creating>
+            <value_extender target="idfMonitoringSession" value="original.idfMonitoringSession"/>
+            <value_extender target="ASFarms" value="original.ASFarms"/>
+            <value_extender target="ASSpecies" value="original.ASSpecies"/>
+            <value_extender target="ASAnimals" value="original.ASAnimals"/>
+            <value_extender target="ASSamples" value="original.ASSamples"/>
+            <value_extender target="CaseTests" value="original.CaseTests"/>
+            <value_extender target="idfFarm" value="original.idfFarm"/>
+            <value_extender target="idfSpecies" value="original.idfSpecies"/>
+            <value_extender target="SpeciesType" value="original.SpeciesType"/>
+            <value_extender target="idfAnimal" value="idfAnimal"/>
+            <value_extender target="idfMaterial" value="idfMaterial"/>            
+            <value_extender target="id" value="idfMaterial.HasValue ? idfMaterial.Value : idfAnimal.Value"/>
+            <custom_extender>
+              <text>
+                obj.UpdateLineFarm();
+                if (obj.idfAnimal.HasValue)
+                  obj.UpdateLineAnimal();
+                if (obj.idfMaterial.HasValue)
+                  obj.UpdateLineSample();
+              </text>
+            </custom_extender>
+          </creating>          
+          </run>
+        </action>
+      </actions>
+    </table>
+  </tables>
+
+</object>

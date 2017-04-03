@@ -1,0 +1,41 @@
+﻿@model eidss.model.Schema.LabTestAmendmentHistory
+@{
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+@using eidss.webclient.Utils;
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        @Html.Hidden("idfTestAmendmentHistory", Model.idfTestAmendmentHistory)
+                               
+        <table>    
+            <tr>
+                <td class="medium">
+                    @Html.LabelFor(m => m.strReason)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, "strReason", true)
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.idfsNewTestResult)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, "NewTestResult")
+                </td>                            
+            </tr>
+        </table>     
+        <div class="popupBottomButtonPanel">    
+            <input type="button" onclick="CloseMessageWindow();" value="@Translator.GetMessageString("Cancel")" class="popupButton"/> 
+            <input type="button" onclick="onLabTestAmendmentHistoryPickerChanged('@(Model.CaseObjectIdent)');" value="@Translator.GetMessageString("Ok")" class="popupButton"/>      
+        </div>                       
+    }           
+</div>

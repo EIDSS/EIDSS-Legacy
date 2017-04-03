@@ -1,0 +1,118 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnWeekDatediff]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnWeekDatediff]
+GO
+
+
+
+CREATE    function fnWeekDatediff (@StartDate datetime, @EndDate datetime)
+returns int
+as
+begin
+
+declare @res int
+declare @SDate datetime
+declare @EDate datetime
+declare @sgn int
+set @sgn = 1
+set @SDate = @StartDate
+set @EDate = @EndDate
+
+if @StartDate > @EndDate
+begin
+	set @sgn = -1
+	set @SDate = @EndDate
+	set @EDate = @StartDate
+end
+
+declare @SDP int
+declare @EDP int
+
+
+declare @diff int
+declare @FirstDayOfYear datetime
+declare @FirstDayOfSecondWeek datetime
+declare @FD2W int
+declare @FirstDayOfResFirstWeek datetime
+declare @FDR1W int
+
+
+set @FirstDayOfYear = dateadd(day, 1 - day(@SDate), @SDate)
+set @FirstDayOfYear = dateadd(month, 1 - month(@SDate), @FirstDayOfYear)
+set @FirstDayOfSecondWeek = @FirstDayOfYear
+set @diff = 0
+while datepart(week, @FirstDayOfSecondWeek) <= 1
+begin
+	set @diff = @diff + 1
+	set @FirstDayOfSecondWeek = dateadd(day, @diff, @FirstDayOfYear)
+end
+set @FD2W = day(@FirstDayOfSecondWeek)
+if @@DateFirst = 1
+begin
+	if @FD2W = 8
+		set @FDR1W = 1
+	else set @FDR1W = @FD2W
+end
+else begin
+	if @FD2W >= @@DateFirst
+		set  @FDR1W = @FD2W - @@DateFirst + 1
+	else set @FDR1W = @FD2W - @@DateFirst + 8
+end
+set @FirstDayOfResFirstWeek = dateadd(day, @FDR1W - 1, @FirstDayOfYear)
+
+set @diff = datediff(day, @FirstDayOfResFirstWeek, @SDate)
+
+if @diff < 0
+begin
+	set @FirstDayOfYear = dateadd(year, -1, @FirstDayOfYear)
+	set @FirstDayOfSecondWeek = @FirstDayOfYear
+	set @diff = 0
+	while datepart(week, @FirstDayOfSecondWeek) <= 1
+	begin
+		set @diff = @diff + 1
+		set @FirstDayOfSecondWeek = dateadd(day, @diff, @FirstDayOfYear)
+	end
+	set @FD2W = day(@FirstDayOfSecondWeek)
+	if @@DateFirst = 1
+	begin
+		if @FD2W = 8
+			set @FDR1W = 1
+		else set @FDR1W = @FD2W
+	end
+	else begin
+		if @FD2W >= @@DateFirst
+			set  @FDR1W = @FD2W - @@DateFirst + 1
+		else set @FDR1W = @FD2W - @@DateFirst + 8
+	end
+	set @FirstDayOfResFirstWeek = dateadd(day, @FDR1W - 1, @FirstDayOfYear)
+end
+
+set @diff = datediff(day, @FirstDayOfResFirstWeek, @SDate)
+set	@SDP = @diff / 7 + 1
+set @diff = datediff(day, @FirstDayOfResFirstWeek, @EDate)
+set	@EDP = @diff / 7 + 1
+
+set @res = @sgn * (@EDP - @SDP)
+
+
+return @res
+end
+
+
+
+
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

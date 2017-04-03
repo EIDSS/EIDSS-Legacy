@@ -1,0 +1,125 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnGeoLocationString]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnGeoLocationString]
+GO
+
+
+
+
+
+--##SUMMARY Returns text representation of geolocation record.
+
+--##REMARKS Author: Zurin M.
+--##REMARKS Create date: 25.11.2009
+
+--##RETURNS Returns text representation of geolocation record, depending on geolocation record type
+
+
+/*
+--Example of function call:
+
+DECLARE @GeoLocation BIGINT
+SELECT dbo.fnGeoLocationString (
+   'en'
+  ,@GeoLocation
+  ,null)
+
+*/
+
+
+
+
+
+CREATE        function fnGeoLocationString (
+					@LangID  nvarchar(50),  --##PARAM @LangID - lanquage ID
+					@GeoLocation bigint,   --##PARAM @GeoLocation - geolocation record ID
+					@GeoLocationType bigint = null)  --##PARAM @GeoLocationType - desired type of geolocation string. If NULL, the idfsGeoLocationType value of geolocation record is used 
+returns nvarchar(1000)
+as 
+begin
+DECLARE @Country			nvarchar(200)
+DECLARE @Region				nvarchar(200)
+DECLARE @Rayon				nvarchar(200)
+DECLARE @Latitude			nvarchar(200)
+DECLARE @Longitude			nvarchar(200)
+DECLARE @Description		nvarchar(200)
+DECLARE @PostalCode			nvarchar(200)
+DECLARE @SettlementType		nvarchar(200)
+DECLARE @Settlement			nvarchar(200)
+DECLARE @Street				nvarchar(200)
+DECLARE @House				nvarchar(200)
+DECLARE @Building			nvarchar(200)
+DECLARE @Appartment			nvarchar(200)
+DECLARE @ResidentType		nvarchar(200)
+DECLARE @Alignment			nvarchar(200)
+DECLARE @Distance			nvarchar(200)
+DECLARE @GroundType			nvarchar(200)
+
+select	@GeoLocationType = ISNULL(@GeoLocationType, tlbGeoLocation.idfsGeoLocationType),
+		@Country =  ISNULL(GeoLocation.Country,N''),
+		@Region =  ISNULL(GeoLocation.Region,N''),
+		@Rayon =  ISNULL(GeoLocation.Rayon,N''),
+		@Latitude =  ISNULL(tlbGeoLocation.dblLatitude,N''),
+		@Longitude =  ISNULL(tlbGeoLocation.dblLongitude,N''),
+		@Description =  ISNULL(tlbGeoLocation.strDescription,N''),
+		@PostalCode =  ISNULL(tlbGeoLocation.strPostCode,N''),
+		@SettlementType =  ISNULL(GeoLocation.SettlementType,N''),
+		@Settlement =  ISNULL(GeoLocation.Settlement,N''),
+		@Street =  ISNULL(tlbGeoLocation.strStreetName,N''),
+		@House =  ISNULL(tlbGeoLocation.strHouse,N''),
+		@Building =  ISNULL(tlbGeoLocation.strBuilding,N''),
+		@Appartment =  ISNULL(tlbGeoLocation.strApartment,N''),
+		@ResidentType =  ISNULL(GeoLocation.ResidentType,N''),
+		@Alignment =  ISNULL(tlbGeoLocation.dblAlignment,N''),
+		@Distance =  ISNULL(tlbGeoLocation.dblDistance,N''),
+		@GroundType =  ISNULL(GeoLocation.GroundType,N'')
+from	tlbGeoLocation 
+		inner join fnGeoLocationAsRow(@LangID) as GeoLocation
+		on tlbGeoLocation.idfGeoLocation = GeoLocation.idfGeoLocation
+where	tlbGeoLocation.idfGeoLocation = @GeoLocation
+return dbo.fnCreateGeoLocationString (
+   @LangID
+  ,@GeoLocationType
+  ,@Country
+  ,@Region
+  ,@Rayon
+  ,@Latitude
+  ,@Longitude
+  ,@Description
+  ,@PostalCode
+  ,@SettlementType
+  ,@Settlement
+  ,@Street
+  ,@House
+  ,@Building
+  ,@Appartment
+  ,@ResidentType
+  ,@Alignment
+  ,@Distance
+  ,@GroundType)
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

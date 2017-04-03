@@ -1,0 +1,114 @@
+﻿@model eidss.model.Schema.HumanCase
+@{
+    ViewBag.Title = Translator.GetMessageString("tabTitleContactList"); 
+    Layout = "~/Views/Shared/_HumanCaseDetailsLayout.cshtml";
+}
+
+@using eidss.mobileclient.Utils
+@using eidss.model.Schema;
+
+<script src="@Url.Content("~/Scripts/EIDSS.Grid.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/EIDSS.Contacts.js")" type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript">
+    $(function () {
+        var tabs = [2, 6];
+        SelectTabs(tabs);
+        SelectGridRow("ContactsList", 1);
+        if("@((bool)ViewBag.IsHiddenPersonalData)" == "True") {
+            $("#btAdd").attr('disabled', 'disabled');
+            $("#btEdit").attr('disabled', 'disabled');
+            $("#btRemove").attr('disabled', 'disabled');
+        }
+        else if (@(Model.ContactedPerson.Count) == 0) {
+            $("#btEdit").attr('disabled', 'disabled');
+            $("#btRemove").attr('disabled', 'disabled');
+        }
+    });                 
+</script>
+
+@using (Html.BeginForm())
+{
+    var editButtonName = (bool)ViewBag.CanUpdate ? Translator.GetMessageString("Edit") : Translator.GetMessageString("View");
+    <table class="threeParts">
+        <tr>
+            @if ((bool)ViewBag.CanUpdate)
+            {
+                <td>
+                    <input type="button" id="btAdd" value="@Translator.GetMessageString("Add")" onclick="document.location.href='@Url.Action("ContactDetails", "ContactedCasePerson", new { rootKey = Model.idfCase, contactedCasePersonId = "0", getFromSession = false })';" />         
+                </td>
+            }
+            <td>
+                <input type="button" id="btEdit" value="@editButtonName" onclick="onEditContactClick('@Model.idfCase');" />         
+            </td>
+            @if ((bool)ViewBag.CanUpdate)
+            {
+                <td>
+                    <input type="button" id="btRemove" value="@Translator.GetMessageString("Remove")" onclick="onRemoveContactClick('@Model.idfCase');" />                                  
+                </td>
+            }
+        </tr>
+    </table>  
+    <br />
+    <table class="bvGrid" id="ContactsList">
+        <tr>
+            <th></th>
+            <th>
+                @Translator.GetString("strName")
+            </th>
+            <th>
+                @Translator.GetString("strPersonContactType")
+            </th>
+            <th>
+                @Translator.GetString("datDateOfLastContact")
+            </th>
+            <th>
+                @Translator.GetString("strPlaceInfo")
+            </th>
+        </tr>
+        @if (Model.ContactedPerson.Count == 0)
+        {
+            <tr>
+                <td colspan="5">
+                    @Translator.GetMessageString("msgNoRecords")
+                </td>
+            </tr>
+        }
+        @foreach (ContactedCasePerson person in Model.ContactedPerson)
+        { 
+            <tr>
+                <td>
+                    <input type="radio" onclick="SelectGridRowByRadioButton('ContactsList', this);" />
+                    <input type="hidden" value="@person.idfContactedCasePerson" />
+                </td>
+                <td>
+                    @if ((bool)ViewBag.IsHiddenPersonalData)
+                    {
+                        <text>
+                            ***
+                        </text>    
+                    }
+                    else
+                    {
+                        @person.strFullName
+                    }
+                </td>
+                <td>
+                    @person.strPersonContactType
+                </td>
+                <td>
+                    @if (person.datDateOfLastContact.HasValue)
+                    {
+                        <text>
+                            @person.datDateOfLastContact.Value.ToString("dd/MM/yyyy")
+                        </text>                        
+                    }
+                </td>
+                <td>
+                    @person.strPlaceInfo
+                </td>
+            </tr>
+        }        
+    </table> 
+    <br />
+}

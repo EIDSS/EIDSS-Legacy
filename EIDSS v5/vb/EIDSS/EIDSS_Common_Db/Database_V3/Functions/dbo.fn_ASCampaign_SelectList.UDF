@@ -1,0 +1,65 @@
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+ 
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fn_ASCampaign_SelectList]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fn_ASCampaign_SelectList]
+GO
+
+
+
+--##SUMMARY Returns list of AS campaigns.
+
+--##REMARKS Author: Zurin M.
+--##REMARKS Create date: 10.06.2010
+
+--##RETURNS Returns list of AS campaigns.
+
+
+
+/*
+select * from fn_ASCampaign_SelectList ('en')
+*/
+
+
+CREATE     Function fn_ASCampaign_SelectList(
+	@LangID as nvarchar(50) --##PARAM @LangID - language ID
+)
+returns table 
+as
+return
+SELECT idfCampaign
+      ,CampaignType.Name as strCampaignType
+      ,idfsCampaignType
+      ,CampaignStatus.Name as strCampaignStatus
+      ,idfsCampaignStatus
+      ,datCampaignDateStart
+      ,datCampaignDateEnd
+      ,strCampaignID
+      ,strCampaignName
+      ,strCampaignAdministrator
+FROM tlbCampaign
+LEFT JOIN fnReference(@LangID,19000116) CampaignType  ON
+	tlbCampaign.idfsCampaignType = CampaignType.idfsReference 
+LEFT JOIN fnReference(@LangID,19000115) CampaignStatus  ON
+	tlbCampaign.idfsCampaignStatus = CampaignStatus.idfsReference 
+WHERE 
+		tlbCampaign.intRowStatus = 0
+
+
+
+
+
+
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

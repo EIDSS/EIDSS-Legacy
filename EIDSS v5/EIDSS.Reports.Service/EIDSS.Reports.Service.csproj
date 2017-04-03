@@ -1,0 +1,255 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4C852A40-DB01-49D7-B33E-0C6AE4F16851}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EIDSS.Reports.Service</RootNamespace>
+    <AssemblyName>EIDSS.Reports.Service</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\EIDSS.Reports.Service.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Release\EIDSS.Reports.Service.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Charts.v11.1.Core, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Data.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Printing.v11.1.Core, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common">
+      <HintPath>..\dlls\ApplicationBlocks\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling">
+      <HintPath>..\dlls\ApplicationBlocks\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging">
+      <HintPath>..\dlls\ApplicationBlocks\Microsoft.Practices.EnterpriseLibrary.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ObjectBuilder">
+      <HintPath>..\dlls\ApplicationBlocks\Microsoft.Practices.ObjectBuilder.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\EIDSSAssemblyInfo.cs">
+      <Link>EIDSSAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Trace\TraceHelper.cs" />
+    <Compile Include="Trace\TraceTraceListener.cs" />
+    <Compile Include="WcfFacade\IReportFacade.cs" />
+    <Compile Include="WcfFacade\ReportDataException.cs" />
+    <Compile Include="WcfFacade\ReportFacade.cs" />
+    <Compile Include="WcfService\DataBaseChecker.cs" />
+    <Compile Include="WcfService\HostKeeper.cs" />
+    <Compile Include="WindowsService\ReportService.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WindowsService\ReportServiceInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="LoggingConfiguration.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="ThirdPartyComponents\Eidss.Report.Autotester.exe.config" />
+    <None Include="ThirdPartyComponents\InstallUtil.exe.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ThirdPartyComponents\Eidss.Report.Autotester.exe" />
+    <Content Include="ThirdPartyComponents\InstallUtil.exe" />
+    <Content Include="ThirdPartyComponents\InstallUtilLib.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\bltoolkit.3.2.dev\BLToolkit.4.csproj">
+      <Project>{0C325F5D-E50E-4340-8724-D29896CCC583}</Project>
+      <Name>BLToolkit.4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\bv.common\bv.common.csproj">
+      <Project>{BEE76B17-720D-4B65-996A-5712912B3ACF}</Project>
+      <Name>bv.common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\bv.model\bv.model.csproj">
+      <Project>{9067327E-1960-4326-ACB9-D982DDBEAA76}</Project>
+      <Name>bv.model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\bv.winclient\bv.winclient.csproj">
+      <Project>{B0163672-F328-4D02-9B71-FB698EDAF815}</Project>
+      <Name>bv.winclient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.core\eidss.core.csproj">
+      <Project>{BF545ECD-F673-4C71-9362-57C01DF13062}</Project>
+      <Name>eidss.core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.model\eidss.model.csproj">
+      <Project>{E4B87B63-D5F2-4F9F-B39C-A7714896D1DE}</Project>
+      <Name>eidss.model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.winclient\eidss.winclient.csproj">
+      <Project>{428C1EFE-F1A1-441A-9C59-50AE279F887F}</Project>
+      <Name>eidss.winclient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\EIDSS\EIDSS.FlexibleForms\EIDSS.FlexibleForms.csproj">
+      <Project>{8040D091-58E8-4FBE-8F46-D5200EEDAF69}</Project>
+      <Name>EIDSS.FlexibleForms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\EIDSS\EIDSS.Reports\EIDSS.Reports.csproj">
+      <Project>{7122E0E0-019F-494E-8012-155FB3553E14}</Project>
+      <Name>EIDSS.Reports</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\EIDSS\EIDSS_Common\EIDSS_Common.vbproj">
+      <Project>{119CC05A-2F6C-4FC8-AC74-79BB76E3C1C0}</Project>
+      <Name>EIDSS_Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\EIDSS\EIDSS_Common_Db\EIDSS_Common_Db.vbproj">
+      <Project>{B66DEB84-FBE3-44E4-9B72-1E459CE0E50D}</Project>
+      <Name>EIDSS_Common_Db</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\EIDSS\EIDSS_Common_Forms\EIDSS_Common_Forms.vbproj">
+      <Project>{389B8F77-0B61-46DB-B752-1ECDC502267D}</Project>
+      <Name>EIDSS_Common_Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\Shared\bvwin_common\bvwin_common.vbproj">
+      <Project>{B3E5BA6B-FAA3-4A7D-8236-3F8842D61CD4}</Project>
+      <Name>bvwin_common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\Shared\bv_common\bvcommon.vbproj">
+      <Project>{BA2844A8-F629-4B02-ACD6-B60063E4D27F}</Project>
+      <Name>bvcommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\Shared\bv_dbcommon\bvdb_common.vbproj">
+      <Project>{6C48BB93-277D-4804-B280-F6130E29EB81}</Project>
+      <Name>bvdb_common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(ProjectDir)ThirdPartyComponents\InstallUtil.exe" "$(TargetDir)InstallUtil.exe" /y
+copy "$(ProjectDir)ThirdPartyComponents\InstallUtil.config" "$(TargetDir)InstallUtil.config" /y
+copy "$(ProjectDir)ThirdPartyComponents\InstallUtilLib.dll" "$(TargetDir)InstallUtilLib.dll" /y
+copy "$(ProjectDir)ThirdPartyComponents\Eidss.Report.Autotester.exe" "$(TargetDir)Eidss.Report.Autotester.exe" /y
+copy "$(ProjectDir)ThirdPartyComponents\Eidss.Report.Autotester.exe.config" "$(TargetDir)Eidss.Report.Autotester.exe.config" /y
+
+</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

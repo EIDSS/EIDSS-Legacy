@@ -1,0 +1,57 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fn_UserGroup_SelectList]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fn_UserGroup_SelectList]
+GO
+
+
+
+/*
+select * from dbo.fn_UserGroup_SelectList('ru')
+*/
+
+
+
+
+CREATE  function dbo.fn_UserGroup_SelectList(@LanguageID as nvarchar(50))
+returns table 
+as
+return
+	select		tlbEmployeeGroup.idfEmployeeGroup,
+				tlbEmployeeGroup.idfsEmployeeGroupName,
+				ISNULL(GroupName.Name,tlbEmployeeGroup.strName) as strName,
+				tlbEmployeeGroup.strDescription
+	from		tlbEmployeeGroup
+	inner join	tlbEmployee
+	on			tlbEmployee.idfEmployee=tlbEmployeeGroup.idfEmployeeGroup
+	left join	fnReference(@LanguageID, 19000022) GroupName -- translated group name
+	on			GroupName.idfsReference = tlbEmployeeGroup.idfsEmployeeGroupName
+	where		tlbEmployee.intRowStatus=0 and
+				tlbEmployeeGroup.idfEmployeeGroup<>-1
+				
+/*
+	select	TOP 100 PERCENT
+				EE.idfEmployee, 
+				EE.idfsEmployee_Type, 
+				EG.strName as [Name], 
+				EG.strDescription as [Description]
+
+	from		EmployeeGroup EG,
+				Employee EE
+	where		EE.idfEmployee = EG.idfEmployee
+				--
+				and EE.idfEmployee <> '{DEFA0000-0000-0000-0000-000000000000}'
+				and IsNull(EE.intRowStatus, 0) = 0
+ 
+	order by	EG.strName
+*/
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

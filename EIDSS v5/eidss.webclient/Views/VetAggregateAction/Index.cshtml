@@ -1,0 +1,41 @@
+﻿@using eidss.webclient.Utils
+@using eidss.model.Schema
+@model eidss.model.Schema.VetAggregateActionListItem.Accessor
+@{
+    ViewBag.Title = Translator.GetMessageString("titleVetAggregateActionsList");
+    ViewBag.FormCode = "V13";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="@Url.Content("~/Scripts/Aggregate/CommonScript.js")" type="text/javascript"></script>
+
+<input type="hidden" id="grid_selecteditem" />
+
+<table class="listForm">
+    <tr>
+        <td class="lfSearchPanelTd">
+            <div id="searchpanel" class="customSearchPanel">
+                @using (Html.BeginForm())
+                {                             
+                    @Html.SearchPanel(Model, (bv.model.Model.Core.FilterParams)ViewBag.Filter,(bv.model.Model.Core.IObject)ViewBag.InitObject)                  
+                    <input type="button" value="@Translator.GetMessageString("Search")" class="spSearchButton" id="AltSearch"/>
+                    <input type="button" value="@Translator.GetMessageString("Clear")" onclick="ClearSearch();" />                                                 
+                }
+            </div>
+        </td>
+        <td class="lfButtonTd">
+            <input type="button" id="btHideListFormSearch" value="<<" onclick="onHideListFormSearchPanel();" class="lfButton" />
+            <input type="button" id="btShowListFormSearch" value=">>" onclick="onShowListFormSearchPanel();" class="lfButton invisible" />
+        </td>
+        <td class="lfGridTd">                                       
+        @using (var manager = bv.model.BLToolkit.DbManagerFactory.Factory.Create(eidss.model.Core.EidssUserContext.Instance))
+        {
+            Html.BvFullGrid<VetAggregateActionListItem.VetAggregateActionListItemGridModel, VetAggregateActionListItem.VetAggregateActionListItemGridModelList>(
+                    Session.SessionID,
+                    new VetAggregateActionListItem.VetAggregateActionListItemGridModelList(AutoGridRoots.VetAggregateActionList, Model.SelectListT(manager, (bv.model.Model.Core.FilterParams)ViewBag.Filter))
+                   )
+                .Render();                                                                 
+        }
+        </td>
+    </tr>
+</table>

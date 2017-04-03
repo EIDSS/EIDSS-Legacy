@@ -1,0 +1,41 @@
+﻿@model eidss.model.Schema.PatientListItem.Accessor
+@{
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+<div class="popupContent searchPopupContent">      
+    <input type="hidden" id="grid_selecteditem" />    
+    <div class="fillAll">                                          
+        <div class="collapsePanel collapsePanelRight">                                                                      
+            <input type="button" id="btHideSearch" value="<<" onclick="onHideSearchPanel()" class="popupButton lfButton" />
+            <input type="button" id="btShowSearch" value=">>" onclick="onShowSearchPanel()" class="popupButton lfButton invisible" />                
+        </div>
+        <div class="searchContentTop">
+            <!--div class="titleNumber">H03</div-->
+            <input type="button" value="@Translator.GetMessageString("Select")" onclick="@ViewBag.OnPatientPickerSelect" class="popupButton" />
+        </div>
+        <div class="searchContentLeft">
+            <div id="searchpanel" class="customSearchPanel popupSearchPanel">
+                @using (Html.BeginForm())
+                { 
+                    @Html.SearchPanel(Model, (bv.model.Model.Core.FilterParams)ViewBag.Filter, (bv.model.Model.Core.IObject)ViewBag.InitObject)
+                    @*@Html.Partial(@"../Search/SearchPanel", Model)                *@
+                    <input type="button" value="@Translator.GetMessageString("Search")" onclick="onPatientPickerSearchAndOrder()" class="popupButton"/>
+                    <input type="button" value="@Translator.GetMessageString("Clear")" onclick="ClearSearch(true);" />                                   
+                }
+            </div>
+        </div>
+        <div class="mainSearchContent searchLeftIndent">    
+            @(Html.BvSelectGrid<PatientListItem.PatientListItemGridModel, PatientListItem.PatientListItemGridModelList>(
+                Session.SessionID,
+                (PatientListItem.PatientListItemGridModelList)ViewBag.GridItems,
+                eidss.webclient.Configurations.GridDisplayRowsSettings.PATIENT_LIST)
+                .Sortable(sorting => sorting.OrderBy(ordering => ordering.Add("strLastName"))))                                       
+        </div>              
+        <div class="searchContentBottom">                            
+            <input type="button" onclick="CloseMessageWindow();" value="@Translator.GetMessageString("Close")" class="popupButton"/> 
+        </div>   
+    </div>    
+</div>      

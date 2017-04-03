@@ -1,0 +1,26 @@
+﻿@model eidss.model.Schema.GeoLocation
+           
+@using eidss.mobileclient.Utils
+
+<table>    
+    <tr>
+        <td>
+            @Translator.GetString("strLongitude")&nbsp;(&#177;&#35;.&#35;&#35;&#35;&#35;&#35;&#176;)            
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvNumeric(Model, "dblLongitude")            
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Translator.GetString("strLatitude")&nbsp;(&#177;&#35;.&#35;&#35;&#35;&#35;&#35;&#176;)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvNumeric(Model, "dblLatitude")
+        </td>
+    </tr>    
+</table>    

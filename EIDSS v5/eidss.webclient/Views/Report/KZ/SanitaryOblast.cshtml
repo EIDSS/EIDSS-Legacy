@@ -1,0 +1,19 @@
+﻿@model eidss.model.Reports.KZ.SanitaryModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/BaseFilter", Model)
+
+    @Html.Partial("Common/BaseIntervalFilter", Model)
+
+    @Html.Partial("KZ/RegionFilter", Model.RegionFilter)
+
+    @Html.Partial("KZ/SanitaryFilter", Model)
+
+    @Html.Partial("Common/ExportButtons", Model)
+}

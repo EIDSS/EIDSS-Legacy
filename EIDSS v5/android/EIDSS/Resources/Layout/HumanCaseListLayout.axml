@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+  
+  <Button
+    android:id="@+id/NewHumanCaseButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"    
+    android:text="@string/New"
+    />
+  <Button
+    android:id="@+id/SynchronizeHumanCaseButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_toRightOf="@id/NewHumanCaseButton"
+    android:layout_alignTop="@id/NewHumanCaseButton"
+    android:text="@string/SynchronizeHumanCase"
+    />
+  <Button
+      android:id="@+id/OkButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_toRightOf="@id/SynchronizeHumanCaseButton"
+      android:layout_alignTop="@id/SynchronizeHumanCaseButton"
+      android:text="@string/Close"
+    />
+  <TextView
+          android:id="@+id/labelCaseStatusFilterLookup"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/CaseStatusFilter"
+          android:layout_below="@id/OkButton" />
+  <Spinner
+      android:id="@+id/CaseStatusFilterLookup"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/labelCaseStatusFilterLookup"/>
+  <ImageView
+      android:id="@+id/Footer"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="2px"
+      android:layout_marginRight="16px"
+      android:src="@drawable/line"
+      android:layout_below="@id/CaseStatusFilterLookup"
+      />
+
+  <ListView android:id="@+id/List"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_below="@id/Footer"
+  />
+
+</RelativeLayout>

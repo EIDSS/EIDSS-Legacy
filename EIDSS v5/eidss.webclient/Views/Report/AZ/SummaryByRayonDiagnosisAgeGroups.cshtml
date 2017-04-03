@@ -1,0 +1,17 @@
+﻿@model eidss.model.Reports.AZ.SummaryByRayonDiagnosisAgeGroupsModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/BaseFilter", Model)
+
+    @Html.Partial("Common/BaseIntervalFilter", Model)
+
+    @Html.Partial("AZ/MultipleDiagnosisFilter", Model.MultipleDiagnosisFilter)
+
+    @Html.Partial("Common/ExportButtons", Model)
+}

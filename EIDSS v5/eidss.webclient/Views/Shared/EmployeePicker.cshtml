@@ -1,0 +1,55 @@
+﻿@model eidss.model.Schema.PersonListItem.Accessor
+@{
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+
+<div class="popupContent searchPopupContent">     
+    <input type="hidden" id="grid_selecteditem" />    
+    <div class="fillAll">  
+        <div class="collapsePanel collapsePanelRight">                                                                      
+            <input type="button" id="btHideSearch" value="<<" onclick="onHideSearchPanel()" class="popupButton lfButton" />
+            <input type="button" id="btShowSearch" value=">>" onclick="onShowSearchPanel()" class="popupButton lfButton invisible" />                
+        </div>
+        <div class="searchContentTop">                                          
+            <!--div class="titleNumber">A08</div-->
+            <input type="button" value="@Translator.GetMessageString("Select")" onclick="onEmployeeSearchPickerSelect('@ViewBag.ObjectId', '@ViewBag.idfsEmployeePropertyName', 
+                '@ViewBag.strEmployeePropertyName', '@ViewBag.IdfsOrganizationPropertyName', '@ViewBag.ShowInInternalWindow')" class="popupButton" />                             
+        </div>
+        <div class="searchContentLeft">
+            <div id="searchpanel" class="customSearchPanel popupSearchPanel">
+                @using (Html.BeginForm())
+                { 
+                    <div class="spMainContainer">
+                        <table class="spTableContainer">
+                            <tr>
+                                <td>
+                                    <label class="spLabel">@Translator.GetString("lblOrganizationAbbreaviation")</label>
+                                    <div class="spTextBoxContainer">
+                                        <input type="text" class="spTextBox readonlyField" readonly="readonly" value="@ViewBag.OrganizationAbbreaviation"/>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    @Html.SearchPanel(Model, (bv.model.Model.Core.FilterParams)ViewBag.Filter, (bv.model.Model.Core.IObject)ViewBag.InitObject)
+                    @*@Html.Partial(@"../Search/SearchPanel", Model)                *@
+                    <input type="button" value="@Translator.GetMessageString("Search")" onclick="onEmployeePickerSearchAndOrder('@ViewBag.ObjectId', '@ViewBag.IdfsOrganizationPropertyName', '@ViewBag.ShowInInternalWindow')" class="popupButton"/>
+                    <input type="button" value="@Translator.GetMessageString("Clear")" onclick="ClearSearch(true);" />                                             
+                }
+            </div>
+        </div>
+        <div class="mainSearchContent searchLeftIndent">                      
+            @(Html.BvSelectGrid<PersonListItem.PersonListItemGridModel, PersonListItem.PersonListItemGridModelList>(
+                Session.SessionID,
+                (PersonListItem.PersonListItemGridModelList)ViewBag.GridItems,
+                eidss.webclient.Configurations.GridDisplayRowsSettings.PERSON_LIST)
+                .Sortable(sorting => sorting.OrderBy(ordering => ordering.Add("strFamilyName"))))                  
+        </div>              
+        <div class="searchContentBottom">                            
+            <input type="button" onclick="CloseEmployeePicker('@ViewBag.ShowInInternalWindow');" value="@Translator.GetMessageString("Close")" class="popupButton"/> 
+        </div>   
+    </div>    
+</div>      

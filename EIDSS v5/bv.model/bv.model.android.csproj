@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9067327E-1960-4326-ACB9-D982DDBEAA76}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>bv.model</RootNamespace>
+    <AssemblyName>bv.model</AssemblyName>
+    <TargetFrameworkVersion>v2.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\android\EIDSS\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;MONO</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\android\EIDSS\bin\Release\</OutputPath>
+    <DefineConstants>TRACE;MONO</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\BvAssemblyInfo.cs">
+      <Link>BvAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="BLToolkit\BvCacheAspect.cs" />
+    <Compile Include="BLToolkit\CacheScope.cs" />
+    <Compile Include="BLToolkit\DbManagerProxy.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="BLToolkit\RemoteProvider\Client\RemoteSqlDataAdapter.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="BLToolkit\RemoteProvider\Client\RemoteSqlClient.cs" />
+    <Compile Include="BLToolkit\RemoteProvider\Client\RemoteSqlCommand.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="BLToolkit\RemoteProvider\Client\RemoteSqlConnection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="BLToolkit\RemoteProvider\Client\RemoteSqlDataProvider.cs" />
+    <Compile Include="BLToolkit\RemoteProvider\Client\RemoteSqlTransaction.cs" />
+    <Compile Include="BLToolkit\RemoteProvider\IRemoteSql.cs" />
+    <Compile Include="BLToolkit\RemoteProvider\SerializationSurrogates.cs" />
+    <Compile Include="BLToolkit\RemoteProvider\Server\RemoteSqlInstance.cs" />
+    <Compile Include="BLToolkit\RemoteProvider\Server\RemoteSqlServer.cs" />
+    <Compile Include="BLToolkit\Serializer.cs" />
+    <Compile Include="Helpers\ActionsHelper.cs" />
+    <Compile Include="Helpers\ListHelper.cs" />
+    <Compile Include="Helpers\DateHelper.cs" />
+    <Compile Include="Helpers\ParsingHelper.cs" />
+    <Compile Include="Model\Core\ActionListMetaItem.cs" />
+    <Compile Include="Model\Core\AfterPostEvent.cs" />
+    <Compile Include="Model\Core\BvModelException.cs" />
+    <Compile Include="Model\Core\CanNotDeleteException.cs" />
+    <Compile Include="Model\Core\ActionMetaItem.cs" />
+    <Compile Include="Model\Core\BvSelectList.cs" />
+    <Compile Include="Model\Core\CompareModel.cs" />
+    <Compile Include="Model\Core\IObjectValidator.cs" />
+    <Compile Include="Model\Core\FormSize.cs" />
+    <Compile Include="Model\Core\IBarcodeFactory.cs" />
+    <Compile Include="Model\Core\IGridModelList.cs" />
+    <Compile Include="Model\Core\IGridModelItem.cs" />
+    <Compile Include="Model\Core\IObjectDelete.cs" />
+    <Compile Include="Model\Core\GridMetaItem.cs" />
+    <Compile Include="Model\Core\FilterParams.cs" />
+    <Compile Include="Model\Core\IReportFactory.cs" />
+    <Compile Include="Model\Core\ISearchPanel.cs" />
+    <Compile Include="Model\Core\ISecurityManager.cs" />
+    <Compile Include="Model\Core\IUser.cs" />
+    <Compile Include="Model\Core\ModelUserContext.cs" />
+    <Compile Include="Model\Core\ObjectOperation.cs" />
+    <Compile Include="Model\Core\PermissionException.cs" />
+    <Compile Include="Model\Core\IObjectPermissions.cs" />
+    <Compile Include="Model\Core\IObjectAccessor.cs" />
+    <Compile Include="Model\Core\DbModelException.cs" />
+    <Compile Include="Model\Core\ObjectAccessor.cs" />
+    <Compile Include="Model\Core\ParamsCountException.cs" />
+    <Compile Include="Model\Core\SelectMode.cs" />
+    <Compile Include="Model\Core\TypeMismatchException.cs" />
+    <Compile Include="Model\Core\SearchPanelLocation.cs" />
+    <Compile Include="Model\Core\EditorType.cs" />
+    <Compile Include="Model\Core\SearchPanelMetaItem.cs" />
+    <Compile Include="Model\Core\IObjectMeta.cs" />
+    <Compile Include="Model\Core\IObject.cs" />
+    <Compile Include="Model\Core\IObjectCreator.cs" />
+    <Compile Include="Model\Core\IObjectPost.cs" />
+    <Compile Include="Model\Core\IObjectSelectDetail.cs" />
+    <Compile Include="Model\Core\IObjectSelectDetailList.cs" />
+    <Compile Include="Model\Core\IObjectSelectList.cs" />
+    <Compile Include="Model\Core\ValidationEvent.cs" />
+    <Compile Include="Model\Core\ValidationEventArgs.cs" />
+    <Compile Include="Model\Core\ValidationModelException.cs" />
+    <Compile Include="Model\ExprUtils.cs" />
+    <Compile Include="Model\Extenders\AutoIncrementExtender.cs" />
+    <Compile Include="Model\Extenders\GetDateTimeNowExtender.cs" />
+    <Compile Include="Model\Extenders\GetNewIDExtender.cs" />
+    <Compile Include="Model\Extenders\GetNextNumberExtender.cs" />
+    <Compile Include="Model\Extenders\GetSiteIDExtender.cs" />
+    <Compile Include="Model\Extenders\ICreateExtender.cs" />
+    <Compile Include="Model\Extenders\IGetScalarExtender.cs" />
+    <Compile Include="Model\Extenders\ISelectExtender.cs" />
+    <Compile Include="Model\Extenders\ObjectCreateExtender.cs" />
+    <Compile Include="Model\Extenders\SelectLookupExtender.cs" />
+    <Compile Include="Model\Handlers\SetNowHandler.cs" />
+    <Compile Include="Model\Handlers\SetScalarHandler.cs" />
+    <Compile Include="Model\Validators\BaseFieldValidator.cs" />
+    <Compile Include="Model\Validators\DuplicateValueValidator.cs" />
+    <Compile Include="Model\Validators\IFieldValidator.cs" />
+    <Compile Include="Model\Validators\PredicateValidator.cs" />
+    <Compile Include="Model\Validators\ReferenceDuplicateValueValidator.cs" />
+    <Compile Include="Model\Validators\RequiredChildListValidator.cs" />
+    <Compile Include="Model\Validators\RequiredValidator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Schema\BVObjectModel.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schema\BVWinClientModel.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Schema\XsltGenerator\bykey.xslt" />
+    <Content Include="Schema\XsltGenerator\EmptyGenerator.xslt">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\XsltGenerator\invisible.xslt" />
+    <Content Include="Schema\XsltGenerator\required.xslt" />
+    <Content Include="Schema\XsltGenerator\web.xslt" />
+    <Content Include="Schema\XsltGenerator\WinClientGenerator.xslt">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\XsltGenerator\permissions.xslt" />
+    <Content Include="Schema\XsltGenerator\create.xslt" />
+    <Content Include="Schema\XsltGenerator\dispose.xslt" />
+    <Content Include="Schema\XsltGenerator\extenders.xslt" />
+    <Content Include="Schema\XsltGenerator\fields.xslt" />
+    <Content Include="Schema\XsltGenerator\fnlist.xslt">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\XsltGenerator\globals.xslt" />
+    <Content Include="Schema\XsltGenerator\handlers.xslt" />
+    <Content Include="Schema\XsltGenerator\list.xslt" />
+    <Content Include="Schema\XsltGenerator\lookups.xslt">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\XsltGenerator\meta.xslt">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\XsltGenerator\ObjectGenerator.xslt">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\XsltGenerator\other.xslt">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\XsltGenerator\post.xslt" />
+    <Content Include="Schema\XsltGenerator\readonly.xslt" />
+    <Content Include="Schema\XsltGenerator\relations.xslt" />
+    <Content Include="Schema\XsltGenerator\sections.xslt" />
+    <Content Include="Schema\XsltGenerator\select.xslt" />
+    <Content Include="Schema\XsltGenerator\utils.xslt" />
+    <Content Include="Schema\XsltGenerator\validators.xslt">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\Attributes\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\bltoolkit.3.2.dev\BLToolkit.4.android.csproj">
+      <Project>{0C325F5D-E50E-4340-8724-D29896CCC583}</Project>
+      <Name>BLToolkit.4.android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\bv.common\bv.common.android.csproj">
+      <Project>{BEE76B17-720D-4B65-996A-5712912B3ACF}</Project>
+      <Name>bv.common.android</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+</Project>

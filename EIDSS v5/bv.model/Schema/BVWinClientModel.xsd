@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema 
+    attributeFormDefault="unqualified" 
+    elementFormDefault="qualified" 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="urn:schemas-bv:clientmodel"
+    targetNamespace="urn:schemas-bv:clientmodel">
+
+    <xs:simpleType name="bv-type">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="BaseDetailPanel" />
+            <xs:enumeration value="BaseGroupPanel" />
+            <xs:enumeration value="BaseDetailListPanel" />
+            <xs:enumeration value="BaseListPanel" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:element name="client">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="panels" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="panel" minOccurs="1" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:attribute name="object" type="xs:string" use="required" />
+                                    <xs:attribute name="type" type="tns:bv-type" use="required" />
+                                    <xs:attribute name="formid" type="xs:string" use="optional" />
+                                    <xs:attribute name="classname" type="xs:string" use="optional" />
+                                    <xs:attribute name="relatedlists" type="xs:string" use="optional" />
+                                    <xs:attribute name="is_singletone" type="xs:boolean" use="optional" />                                 
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="generator" type="xs:string" use="required" />
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

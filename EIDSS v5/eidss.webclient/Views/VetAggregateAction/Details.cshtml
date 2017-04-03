@@ -1,0 +1,34 @@
+﻿@model eidss.model.Schema.VetAggregateAction
+@{
+    ViewBag.Title = Translator.GetMessageString("titleVetAggregateActionTitle");
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+    
+}
+
+@using eidss.webclient.Utils;
+
+<script type="text/javascript">
+    $(window).load(function () {
+        if ($("#ErrorMessage").val()) {
+            $("#ShowVetAggregateActionReportClick").val('');
+        }
+        if ($("#ShowVetAggregateActionReportClick") && $("#ShowVetAggregateActionReportClick").val() == '1') {
+            var lang = GetSiteLanguage();
+            var url = "/" + lang + "/VetAggregateAction/VetAggregateActionReport";
+            ShowVetAggregateActionReport(url);
+        }
+    });           
+</script>
+
+
+@using (Html.BeginForm())
+{        
+    <input id='SaveAndExitClick' name='SaveAndExitClick' type='hidden' value='@ViewData["SaveAndExitClick"]' />   
+    <input type="hidden" id="ShowVetAggregateActionReportClick" name='ShowVetAggregateActionReportClick' value="@ViewBag.ShowVetAggregateActionReportClick" />
+            
+    @Html.IdentificationAndHeartbeat("idfAggrCase", Model.idfAggrCase) 
+      
+    <div class="detailsWindow largeDetailsWindow">
+        @Html.Partial("../VetAggregateAction/DetailsContent", Model)
+    </div>    
+}

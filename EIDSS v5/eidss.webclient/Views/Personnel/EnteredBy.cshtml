@@ -1,0 +1,35 @@
+﻿@model eidss.model.Schema.VetCase
+           
+@using eidss.webclient.Utils
+
+<table class="bordered">
+    <tr>
+        <td class="sectionName" colspan="2">            
+            @Translator.GetMessageString("titleDataEntry")       
+        </td>
+    </tr>
+    <tr>
+        <td >
+            @Html.LabelFor(m => m.idfsSite)
+        </td>
+        <td >
+            @Html.BvEditbox(Model, "strSiteCode")
+        </td>
+    </tr>
+    <tr>
+        <td class="small">
+           @Translator.GetMessageString("lblOfficer")
+        </td>
+        <td >
+            @Html.BvEditbox(Model, "strPersonEnteredByName")
+        </td>
+    </tr>
+    <tr>
+        <td  class="small">
+           @Translator.GetMessageString("lblEntryDate")
+        </td>
+        <td >
+            @Html.BvEditbox(Model, "strReadOnlyEnteredDate")
+        </td>
+    </tr>
+</table>

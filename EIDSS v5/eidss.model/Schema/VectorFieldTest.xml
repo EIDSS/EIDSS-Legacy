@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="VectorFieldTest"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spVectorFieldTest_SelectDetail" type="detaillist" />        
+  </storage>
+  
+  <tables>
+    <table name="VectorFieldTest">      
+      <grid>
+        <item name="idfPensideTest" key="true" visible="false"/>
+        <item name="strPensideTestTypeName"/> <!-- для группировки -->
+        <item name="strVectorID" /> <!-- Pool/Vector ID -->
+        <item name="strFieldBarcode" /> <!-- Field Sample ID -->
+        <!--<item name="strVectorTypeName" readonly="true" />-->
+        <item name="strVectorSubTypeName" type="string"/>
+        <item name="strSpecimenName" /> <!-- Sample Type -->
+        <item name="datFieldCollectionDate" />        
+        <item name="datTestDate" />
+        <item name="idfsPensideTestCategory"/>        
+        <item name="idfTestedByPerson"/>
+        <item name="idfTestedByOffice"/>
+        <item name="idfsPensideTestResult"/>
+        <item name="idfsDiagnosis"/>                    
+      </grid>      
+      <labels>        
+        <item labelId="VectorSample.strFieldBarcode" name="strFieldBarcode"/>
+        <item labelId="idfPensideTestTestedByPerson" name="idfTestedByPerson"/>
+        <item labelId="idfPensideTestTestedByOffice" name="idfTestedByOffice"/>
+        <item labelId="idfPensideTestTestDate" name="datTestDate"/>
+        <item labelId="idfPensideTestTestCategory" name="idfsPensideTestCategory"/>
+        <item labelId="TestName" name="strPensideTestTypeName"/>
+        <!--<item labelId="idfPensideTestTestType" name="strPensideTestTypeName"/>-->
+        <item labelId="Vector.strVectorID" name="strVectorID"/>     
+        <item labelId="idfsSpecimenType" name="strSpecimenName"/>
+        <item labelId="idfsVectorType" name="strVectorTypeName"/>
+        <item labelId="idfsVectorSubType" name="strVectorSubTypeName"/>
+        <item labelId="FT.strDisease" name="idfsDiagnosis"/>        
+      </labels>      
+      <keys>
+        <key name="idfPensideTest"/>
+      </keys>
+      <fields>       
+        <storage name="tempint" type="long"/>
+        <storage name="strVectorSubTypeName" type ="string"/>
+      </fields>
+      <readonly>
+        <fields name="datTestDate,idfsPensideTestCategory,idfTestedByPerson,idfTestedByOffice,idfsPensideTestResult,idfsDiagnosis" predicate="c => false" />
+        <fields name="*" predicate="c => true" />
+      </readonly>
+      <relations>
+        <relation name="TypeFieldTestToResultMatrix" type="child" 
+                  table="TypeFieldTestToResultMatrixLookup" 
+                  source="idfsPensideTestResult" 
+                  target="" internal="false" lazy="false"/>
+        <relation name="Diagnosis2PensideTestMatrix" type="child"
+                  table="Diagnosis2PensideTestMatrixLookup"
+                  source="idfsDiagnosis"
+                  target="" internal="false" lazy="false"/>
+      </relations>
+      <lookups>
+        <lookup name="PensideTestType" table="BaseReference" section="rftPensideTestType" source="idfsPensideTestType" target="idfsBaseReference" />
+        <lookup name="PensideTestCategory" table="BaseReference" section="rftPensideTestCategory" source="idfsPensideTestCategory" target="idfsBaseReference" />
+        <lookup name="TestedByPerson" table="PersonLookup" source="idfTestedByPerson" target="idfPerson" >
+          <params>
+            <param name="OfficeID" const="null" />
+            <param name="ID" const="null" />
+          </params>
+        </lookup>
+        <lookup name="TestedByOffice" table="OrganizationLookup" source="idfTestedByOffice" target="idfInstitution">
+          <params>
+            <param name="ID" const="null" />
+          </params>
+        </lookup>       
+      </lookups>
+      <storage>
+        <post />
+        <delete />
+        <candelete />  
+      </storage>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfPensideTest" class="AutoIncrementExtender" />
+        </creating>
+        <created>
+          <lambda_extender target="idfTestedByPerson" type="long" lambda="c => (long)EidssUserContext.User.EmployeeID"/>
+          <lambda_extender target="idfTestedByOffice" type="long" lambda="c => (long)EidssUserContext.User.OrganizationID"/>
+          <db_lambda_extender target="tempint" type="long" lambda="(c,m) => { _LoadTypeFieldTestToResultMatrix(m,c); return c.tempint; }" />
+          <db_lambda_extender target="tempint" type="long" lambda="(c,m) => { _LoadDiagnosis2PensideTestMatrix(m,c); return c.tempint; }" />
+        </created>        
+      </extenders>
+      <handlers>
+        <fieldhandler>   
+        </fieldhandler>
+      </handlers>
+      <validators>
+        <post>
+          <required_validator target="idfMaterial"/>
+        </post>
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <remove type="Edit"/>
+          <remove type="Delete"/>
+        </standard>
+        <action name="SetResult" type="Container">
+          <visual alignment="Right" panel="Group" enablePredicate="(c, p, b) => c != null &amp;&amp;  !c.ReadOnly ">
+            <regular caption="titleFieldTestsSetResult" tooltip="titleFieldTestsSetResult"  icon=""/>
+          </visual>
+          <permissions type="VsSession.Update"/>
+        </action>
+        <action name="SetResultEmpty" type="Action">
+          <visual alignment="Right" panel="Group" enablePredicate="(c, p, b) => c != null &amp;&amp;  !c.ReadOnly">
+            <regular caption="titleFieldTestsSetResultEmpty" tooltip="titleFieldTestsSetResultEmpty"  icon=""/>
+          </visual>
+          <permissions type="VsSession.Update"/>
+          <hierarchy container="SetResult"/>
+        </action>
+        <action name="ClearTestResults" type="Action">
+          <visual alignment="Right" panel="Group" enablePredicate="(c, p, b) => c != null &amp;&amp;  !c.ReadOnly">
+            <regular caption="titleClearTestResults" tooltip="titleClearTestResults"  icon=""/>
+          </visual>
+          <permissions type="VsSession.Update"/>
+          <hierarchy container="SetResult"/>
+        </action>
+      </actions>
+    </table>    
+  </tables>
+
+</object>

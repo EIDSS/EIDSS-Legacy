@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="VsSession"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get />
+  </storage>
+
+  <tables>
+    <table name="VsSession">
+      <properties auditObject="daoVectorSurveillanceSession" auditTable="tlbVectorSurveillanceSession" permissionObject="VsSession"/>
+      <help win="vss_form"/>
+      <fields>
+        <!-- тип вектора, выбранный для ввода векторов-->
+        <storage name="idfsVectorType" type="long?"/>
+        <storage name="strVectorType" type="string"/>
+        <storage name="idfsDiagnosis" type="long?"/>
+        <!-- фейковое поле, значение которого меняется, чтобы запустить перерасчёт-->
+        <storage name="blnNeedRecalculateFields" type="bool"/>
+        <!-- триггер пересчёта полевых тестов -->
+        <storage name="blnNeedRecalculateFieldTests" type="bool"/>
+
+        <calculated name="IsPoolVectorType" type="bool"
+                  depends="idfsVectorType"
+                  lambda="c => c.VectorTypesLookup.Where(m => m.idfsBaseReference == c.idfsVectorType).FirstOrDefault() != null ? c.VectorTypesLookup.Where(m => m.idfsBaseReference == idfsVectorType).FirstOrDefault().bitCollectionByPool : false" />
+
+        <calculated name="strVectorsCalculated" type="string"
+                  depends="blnNeedRecalculateFields"
+                  lambda='c => c.SessionToVectorType.Where(m => m.IsChecked == 1).Aggregate("", 
+                                (a,b) => (a == String.Empty ? String.Empty : a + ", ") 
+                                + b.VectorTypeNationalName)' />
+
+        <storage name="intSummaryQuantity" type="int" />
+
+        <storage name="datSummaryCollectionFrom" type="DateTime?" />
+        <storage name="datSummaryCollectionTo" type="DateTime?" />
+
+        <storage type="List&lt;eidss.model.Model.SummaryTable&gt;" name="FieldTestsSummary"/>
+        <storage type="List&lt;eidss.model.Model.SummaryTable&gt;" name="LabTestsSummary"/>
+
+        <calculated name="IsClosed" type="bool" depends="idfsVectorSurveillanceStatus" dependonpost="yes"
+                        lambda="c => (c.idfsVectorSurveillanceStatus == (long)VsStatusEnum.Closed) " />
+        <!--&amp;&amp; !c.IsDirty-->
+      </fields>
+      <readonly>
+        <fields name="strSessionID,strVectorsCalculated,intSummaryQuantity,intSummaryCollectionEffort,datSummaryCollectionFrom,datSummaryCollectionTo,datCloseDate" predicate="c => true"/>
+        <fields name="VsStatus" predicate="c => c.ReadOnly" />
+        <fields name="*" predicate="c => c.ReadOnly || c.IsClosed" />
+      </readonly>
+      <relations>
+        <relation name="Diagnosis" table="DiagnosisItem" internal="true" type="child" source="idfVectorSurveillanceSession" target="idfVectorSurveillanceSession" lazy="false" />
+        <relation name="SessionToVectorType" table="SessionToVectorTypeItem" internal="true" type="child" source="idfVectorSurveillanceSession" target="idfVectorSurveillanceSession" lazy="false" />
+        <relation name="PoolsVectors" table="Vector" internal="false" type="child" source="idfVectorSurveillanceSession" target="idfVectorSurveillanceSession" lazy="false" />
+        <relation name="Location" table="GeoLocation" internal="false" type="link" source="idfLocation" target="idfGeoLocation" lazy="false" />
+        <relation name="Samples" table="VectorSample" internal="false" type="child" lazy="false" source="idfVectorSurveillanceSession" target="idfVectorSurveillanceSession" />
+        <relation name="FieldTests" table="VectorFieldTest" internal="false" type="child" source="idfVectorSurveillanceSession" target="idfVectorSurveillanceSession" lazy="false" />
+        <relation name="LabTests" table="VectorLabTest" internal="false" type="child" source="idfVectorSurveillanceSession" target="" lazy="false" />
+      </relations>
+      <lookups>
+        <lookup name="VsStatus" table="BaseReference" section="rftVectorSurveillanceSessionStatus" source="idfsVectorSurveillanceStatus" target="idfsBaseReference" notaddempty="true" />
+        <lookup name="VsVectorType" table="BaseReference" section="rftVectorType" source="idfsVectorType" target="idfsBaseReference" />
+        <lookup name="PensideTestType" table="PensideTestLookup" source="idfsVectorType" target="idfsVectorType" />
+
+        <lookup name="Diagnoses" table="DiagnosisLookup" source="idfsDiagnosis" target="idfsDiagnosis">
+              <filters>
+                <filter predicate="c => ((c.intHACode &amp; (int)HACode.Vector) != 0) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+                <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+              </filters>
+        </lookup>
+        <lookup name="VectorTypes" table="VectorTypeLookup" source="idfsVectorType" target="idfsBaseReference" />
+      </lookups>
+      <storage>
+        <post />
+        <delete />
+        <!--TODO решить, как правильно сделать-->
+        <!--<candelete />-->
+      </storage>
+      <postorder>
+        <item name="Location" />
+        <item name="this"/>
+        <item name="SessionToVectorType"/>
+        <item name="PoolsVectors"/>
+        <item name="Samples"/>
+        <item name="FieldTests"/>
+      </postorder>
+      <deleteorder>
+        <item name="FieldTests"/>
+        <item name="Samples"/>
+        <item name="PoolsVectors"/>
+        <item name="SessionToVectorType"/>
+        <item name="this"/>
+        <item name="Location" />
+      </deleteorder>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfVectorSurveillanceSession" class="GetNewIDExtender" />
+          <lambda_extender target="datStartDate" type="DateTime" lambda="c => DateTime.Now" />
+          <lambda_extender target="strSessionID" type="string" lambda='c => "(new)"' />
+          <lambda_extender target="Location" type="GeoLocation" lambda="c => LocationAccessor.CreateWithCountry(manager, obj)" />
+        </creating>
+        <created>
+          <lambda_extender target="VsStatus" type="BaseReference" lambda="c => c.VsStatusLookup.Where(l => l.idfsBaseReference == (long)VsStatusEnum.InProgress).SingleOrDefault()"/>
+          <custom_extender>
+            <text>
+              obj.VsVectorTypeLookup.ForEach(c =>
+              {
+              var item = SessionToVectorTypeItem.Accessor.Instance(obj.m_CS).CreateNewT(manager, obj);
+              item.idfsVectorType = c.idfsBaseReference;
+              item.idfVectorSurveillanceSession = obj.idfVectorSurveillanceSession;
+              item.IsChecked = 0;
+              item.VectorTypeDefaultName = c.strDefault;
+              item.VectorTypeNationalName = c.name;
+              obj.SessionToVectorType.Add(item);
+              });
+            </text>
+          </custom_extender>
+          <custom_extender>
+            <text>
+              obj.InitRoutines(manager);
+            </text>
+          </custom_extender>
+        </created>
+        <loading>
+        </loading>
+        <loaded>
+          <!--lambda_list_extender list="PoolsVectors" type="EditableList&lt;VectorSample&gt;" target="Samples" lambda="c => c.Samples"/>
+          <lambda_list_extender list="PoolsVectors" type="EditableList&lt;Vector&gt;" target="Vectors" lambda="c => c.PoolsVectors"/>
+          <lambda_list_extender list="PoolsVectors" type="EditableList&lt;VectorFieldTest&gt;" target="FieldTests" lambda="c => c.FieldTests"/>
+          <lambda_list_extender list="PoolsVectors" type="EditableList&lt;VectorLabTest&gt;" target="LabTests" lambda="c => c.LabTests"/-->
+          <lambda_list_extender list="Samples" type="EditableList&lt;VectorSample&gt;" target="SessionSamples" lambda="c => c.Samples"/>
+          <lambda_list_extender list="Samples" type="EditableList&lt;Vector&gt;" target="Vectors" lambda="c => c.PoolsVectors"/>
+          <lambda_list_extender list="Samples" type="EditableList&lt;VectorFieldTest&gt;" target="FieldTests" lambda="c => c.FieldTests"/>
+          <lambda_list_extender list="Samples" type="EditableList&lt;VectorLabTest&gt;" target="LabTests" lambda="c => c.LabTests"/>
+          <custom_extender>
+            <text>
+              obj.InitRoutines(manager);
+            </text>
+          </custom_extender>
+          <!-- пересчёт FF-данных и вычислимых полей -->
+          <!-- раздаём семплам родительские векторы -->
+          <custom_extender>
+            <text>
+              foreach (var vector in obj.PoolsVectors)
+              {
+              vector.RecalculateVectorSpecificData();
+              foreach (var sample in obj.Samples)
+              {
+                if (sample.idfVector != vector.idfVector) continue;
+                sample.ParentVector = vector;
+                sample.isPool = vector.IsPoolVectorType;
+              }
+              }
+            </text>
+          </custom_extender>
+        </loaded>
+        <posting>
+        </posting>
+        <posted>
+        </posted>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <lambda_list_handler field="strSessionID" target="strSessionID" list="PoolsVectors" type="string" lambda="c => c.strSessionID" />
+          <lambda_handler field="idfsVectorType" target="strVectorType" type="string" lambda="c => c.idfsVectorType.HasValue ? c.VsVectorTypeLookup.FirstOrDefault(t => t.idfsBaseReference == c.idfsVectorType).name : String.Empty" />
+          <lambda_handler field="idfsVectorSurveillanceStatus" target="datCloseDate" type="DateTime?" lambda="c => c.IsClosed ? new DateTime?(DateTime.Now) : null" >
+          </lambda_handler>
+          <custom_handler field="blnNeedRecalculateFieldTests">
+            <text>
+              using (var manager = DbManagerFactory.Factory.Create(ModelUserContext.Instance))
+              {
+              obj.RefreshFieldTests(manager);
+              obj.RefreshLabTests();
+              }
+            </text>
+          </custom_handler>
+        </fieldhandler>
+      </handlers>
+      <validators>
+        <change>
+          <predicate_validator field="datStartDate" predicate="c => PredicateValidator.CompareDates(c.datStartDate, DateTime.Now)" message="datStartDate_CurrentDate_msgId" />
+          <predicate_validator field="intCollectionEffort" predicate="c => c.intCollectionEffort > 0" message="intCollectionEffort_CurrentDate_msgId" />
+        </change>
+        <post>
+          <required_validator target="strSessionID"/>
+          <required_validator target="idfsVectorSurveillanceStatus" property="VsStatus"/>
+          <required_validator target="datStartDate"/>
+          <required_validator target="Location.LocationDisplayName"/>
+          <required_validator target="intCollectionEffort"/>
+        </post>
+        <delete>
+          <predicate_validator field="" property="" predicate="v => v.Samples.Where(s => !s.IsMarkedToDelete).Count() == 0" message="msgCantDeleteRecord" />
+          <predicate_validator field="" property="" predicate="v => v.PoolsVectors.Where(s => !s.IsMarkedToDelete).Count() == 0" message="msgCantDeleteRecord" />
+          <predicate_validator field="" property="" predicate="v => v.FieldTests.Where(ft => ft.idfsPensideTestResult != null).Count() == 0" message="msgCantDeleteRecord" />
+
+          <!--TODO решить, как правильно сделать-->
+          <!--<custom_validator method="CheckCanDelete" />-->
+        </delete>
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+        </standard>
+      </actions>
+    </table>
+    <table name="DiagnosisItem">
+      <keys>
+        <key name="idfVectorSurveillanceSession" />
+      </keys>
+      <storage>
+      </storage>
+    </table>
+    <table name="SessionToVectorTypeItem">
+      <keys>
+        <key name="idfsVectorType" />
+      </keys>
+      <storage>
+        <post name="spVectorSurveillanceSessionToVectorType_Post" />
+      </storage>
+    </table>
+  </tables>
+
+</object>

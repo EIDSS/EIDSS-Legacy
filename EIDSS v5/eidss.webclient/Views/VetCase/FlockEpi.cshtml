@@ -1,0 +1,28 @@
+﻿@model eidss.model.Schema.VetCase
+@using bv.common.Configuration
+@using eidss.webclient.Areas.HerdEpi
+@using eidss.webclient.Utils
+
+@(Html.Telerik().TabStrip()
+    .Name("EpiSection")
+    .ClientEvents(events => events.OnSelect("onAvianTabSelect"))    
+    .Items(items =>
+    {
+        items.Add()
+            .Text(Translator.GetMessageString("strFlockSpeciesInfo"))
+            .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "strFlockSpeciesInfo" } : new { })
+            .Content(
+                @<text>
+                    <div class="smallTabPanelContent">
+                        @Html.FlockSpeciesList(Model.idfCase, Model.Farm.ObjectIdent + "FarmTree", Model.Farm.FarmTree, Model.Farm.IsReadOnly("FarmTree") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit))
+                    </div>                
+                </text>);
+        items.Add()
+            .Text(Translator.GetMessageString("sectionTitleAvianEpiInfo"))
+            .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "sectionTitleAvianEpiInfo" } : new { })
+            .Content(
+                @<text>
+                    <div class="yScrollable smallTabPanelContent" id="AvianEpiFlexForm"></div>
+                </text>);
+    })
+    .SelectedIndex(0))

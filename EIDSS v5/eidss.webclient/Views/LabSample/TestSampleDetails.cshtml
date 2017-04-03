@@ -1,0 +1,50 @@
+﻿@model eidss.model.Schema.LabTestSample
+           
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+
+<div class="largeTabPanelContent">
+    <table>
+        <tr>
+            <td class="large">
+                @Html.LabelFor(m => m.strBarcode)
+            </td>            
+            <td class="noIndent">                            
+                <table>
+                    <tr>                                                                       
+                        <td class="fillAll">
+                            @Html.BvEditbox(Model, "strBarcode")
+                        </td>
+                        <td class="selectButton">
+                            <input type="button" class="coloredButton" onclick="OpenPopup(GetUrlPrefixLanguage() + 'LabSample/Details?id=' + @Model.idfContainer, ' ');" value="..." />
+                        </td>
+                    </tr>                                
+                </table> 
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.SpecimenType)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, "SpecimenType")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.datFieldCollectionDate)
+            </td>
+            <td>
+                @Html.BvDatebox(Model, "datFieldCollectionDate")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.HumanName)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, "HumanName")
+            </td>
+        </tr>
+    </table>
+</div>

@@ -1,0 +1,52 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fn_LabTest_SelectList]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fn_LabTest_SelectList]
+GO
+
+
+
+-- select * from fn_LabTest_SelectList('en')
+
+
+CREATE function [dbo].[fn_LabTest_SelectList](@LangID as nvarchar(50))
+returns table
+as
+return
+
+select		
+				idfTesting,
+				idfsTestType,
+				idfObservation,
+				TestType,
+				TestResult,
+				TestCategory,
+				idfBatchTest,
+				BatchTestCode,
+				datPerformedDate,
+				--blnVisible,
+				[Status],
+
+
+				strBarcode,
+				SpecimenType,
+				idfCase,
+
+
+				CaseID,
+				DiagnosisName,
+				idfsDiagnosis,
+				idfsSpecimenType,
+				DepartmentName,
+				datFieldCollectionDate,
+				strFieldBarcode,
+				HumanName,
+				AnimalName,
+
+				idfsBatchStatus
+FROM dbo.fnTestListOptimized(@LangID)  
+
+

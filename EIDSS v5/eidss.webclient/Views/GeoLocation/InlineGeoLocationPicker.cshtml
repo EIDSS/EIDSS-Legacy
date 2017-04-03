@@ -1,0 +1,23 @@
+﻿@model eidss.model.Schema.GeoLocation
+@using eidss.webclient.Utils
+
+<script language="javascript" type="text/javascript">
+    $(document.getElementById('GeoLocationPicker')).ready(function () {
+        var btGeoLocationPicker = $("#buttonGeoLocationPicker");        
+        var isReadOnlyForEdit = '@(ViewBag.IsReadOnlyForEdit)';
+        if (isReadOnlyForEdit.toString().toLowerCase() == 'true') {
+            btGeoLocationPicker.attr('disabled', 'disabled');
+        }        
+    });  
+</script>
+
+<table>
+    <tr>
+        <td>
+            @Html.BvEditbox(Model, "strReadOnlyAdaptiveFullName")       
+        </td>
+        <td class="selectButton">
+            <input type="button" id="buttonGeoLocationPicker" class="coloredButton" onclick="ShowGeoLocationPicker(@Model.idfGeoLocation);" value=".." />
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,43 @@
+set ANSI_NULLS ON
+set QUOTED_IDENTIFIER ON
+GO
+
+IF  EXISTS (SELECT TOP 1 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].fnFFCheckForSaveTemplateDeterminants')) Drop Function [dbo].fnFFCheckForSaveTemplateDeterminants
+GO
+
+-- =============================================
+-- Author:		Leonov E.N.
+-- Create date:
+-- Description:
+-- =============================================
+Create Function dbo.fnFFCheckForSaveTemplateDeterminants
+(
+	@idfsFormTemplate BigInt	
+	,@determinantList Nvarchar(600)
+)
+RETURNS @ResultTable Table
+(
+		[ErrorMessage] nvarchar(400)	
+)
+AS
+BEGIN
+	
+	declare	@ErrorMessage nvarchar(400)
+	
+	Declare @country Bigint, @idfsFormType Bigint
+		
+	-- не должно быть совпадений UNI-шаблон+страна
+	Select Top 1 @country = Cast([Value] As Bigint) From [dbo].[fnsysSplitList](@determinantList, null, null)
+	Select @idfsFormType = [idfsFormType] From dbo.ffFormTemplate Where idfsFormTemplate = @idfsFormTemplate
+	
+	If Exists(Select Top 1 1 From dbo.ffDeterminantValue DV
+	          Where idfsFormTemplate In 	(Select Distinct idfsFormTemplate From dbo.ffFormTemplate FT Where idfsFormType = @idfsFormType And idfsFormTemplate <> @idfsFormTemplate)
+				And DV.idfsGISBaseReference = @country) BEGIN
+		Set @ErrorMessage = 'Determinant_Save_Has_Not_Unique_UNI';
+	END	
+	
+	Insert into @ResultTable(ErrorMessage) Values (@ErrorMessage);	
+	
+	Return;
+End
+Go

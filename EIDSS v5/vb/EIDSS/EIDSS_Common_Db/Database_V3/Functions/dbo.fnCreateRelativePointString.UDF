@@ -1,0 +1,99 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnCreateRelativePointString]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnCreateRelativePointString]
+GO
+
+
+
+
+--##SUMMARY Builds relative point geoplocation string from passed compound parts basing on template specific for passed @LangID.
+--##SUMMARY This function is designed for maximum speed execution so it assumes that passed compound parts is NOT NULL.
+--##SUMMARY The statement that calls this function must provide NOT NULL values for relative point geoplocation string compound parts,
+--##SUMMARY in other case NULL will be returned
+
+
+--##REMARKS Author: Zurin M.
+--##REMARKS Create date: 25.11.2009
+
+--##RETURNS String representation of relative point geoplocation
+
+
+/*
+--Example of function call:
+
+SELECT dbo.fnCreateRelativePointString (
+  'en'
+  ,'Georgia'
+  ,'Imereti'
+  ,'Khoni'
+  ,''
+  ,'Khoni'
+  ,'20,1'
+  ,'46,345'
+  ,'0,01'
+  ,''
+  ,''
+  )
+
+*/
+
+
+
+Create   function fnCreateRelativePointString(
+	@LangID			nvarchar(50),  --##PARAM @LangID - lanquage ID
+	@Country		nvarchar(200) = '', --##PARAM @Country - Country name
+	@Region			nvarchar(200) = '', --##PARAM @Region - Region name
+	@Rayon			nvarchar(200) = '', --##PARAM @Rayon - Rayon name
+	@SettlementType	nvarchar(200) = '', --##PARAM @SettlementType - Settlement type
+	@Settlement		nvarchar(200) = '', --##PARAM @Settlement -Settlement
+	@Aligment		nvarchar(200) = '', --##PARAM @Aligment - Azimuth of direction from settlement
+	@Distance		nvarchar(200) = '', --##PARAM @Distance - Distance from settlement
+	@Description	nvarchar(200) = '', --##PARAM @Description - description
+	@GroundType		nvarchar(200) = ''  --##PARAM @GroundType - Ground Type
+)
+returns nvarchar(1000)
+as
+begin
+
+declare @TempStr nvarchar(1000)
+
+select	@TempStr = strRelativePointString 
+from	trtLanguageFormat
+where	idfsLanguage = dbo.fnGetLanguageCode(@LangID)
+
+IF (LEN(@Country)>0 OR LEN(@Region)>0 OR LEN(@Rayon)>0 OR LEN(@SettlementType)>0
+OR LEN(@Settlement)>0 OR LEN(@Aligment)>0 OR LEN(@Description)>0 OR LEN(@GroundType)>0 ) 
+BEGIN 
+set @TempStr = REPLACE(@TempStr, '@Country', @Country)
+set @TempStr = REPLACE(@TempStr, '@Region', @Region)
+set @TempStr = REPLACE(@TempStr, '@Rayon', @Rayon)
+set @TempStr = REPLACE(@TempStr, '@SettlementType', @SettlementType)
+set @TempStr = REPLACE(@TempStr, '@Settlement', @Settlement)
+set @TempStr = REPLACE(@TempStr, '@Aligment', @Aligment)
+set @TempStr = REPLACE(@TempStr, '@Distance', @Distance)
+set @TempStr = REPLACE(@TempStr, '@Descriprion', @Description)
+set @TempStr = REPLACE(@TempStr, '@GroundType', @GroundType)
+END
+ELSE
+SET @TempStr = ''
+
+return @TempStr
+
+end
+
+
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

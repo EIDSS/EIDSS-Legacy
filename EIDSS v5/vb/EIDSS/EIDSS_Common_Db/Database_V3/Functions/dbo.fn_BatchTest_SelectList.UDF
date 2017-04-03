@@ -1,0 +1,52 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fn_BatchTest_SelectList]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fn_BatchTest_SelectList]
+GO
+
+/*
+	select * from fn_BatchTest_SelectList('en')
+*/
+
+create function [dbo].[fn_BatchTest_SelectList](@LangID as nvarchar(50))
+returns table 
+as
+return
+
+select 
+		batch.idfBatchTest,--a.idfActivity,
+		batch.strBarcode,
+		batch.idfsTestType,
+		batch.idfsBatchStatus,
+		--!!!!!!!!!!!!!!!TestCode = a.strActivityCode,
+		TestName = TestType.Name,
+		batch.datPerformedDate,
+		batch.datValidatedDate,
+		TestsInBatchCount = Tests.Testcount,
+		StatusName = StatusType.Name
+
+from		tlbBatchTest batch
+left join
+			(
+			select		tlbTesting.idfBatchTest,count(*) as TestCount
+			from		tlbTesting
+			where		tlbTesting.intRowStatus=0
+			group by	tlbTesting.idfBatchTest
+			)Tests
+on			Tests.idfBatchTest=batch.idfBatchTest
+left join	dbo.fnReference(@LangID, 19000097 ) TestType --rftTestType
+on			TestType.idfsReference = batch.idfsTestType
+left join	dbo.fnReference(@LangID, 19000001 ) StatusType --rftActivityStatus
+on			StatusType.idfsReference = batch.idfsBatchStatus
+where		batch.intRowStatus=0 
+			and batch.idfsSite=dbo.fnSiteID()
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

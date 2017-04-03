@@ -1,0 +1,202 @@
+﻿@model eidss.model.Schema.AsSessionSummary
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+}
+<script language="javascript" src='@Url.Content("~/Scripts/jquery.form.js")' type="text/javascript"></script>
+<script language="javascript" src='@Url.Content("~/Scripts/ASSession/SummaryItem.js")' type="text/javascript"></script>
+@if (ViewBag.Close)
+{
+    <script language="javascript" type="text/javascript">
+    $(document).ready(function() {
+        window.opener.updateTotals();
+        window.opener.gridItemAdded('@ViewData["name"]');
+        window.close();
+    });
+    </script>
+}
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        $('div[class="bottomButtonPanel detailsBottomPanel"]').hide();
+        $('#Diagnosis').enable(false);
+        $('#Samples').enable(false);
+        var msg = '@ViewBag.ErrorText';
+        if (msg.length > 0)
+            ShowEidssErrorNotification(msg, function () { });    
+    });
+    function ShowFarmPicker() {
+        ShowSearchPicker('@Url.Action("Select", "Farm", new RouteValueDictionary { { "area", "" } })', EIDSS.BvMessages['titleSelectFarm'] + ' (V04)');
+    }
+
+    function EditFarm() {
+        var idFarm = $("input[type='hidden'][name$='idfFarm']");
+        var idfFarm = idFarm.val();
+        if (idfFarm.length == 0)
+            idfFarm = '0';
+        var url = '@Url.Action("AsSessionFarmDetails", "Farm", new RouteValueDictionary { { "area", "" } })' + '/' + idfFarm;
+        OpenPopup(url, "Edit Farm");
+    }
+
+
+    function SelectSamples() {
+        var url = '@Url.Action("SampleTypes", "Summary", new RouteValueDictionary { { "idfMonitoringSessionSummary", Model.idfMonitoringSessionSummary } })';
+        ShowSearchPicker(url, "Select Sample Type");
+    }
+
+    function samplesSelected(data) {
+        $('#strSamples').html(data);
+        $('#Message').data('tWindow').close();        
+    }
+
+    function SelectDiagnosis() {
+        var url = '@Url.Action("Diagnosis", "Summary", new RouteValueDictionary { { "idfMonitoringSessionSummary", Model.idfMonitoringSessionSummary } })';
+        ShowSearchPicker(url, "Select Diagnosis", 400);
+
+    }
+
+    function GetSpeciesList(idFarmActual, idFarm) {
+        //(long idfAsSessionSummary, long? idfFarmActual, long? idfFarm)
+        var url = '@Url.Action("GetSpeciesList", "Summary")';
+        $.ajax({
+            url: url,
+            cache: false,
+            dataType: "json",
+            type: "GET",
+            data: {
+                idfAsSessionSummary: '@Model.idfMonitoringSessionSummary',
+                idfFarmActual: idFarmActual,
+                idfFarm: idFarm
+            },
+            success: function (data) {
+                if (data.toString().indexOf('Error') == -1)
+                    load(data);
+                else
+                    alert(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(jqXHR.status);
+            }
+        });
+    }
+
+
+</script>
+<div class="popupContentInNewWin">
+    <h2>@Translator.GetMessageString("AddSummaryWindowTitle")</h2>
+    @using eidss.webclient.Utils
+    @using (Html.BeginForm())
+    {    
+        @Html.IdentificationAndHeartbeat("idfMonitoringSessionSummary", Model.idfMonitoringSessionSummary)
+        @Html.BvHidden(Model, "idfFarmActual")
+        @Html.BvHidden(Model, "idfFarm")        
+        <table>
+            <tr>
+                <td>@Html.LabelFor(m => m.idfFarm)
+                </td>
+                @*            <td>@Html.BvEditbox(Model, "strFarmCode")
+            </td>
+*@
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td class='fillAll' style='padding-left:0px'>
+                                @Html.BvEditbox(Model, "strFarmCode")
+                            </td>
+                            <td class='selectButton'>
+                                <input type='button' class='coloredButton' onclick='ShowFarmPicker();' value='@Translator.GetMessageString("Search")' />
+                            </td>
+                            <td class='selectButton'>
+                                <input type='button' class='coloredButton' onclick='EditFarm();' value='...' />
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.idfSpecies)
+                </td>
+                <td>
+                    @(Html.Telerik().ComboBox()
+                        .Name(String.Format("{0}idfSpecies", Model.ObjectIdent))
+                        .ClientEvents(events => events.OnChange("onSpeciesChange"))
+                        .BindTo((SelectList)ViewBag.SpeciesList)
+                        )
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.idfsAnimalSex)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, "AnimalSex")
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.intSampledAnimalsQty)
+                </td>
+                <td>
+                    @Html.BvNumeric(Model, "intSampledAnimalsQty", 0)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.strSamples)
+                </td>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td class='selectButton'>
+                                <input type='button' id='Samples' class='coloredButton' onclick='SelectSamples();'
+                                    value='...' />
+                            </td>
+                            <td class='fillAll'>
+                                <span id="strSamples">@Model.strSamples</span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.intSamplesQty)
+                </td>
+                <td>
+                    @Html.BvNumeric(Model, "intSamplesQty", 0)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.datCollectionDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, "datCollectionDate")
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.intPositiveAnimalsQty)
+                </td>
+                <td>
+                    @Html.BvNumeric(Model, "intPositiveAnimalsQty", 0,0,refreshOnLostFocus: true, clientOnChange:"enableDiagnosis")
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.Diagnosis)
+                </td>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td class='selectButton'>
+                                <input type='button' id='Diagnosis' class='coloredButton' onclick='SelectDiagnosis();'
+                                    value='...' />
+                            </td>
+                            <td class='fillAll'>
+                                <span id="strDiagnosis" >@Model.strDiagnosis</span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+        <div class="popupBottomButtonPanel">
+            <input type="button" class="popupButton" onclick="window.close()" value="@Translator.GetMessageString("Cancel")" />
+            <input type="submit" class="popupButton" value="@Translator.GetMessageString("Ok")" />
+        </div>     
+    }
+</div>

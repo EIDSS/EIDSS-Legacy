@@ -1,0 +1,1266 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E2445070-F512-4979-B14A-6B815D78024B}</ProjectGuid>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>eidss_vet</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyMode>None</AssemblyOriginatorKeyMode>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionStrict>On</OptionStrict>
+    <RootNamespace>EIDSS</RootNamespace>
+    <StartupObject>EIDSS.%28None%29</StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <MyType>Windows</MyType>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <PublishUrl>http://localhost/eidss_vet/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>..\..\..\eidss.main\bin\Debug\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>..\..\..\eidss.main\bin\Release\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032,42353,42354,42355</NoWarn>
+    <DebugType>none</DebugType>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Printing.v11.1.Core, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Data.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Utils.v11.1">
+      <Name>DevExpress.Utils.v11.1</Name>
+      <AssemblyFolderKey>hklm\devexpress.net.v3</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v11.1">
+      <Name>DevExpress.XtraBars.v11.1</Name>
+      <AssemblyFolderKey>hklm\devexpress.net.v3</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="DevExpress.Charts.v11.1.Core, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraCharts.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v11.1">
+      <Name>DevExpress.XtraEditors.v11.1</Name>
+      <AssemblyFolderKey>hklm\devexpress.net.v3</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v11.1">
+      <Name>DevExpress.XtraGrid.v11.1</Name>
+      <AssemblyFolderKey>hklm\devexpress.net.v3</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="DevExpress.XtraLayout.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraNavBar.v11.1">
+      <Name>DevExpress.XtraNavBar.v11.1</Name>
+      <AssemblyFolderKey>hklm\devexpress.net.v3</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="DevExpress.XtraPivotGrid.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.PivotGrid.v11.1.Core, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPrinting.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Reports.v11.1.Designer, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraReports.v11.1.Extensions, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraReports.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraTreeList.v11.1">
+      <Name>DevExpress.XtraTreeList.v11.1</Name>
+      <AssemblyFolderKey>hklm\devexpress.net.v3</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="DevExpress.XtraVerticalGrid.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="Help2">
+      <HintPath>..\..\..\dlls\Help2.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="stdole">
+      <Name>stdole</Name>
+      <HintPath>..\..\..\..\..\Program Files\Microsoft.NET\Primary Interop Assemblies\stdole.dll</HintPath>
+      <AssemblyFolderKey>hklm\primary interop assemblies</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Design">
+      <Name>System.Design</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\..\..\bltoolkit.3.2.dev\BLToolkit.4.csproj">
+      <Project>{0C325F5D-E50E-4340-8724-D29896CCC583}</Project>
+      <Name>BLToolkit.4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\bv.common\bv.common.csproj">
+      <Project>{BEE76B17-720D-4B65-996A-5712912B3ACF}</Project>
+      <Name>bv.common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\bv.model\bv.model.csproj">
+      <Project>{9067327E-1960-4326-ACB9-D982DDBEAA76}</Project>
+      <Name>bv.model</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\bv.winclient\bv.winclient.csproj">
+      <Project>{B0163672-F328-4D02-9B71-FB698EDAF815}</Project>
+      <Name>bv.winclient</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\eidss.core\eidss.core.csproj">
+      <Project>{BF545ECD-F673-4C71-9362-57C01DF13062}</Project>
+      <Name>eidss.core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\eidss.model\eidss.model.csproj">
+      <Project>{E4B87B63-D5F2-4F9F-B39C-A7714896D1DE}</Project>
+      <Name>eidss.model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\eidss.winclient\eidss.winclient.csproj">
+      <Project>{428C1EFE-F1A1-441A-9C59-50AE279F887F}</Project>
+      <Name>eidss.winclient</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\bvwin_common\bvwin_common.vbproj">
+      <Name>bvwin_common</Name>
+      <Project>{B3E5BA6B-FAA3-4A7D-8236-3F8842D61CD4}</Project>
+      <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\bv_common\bvcommon.vbproj">
+      <Project>{BA2844A8-F629-4B02-ACD6-B60063E4D27F}</Project>
+      <Name>bvcommon</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\bv_dbcommon\bvdb_common.vbproj">
+      <Name>bvdb_common</Name>
+      <Project>{6C48BB93-277D-4804-B280-F6130E29EB81}</Project>
+      <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EIDSS.FlexibleForms\EIDSS.FlexibleForms.csproj">
+      <Project>{8040D091-58E8-4FBE-8F46-D5200EEDAF69}</Project>
+      <Name>EIDSS.FlexibleForms</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EIDSS_Common\EIDSS_Common.vbproj">
+      <Name>EIDSS_Common</Name>
+      <Project>{119CC05A-2F6C-4FC8-AC74-79BB76E3C1C0}</Project>
+      <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EIDSS_Common_Db\EIDSS_Common_Db.vbproj">
+      <Name>EIDSS_Common_Db</Name>
+      <Project>{B66DEB84-FBE3-44E4-9B72-1E459CE0E50D}</Project>
+      <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EIDSS_Common_Forms\EIDSS_Common_Forms.vbproj">
+      <Name>EIDSS_Common_Forms</Name>
+      <Project>{389B8F77-0B61-46DB-B752-1ECDC502267D}</Project>
+      <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EIDSS_Vet_Db\EIDSS_Vet_Db.vbproj">
+      <Name>EIDSS_Vet_Db</Name>
+      <Project>{F1E3D1E8-0C9C-4DB0-AEB1-B8006DCFDC9F}</Project>
+      <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="bv.common" />
+    <Import Include="bv.common.Core" />
+    <Import Include="bv.common.db" />
+    <Import Include="bv.common.db.Core" />
+    <Import Include="bv.common.Diagnostics" />
+    <Import Include="bv.common.Objects" />
+    <Import Include="bv.common.win" />
+    <Import Include="bv.common.win.Core" />
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\EIDSSAssemblyInfo.vb">
+      <Link>EIDSSAssemblyInfo.vb</Link>
+    </Compile>
+    <Compile Include="ActiveSurveillance\AsCampaignDetail.Designer.vb">
+      <DependentUpon>AsCampaignDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ActiveSurveillance\AsCampaignDetail.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ActiveSurveillance\AsSessionDetail.Designer.vb">
+      <DependentUpon>AsSessionDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ActiveSurveillance\AsSessionDetail.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ActiveSurveillance\AsSamplesPanel.Designer.vb">
+      <DependentUpon>AsSamplesPanel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ActiveSurveillance\AsSamplesPanel.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ActiveSurveillance\AsSessionSummaryPanel.Designer.vb">
+      <DependentUpon>AsSessionSummaryPanel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ActiveSurveillance\AsSessionSummaryPanel.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ActiveSurveillance\AsSessionTableViewPanel.Designer.vb">
+      <DependentUpon>AsSessionTableViewPanel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ActiveSurveillance\AsSessionTableViewPanel.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AggregateCase\VetAggregateActionDetail.Designer.vb">
+      <DependentUpon>VetAggregateActionDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AggregateCase\VetAggregateActionDetail.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AggregateCase\VetAggregateSummaryActionDetail.Designer.vb">
+      <DependentUpon>VetAggregateSummaryActionDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AggregateCase\VetAggregateSummaryActionDetail.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AggregateCase\VetAggregateSummaryCaseDetail.Designer.vb">
+      <DependentUpon>VetAggregateSummaryCaseDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AggregateCase\VetAggregateSummaryCaseDetail.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AggregateCase\VetAggregateCaseDetail.Designer.vb">
+      <DependentUpon>VetAggregateCaseDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AggregateCase\VetAggregateCaseDetail.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Farm\AvianFarmDetail.Designer.vb">
+      <DependentUpon>AvianFarmDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Farm\AvianFarmDetail.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Farm\AvianFarmProductionControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Farm\FarmDetail.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Farm\LivestockFarmProductionControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Farm\FarmPanel.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Farm\RootFarmTree.Designer.vb">
+      <DependentUpon>RootFarmTree.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Farm\RootFarmTree.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Vet Case\BaseFarmTreePanel.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Vet Case\CaseLog.Designer.vb">
+      <DependentUpon>CaseLog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Vet Case\CaseLog.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Vet Case\FarmTreePanel.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Vet Case\PensideTestPanel.Designer.vb">
+      <DependentUpon>PensideTestPanel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Vet Case\PensideTestPanel.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Vet Case\ValidationDateType.vb" />
+    <Compile Include="Vet Case\VetCaseSamplesPanel.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Vet Case\VetDiagnosisPanel.Designer.vb">
+      <DependentUpon>VetDiagnosisPanel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Vet Case\VetDiagnosisPanel.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Vet Case\VaccinationPanel.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Vet Case\VetCaseAnimalsPanel.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Vet Case\VetCaseAvianDetail.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Vet Case\VetCaseLiveStockDetail.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Vet Case\VetCaseRegistrationPanel.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Vet Case\VetControlMeasurePanel.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Vet Case\VetStatusPanel.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <EmbeddedResource Include="ActiveSurveillance\AsCampaignDetail.ar-IQ.resx">
+      <DependentUpon>AsCampaignDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsCampaignDetail.az-Latn-AZ.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AsCampaignDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsCampaignDetail.hy-am.resx">
+      <DependentUpon>AsCampaignDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsCampaignDetail.ka-GE.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AsCampaignDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsCampaignDetail.kk-KZ.resx">
+      <DependentUpon>AsCampaignDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsCampaignDetail.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AsCampaignDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsCampaignDetail.ru-RU.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AsCampaignDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsCampaignDetail.uk-UA.resx">
+      <DependentUpon>AsCampaignDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSamplesPanel.az-latn-az.resx">
+      <DependentUpon>AsSamplesPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSamplesPanel.hy-am.resx">
+      <DependentUpon>AsSamplesPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSamplesPanel.ka-ge.resx">
+      <DependentUpon>AsSamplesPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSamplesPanel.kk-kz.resx">
+      <DependentUpon>AsSamplesPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSamplesPanel.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AsSamplesPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSamplesPanel.ru-ru.resx">
+      <DependentUpon>AsSamplesPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSamplesPanel.uk-ua.resx">
+      <DependentUpon>AsSamplesPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionDetail.ar-IQ.resx">
+      <DependentUpon>AsSessionDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionDetail.az-Latn-AZ.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AsSessionDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionDetail.hy-am.resx">
+      <DependentUpon>AsSessionDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionDetail.ka-GE.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AsSessionDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionDetail.kk-KZ.resx">
+      <DependentUpon>AsSessionDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionDetail.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AsSessionDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionDetail.ru-RU.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AsSessionDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionDetail.uk-UA.resx">
+      <DependentUpon>AsSessionDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionSummaryPanel.ar-IQ.resx">
+      <DependentUpon>AsSessionSummaryPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionSummaryPanel.az-latn-az.resx">
+      <DependentUpon>AsSessionSummaryPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionSummaryPanel.hy-am.resx">
+      <DependentUpon>AsSessionSummaryPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionSummaryPanel.ka-ge.resx">
+      <DependentUpon>AsSessionSummaryPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionSummaryPanel.kk-kz.resx">
+      <DependentUpon>AsSessionSummaryPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionSummaryPanel.resx">
+      <DependentUpon>AsSessionSummaryPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionSummaryPanel.ru-ru.resx">
+      <DependentUpon>AsSessionSummaryPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionSummaryPanel.uk-ua.resx">
+      <DependentUpon>AsSessionSummaryPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionTableViewPanel.ar-IQ.resx">
+      <DependentUpon>AsSessionTableViewPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionTableViewPanel.az-latn-az.resx">
+      <DependentUpon>AsSessionTableViewPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionTableViewPanel.hy-am.resx">
+      <DependentUpon>AsSessionTableViewPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionTableViewPanel.ka-ge.resx">
+      <DependentUpon>AsSessionTableViewPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionTableViewPanel.kk-kz.resx">
+      <DependentUpon>AsSessionTableViewPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionTableViewPanel.resx">
+      <DependentUpon>AsSessionTableViewPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionTableViewPanel.ru-ru.resx">
+      <DependentUpon>AsSessionTableViewPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionTableViewPanel.uk-ua.resx">
+      <DependentUpon>AsSessionTableViewPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateActionDetail.ar-IQ.resx">
+      <DependentUpon>VetAggregateActionDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateActionDetail.az-Latn-AZ.resx">
+      <DependentUpon>VetAggregateActionDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateActionDetail.hy-am.resx">
+      <DependentUpon>VetAggregateActionDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateActionDetail.ka-GE.resx">
+      <DependentUpon>VetAggregateActionDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateActionDetail.kk-KZ.resx">
+      <DependentUpon>VetAggregateActionDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateActionDetail.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>VetAggregateActionDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateActionDetail.ru-RU.resx">
+      <DependentUpon>VetAggregateActionDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateActionDetail.uk-UA.resx">
+      <DependentUpon>VetAggregateActionDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateCaseDetail.ar-IQ.resx">
+      <DependentUpon>VetAggregateCaseDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateCaseDetail.az-Latn-AZ.resx">
+      <DependentUpon>VetAggregateCaseDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateCaseDetail.hy-am.resx">
+      <DependentUpon>VetAggregateCaseDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateCaseDetail.ka-GE.resx">
+      <DependentUpon>VetAggregateCaseDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateCaseDetail.kk-KZ.resx">
+      <DependentUpon>VetAggregateCaseDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateCaseDetail.ru-RU.resx">
+      <DependentUpon>VetAggregateCaseDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateCaseDetail.uk-UA.resx">
+      <DependentUpon>VetAggregateCaseDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateSummaryActionDetail.ar-IQ.resx">
+      <DependentUpon>VetAggregateSummaryActionDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateSummaryActionDetail.az-Latn-AZ.resx">
+      <DependentUpon>VetAggregateSummaryActionDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateSummaryActionDetail.hy-am.resx">
+      <DependentUpon>VetAggregateSummaryActionDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateSummaryActionDetail.ka-GE.resx">
+      <DependentUpon>VetAggregateSummaryActionDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateSummaryActionDetail.kk-KZ.resx">
+      <DependentUpon>VetAggregateSummaryActionDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateSummaryActionDetail.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>VetAggregateSummaryActionDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateSummaryActionDetail.ru-RU.resx">
+      <DependentUpon>VetAggregateSummaryActionDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateSummaryActionDetail.uk-UA.resx">
+      <DependentUpon>VetAggregateSummaryActionDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateSummaryCaseDetail.ar-IQ.resx">
+      <DependentUpon>VetAggregateSummaryCaseDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateSummaryCaseDetail.az-Latn-AZ.resx">
+      <DependentUpon>VetAggregateSummaryCaseDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateSummaryCaseDetail.hy-am.resx">
+      <DependentUpon>VetAggregateSummaryCaseDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateSummaryCaseDetail.ka-GE.resx">
+      <DependentUpon>VetAggregateSummaryCaseDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateSummaryCaseDetail.kk-KZ.resx">
+      <DependentUpon>VetAggregateSummaryCaseDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateSummaryCaseDetail.resx">
+      <DependentUpon>VetAggregateSummaryCaseDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateCaseDetail.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>VetAggregateCaseDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateSummaryCaseDetail.ru-RU.resx">
+      <DependentUpon>VetAggregateSummaryCaseDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateSummaryCaseDetail.uk-UA.resx">
+      <DependentUpon>VetAggregateSummaryCaseDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\AvianFarmDetail.ar-IQ.resx">
+      <DependentUpon>AvianFarmDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\AvianFarmDetail.az-Latn-AZ.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AvianFarmDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\AvianFarmDetail.hy-am.resx">
+      <DependentUpon>AvianFarmDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\AvianFarmDetail.ka-GE.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AvianFarmDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\AvianFarmDetail.kk-KZ.resx">
+      <DependentUpon>AvianFarmDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\AvianFarmDetail.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AvianFarmDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\AvianFarmDetail.ru-RU.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AvianFarmDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\AvianFarmDetail.uk-UA.resx">
+      <DependentUpon>AvianFarmDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\AvianFarmProductionControl.ar-IQ.resx">
+      <DependentUpon>AvianFarmProductionControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\AvianFarmProductionControl.az-Latn-AZ.resx">
+      <DependentUpon>AvianFarmProductionControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\AvianFarmProductionControl.hy-am.resx">
+      <DependentUpon>AvianFarmProductionControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\AvianFarmProductionControl.ka-GE.resx">
+      <DependentUpon>AvianFarmProductionControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\AvianFarmProductionControl.kk-KZ.resx">
+      <DependentUpon>AvianFarmProductionControl.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\AvianFarmProductionControl.resx">
+      <DependentUpon>AvianFarmProductionControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\AvianFarmProductionControl.ru-RU.resx">
+      <DependentUpon>AvianFarmProductionControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\AvianFarmProductionControl.uk-UA.resx">
+      <DependentUpon>AvianFarmProductionControl.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\FarmDetail.ar-IQ.resx">
+      <DependentUpon>FarmDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\FarmDetail.az-Latn-AZ.resx">
+      <DependentUpon>FarmDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\FarmDetail.hy-am.resx">
+      <DependentUpon>FarmDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\FarmDetail.ka-GE.resx">
+      <DependentUpon>FarmDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\FarmDetail.kk-KZ.resx">
+      <DependentUpon>FarmDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\FarmDetail.resx">
+      <DependentUpon>FarmDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\FarmDetail.ru-RU.resx">
+      <DependentUpon>FarmDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\FarmDetail.uk-UA.resx">
+      <DependentUpon>FarmDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\FarmPanel.ar-IQ.resx">
+      <DependentUpon>FarmPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\FarmPanel.hy-am.resx">
+      <DependentUpon>FarmPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\FarmPanel.kk-KZ.resx">
+      <DependentUpon>FarmPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\FarmPanel.uk-UA.resx">
+      <DependentUpon>FarmPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\LivestockFarmProductionControl.ar-IQ.resx">
+      <DependentUpon>LivestockFarmProductionControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\LivestockFarmProductionControl.az-Latn-AZ.resx">
+      <DependentUpon>LivestockFarmProductionControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\LivestockFarmProductionControl.hy-am.resx">
+      <DependentUpon>LivestockFarmProductionControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\LivestockFarmProductionControl.ka-GE.resx">
+      <DependentUpon>LivestockFarmProductionControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\LivestockFarmProductionControl.kk-KZ.resx">
+      <DependentUpon>LivestockFarmProductionControl.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\LivestockFarmProductionControl.resx">
+      <DependentUpon>LivestockFarmProductionControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\LivestockFarmProductionControl.ru-RU.resx">
+      <DependentUpon>LivestockFarmProductionControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\FarmPanel.az-Latn-AZ.resx">
+      <DependentUpon>FarmPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\FarmPanel.ka-GE.resx">
+      <DependentUpon>FarmPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\FarmPanel.resx">
+      <DependentUpon>FarmPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\FarmPanel.ru-RU.resx">
+      <DependentUpon>FarmPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\LivestockFarmProductionControl.uk-UA.resx">
+      <DependentUpon>LivestockFarmProductionControl.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Farm\RootFarmTree.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>RootFarmTree.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="licenses.licx" />
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <SubType>Designer</SubType>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\BaseFarmTreePanel.ar-IQ.resx">
+      <DependentUpon>BaseFarmTreePanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\BaseFarmTreePanel.az-Latn-AZ.resx">
+      <DependentUpon>BaseFarmTreePanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\BaseFarmTreePanel.hy-am.resx">
+      <DependentUpon>BaseFarmTreePanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\BaseFarmTreePanel.ka-GE.resx">
+      <DependentUpon>BaseFarmTreePanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\BaseFarmTreePanel.kk-KZ.resx">
+      <DependentUpon>BaseFarmTreePanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\BaseFarmTreePanel.resx">
+      <DependentUpon>BaseFarmTreePanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\BaseFarmTreePanel.ru-RU.resx">
+      <DependentUpon>BaseFarmTreePanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\BaseFarmTreePanel.uk-UA.resx">
+      <DependentUpon>BaseFarmTreePanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\CaseLog.ar-IQ.resx">
+      <DependentUpon>CaseLog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\CaseLog.az-Latn-AZ.resx">
+      <DependentUpon>CaseLog.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\CaseLog.hy-am.resx">
+      <DependentUpon>CaseLog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\CaseLog.ka-GE.resx">
+      <DependentUpon>CaseLog.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\CaseLog.kk-KZ.resx">
+      <DependentUpon>CaseLog.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\CaseLog.resx">
+      <DependentUpon>CaseLog.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\CaseLog.ru-RU.resx">
+      <DependentUpon>CaseLog.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\CaseLog.uk-UA.resx">
+      <DependentUpon>CaseLog.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\FarmTreePanel.ar-IQ.resx">
+      <DependentUpon>FarmTreePanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\FarmTreePanel.az-Latn-AZ.resx">
+      <DependentUpon>FarmTreePanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\FarmTreePanel.hy-am.resx">
+      <DependentUpon>FarmTreePanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\FarmTreePanel.ka-GE.resx">
+      <DependentUpon>FarmTreePanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\FarmTreePanel.kk-KZ.resx">
+      <DependentUpon>FarmTreePanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\FarmTreePanel.resx">
+      <DependentUpon>FarmTreePanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\FarmTreePanel.ru-RU.resx">
+      <DependentUpon>FarmTreePanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\FarmTreePanel.uk-UA.resx">
+      <DependentUpon>FarmTreePanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\PensideTestPanel.ar-IQ.resx">
+      <DependentUpon>PensideTestPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\PensideTestPanel.az-Latn-AZ.resx">
+      <DependentUpon>PensideTestPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\PensideTestPanel.hy-am.resx">
+      <DependentUpon>PensideTestPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\PensideTestPanel.ka-GE.resx">
+      <DependentUpon>PensideTestPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\PensideTestPanel.kk-KZ.resx">
+      <DependentUpon>PensideTestPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\PensideTestPanel.resx">
+      <DependentUpon>PensideTestPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\PensideTestPanel.ru-RU.resx">
+      <DependentUpon>PensideTestPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\PensideTestPanel.uk-UA.resx">
+      <DependentUpon>PensideTestPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VaccinationPanel.ar-IQ.resx">
+      <DependentUpon>VaccinationPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VaccinationPanel.az-Latn-AZ.resx">
+      <DependentUpon>VaccinationPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VaccinationPanel.hy-am.resx">
+      <DependentUpon>VaccinationPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VaccinationPanel.ka-GE.resx">
+      <DependentUpon>VaccinationPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VaccinationPanel.kk-KZ.resx">
+      <DependentUpon>VaccinationPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VaccinationPanel.resx">
+      <DependentUpon>VaccinationPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VaccinationPanel.ru-RU.resx">
+      <DependentUpon>VaccinationPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VaccinationPanel.uk-UA.resx">
+      <DependentUpon>VaccinationPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseAnimalsPanel.ar-IQ.resx">
+      <DependentUpon>VetCaseAnimalsPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseAnimalsPanel.az-Latn-AZ.resx">
+      <DependentUpon>VetCaseAnimalsPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseAnimalsPanel.hy-am.resx">
+      <DependentUpon>VetCaseAnimalsPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseAnimalsPanel.ka-GE.resx">
+      <DependentUpon>VetCaseAnimalsPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseAnimalsPanel.kk-KZ.resx">
+      <DependentUpon>VetCaseAnimalsPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseAnimalsPanel.resx">
+      <DependentUpon>VetCaseAnimalsPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseAnimalsPanel.ru-RU.resx">
+      <DependentUpon>VetCaseAnimalsPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseAnimalsPanel.uk-UA.resx">
+      <DependentUpon>VetCaseAnimalsPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseAvianDetail.ar-IQ.resx">
+      <DependentUpon>VetCaseAvianDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseAvianDetail.az-Latn-AZ.resx">
+      <DependentUpon>VetCaseAvianDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseAvianDetail.hy-am.resx">
+      <DependentUpon>VetCaseAvianDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseAvianDetail.ka-GE.resx">
+      <DependentUpon>VetCaseAvianDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseAvianDetail.kk-KZ.resx">
+      <DependentUpon>VetCaseAvianDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseAvianDetail.resx">
+      <DependentUpon>VetCaseAvianDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseAvianDetail.ru-RU.resx">
+      <DependentUpon>VetCaseAvianDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseAvianDetail.uk-UA.resx">
+      <DependentUpon>VetCaseAvianDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseLiveStockDetail.ar-IQ.resx">
+      <DependentUpon>VetCaseLiveStockDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseLiveStockDetail.az-Latn-AZ.resx">
+      <DependentUpon>VetCaseLiveStockDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseLiveStockDetail.hy-am.resx">
+      <DependentUpon>VetCaseLiveStockDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseLiveStockDetail.ka-GE.resx">
+      <DependentUpon>VetCaseLiveStockDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseLiveStockDetail.kk-KZ.resx">
+      <DependentUpon>VetCaseLiveStockDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseLiveStockDetail.resx">
+      <DependentUpon>VetCaseLiveStockDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseLiveStockDetail.ru-RU.resx">
+      <DependentUpon>VetCaseLiveStockDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseLiveStockDetail.uk-UA.resx">
+      <DependentUpon>VetCaseLiveStockDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseRegistrationPanel.ar-IQ.resx">
+      <DependentUpon>VetCaseRegistrationPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseRegistrationPanel.az-Latn-AZ.resx">
+      <DependentUpon>VetCaseRegistrationPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseRegistrationPanel.hy-am.resx">
+      <DependentUpon>VetCaseRegistrationPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseRegistrationPanel.ka-GE.resx">
+      <DependentUpon>VetCaseRegistrationPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseRegistrationPanel.kk-KZ.resx">
+      <DependentUpon>VetCaseRegistrationPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseRegistrationPanel.resx">
+      <DependentUpon>VetCaseRegistrationPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseRegistrationPanel.ru-RU.resx">
+      <DependentUpon>VetCaseRegistrationPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseRegistrationPanel.uk-UA.resx">
+      <DependentUpon>VetCaseRegistrationPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseSamplesPanel.ar-IQ.resx">
+      <DependentUpon>VetCaseSamplesPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseSamplesPanel.az-Latn-AZ.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>VetCaseSamplesPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseSamplesPanel.hy-am.resx">
+      <DependentUpon>VetCaseSamplesPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseSamplesPanel.ka-GE.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>VetCaseSamplesPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseSamplesPanel.kk-KZ.resx">
+      <DependentUpon>VetCaseSamplesPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseSamplesPanel.resx">
+      <DependentUpon>VetCaseSamplesPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseSamplesPanel.ru-RU.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>VetCaseSamplesPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetCaseSamplesPanel.uk-UA.resx">
+      <DependentUpon>VetCaseSamplesPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetControlMeasurePanel.ar-IQ.resx">
+      <DependentUpon>VetControlMeasurePanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetControlMeasurePanel.az-Latn-AZ.resx">
+      <DependentUpon>VetControlMeasurePanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetControlMeasurePanel.hy-am.resx">
+      <DependentUpon>VetControlMeasurePanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetControlMeasurePanel.ka-GE.resx">
+      <DependentUpon>VetControlMeasurePanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetControlMeasurePanel.kk-KZ.resx">
+      <DependentUpon>VetControlMeasurePanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetControlMeasurePanel.resx">
+      <DependentUpon>VetControlMeasurePanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetControlMeasurePanel.ru-RU.resx">
+      <DependentUpon>VetControlMeasurePanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetControlMeasurePanel.uk-UA.resx">
+      <DependentUpon>VetControlMeasurePanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetDiagnosisPanel.ar-IQ.resx">
+      <DependentUpon>VetDiagnosisPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetDiagnosisPanel.az-Latn-AZ.resx">
+      <DependentUpon>VetDiagnosisPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetDiagnosisPanel.hy-am.resx">
+      <DependentUpon>VetDiagnosisPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetDiagnosisPanel.ka-GE.resx">
+      <DependentUpon>VetDiagnosisPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetDiagnosisPanel.kk-KZ.resx">
+      <DependentUpon>VetDiagnosisPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetDiagnosisPanel.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>VetDiagnosisPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetDiagnosisPanel.ru-RU.resx">
+      <DependentUpon>VetDiagnosisPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetDiagnosisPanel.uk-UA.resx">
+      <DependentUpon>VetDiagnosisPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetStatusPanel.ar-IQ.resx">
+      <DependentUpon>VetStatusPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetStatusPanel.az-Latn-AZ.resx">
+      <DependentUpon>VetStatusPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetStatusPanel.hy-am.resx">
+      <DependentUpon>VetStatusPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetStatusPanel.ka-GE.resx">
+      <DependentUpon>VetStatusPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetStatusPanel.kk-KZ.resx">
+      <DependentUpon>VetStatusPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetStatusPanel.resx">
+      <DependentUpon>VetStatusPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetStatusPanel.ru-RU.resx">
+      <DependentUpon>VetStatusPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet Case\VetStatusPanel.uk-UA.resx">
+      <DependentUpon>VetStatusPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Migrated rules for EIDSS_Vet.ruleset" />
+    <None Include="Resources\add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Delete_Remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Clear_Cancel-Changes1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\copy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\paste.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Avian-Case-%28large%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Livestock Case %28large%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Search.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Farm-%28large%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Vet-Aggregate-Actions-Entry-%28large%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Vet-Aggregate-Entry-%28large%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Active-Surviellance-Campaign-%28large%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\doun.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Active-Surviellance-Session-%28large%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Select2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Livestock Case %28small%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Avian Case %28small%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Browse5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\View1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Vet Aggregate Actions Summary %28large%29%2806%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Vet Aggregate Cases Summary %28large%29%2808%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Search13x13.PNG" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

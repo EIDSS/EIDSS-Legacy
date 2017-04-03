@@ -1,0 +1,74 @@
+﻿
+@using eidss.webclient.Utils
+@model eidss.webclient.Models.Reports.VetLabModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/BaseFilter", Model)
+
+    <table id="VetLabFilterTable" >
+    
+        <tr>
+            <td class="medium">
+                @Translator.GetMessageString("titleCountry") 
+            </td>
+            <td class="large">
+                @Html.TextBox("CountryName", @Translator.GetMessageString("titleAzerbaijan"), new {@readonly = "readonly"})
+            </td>
+            <td class="medium">
+                @Html.LabelFor(m => m.OrganizationEnteredById)
+            </td>
+            <td class="large">
+                
+                @{
+                    @(Html.Telerik().ComboBox()
+                          .Name("OrganizationEnteredById")
+                          .BindTo(Model.OrganizationList.ConvertToSelectListItem())
+                          
+                          )
+                }
+                
+            </td>
+            <td ></td>
+        </tr>
+        
+        <tr>
+            <td class="medium">
+                @Html.LabelFor(m => m.Address.RegionId) 
+            </td>
+            <td class="large">
+                @{
+                    @(Html.Telerik().ComboBox()
+                          .Name("Address.RegionId")
+                          .BindTo(Model.Address.GetSelectedRegions().ConvertToSelectListItem())
+                          .ClientEvents(c => c.OnChange("paperForm.OnRegionChanged"))
+                          )
+                }
+            </td>
+            <td class="medium">
+                @Html.LabelFor(m => m.Address.RayonId)
+            </td>
+            <td class="large">
+                @{
+                    @(Html.Telerik().ComboBox()
+                          .Name("Address.RayonId")
+                          .BindTo(Model.Address.GetRayons().ConvertToSelectListItem())
+                          )
+                }
+            </td>
+            <td></td>
+        </tr>
+        
+       
+        
+  
+    </table>
+
+    @Html.Partial("AZ/AFPSurveillanceFilter", Model)
+
+    @Html.Partial("Common/ExportButtons", Model)
+}

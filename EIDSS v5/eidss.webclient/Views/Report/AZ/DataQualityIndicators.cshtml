@@ -1,0 +1,16 @@
+﻿@model eidss.model.Reports.AZ.DataQualityIndicatorsModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/BaseFilter", Model)
+
+    @Html.Partial("AZ/AFPSurveillanceFilter", Model)
+
+    @Html.Partial("AZ/MultipleDiagnosisFilter", Model.MultipleDiagnosisFilter)
+
+    @Html.Partial("Common/ExportButtons", Model)
+}

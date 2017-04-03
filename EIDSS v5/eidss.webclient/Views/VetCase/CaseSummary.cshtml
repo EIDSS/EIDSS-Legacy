@@ -1,0 +1,69 @@
+﻿@model eidss.model.Schema.VetCase
+@using eidss.webclient.Utils;
+
+<table class="bordered">
+    <tr>
+        <td class="sectionName" colspan="8">      
+            @Translator.GetMessageString("titleCaseSummary")      
+        </td>    
+    </tr>
+    <tr>
+        <td class="small">
+            @Html.LabelFor(m => m.strCaseID)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strCaseID", false)
+        </td>
+        <td class="small">
+            @Html.LabelFor(m => m.strFieldAccessionID)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strFieldAccessionID", false)
+        </td>
+        <td class="small">
+            @Html.LabelFor(m => m.idfsCaseProgressStatus)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, "CaseProgressStatus")
+        </td>
+        <td class="small">
+            @Html.LabelFor(m => m.idfsCaseStatus)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, "CaseStatus")
+        </td>
+    </tr>
+    <tr>
+        <td class="small">
+            @Html.LabelFor(m => m.idfsShowDiagnosis)
+        </td>
+        <td colspan="7">
+            @Html.BvEditbox(Model, "strDiagnosis", false)
+        </td>
+    </tr>
+    
+    <tr>
+        @if (Model._HACode == (int)eidss.model.Enums.HACode.Livestock)
+        {    
+            <td class="small">
+                @Html.LabelFor(m => m.idfParentMonitoringSession)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, "strMonitoringSessionID")
+            </td>               
+        }
+        @if (Model.idfParentMonitoringSession.HasValue)
+        {   
+        <td class='selectButton'>
+            <input type='button' class='coloredButton' onclick="if (window.opener.document.location.href.indexOf('ASSession') == -1) OpenPopup('@String.Format("{0}/{1}", Url.Action("Details", "ASSession"), Model.idfParentMonitoringSession.ToString())', 'ViewAsSession', null, null, true); else window.opener.focus();" value='...' />
+        </td>        
+        }
+        <td class="small">
+            @Html.LabelFor(m=>m.idfsCaseReportType)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, "CaseReportType")
+        </td>
+    </tr>
+    
+</table>

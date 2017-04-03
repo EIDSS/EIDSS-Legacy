@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+  <Button
+    android:id="@+id/SetPasswordButton"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/SetPassword"
+    />
+  <Button
+    android:id="@+id/LoadReferencesButton"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/LoadReferences"
+    android:layout_below="@id/SetPasswordButton"
+    />
+  <TextView
+    android:id="@+id/label1"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/ServerUrl"
+    android:layout_below="@id/LoadReferencesButton"
+    />
+  <EditText
+    android:id="@+id/ServerUrl"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/label1"
+    />
+  <Button
+    android:id="@+id/CancelButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/Cancel"
+    android:layout_below="@id/ServerUrl"
+    android:layout_alignParentRight="true"
+    />
+  <Button
+    android:id="@+id/OkButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/Ok"   
+    android:layout_toLeftOf="@id/CancelButton"
+    android:layout_alignTop="@id/CancelButton"
+    />
+
+</RelativeLayout>

@@ -1,0 +1,32 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnSiteID]') and xtype in (N'FN', N'IF', N'TF'))
+AND NOT exists (select * from dbo.sysobjects where id = object_id(N'Def_fnSiteID_tstNotification'))
+drop function [dbo].[fnSiteID]
+GO
+
+if NOT exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnSiteID]') and xtype in (N'FN', N'IF', N'TF'))
+exec (
+'CREATE     function fnSiteID()
+returns bigint
+as
+begin
+	declare @ret bigint
+	select		@ret=isnull(tstLocalConnectionContext.idfsSite,cast(tstLocalSiteOptions.strValue as bigint))
+	from		tstLocalSiteOptions
+	left join	tstLocalConnectionContext
+	on			tstLocalConnectionContext.strConnectionContext=dbo.fnGetContext()
+	where		tstLocalSiteOptions.strName=''SiteID''
+	return @ret
+end'
+)
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

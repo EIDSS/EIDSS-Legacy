@@ -1,0 +1,46 @@
+﻿@model eidss.model.Schema.LabSample
+@{
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+@using eidss.webclient.Utils;
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        @Html.Hidden("idfContainer", Model.idfContainer)
+        @Html.Hidden("idfSubdivision", Model.idfSubdivision)
+                               
+        <table>    
+            <tr>
+                <td class="small">
+                    @(Html.Telerik().TreeView()
+                        .Name("TreeView")
+                        .BindTo(Model.FreezerLookup.Where(f => f.Level == 0).Select(c => c), m =>
+                        {
+                            m.For<eidss.model.Schema.FreezerTreeLookup>(b => b
+                                .ItemDataBound((i, d) =>
+                                {
+                                    i.Text = d.Path + (d.intCapacity.HasValue ? ("  " + d.intUsed.ToString() + "/" + d.intCapacity.ToString()) : "");
+                                    i.Value = d.ID.ToString();
+                                })
+                                .Children(d => Model.FreezerLookup.Where(f => f.idfParentSubdivision == d.ID)));
+                        })
+                        .ClientEvents(e => e
+                            .OnLoad("onFreezerLoad")
+                            .OnSelect("onFreezerSelect"))
+                    )
+                </td>
+            </tr>
+        </table>        
+        <div class="popupBottomButtonPanel">      
+            <input type="button" onclick="onPickerFreezerChanged();" class="popupButton" value="@Translator.GetMessageString("Ok")"/>  
+            <input type="button" onclick="CloseMessageWindow();" class="popupButton" value="@Translator.GetMessageString("Cancel")"/>                                                    
+        </div>                
+    }
+</div>

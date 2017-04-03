@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="AsSessionSample"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spAsSessionSample_SelectDetails" type="detaillist" />
+  </storage>
+
+  <tables>
+    <table name="AsSessionSample" hacodable="true" tostring='c => c.strSpecimenName + " / " + c.strFieldBarcode'>
+      <fields>
+        <calculated name="strSpecimenName" type="string" depends="idfsSpecimenType" lambda='c => c.SampleType == null ? "" : c.SampleType.name'/>
+        <!--prnt storage name="CaseTests" type="EditableList&lt;CaseTest&gt;"/-->
+        <calculated name="CaseTests" type="EditableList&lt;CaseTest&gt;" depends="Parent" lambda="c => (c.Parent as AsSession).CaseTests"/>
+      </fields>
+      <readonly>
+      </readonly>
+      <relations>
+      </relations>
+      <lookups>
+        <lookup name="SampleType" table="BaseReference" section="rftSpecimenType" source="idfsSpecimenType" target="idfsBaseReference">
+          <filters>
+            <filter predicate="c => (c.intHACode &amp; (int)HACode.Livestock) != 0"/>
+            <filter predicate="c => c.idfsBaseReference != (long)SampleTypeEnum.Unknown"/>
+          </filters>
+        </lookup>
+      </lookups>
+      <storage>
+      </storage>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfMaterial" class="GetNewIDExtender" />
+          <lambda_extender target="datFieldCollectionDate" type="DateTime?" lambda="c => DateTime.Now.Date" />
+        </creating>
+        <loaded>
+        </loaded>
+      </extenders>
+      <handlers>
+      </handlers>
+      <validators>
+        <post>
+          <required_validator target="SampleType" />
+        </post>
+        <delete>
+          <predicate_validator predicate="c => c.CaseTests.Where(i => !i.IsMarkedToDelete &amp;&amp; i.idfContainerAsSession == c.idfMaterial).Count() == 0"
+                               message="msgCantDeleteRecord" />
+        </delete>
+      </validators>
+
+      <actions>
+        <action name="Create" type="Create">
+          <run>
+            <params>
+              <param name="CaseHACode" type="int?" />
+              <!--prnt param name="CaseTests" type="EditableList&lt;CaseTest&gt;"/-->
+              <param name="idfsSpeciesType" type="long?"/>
+            </params>
+            <creating>
+              <lambda_extender target="_HACode" type="int?" lambda='c => CaseHACode' />
+              <!--prnt lambda_extender target="CaseTests" type="EditableList&lt;CaseTest&gt;" lambda='c => CaseTests' /-->
+              <lambda_extender target="idfsSpeciesType" type="long?" lambda='c => idfsSpeciesType' />
+            </creating>
+          </run>
+        </action>
+        <action name="CreateCopy" type="Create">
+          <run>
+            <params>
+              <param name="original" type="AsSessionSample"/>
+            </params>
+            <creating>
+              <value_extender target="idfMonitoringSession" value="original.idfMonitoringSession"/>
+              <value_extender target="datFieldCollectionDate" value="original.datFieldCollectionDate"/>
+              <value_extender target="idfsSpecimenType" value="original.idfsSpecimenType"/>
+              <value_extender target="idfsSpeciesType" value="original.idfsSpeciesType"/>
+            </creating>
+          </run>
+        </action>
+      </actions>
+    </table>
+
+  </tables>
+
+</object>

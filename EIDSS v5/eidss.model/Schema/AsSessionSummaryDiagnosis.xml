@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="AsSessionSummaryDiagnosis"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spASSessionSummaryDiagnosis_SelectDetail" type="detaillist" />
+  </storage>
+
+  <tables>
+    <table name="AsSessionSummaryDiagnosis">
+      <fields>
+        <calculated name="strDiagnosis" type="string" depends="idfsDiagnosis" lambda='c=>c.Diagnosis == null ? "" : c.Diagnosis.name'/>
+      </fields>
+      <lookups>
+        <lookup name="Diagnosis" table="DiagnosisLookup" source="idfsDiagnosis" target="idfsDiagnosis">
+          <filters>
+            <filter predicate="c => ((c.intHACode &amp; (int)HACode.Livestock) != 0) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+            <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+          </filters>
+        </lookup>
+      </lookups>
+      <storage>
+        <post name="spASSessionSummaryDiagnosis_Post"/>
+      </storage>
+    </table>
+  </tables>
+
+</object>

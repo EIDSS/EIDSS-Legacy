@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="VectorLabTest"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spVectorLabTest_SelectDetail" type="detaillist" />        
+  </storage>
+  
+  <tables>
+    <table name="VectorLabTest">
+      <grid>
+        <item name="idfTesting" key="true" visible="false"/>
+        <item name="strTestName"/> <!-- для группировки -->
+        
+        <item name="strVectorID" /> <!-- Pool/Vector ID -->
+        <item name="strBarcode" /> <!-- LAB Sample ID -->
+        <item name="strFieldBarcode" /> <!-- Field Sample ID -->
+        <item name="strSampleType" /> <!-- Sample Type -->
+        <item name="datFieldCollectionDate" />
+        <item name="datAccession" />        
+        <item name="datStartedDate" />        
+        <item name="strTestCategory"/>        
+        <item name="strTestedByPerson"/>
+        <item name="strTestedByOffice"/>
+        <item name="strTestResultName"/>
+        <item name="strDiagnosisName"/>
+      </grid>
+      <labels>
+        <item labelId="TestName" name="strTestName"/>
+        <item labelId="Vector.strVectorID" name="strVectorID"/>
+        <item labelId="VectorSample.strBarcode" name="strBarcode"/> 
+        <item labelId="VectorSample.strFieldBarcode" name="strFieldBarcode"/>
+        <item labelId="idfsSpecimenType" name="strSampleType"/>
+        <item labelId="idfPensideTestTestDate" name="datStartedDate"/>
+        <item labelId="idfPensideTestTestCategory" name="strTestCategory"/>        
+        <item labelId="idfPensideTestTestedByPerson" name="strTestedByPerson"/>
+        <item labelId="idfPensideTestTestedByOffice" name="strTestedByOffice"/>
+        <item labelId="idfsPensideTestResult" name="strTestResultName"/>        
+        <item labelId="FT.strDisease" name="strDiagnosisName"/>
+      </labels>
+      <keys>
+        <key name="idfTesting"/>
+      </keys>
+      <!--<fields>
+        <storage name="ID" type="long"/>
+      </fields>-->
+      <readonly>       
+        <fields name="*" predicate="c => true" />
+      </readonly>
+      <relations>
+        <relation name="TypeLabTestToResultMatrix" type="child"
+                  table="TypeLabTestToResultMatrixLookup"
+                  source="idfsTestResult"
+                  target="" internal="false" lazy="false"/>
+      </relations>
+      <lookups>        
+        <!--<lookup name="PensideTestResult" table="BaseReference" section="rftPensideTestResult" source="idfsTestResult" target="idfsBaseReference" />
+        <lookup name="PensideTestCategory" table="BaseReference" section="rftPensideTestCategory" source="idfsTestForDiseaseType" target="idfsBaseReference" />
+        <lookup name="TestedByPerson" table="PersonLookup" source="idfTestedByPerson" target="idfPerson" >
+          <params>
+            <param name="OfficeID" const="null" />
+            <param name="ID" const="null" />
+          </params>
+        </lookup>
+        <lookup name="TestedByOffice" table="OrganizationLookup" source="idfTestedByOffice" target="idfInstitution">
+          <params>
+            <param name="ID" const="null" />
+          </params>
+        </lookup>
+        <lookup name="SampleType" table="BaseReference" section="rftSpecimenType" source="idfsSpecimenType" target="idfsBaseReference" >
+          <filters>
+            <filter predicate="c => c.intHACode == 128" />
+            <filter predicate="c => c.idfsBaseReference != (long)SampleTypeEnum.Unknown"/>
+          </filters>
+        </lookup>
+        <lookup name="Diagnosis" table="DiagnosisLookup" source="idfsDiagnosis" target="idfsDiagnosis">
+          <params>
+            <param name="HACode" const="null" />
+            <param name="DiagnosisUsingType" const="(long)DiagnosisUsingTypeEnum.StandardCase" />
+          </params>
+        </lookup>
+        <lookup name="TypeLabTestToResultMatrix" table="TypeLabTestToResultMatrixLookup" source="idfVector" target="ID" />-->
+      </lookups>
+      <storage>         
+      </storage>
+      <extenders>
+        <created>
+          <db_lambda_extender target="idfTesting" type="long" lambda="(c,m) => { _LoadTypeLabTestToResultMatrix(m,c); return c.idfTesting; }" />
+        </created>
+      </extenders>
+      <handlers>
+        <fieldhandler>   
+        </fieldhandler>
+      </handlers>
+      <validators>
+        <change>
+        </change>
+        <post>          
+        </post>
+        <delete>
+        </delete>
+      </validators>
+    </table>    
+  </tables>
+
+</object>

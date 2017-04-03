@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>   
+    <link href="@Url.Content("~/Content/Styles/Common.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Styles/SearchPanel.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Styles/ListForm.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Styles/ErrorPage.css")" rel="stylesheet" type="text/css" />
+
+    <script src="@Url.Content("~/Scripts/jquery-1.4.4.min.js")" type="text/javascript"></script>   
+    <!-- Translations -->
+    <script src="@Url.Content(String.Format("~/Scripts/Messages/EIDSS.BvMessages.{0}.js", Cultures.GetCulture(ModelUserContext.CurrentLanguage)))" type="text/javascript" ></script>
+     <!-- Common -->
+    <script src="@Url.Content("~/Scripts/Common/Config.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/Common/WindowsShow.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/Common/ActionsPanelScripts.js")" type="text/javascript" ></script>       
+    <script src="@Url.Content("~/Scripts/Common/CustomActions.js")" type="text/javascript" ></script>       
+    <script src="@Url.Content("~/Scripts/Common/Dialogs.js")" type="text/javascript"></script>
+    <script src='@Url.Content("~/Scripts/Common/BvGrid.js")' type="text/javascript"></script>
+    @(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.web20.css").Add("telerik.rtl.css").Add("FFstyles.css")/*.Combined(true).Compress(true)*/))   
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('div[class="t-status"]').hide();
+            SetCurrentTime();
+            setInterval(SetCurrentTime, 1000);
+        });
+    
+        function SetCurrentTime() {
+            var date = new Date();
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
+            var hours = date.getHours();
+            var minutes = date.getMinutes();
+            var seconds = date.getSeconds();
+
+            if (minutes < 10) {
+                minutes = "0" + minutes;
+            }
+
+            if (seconds < 10) {
+                seconds = "0" + seconds;
+            }
+
+            var suffix = "AM";
+            if (hours >= 12) {
+                suffix = "PM";
+                hours = hours - 12;
+            }
+            if (hours == 0) {
+                hours = 12;
+            }
+
+            $("#curTime")[0].innerHTML = year + "/" + month + "/" + day + " " + hours + ":" + minutes + ":" + seconds + " " + suffix;            
+        }
+    </script>
+</head>
+ 
+@*@using eidss.webclient.Areas.ActionPanel;*@
+@using System.Threading
+@using bv.common.Enums;
+@using bv.model.Model.Core;
+@using eidss.model.Core
+@using eidss.webclient.Utils
+
+@functions
+{
+    IObjectAccessor GetAccessor()
+    {
+        var result = Model as IObjectAccessor;
+        if (result == null)
+        {
+            if (Model is IObject)
+            {
+                result = ((IObject)Model).GetAccessor();
+            }
+        }
+        return result;
+    }
+
+    string RenderTopPanel()
+    {
+        IObjectAccessor accessor = GetAccessor();
+        if (accessor != null)
+        {
+            eidss.webclient.Areas.ActionPanel.Extenders.RenderActionPanel(Html, accessor, null, ActionsPanelType.Top);
+        }
+        return String.Empty;
+    }
+
+    string RenderMainPanel()
+    {
+        IObjectAccessor accessor = GetAccessor();
+        if (accessor != null) eidss.webclient.Areas.ActionPanel.Extenders.RenderActionPanel(Html, accessor, null, ActionsPanelType.Main);
+        return String.Empty;
+    }
+    
+    string GetPopup(eidss.webclient.Utils.MenuItem item)        
+    {
+        if (item.IsHelp)
+        {
+            return String.Format("return OpenPopup('{0}', '{1}');", GetHelpUrl(item.Url), item.Name.Replace(" ", ""));
+        }
+        
+        if (item.Url.Contains("AVR"))
+        {
+            return String.Format("return OpenPopup('{0}?lang={1}', 'CreateObject');", item.Url, Thread.CurrentThread.CurrentCulture);
+        }
+        
+        return String.Format("return OpenPopup('{0}', 'CreateObject');", item.Url);
+    }
+    
+    string GetHelpUrl(string basicUrl)
+    {
+        var acc = Model as IObjectMeta;
+        if (acc == null)
+        {
+            return basicUrl;
+        }
+        return String.Format("{0}?{1}.htm", basicUrl, acc.HelpIdWeb);
+    }
+}
+
+<body>  
+    @(Html.Telerik().Window()
+        .Name("Message")
+        .Modal(true)
+        .Visible(false)
+        .Draggable(true)
+        .Height(370)
+        .Buttons(buttons => buttons.Refresh().Maximize().Close())
+    ) 
+    <div class="page">
+        <div class="header">        
+            @(Html.Telerik().Menu()
+                    .Name("Menu")
+                    .BindTo(eidss.webclient.Utils.MenuHelper.GetMenu(), mappings =>
+                    {
+                        mappings.For<eidss.webclient.Utils.MenuCategory>(binding => binding
+                                .ItemDataBound((item, category) =>
+                                {
+                                    item.Text = category.Name;
+                                    item.Visible = category.IsActive;
+                                })
+                                .Children(category => category.Items));
+                        mappings.For<eidss.webclient.Utils.MenuItem>(binding => binding
+                            .ItemDataBound((item, menuitem) =>
+                            {
+                                item.Text = menuitem.Name;
+                                item.Visible = menuitem.IsActive;
+                                item.Url = menuitem.Url;
+
+                                if (menuitem.IsPopup)
+                                {
+                                    item.LinkHtmlAttributes.Add("onclick", GetPopup(menuitem));
+                                    item.Url = "#";
+                                }
+                                else
+                                {
+                                    if (menuitem.IsModal)
+                                        item.LinkHtmlAttributes.Add("onclick", String.Format("return OpenModal('{0}', '{1}');", menuitem.Url, menuitem.Name.Replace(" ", "")));
+                                }
+                                
+                            }));
+                    })
+            )
+            <div class="menuContainer">
+                <ul class="navigationMenu">
+                    @foreach (var item in eidss.webclient.Utils.MenuHelper.GetIconMenu())
+                    {
+                        if (item.IsActive)
+                        {
+                            if (item.IsPopup)
+                            {
+                                <text>
+                                <li>                                    
+                                    <a href="#" onclick='@GetPopup(item)' >
+                                    @if (item.IconName == null)
+                                    {
+                                        @item.Name
+                                    }
+                                    else
+                                    {
+                                        <img src='/Content/Images/@item.IconName' border='0' alt='@item.Name' title='@item.Name' />
+                                    }
+                                    </a>
+                                </li>
+                                </text>                        
+                            }
+                            else
+                            {
+                            <text>
+                                <li>                                    
+                                    <a href='@item.Url'  >
+                                    @if (item.IconName == null)
+                                    {
+                                        @item.Name
+                                    }
+                                     else
+                                    {
+                                        <img src='/Content/Images/@item.IconName' border='0' alt='@item.Name' title='@item.Name' />
+                                    }
+                                    </a>
+                                </li>
+                            </text>                        
+                            }
+                        }
+                    }                    
+                </ul>
+                <a class="logoutLink" href='@Url.Action("Logout", "Account")'>@eidss.webclient.Utils.Translator.GetMessageString("Logout")</a>
+            </div>
+        </div>
+        <div class="content">
+            <div class="customTitle">@ViewBag.Title</div>
+            <div class="customTitle customTitleFormCode">@ViewBag.FormCode</div>
+            <div class="topButtonPanel">
+                <!--top action panel-->
+                @RenderTopPanel()
+            </div>
+            @RenderBody()
+            <div class="bottomButtonPanel" >
+                <!-- bottom action panel -->
+                @RenderMainPanel()                
+            </div>            
+        </div>
+        <div class="footer">
+            <table class="siteInfo">
+                <tr>
+                    @*<td >
+                        Build Version: <strong>@eidss.webclient.Utils.Translator.GetAssemblyVersion()</strong>
+                    </td>*@
+                    <td>
+                        @Translator.GetString("PersonName"): <strong>@UserContextHelper.UserFullName()</strong>
+                    </td>                
+                    <td>
+                        @Translator.GetString("idfInstitution"): <strong>@UserContextHelper.UserOrganization()</strong>
+                    </td>                
+                    <td>
+                        @Translator.GetString("strSiteID"): <strong>@UserContextHelper.ContextSiteCode()</strong> 
+                    </td>                
+                    <td>
+                        @Translator.GetString("idfsCountry"): <strong>@UserContextHelper.ContextCountry()</strong>
+                    </td>                
+                    <td>
+                       @Translator.GetString("lblEntryDate"): <strong id="curTime"></strong>
+                    </td>
+                </tr>
+            </table>   
+        </div>
+    </div>
+   <div style='display:none'>Build Version: <strong>@Translator.GetAssemblyVersion()</strong></div>
+    @(Html.Telerik().ScriptRegistrar().jQuery(false).Globalization(true)/*.DefaultGroup(group => group.Combined(true).Compress(true))*/)</body>
+</html>

@@ -1,0 +1,36 @@
+﻿set ANSI_NULLS ON
+set QUOTED_IDENTIFIER ON
+GO
+
+IF  EXISTS (SELECT TOP 1 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].fnFFCheckForTemplateHasObservations')) Drop Function [dbo].fnFFCheckForTemplateHasObservations
+GO
+
+-- =============================================
+-- Author:		Leonov E.N.
+-- Create date:
+-- Description:
+-- =============================================
+Create Function dbo.fnFFCheckForTemplateHasObservations
+(
+	@idfsFormTemplate BigInt	
+)
+Returns @ResultTable Table
+(
+		[Result]	Bit
+)
+As
+BEGIN		
+	Declare @result bit
+	-- если на шаблон завязаны какие-то данные, то удалять шаблон нельзя
+	If Exists(Select Top 1 1 From dbo.tlbObservation Where idfsFormTemplate = @idfsFormTemplate And intRowStatus = 0)	Set @result = 1 Else Set @result = 0;
+	
+	If (@result = 1) begin
+		Insert into @ResultTable
+			([Result])
+		Values
+			(@result)
+	End;
+	
+	Return;
+End
+Go

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="AntimicrobialTherapy"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="spAntimicrobialTherapy_SelectDetail" type="detaillist" />
+    </storage>
+
+    <tables>
+        <table name="AntimicrobialTherapy">
+            <grid>
+                <item name="idfAntimicrobialTherapy" visible="false" key="true"/>
+                <item name="strAntimicrobialTherapyName" required="true" />
+                <item name="strDosage" required="true" />
+                <item name="datFirstAdministeredDate" required="true" />
+            </grid>
+            <fields>
+              <storage name="NewObject" type="bool"/>              
+              <calculated name="CaseObjectIdent" type="string" depends="idfHumanCase" lambda='c => "HumanCase_" + c.idfHumanCase + "_"' />
+            </fields>
+            <storage>
+                <post name="spAntimicrobialTherapy_Post" />
+                <delete name="spAntimicrobialTherapy_Delete" />
+            </storage>
+            <extenders>
+                <creating>
+                    <scalar_extender target="idfAntimicrobialTherapy" class="GetNewIDExtender" />
+                </creating>
+            </extenders>
+            <validators>              
+                <post>
+                    <required_validator target="strAntimicrobialTherapyName"/>
+                </post>
+            </validators>
+          <actions>
+            <action name="Create" type="Create">
+              <run>
+                <params>
+                  <param name="idfHumanCase" type="long" />
+                </params>
+                <creating>
+                  <lambda_extender target="idfHumanCase" type="long" lambda='c => idfHumanCase' />
+                </creating>
+              </run>
+            </action>
+          </actions>
+        </table>
+    </tables>
+
+</object>

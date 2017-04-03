@@ -1,0 +1,14 @@
+﻿@model eidss.model.Schema.VetCase
+@using eidss.webclient.Areas.Vaccination
+@using eidss.webclient.Utils
+<div class="yScrollable smallTabPanelContent">
+    @Html.Partial("../VetCase/Diagnosis", Model)<br />
+    <table class="bordered">
+        <tr>
+            <td class="sectionName">
+                @Translator.GetMessageString("titleVaccinationSection")
+            </td>
+        </tr>
+    </table>
+    @Html.VaccinationList(Model.idfCase, Model.ObjectIdent + "Vaccination", Model.Vaccination, Model.IsClosed || Model.IsReadOnly("Vaccination") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit))           
+</div>

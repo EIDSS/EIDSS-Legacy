@@ -1,0 +1,118 @@
+﻿@model eidss.model.Schema.CaseTestValidation
+@{
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+@using eidss.webclient.Utils;
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+<input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        @Html.Hidden("idfTestValidation", Model.idfTestValidation)
+                               
+        <table>    
+            <tr>
+                <td class="medium">
+                    @Html.LabelFor(m => m.Diagnosis)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, "Diagnosis", true, null, null, "CanValidateTestResult.Execute")
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.TestName)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, "TestName")
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.TestType)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, "TestType")
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.idfsInterpretedStatus)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, "RuleInOut", true, null, null, "CanValidateTestResult.Execute")
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.strInterpretedComment)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, "strInterpretedComment", true, null, "CanValidateTestResult.Execute")
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.datInterpretationDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, "datInterpretationDate")
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.InterpretedName)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, "InterpretedName", true)
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                    @Html.BvCheckBox(Model, "blnValidateStatus", true, null, "CanValidateTestInterpretation.Execute")
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.strValidateComment)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, "strValidateComment", true, null, "CanValidateTestInterpretation.Execute")
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.datValidationDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, "datValidationDate")
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.ValidatedName)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, "ValidatedName", true)
+                </td>                            
+            </tr>
+        </table>     
+        <div class="popupBottomButtonPanel">    
+            <input type="button" onclick="
+                var o = '@(Model.CaseObjectIdent)';
+                var ObjectIdent = o.substring(0, o.lastIndexOf('_') + 1);
+                CloseMessageWindow(); 
+                $('#' + ObjectIdent + 'CaseTestValidations').data('tGrid').ajaxRequest();" value="@Translator.GetMessageString("Cancel")" class="popupButton"/> 
+            <input type="button" onclick="onCaseTestValidationsPickerChanged('@(Model.CaseObjectIdent)');" value="@Translator.GetMessageString("Ok")" class="popupButton"/>      
+        </div>                       
+    }           
+</div>

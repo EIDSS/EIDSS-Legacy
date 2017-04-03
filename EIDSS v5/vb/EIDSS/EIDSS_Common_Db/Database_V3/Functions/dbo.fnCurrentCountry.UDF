@@ -1,0 +1,72 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnCurrentCountry]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnCurrentCountry]
+GO
+
+
+
+
+--##SUMMARY Posts data from DiagnosisReferenceDetail form
+
+--##REMARKS Author: Zurin M.
+--##REMARKS Create date: 5.12.2009
+
+--##RETURNS Doesn't use
+
+/*
+Example of procedure call:
+
+DECLARE @Action int
+DECLARE @idfsBaseReference bigint
+DECLARE @strDefault varchar(200)
+DECLARE @Name nvarchar(200)
+DECLARE @strOIECode nvarchar(200)
+DECLARE @strIDC10 nvarchar(200)
+DECLARE @intHACode int
+DECLARE @idfsUsingType bigint
+DECLARE @LangID nvarchar(50)
+
+
+EXECUTE @spDiagnosisReference_Post
+   @Action
+  ,@idfsBaseReference
+  ,@strDefault
+  ,@Name
+  ,@strOIECode
+  ,@strIDC10
+  ,@intHACode
+  ,@idfsUsingType
+  ,@LangID
+
+*/
+
+
+
+
+CREATE function fnCurrentCountry()
+RETURNS BIGINT
+AS
+BEGIN
+	DECLARE @idfsCountry BIGINT
+	SELECT		@idfsCountry = idfsCountry
+	FROM		tstSite
+	WHERE		tstSite.idfsSite = dbo.fnSiteID()
+	RETURN @idfsCountry
+END
+
+
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

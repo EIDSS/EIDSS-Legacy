@@ -1,0 +1,112 @@
+﻿@model eidss.model.Schema.AsCampaign
+@{
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+}
+@using bv.common.Configuration
+@using eidss.webclient.Utils
+@using eidss.model.Schema
+@using eidss.webclient.Areas.ActiveSurveillence 
+<script src='@Url.Content("~/Scripts/jquery.form.js")' type="text/javascript"></script>
+<script src='@Url.Content("~/Scripts/Common/GridAreaHelpers.js")' type="text/javascript"></script>
+<script src='@Url.Content("~/Scripts/ASCampaign/Script.js")' type="text/javascript"></script>
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        $('#bMainPanel_Create').hide();
+        $("#bMainPanel_Save").removeAttr("onclick");
+        $("#bMainPanel_Ok").removeAttr("onclick");
+
+        $("#bMainPanel_Save").unbind("click").click(SaveClick);
+        $("#bMainPanel_Ok").unbind("click").click(OKClick);        
+
+    });
+</script>
+@using (Html.BeginForm())
+{
+    <input id='SaveAndExitClick' name='SaveAndExitClick' type='hidden' value='@ViewData["SaveAndExitClick"]' /> 
+      
+    @Html.IdentificationAndHeartbeat("idfCampaign", Model.idfCampaign)	  
+    
+    <div class="detailsWindow largeDetailsWindow">
+        <div class="detailsTitle">
+            <table class="detailsTitleContent">
+                <tr>
+                    <td class="titleImage">                                                
+                        <img src='@Url.Content("~/Content/Images/Active-Surviellance-Campaign-(large).png")'  alt=""/>
+                    </td>
+                    <td class="titleText">
+                        @Translator.GetMessageString("Active Surveillence Campaign")@* idfCampaign=@Model.idfCampaign*@
+                    </td>
+                    <td class="titleText titleFormCode">
+                        V16
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        
+        @(Html.Telerik().TabStrip()
+            .Name("FullDetails")
+            .Items(items =>
+            {
+                items.Add()
+                    .Text(Translator.GetMessageString("tabTitleCampaign"))
+                    .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleCampaign" } : new { })
+                    .Content(
+                        @<text>
+                        <div class="yScrollable smallTabPanelContent">
+                            @(Html.Partial("../ASCampaign/Summary", Model))
+                            <table class="bordered">
+                                <tr>
+                                    <td class="sectionName">@Translator.GetMessageString("sectionDiseasesList")
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            @Html.DiseasesByCampaign(Model.idfCampaign, Model.ObjectIdent + "Diseases", Model.Diseases, Model.IsReadOnly("Diseases"))
+                                                      
+                            <table class="bordered">
+                                        <tr>
+                                            <td class="sectionName">@Html.LabelFor(m => m.strComments)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>@Html.BvTextArea(Model, "strComments")
+                                            </td>
+                                        </tr>
+                                    </table>
+                        </div>
+                        </text>);
+           
+                    items.Add()
+                        .Text(Translator.GetMessageString("tabTitleSessions"))
+                        .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleSessions" } : new { })
+                        .Content(                        
+                        @<text>
+                        <div class="yScrollable smallTabPanelContent">
+                           @Html.SessionsByCampaign(Model.idfCampaign, Model.ObjectIdent + "Sessions", Model.Sessions, Model.IsReadOnly("Sessions"))
+                        </div>
+                        </text>);                
+          
+                    items.Add()
+                        .Text(Translator.GetMessageString("tabTitleConclusion"))
+                        .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleConclusion" } : new { })
+                        .Content(
+                            @<text>
+                             <div class="smallTabPanelContent">
+                                    <table class="bordered">
+                                        <tr>
+                                            <td class="sectionName">@Html.LabelFor(m => m.strConclusion)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>@Html.BvTextArea(Model, "strConclusion")
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </text>);                
+            })
+        .SelectedIndex(0)
+    )
+    </div>    
+}

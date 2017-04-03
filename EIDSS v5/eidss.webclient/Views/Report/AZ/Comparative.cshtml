@@ -1,0 +1,145 @@
+﻿
+@using eidss.webclient.Utils
+@model eidss.webclient.Models.Reports.ComparativeModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/BaseFilter", Model)
+
+    @Html.Partial("AZ/FromYearToYearFilter", Model.YearModel)
+
+    <table id="ComparativeFilterTable" >
+        <tr>
+            <td class="medium">
+                @Html.LabelFor(m => m.StartMonth)
+            </td>
+            <td class="large">
+                
+                @{
+                    @(Html.Telerik().ComboBox()
+                          .Name("StartMonth")
+                          .BindTo(Model.SelectedJanuaryMonthList.ConvertToSelectListItem())
+                          .ClientEvents(c => c.OnChange("paperForm.OnMonthChanged"))
+                          )
+                }
+                
+            </td>
+            <td class="medium">
+                @Html.LabelFor(m => m.EndMonth)
+            </td>
+            <td class="large">
+                
+                @{
+                    @(Html.Telerik().ComboBox()
+                          .Name("EndMonth")
+                          .BindTo(Model.SelectedCurrentMonthList.ConvertToSelectListItem())
+                          .ClientEvents(c => c.OnChange("paperForm.OnMonthChanged"))
+                          )
+                }
+                
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="medium">
+                @Html.LabelFor(m => m.Counter)
+            </td>
+            <td class="large">
+                
+                @{
+                    @(Html.Telerik().ComboBox()
+                          .Name("Counter")
+                          .BindTo(Model.CounterList.ConvertToSelectListItem())
+                          .HtmlAttributes(new {@class = "requiredField"})
+                          )
+                }
+                
+            </td>
+            <td colspan="3"></td>
+        </tr>
+        <tr>
+            <td class="medium">
+                @Html.LabelFor(m => m.Address1.RegionId) 
+                1
+            </td>
+            <td class="large">
+                @{
+                    @(Html.Telerik().ComboBox()
+                          .Name("Address1.RegionId")
+                          .BindTo(Model.Address1.GetSelectedRegions().ConvertToSelectListItem())
+                          .ClientEvents(c => c.OnChange("paperForm.OnRegion1Changed"))
+                          )
+                }
+            </td>
+            <td class="medium">
+                @Html.LabelFor(m => m.Address1.RayonId)
+                1
+            </td>
+            <td class="large">
+                @{
+                    @(Html.Telerik().ComboBox()
+                          .Name("Address1.RayonId")
+                          .BindTo(Model.Address1.GetRayons().ConvertToSelectListItem())
+                          .ClientEvents(c => c.OnChange("paperForm.OnRayon1Changed"))
+                          )
+                }
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="medium">
+                @Html.LabelFor(m => m.Address2.RegionId)
+                2
+            </td>
+            <td class="large">
+                @{
+                    @(Html.Telerik().ComboBox()
+                          .Name("Address2.RegionId")
+                          .BindTo(Model.Address2.GetUnselectedRegions().ConvertToSelectListItem())
+                          .ClientEvents(c => c.OnChange("paperForm.OnRegion2Changed"))
+                          )
+                }
+            </td>
+            <td class="medium">
+                @Html.LabelFor(m => m.Address2.RayonId)
+                2
+            </td>
+            <td class="large">
+                @{
+                    @(Html.Telerik().ComboBox()
+                          .Name("Address2.RayonId")
+                          .ClientEvents(c => c.OnChange("paperForm.OnRayon2Changed"))
+                          .Enable(false)
+                          )
+                }
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="medium">
+                @Html.LabelFor(m => m.OrganizationCHE)
+            </td>
+            <td class="large">
+                
+                @{
+                    @(Html.Telerik().ComboBox()
+                          .Name("OrganizationCHE")
+                          .BindTo(Model.OrganizationList.ConvertToSelectListItem())
+                          .ClientEvents(c => c.OnChange("paperForm.OnComparativeOrganizationChanged"))
+                          .Enable(false)
+                          
+                          )
+                }
+                
+            </td>
+            <td colspan="3"></td>
+        </tr>
+  
+    </table>
+
+    @Html.Partial("Common/ExportButtons", Model)
+}

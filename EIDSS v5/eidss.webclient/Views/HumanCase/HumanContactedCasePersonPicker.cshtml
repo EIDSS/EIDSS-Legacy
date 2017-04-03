@@ -1,0 +1,24 @@
+﻿@model eidss.model.Schema.ContactedCasePerson
+@{
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+@using eidss.webclient.Utils;
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        <div>
+            @Html.Partial("../HumanCase/ContactedCasePerson", Model)                       
+            <div class="popupBottomButtonPanel">                   
+                <input type="button" class="popupButton" onclick="CloseHumanContactedCasePersonPicker('@(Model.CaseObjectIdent)');" value="@Translator.GetMessageString("Cancel")"/>                          
+                <input type="button" class="popupButton" onclick="onHumanContactedCasePersonPickerChanged('@(Model.CaseObjectIdent)');" value="@Translator.GetMessageString("Ok")"/>   
+            </div>  
+        </div> 
+    }           
+</div>

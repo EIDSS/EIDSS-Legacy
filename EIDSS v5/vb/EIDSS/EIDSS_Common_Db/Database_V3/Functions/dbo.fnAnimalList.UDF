@@ -1,0 +1,57 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fnAnimalList]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[fnAnimalList]
+GO
+
+/*
+select * from fnAnimalList('en')
+*/
+
+--##SUMMARY Returns the list of species and possibly associated animals.
+
+--##REMARKS Author: KLETKIN.
+--##REMARKS Create date: 16.02.2010
+
+--##RETURNS Doesn't use
+
+CREATE FUNCTION [dbo].[fnAnimalList]
+(	
+	@LangID nvarchar(20)
+)
+RETURNS TABLE 
+AS
+RETURN 
+
+select		tlbParty.idfParty,
+			tlbParty.idfCase,
+			tlbParty.idfMonitoringSession,
+			tlbAnimal.idfAnimal,
+			tlbAnimal.strAnimalCode,
+			tlbAnimal.idfsAnimalGender,
+
+			tlbSpecies.idfSpecies,
+			tlbSpecies.idfsSpeciesType,
+			SpeciesName.Name as SpeciesName,
+
+			ISNULL(tlbAnimal.strAnimalCode,SpeciesName.Name) as AnimalName
+			--Gender.Name as strGender
+
+from		tlbParty
+left join	tlbAnimal
+on			tlbAnimal.idfAnimal=tlbParty.idfParty
+left join	tlbSpecies
+on			tlbSpecies.idfsSpeciesType<>947220000000 and
+			(
+			tlbSpecies.idfSpecies=tlbParty.idfParty or
+			tlbSpecies.idfSpecies=tlbAnimal.idfSpecies
+			)
+left join	fnReference(@LangID,19000086) SpeciesName --rftSpeciesList
+on			SpeciesName.idfsReference=tlbSpecies.idfsSpeciesType
+where		tlbParty.intRowStatus=0 and
+			(tlbAnimal.idfAnimal is not null or tlbSpecies.idfSpecies is not null )
+
+GO

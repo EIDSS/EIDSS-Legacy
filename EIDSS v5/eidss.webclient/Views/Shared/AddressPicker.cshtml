@@ -1,0 +1,106 @@
+﻿@model eidss.model.Schema.Address
+@{
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+@using eidss.webclient.Utils;
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        @Html.Hidden("idfGeoLocation")
+        @Html.Hidden("strStreetName")
+        @Html.Hidden("strPostCode")
+        @Html.Hidden("needSetStreetAndPostCode", true)        
+                 
+        <table>    
+            <tr>
+                <td class="medium">
+                    @Html.LabelFor(m => m.idfsCountry)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, "Country", true, "onCountryChanged")
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.idfsRegion)
+                </td>
+                <td>
+                    @(Html.BvCombobox(Model, "Region", false, "onRegionChanged")                        
+                        .DataBinding(b => b.Ajax()
+                        .Select("SelectRegion", "Address", new RouteValueDictionary { { "area", "Address" }, { "idfGeoLocation", Model.idfGeoLocation } })))                           
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.idfsRayon)
+                </td>
+                <td>
+                    @(@Html.BvCombobox(Model, "Rayon", false, "onRayonChanged")
+                        .DataBinding(b => b.Ajax()
+                        .Select("SelectRayon", "Address", new RouteValueDictionary { { "area", "Address" }, { "idfGeoLocation", Model.idfGeoLocation } })))                          
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.idfsSettlement)
+                </td>
+                <td>
+                    @(@Html.BvCombobox(Model, "Settlement", false, "onSettlementChanged")
+                        .DataBinding(b => b.Ajax()
+                        .Select("SelectSettlement", "Address", new RouteValueDictionary { { "area", "Address" }, { "idfGeoLocation", Model.idfGeoLocation } })))                            
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.strStreetName)
+                </td>
+                <td>
+                    @(Html.BvCombobox(Model, "Street", false)
+                        .DataBinding(b => b.Ajax()
+                        .Select("SelectStreet", "Address", new RouteValueDictionary { { "area", "Address" }, { "idfGeoLocation", Model.idfGeoLocation } })))                            
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.strPostCode)
+                </td>
+                <td>
+                    @(Html.BvCombobox(Model, "PostCode", false)
+                        .DataBinding(b => b.Ajax()
+                        .Select("SelectPostCode", "Address", new RouteValueDictionary { { "area", "Address" }, { "idfGeoLocation", Model.idfGeoLocation } })))                            
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.strBuilding)/@Html.LabelFor(m => m.strHouse)/@Html.LabelFor(m => m.strApartment)
+                </td>
+                <td class="noIndent">
+                    <table>
+                        <tr>
+                            <td>
+                                @Html.BvEditbox(Model, "strBuilding", true)
+                            </td>
+                            <td>
+                                @Html.BvEditbox(Model, "strHouse", true)
+                            </td>
+                            <td>
+                                @Html.BvEditbox(Model, "strApartment", true)
+                            </td>                                            
+                        </tr>
+                    </table>
+                </td>
+            </tr>            
+        </table>           
+        <div class="popupBottomButtonPanel">    
+            <input type="button" class="popupButton" onclick="CloseMessageWindow();" value="@Translator.GetMessageString("Cancel")"/> 
+            <input type="button" class="popupButton" onclick="onAddressPickerAddressChanged(@Model.idfGeoLocation, '@Model.ObjectIdent');" value="@Translator.GetMessageString("Ok")"/>                                                      
+        </div>                          
+    }
+</div>

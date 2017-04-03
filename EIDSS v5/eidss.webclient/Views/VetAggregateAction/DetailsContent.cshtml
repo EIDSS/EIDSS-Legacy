@@ -1,0 +1,31 @@
+﻿@model eidss.model.Schema.VetAggregateAction
+@{
+    Layout = null;
+} 
+   
+@using eidss.webclient.Utils; 
+
+<script src="../../Scripts/Address/Lookups.js" type="text/javascript"></script>
+<script src='../../Scripts/Common/GridAreaHelpers.js' type="text/javascript"></script>
+<script src="../../Scripts/Address/CommonScript.js" type="text/javascript"></script>
+<script src="../../Scripts/GeoLocation/CommonScript.js" type="text/javascript"></script>
+<script src="../../Scripts/Organization/CommonScript.js" type="text/javascript"></script>
+<script src="../../Scripts/Employee/CommonScript.js" type="text/javascript"></script>
+
+<div class="detailsTitle">
+	<table class="detailsTitleContent">
+		<tr>						
+			<td class="titleImage">
+                <img src="../../Content/Images/Vet Aggregate Actions Entry (large).png" alt="" />
+            </td>
+            <td class="titleText">
+                @Translator.GetMessageString("titleVetAggregateActionTitle")
+            </td>
+            <td class="titleText titleFormCode">
+                V12
+            </td>
+		</tr>
+	</table>
+</div>        
+
+@Html.Partial("../CommonAggregate/AggregateHeader", Model.Header)

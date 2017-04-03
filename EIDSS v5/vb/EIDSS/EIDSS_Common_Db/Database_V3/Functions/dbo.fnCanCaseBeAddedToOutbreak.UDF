@@ -1,0 +1,60 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnCanCaseBeAddedToOutbreak]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnCanCaseBeAddedToOutbreak]
+GO
+
+--##SUMMARY Checks if human case can be added to outbreak
+--##SUMMARY We consider that case can be added to outbreak if it exists and doesn't marked as not related to outbreak by human case idfsYNRelatedToOutbreak field
+
+
+--##REMARKS Author: Zurin M.
+--##REMARKS Create date: 24.11.2009
+
+--##RETURNS 1 if case can be added to outbreak, 0 in other case
+
+/*
+--Example of function call:
+DECLARE @result bit
+DECLARE @idfCase bigint
+SET @idfCase = 91190000000
+SET @result = dbo.fnCanCaseBeAddedToOutbreak(@idfCase)
+Print @result
+*/
+CREATE function [dbo].[fnCanCaseBeAddedToOutbreak] (
+	@CaseID BIGINT --##PARAM @CaseID - human case ID
+)
+returns bit
+as
+begin
+
+declare @res bit
+set @res = 0
+
+if	(@CaseID is not null)
+	and exists	(
+		select		tlbHumanCase.*
+		from		tlbHumanCase
+		inner join	tlbCase ON
+			tlbCase.idfCase = tlbHumanCase.idfHumanCase
+		where		idfHumanCase = @CaseID
+					and (idfsYNRelatedToOutbreak is null  or idfsYNRelatedToOutbreak <> 10100002/*ynvNo*/)
+					and (tlbCase.intRowStatus = 0)
+				)
+begin
+	set @res = 1
+end
+
+return @res
+
+end
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

@@ -1,0 +1,54 @@
+﻿@model eidss.model.Schema.GeoLocation           
+@{
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+
+@using eidss.webclient.Utils
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+<input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        @Html.Hidden("idfGeoLocation")
+        
+        <table>    
+            <tr>
+                <td class="medium">
+                    @Html.LabelFor(m => m.strDescription)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, "strDescription", true)
+                </td>                            
+            </tr>                                  
+        </table>     
+        <table class="bordered">
+            <tr>
+                <td class="sectionName">
+                    @Translator.GetMessageString("titleLocation")
+                </td>
+            </tr>            
+            <tr class="noIndent">
+                <td class="noIndent">
+                    @Html.Action("Details", "GeoLocation", new { root = ViewData["Root"], location = Model })
+                </td>
+            </tr>
+            <tr>
+                <td class="noIndent">
+                    @Html.Action("Coordinates", "GeoLocation", new { root = ViewData["Root"], location = Model })
+                </td>
+            </tr>
+        </table>              
+        <div class="popupBottomButtonPanel">                
+            <input type="button" class="popupButton" onclick="CloseMessageWindow();" value="@Translator.GetMessageString("Cancel")"/> 
+            <input type="button" class="popupButton" onclick="onGeoLocationChanged(@Model.idfGeoLocation, '@Model.ObjectIdent', true);" value="@Translator.GetMessageString("Ok")"/>     
+            <input type="button" class="popupButton" onclick="onGeoLocationChanged(@Model.idfGeoLocation, '@Model.ObjectIdent', false);" value="@Translator.GetMessageString("Save")"/>                                                  
+        </div>                         
+    }
+</div>        

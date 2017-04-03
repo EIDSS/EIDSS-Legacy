@@ -1,0 +1,61 @@
+﻿@model eidss.model.Schema.FarmListItem.Accessor
+@{
+    Layout = null; // "~/Views/Shared/_EmptyLayout.cshtml";
+}
+@using eidss.webclient.Utils;
+@using eidss.model.Schema
+<script src='@Url.Content("~/Scripts/Common/SearchPicker.js")' type="text/javascript"></script>
+<script src='@Url.Content("~/Scripts/Search/Panel.js")' type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript">
+
+    function SelectFarm() {       
+        //close window and fill farm details with selection
+        var id = GetSelectedItemId();
+//        var id = $('#grid_selecteditem').val();        
+        if (id.length > 0)
+            parent.FarmIdSelected(id);
+    }
+
+
+    function onFarmSearch() {        
+        SearchItemsAndUpdateGrid('@Url.Action("Select", "Farm")', "Message");
+    }
+
+    $(document).ready(function () {
+        $('div[class="t-status"]').hide();
+    });
+</script>
+<div class="popupContent searchPopupContent">
+    <input type="hidden" id="grid_selecteditem" />
+    <div class="fillAll">
+        <div class="collapsePanel collapsePanelRight">                                                                      
+            <input type="button" id="btHideSearch" value="<<" onclick="onHideSearchPanel()" class="popupButton lfButton" />
+            <input type="button" id="btShowSearch" value=">>" onclick="onShowSearchPanel()" class="popupButton lfButton invisible" />                
+        </div>
+        <div class="searchContentTop">
+            <!--div class="titleNumber">V04</div-->
+            <input type="button" value="@Translator.GetMessageString("Select")" onclick="SelectFarm();" class="popupButton" />            
+        </div>
+        <div class="searchContentLeft">
+            <div id="searchpanel" class="customSearchPanel popupSearchPanel">
+                @using (Html.BeginForm())
+                { 
+                    @Html.SearchPanel(Model, (bv.model.Model.Core.FilterParams)ViewBag.Filter, (bv.model.Model.Core.IObject)ViewBag.InitObject)                       
+                    <input type="button" value="@Translator.GetMessageString("Search")" onclick="onFarmSearch()" class="popupButton" />
+                    <input type="button" value="@Translator.GetMessageString("Clear")" onclick="ClearSearch(true);" />                    
+                }
+            </div>
+        </div>
+        <div class="mainSearchContent searchLeftIndent">
+           @(Html.BvSelectGrid<FarmListItem.FarmListItemGridModel, FarmListItem.FarmListItemGridModelList>(
+                Session.SessionID,
+                (FarmListItem.FarmListItemGridModelList)ViewBag.GridItems,                       
+                eidss.webclient.Configurations.GridDisplayRowsSettings.FARM_LIST)
+                .Sortable(sorting => sorting.OrderBy(ordering => ordering.Add("strNationalName"))))                 
+        </div>
+        <div class="searchContentBottom">
+            <input type="button" onclick="CloseMessageWindow();" value="@Translator.GetMessageString("Close")" class="popupButton" />
+        </div>
+    </div>
+</div>

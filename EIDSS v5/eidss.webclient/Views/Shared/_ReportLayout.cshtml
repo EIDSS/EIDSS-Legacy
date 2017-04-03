@@ -1,0 +1,91 @@
+﻿@using bv.model.Model.Core
+@using eidss.webclient.Utils
+
+<!DOCTYPE html>
+<html>    
+    <head>
+        <title>@ViewBag.Title</title>
+               
+        <link href="@Url.Content("~/Content/Styles/Common.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/Styles/Details.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/Styles/Report.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/Styles/PopupWindow.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/Styles/ErrorPage.css")" rel="stylesheet" type="text/css" />
+        <script src="@Url.Content("~/Scripts/jquery-1.4.4.min.js")" type="text/javascript"> </script>           
+        <!-- Translations -->
+        <script src="@Url.Content(String.Format("~/Scripts/Messages/EIDSS.BvMessages.{0}.js", Cultures.GetCulture(ModelUserContext.CurrentLanguage)))" type="text/javascript" > </script>
+        <!-- Common -->        
+        <script src="@Url.Content("~/Scripts/Common/Config.js")" type="text/javascript"> </script>
+        <script src="@Url.Content("~/Scripts/Common/WindowsShow.js")" type="text/javascript"> </script>
+        <script src="@Url.Content("~/Scripts/Common/Dialogs.js")" type="text/javascript"> </script>
+        <script src="@Url.Content("~/Scripts/Common/FormRefresh.js")" type="text/javascript"> </script>
+        <script src="@Url.Content("~/Scripts/Reports/PaperForm.js")" type="text/javascript"> </script>
+
+        @(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.web20.css").Add("telerik.rtl.css") /*.Combined(true).Compress(true)*/))
+        
+        <script type="text/javascript">
+
+            $(window).load(function() {
+                $.ajaxSetup({ cache: false });
+            });
+
+            document.onkeypress = function (e) {
+                e = window.event || e;
+                if (e.keyCode == 13) {
+                    return false;
+                }
+                return true;
+            };
+
+        </script>
+    </head>
+    <body class="detailsViewContainer">
+        @(Html.Telerik().Window()
+               .Name("Message")
+               .Modal(true)
+               .Visible(false)
+               .Draggable(true)
+               .ClientEvents
+               (events => events.OnClose("OnCloseMessageWindow"))
+              )
+        <input id='MapOpenerId' type='hidden' value='' />
+        <div class="detailsPage">
+            <div>
+                <div class="detailsWindow largeDetailsWindow">
+                    <div class="detailsTitle">
+                        <table class="detailsTitleContent">
+                            <tr>						
+                                <td class="titleText">
+                                   @ViewBag.Title
+                                </td>
+                            </tr>
+                        </table>
+                    </div>  
+
+                    @RenderBody()   
+
+                </div>
+            </div>
+        </div>        
+        <div id="error">
+            <span class="errorMessage">
+                <input id='ErrorMessage' name='ErrorMessage' type='hidden' value='@ViewData["ErrorMessage"]' />
+            </span>            
+        </div> 
+        @(@Html.Telerik().ScriptRegistrar().jQuery(false).Globalization(true)
+               .DefaultGroup(group =>
+                             group.Add("/jquery.validate.js")
+                                 .Add("/2010.3.1318/telerik.common.js")
+                                 .Add("/2010.3.1318/telerik.list.js")
+                                 .Add("/2010.3.1318/telerik.combobox.js")
+                                 .Add("/2010.3.1318/telerik.calendar.js")
+                                 .Add("/2010.3.1318/telerik.datepicker.js")
+                                 .Add("/2010.3.1318/telerik.timepicker.js")
+                                 .Add("/2010.3.1318/telerik.datetimepicker.js")
+                                 .Add("/2010.3.1318/telerik.textbox.js")
+                                 .Add("/2010.3.1318/telerik.draganddrop.js")
+               /*.Combined(true).Compress(true)*/
+               )
+              )
+    </body>    
+</html>

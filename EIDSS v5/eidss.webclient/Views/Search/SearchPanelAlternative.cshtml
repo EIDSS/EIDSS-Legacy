@@ -1,0 +1,123 @@
+﻿@model eidss.webclient.Models.SearchPanelModel
+@{
+    ViewBag.Title = "SearchPanelAlternative";    
+}
+@using bv.model.Model.Core;
+@using eidss.webclient.Utils;
+@using eidss.webclient.Models;
+ <script src='@Url.Content("~/Scripts/jquery.form.js")' type="text/javascript"></script>
+ <script type="text/javascript" language="javascript" src="/Scripts/Search/Panel.js" ></script>
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        $("#AltSearch").click(function () { AjaxSearch(SearchSuccessHandler) });
+    });
+
+    function ReloadPartial(e) {
+        var query = '@Url.Action("SearchPanelMetaItem", "Search")';
+        var index = e.target.id.substring(e.target.id.lastIndexOf("_") + 1);
+        $.get(
+                query,
+                {
+                    valueFieldName: e.value,
+                    objIndex: index
+                },
+                function (data) {
+                    $("#combocontainer" + index).html(data);
+                }
+            );
+            }
+
+</script>
+@*@if (Model.SearchPanelItems.Where(m => m.Location == SearchPanelLocation.Additional || m.Location == SearchPanelLocation.Combobox).Count() > 0)
+{    
+    <a href="#" class="searchOptions" onclick="Show('Additional');">advanced search >></a>
+}
+*@
+<input type="hidden" id="NeedsFirstRowSelection" value="0" />
+<div class="spMainContainer">
+    <div id="MainSearchPanel">    
+        <table class="spTableContainer">
+            @foreach (var t in Model.SearchPanelItemsBasic)
+            {
+                if (t.Name.Equals("-", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    <tr>
+                        <td >
+                            @*<div style='height:4px'></div>*@
+                            <hr style="height:1px;width:100%"  />
+                        </td>
+                    </tr>
+                }
+                else
+                {   
+                    <tr>
+                        <td>
+                            @if (t.EditorType == EditorType.Lookup)
+                            {
+                                @Html.Partial("../Search/SearchPanelMetaItem",
+                                    t,
+                                    SearchPanelDataExtractor.GetDataForItem(
+                                        Model.Id.ToString(),
+                                        t,
+                                        Model.ResultObjectInstance,
+                                        Model.CurrentFilter,
+                                        Model.SearchPanelItems.Where(m => m.Dependent == t.Name).Count() > 0,
+                                        Model.FieldIsHiddenPersonalData(t.Name))
+                                )
+                            }
+                            else
+                            {                                                
+                                @Html.Partial("../Search/SearchPanelMetaItem", t, SearchPanelDataExtractor.GetDataForItem(Model.Id.ToString(), t, Model.ResultObjectInstance, Model.CurrentFilter, isHiddenPersonalData: Model.FieldIsHiddenPersonalData(t.Name)))  
+                            }
+                        </td>
+                    </tr>  
+                }                                         
+            }
+        </table>    
+    </div>
+    <input type="hidden" id="LoadingHelper" value="0" />
+@*    <div id="AdditionalSearchPanel" class="invisible">
+        <table class="spTableContainer spAdditionalContainer">
+            @foreach (var t in Model.SearchPanelItemsAdditional)
+            {
+                <tr>
+                    <td>
+                        @Html.Partial("../Search/SearchPanelMetaItem", t, SearchPanelDataExtractor.GetDataForItem(Model.Id.ToString(), t, Model.ResultObjectInstance, Model.CurrentFilter))
+                    </td>
+                </tr>
+            }
+        </table>
+       @if (Model.SearchPanelItemsCombo.Count() > 0)
+        {
+        <table class="spTableContainer">
+            @for (byte i = 0; i < SearchPanelHelper.COMBOBOXES_ON_ADDITIONAL_PANEL_COUNT; i++)
+            {
+                <tr>
+                    <td>
+                        @(Html.Telerik().ComboBox()
+                            .Name("CBox.Item." + i.ToString())
+                            .BindTo(SearchPanelHelper.GetComboSource(Model.SearchPanelItems)).ClientEvents(events => events
+                            .OnChange("ReloadPartial")
+                            )
+                        .HtmlAttributes(new { style = "width:132px" })
+                        )
+                    </td>
+                    <td nowrap="nowrap">
+                        <div id="@String.Format("combocontainer{0}", i)" class="spComboContainer">                    
+                            @Html.Partial("../Search/SearchPanelMetaItem",
+                                Model.SearchPanelItemsCombo.FirstOrDefault(),
+                                    new ViewDataDictionary { 
+                                         new KeyValuePair<string, object>("ObjNameIndex", i.ToString()) 
+                                    }
+                                )
+                        </div>
+                    </td>
+                </tr>
+            }
+        </table>
+        }
+        <a href="#" class="searchOptions" onclick="Hide('Additional');">&lt;&lt; hide</a><br/>
+        <!--<a href="#" class="searchOptions" onclick="Hide('Combo');">&lt;&lt; hide</a>-->
+    </div>*@
+</div>
+@ViewData["FillComboScript"]

@@ -1,0 +1,45 @@
+
+/****** Object:  UserDefinedFunction [dbo].[fnReference_Full]    Script Date: 11/12/2009 15:00:12 ******/
+SET ANSI_NULLS OFF
+GO
+SET QUOTED_IDENTIFIER OFF
+Go
+
+
+IF  EXISTS (SELECT TOP 1 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fnReference_Full]')) DROP Function [dbo].[fnReference_Full]
+GO
+-- select * from fnReference_full ('en')
+
+CREATE function [dbo].[fnReference_Full](@LangID	nvarchar(50))
+returns table
+as
+return(
+select		b.idfsBaseReference as idfsReference, 
+			IsNull(c.strTextString, b.strDefault) as [Name],
+			b.idfsReferenceType, 
+			b.intHACode, 
+			b.strDefault, 
+--			b.intRowStatus, 
+			IsNull(c.strTextString, b.strDefault) as [LongName]
+
+from		dbo.trtBaseReference as b 
+left Join 	dbo.trtStringNameTranslation as c 
+on			b.idfsBaseReference = c.idfsBaseReference
+			and c.idfsLanguage = dbo.fnGetLanguageCode(@LangID)
+
+where		b.intRowStatus = 0 -- or intRowStatus is null) --    
+
+)
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+
+
+
+

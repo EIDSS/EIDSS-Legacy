@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<menu>
+  <item ref="MenuCatalogs" reskey="Journals" permission="">
+    <item ref="MenuFindHumanCase" reskey="Human Cases" permission="HumanCase.Select" url="/HumanCase/Index" />
+    <item ref="MenuFindVetCase" reskey="Veterinary Cases" permission="VetCase.Select" url="/VetCase/Index" />
+    <item ref="MenuPatient" reskey="Persons" permission="Person.Select" url="/Person/Index" />
+    <item ref="MenuFindAggregateCase" reskey="Human Aggregate Cases List" permission="HumanCase.Select" url="/HumanAggregateCase/Index" />
+    <item ref="MenuVetAggregateCaseList" reskey="Vet Aggregate Cases List" permission="VetCase.Select" url="/VetAggregateCase/Index" />
+    <item ref="MenuVetAggregateActionList" reskey="Vet Aggregate Actions List" permission="VetCase.Select" url="/VetAggregateAction/Index" />
+    <item ref="MenuASCampaigns" reskey="Active Surveillance Campaigns" permission="Campaign.Select" url="/ASCampaign/Index"/>
+    <item ref="MenuASSessionList" reskey="Active Surveillance Sessions" permission="MonitoringSession.Select" url="/ASSession/Index" />    
+    <item ref="MenuLabSampleLogBook" reskey="Lab Sample Log Book" permission="Sample.Select" url="/LabSample/Index" />
+  </item>
+  <item ref="MenuCreate" reskey="Create" url="" permission="">
+    <item ref="MenuNewHumanCase" reskey="Human Case" permission="HumanCase.Insert" url="/HumanCase/Details" popup="true"/>
+    <item ref="MenuNewVetCaseAvian" reskey="Avian Case" permission="VetCase.Insert" url="/VetCase/Details/Avian/0" popup="true"/>
+    <item ref="MenuNewVetCaseLivestock" reskey="Livestock Case" permission="VetCase.Insert" url="/VetCase/Details/Lvstk/0" popup="true"/>
+    <item ref="MenuNewAggregateCase" reskey="Human Aggregate Case" permission="HumanCase.Insert" url="/HumanAggregateCase/Details" popup="true"/>
+    <item ref="MenuNewVetAggregateCase" reskey="Vet Aggregate Case" permission="VetCase.Insert" url="/VetAggregateCase/Details" popup="true"/>
+    <item ref="MenuNewVetAggregateAction" reskey="Vet Aggregate Action" permission="VetCase.Insert" url="/VetAggregateAction/Details" popup="true"/>
+    <item ref="MenuNewASCampaign" reskey="Active Surveillance Campaign" permission="Campaign.Insert" url="/ASCampaign/Details/0" popup="true"/>
+    <item ref="MenuNewASSession" reskey="Active Surveillance Session" permission="MonitoringSession.Insert" url="/ASSession/Details/0" popup="true"/>    
+  </item>
+  <item ref="MenuSearch" reskey="Search" permission="">
+    <item ref="MenuViewAggregateSummaryCase" reskey="Human Aggregate Case Summary" permission="HumanCase.Select" url="/HumanAggregateCase/CaseSummary"/>
+    <item ref="MenuViewVetAggregateSummaryCase" reskey="Vet Aggregate Case Summary" permission="VetCase.Select" url="/VetAggregateCase/CaseSummary"/>
+    <item ref="MenuViewVetAggregateSummaryAction" reskey="Vet Aggregate Action Summary" permission="VetCase.Select" url="/VetAggregateAction/CaseSummary"/>
+  </item>
+  <item ref="MenuReports" reskey="Reports" dynamic="true" permission="Report.Select">
+    
+    
+    <!--AZ Human Reports-->
+    <!--item ref="HumFormN1" reskey="Form # 1" permission="HumanCase.Select" url="/Report/HumFormN1" popup="true"/>
+    <item ref="HumDataQualityIndicators" reskey="Data Quality Indicators" permission="HumanCase.Select" url="/Report/HumDataQualityIndicators" popup="true"/>
+    <item ref="HumDataQualityIndicatorsRayons" reskey="Data Quality Indicators for rayons" permission="HumanCase.Select" url="/Report/HumDataQualityIndicatorsRayons" popup="true"/>
+    <item ref="HumComparativeReport" reskey="Comparative Report" permission="HumanCase.Select" url="/Report/HumComparativeAZReport" popup="true"/>
+    <item ref="HumSummaryByRayonDiagnosisAgeGroups" reskey="Report of human cases by rayon, diagnosis, age groups" permission="HumanCase.Select" url="/Report/HumSummaryByRayonDiagnosisAgeGroups" popup="true"/>
+    <item ref="HumExternalComparativeReport" reskey="External comparative Report" permission="HumanCase.Select" url="/Report/HumExternalComparativeReport" popup="true"/>
+    <item ref="HumMainIndicatorsOfAFPSurveillance" reskey="Main indicators of AFP surveillance" permission="HumanCase.Select" url="/Report/HumMainIndicatorsOfAFPSurveillance" popup="true"/>
+    <item ref="HumAdditionalIndicatorsOfAFPSurveillance" reskey=">Additional indicators of AFP surveillance" permission="HumanCase.Select" url="/Report/HumAdditionalIndicatorsOfAFPSurveillance" popup="true"/>
+    <item ref="HumWhoMeaslesRubellaReport" reskey="WHO Report on Measles and Rubella" permission="HumanCase.Select" url="/Report/HumWhoMeaslesRubellaReport" popup="true"/-->
+    <!--GG Human Reports-->
+    <!--item ref="ReportsJournal60BReportCard" reskey="60B Journal" permission="HumanCase.Select" url="/Report/Hum60BJournal" popup="true"/>
+    <item ref="ReportsHumInfectiousDiseaseMonthNew" reskey="Report on Certain Diseases/Conditions (Monthly Form IV–03)" permission="HumanCase.Select" url="/Report/HumMonthInfectiousDiseaseNew" popup="true"/>
+    <item ref="HumInfectiousDiseaseIntermediateMonthNew" reskey="Intermediate Report by Monthly Form IV–03" permission="HumanCase.Select" url="/Report/HumIntermediateMonthInfectiousDiseaseNew" popup="true"/>
+    <item ref="ReportsHumInfectiousDiseaseYear" reskey="Report on Cases of Annually Reportable Infectious Diseases (Annual Form IV–03 Old Revision)" permission="HumanCase.Select" url="/Report/HumAnnualInfectiousDisease" popup="true"/>
+    <item ref="HumInfectiousDiseaseIntermediateYear" reskey="Intermediate Report by Annual Form IV–03 (Old Revision)" permission="HumanCase.Select" url="/Report/HumIntermediateAnnualInfectiousDisease" popup="true"/>
+    <item ref="ReportsHumInfectiousDiseaseMonth" reskey="Report on Cases of Infectious Diseases (Monthly Form IV–03/1 Old Revision)" permission="HumanCase.Select" url="/Report/HumMonthInfectiousDisease" popup="true"/>
+    <item ref="HumInfectiousDiseaseIntermediateMonth" reskey="Intermediate Report by Monthly Form IV–03/1 (Old Revision)" permission="HumanCase.Select" url="/Report/HumIntermediateMonthInfectiousDisease" popup="true"/-->
+    <!--GG Lab Reports-->
+    <!--item ref="ReportsHumSerologyResearchCard" reskey="Serology Research Result" permission="Sample.Select" url="/Report/HumSerologyResearchCard" popup="true"/>
+    <item ref="ReportsHumMicrobiologyResearchCard" reskey="Microbiology Research Result" permission="Sample.Select" url="/Report/HumMicrobiologyResearchCard" popup="true"/>
+    <item ref="HumAntibioticResistanceCard" reskey="Antibiotic Resistance Card" permission="Sample.Select" url="/Report/HumAntibioticResistanceCard" popup="true"/-->
+    <!--Common Human Reports-->
+    <!--item ref="ReportsHumDiagnosisToChangedDiagnosis" reskey="Human Diagnosis To Changed Diagnosis" permission="HumanCase.Select" url="/Report/HumDiagnosisToChangedDiagnosis" popup="true"/>
+    <item ref="ReportsHumMonthlyMorbidityAndMortality" reskey="Human Monthly Morbidity And Mortality" permission="HumanCase.Select" url="/Report/HumMonthlyMorbidityAndMortality" popup="true"/-->
+
+    <!--AZ Vet Reports-->
+    <!--item ref="VeterinaryCasesReport" reskey="Veterinary Cases Report" permission="VetCase.Select" url="/Report/VetCasesReportAZ" popup="true"/-->
+    <!--KZ Vet Reports-->
+    <!--item ref="VetCountryPlannedDiagnosticTestsReport" reskey="Country Report &quot;Planned diagnostic tests&quot;" permission="VetCase.Select" url="/Report/VetCountryPlannedDiagnosticTests" popup="true"/>
+    <item ref="VetRegionPlannedDiagnosticTestsReport" reskey="Oblast Report &quot;Planned diagnostic tests&quot;" permission="VetCase.Select" url="/Report/VetOblastPlannedDiagnosticTests" popup="true"/>
+    <item ref="VetCountryPreventiveMeasuresReport" reskey="Country Report &quot;Veterinary preventive measures&quot;" permission="VetCase.Select" url="/Report/VetCountryPreventiveMeasures" popup="true"/>
+    <item ref="VetRegionPreventiveMeasuresReport" reskey="Oblast Report &quot;Veterinary preventive measures&quot;" permission="VetCase.Select" url="/Report/VetOblastPreventiveMeasures" popup="true"/>
+    <item ref="VetCountryProphilacticMeasuresReport" reskey="Country Report &quot;Veterinary- sanitary measures&quot;" permission="VetCase.Select" url="/Report/VetCountrySanitaryMeasures" popup="true"/>
+    <item ref="VetRegionProphilacticMeasuresReport" reskey="Oblast Report &quot;Veterinary- sanitary measures&quot;" permission="VetCase.Select" url="/Report/VetOblastSanitaryMeasures" popup="true"/-->
+    <!--Common Vet Reports-->
+    <!--item ref="ReportsVetSamplesCount" reskey="Veterinary Samples Count" permission="VetCase.Select" url="/Report/VetSamplesCount" popup="true"/>
+    <item ref="ReportsVetSamplesReportBySampleType" reskey="Veterinary Samples By Sample Type" permission="VetCase.Select" url="/Report/VetSamplesBySampleType" popup="true"/>
+    <item ref="ReportsVetSamplesReportBySampleTypesWithinRegions" reskey="Veterinary Samples By Sample Types Within Regions" permission="VetCase.Select" url="/Report/VetSamplesBySampleTypesWithinRegions" popup="true"/>
+    <item ref="ReportsVetYearlySituation" reskey="Veterinary Yearly Situation" permission="VetCase.Select" url="/Report/VetYearlySituation" popup="true"/>
+    <item ref="ReportsActiveSurveillance" reskey="Active Surveillance Report" permission="VetCase.Select" url="/Report/VetActiveSurveillance" popup="true"/-->
+     
+    <!--Common Admin Reports-->
+    <!--item ref="ReportsAdmEventLog" reskey="Administrative Event Log" permission="EventLog.Select" url="/Report/AdmEventLog" popup="true"/-->
+    <!---->
+    
+    <item ref="MenuPaperForms" reskey="Paper Forms" permission="Report.Select" url="/System/PaperForms"/>
+    <item ref="menuStndReports" reskey="Standard Reports" permission="AVRReport.Select" url="/../AVR" popup="true"/>        
+    <!--<item ref="" reskey="Human" permission="" url="/Account/Home"/>
+    <item ref="" reskey="Veterinary" permission="" url="/Account/Home"/>-->
+  </item>
+  <item ref="MenuHelp" reskey="Help" permission="">
+    <item ref="MenuHelp" reskey="Help" permission="" url="/../HelpRouter.htm" popup="true" help="true"/>
+    <item ref="MenuHelpAbout" reskey="About" permission="" url="/Account/About" popup="true"/>
+  </item>
+</menu>

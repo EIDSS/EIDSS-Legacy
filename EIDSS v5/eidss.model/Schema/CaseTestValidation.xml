@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="CaseTest"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="spCaseTestsValidation_SelectDetail" type="detaillist" />
+    </storage>
+
+    <tables>
+        <table name="CaseTestValidation">
+            <grid>
+                <item name="idfTestValidation" visible="false" key="true"/>
+                <item name="IsNew" type="bool" visible="false" />
+                <item name="DiagnosisName" type="string" />
+                <item name="TestName" type="string" />
+                <item name="TestType" type="string" />
+                <item name="RuleInOutName" type="string" />
+                <item name="strInterpretedComment" type="string" />
+                <item name="datInterpretationDate" />
+                <item name="InterpretedName" type="string" />
+                <item name="blnValidateStatus" type="bool?" />
+                <item name="strValidateComment" type="string" />
+                <item name="datValidationDate" />
+                <item name="ValidatedName" type="string" />
+            </grid>
+            <labels>
+              <item name="DiagnosisName" labelId="TestDiagnosis"/>
+              <item name="TestType" labelId="TestCategory"/>
+              <item name="idfsInterpretedStatus" labelId="RuleInOut"/>
+            </labels>
+            <fields>
+              <storage name="NewObject" type="bool"/>
+              <!--prnt storage name="idfsCaseType" type="long?"/-->
+              <calculated name="idfsCaseType" type="long?" depends="Parent" 
+                          lambda="c => c.Parent is AsSession ? 0 : (
+                                       c.Parent is HumanCase ? (long)eidss.model.Enums.CaseTypeEnum.Human : (
+                                       c.Parent is VetCase ? (c.Parent as VetCase).idfsCaseType : (long?)null))"/>
+              <calculated name="CaseObjectIdent" type="string" depends="idfCase" lambda='c => (c.idfsCaseType == (long)eidss.model.Enums.CaseTypeEnum.Human ? "HumanCase_" : (c.idfsCaseType == 0 ? "AsSession_" : "VetCase_")) + c.idfCase + "_"' />
+            </fields>
+            <readonly>
+                <fields name="TestName,TestType,datInterpretationDate,InterpretedName,datValidationDate,ValidatedName" predicate="c => true"/>
+                <fields name="Diagnosis,idfsDiagnosis,RuleInOut,idfsInterpretedStatus,strInterpretedComment" 
+                        predicate='c => !ModelUserContext.Instance.CurrentUser.HasPermission("CanValidateTestResult.Execute") || c.blnValidateStatus.HasValue &amp;&amp; c.blnValidateStatus.Value'/>
+                <fields name="*" predicate="c => false"/>
+            </readonly>
+            <lookups>
+                <lookup name="Diagnosis" table="DiagnosisLookup" source="idfsDiagnosis" target="idfsDiagnosis">
+                  <filters>
+                    <filter predicate="c => ((c.intHACode &amp; 
+                               (obj.idfsCaseType == (long)CaseTypeEnum.Human ? (int)HACode.Human :
+                               (obj.idfsCaseType == (long)CaseTypeEnum.Livestock ? (int)HACode.Livestock : 
+                               (obj.idfsCaseType == (long)CaseTypeEnum.Avian ? (int)HACode.Avian : 
+                               (int)HACode.All)))) != 0) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+                    <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+                  </filters>
+                </lookup>
+                <lookup name="RuleInOut" table="BaseReference" section="rftRuleInValue" source="idfsInterpretedStatus" target="idfsBaseReference" />
+            </lookups>
+            <storage>
+                <post name="spCaseTestsValidation_Update" />
+            </storage>
+            <extenders>
+                <creating>
+                    <scalar_extender target="idfTestValidation" class="GetNewIDExtender" />
+                </creating>
+                <created>
+                    <lambda_extender target="datInterpretationDate" type="DateTime" lambda="c => DateTime.Now.Date"/>
+                    <lambda_extender target="idfInterpretedByPerson" type="long" lambda="c => (long)ModelUserContext.Instance.CurrentUser.EmployeeID"/>
+                    <lambda_extender target="InterpretedName" type="string" lambda="c => ModelUserContext.Instance.CurrentUser.FullName"/>
+                </created>
+            </extenders>
+            <handlers>
+                <fieldhandler>
+                    <lambda_handler field="blnValidateStatus" target="datValidationDate" type="DateTime" lambda="c => DateTime.Now.Date"/>
+                    <lambda_handler field="blnValidateStatus" target="idfValidatedByPerson" type="long" lambda="c => (long)ModelUserContext.Instance.CurrentUser.EmployeeID"/>
+                    <lambda_handler field="blnValidateStatus" target="ValidatedName" type="string" lambda="c => ModelUserContext.Instance.CurrentUser.FullName"/>
+                    <lambda_handler field="idfsDiagnosis" target="DiagnosisName" type="string" lambda='c => c.Diagnosis != null ? c.Diagnosis.name : ""'/>
+                    <lambda_handler field="idfsInterpretedStatus" target="RuleInOutName" type="string" lambda='c => c.RuleInOut != null ? c.RuleInOut.name : ""'/>
+                </fieldhandler>
+            </handlers>
+            <validators>
+                <post>
+                    <required_validator target="idfsDiagnosis" property="Diagnosis" />
+                    <required_validator target="idfsInterpretedStatus" property="RuleInOut" label="RuleInOut" />
+                </post>
+              <delete>
+                <predicate_validator predicate="c => c.IsNew" message="msgCantDeleteRecord" />
+              </delete>
+            </validators>
+            <actions>
+              <action name="Create" type="Create">
+                <permissions type="CanValidateTestInterpretation"/>
+                <run>
+                  <params>
+                    <param name="idfCase" type="long" />
+                    <!--prnt param name="idfsCaseType" type="long?"/-->
+                    <param name="idfTesting" type="long" />
+                    <param name="TestName" type="string" />
+                    <param name="TestType" type="string" />
+                    <param name="idfsDiagnosis" type="long"/>
+                  </params>
+                  <creating>
+                    <lambda_extender target="idfCase" type="long" lambda='c => idfCase' />
+                    <!--prnt lambda_extender target="idfsCaseType" type="long?" lambda='c => idfsCaseType' /-->
+                    <lambda_extender target="idfTesting" type="long" lambda='c => idfTesting' />
+                    <lambda_extender target="TestName" type="string" lambda='c => TestName' />
+                    <lambda_extender target="TestType" type="string" lambda='c => TestType' />
+                  </creating>
+                  <created>
+                    <lambda_extender target="Diagnosis" type="DiagnosisLookup" lambda="c => c.DiagnosisLookup.FirstOrDefault(i => i.idfsDiagnosis == idfsDiagnosis)"/>
+                  </created>
+                </run>
+              </action>
+            </actions>
+        </table>
+    </tables>
+
+</object>

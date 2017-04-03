@@ -1,0 +1,80 @@
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnGetPermissionOnHumanCase]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnGetPermissionOnHumanCase]
+GO
+
+CREATE FUNCTION [dbo].[fnGetPermissionOnHumanCase](
+	@ObjectOperation BIGINT
+	, @Employee BIGINT
+)
+RETURNS TABLE 
+AS
+RETURN
+/* test
+DECLARE @ObjectOperation BIGINT
+DECLARE @Employee BIGINT
+
+SET @Employee = 3
+*/
+
+
+SELECT
+	idfHumanCase
+	, CASE
+		WHEN m_diag <= m_site AND m_diag <= m_out THEN m_diag
+		WHEN m_out <= m_site AND m_out <= m_diag THEN m_out
+		ELSE m_site
+	END intPermission
+FROM (
+	SELECT
+		thc.idfHumanCase
+		, MIN(CASE 
+				WHEN ot2.idfsStatus = 10107003 
+					THEN ISNULL(Diagnosis.intPermission, 2)
+				ELSE 2
+			END) m_diag
+		, MIN(CASE 
+				WHEN ot3.idfsStatus = 10107003 
+					THEN ISNULL(Site.intPermission, 2)
+				ELSE 2
+			END) m_site
+		, MIN(CASE 
+				WHEN ot4.idfsStatus = 10107003 
+					THEN ISNULL(Site.intPermission, 2)
+				ELSE 2
+			END) m_out
+	FROM tlbHumanCase thc
+	JOIN tlbCase tc ON
+		tc.idfCase = thc.idfHumanCase
+		AND tc.intRowStatus = 0
+	--rights on diagnosis
+	LEFT JOIN dbo.fnGetPermissionOnDiagnosis(@ObjectOperation, @Employee) AS Diagnosis ON
+		Diagnosis.idfsDiagnosis = tc.idfsShowDiagnosis
+	LEFT JOIN dbo.trtObjectTypeToObjectType ot2 ON
+		ot2.idfsRelatedObjectType = 10060006
+		AND ot2.idfsParentObjectType = 10060001
+	--rights on site
+	LEFT JOIN dbo.fnGetPermissionOnSite(@ObjectOperation, @Employee) AS [Site] ON
+		Site.idfsSite = tc.idfsSite
+	LEFT JOIN dbo.trtObjectTypeToObjectType ot3 ON
+		ot3.idfsRelatedObjectType = 10060006
+		AND ot3.idfsParentObjectType = 10060011
+	--rights on Outbreak
+	LEFT JOIN dbo.fnGetPermissionOnOutbreak(@ObjectOperation, @Employee) AS [Outbreak] ON
+		Outbreak.idfOutbreak = tc.idfOutbreak
+	LEFT JOIN dbo.trtObjectTypeToObjectType ot4 ON
+		ot4.idfsRelatedObjectType = 10060006
+		AND ot4.idfsParentObjectType = 10060014
+	GROUP BY thc.idfHumanCase
+) hc
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO

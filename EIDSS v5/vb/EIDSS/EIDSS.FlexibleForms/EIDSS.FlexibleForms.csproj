@@ -1,0 +1,498 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8040D091-58E8-4FBE-8F46-D5200EEDAF69}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EIDSS.FlexibleForms</RootNamespace>
+    <AssemblyName>EIDSS.FlexibleForms</AssemblyName>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>http://localhost/EIDSS.FlexibleForms/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\eidss.main\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\eidss.main\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Printing.v11.1.Core, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Data.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Utils.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraBars.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Charts.v11.1.Core, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraCharts.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraGrid.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraNavBar.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPivotGrid.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.PivotGrid.v11.1.Core, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPrinting.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Reports.v11.1.Designer, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraReports.v11.1.Extensions, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraReports.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraTreeList.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraVerticalGrid.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="Help2">
+      <HintPath>..\..\..\dlls\Help2.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\EIDSSAssemblyInfo.cs">
+      <Link>EIDSSAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Components\Label.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\Label.Designer.cs">
+      <DependentUpon>Label.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Line.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DataBase\DBServiceParameterTypeEditor.cs" />
+    <Compile Include="FFDeterminants.cs" />
+    <Compile Include="FFDeterminants.Designer.cs">
+      <DependentUpon>FFDeterminants.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FFParameterTypesEditor.cs" />
+    <Compile Include="FFParameterTypesEditor.Designer.cs">
+      <DependentUpon>FFParameterTypesEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FFTreeParameterForTemplate.cs" />
+    <Compile Include="FFTreeParameterForTemplate.Designer.cs">
+      <DependentUpon>FFTreeParameterForTemplate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\ActivityParametersBuffer.cs" />
+    <Compile Include="Components\Parameter.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\Section.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\SectionTable.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DataBase\DbService.cs">
+    </Compile>
+    <Compile Include="DataBase\DbServiceUserData.cs" />
+    <Compile Include="DataBase\FlexibleFormsDS.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FlexibleFormsDS.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DesignerHosting\DesignerHost.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DesignerHosting\DesignerHost.designer.cs">
+      <DependentUpon>DesignerHost.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DesignerHosting\ParameterHost.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DesignerHosting\ParameterHost.designer.cs">
+      <DependentUpon>ParameterHost.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FFPresenter.cs" />
+    <Compile Include="FFPresenter.Designer.cs">
+      <DependentUpon>FFPresenter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FlexibleFormEditor.cs" />
+    <Compile Include="FlexibleFormEditor.Designer.cs">
+      <DependentUpon>FlexibleFormEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\CopyHelper.cs" />
+    <Compile Include="Helpers\CriticalObjectsHelper.cs" />
+    <Compile Include="Helpers\DataHelper.cs" />
+    <Compile Include="Helpers\ErrorHelper.cs" />
+    <Compile Include="Helpers\FFRender.cs" />
+    <Compile Include="Helpers\HelperFunctions.cs" />
+    <Compile Include="Helpers\ParameterControlTypeHelper.cs" />
+    <Compile Include="Helpers\ParameterSchemeHelper.cs" />
+    <Compile Include="Helpers\ReportHelper\DataItems\FlexItem.cs" />
+    <Compile Include="Helpers\ReportHelper\DataItems\FlexLabelItem.cs" />
+    <Compile Include="Helpers\ReportHelper\DataItems\FlexLineItem.cs" />
+    <Compile Include="Helpers\ReportHelper\DataItems\FlexTableItem.cs" />
+    <Compile Include="Helpers\ReportHelper\ReportSettings.cs" />
+    <Compile Include="Helpers\ReportHelper\Tree\FlexNode.cs" />
+    <Compile Include="Helpers\ReportHelper\Tree\FlexNodeVisitor.cs" />
+    <Compile Include="Helpers\StubHelper.cs" />
+    <Compile Include="Helpers\TemplateHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Test.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Test.Designer.cs">
+      <DependentUpon>Test.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\bltoolkit.3.2.dev\BLToolkit.4.csproj">
+      <Project>{0C325F5D-E50E-4340-8724-D29896CCC583}</Project>
+      <Name>BLToolkit.4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\bv.common\bv.common.csproj">
+      <Project>{BEE76B17-720D-4B65-996A-5712912B3ACF}</Project>
+      <Name>bv.common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\bv.model\bv.model.csproj">
+      <Project>{9067327E-1960-4326-ACB9-D982DDBEAA76}</Project>
+      <Name>bv.model</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\bv.winclient\bv.winclient.csproj">
+      <Project>{B0163672-F328-4D02-9B71-FB698EDAF815}</Project>
+      <Name>bv.winclient</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\eidss.core\eidss.core.csproj">
+      <Project>{BF545ECD-F673-4C71-9362-57C01DF13062}</Project>
+      <Name>eidss.core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\bvwin_common\bvwin_common.vbproj">
+      <Project>{B3E5BA6B-FAA3-4A7D-8236-3F8842D61CD4}</Project>
+      <Name>bvwin_common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\bv_common\bvcommon.vbproj">
+      <Project>{BA2844A8-F629-4B02-ACD6-B60063E4D27F}</Project>
+      <Name>bvcommon</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\bv_dbcommon\bvdb_common.vbproj">
+      <Project>{6C48BB93-277D-4804-B280-F6130E29EB81}</Project>
+      <Name>bvdb_common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EIDSS_Common\EIDSS_Common.vbproj">
+      <Project>{119CC05A-2F6C-4FC8-AC74-79BB76E3C1C0}</Project>
+      <Name>EIDSS_Common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Components\Label.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Label.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Line.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Line.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Parameter.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Parameter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\Section.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Section.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\SectionTable.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SectionTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DesignerHosting\DesignerHost.resx">
+      <DependentUpon>DesignerHost.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DesignerHosting\ParameterHost.resx">
+      <DependentUpon>ParameterHost.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFDeterminants.az-Latn-AZ.resx">
+      <DependentUpon>FFDeterminants.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFDeterminants.hy-am.resx">
+      <DependentUpon>FFDeterminants.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFDeterminants.ka-GE.resx">
+      <DependentUpon>FFDeterminants.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFDeterminants.kk-KZ.resx">
+      <DependentUpon>FFDeterminants.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFDeterminants.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FFDeterminants.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFDeterminants.ru-RU.resx">
+      <DependentUpon>FFDeterminants.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFDeterminants.uk-UA.resx">
+      <DependentUpon>FFDeterminants.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFParameterTypesEditor.az-Latn-AZ.resx">
+      <DependentUpon>FFParameterTypesEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFParameterTypesEditor.hy-am.resx">
+      <DependentUpon>FFParameterTypesEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFParameterTypesEditor.ka-GE.resx">
+      <DependentUpon>FFParameterTypesEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFParameterTypesEditor.kk-KZ.resx">
+      <DependentUpon>FFParameterTypesEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFParameterTypesEditor.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FFParameterTypesEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFParameterTypesEditor.ru-RU.resx">
+      <DependentUpon>FFParameterTypesEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFParameterTypesEditor.uk-UA.resx">
+      <DependentUpon>FFParameterTypesEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFPresenter.az-Latn-AZ.resx">
+      <DependentUpon>FFPresenter.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFPresenter.hy-am.resx">
+      <DependentUpon>FFPresenter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFPresenter.ka-GE.resx">
+      <DependentUpon>FFPresenter.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFPresenter.kk-KZ.resx">
+      <DependentUpon>FFPresenter.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFPresenter.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FFPresenter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFPresenter.ru-RU.resx">
+      <DependentUpon>FFPresenter.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFPresenter.uk-UA.resx">
+      <DependentUpon>FFPresenter.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFTreeParameterForTemplate.az-Latn-AZ.resx">
+      <DependentUpon>FFTreeParameterForTemplate.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFTreeParameterForTemplate.hy-am.resx">
+      <DependentUpon>FFTreeParameterForTemplate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFTreeParameterForTemplate.ka-GE.resx">
+      <DependentUpon>FFTreeParameterForTemplate.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFTreeParameterForTemplate.kk-KZ.resx">
+      <DependentUpon>FFTreeParameterForTemplate.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFTreeParameterForTemplate.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FFTreeParameterForTemplate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFTreeParameterForTemplate.ru-RU.resx">
+      <DependentUpon>FFTreeParameterForTemplate.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFTreeParameterForTemplate.uk-UA.resx">
+      <DependentUpon>FFTreeParameterForTemplate.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FlexibleFormEditor.az-Latn-AZ.resx">
+      <DependentUpon>FlexibleFormEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FlexibleFormEditor.hy-am.resx">
+      <DependentUpon>FlexibleFormEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FlexibleFormEditor.ka-GE.resx">
+      <DependentUpon>FlexibleFormEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FlexibleFormEditor.kk-KZ.resx">
+      <DependentUpon>FlexibleFormEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FlexibleFormEditor.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FlexibleFormEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FlexibleFormEditor.ru-RU.resx">
+      <DependentUpon>FlexibleFormEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FlexibleFormEditor.uk-UA.resx">
+      <DependentUpon>FlexibleFormEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Test.resx">
+      <DependentUpon>Test.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="DataBase\FlexibleFormsDS.xsc">
+      <DependentUpon>FlexibleFormsDS.xsd</DependentUpon>
+    </None>
+    <None Include="DataBase\FlexibleFormsDS.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>FlexibleFormsDS.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DataBase\FlexibleFormsDS.xss">
+      <DependentUpon>FlexibleFormsDS.xsd</DependentUpon>
+    </None>
+    <None Include="Helpers\ReportHelper\FlexTreeDiagram.cd" />
+    <None Include="Migrated rules for EIDSS.FlexibleForms.ruleset" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\Books.bmp" />
+    <Content Include="Images\Calendar Add.png" />
+    <Content Include="Images\Calendar Restricted.png" />
+    <Content Include="Images\Calendar Stop.png" />
+    <Content Include="Images\Calendar.bmp" />
+    <Content Include="Images\Document 2 Back.bmp" />
+    <Content Include="Images\Document 2 Edit 2.png" />
+    <Content Include="Images\Document 2 Up.bmp" />
+    <Content Include="Images\Document Down.bmp" />
+    <Content Include="Images\Document Forward.bmp" />
+    <Content Include="Images\down.png" />
+    <Content Include="Images\File Documents Add.png" />
+    <Content Include="Images\File Documents Delete.png" />
+    <Content Include="Images\File Documents.bmp" />
+    <Content Include="Images\Folder.png" />
+    <Content Include="Images\GroupXml_ch.png" />
+    <Content Include="Images\Internet Update.png" />
+    <Content Include="Images\Label.bmp" />
+    <Content Include="Images\label2.bmp" />
+    <Content Include="Images\line.bmp" />
+    <Content Include="Images\pointer.bmp" />
+    <Content Include="Images\Report Add.png" />
+    <Content Include="Images\Report Delete.png" />
+    <Content Include="Images\Report.png" />
+    <Content Include="Images\row.png" />
+    <Content Include="Images\row_add.png" />
+    <Content Include="Images\row_delete.png" />
+    <Content Include="Images\Save 2.png" />
+    <Content Include="Images\SpreadSheet Total Add.png" />
+    <Content Include="Images\SpreadSheet Total Delete.png" />
+    <Content Include="Images\SpreadSheet Total.png" />
+    <Content Include="Images\Symbol Delete 2.png" />
+    <Content Include="Images\up.png" />
+    <Content Include="Images\Window Add.png" />
+    <Content Include="Images\Window Configuration.bmp" />
+    <Content Include="Images\Window Delete.png" />
+    <Content Include="Images\Window Dialog.bmp" />
+    <Content Include="Images\Window.bmp" />
+    <None Include="Resources\Parameter Types Editor %28large%29%2848%29.png" />
+    <None Include="Resources\Flexible Forms Designer %28large%29%2850%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

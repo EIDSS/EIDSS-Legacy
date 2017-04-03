@@ -1,0 +1,371 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="AsSession"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="spASSession_SelectDetail" />
+	</storage>
+
+	<tables>
+		<table name="AsSession">
+      <properties auditObject="daoMonitoringSession" auditTable="tlbMonitoringSession" permissionObject="MonitoringSession" />
+      <help web="web_as_session_form"/>
+      <labels>
+        <item name="datStartDate" labelId="AsSession.DetailsStartDate" />        
+      </labels>
+			<fields>
+        <storage name="_blnAllowCampaignReload" type="bool"/>        
+        <storage name="_blnReloadSummaryFigures" type="bool"/>
+        <storage name="blnForceCampaignAssignment" type="bool"/>
+        <storage name="_idfFarmForCaseCreation" type="long?"/>
+        <storage name="_strCreatedCases" type="string"/>        
+        <storage name="CampaignInRamOnly" type="AsCampaign"/>        
+        <calculated name="buttonSearchCampaign" type="string" depends="strCampaignID" lambda='c=>strCampaignID'/>
+        <calculated name="buttonEditCampaign" type="string" depends="strCampaignID" lambda='c=>strCampaignID'/>
+        <calculated name="buttonRemoveCampaign" type="string" depends="strCampaignID" lambda='c=>strCampaignID'/>
+        <calculated name="strReadOnlyCountry" type="string" depends="idfsCountry" lambda='c=>(c.Country == null)?"" : Country.strCountryName'/>
+        <calculated name="strReadOnlyEnteredDate" type="string" depends="datEnteredDate" lambda='c => c.datEnteredDate == null ? (string)null : c.datEnteredDate.Value.ToString("d")'/>
+        <calculated name="strPersonEnteredBy" type="string" depends="idfPersonEnteredBy" lambda='c=>(c.EnteredByPerson==null) ? "" : c.EnteredByPerson.strFullName' />
+        <calculated name='intTotalSampledAnimals' type='int' depends='SummaryItems' lambda='c=>c.SummaryItems.Where(x=>!x.IsMarkedToDelete).Sum(x=>x.intSampledAnimalsQty ?? 0)'/>
+        <calculated name='intTotalSamples' type='int' depends='SummaryItems' lambda='c=>c.SummaryItems.Where(x=>!x.IsMarkedToDelete).Sum(x=>x.intSamplesQty ?? 0)'/>
+        <calculated name='intTotalPositiveAnimals' type='int' depends='SummaryItems' lambda='c=>c.SummaryItems.Where(x=>!x.IsMarkedToDelete).Sum(x=>x.intPositiveAnimalsQty ?? 0)'/>
+        <calculated name='intTotalDiagnosedAnimals' type='int' depends='ASAnimals' lambda='c=>c.DetailsTableView.Where(x=>!x.IsMarkedToDelete).Where(x=>x.idfAnimal.HasValue).Select(x=>x.idfAnimal).Distinct().Count()'/>
+        <calculated name='intTotalSamplesInDetails' type='int' depends='ASSamples' lambda='c=>c.ASSamples.Where(x=>!x.IsMarkedToDelete).Count()'/>
+        <calculated name='intTotalCases' type='int' depends='Cases' lambda='c => (c.Cases == null) ? 0 : c.Cases.Count()'/>
+        <!--calculated name="DiagnosisAll" type="List&lt;DiagnosisLookup&gt;" depends="Diseases"
+                        lambda='c => new List&lt;DiagnosisLookup&gt;(Diseases.Where(d => !d.IsMarkedToDelete).Select(d => d.Diagnosis).Where(d => d != null).Distinct())'/-->
+      </fields>
+      <readonly>
+        <fields name="strReadOnlyEnteredDate" predicate="c => true" />
+        <fields name="intTotalCases" predicate="c => true" />
+        <fields name="intTotalDiagnosedAnimals,intTotalSamplesInDetails,intTotalPositiveAnimals,intTotalSamples,intTotalSampledAnimals,strMonitoringSessionID,idfPersonEnteredBy,idfsSite,strPersonEnteredBy,idfsCampaignType,CampaignType,strCampaignName,strCampaignID,datEnteredDate" predicate="c=>true"/>        
+        <fields name="idfsMonitoringSessionStatus,MonitoringSessionStatus" predicate="c => false"/>
+        <fields name="buttonSearchCampaign,buttonEditCampaign,buttonRemoveCampaign" predicate="c=>c.idfsMonitoringSessionStatus == (long)AsSessionStatus.Closed"/>
+        <fields name="*" predicate="c=>c.idfsMonitoringSessionStatus == (long)AsSessionStatus.Closed"/>
+      </readonly>
+      <relations>
+        <relation name="EnteredByPerson" table="Personnel" internal="false" type="link" source="idfPersonEnteredBy" target="idfPerson" hacodable="false" />
+        <relation name="Diseases" table="AsSessionDisease" internal="true" type="child" lazy="false" source="idfMonitoringSession" target="idfMonitoringSession" />
+        <relation name="Actions" table="AsSessionAction" internal="false" type="child" lazy="false" source="idfMonitoringSession" target="idfMonitoringSession" />
+        <relation name="SummaryItems" table="AsSessionSummary" internal="false" type="child" lazy="true" source="idfMonitoringSession" target="idfMonitoringSession"/>
+        <relation name="DetailsTableView" table="AsSessionTableViewItem" internal="false" type="child" lazy="true" source="idfMonitoringSession" target="idfMonitoringSession"/>
+        <relation name="ASAnimals" table="AsSessionAnimal" internal="false" type="child" lazy="false" source="idfMonitoringSession" target="idfMonitoringSession"/>
+        <relation name="ASSpecies" table="AsSessionFarmSpeciesListItem" internal="false" type="child" source="idfMonitoringSession" target="" lazy="true"/>
+        <relation name="ASFarms" table="AsSessionFarm" internal="true" type="child" source="idfMonitoringSession" target="idfMonitoringSession" lazy="false"/>
+        <relation name="ASSamples" table="AsSessionSample" internal="false" type="child" source="idfMonitoringSession" target="idfMonitoringSession" lazy="true"/>
+        <relation name="Cases" table="AsSessionCase" internal="false" type="child" source="idfMonitoringSession" target="" lazy="true"/>
+        <relation name="CaseTests" table="CaseTest" internal="false" type="child" lazy="false" source="idfMonitoringSession" target="" />
+        <relation name="CaseTestValidations" table="CaseTestValidation" internal="false" type="child" lazy="false" source="idfMonitoringSession" target="" />        
+      </relations>
+      <lookups>
+        <lookup name="MonitoringSessionStatus" table="BaseReference" section="rftMonitoringSessionStatus" source="idfsMonitoringSessionStatus" target="idfsBaseReference" notaddempty="true" />
+        <lookup name="CampaignType" table="BaseReference" section="rftCampaignType" source="idfsCampaignType" target="idfsBaseReference" />
+        <lookup name="Country" table="CountryLookup" source="idfsCountry" target="idfsCountry" />
+        <lookup name="Region" table="RegionLookup" source="idfsRegion" target="idfsRegion">
+          <params>
+            <param name="CountryID" lambda="c => c.idfsCountry ?? 0" type="long" />
+            <param name="ID" const="null" />
+          </params>
+        </lookup>
+        <lookup name="Rayon" table="RayonLookup" source="idfsRayon" target="idfsRayon">
+          <params>
+            <param name="RegionID" lambda="c => c.idfsRegion ?? 0" type="long" />
+            <param name="ID" const="null" />
+          </params>
+        </lookup>
+        <lookup name="Settlement" table="SettlementLookup" source="idfsSettlement" target="idfsSettlement">
+          <params>
+            <param name="RayonID" lambda="c => c.idfsRayon ?? 0" type="long" />
+            <param name="ID" const="null" />
+          </params>
+        </lookup>
+      </lookups>
+      <storage>
+        <post name="spASSession_Post"/>
+        <candelete name="spASSession_CanDelete"/>
+      </storage>
+      <postorder>        
+        <item name="this"/>
+        <item name="Diseases"/>
+        <item name="ASFarms"/>
+        <item name="Actions"/>
+        <item name="SummaryItems"/>
+        <item name="DetailsTableView"/>
+        <item name="CaseTests"/>
+        <item name="CaseTestValidations"/>
+      </postorder>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfMonitoringSession" class="GetNewIDExtender" />
+          <lambda_extender target="strMonitoringSessionID" lambda='c=>"(new session)"' type='string'/>
+          <scalar_extender target="idfsSite" class="GetSiteIDExtender" />
+          <value_extender target="_blnAllowCampaignReload" value="true"/>
+          <value_extender target="datEnteredDate" value="DateTime.Today"/>
+          <custom_extender>
+            <text>
+              if (EidssUserContext.Instance != null)
+              if (EidssUserContext.User != null)
+              {
+              if (EidssUserContext.User.EmployeeID != null)
+              {
+              long em;
+              if (long.TryParse(EidssUserContext.User.EmployeeID.ToString(), out em))
+              {
+              obj.idfPersonEnteredBy = em;
+              _LoadEnteredByPerson(obj);
+              }            
+              }
+              }
+
+            </text>
+          </custom_extender>          
+        </creating>
+        <created>
+          <!-- set default country as current country of database -->
+          <lambda_extender target="Country" type="CountryLookup" lambda='c => 
+                                     c.CountryLookup.Where(a => a.idfsCountry == eidss.model.Core.EidssSiteContext.Instance.CountryID)
+                                     .SingleOrDefault()'/>
+          <select_extender class="SelectLookupExtender" target="MonitoringSessionStatus" table="BaseReference" source="MonitoringSessionStatusLookup" lambda='c => c.idfsBaseReference == (long)AsSessionStatus.Open' />
+          <value_extender target="_strCreatedCases" value="NO_CASES_CREATED"/>
+        </created>
+        <loaded>
+          <!--prnt lambda_list_extender list="CaseTestValidations" type="long?" target="idfsCaseType" lambda="c => 0"/-->
+          <!--prnt lambda_list_extender list="CaseTests" type="EditableList&lt;AsSessionDisease&gt;" target="AsSessionDiseases" lambda="c => c.Diseases"/>
+          <lambda_list_extender list="CaseTests" type="EditableList&lt;AsSessionSample&gt;" target="AsSessionSamples" lambda="c => c.ASSamples"/>
+          <lambda_list_extender list="CaseTests" type="EditableList&lt;CaseTestValidation&gt;" target="CaseTestValidations" lambda="c => c.CaseTestValidations"/-->
+          <!--prnt lambda_list_extender list="ASSamples" type="EditableList&lt;CaseTest&gt;" target="CaseTests" lambda="c => c.CaseTests"/-->
+          <lambda_list_extender list="CaseTests" type="long" target="idfTesting" lambda="c => { (t.GetAccessor() as CaseTest.Accessor).LoadLookup_TestTypeRef(manager, t); return t.idfTesting; }"/>
+          <lambda_list_extender list="DetailsTableView" type="EditableList&lt;CaseTest&gt;" target="CaseTests" lambda="c => c.CaseTests"/>
+   
+          <!-- set links to details-->
+          <custom_extender>
+            <text>
+              obj.DetailsTableView.ForEach(x => x.ASFarms = obj.ASFarms);
+              obj.DetailsTableView.ForEach(x => x.ASSpecies = obj.ASSpecies);
+              obj.DetailsTableView.ForEach(x => x.ASAnimals = obj.ASAnimals);
+              obj.DetailsTableView.ForEach(x => x.ASSamples = obj.ASSamples);
+              obj.SummaryItems.ForEach(x => x.ASFarms = obj.ASFarms);
+
+            </text>
+          </custom_extender>
+          <!--<db_lambda_extender target="CampaignInRamOnly" lambda="(c,m) => AsCampaign.Accessor.Instance(null).SelectByKey(m, c.idfCampaign)" type="AsCampaign"/>-->
+          <value_extender target="_blnAllowCampaignReload" value="true"/>
+          <value_extender target="_strCreatedCases" value="NO_CASES_CREATED"/>
+        </loaded>        
+        <posting>
+          <value_extender target="_blnAllowCampaignReload" value="false"/>
+          <value_extender target="_strCreatedCases" value="NO_CASES_CREATED"/>
+          <db_lambda_extender target="strMonitoringSessionID" type="string" lambda='(c,m) => 
+                        c.strMonitoringSessionID != "(new session)" 
+                        ? c.strMonitoringSessionID 
+                        : m.SetSpCommand("dbo.spGetNextNumber", (long)NumberingObjectEnum.ASSession, DBNull.Value, DBNull.Value)                        
+                        .ExecuteScalar&lt;string&gt;(ScalarSourceType.OutputParameter, "NextNumberValue")' />
+        </posting>
+        <posted>
+          <custom_extender>
+            <text>
+              if (obj.ASFarms.Count() > 0)
+              {
+              SaveFarms(manager, obj);
+              }
+              if (obj._idfFarmForCaseCreation.HasValue)
+              {
+              CreateCases(manager, obj);
+              }
+            </text>
+          </custom_extender>
+          <value_extender target="_blnAllowCampaignReload" value="true"/>          
+        </posted>
+      </extenders>      
+      <handlers>          
+
+        <fieldhandler>
+          <scalar_handler class="SetScalarHandler" target="Region" field="idfsCountry" lambda="(o, fld, prev_fld) => null" />
+          <scalar_handler class="SetScalarHandler" target="Rayon" field="idfsRegion" lambda="(o, fld, prev_fld) => null" />
+          <scalar_handler class="SetScalarHandler" target="Settlement" field="idfsRayon" lambda="(o, fld, prev_fld) => null" />
+          <lookup_handler lookup="Region" field="idfsCountry" />
+          <lookup_handler lookup="Rayon" field="idfsRegion" />
+          <lookup_handler lookup="Settlement" field="idfsRayon" />
+          <custom_handler field="blnForceCampaignAssignment" >
+            <text>
+              obj.CopyCampaignData();
+            </text>
+          </custom_handler>
+        </fieldhandler>        
+        <childhandler>
+            <custom_handler field="IsMarkedToDelete" container="DetailsTableView" filter="x=>true" >
+              <text>
+                if (o.Sample != null) o.Sample.MarkToDelete();
+                obj.OnPropertyChanged(_str_ASSamples);
+              </text>
+            </custom_handler>
+          
+        </childhandler>        
+      </handlers>
+      <validators>
+        <change>
+          <predicate_validator field="idfCampaign" message="AsSession_WrongCampaignAssignment" property="idfCampaign" predicate="c=>c.CopyCampaignData()"/>
+          <predicate_validator field="_strCreatedCases" message="" property="_strCreatedCases" predicate="c=>c.ValidationMessageForCases()"/>
+          <!-- Session Start Date ≤ Session End Date -->
+          <predicate_validator field="datStartDate" predicate="c => PredicateValidator.CompareDates(c.datStartDate, c.datEndDate)" message="datSessionStartDate_datSessionEndDate_msgId" />
+          <predicate_validator field="datEndDate" predicate="c => PredicateValidator.CompareDates(c.datStartDate, c.datEndDate)" message="datSessionStartDate_datSessionEndDate_msgId" />
+        </change>
+
+        <childchange>
+          <container field="datFieldCollectionDate" name="ASSamples" filter="c => !c.IsMarkedToDelete">
+            <predicate_validator field="datFieldCollectionDate" container="ASSamples" predicate="(c,i) => ASSamplesIsValid(c,i)" message="AsSession.SummaryItem.datCollectionDate_msgId" />
+          </container>
+          <container field="datCompletionDate" name="SummaryItems" filter="c => !c.IsMarkedToDelete">
+            <predicate_validator container="SummaryItems" field="datCompletionDate" predicate="(c,i) => NewSummaryItemIsValid(c,i)" message="AsSession.SummaryItem.datCollectionDate_msgId"/>
+          </container>
+        </childchange>
+        <childaddlist container="ASSamples">
+          <predicate_validator field="ASSamples" property="datFieldCollectionDate" predicate="(c,i) => ASSamplesIsValid(c,i)" message="AsSession.SummaryItem.datCollectionDate_msgId"/>
+        </childaddlist>
+        <childaddlist container="SummaryItems">
+          <predicate_validator field="SummaryItems" property="datCompletionDate" predicate="(c,i) => NewSummaryItemIsValid(c,i)" message="AsSession.SummaryItem.datCollectionDate_msgId"/>
+        </childaddlist>        
+        <childaddlist container="DetailsTableView">
+          <predicate_validator field="DetailsTableView" predicate="(c,i) => NewTableItemIsValid(c,i)" message=""/>
+        </childaddlist>
+        <childaddlist container="Diseases">
+          <predicate_validator field="Diseases" predicate="(c,i) => NewDiseaseValidation(c,i)" message=""/>
+        </childaddlist>
+        
+        <post>
+          <required_validator field="idfsMonitoringSessionStatus" target="MonitoringSessionStatus"/>
+          <required_validator field="idfsRegion" target="Region"/>
+
+          <custom_mandatory_validator name="datStartDate" fieldId="ASSession_StartDate"/>
+          <custom_mandatory_validator name="datEndDate" fieldId="ASSession_EndDate"/>
+          <custom_mandatory_validator name="Rayon" fieldId="ASSession_Rayon"/>
+          
+          <predicate_validator field="DetailsTableView" predicate="c => DetailsViewIsValid(c)" message=""/>
+
+          <container name="ASSamples" filter="c => true">
+            <predicate_validator field="ASSamples" property="datFieldCollectionDate" predicate="(c,i) => ASSamplesIsValid(c,i)" message="AsSession.SummaryItem.datCollectionDate_msgId"/>
+          </container>
+
+          <container name="SummaryItems" filter="c => true">
+            <predicate_validator field="SummaryItems" property="datCompletionDate" predicate="(c,i) => NewSummaryItemIsValid(c,i)" message="AsSession.SummaryItem.datCollectionDate_msgId"/>
+          </container>
+        </post>
+        
+      </validators>
+      <actions>
+        <action name="CreateCase" type="Action">
+          <visual>
+            <regular caption="titleCreateCase" tooltip="titleCreateCase" icon="Livestock_Case__small_"/>
+          </visual>
+          <run>
+            <preUI webType="JScript"/>
+          </run>
+        </action>
+        <action name="ReportAsSampleCollectedList" type="Action">
+          <visual panel="Main" alignment="Left">
+            <regular caption="titleReportAsSampleCollectedList" icon="Report" tooltip="titleReportAsSampleCollectedList"/>
+          </visual>
+          <run>
+            <preUI webType="JScript"/>
+            <params>
+              <param name="id" type="long"/>
+            </params>
+          </run>
+        </action>
+        <action name="ReportAsSessionTests" type="Action">
+          <visual panel="Main" alignment="Left">
+            <regular caption="titleReportAsSessionTests" icon="Report" tooltip="titleReportAsSessionTests"/>
+          </visual>
+          <run>
+            <preUI webType="JScript"/>
+            <params>
+              <param name="id" type="long"/>
+            </params>
+          </run>
+        </action>
+      </actions>
+		</table>
+    <table name='AsSessionDisease'>      
+      <grid>
+        <item name='idfMonitoringSessionToDiagnosis' key='true' type='long?' visible='false'/>
+        <item name="strDiagnosis" type="string"/>
+        <item name="strSpecies" type="string"/>
+      </grid>
+      <fields>        
+        <calculated name="strDiagnosis" depends="idfsDiagnosis" type="string" lambda='c=> c.Diagnosis == null ? "" : c.Diagnosis.name'/>
+        <calculated name='strSpecies' depends='idfsSpeciesType' type='string' lambda='c=>c.SpeciesType == null ? "" : c.SpeciesType.name'/>        
+      </fields>
+      <readonly>
+        <fields name='idfsSpeciesType,SpeciesType' predicate='c=>(c.idfsDiagnosis == 0)'/>
+      </readonly>
+      <lookups>
+        <lookup name="Diagnosis" table="DiagnosisLookup" source="idfsDiagnosis" target="idfsDiagnosis">
+          <filters>
+            <filter predicate="c => ((c.intHACode &amp; (int)HACode.Livestock) != 0) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+            <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+          </filters>
+        </lookup>
+        <lookup name="SpeciesType" table="BaseReference" section="rftSpeciesList" source="idfsSpeciesType" target="idfsBaseReference">
+          <filters>
+            <filter predicate="c => (c.intHACode.GetValueOrDefault() &amp; ((int?)HACode.Livestock).GetValueOrDefault()) != 0 || c.idfsBaseReference == obj.idfsSpeciesType" />
+          </filters>
+        </lookup>
+        <!--lookup name="SpeciesType" table="SpeciesTypeLookup" source="idfsSpeciesType" target="idfsBaseReference">
+          <filters>
+            <filter predicate="c => (c.intHACode.GetValueOrDefault() &amp; ((int?)HACode.Livestock).GetValueOrDefault()) != 0 || c.idfsBaseReference == obj.idfsSpeciesType" />
+          </filters>
+        </lookup-->
+      </lookups>
+      <storage>
+        <post name="spASSessionDiagnosis_Post"/>
+      </storage>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfMonitoringSessionToDiagnosis" class="GetNewIDExtender" />
+        </creating>
+      </extenders>
+      <validators>
+        <post>
+          <required_validator field="idfsDiagnosis" target="idfsDiagnosis"/>
+        </post>
+      </validators>
+    </table>
+    <table name="AsSessionFarm" hacodable="true">
+      <relations>
+        <relation name="Farm" table="FarmPanel" internal="false" lazy="false" source="idfFarm" target="idfFarm" type="link" hacodable="true" /> 
+      </relations>
+      <storage>
+        <post name="spASSessionFarm_Link"/>
+      </storage>
+      <postorder>
+        <item name="this"/>
+      </postorder>
+      <extenders>
+        <creating>
+          <lambda_extender type="int?" target="_HACode" lambda="c => (int)eidss.model.Enums.HACode.Livestock"/>
+        </creating>
+        <loading>
+          <lambda_extender type="int?" target="_HACode" lambda="c => (int)eidss.model.Enums.HACode.Livestock"/>
+        </loading>
+      </extenders>
+      <actions>
+        <action name="CreateFarm" type="Create">
+          <run>
+            <params>
+              <param name="farm" type="FarmPanel" />
+            </params>
+            <creating>
+              <value_extender target="idfFarm" value="farm.idfFarm"/>
+              <value_extender target="idfRootFarm" value="farm.idfRootFarm"/>
+              <value_extender target="idfMonitoringSession" value="farm.idfMonitoringSession"/>
+              <value_extender target="Farm" value="farm"/>
+            </creating>
+          </run>
+        </action>
+      </actions>
+    </table>   
+	</tables>
+
+</object>

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="AsSessionFarmSpeciesListItem"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spASSession_SelectSpecies" type="detaillist" />
+  </storage>
+
+  <tables>
+    <table name="AsSessionFarmSpeciesListItem">
+      <fields>
+        <calculated name="DisplayName" type="string" depends="idfSpecies" lambda='c=>String.Format("{0}/{1}", c.strHerdCode, c.name)' />
+      </fields>
+      <actions>
+        <action name="SelectByFarm" type="Loadlist"/>
+      </actions>
+    </table>
+  </tables>
+
+</object>

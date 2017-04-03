@@ -1,0 +1,126 @@
+﻿@model eidss.model.Schema.FarmPanel           
+@{
+    ViewBag.Title = @Translator.GetMessageString("FarmPanelDetailsWindow");
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+}
+@*<script language="javascript" type="text/javascript" src='@Url.Content("~/Scripts/Common/FormRefresh.js")' ></script>*@
+<script src='@Url.Content("~/Scripts/jquery.form.js")' type="text/javascript"></script>
+<script src='@Url.Content("~/Scripts/Common/GridAreaHelpers.js")' type="text/javascript"></script>
+<script src='@Url.Content("~/Scripts/VetCase/HerdEpi.js")' type="text/javascript"></script>
+<script src='@Url.Content("~/Scripts/jquery.watermark.js")' type="text/javascript"></script>
+@using bv.common.Configuration
+@using eidss.webclient.Utils
+@using eidss.webclient.Areas.HerdEpi
+
+<div>
+<div class="detailsTitle">
+    <table class="detailsTitleContent">
+        <tr>
+            <td class="titleText">
+                @Translator.GetMessageString("FarmPanelDetailsWindow")
+            </td>                  
+            <td class="titleText titleFormCode">
+                V06
+            </td>
+        </tr>
+    </table>
+</div>
+
+    <script language="javascript" type="text/javascript">
+        $(document).ready(function () {            
+            $("#bMainPanel_Ok").removeAttr("onclick");                    
+            $("#bMainPanel_Ok").unbind("click").click(OKClick);
+
+            $("#bMainPanel_Save").hide();
+            $("#bMainPanel_Delete").hide();
+            $("#bMainPanel_Create").hide();
+
+            $('input[name$="strOwnerLastName"]').watermark(EIDSS.BvMessages['LastName'], { className: 'waterMarkClass' });
+            $('input[name$="strOwnerFirstName"]').watermark(EIDSS.BvMessages['FirstName'], { className: 'waterMarkClass' });
+            $('input[name$="strOwnerMiddleName"]').watermark(EIDSS.BvMessages['MiddleName'], { className: 'waterMarkClass' });
+
+        });
+
+        function AjaxFormSubmit(SuccessHandler) {
+            var formString = $('form').formSerialize();
+            var action = $('form').attr('action');
+            showLoading();
+
+            $.ajax({
+                url: action,
+                type: "POST",
+                data: formString,
+                success: function (data) {
+                    SuccessHandler(data);
+                    hideLoading();
+                }
+            });
+
+        }
+
+        function OKClick() {
+            AjaxFormSubmit(function (data) {
+                if (data.Values["ErrorMessage"]) {
+                    ApplyChanges(data);
+                }
+                else {                
+                    var root = '@Model.idfRootFarm';
+                    if (root.length == 0)
+                    {
+                        if (data.Values['@Model.ObjectIdent' + 'idfRootFarm']) {
+                            root = data.Values['@Model.ObjectIdent' + 'idfRootFarm'].value;
+                        }
+                        else {
+                            root = 0;
+                        }
+                    }
+                    
+                    window.opener.RootFarmRefreshed(root, @Model.idfFarm);
+                    window.close();                   
+                }
+            });
+        }
+
+    </script>
+
+@using (Html.BeginForm())
+{
+    
+    @Html.IdentificationAndHeartbeat("idfFarm", Model.idfFarm)	  
+    <input id='SaveAndExitClick' name='SaveAndExitClick' type='hidden' value='@ViewData["SaveAndExitClick"]' /> 
+    @(Html.Telerik().TabStrip()
+            .Name("Farm")
+            .Items(items =>
+            {
+                items.Add()
+                    .Text(Translator.GetMessageString("titleGeneralInformation"))
+                    .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "titleGeneralInformation" } : new { })
+                    .Content(
+                        @<text>
+                        <div class="yScrollable largeTabPanelContent">
+                            @Html.Partial("../Farm/InfoPanel", Model)
+                        </div>
+                        </text>);
+                items.Add()
+                    .Text(Translator.GetMessageString("tabTitleFarmHerds"))
+                    .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleFarmHerds" } : new { })
+                    .Enabled(true)
+                    .Content(@<text>
+                        <div class="yScrollable smallTabPanelContent">
+                          @Html.HerdSpeciesListByFarm(Model.idfFarm, "Herds", Model.FarmTree, Model.IsReadOnly("FarmTree") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit))  
+                        </div>
+                        </text>);
+               @* items.Add()
+                    .Text(Translator.GetMessageString("tabTitleFarmFlocks"))
+                    .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleFarmFlocks" } : new { })
+                    .Enabled(Model.blnIsAvian ?? false)
+                    .Content(@<text>
+                        <div class="yScrollable smallTabPanelContent">
+                             @Html.FlockSpeciesListByFarm(Model.idfFarm, "Flocks", Model.FarmAvianTree, Model.IsReadOnly("FarmLivestockTree") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit))
+                        </div>
+                        </text>);*@
+            }).SelectedIndex(Model.IsNew ? 0 : 1)
+)
+    
+}
+</div>

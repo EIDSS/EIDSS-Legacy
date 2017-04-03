@@ -1,0 +1,184 @@
+﻿@model eidss.model.Schema.VetCaseSample
+@{
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+@using eidss.webclient.Utils;
+
+<script type="text/javascript">
+    function onFilterByDiagnosisClick(name) {
+        ModelFieldChangedCheckbox(name);
+        var ObjectIdent = name.substring(0, name.lastIndexOf("_") + 1);
+        var SampleType = $("#" + ObjectIdent + "SampleType").data("tComboBox");
+        SampleType.reload();
+    }
+
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        @Html.Hidden("idfMaterial", Model.idfMaterial)                                               
+        <table>    
+            <tr>
+                <td class="medium">
+                </td>
+                <td>
+                    @Html.BvCheckBox(Model, "FilterByDiagnosis", false, "onFilterByDiagnosisClick")
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.strSpecimenName)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, "SampleType", false).DataBinding(b => b.Ajax().Select("SelectSampleType", "Sample", new RouteValueDictionary { { "area", "Sample" }, { "idfMaterial", Model.idfMaterial } }))
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.strFieldBarcode)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, "strFieldBarcode")
+                </td>                            
+            </tr>
+
+            @if (Model._HACode == (int)eidss.model.Enums.HACode.Livestock)
+            {
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.AnimalID)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, "Animal")
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.Species)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, "Species")
+                </td>                            
+            </tr>
+            }
+            else
+            {
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.Species)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, "FarmTree")
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.strBirdStatus)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, "BirdStatus")
+                </td>                            
+            </tr>
+            }
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.datFieldCollectionDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, "datFieldCollectionDate")
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Translator.GetString("VetCaseSample.idfSendToOffice")
+                </td>
+                <td class="noIndent">                     
+                    @Html.Action("InlineOrganizationPicker", "Organization", new
+               {
+                   obj = Model,
+                   objectId = Model.idfMaterial,
+                   idfsOrganizationPropertyName = "idfSendToOffice",
+                   strOrganizationPropertyName = "strSendToOffice",
+                   idfsEmployeePropertyName = "",
+                   strEmployeePropertyName = "",
+                   showInInternalWindow = true
+               })     
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.datAccession)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, "datAccession")
+                </td>                            
+            </tr>
+            @if (Model._HACode == (int)eidss.model.Enums.HACode.Livestock)
+            {
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.strCondition)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, "strCondition")
+                </td>                            
+            </tr>
+            }
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.strAccessionCondition)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, "strAccessionCondition")
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.strFieldCollectedByOffice)
+                </td>
+                <td class="noIndent">                     
+                    @Html.Action("InlineOrganizationPicker", "Organization", new
+               {
+                   obj = Model,
+                   objectId = Model.idfMaterial,
+                   idfsOrganizationPropertyName = "idfFieldCollectedByOffice",
+                   strOrganizationPropertyName = "strFieldCollectedByOffice",
+                   idfsEmployeePropertyName = "idfFieldCollectedByPerson",
+                   strEmployeePropertyName = "strFieldCollectedByPerson",
+                   showInInternalWindow = true
+               })     
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.strFieldCollectedByPerson)
+                </td>
+                <td class="noIndent">
+                    @Html.Action("InlineEmployeePicker", "Employee", new
+               {
+                   obj = Model,
+                   objectId = Model.idfMaterial,
+                   idfsEmployeePropertyName = "idfFieldCollectedByPerson",
+                   strEmployeePropertyName = "strFieldCollectedByPerson",
+                   idfsOrganizationPropertyName = "idfFieldCollectedByOffice",
+                   strOrganizationPropertyName = "strFieldCollectedByOffice",
+                   showInInternalWindow = true
+               })                     
+                </td>                            
+            </tr>
+        </table>             
+        <div class="popUpBottomButtonPanel">                   
+            <input type="button" class="popupButton" onclick="
+                var o = '@(Model.CaseObjectIdent)';
+                var ObjectIdent = o.substring(0, o.lastIndexOf('_') + 1);
+                CloseMessageWindow(); 
+                $('#' + ObjectIdent + 'Samples').data('tGrid').ajaxRequest();
+                SelectFirstGridRow(ObjectIdent + 'Samples');" value="@Translator.GetMessageString("Cancel")"/>                          
+            <input type="button" class="popupButton" onclick="onVetSamplePickerChanged('@(Model.CaseObjectIdent)');" value="@Translator.GetMessageString("Ok")"/>     
+        </div>   
+    }           
+</div>

@@ -1,0 +1,36 @@
+﻿@using eidss.webclient.Utils
+@model eidss.model.Reports.Common.AddressModel
+
+<table id="AddressFilterTable" >
+
+    <tr>
+        <td class="medium">
+            @Html.LabelFor(m => m.RegionId)
+        </td>
+        <td class="large">
+                
+            @{
+                @(Html.Telerik().ComboBox()
+                      .Name("Address.RegionId")
+                      .BindTo(Model.GetSelectedRegions().ConvertToSelectListItem())
+                      .ClientEvents(c => c.OnChange("paperForm.OnRegionChanged"))
+                      )
+            }
+                
+        </td>
+        <td class="medium">
+            @Html.LabelFor(m => m.RayonId)
+        </td>
+        <td class="large">
+                
+            @{
+                @(Html.Telerik().ComboBox()
+                      .Name("Address.RayonId")
+                      .BindTo(Model.GetRayons().ConvertToSelectListItem())
+                      )
+            }
+                
+        </td>
+        <td></td>
+    </tr>
+</table>

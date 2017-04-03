@@ -1,0 +1,171 @@
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnAsGetFFFrom]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnAsGetFFFrom]
+GO
+
+--##SUMMARY Returns updated from condition for specified search table related to FF fields from specified query
+--##SUMMARY including ordinary and GIS reference tables.
+
+
+--##REMARKS Author: Mirnaya O.
+--##REMARKS Create date: 27.04.2010
+
+--##RETURNS Function returns updated from condition for specified search table related to FF fields
+--##RETURNS from specified query including ordinary and GIS reference tables.
+
+
+/*
+--Example of a call of function:
+declare	@idflQuery			bigint
+declare	@idfSearchTable		bigint
+declare	@strFrom			nvarchar(MAX)
+declare	@strJoinCondition	nvarchar(2000)
+
+
+select	dbo.fnAsGetFFFrom
+		(	@idflQuery,
+			@idfSearchTable,
+			@strFrom,
+			@strJoinCondition
+		)
+
+*/
+
+
+create	function	fnAsGetFFFrom
+(
+	@idflQuery				bigint,			--##PARAM @idflQuery Id of specified query 
+	@idfSearchTable			bigint,			--##PARAM @idfSearchTable Id of specified search table included in the query
+	@strFrom				nvarchar(MAX),	--##PARAM @strFrom Initial from condition of specified search table
+	@strJoinCondition		nvarchar(2000)	--##PARAM @strJoinCondition Condition of join between epecified search table and its parent search table in the query
+)
+returns nvarchar(MAX)
+as
+begin
+
+	-- Define result from condition
+	declare @from		nvarchar(MAX)
+	set	@from = ''
+
+		-- Create from condition for non FF table and related parameters
+
+		-- Define Separator
+		declare	@s			varchar(20)
+		set @s = '
+				'
+
+		-- Generate from condition
+	select		@from =
+				case
+				-- From condition for parameter without reference tables
+				when	pt.idfsReferenceType is null --and pt.idfsGISReferenceType is null
+					then	@from + 
+							replace(replace(N'left join	' + 
+											replace(replace(@strFrom, N'{(}', N''), N'{)}', N'') + @s + 
+											replace(@strJoinCondition, N'{2}', cast(p.idfsParameter as varchar(20))), 
+											N'{1}', 
+											N''), 
+									N'{0}',
+									N'_' + cast(p.idfsParameter as varchar(20)) + 
+									N'_qso_' + cast(qso.intOrder as varchar(20)))
+
+				-- From condition for parameter with reference table
+				when	pt.idfsReferenceType is not null
+					then	@from + 
+							replace(replace(N'left join	' + 
+											replace(replace(@strFrom, N'{(}', N'('), N'{)}', N')') + @s + 
+											replace(@strJoinCondition, N'{2}', cast(p.idfsParameter as varchar(20))), 
+											N'{1}', 
+											IsNull	(
+						N'left join	fnReference(@LangID, ' + cast(pt.idfsReferenceType as varchar(20)) + ') ' +
+						N'[ref_' +	sf.strSearchFieldAlias + N'__' + 
+									cast(sob.idfsFormType as varchar(20)) + N'__' + 
+									cast(p.idfsParameter as varchar(20)) + '] ' + @s + 
+						N'on		[ref_' + sf.strSearchFieldAlias + N'__' + 
+										cast(sob.idfsFormType as varchar(20)) + N'__' + 
+										cast(p.idfsParameter as varchar(20)) + '].idfsReference = ' + sf.strFieldText,
+						N''
+													)), 
+									N'{0}',
+									N'_' + cast(p.idfsParameter as varchar(20)) + 
+									N'_qso_' + cast(qso.intOrder as varchar(20)))
+--				-- From condition for parameter with GIS reference table
+--				when	pt.idfsGISReferenceType is not null
+--					then	@from + 
+--							replace(replace(N'left join	' + 
+--											replace(replace(@strFrom, N'{(}', N'('), N'{)}', N')') + @s + 
+--											replace(@strJoinCondition, N'{2}', cast(p.idfsParameter as varchar(20))), 
+--											N'{1}', 
+--											IsNull	(
+--						N'left join	fnGISReference(@LangID, ' + cast(pt.idfsReferenceType as varchar(20)) + ') ' +
+--						N'[ref_GIS_' +	sf.strSearchFieldAlias + N'__' + 
+--									cast(sob.idfsFormType as varchar(20)) + N'__' + 
+--									cast(p.idfsParameter as varchar(20)) + '] ' + @s + 
+--						N'on		[ref_GIS_' + sf.strSearchFieldAlias + N'__' + 
+--										cast(sob.idfsFormType as varchar(20)) + N'__' + 
+--										cast(p.idfsParameter as varchar(20)) + '].idfsReference = ' + sf.strFieldText,
+--						N''
+--													)), 
+--									N'{0}',
+--									N'_' + cast(p.idfsParameter as varchar(20)) + 
+--									N'_qso_' + cast(qso.intOrder as varchar(20)))
+				-- None from condition
+				else		@from
+				end
+	from		tasQuerySearchField qsf
+	inner join	(
+		tasQuerySearchObject qso
+		inner join	tasSearchObject sob
+		on			sob.idfsSearchObject = qso.idfsSearchObject
+		inner join	trtBaseReference br_ft
+		on			br_ft.idfsBaseReference = sob.idfsFormType
+					and br_ft.idfsReferenceType = 19000034		-- rftFFType
+					and br_ft.intRowStatus = 0
+				)
+	on			qso.idfQuerySearchObject = qsf.idfQuerySearchObject
+	inner join	(
+		tasSearchField sf
+		inner join	trtBaseReference br_sf
+		on			br_sf.idfsBaseReference = sf.idfsSearchField
+					and br_sf.intRowStatus = 0
+		inner join	tasSearchTable st
+		on			st.idfSearchTable = sf.idfSearchTable
+				)
+	on			sf.idfsSearchField = qsf.idfsSearchField
+				and sf.idfsSearchFieldType = 10081003			-- FF Field
+				and st.idfSearchTable = @idfSearchTable
+	inner join	(
+		ffParameter p
+		inner join	trtBaseReference br_p
+		on			br_p.idfsBaseReference = p.idfsParameter
+					and br_p.intRowStatus = 0
+		inner join	ffParameterType pt
+		on			pt.idfsParameterType = p.idfsParameterType
+					and pt.intRowStatus = 0
+		inner join	trtBaseReference br_pt
+		on			br_pt.idfsBaseReference = pt.idfsParameterType
+					and br_pt.intRowStatus = 0
+				)
+	on			p.idfsParameter = qsf.idfsParameter
+				and p.idfsFormType = sob.idfsFormType
+				and p.intRowStatus = 0
+----	For version 3 we can use idfsParameter to replace the {0} text for FF fields in from condition
+----	inner join	@ParameterOrder pOrder
+----	on			pOrder.idfQuerySearchObject = qso.idfQuerySearchObject
+----				and pOrder.idfsParameter = p.idfsParameter
+	where		qso.idflQuery = @idflQuery
+
+	return @from
+
+end
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

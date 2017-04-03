@@ -1,0 +1,47 @@
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnGisReference]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnGisReference]
+GO
+
+
+-- select * from fnGisReference('ru',19000001)
+
+CREATE          function fnGisReference(@LangID  nvarchar(50), @type bigint)
+returns table
+as
+return(
+
+select
+			b.idfsGISBaseReference as idfsReference, 
+			IsNull(c.strTextString, b.strDefault) as [Name],
+			b.idfsGISReferenceType, 
+			b.strDefault, 
+			IsNull(c.strTextString, b.strDefault) as LongName,
+			b.intOrder
+
+from		dbo.gisBaseReference as b 
+left join	dbo.gisStringNameTranslation as c 
+on			b.idfsGISBaseReference = c.idfsGISBaseReference and c.idfsLanguage = dbo.fnGetLanguageCode(@LangID)
+
+where		b.idfsGISReferenceType = @type and b.intRowStatus = 0 
+)
+
+
+
+
+
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

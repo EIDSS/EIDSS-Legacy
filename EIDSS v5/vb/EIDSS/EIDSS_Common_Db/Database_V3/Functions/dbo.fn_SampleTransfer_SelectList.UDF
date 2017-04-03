@@ -1,0 +1,37 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fn_SampleTransfer_SelectList]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[fn_SampleTransfer_SelectList]
+GO
+
+CREATE FUNCTION [dbo].[fn_SampleTransfer_SelectList] 
+(	
+	@LangID nvarchar(20)
+)
+RETURNS TABLE 
+AS
+RETURN 
+(
+	SELECT 
+		tlbTransferOUT.idfTransferOUT,
+		tlbTransferOUT.strBarcode,
+		tlbTransferOUT.idfSendFromOffice,
+		tlbTransferOUT.idfSendToOffice,
+		--Src.idfOffice as idfOfficeFrom,
+		--Dst.idfOffice as idfOfficeTo,
+		SrcName.Name as TransferFrom,
+		DstName.Name as TransferTo
+	FROM		tlbTransferOUT
+	LEFT JOIN	fnInstitution(@LangID) SrcName
+	ON			SrcName.idfOffice=tlbTransferOUT.idfSendFromOffice
+	LEFT JOIN	fnInstitution(@LangID) DstName
+	ON			DstName.idfOffice=tlbTransferOUT.idfSendToOffice
+	WHERE 		tlbTransferOUT.intRowStatus=0
+)
+
+GO
+
+

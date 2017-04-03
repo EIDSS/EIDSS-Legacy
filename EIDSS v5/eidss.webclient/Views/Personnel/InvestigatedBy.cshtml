@@ -1,0 +1,34 @@
+﻿@using eidss.webclient.Utils
+@using eidss.model.Core
+@using eidss.model.Schema
+
+<table class="bordered">
+    <tr>
+        <td colspan="3" class="sectionName" >            
+            @Translator.GetMessageString("titleSectionInvetigated")           
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3" class="noIndent">
+            @Html.SelectPerson(Model as VetCase, "idfInvestigatedByOffice", "strInvestigatedByOffice", "idfPersonInvestigatedBy", "strPersonInvestigatedBy")
+        </td>
+    </tr>
+    <tr>
+        <td class="small">
+            @Translator.GetString("datAssignedDate")
+        </td>
+        <td class="medium">
+            @Html.BvDatebox((bv.model.Model.Core.IObject)Model, "datAssignedDate")
+        </td>   
+        <td class="fillAll"></td>     
+    </tr>
+    <tr>
+        <td class="small">
+            @Translator.GetString("datInvestigationDate")
+        </td>
+        <td class="medium">
+            @Html.BvDatebox((bv.model.Model.Core.IObject)Model, "datInvestigationDate")
+        </td>  
+        <td class="fillAll"></td>           
+    </tr>                
+</table>

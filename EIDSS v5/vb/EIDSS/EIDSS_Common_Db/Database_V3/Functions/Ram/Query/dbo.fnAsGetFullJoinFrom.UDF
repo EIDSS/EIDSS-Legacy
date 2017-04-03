@@ -1,0 +1,2323 @@
+SET ANSI_NULLS OFF
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnAsGetFullJoinFrom]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnAsGetFullJoinFrom]
+GO
+
+--##SUMMARY Returns full join from condition for the key references included in the query.
+
+
+--##REMARKS Author: Mirnaya O.
+--##REMARKS Create date: 04.09.2010
+
+--##RETURNS Function returns full join from condition for the key references included in the query.
+
+
+/*
+--Example of a call of function:
+declare	@BinKey	int
+
+select	dbo.fnAsGetFullJoinFrom	(@BinKey)
+
+*/
+
+
+create	function	[dbo].[fnAsGetFullJoinFrom]
+(
+	@BinKey	int	--##PARAM @BinKey Value that corresponds to key reference fields included in the query
+)
+returns nvarchar(MAX)
+as
+begin
+
+	-- Define result from condition
+	declare @from		nvarchar(MAX)
+	set	@from = N''
+
+	if @BinKey = 127 or @BinKey = 123 or @BinKey = 119	-- all key references
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			LEFT JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+			FULL JOIN	fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis] 
+				ON	[ref_sflVC_Diagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+					)
+				)
+		ON	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+				AllDiagnoses.intRowStatus = 0
+			) OR
+			(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+				AllDiagnoses.idfsDiagnosis is null
+			)
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon	AND 
+		AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion	AND 
+		[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	OR
+	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon	AND 
+		AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion	AND
+		[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if	@BinKey = 63 or @BinKey = 59 or @BinKey = 55	-- all key references without Vet Diagnosis
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			INNER JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+				)
+		ON	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+			AllDiagnoses.intRowStatus = 0
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon	AND 
+		AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion	AND 
+		[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	OR
+	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon	AND 
+		AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion
+	)
+'
+	else if @BinKey = 115	-- all key references without Human Diagnosis
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis]
+			LEFT JOIN	trtDiagnosis AS AllDiagnoses 
+				ON	AllDiagnoses.idfsDiagnosis = [ref_sflVC_Diagnosis].idfsReference
+				)
+		ON	(	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+					AllDiagnoses.intRowStatus = 0
+				) OR
+				(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+					AllDiagnoses.idfsDiagnosis is null
+				)
+			)	AND
+			(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0)
+			)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon	AND 
+		AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion
+	)	OR
+	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon	AND 
+		AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion	AND
+		[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 111 or @BinKey = 107 or @BinKey = 103	-- all key references without Vet Rayon
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			LEFT JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+			FULL JOIN	fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis] 
+				ON	[ref_sflVC_Diagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+					)
+				)
+		ON	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+				AllDiagnoses.intRowStatus = 0
+			) OR
+			(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+				AllDiagnoses.idfsDiagnosis is null
+			)
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon	AND 
+		AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion	AND 
+		[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	OR
+	(	AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion	AND
+		[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 126 or @BinKey = 122 or @BinKey = 118	-- all key references without Human Rayon
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			LEFT JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+			FULL JOIN	fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis] 
+				ON	[ref_sflVC_Diagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+					)
+				)
+		ON	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+				AllDiagnoses.intRowStatus = 0
+			) OR
+			(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+				AllDiagnoses.idfsDiagnosis is null
+			)
+					)
+ON	(	AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion	AND 
+		[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	OR
+	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon	AND 
+		AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion	AND
+		[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 95 or @BinKey = 91 or @BinKey = 87	-- all key references without Vet Region
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			LEFT JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+			FULL JOIN	fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis] 
+				ON	[ref_sflVC_Diagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+					)
+				)
+		ON	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+				AllDiagnoses.intRowStatus = 0
+			) OR
+			(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+				AllDiagnoses.idfsDiagnosis is null
+			)
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon	AND 
+		AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion	AND 
+		[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	OR
+	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon	AND 
+		[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 125 or @BinKey = 121 or @BinKey = 117	-- all key references without Human Region
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			LEFT JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+			FULL JOIN	fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis] 
+				ON	[ref_sflVC_Diagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+					)
+				)
+		ON	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+				AllDiagnoses.intRowStatus = 0
+			) OR
+			(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+				AllDiagnoses.idfsDiagnosis is null
+			)
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon	AND 
+		[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	OR
+	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon	AND 
+		AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion	AND
+		[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 51	-- all key references without Vet Diagnosis and Human Diagnosis
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon	AND 
+		AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion
+	)	OR
+	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon	AND 
+		AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion
+	)
+'
+	else if @BinKey = 47 or @BinKey = 43 or @BinKey = 39	-- all key references without Vet Diagnosis and Vet Rayon
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			INNER JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+				)
+		ON	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+			AllDiagnoses.intRowStatus = 0
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon	AND 
+		AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion	AND 
+		[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	OR
+	(	AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion
+	)
+'
+	else if @BinKey = 62 or @BinKey = 58 or @BinKey = 54	-- all key references without Vet Diagnosis and Human Rayon
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			INNER JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+				)
+		ON	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+			AllDiagnoses.intRowStatus = 0
+					)
+ON	(	AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion	AND 
+		[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	OR
+	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon	AND 
+		AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion
+	)
+'
+	else if @BinKey = 31 or @BinKey = 27 or @BinKey = 23	-- all key references without Vet Diagnosis and Vet Region
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			INNER JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+				)
+		ON	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+			AllDiagnoses.intRowStatus = 0
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon	AND 
+		AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion	AND 
+		[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	OR
+	(	AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion
+	)
+'
+	else if @BinKey = 61 or @BinKey = 57 or @BinKey = 53	-- all key references without Vet Diagnosis and Human Region
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			INNER JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+				)
+		ON	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+			AllDiagnoses.intRowStatus = 0
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon	AND 
+		[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	OR
+	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon	AND 
+		AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion
+	)
+'
+	else if @BinKey = 99	-- all key references without Human Diagnosis and Vet Rayon
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis]
+			LEFT JOIN	trtDiagnosis AS AllDiagnoses 
+				ON	AllDiagnoses.idfsDiagnosis = [ref_sflVC_Diagnosis].idfsReference
+				)
+		ON	(	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+					AllDiagnoses.intRowStatus = 0
+				) OR
+				(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+					AllDiagnoses.idfsDiagnosis is null
+				)
+			)	AND
+			(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+			)
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon	AND 
+		AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion
+	)	OR
+	(	AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion	AND
+		[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 114	-- all key references without Human Diagnosis and Human Rayon
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis]
+			LEFT JOIN	trtDiagnosis AS AllDiagnoses 
+				ON	AllDiagnoses.idfsDiagnosis = [ref_sflVC_Diagnosis].idfsReference
+				)
+		ON	(	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+					AllDiagnoses.intRowStatus = 0
+				) OR
+				(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+					AllDiagnoses.idfsDiagnosis is null
+				)
+			)	AND
+			(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+			)
+					)
+ON	(	AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion
+	)	OR
+	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon	AND 
+		AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion	AND
+		[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 83	-- all key references without Human Diagnosis and Vet Region
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis]
+			LEFT JOIN	trtDiagnosis AS AllDiagnoses 
+				ON	AllDiagnoses.idfsDiagnosis = [ref_sflVC_Diagnosis].idfsReference
+				)
+		ON	(	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+					AllDiagnoses.intRowStatus = 0
+				) OR
+				(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+					AllDiagnoses.idfsDiagnosis is null
+				)
+			)	AND
+			(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+			)
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon	AND 
+		AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion
+	)	OR
+	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon	AND 
+		[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 113	-- all key references without Human Diagnosis and Human Region
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis]
+			LEFT JOIN	trtDiagnosis AS AllDiagnoses 
+				ON	AllDiagnoses.idfsDiagnosis = [ref_sflVC_Diagnosis].idfsReference
+				)
+		ON	(	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+					AllDiagnoses.intRowStatus = 0
+				) OR
+				(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+					AllDiagnoses.idfsDiagnosis is null
+				)
+			)	AND
+			(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+			)
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon
+	)	OR
+	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon	AND 
+		AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion	AND
+		[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 79 or @BinKey = 75 or @BinKey = 71	-- all key references without Vet Rayon and Vet Region
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			LEFT JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+			FULL JOIN	fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis] 
+				ON	[ref_sflVC_Diagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+					)
+				)
+		ON	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+				AllDiagnoses.intRowStatus = 0
+			) OR
+			(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+				AllDiagnoses.idfsDiagnosis is null
+			)
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon	AND 
+		AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion	AND 
+		[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	OR
+	(	[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 110 or @BinKey = 106 or @BinKey = 102	-- all key references without Vet Rayon and Human Rayon
+		set	@from = N'
+FULL JOIN	(
+	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRegions.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			LEFT JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+			FULL JOIN	fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis] 
+				ON	[ref_sflVC_Diagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+					)
+				)
+		ON	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+				AllDiagnoses.intRowStatus = 0
+			) OR
+			(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+				AllDiagnoses.idfsDiagnosis is null
+			)
+					)
+ON	(	AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion	AND 
+		[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	OR
+	(	AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion	AND
+		[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 109 or @BinKey = 105 or @BinKey = 101	-- all key references without Vet Rayon and Human Region
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			LEFT JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+			FULL JOIN	fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis] 
+				ON	[ref_sflVC_Diagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+					)
+				)
+		ON	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+				AllDiagnoses.intRowStatus = 0
+			) OR
+			(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+				AllDiagnoses.idfsDiagnosis is null
+			)
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon	AND 
+		[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	OR
+	(	AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion	AND
+		[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 94 or @BinKey = 90 or @BinKey = 86	-- all key references without Human Rayon and Vet Region
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			LEFT JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+			FULL JOIN	fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis] 
+				ON	[ref_sflVC_Diagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+					)
+				)
+		ON	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+				AllDiagnoses.intRowStatus = 0
+			) OR
+			(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+				AllDiagnoses.idfsDiagnosis is null
+			)
+					)
+ON	(	AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion	AND 
+		[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	OR
+	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon	AND 
+		[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 124 or @BinKey = 120 or @BinKey = 116	-- all key references without Human Rayon and Human Region
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			LEFT JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+			FULL JOIN	fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis] 
+				ON	[ref_sflVC_Diagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+					)
+				)
+		ON	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+				AllDiagnoses.intRowStatus = 0
+			) OR
+			(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+				AllDiagnoses.idfsDiagnosis is null
+			)
+					)
+ON	(	[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	OR
+	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon	AND 
+		AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion	AND
+		[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 93 or @BinKey = 89 or @BinKey = 85	-- all key references without Vet Region and Human Region
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			LEFT JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+			FULL JOIN	fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis] 
+				ON	[ref_sflVC_Diagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+					)
+				)
+		ON	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+				AllDiagnoses.intRowStatus = 0
+			) OR
+			(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+				AllDiagnoses.idfsDiagnosis is null
+			)
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon	AND 
+		[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	OR
+	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon	AND 
+		[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 92 or @BinKey = 88 or @BinKey = 84	-- Vet Diagnosis, Human Diagnosis, Vet Rayon
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			LEFT JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+			FULL JOIN	fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis] 
+				ON	[ref_sflVC_Diagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+					)
+				)
+		ON	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+				AllDiagnoses.intRowStatus = 0
+			) OR
+			(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+				AllDiagnoses.idfsDiagnosis is null
+			)
+					)
+ON	(	[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	OR
+	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon	AND 
+		[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 77 or @BinKey = 73 or @BinKey = 69	-- Vet Diagnosis, Human Diagnosis, Human Rayon
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			LEFT JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+			FULL JOIN	fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis] 
+				ON	[ref_sflVC_Diagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+					)
+				)
+		ON	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+				AllDiagnoses.intRowStatus = 0
+			) OR
+			(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+				AllDiagnoses.idfsDiagnosis is null
+			)
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon	AND 
+		[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	OR
+	(	[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 108 or @BinKey = 104 or @BinKey = 100	-- Vet Diagnosis, Human Diagnosis, Vet Region
+		set	@from = N'
+FULL JOIN	(
+	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRegions.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			LEFT JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+			FULL JOIN	fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis] 
+				ON	[ref_sflVC_Diagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+					)
+				)
+		ON	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+				AllDiagnoses.intRowStatus = 0
+			) OR
+			(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+				AllDiagnoses.idfsDiagnosis is null
+			)
+					)
+ON	(	[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	OR
+	(	AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion	AND
+		[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 78 or @BinKey = 74 or @BinKey = 70	-- Vet Diagnosis, Human Diagnosis, Human Region
+		set	@from = N'
+FULL JOIN	(
+	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRegions.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			LEFT JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+			FULL JOIN	fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis] 
+				ON	[ref_sflVC_Diagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+						IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+					)
+				)
+		ON	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+				AllDiagnoses.intRowStatus = 0
+			) OR
+			(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+				AllDiagnoses.idfsDiagnosis is null
+			)
+					)
+ON	(	AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion	AND 
+		[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	OR
+	(	[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 81	-- Vet Diagnosis, Vet Rayon, Human Rayon
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis]
+			LEFT JOIN	trtDiagnosis AS AllDiagnoses 
+				ON	AllDiagnoses.idfsDiagnosis = [ref_sflVC_Diagnosis].idfsReference
+				)
+		ON	(	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+					AllDiagnoses.intRowStatus = 0
+				) OR
+				(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+					AllDiagnoses.idfsDiagnosis is null
+				)
+			)	AND
+			(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+			)
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon
+	)	OR
+	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon	AND 
+		[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 112	-- Vet Diagnosis, Vet Rayon, Vet Region
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis]
+			LEFT JOIN	trtDiagnosis AS AllDiagnoses 
+				ON	AllDiagnoses.idfsDiagnosis = [ref_sflVC_Diagnosis].idfsReference
+				)
+		ON	(	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+					AllDiagnoses.intRowStatus = 0
+				) OR
+				(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+					AllDiagnoses.idfsDiagnosis is null
+				)
+			)	AND
+			(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+			)
+					)
+ON	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon	AND 
+		AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion	AND
+		[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 82	-- Vet Diagnosis, Vet Rayon, Human Region
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis]
+			LEFT JOIN	trtDiagnosis AS AllDiagnoses 
+				ON	AllDiagnoses.idfsDiagnosis = [ref_sflVC_Diagnosis].idfsReference
+				)
+		ON	(	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+					AllDiagnoses.intRowStatus = 0
+				) OR
+				(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+					AllDiagnoses.idfsDiagnosis is null
+				)
+			)	AND
+			(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+			)
+					)
+ON	(	AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion
+	)	OR
+	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon	AND 
+		[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 97	-- Vet Diagnosis, Human Rayon, Vet Region
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis]
+			LEFT JOIN	trtDiagnosis AS AllDiagnoses 
+				ON	AllDiagnoses.idfsDiagnosis = [ref_sflVC_Diagnosis].idfsReference
+				)
+		ON	(	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+					AllDiagnoses.intRowStatus = 0
+				) OR
+				(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+					AllDiagnoses.idfsDiagnosis is null
+				)
+			)	AND
+			(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+			)
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon
+	)	OR
+	(	AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion	AND
+		[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 67	-- Vet Diagnosis, Human Rayon, Human Region
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis]
+			LEFT JOIN	trtDiagnosis AS AllDiagnoses 
+				ON	AllDiagnoses.idfsDiagnosis = [ref_sflVC_Diagnosis].idfsReference
+				)
+		ON	(	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+					AllDiagnoses.intRowStatus = 0
+				) OR
+				(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+					AllDiagnoses.idfsDiagnosis is null
+				)
+			)	AND
+			(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+			)
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon	AND 
+		AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion
+	)	OR
+	(	[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 29 or @BinKey = 25 or @BinKey = 21	-- Vet Diagnosis, Vet Region, Human Region
+		set	@from = N'
+FULL JOIN	(
+	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRegions.idfsCountry
+
+	INNER JOIN	(
+		fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis]
+			LEFT JOIN	trtDiagnosis AS AllDiagnoses 
+				ON	AllDiagnoses.idfsDiagnosis = [ref_sflVC_Diagnosis].idfsReference
+				)
+		ON	(	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+					AllDiagnoses.intRowStatus = 0
+				) OR
+				(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+					AllDiagnoses.idfsDiagnosis is null
+				)
+			)	AND
+			(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+			)
+					)
+ON	(	AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion
+	)	OR
+	(	AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion	AND
+		[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 29 or @BinKey = 25 or @BinKey = 21	-- Human Diagnosis, Vet Rayon, Human Rayon
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			INNER JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+				)
+		ON	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+			AllDiagnoses.intRowStatus = 0
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon	AND 
+		[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	OR
+	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon
+	)
+'
+	else if @BinKey = 60 or @BinKey = 56 or @BinKey = 52	-- Human Diagnosis, Vet Rayon, Vet Region
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			INNER JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+				)
+		ON	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+			AllDiagnoses.intRowStatus = 0
+					)
+ON	(	[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	OR
+	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon	AND 
+		AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion
+	)
+'
+	else if @BinKey = 30 or @BinKey = 26 or @BinKey = 22	-- Human Diagnosis, Vet Rayon, Human Region
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			INNER JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+				)
+		ON	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+			AllDiagnoses.intRowStatus = 0
+					)
+ON	(	AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion	AND 
+		[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	OR
+	(	AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion
+	)
+'
+	else if @BinKey = 15 or @BinKey = 11 or @BinKey = 7	-- Human Diagnosis, Human Rayon, Human Region
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			INNER JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+				)
+		ON	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+			AllDiagnoses.intRowStatus = 0
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon	AND 
+		AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion	AND 
+		[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)
+'
+	else if @BinKey = 45 or @BinKey = 41 or @BinKey = 37	-- Human Diagnosis, Human Rayon, Vet Region
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			INNER JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+				)
+		ON	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+			AllDiagnoses.intRowStatus = 0
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon	AND 
+		[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	OR
+	(	AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion
+	)
+'
+	else if @BinKey = 46 or @BinKey = 42 or @BinKey = 38	-- Human Diagnosis, Vet Region, Human Region
+		set	@from = N'
+FULL JOIN	(
+	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRegions.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			INNER JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+				)
+		ON	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+			AllDiagnoses.intRowStatus = 0
+					)
+ON	(	AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion	AND 
+		[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	OR
+	(	AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion
+	)
+'
+	else if @BinKey = 49	-- Vet Rayon, Human Rayon, Vet Region
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon
+	)	OR
+	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon	AND 
+		AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion
+	)
+'
+	else if @BinKey = 19	-- Vet Rayon, Human Rayon, Human Region
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon	AND 
+		AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion
+	)	OR
+	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon
+	)
+'
+	else if @BinKey = 35	-- Human Rayon, Vet Region, Human Region
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon	AND 
+		AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion
+	)	OR
+	(	AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion
+	)
+'
+	else if @BinKey = 76 or @BinKey = 72 or @BinKey = 68	-- Vet Diagnosis, Human Diagnosis
+		set	@from = N'
+FULL JOIN	(
+	trtDiagnosis AS AllDiagnoses
+		LEFT JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+			ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+				IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0 AND 
+				AllDiagnoses.idfsUsingType = 10020001	AND -- Standard Case
+				AllDiagnoses.intRowStatus = 0
+		FULL JOIN	fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis] 
+			ON	[ref_sflVC_Diagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+				(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+					IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+					IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+				)
+			)
+ON	(	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+			AllDiagnoses.intRowStatus = 0
+		) OR
+		(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+			AllDiagnoses.idfsDiagnosis is null
+		)
+	)	AND
+	(	(	[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+		)	OR
+		(	[ref_sflVC_Diagnosis].idfsReference = 
+				IsNull(	VetCase.idfsFinalDiagnosis, 
+						IsNull(	VetCase.idfsTentativeDiagnosis2, 
+								IsNull(	VetCase.idfsTentativeDiagnosis1, 
+										IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+		)
+	)
+'
+	else if @BinKey = 80	-- Vet Diagnosis, Vet Rayon
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis]
+			LEFT JOIN	trtDiagnosis AS AllDiagnoses 
+				ON	AllDiagnoses.idfsDiagnosis = [ref_sflVC_Diagnosis].idfsReference
+				)
+		ON	(	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+					AllDiagnoses.intRowStatus = 0
+				) OR
+				(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+					AllDiagnoses.idfsDiagnosis is null
+				)
+			)	AND
+			(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+			)
+					)
+ON	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon	AND 
+		[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 65	-- Vet Diagnosis, Human Rayon
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis]
+			LEFT JOIN	trtDiagnosis AS AllDiagnoses 
+				ON	AllDiagnoses.idfsDiagnosis = [ref_sflVC_Diagnosis].idfsReference
+				)
+		ON	(	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+					AllDiagnoses.intRowStatus = 0
+				) OR
+				(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+					AllDiagnoses.idfsDiagnosis is null
+				)
+			)	AND
+			(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+			)
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon
+	)	OR
+	(	[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 96	-- Vet Diagnosis, Vet Region
+		set	@from = N'
+FULL JOIN	(
+	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRegions.idfsCountry
+
+	INNER JOIN	(
+		fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis]
+			LEFT JOIN	trtDiagnosis AS AllDiagnoses 
+				ON	AllDiagnoses.idfsDiagnosis = [ref_sflVC_Diagnosis].idfsReference
+				)
+		ON	(	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+					AllDiagnoses.intRowStatus = 0
+				) OR
+				(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+					AllDiagnoses.idfsDiagnosis is null
+				)
+			)	AND
+			(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+			)
+					)
+ON	(	AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion	AND
+		[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 66	-- Vet Diagnosis, Human Region
+		set	@from = N'
+FULL JOIN	(
+	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRegions.idfsCountry
+
+	INNER JOIN	(
+		fnReferenceWithNoneValue(@LangID, 19000019) AS [ref_sflVC_Diagnosis]
+			LEFT JOIN	trtDiagnosis AS AllDiagnoses 
+				ON	AllDiagnoses.idfsDiagnosis = [ref_sflVC_Diagnosis].idfsReference
+				)
+		ON	(	(	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+					AllDiagnoses.intRowStatus = 0
+				) OR
+				(	[ref_sflVC_Diagnosis].idfsReference = -1 AND
+					AllDiagnoses.idfsDiagnosis is null
+				)
+			)	AND
+			(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+				IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+			)
+					)
+ON	(	AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion
+	)	OR
+	(	[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 17	-- Vet Rayon, Human Rayon
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon
+	)	OR
+	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon
+	)
+'
+	else if @BinKey = 48	-- Vet Rayon, Vet Region
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+					)
+ON	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon	AND 
+		AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion
+	)
+'
+	else if @BinKey = 18	-- Vet Rayon, Human Region
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+					)
+ON	(	AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion
+	)	OR
+	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon
+	)
+'
+	else if @BinKey = 28 or @BinKey = 24 or @BinKey = 20	-- Human Diagnosis, Vet Rayon
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			INNER JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+				)
+		ON	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+			AllDiagnoses.intRowStatus = 0
+					)
+ON	(	[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	OR
+	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon
+	)
+'
+	else if @BinKey = 13 or @BinKey = 9 or @BinKey = 5	-- Human Diagnosis, Human Rayon
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			INNER JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+				)
+		ON	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+			AllDiagnoses.intRowStatus = 0
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon	AND 
+		[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)
+'
+	else if @BinKey = 44 or @BinKey = 40 or @BinKey = 36	-- Human Diagnosis, Vet Region
+		set	@from = N'
+FULL JOIN	(
+	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRegions.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			INNER JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+				)
+		ON	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+			AllDiagnoses.intRowStatus = 0
+					)
+ON	(	[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	OR
+	(	AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion
+	)
+'
+	else if @BinKey = 14 or @BinKey = 10 or @BinKey = 6	-- Human Diagnosis, Human Region
+		set	@from = N'
+FULL JOIN	(
+	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRegions.idfsCountry
+
+	INNER JOIN	(
+		trtDiagnosis AS AllDiagnoses
+			INNER JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+				ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+					IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0
+				)
+		ON	AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+			AllDiagnoses.intRowStatus = 0
+					)
+ON	(	AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion	AND 
+		[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)	
+'
+	else if @BinKey = 33	-- Human Rayon, Vet Region
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon
+	)	OR
+	(	AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion
+	)
+'
+	else if @BinKey = 3	-- Human Rayon, Human Region
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		ON	AllRegions.idfsRegion = AllRayons.idfsRegion AND 
+			AllRegions.idfsCountry = AllRayons.idfsCountry
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+					)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon	AND 
+		AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion
+	)
+'
+	else if @BinKey = 34	-- Vet Region, Human Region
+		set	@from = N'
+FULL JOIN	(
+	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRegions.idfsCountry
+					)
+ON	(	AllRegions.idfsRegion = HumanCaseCurrentResidence.idfsRegion
+	)	OR
+	(	AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion
+	)
+'
+	else if @BinKey = 64	-- Vet Diagnosis
+		set	@from = N'
+FULL JOIN	(
+	trtDiagnosis AS AllDiagnoses
+		INNER JOIN	fnReference(@LangID, 19000019) AS [ref_sflVC_Diagnosis] 
+			ON	[ref_sflVC_Diagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+				(	IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 1 > 0	OR
+					IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 32 > 0	OR
+					IsNull([ref_sflVC_Diagnosis].intHACode, 97) & 64 > 0
+				)	AND
+				AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+				AllDiagnoses.intRowStatus = 0
+			)
+ON	(	[ref_sflVC_Diagnosis].idfsReference = 
+			IsNull(	VetCase.idfsFinalDiagnosis, 
+					IsNull(	VetCase.idfsTentativeDiagnosis2, 
+							IsNull(	VetCase.idfsTentativeDiagnosis1, 
+									IsNull(VetCase.idfsTentativeDiagnosis, -1))))
+	)
+'
+	else if @BinKey = 12 or @BinKey = 8 or @BinKey = 4	-- Human Diagnosis
+		set	@from = N'
+FULL JOIN	(
+	trtDiagnosis AS AllDiagnoses
+		INNER JOIN	fnReference(@LangID, 19000019) AS [ref_sflHC_FinalDiagnosis] 
+			ON	[ref_sflHC_FinalDiagnosis].idfsReference = AllDiagnoses.idfsDiagnosis AND 
+				IsNull([ref_sflHC_FinalDiagnosis].intHACode, 2) & 2 > 0	AND
+				AllDiagnoses.idfsUsingType = 10020001	AND	-- Standard Case
+				AllDiagnoses.intRowStatus = 0
+					)
+ON	(	[ref_sflHC_FinalDiagnosis].idfsReference = HumanCase_Diagnosis.idfsDiagnosis
+	)
+'
+	else if @BinKey = 16	-- Vet Rayon
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflVC_FarmAddressRayon]	-- rftRayon
+			ON	[ref_GIS_sflVC_FarmAddressRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+					)
+ON	(	AllRayons.idfsRayon = VetFarmAddress_GeoLocation.idfsRayon
+	)
+'
+	else if @BinKey = 1	-- Human Rayon
+		set	@from = N'
+FULL JOIN	(
+	gisRayon AS AllRayons
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000002) AS [ref_GIS_sflHC_PatientCRRayon]	-- rftRayon
+			ON	[ref_GIS_sflHC_PatientCRRayon].idfsReference = AllRayons.idfsRayon
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRayons.idfsCountry
+			)
+ON	(	AllRayons.idfsRayon = HumanCaseCurrentResidence.idfsRayon
+'
+	else if @BinKey = 32	-- Vet Region
+		set	@from = N'
+FULL JOIN	(
+	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflVC_FarmAddressRegion]	-- rftRegion
+			ON	[ref_GIS_sflVC_FarmAddressRegion].idfsReference = AllRegions.idfsRegion
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRegions.idfsCountry
+					)
+ON	(	AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion
+	)
+'
+	else if @BinKey = 2	-- Human Region
+		set	@from = N'
+FULL JOIN	(
+	gisRegion AS AllRegions
+		INNER JOIN	fnGisExtendedReference(@LangID, 19000003) AS [ref_GIS_sflHC_PatientCRRegion]	-- rftRegion
+			ON	[ref_GIS_sflHC_PatientCRRegion].idfsReference = AllRegions.idfsRegion
+	INNER JOIN	(
+		tstSite s
+		INNER JOIN	tstLocalSiteOptions lso
+			ON	lso.strName = N''SiteID'' AND 
+				lso.strValue = CAST(s.idfsSite AS NVARCHAR(200))
+				)
+		ON	s.idfsCountry = AllRegions.idfsCountry
+			AllDiagnoses.intRowStatus = 0
+					)
+ON	(	AllRegions.idfsRegion = VetFarmAddress_GeoLocation.idfsRegion
+	)
+'
+
+	return @from
+
+end
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO

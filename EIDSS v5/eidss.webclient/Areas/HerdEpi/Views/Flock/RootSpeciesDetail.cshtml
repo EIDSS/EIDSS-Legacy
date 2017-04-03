@@ -1,0 +1,95 @@
+﻿@model eidss.model.Schema.RootFarmTree
+@{
+    ViewBag.Title = "Add New Species";
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+<script src="../../../../Scripts/jquery.form.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('form').ajaxForm(function (data) {
+            if (data == 'ok')
+                parent.gridItemAdded('@ViewData["name"]');
+            else
+                ShowEidssErrorNotification(data, function () { });            
+        });
+    });
+    function setIdfSpeciesValue(e) {
+        var ddl = $('#' + e.target.id).data('tComboBox');
+        ddl.value('@Model.idfParentParty');
+    }
+</script>
+@using eidss.webclient.Utils
+<h2>@Translator.GetString("strSpecies")</h2>
+@using (Html.BeginForm())
+{    
+    <table>
+        <tr>
+            <td class="medium">
+                @Translator.GetMessageString("strFlock")
+            </td>
+            <td>
+                @(Html.BvCombobox(Model, "idfParentParty")
+                        .ClientEvents(events => events.OnLoad("setIdfSpeciesValue"))
+                        .BindTo(ViewBag.ParentPartySelection)
+                    )
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.strSpeciesName)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, "SpeciesType")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.intTotalAnimalQty)
+            </td>
+            <td>
+                @Html.BvNumeric(Model, "intTotalAnimalQty", 0)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.intSickAnimalQty)
+            </td>
+            <td>
+                @Html.BvNumeric(Model, "intSickAnimalQty", 0)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.intDeadAnimalQty)
+            </td>
+            <td>
+                @Html.BvNumeric(Model, "intDeadAnimalQty", 0)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.strAverageAge)
+            </td>
+            <td>
+                @Html.BvNumeric(Model, "strAverageAge", 0, 0)
+            </td>
+        </tr>
+        <!--<tr>
+            <td>
+                <input type="submit" value="Save" />
+            </td>
+            <td>
+                <input type="button" onclick="parent.cancelItemAdding();" value='Cancel' />
+            </td>
+        </tr>-->
+    </table> 
+    <div class="popupBottomButtonPanel">
+        <input type="button" class="popupButton" onclick="parent.cancelItemAdding();" value="@Translator.GetMessageString("Cancel")" />
+        <input type="submit" class="popupButton" value="@Translator.GetMessageString("Ok")"/>
+    </div>       
+           
+    
+
+
+
+}

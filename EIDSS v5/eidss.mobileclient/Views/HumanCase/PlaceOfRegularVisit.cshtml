@@ -1,0 +1,37 @@
+﻿@model eidss.model.Schema.HumanCase
+           
+@using eidss.mobileclient.Utils
+
+<table> 
+    <tr>                                                               
+        <td>
+            @Translator.GetString("strEmployerNameAndOrganization")
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvEditBox(Model.Patient, "strEmployerName")
+        </td>
+    </tr>
+    <tr>                
+        <td>
+            @Translator.GetString("datLastVisit")
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvDateBox(Model, "datFacilityLastVisit")
+        </td>
+    </tr>
+    <tr>                
+        <td>
+            @Html.LabelFor(m => m.Patient.idfEmployerAddress):
+        </td>
+    </tr>
+    <tr>
+        <td>            
+            @Html.Action("ShowAddress", "Common", new { root = Model.Patient.idfCase.HasValue ? Model.Patient.idfCase.Value : Model.Patient.idfHuman, 
+                address = Model.Patient.EmployerAddress, isCountryFieldVisible = true, needFillRegionOnCountryChanged = false })                   
+        </td>
+    </tr>        
+</table>

@@ -1,0 +1,58 @@
+﻿@model bv.model.Model.Core.IObject
+           
+@using eidss.webclient.Utils
+
+<script language="javascript" type="text/javascript">
+    $(document.getElementById('@(ViewBag.MainDivId)')).ready(function () {
+        var btnSearchPicker = $("#" + '@(ViewBag.BtnSearchPicker)');
+        var btnClian = $("#" + '@(ViewBag.BtnClianPicker)');
+        var btnAddNew = $("#" + '@(ViewBag.BtnAddNew)');
+        var isSearchButtonReadOnly = '@(ViewBag.IsSearchButtonReadOnly)';
+        var isClianButtonReadOnly = '@(ViewBag.IsClianButtonReadOnly)';
+        var isNewButtonReadOnly = '@(ViewBag.IsAddButtonReadOnly)';
+        if (isSearchButtonReadOnly.toString().toLowerCase() == 'true') {
+            btnSearchPicker.attr('disabled', 'disabled');
+        }
+        else {
+            btnSearchPicker.removeAttr('disabled');
+        }
+        if (isClianButtonReadOnly.toString().toLowerCase() == 'true') {
+            btnClian.attr('disabled', 'disabled');
+        }
+        else {
+            btnClian.removeAttr('disabled');
+        }
+        if (isNewButtonReadOnly.toString().toLowerCase() == 'true') {
+            btnAddNew.attr('disabled', 'disabled');
+        }
+        else {
+            btnAddNew.removeAttr('disabled');
+        }
+    });  
+</script>
+
+@{
+    var isRequired = Model.IsRequired(ViewBag.IdfsEmployeePropertyName);
+    var className = isRequired ? "requiredTd fillAll" : "fillAll";
+}
+
+<div id="@ViewBag.MainDivId">
+    <table>
+        <tr>
+            <td class='@className'>
+                @Html.BvEditbox(Model, (string)ViewBag.StrEmployeePropertyName)      
+            </td> 
+            <td class='selectButton'>
+                <button id='@ViewBag.BtnSearchPicker' class="magnifierButton" onclick='@ViewBag.OnSelectItemClick' type="button">
+                    <img src="@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/ActionsPanelButtons/Search.png"))" alt="Select" />
+                </button>                   
+            </td>
+            <td class='selectButton'>
+                <input type='button' id='@ViewBag.BtnClianPicker' class='coloredButton' onclick='@ViewBag.OnClianButtonClick' value='X' />
+            </td>
+            <td class='selectButton'>
+                <input type='button' id='@ViewBag.BtnAddNew' class='coloredButton' onclick='@ViewBag.OnAddButtonClick' value='+' />
+            </td>
+        </tr>
+    </table>
+</div>

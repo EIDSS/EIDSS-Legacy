@@ -1,0 +1,38 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnTriggersWork]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnTriggersWork]
+GO
+
+
+
+
+
+
+
+
+
+CREATE      function fnTriggersWork ()
+returns bit
+as
+begin
+return 1 --0
+end
+
+
+
+
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

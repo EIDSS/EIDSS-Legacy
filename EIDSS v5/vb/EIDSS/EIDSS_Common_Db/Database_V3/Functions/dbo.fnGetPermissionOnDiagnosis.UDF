@@ -1,0 +1,56 @@
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnGetPermissionOnDiagnosis]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnGetPermissionOnDiagnosis]
+GO
+
+
+CREATE FUNCTION [dbo].[fnGetPermissionOnDiagnosis](
+	@ObjectOperation BIGINT
+	, @Employee BIGINT
+)
+RETURNS TABLE 
+AS
+RETURN
+/* test
+DECLARE @ObjectOperation BIGINT
+DECLARE @Employee BIGINT
+
+SET @Employee = 3
+*/
+
+
+SELECT
+	td.idfsDiagnosis
+	, COALESCE(
+				MIN(InstanceUser.intPermission)
+				, MIN(TypeUser.intPermission)
+				, MIN(InstanceDefault.intPermission)
+				, MIN(TypeDefault.intPermission)
+				, 2
+				) intPermission
+FROM trtDiagnosis td
+--user rights on instance
+LEFT JOIN dbo.fnGetPermissionOnObjectOrType(10060001 /*objDiagnosis*/, @ObjectOperation, @Employee, 1) InstanceUser ON
+	InstanceUser.idfsObjectID = td.idfsDiagnosis
+--user rights on type
+LEFT JOIN dbo.fnGetPermissionOnObjectOrType(10060001 /*objDiagnosis*/, @ObjectOperation, @Employee, 0) TypeUser ON 
+	1 = 1
+--default rights on instance
+LEFT JOIN dbo.fnGetPermissionOnObjectOrType(10060001 /*objDiagnosis*/, @ObjectOperation, -1, 1) InstanceDefault ON
+	InstanceDefault.idfsObjectID = td.idfsDiagnosis
+--default rights on type
+LEFT JOIN dbo.fnGetPermissionOnObjectOrType(10060001 /*objDiagnosis*/, @ObjectOperation, -1, 0) TypeDefault ON 
+	1 = 1
+WHERE td.intRowStatus = 0
+GROUP BY td.idfsDiagnosis
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO

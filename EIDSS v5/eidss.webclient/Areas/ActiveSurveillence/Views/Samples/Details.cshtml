@@ -1,0 +1,231 @@
+﻿@model eidss.model.Schema.AsSessionTableViewItem
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+}
+<script language="javascript" src='@Url.Content("~/Scripts/jquery.form.js")' type="text/javascript"></script>
+<script language="javascript" src='@Url.Content("~/Scripts/ASSession/Samples.js")' type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript">
+
+    var speciesLookupId = '#' + '@Model.ObjectIdent' + 'idfSpecies';
+    var animalLookupId = '#' + '@Model.ObjectIdent' + 'idfAnimal';
+
+    $(document).ready(function () {
+        $('div[class="bottomButtonPanel detailsBottomPanel"]').hide();
+    });
+
+    $(window).load(function () {
+        var idFarm = $("input[type='hidden'][name$='idfFarmActual']");
+        var idfFarm = idFarm.val();
+        var speciesBox = $(speciesLookupId).data("tComboBox");
+        
+        if (idfFarm.length == 0 || idfFarm == 0) {
+            speciesBox.disable();
+        }
+
+        if (speciesBox && speciesBox.value().length == 0) {
+            $(animalLookupId).data("tComboBox").disable();
+        }
+    });
+
+    function ShowFarmPicker() {
+        ShowSearchPicker('@Url.Action("Select", "Farm", new RouteValueDictionary { { "area", "" } })', EIDSS.BvMessages['titleSelectFarm'] + ' (V04)');
+    }
+
+    function EditFarm() {
+        var idFarm = $("input[type='hidden'][name$='idfFarm']");
+        var idfFarm = idFarm.val();
+        if (idfFarm.length == 0)
+            idfFarm = '0';
+        var url = '@Url.Action("AsSessionFarmDetails", "Farm", new RouteValueDictionary { { "area", "" } , {"idfMonitoringSession", Model.idfMonitoringSession}})' + '&id=' + idfFarm;        
+        OpenPopup(url, "Edit Farm");
+    }
+        
+
+    function GetSpeciesList(idFarmActual, idFarm) {
+        var url = '@Url.Action("GetSpeciesList", "Samples")';
+        $(speciesLookupId).data("tComboBox").enable();
+
+        var url = '@Url.Action("GetSpeciesList", "Samples")';
+        $.ajax({
+            url: url,
+            cache: false,
+            dataType: "json",
+            type: "GET",
+            data: {
+                idfMonitoringSession: '@Model.idfMonitoringSession',
+                idfFarmActual: idFarmActual,
+                idfFarm: idFarm
+            },
+            success: function (data) {
+                if (!isNaN(data)) {
+                    var url = '@Url.Action("AsSessionFarmDetails", "Farm", new RouteValueDictionary { { "area", "" } , {"idfMonitoringSession", Model.idfMonitoringSession}})' + '&id=' + data.toString();
+                    OpenPopup(url, "Edit Farm");                 
+                }
+                else {
+                    if (data.toString().indexOf('Error') == -1)
+                        load(data, '@String.Format("{0}idfSpecies", Model.ObjectIdent)');
+                    else
+                        ShowEidssErrorNotification(data);
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(jqXHR.status);
+            }
+        });        
+    }
+
+    function GetAnimalsList(idfSpecies) {
+        var url = '@Url.Action("GetAnimalsList", "Samples")';
+        var lkp = $(animalLookupId).data("tComboBox");
+        lkp.enable();
+
+        if (idfSpecies) {
+            GetUpdate(
+                url,
+                idfSpecies,
+                function (result) {
+                    loadWithKey(result[0]);
+                    loadWithKey(result[1]);
+                    lkp.select(lkp.dropDown.$items.length-1);
+                },
+                '@Model.idfMonitoringSession');
+        }
+    }
+
+
+    function onAnimalChange(e) {
+        if (e.previousValue == e.value) { return; }        
+        var url = '@Url.Action("AnimalIsSelected", "Samples")';
+        GetUpdate(url, e.value, ApplyChanges, '@Model.idfMonitoringSession');
+    }
+
+    
+
+</script>
+<div class="popupContentInNewWin">
+    <h2>@Translator.GetMessageString("AddSampleWindowTitle")</h2>
+    @using eidss.webclient.Utils
+    @using (Html.BeginForm())
+    {    
+        @Html.IdentificationAndHeartbeat("idfMonitoringSessionSummary", Model.id)
+        @Html.BvHidden(Model, "idfFarmActual")
+        @Html.BvHidden(Model, "idfFarm")        
+        <table cellpadding="0" cellspacing="0">
+            <tr>
+                <td>@Html.LabelFor(m => m.idfFarm)
+                </td>
+                <td>
+                    <table cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td class='fillAll' style='padding-left:0px'>
+                                @Html.BvEditbox(Model, "strFarmCode")
+                            </td>
+                            <td class='selectButton'>
+                                <input type='button' class='coloredButton' onclick='ShowFarmPicker();' value='@Translator.GetMessageString("Search")' />
+                            </td>
+                            <td class='selectButton'>
+                                <input type='button' class='coloredButton' onclick='EditFarm();' value='...' />
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.idfSpecies)
+                </td>
+                <td>
+                    @(Html.Telerik().ComboBox()
+                        .Name(String.Format("{0}idfSpecies", Model.ObjectIdent))
+                        .ClientEvents(events => events.OnChange("onSpeciesChange"))
+                        .BindTo((SelectList)ViewBag.SpeciesList)                        
+                        )
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.idfAnimal)
+                </td>
+                <td>
+                    @(Html.Telerik().ComboBox()
+                        .Name(String.Format("{0}idfAnimal", Model.ObjectIdent))
+                        .ClientEvents(events => events.OnChange("onAnimalChange"))
+                        .BindTo((SelectList)ViewBag.AnimalsList)
+                        )
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.idfsAnimalAge)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, "AnimalAge")
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.strColor)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, "strColor")
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.idfsAnimalGender)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, "AnimalGender")
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.strName)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, "strName")
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.idfsSpecimenType)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, "SampleType")
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.strFieldBarcode)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, "strFieldBarcode")
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.datFieldCollectionDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, "datFieldCollectionDate")
+                </td>
+            </tr>
+        </table>  
+        <div class="popupBottomButtonPanel">
+            <input type="button" class="popupButton" onclick="window.close()" value="@Translator.GetMessageString("Cancel")" />
+            <input type="submit" class="popupButton" value="@Translator.GetMessageString("Ok")" />
+        </div>     
+    }
+</div> 
+@if (ViewBag.Close)
+{
+    <script language="javascript" type="text/javascript">
+        $(document).ready(function () {
+            window.opener.gridItemAdded('@ViewData["name"]');
+            window.close();
+        });
+    </script>
+}
+else
+{
+    <script language='javascript' type="text/javascript">
+     $(document).ready(function() {
+        var msg = '@ViewBag.ErrorMessage';
+        if (msg.length > 0)
+            ShowEidssErrorNotification(msg, function () { });            
+    });
+    </script>
+}

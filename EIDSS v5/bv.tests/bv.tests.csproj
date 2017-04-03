@@ -1,0 +1,552 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2B47411D-EF70-4AC6-8EED-F43C257CFEAF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>bv.tests</RootNamespace>
+    <AssemblyName>bv.tests</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\eidss.main\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\eidss.main\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Accessibility">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="DevExpress.Printing.v11.1.Core, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Data.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.PivotGrid.v11.1.Core, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Reports.v11.1.Designer, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Utils.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Web.ASPxEditors.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Web.ASPxPivotGrid.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Web.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraBars.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Charts.v11.1.Core, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraCharts.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraCharts.v11.1.UI, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraGrid.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraLayout.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraNavBar.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPivotGrid.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPrinting.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraReports.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraReports.v11.1.Extensions, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraTreeList.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="Help2, Version=1.0.0.30065, Culture=neutral, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Interop.ADOX, Version=2.8.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <HintPath>..\dlls\Interop.ADOX.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zlib, Version=1.9.1.5, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dlls\Ionic.Zlib.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="microsoft.visualbasic" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>$(VS100COMNTOOLS)\..\IDE\PublicAssemblies\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NMock2">
+      <HintPath>..\dlls\NMock2.dll</HintPath>
+    </Reference>
+    <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
+      <Visible>False</Visible>
+    </CodeAnalysisDependentAssemblyPaths>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\EIDSSAssemblyInfo.cs">
+      <Link>EIDSSAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="AVR\Helpers\DataHelper.cs" />
+    <Compile Include="AVR\Helpers\Fake\BaseFormStub.cs" />
+    <Compile Include="AVR\Helpers\Fake\FakeExportDialogStrategy.cs" />
+    <Compile Include="AVR\Helpers\ViewHelper.cs" />
+    <Compile Include="AVR\IntegrationTests\AccessIntegrationTests.cs" />
+    <Compile Include="AVR\IntegrationTests\BindingHelper.cs" />
+    <Compile Include="AVR\IntegrationTests\DBServiceIntegrationTests.cs" />
+    <Compile Include="AVR\IntegrationTests\ExportReportTests.cs" />
+    <Compile Include="AVR\IntegrationTests\FormBindingTests.cs" />
+    <Compile Include="AVR\IntegrationTests\FormConstructorReportTests.cs" />
+    <Compile Include="AVR\IntegrationTests\FormIntegrationTests.cs" />
+    <Compile Include="AVR\IntegrationTests\PrintReportTests.cs" />
+    <Compile Include="AVR\UnitTests\AccessTests.cs" />
+    <Compile Include="AVR\UnitTests\CommandTests.cs" />
+    <Compile Include="AVR\UnitTests\ComponentsTests.cs" />
+    <Compile Include="AVR\UnitTests\ConfigurationTests.cs" />
+    <Compile Include="AVR\UnitTests\ContextTests.cs" />
+    <Compile Include="AVR\UnitTests\DataTableCleanerTests.cs" />
+    <Compile Include="AVR\UnitTests\DataTableCopierTests.cs" />
+    <Compile Include="AVR\UnitTests\FilterValueHashTests.cs" />
+    <Compile Include="AVR\UnitTests\PivotGridFieldTests.cs" />
+    <Compile Include="AVR\UnitTests\DbTests.cs" />
+    <Compile Include="AVR\UnitTests\DistinctCounterReportTests.cs" />
+    <Compile Include="AVR\UnitTests\FieldIconsReportTests.cs" />
+    <Compile Include="AVR\UnitTests\ModelTests.cs" />
+    <Compile Include="AVR\UnitTests\PresenterFactoryTests.cs" />
+    <Compile Include="AVR\UnitTests\Presenters\ChartPresenterTests.cs" />
+    <Compile Include="AVR\UnitTests\Presenters\InitializingPresentersTests.cs" />
+    <Compile Include="AVR\UnitTests\Presenters\PivotPresenterReportTests.cs" />
+    <Compile Include="AVR\UnitTests\Presenters\PresenterReportTests.cs" />
+    <Compile Include="AVR\UnitTests\Presenters\RamFormPresenterReportTests.cs" />
+    <Compile Include="AVR\UnitTests\RamMenuReportTests.cs" />
+    <Compile Include="AVR\UnitTests\ReflectionHelperTests.cs" />
+    <Compile Include="AVR\UnitTests\ReportFlexTests.cs" />
+    <Compile Include="AVR\UnitTests\WinToWebConvertorTests.cs" />
+    <Compile Include="AVR\UnitTests\ViewReportTests.cs" />
+    <Compile Include="AVR\UnitTests\ZLibReportTests.cs" />
+    <Compile Include="common\BaseReportTests.cs" />
+    <Compile Include="common\EidssSiteOptionsTests.cs" />
+    <Compile Include="db.tests\ActiveSurveillenceTest.cs" />
+    <Compile Include="db.tests\AddressTest.cs" />
+    <Compile Include="db.tests\DiagnosisAgeGroupTest.cs" />
+    <Compile Include="db.tests\FarmRoot.cs" />
+    <Compile Include="db.tests\PersonTest.cs" />
+    <Compile Include="db.tests\SqlExceptionHandlerTest.cs" />
+    <Compile Include="db.tests\StatisticImport.cs" />
+    <Compile Include="common\LookupBinderTest.cs" />
+    <Compile Include="db.tests\EIDSS_LookupCacheHelperTest.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="common\RegistryHelperTest.cs" />
+    <Compile Include="Reports\AccessToReportsTests.cs" />
+    <Compile Include="Reports\BaseReportDataTests.cs" />
+    <Compile Include="Reports\BaseReportStub.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\VetLabReportTests.cs" />
+    <Compile Include="Reports\FilterHelperTest.cs" />
+    <Compile Include="Reports\GenerateTests.cs" />
+    <Compile Include="Reports\PDFServiceTests.cs" />
+    <Compile Include="Reports\CultureInfoExTests.cs" />
+    <Compile Include="Reports\ExportTests.cs" />
+    <Compile Include="Reports\ReportDateRebinderTests.cs" />
+    <Compile Include="Reports\ReportModelsTests.cs" />
+    <Compile Include="Reports\ReportParametersTest.cs" />
+    <Compile Include="Reports\StubDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StubDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\WaitDialogTests.cs" />
+    <Compile Include="Service References\ReportPdfService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="tests.Core\TestsEnvironment.cs" />
+    <Compile Include="Reports\MenuReportRegistratorTests.cs" />
+    <Compile Include="WinClient\AllListCounttests.cs" />
+    <Compile Include="WinClient\AllListPanelsTests.cs" />
+    <Compile Include="WinClient\AppConfigWriterTest.cs" />
+    <Compile Include="db.tests\LabSampleReceiveTests.cs" />
+    <Compile Include="db.tests\VectorTests.cs" />
+    <Compile Include="db.tests\HumanCaseTest.cs" />
+    <Compile Include="db.tests\FFTests.cs" />
+    <Compile Include="db.tests\EidssModelTest.cs" />
+    <Compile Include="db.tests\GeneralBLToolkitTest.cs" />
+    <Compile Include="db.tests\GeneralModelTest.cs" />
+    <Compile Include="db.tests\ModelTests.cs" />
+    <Compile Include="db.tests\RemoteSqlTests.cs" />
+    <Compile Include="db.tests\EidssSecurityManagerTest.cs" />
+    <Compile Include="model\EidssUserTest.cs" />
+    <Compile Include="Schema\ChildObject.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChildObject.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Schema\LinkObject.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LinkObject.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Schema\ListPanelList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ListPanelList.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Schema\ListPanelObject.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ListPanelObject.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Schema\Lookup1Object.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Lookup1Object.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Schema\Lookup2List.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Lookup2List.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Schema\Lookup2Object.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Lookup2Object.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Schema\Lookup2ParamObject.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Lookup2ParamObject.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Schema\MasterObject.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MasterObject.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Schema\SiblingObject.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SiblingObject.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Schema\TestObject.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestObject.xml</DependentUpon>
+    </Compile>
+    <Compile Include="tests.Core\PathToTestFolder.cs" />
+    <Compile Include="tests.Core\ScriptLoader.cs" />
+    <Compile Include="WinClient\OneInstanceAppTest.cs" />
+    <Compile Include="WinClient\UserConfigWriterTest.cs" />
+    <Compile Include="WebClient\FlexForms\FFRenderModelTest.cs" />
+    <Compile Include="WinClient\BaseListPanelTest.cs" />
+    <Compile Include="WinClient\FakeListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinClient\FakeSearchPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinClient\MenuActionManagerTest.cs" />
+    <Compile Include="WinClient\TestMainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinClient\TestMainForm.Designer.cs">
+      <DependentUpon>TestMainForm.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\EIDSS.Reports.Service\LoggingConfiguration.config">
+      <Link>LoggingConfiguration.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\StubDataSet.xsc">
+      <DependentUpon>StubDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\StubDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>StubDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\StubDataSet.xss">
+      <DependentUpon>StubDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="Service References\ReportPdfService\item3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ReportPdfService\item31.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ReportPdfService\item33.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ReportPdfService\item34.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ReportPdfService\item35.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ReportPdfService\item36.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ReportPdfService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\ReportPdfService\configuration.svcinfo" />
+    <None Include="Service References\ReportPdfService\configuration91.svcinfo" />
+    <None Include="AVR\db_test.mdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Content Include="db.tests\Data\CreateTestTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="db.tests\Data\DropTestTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Schema\ChildObject.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>ChildObject.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\LinkObject.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>LinkObject.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\ListPanelList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>ListPanelList.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\ListPanelObject.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>ListPanelObject.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\Lookup1Object.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>Lookup1Object.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\Lookup2List.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>Lookup2List.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\Lookup2Object.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>Lookup2Object.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\Lookup2ParamObject.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>Lookup2ParamObject.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\MasterObject.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>MasterObject.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\SiblingObject.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>SiblingObject.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\TestObject.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>TestObject.model.cs</LastGenOutput>
+    </Content>
+    <Shadow Include="Test References\eidss.core.accessor" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\bltoolkit.3.2.dev\BLToolkit.4.csproj">
+      <Project>{0C325F5D-E50E-4340-8724-D29896CCC583}</Project>
+      <Name>BLToolkit.4</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\bv.common\bv.common.csproj">
+      <Project>{BEE76B17-720D-4B65-996A-5712912B3ACF}</Project>
+      <Name>bv.common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\bv.model\bv.model.csproj">
+      <Project>{9067327E-1960-4326-ACB9-D982DDBEAA76}</Project>
+      <Name>bv.model</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\bv.winclient\bv.winclient.csproj">
+      <Project>{B0163672-F328-4D02-9B71-FB698EDAF815}</Project>
+      <Name>bv.winclient</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.core\eidss.core.csproj">
+      <Project>{BF545ECD-F673-4C71-9362-57C01DF13062}</Project>
+      <Name>eidss.core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.gis.common\eidss.gis.common.csproj">
+      <Project>{A9B1EE20-AC3C-404E-B9AD-110AD63BBEA6}</Project>
+      <Name>eidss.gis.common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.gis\eidss.gis.csproj">
+      <Project>{20D52400-EAEF-4ECA-A006-242683176310}</Project>
+      <Name>eidss.gis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.main\eidss.main.csproj">
+      <Project>{660A3AEB-B22D-40AE-BD03-C0966B3B9EE0}</Project>
+      <Name>eidss.main</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.model\eidss.model.csproj">
+      <Project>{E4B87B63-D5F2-4F9F-B39C-A7714896D1DE}</Project>
+      <Name>eidss.model</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.ram.web\eidss.ram.web.csproj">
+      <Project>{8564EC38-65CA-4045-99D6-9939D731FCAA}</Project>
+      <Name>eidss.ram.web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EIDSS.Reports.Service\EIDSS.Reports.Service.csproj">
+      <Project>{4C852A40-DB01-49D7-B33E-0C6AE4F16851}</Project>
+      <Name>EIDSS.Reports.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.webclient\eidss.webclient.csproj">
+      <Project>{E7DA5B3E-72DC-43E1-B02C-926E7954AADE}</Project>
+      <Name>eidss.webclient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.winclient\eidss.winclient.csproj">
+      <Project>{428C1EFE-F1A1-441A-9C59-50AE279F887F}</Project>
+      <Name>eidss.winclient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\EIDSS\EIDSS.FlexibleForms\EIDSS.FlexibleForms.csproj">
+      <Project>{8040D091-58E8-4FBE-8F46-D5200EEDAF69}</Project>
+      <Name>EIDSS.FlexibleForms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\EIDSS\EIDSS.RAM\EIDSS.RAM.csproj">
+      <Project>{D068D455-22BB-4C94-AA32-593AE9077304}</Project>
+      <Name>EIDSS.RAM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\EIDSS\EIDSS.RAM_DB\EIDSS.RAM_DB.csproj">
+      <Project>{75A1FF29-BB1F-4376-A548-B98258961633}</Project>
+      <Name>EIDSS.RAM_DB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\EIDSS\EIDSS.Reports\EIDSS.Reports.csproj">
+      <Project>{7122E0E0-019F-494E-8012-155FB3553E14}</Project>
+      <Name>EIDSS.Reports</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\EIDSS\EIDSS_Common\EIDSS_Common.vbproj">
+      <Project>{119CC05A-2F6C-4FC8-AC74-79BB76E3C1C0}</Project>
+      <Name>EIDSS_Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\EIDSS\EIDSS_Common_Db\EIDSS_Common_Db.vbproj">
+      <Project>{B66DEB84-FBE3-44E4-9B72-1E459CE0E50D}</Project>
+      <Name>EIDSS_Common_Db</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\EIDSS\EIDSS_Common_Forms\EIDSS_Common_Forms.vbproj">
+      <Project>{389B8F77-0B61-46DB-B752-1ECDC502267D}</Project>
+      <Name>EIDSS_Common_Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\Shared\bvwin_common\bvwin_common.vbproj">
+      <Project>{B3E5BA6B-FAA3-4A7D-8236-3F8842D61CD4}</Project>
+      <Name>bvwin_common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\Shared\bv_common\bvcommon.vbproj">
+      <Project>{BA2844A8-F629-4B02-ACD6-B60063E4D27F}</Project>
+      <Name>bvcommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\Shared\bv_dbcommon\bvdb_common.vbproj">
+      <Project>{6C48BB93-277D-4804-B280-F6130E29EB81}</Project>
+      <Name>bvdb_common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Shadow Include="Test References\eidss.model.accessor" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="WinClient\TestMainForm.resx">
+      <DependentUpon>TestMainForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Shadow Include="Test References\bv.common.accessor" />
+    <Content Include="db.tests\Data\StatisticData_BadHeader1.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="db.tests\Data\StatisticData_Errors.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="db.tests\Data\StatisticData_BadHeader.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="db.tests\Data\StatisticData_Good.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="app.config" />
+    <None Include="Service References\ReportPdfService\item.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ReportPdfService\item1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ReportPdfService\item2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ReportPdfService\ReportFacade.wsdl" />
+    <None Include="Test References\bv.winclient.accessor" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\ReportPdfService\" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

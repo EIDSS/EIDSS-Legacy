@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="TestObject"
+        connection="TestConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="spTestObject_SelectDetail" />
+    </storage>
+
+    <tables>
+        <table name="TestTable">
+            <properties permissionObject="Test" />
+            <keys>
+                <key name="MasterID" />
+            </keys>
+            <relations>
+                <relation name="Children" table="ChildTable" internal="true" type="child" source="MasterID" target="ParentID" lazy="false" />
+                <relation name="MasterSibling" table="MasterSiblingTable" internal="true" type="sibling" source="MasterID" target="MasterSiblingID" lazy="false" />
+                <relation name="Link" table="LinkTable" internal="true" type="link" source="LinkField1" target="LinkID" lazy="false" />
+            </relations>
+            <lookups>
+                <lookup name="Lookup1" table="Lookup1Table" source="LookupField1" target="Lookup1ID" />
+                <lookup name="Lookup2" table="Lookup2Table" source="LookupField2" target="Lookup2ID">
+                    <filters>
+                      <filter predicate="c => c.Lookup2ParentID == ((obj.Lookup1 == null) ? -1L : obj.Lookup1.Lookup1ID)"/>
+                      <!--filter name="Lookup1.Lookup1ID" target="Lookup2ParentID" />-->
+                    </filters>
+                </lookup>
+            </lookups>
+            <storage>
+                <post name="spMasterObject_Post" />
+                <candelete name="" />
+            </storage>
+        </table>
+        <table name="ChildTable">
+            <keys>
+                <key name="ChildID" />
+            </keys>
+            <storage>
+            </storage>
+        </table>
+        <table name="MasterSiblingTable">
+            <keys>
+                <key name="MasterSiblingID" />
+            </keys>
+            <storage>
+            </storage>
+            <extenders>
+                <loading>
+                    <lambda_extender target="MasterSiblingField1" type="string" lambda='c => "From extender"'/>
+                </loading>
+            </extenders>
+        </table>
+        <table name="LinkTable">
+            <keys>
+                <key name="LinkID" />
+            </keys>
+            <storage>
+            </storage>
+        </table>
+    </tables>
+
+</object>

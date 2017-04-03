@@ -1,0 +1,811 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D068D455-22BB-4C94-AA32-593AE9077304}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EIDSS.RAM</RootNamespace>
+    <AssemblyName>EIDSS.RAM</AssemblyName>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <StartupObject>
+    </StartupObject>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>http://localhost/EIDSS.RAM/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\eidss.main\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\eidss.main\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Printing.v11.1.Core, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Data.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Utils.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Web.ASPxEditors.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Web.ASPxGridView.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Web.ASPxGridView.v11.1.Export, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Web.ASPxPivotGrid.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Web.ASPxPivotGrid.v11.1.Export, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Web.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraBars.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Charts.v11.1.Core, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraCharts.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraCharts.v11.1.UI, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v11.1.Design, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraGrid.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraNavBar.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPivotGrid.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.PivotGrid.v11.1.Core, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPrinting.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPrinting.v11.1.Design, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Reports.v11.1.Designer, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraReports.v11.1.Extensions, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraReports.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraReports.v11.1.Design, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraTreeList.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="GIS_V5, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\dlls\gis\GIS_V5.dll</HintPath>
+    </Reference>
+    <Reference Include="Help2">
+      <HintPath>..\..\..\dlls\Help2.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\EIDSSAssemblyInfo.cs">
+      <Link>EIDSSAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Components\ChartTitle.cs" />
+    <Compile Include="Components\RamEmptyFieldProcessor.cs" />
+    <Compile Include="Layout\FieldCaptionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Layout\FieldCaptionForm.Designer.cs">
+      <DependentUpon>FieldCaptionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presenters\PivotCellBaseEventArgsWrapper.cs" />
+    <Compile Include="Presenters\RamForm\QueryProcessor.cs" />
+    <Compile Include="Tools\DistinctCounter.cs" />
+    <Compile Include="Tools\FieldAreaChangedDublicateFinder.cs" />
+    <Compile Include="Components\RamFieldIcons.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\RamFieldIcons.Designer.cs">
+      <DependentUpon>RamFieldIcons.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\RamPermissions.cs" />
+    <Compile Include="Components\RamPivotGridFieldData.cs" />
+    <Compile Include="Layout\LayoutInfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Layout\LayoutInfoForm.Designer.cs">
+      <DependentUpon>LayoutInfoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layout\LayoutPopupElement.cs" />
+    <Compile Include="Layout\LayoutTreeListKeeper.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Layout\LayoutTreeListKeeper.designer.cs">
+      <DependentUpon>LayoutTreeListKeeper.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presenters\RamForm\WebReportLink.cs" />
+    <Compile Include="Components\ChartControlMediator.cs" />
+    <Compile Include="Components\DataTransactions\DataTransaction.cs" />
+    <Compile Include="Components\DataTransactions\DataTransactionStrategy.cs" />
+    <Compile Include="Components\DataTransactions\IDataTransactionStrategy.cs" />
+    <Compile Include="Presenters\RamPivotGrid\PivotSummary\PivotCustomChartDataSourceDataEventArgsWrapper.cs" />
+    <Compile Include="Presenters\RamPivotGrid\PivotSummary\PivotCellDisplayTextEventArgsWrapper.cs" />
+    <Compile Include="Presenters\RamPivotGrid\PivotSummary\CustomSummaryHandler.cs" />
+    <Compile Include="Components\RamPivotGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Components\RamPivotGrid.Designer.cs">
+      <DependentUpon>RamPivotGrid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\RamPivotReportGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Components\RamPivotReportGrid.Designer.cs">
+      <DependentUpon>RamPivotReportGrid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\RamPrintingLink.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Components\RamPrintingLink.Designer.cs">
+      <DependentUpon>RamPrintingLink.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layout\BaseLayoutForm.cs" />
+    <Compile Include="Layout\BaseLayoutForm.Designer.cs">
+      <DependentUpon>BaseLayoutForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presenters\Base\BaseRamPresenter.cs" />
+    <Compile Include="Layout\ChartForm.cs" />
+    <Compile Include="Layout\ChartForm.designer.cs">
+      <DependentUpon>ChartForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layout\FilterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Layout\FilterForm.Designer.cs">
+      <DependentUpon>FilterForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layout\LayoutDetail.cs" />
+    <Compile Include="Layout\LayoutDetail.Designer.cs">
+      <DependentUpon>LayoutDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layout\LayoutInfo.cs" />
+    <Compile Include="Layout\LayoutInfo.Designer.cs">
+      <DependentUpon>LayoutInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layout\MapForm.cs" />
+    <Compile Include="Layout\MapForm.designer.cs">
+      <DependentUpon>MapForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presenters\Base\BindingHelper.cs" />
+    <Compile Include="Presenters\Base\LayoutMediator.cs" />
+    <Compile Include="Presenters\ChartPresenter.cs" />
+    <Compile Include="Presenters\LayoutDetailPresenter.cs" />
+    <Compile Include="Presenters\LayoutInfoPresenter.cs" />
+    <Compile Include="Presenters\RamForm\RamMenuRegistrator.cs" />
+    <Compile Include="Presenters\RamPivotGrid\PivotSummary\DisplayTextHandler.cs" />
+    <Compile Include="Presenters\RamPivotGrid\PivotSummary\PivotFieldDisplayTextEventArgsWrapper.cs" />
+    <Compile Include="Presenters\RamPivotGrid\PivotSummary\PivotGridCustomSummaryEventArgsWrapper.cs" />
+    <Compile Include="Presenters\SharedPresenter.cs" />
+    <Compile Include="Presenters\MapPresenter.cs" />
+    <Compile Include="Layout\PivotForm.cs" />
+    <Compile Include="Layout\PivotForm.designer.cs">
+      <DependentUpon>PivotForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\PivotReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Components\PivotReport.Designer.cs">
+      <DependentUpon>PivotReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presenters\PivotPresenter.cs" />
+    <Compile Include="Layout\PivotReportForm.cs" />
+    <Compile Include="Layout\PivotReportForm.designer.cs">
+      <DependentUpon>PivotReportForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PresenterFactory.cs" />
+    <Compile Include="Presenters\PivotReportPresenter.cs" />
+    <Compile Include="Presenters\QueryInfoPresenter.cs" />
+    <Compile Include="Presenters\RamPivotGrid\RamPivotGridPresenter.cs" />
+    <Compile Include="Presenters\RamForm\RamFormPresenter.cs" />
+    <Compile Include="Presenters\Base\RelatedObjectPresenter.cs" />
+    <Compile Include="QueryBuilder\ChildQueryObjectList.cs" />
+    <Compile Include="QueryBuilder\FilterControlHelper.cs" />
+    <Compile Include="QueryBuilder\FilterValueHash.cs" />
+    <Compile Include="QueryBuilder\PivotFilterControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="QueryBuilder\QueryFilterColumn.cs" />
+    <Compile Include="QueryBuilder\QueryFilterColumnCollection.cs" />
+    <Compile Include="QueryBuilder\SearchOperator.cs" />
+    <Compile Include="QueryBuilder\UnboundPivotGridColumn.cs" />
+    <Compile Include="QueryBuilder\UnboundQueryFilterColumn.cs" />
+    <Compile Include="RamForm.cs" />
+    <Compile Include="RamForm.designer.cs">
+      <DependentUpon>RamForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Components\PivotReport.az-Latn-AZ.resx">
+      <DependentUpon>PivotReport.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\PivotReport.hy-am.resx">
+      <DependentUpon>PivotReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\PivotReport.ka-GE.resx">
+      <DependentUpon>PivotReport.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\PivotReport.kk-KZ.resx">
+      <DependentUpon>PivotReport.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\PivotReport.ru-RU.resx">
+      <DependentUpon>PivotReport.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\PivotReport.uk-UA.resx">
+      <DependentUpon>PivotReport.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\RamFieldIcons.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>RamFieldIcons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\RamPivotGrid.resx">
+      <DependentUpon>RamPivotGrid.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\RamPrintingLink.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>RamPrintingLink.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\BaseLayoutForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>BaseLayoutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\ChartForm.az-Latn-AZ.resx">
+      <DependentUpon>ChartForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\ChartForm.hy-am.resx">
+      <DependentUpon>ChartForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\ChartForm.ka-GE.resx">
+      <DependentUpon>ChartForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\ChartForm.kk-KZ.resx">
+      <DependentUpon>ChartForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\ChartForm.resx">
+      <DependentUpon>ChartForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\ChartForm.ru-RU.resx">
+      <DependentUpon>ChartForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\ChartForm.uk-UA.resx">
+      <DependentUpon>ChartForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\FieldCaptionForm.az-Latn-AZ.resx">
+      <DependentUpon>FieldCaptionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\FieldCaptionForm.hy-AM.resx">
+      <DependentUpon>FieldCaptionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\FieldCaptionForm.ka-GE.resx">
+      <DependentUpon>FieldCaptionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\FieldCaptionForm.kk-KZ.resx">
+      <DependentUpon>FieldCaptionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\FieldCaptionForm.resx">
+      <DependentUpon>FieldCaptionForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\FieldCaptionForm.ru-RU.resx">
+      <DependentUpon>FieldCaptionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\FieldCaptionForm.uk-UA.resx">
+      <DependentUpon>FieldCaptionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\FilterForm.hy-am.resx">
+      <DependentUpon>FilterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\FilterForm.kk-KZ.resx">
+      <DependentUpon>FilterForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\FilterForm.uk-UA.resx">
+      <DependentUpon>FilterForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutDetail.hy-am.resx">
+      <DependentUpon>LayoutDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutDetail.kk-KZ.resx">
+      <DependentUpon>LayoutDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutDetail.uk-UA.resx">
+      <DependentUpon>LayoutDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutInfo.hy-am.resx">
+      <DependentUpon>LayoutInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutInfo.kk-KZ.resx">
+      <DependentUpon>LayoutInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutInfo.uk-UA.resx">
+      <DependentUpon>LayoutInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutInfoForm.az-Latn-AZ.resx">
+      <DependentUpon>LayoutInfoForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutInfoForm.hy-am.resx">
+      <DependentUpon>LayoutInfoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutInfoForm.ka-GE.resx">
+      <DependentUpon>LayoutInfoForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutInfoForm.kk-KZ.resx">
+      <DependentUpon>LayoutInfoForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutInfoForm.resx">
+      <DependentUpon>LayoutInfoForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutInfoForm.ru-RU.resx">
+      <DependentUpon>LayoutInfoForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\FilterForm.az-Latn-AZ.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FilterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\FilterForm.ka-GE.resx">
+      <DependentUpon>FilterForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\FilterForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FilterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\FilterForm.ru-RU.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FilterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutDetail.az-Latn-AZ.resx">
+      <DependentUpon>LayoutDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutDetail.ka-GE.resx">
+      <DependentUpon>LayoutDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutDetail.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LayoutDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutDetail.ru-RU.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LayoutDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutInfo.az-Latn-AZ.resx">
+      <DependentUpon>LayoutInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutInfo.ka-GE.resx">
+      <DependentUpon>LayoutInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutInfo.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LayoutInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutInfo.ru-RU.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LayoutInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutInfoForm.uk-UA.resx">
+      <DependentUpon>LayoutInfoForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutTreeListKeeper.az-Latn-AZ.resx">
+      <DependentUpon>LayoutTreeListKeeper.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutTreeListKeeper.hy-am.resx">
+      <DependentUpon>LayoutTreeListKeeper.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutTreeListKeeper.ka-GE.resx">
+      <DependentUpon>LayoutTreeListKeeper.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutTreeListKeeper.kk-KZ.resx">
+      <DependentUpon>LayoutTreeListKeeper.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutTreeListKeeper.ru-RU.resx">
+      <DependentUpon>LayoutTreeListKeeper.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutTreeListKeeper.uk-UA.resx">
+      <DependentUpon>LayoutTreeListKeeper.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\MapForm.az-Latn-AZ.resx">
+      <DependentUpon>MapForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\MapForm.hy-am.resx">
+      <DependentUpon>MapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\MapForm.ka-GE.resx">
+      <DependentUpon>MapForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\MapForm.kk-KZ.resx">
+      <DependentUpon>MapForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\MapForm.resx">
+      <DependentUpon>MapForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\MapForm.ru-RU.resx">
+      <DependentUpon>MapForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\MapForm.uk-UA.resx">
+      <DependentUpon>MapForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\PivotForm.az-Latn-AZ.resx">
+      <DependentUpon>PivotForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\PivotForm.hy-am.resx">
+      <DependentUpon>PivotForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\PivotForm.ka-GE.resx">
+      <DependentUpon>PivotForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\PivotForm.kk-KZ.resx">
+      <DependentUpon>PivotForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\PivotForm.resx">
+      <DependentUpon>PivotForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\PivotForm.ru-RU.resx">
+      <DependentUpon>PivotForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\PivotReport.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PivotReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\PivotForm.uk-UA.resx">
+      <DependentUpon>PivotForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\PivotReportForm.az-Latn-AZ.resx">
+      <DependentUpon>PivotReportForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\PivotReportForm.hy-am.resx">
+      <DependentUpon>PivotReportForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\PivotReportForm.ka-GE.resx">
+      <DependentUpon>PivotReportForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\PivotReportForm.kk-KZ.resx">
+      <DependentUpon>PivotReportForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\PivotReportForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PivotReportForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\PivotReportForm.ru-RU.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PivotReportForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutTreeListKeeper.resx">
+      <DependentUpon>LayoutTreeListKeeper.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\PivotReportForm.uk-UA.resx">
+      <DependentUpon>PivotReportForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QueryDetail.az-Latn-AZ.resx">
+      <DependentUpon>QueryDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QueryDetail.hy-am.resx">
+      <DependentUpon>QueryDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QueryDetail.ka-GE.resx">
+      <DependentUpon>QueryDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QueryDetail.kk-KZ.resx">
+      <DependentUpon>QueryDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QueryDetail.ru-RU.resx">
+      <DependentUpon>QueryDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QueryDetail.uk-UA.resx">
+      <DependentUpon>QueryDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QueryInfo.az-Latn-AZ.resx">
+      <DependentUpon>QueryInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QueryInfo.hy-am.resx">
+      <DependentUpon>QueryInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QueryInfo.ka-GE.resx">
+      <DependentUpon>QueryInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QueryInfo.kk-KZ.resx">
+      <DependentUpon>QueryInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QueryInfo.ru-RU.resx">
+      <DependentUpon>QueryInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QueryInfo.uk-UA.resx">
+      <DependentUpon>QueryInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QuerySearchObjectInfo.az-Latn-AZ.resx">
+      <DependentUpon>QuerySearchObjectInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QuerySearchObjectInfo.hy-am.resx">
+      <DependentUpon>QuerySearchObjectInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QuerySearchObjectInfo.ka-GE.resx">
+      <DependentUpon>QuerySearchObjectInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QuerySearchObjectInfo.kk-KZ.resx">
+      <DependentUpon>QuerySearchObjectInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QuerySearchObjectInfo.ru-RU.resx">
+      <DependentUpon>QuerySearchObjectInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QuerySearchObjectInfo.uk-UA.resx">
+      <DependentUpon>QuerySearchObjectInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RamForm.az-Latn-AZ.resx">
+      <DependentUpon>RamForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RamForm.hy-am.resx">
+      <DependentUpon>RamForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RamForm.ka-GE.resx">
+      <DependentUpon>RamForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RamForm.kk-KZ.resx">
+      <DependentUpon>RamForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RamForm.resx">
+      <DependentUpon>RamForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RamForm.ru-RU.resx">
+      <DependentUpon>RamForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QueryDetail.resx">
+      <DependentUpon>QueryDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QueryInfo.resx">
+      <DependentUpon>QueryInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QuerySearchObjectInfo.resx">
+      <DependentUpon>QuerySearchObjectInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RamForm.uk-UA.resx">
+      <DependentUpon>RamForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Migrated rules for EIDSS.RAM.ruleset" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="QueryBuilder\QueryDetail.cs" />
+    <Compile Include="QueryBuilder\QueryDetail.designer.cs">
+      <DependentUpon>QueryDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="QueryBuilder\QueryInfo.cs" />
+    <Compile Include="QueryBuilder\QueryInfo.designer.cs">
+      <DependentUpon>QueryInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="QueryBuilder\QuerySearchObjectInfo.cs" />
+    <Compile Include="QueryBuilder\QuerySearchObjectInfo.designer.cs">
+      <DependentUpon>QuerySearchObjectInfo.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\bltoolkit.3.2.dev\BLToolkit.4.csproj">
+      <Project>{0C325F5D-E50E-4340-8724-D29896CCC583}</Project>
+      <Name>BLToolkit.4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\bv.common\bv.common.csproj">
+      <Project>{BEE76B17-720D-4B65-996A-5712912B3ACF}</Project>
+      <Name>bv.common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\bv.model\bv.model.csproj">
+      <Project>{9067327E-1960-4326-ACB9-D982DDBEAA76}</Project>
+      <Name>bv.model</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\bv.winclient\bv.winclient.csproj">
+      <Project>{B0163672-F328-4D02-9B71-FB698EDAF815}</Project>
+      <Name>bv.winclient</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\eidss.core\eidss.core.csproj">
+      <Project>{BF545ECD-F673-4C71-9362-57C01DF13062}</Project>
+      <Name>eidss.core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\eidss.gis.common\eidss.gis.common.csproj">
+      <Project>{A9B1EE20-AC3C-404E-B9AD-110AD63BBEA6}</Project>
+      <Name>eidss.gis.common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\eidss.gis\eidss.gis.csproj">
+      <Project>{20D52400-EAEF-4ECA-A006-242683176310}</Project>
+      <Name>eidss.gis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\bvwin_common\bvwin_common.vbproj">
+      <Project>{B3E5BA6B-FAA3-4A7D-8236-3F8842D61CD4}</Project>
+      <Name>bvwin_common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\bv_common\bvcommon.vbproj">
+      <Project>{BA2844A8-F629-4B02-ACD6-B60063E4D27F}</Project>
+      <Name>bvcommon</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\bv_dbcommon\bvdb_common.vbproj">
+      <Project>{6C48BB93-277D-4804-B280-F6130E29EB81}</Project>
+      <Name>bvdb_common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EIDSS.RAM_DB\EIDSS.RAM_DB.csproj">
+      <Project>{75A1FF29-BB1F-4376-A548-B98258961633}</Project>
+      <Name>EIDSS.RAM_DB</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EIDSS.Reports\EIDSS.Reports.csproj">
+      <Project>{7122E0E0-019F-494E-8012-155FB3553E14}</Project>
+      <Name>EIDSS.Reports</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EIDSS_Common\EIDSS_Common.vbproj">
+      <Project>{119CC05A-2F6C-4FC8-AC74-79BB76E3C1C0}</Project>
+      <Name>EIDSS_Common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EIDSS_Common_Forms\EIDSS_Common_Forms.vbproj">
+      <Project>{389B8F77-0B61-46DB-B752-1ECDC502267D}</Project>
+      <Name>EIDSS_Common_Forms</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\validate2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\layoutFilter.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\plus.gif" />
+    <None Include="Resources\layout_new.bmp" />
+    <None Include="Resources\layout_deleted.bmp" />
+    <None Include="Resources\copy.png" />
+    <None Include="Resources\Clear_Cancel-Changes1.png" />
+    <None Include="Resources\Close.png" />
+    <None Include="Resources\deleted.gif" />
+    <None Include="Resources\deleted_small.bmp" />
+    <Content Include="Resources\layout_save.ico" />
+    <None Include="Resources\layout_save_1.bmp" />
+    <Content Include="Resources\layout_undo3.ico" />
+    <None Include="Resources\query_big.png" />
+    <None Include="Resources\query_copy.ico" />
+    <None Include="Resources\layout_undo31.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

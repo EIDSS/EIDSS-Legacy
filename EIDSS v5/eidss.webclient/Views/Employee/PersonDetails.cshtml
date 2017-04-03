@@ -1,0 +1,68 @@
+﻿@model eidss.model.Schema.Person
+@{
+    Layout = null;
+} 
+@using eidss.webclient.Utils;
+    
+<table>
+    <!--tr>
+        <td></td>
+        <td><div class="titleNumber">A09</div></td>
+    </tr-->    
+    <tr>
+        <td class="medium">
+            @Html.LabelFor(m => m.strFirstName)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strFirstName")                   
+        </td>                            
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.strSecondName)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strSecondName")                   
+        </td>                            
+    </tr>            
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.strFamilyName)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strFamilyName")                   
+        </td>                            
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.strInstitutionName)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strInstitutionName")                   
+        </td>                            
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.idfDepartment)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, "Department")              
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.idfsStaffPosition)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, "StaffPosition")              
+        </td>
+    </tr>     
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.strContactPhone)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strContactPhone")             
+        </td>
+    </tr>
+</table>

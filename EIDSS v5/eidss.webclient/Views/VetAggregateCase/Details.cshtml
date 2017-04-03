@@ -1,0 +1,32 @@
+﻿@model eidss.model.Schema.VetAggregateCase
+@{
+    ViewBag.Title = Translator.GetMessageString("titleVetAggregateCaseTitle");
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+    
+}
+@using eidss.webclient.Utils;
+
+<script type="text/javascript">
+    $(window).load(function () {
+        if ($("#ErrorMessage").val()) {
+            $("#ShowVetAggregateCaseReportClick").val('');
+        }
+        if ($("#ShowVetAggregateCaseReportClick") && $("#ShowVetAggregateCaseReportClick").val() == '1') {
+            var lang = GetSiteLanguage();
+            var url = "/" + lang + "/VetAggregateCase/VetAggregateCaseReport";
+            ShowVetAggregateCaseReport(url);
+        }
+    });           
+</script>
+
+@using (Html.BeginForm())
+{        
+    <input id='SaveAndExitClick' name='SaveAndExitClick' type='hidden' value='@ViewData["SaveAndExitClick"]' />   
+    <input type="hidden" id="ShowVetAggregateCaseReportClick" name='ShowVetAggregateCaseReportClick' value="@ViewBag.ShowVetAggregateCaseReportClick" />
+            
+    @Html.IdentificationAndHeartbeat("idfAggrCase", Model.idfAggrCase) 
+      
+    <div class="detailsWindow largeDetailsWindow">
+        @Html.Partial("../VetAggregateCase/DetailsContent", Model)
+    </div>    
+}

@@ -1,0 +1,164 @@
+﻿@model eidss.model.Schema.AsSession
+@using eidss.model.Resources
+@using eidss.webclient.Utils
+<script language="javascript" type="text/javascript">
+    $(document.getElementById('tlbCampaign')).ready(function () {    
+        var buttonSearch = $("#buttonSearchCampaign");
+        var buttonEdit = $("#buttonEditCampaign");
+        var buttonRemove = $("#buttonRemoveCampaign");
+        var isButtonsReadOnly = $("#hdnIsReadOnly").val().toLowerCase() == "true";
+        if (isButtonsReadOnly) {
+            buttonSearch.attr('disabled', 'disabled');
+            buttonEdit.attr('disabled', 'disabled');
+            buttonRemove.attr('disabled', 'disabled');
+        }
+        else {
+            buttonSearch.removeAttr('disabled');
+            buttonEdit.removeAttr('disabled');
+            buttonRemove.removeAttr('disabled');
+        }
+    });
+
+    function ShowCampaignPicker() {
+        ShowSearchPicker('@Url.Action("Select", "ASCampaign")', '@Translator.GetMessageString("titleSelectCampaign")' + ' (V15)');
+    }
+
+    function EditCampaign() {
+        var idCampaign = $("input[type='hidden'][name$='idfCampaign']");
+        if (idCampaign.val().length == 0)
+            return false;
+        var url = '@Url.Action("Details", "ASCampaign")' + '/' + idCampaign.val();        
+        OpenPopup(url, " ");   
+    }
+    function CampaignIdSelected(id) { 
+        var attr = $("#buttonRemoveCampaign").attr('disabled');
+        var isDisabled = typeof attr !== 'undefined' && attr !== false;
+        if(isDisabled) {
+            return;
+        }
+        if (id.length > 0) {            
+            var idCampaign = $("input[type='hidden'][name$='idfCampaign']");
+            ApplyContainer.argument = '@Model.ObjectIdent' + "Diseases";
+            ApplyContainer.onAjaxSuccess = gridItemAdded;
+            ApplyContainer.onEidssError =  getCampaignAssignmentConfirmation;
+            var commandUrl = '@Url.Action("TryToSetCampaign", "ASSession")';
+            $.ajax({
+                url: commandUrl,
+                cache: false,
+                dataType: "json",
+                type: "GET",
+                data: {
+                    idfSession: @Model.idfMonitoringSession,
+                    idfCampaign: id
+                },
+                success: function (data) {
+                    ApplyChanges(data);
+                    ApplyContainer.onAjaxSuccess(ApplyContainer.argument);
+                    ApplyContainer.argument = '';
+                    ApplyContainer.onAjaxSuccess = function () { };
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    if (textStatus == 'parsererror') {
+                        ShowEidssErrorNotification(EIDSS.BvMessages['ErrAuthentication'], function () { });
+                    }
+                }
+            });
+            //ModelFieldChanged(idCampaign.attr('name'), id);
+            if(id == '0') {
+                id='';
+            }
+
+            idCampaign.val(id);            
+            $('#Message').data('tWindow').close();
+
+        }
+    }
+</script>
+@Html.BvHidden(Model, "idfCampaign")
+@Html.BvHidden(Model, "blnForceCampaignAssignment")
+<input type="hidden" id="hdnIsReadOnly" value="@Model.IsReadOnly("buttonSearchCampaign")"/>
+<table class="bordered">
+    <tr>
+        <td class="small">
+            @Html.LabelFor(m => m.strMonitoringSessionID)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strMonitoringSessionID", false)
+        </td>
+        <td class="small">
+            @Html.LabelFor(m => m.strCampaignID)
+        </td>
+        <td class="noIndent">
+            <table cellpadding="0" cellspacing="0" id="tlbCampaign">
+                <tr>
+                    <td class='fillAll'>
+                        @Html.BvEditbox(Model, "strCampaignID")
+                    </td>
+                    @if ((bool)ViewBag.EnableCampaignSelection)
+                    {
+                    <td class='selectButton'>                         
+                        <button id="buttonSearchCampaign" onclick="ShowCampaignPicker();" type="button" class="magnifierButton" >
+                            <img src="@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/ActionsPanelButtons/Search.png"))" alt="Select" />
+                        </button>                                              
+                    </td>
+                    <td class='selectButton' id="buttonEditCampaign">
+                        <input type='button' class='coloredButton' onclick='EditCampaign();' value='...' />
+                    </td>
+                    <td class='selectButton' id="buttonRemoveCampaign">
+                        <input type="button" value="X" onclick="CampaignIdSelected('0');" class="coloredButton"/>
+                    </td>
+                    }
+                </tr>
+            </table>
+            @*<input type="button" class="coloredButton" value="Select" onclick="ShowCampaignPicker();"/>*@
+        </td>
+        <td class="small">
+            @Html.LabelFor(m=>m.idfsSite)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "idfsSite")
+        </td>
+    </tr>
+    <tr>
+        <td class="small">
+            @Html.LabelFor(m => m.idfsMonitoringSessionStatus)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, "MonitoringSessionStatus")
+        </td>
+        <td class="small">
+            @Html.LabelFor(m => m.strCampaignName)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strCampaignName")
+        </td>
+        <td class="small">
+            @Translator.GetString("AsSession.idfPersonEnteredBy")
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strPersonEnteredBy")
+        </td>
+    </tr>
+    <tr>
+        <td class="small">
+            @Html.LabelFor(m => m.datStartDate)
+        </td>
+        <td>
+            @Html.BvDatebox(Model, "datStartDate")
+            @Html.LabelFor(m => m.datEndDate)
+            @Html.BvDatebox(Model, "datEndDate")
+        </td>
+        <td class="small">
+            @Translator.GetString("idfsCampaignType")
+        </td>
+        <td>
+            @Html.BvCombobox(Model, "CampaignType")
+        </td>
+        <td>
+            @Translator.GetString("datDate")
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strReadOnlyEnteredDate")
+        </td>
+    </tr>
+</table>

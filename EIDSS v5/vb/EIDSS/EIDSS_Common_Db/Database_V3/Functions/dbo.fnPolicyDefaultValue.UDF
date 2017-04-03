@@ -1,0 +1,33 @@
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fnPolicyDefaultValue]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[fnPolicyDefaultValue]
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE FUNCTION [dbo].[fnPolicyDefaultValue]
+(
+	@id nvarchar(200)
+)
+RETURNS int
+AS
+BEGIN
+
+	if @id='AccountLockTimeout' return 15
+
+	if @id='AccountTryCount' return 3
+
+	if @id='PasswordAge' return 90
+
+	if @id='PasswordHistoryLength' return 3
+
+	if @id='PasswordMinimalLength' return 5
+
+	if @id='InactivityTimeout' return 15
+	
+	if @id='ForcePasswordComplexity' return 0
+
+	return null
+END

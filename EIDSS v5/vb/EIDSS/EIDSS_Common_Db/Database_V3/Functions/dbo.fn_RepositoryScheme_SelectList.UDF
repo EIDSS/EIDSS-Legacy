@@ -1,0 +1,59 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fn_RepositoryScheme_SelectList]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fn_RepositoryScheme_SelectList]
+GO
+
+
+
+
+
+CREATE    Function dbo.fn_RepositoryScheme_SelectList(@LangID as nvarchar(50))
+returns table
+as
+return
+select		tlbFreezer.idfFreezer,
+			tlbFreezer.strFreezerName,
+			tlbFreezer.strNote,
+			tlbFreezer.idfsStorageType,
+			ST.[Name] as 'StorageType'/*,
+			SUM(case 
+					when	dbo.Lab_Location.idfLocationID is not null 
+							and dbo.Lab_Location.idfContainer is not null 
+					then 1 
+					else 0 
+				end) as VialCount*/
+
+from		tlbFreezer
+/*left join	dbo.FreezerSubdivision
+on			dbo.Freezer.idfsFreezerID = dbo.FreezerSubdivision.idfsFreezerID
+left join	dbo.Lab_Location
+on			dbo.FreezerSubdivision.idfsSubdivisionID = dbo.Lab_Location.idfsSubdivisionID*/
+left join	fnReference(@LangID, 19000092) as ST --rftStorageType
+on			ST.idfsReference = tlbFreezer.idfsStorageType 
+
+where		/*(	(Freezer.idfsPlacementID is null) 
+				or (dbo.fn_ObjectPermission(
+							Freezer.idfsPlacementID, 
+							'objPlacement', 
+							dbo.fnPersonID(), 
+							'ObjectOperationRead') <> 1))*/
+			tlbFreezer.intRowStatus = 0 and
+			tlbFreezer.idfsSite=dbo.fnSiteID()
+/*
+group by	dbo.Freezer.idfsFreezerID,
+			dbo.Freezer.strFreezerName,
+			dbo.Freezer.strNote,
+			dbo.Freezer.idfsStorageType,
+			ST.[Name]*/
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

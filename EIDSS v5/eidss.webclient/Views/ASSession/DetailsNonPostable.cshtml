@@ -1,0 +1,129 @@
+﻿@model eidss.model.Schema.AsSession
+@{
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+    ViewBag.Title = Translator.GetMessageString("ASSession");
+}
+@using bv.common.Configuration
+@using eidss.webclient.Utils
+@using eidss.model.Schema
+@using eidss.webclient.Areas.ActiveSurveillence
+<script src='@Url.Content("~/Scripts/jquery.form.js")' type="text/javascript"></script>
+<script src='@Url.Content("~/Scripts/Common/GridAreaHelpers.js")' type="text/javascript"></script>
+<script src='@Url.Content("~/Scripts/Common/SearchPicker.js")' type="text/javascript"></script>
+<script src='@Url.Content("~/Scripts/Address/Lookups.js")' type="text/javascript"></script>
+<script src='@Url.Content("~/Scripts/Sample/CommonScript.js")' type="text/javascript"></script>
+<script src='@Url.Content("~/Scripts/ASSession/Helpers.js")' type="text/javascript"></script>
+<script src='@Url.Content("~/Scripts/Common/AjaxFormSubmit.js")' type="text/javascript"></script>
+<script src='@Url.Content("~/Scripts/ASSession/ScriptNonPostable.js")' type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        $("#bMainPanel_Save").removeAttr("onclick");
+        $("#bMainPanel_Ok").removeAttr("onclick");
+
+        $("#bMainPanel_Save").unbind("click").click(SaveClick);
+        $("#bMainPanel_Ok").unbind("click").click(OKClick);
+
+        //$("#bMainPanel_Save").hide();
+        $("#bMainPanel_CreateCase").hide();
+        $("#bMainPanel_ReportAsSampleCollectedList").hide();
+        $("#bMainPanel_ReportAsSessionTests").hide();
+        $("#bMainPanel_Create").hide();
+        $("#bMainPanel_Delete").hide();
+    });
+        
+</script>
+@using (Html.BeginForm())
+{                
+    @Html.IdentificationAndHeartbeat("idfMonitoringSession", Model.idfMonitoringSession)	  
+    
+    <div class="detailsWindow largeDetailsWindow">
+        <div class="detailsTitle">
+            <table class="detailsTitleContent">
+                <tr>
+                    <td class="titleImage">
+                        <img src='@Url.Content("~/Content/Images/Active-Surviellance-Session-(large).png")'  alt=""/>
+                    </td>
+                    <td class="titleText">
+                        @Translator.GetMessageString("Active Surveillence Session")
+                    </td>
+                    <td class="titleText titleFormCode">
+                        V18
+                    </td>
+                </tr>
+            </table>
+        </div>
+        @Html.Partial("Summary", Model)        
+        <table class="twoParts">
+            <tr>
+                <td valign="top" width="50%">@Html.Partial("Address", Model)
+                </td>
+                <td width="50%">
+                    <div>
+                    <table class="bordered">
+                        <tr>
+                            <td class="sectionName" colspan="2">@Translator.GetMessageString("sectionDiseasesList")
+                            </td>
+                        </tr>
+                    </table>
+                        @Html.DiseasesBySession(Model.idfMonitoringSession, Model.ObjectIdent + "Diseases", Model.Diseases, Model.IsReadOnly("Diseases"))
+                    </div>
+                               
+                </td>
+            </tr>
+        </table>
+        @(Html.Telerik().TabStrip()
+            .Name("FullDetails")
+            .ClientEvents(events=>events.OnSelect("enableCaseCreation"))
+            .Items(items =>
+            {
+                items.Add()
+                    .Text(Translator.GetMessageString("tabTitleDetailedInfo"))
+                    .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleDetailedInfo" } : new { })
+                    .Content(
+                    @<text>
+                     <div class="yScrollable smallTabPanelContent">
+                        @Html.Partial("DetailedInfo", Model)
+                        </div>
+                    </text>);
+
+                items.Add()
+                    .Text(Translator.GetMessageString("titleSummaryInfo"))
+                    .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "titleSummaryInfo" } : new { })
+                    .Content(
+                    @<text>
+                        <div class="yScrollable smallTabPanelContent">
+                            @Html.SummaryItems(Model.idfMonitoringSession, Model.ObjectIdent + "SummaryItems", Model.SummaryItems, Model.IsReadOnly("SummaryItems"))
+                        <table>
+                            <tr>
+                                <td>@Html.LabelFor(m => m.intTotalSampledAnimals)</td>
+                                <td>@Html.BvEditbox(Model, "intTotalSampledAnimals")</td>
+                                <td>@Html.LabelFor(m => m.intTotalPositiveAnimals)</td>
+                                <td>@Html.BvEditbox(Model, "intTotalPositiveAnimals")</td>
+                                <td>@Html.LabelFor(m => m.intTotalSamples)</td>
+                                <td>@Html.BvEditbox(Model, "intTotalSamples")</td>
+                            </tr>
+                        </table>
+                        </div>
+                    </text>);
+                items.Add()
+                    .Text(Translator.GetMessageString("tabTitleActions"))
+                    .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleActions" } : new { })
+                    .Content(
+                        @<text>
+                            @Html.Partial("Actions", Model)
+                        </text>);
+                items.Add()
+                    .Text(Translator.GetMessageString("tabTitleCases"))
+                    .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleCases" } : new { })
+                    .Content(
+                        @<text>
+                        <div class="smallTabPanelContent">    
+                            @Html.Cases(Model.idfMonitoringSession, Model.ObjectIdent +"Cases", Model.Cases, Model.IsReadOnly("Cases"))   
+                        </div>
+                        </text>);
+            })
+        .SelectedIndex(0)
+    )
+    </div>    
+}

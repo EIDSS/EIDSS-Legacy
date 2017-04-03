@@ -1,0 +1,33 @@
+﻿set ANSI_NULLS ON
+set QUOTED_IDENTIFIER ON
+GO
+
+IF  EXISTS (SELECT TOP 1 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.fnFFCheckForRemoveParameterFixedPresetValue')) Drop Function dbo.fnFFCheckForRemoveParameterFixedPresetValue
+GO
+
+-- =============================================
+-- Author:		Leonov E.N.
+-- Create date:
+-- Description:
+-- =============================================
+Create Function dbo.fnFFCheckForRemoveParameterFixedPresetValue
+(
+	@idfsParameterFixedPresetValue BigInt
+)
+RETURNS @ResultTable Table
+(
+		[ErrorMessage] nvarchar(400)	
+)
+AS
+BEGIN
+	
+	declare	@ErrorMessage nvarchar(400)
+		
+	-- должны быть удалены все зависимые записи
+	If Exists(Select Top 1 1 From dbo.tlbActivityParameters Where varValue = @idfsParameterFixedPresetValue	And intRowStatus = 0) Set  @ErrorMessage	= 'ParameterFixedPresetValueRemove_Has_tlbActivityParameters';
+	If Exists(Select Top 1 1 From dbo.tlbAggrMatrixVersion Where varValue = @idfsParameterFixedPresetValue	And intRowStatus = 0) Set  @ErrorMessage	= 'ParameterFixedPresetValueRemove_Has_tlbAggrMatrixVersion';
+	
+	Insert into @ResultTable(ErrorMessage) Values (@ErrorMessage);	
+	Return;
+End
+Go

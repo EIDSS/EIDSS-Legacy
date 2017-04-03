@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="VectorSample"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="spVectorSamples_SelectDetail" type="detaillist" />
+    </storage>
+
+    <tables>
+        <table name="VectorSample">              
+          <grid>
+            <item name="idfMaterial" visible="false" key="true"/>
+            <item name="idfVector" visible="true" type="long?"/>
+            <item name="strBarcode" />
+            <item name="strFieldBarcode" />
+            <item name="idfsVectorType" type="long?"/>
+            <item name="strVectorSubTypeName"/>
+            <item name="idfsSpecimenType"/>                
+            <item name="datFieldCollectionDate" type="DateTime?" />
+            <item name="idfFieldCollectedByOffice"/>
+            <item name="strNote" type="string" />
+            <item name="datAccession" />
+            <item name="idfsAccessionCondition" />              
+          </grid>          
+          <labels>
+            <item labelId="VectorSample.strNote" name="strNote"/>
+            <item labelId="Vector.strVectorID" name="idfVector"/>            
+            <item labelId="VectorSample.strBarcode" name="strBarcode"/>
+            <item labelId="VectorSample.strFieldBarcode" name="strFieldBarcode"/>
+            <item labelId="VectorSample.idfFieldCollectedByOffice" name="idfFieldCollectedByOffice"/>
+            <item labelId="idfsVectorSubType" name="strVectorSubTypeName"/>
+          </labels>
+          <keys>
+            <key name="idfMaterial"/>
+          </keys>
+          <fields>
+            <storage name="NewObject" type="bool"/>
+            <calculated name="strFieldCollectedByOffice" type="string" depends="idfFieldCollectedByOffice"
+                        lambda='c => c.FieldCollectedByOffice == null ? String.Empty : c.FieldCollectedByOffice.name' />
+            <storage name="isPool" type="bool"/>
+            <storage name="isJustCreated" type="bool"/>            
+            <!-- ссылка на полный перечень семплов в сессии -->
+            <storage type="EditableList&lt;VectorSample&gt;" name="SessionSamples"/>
+            <!-- ссылка на полный перечень полевых тестов в сессии -->
+            <storage type="EditableList&lt;VectorFieldTest&gt;" name="FieldTests"/>
+            <!-- ссылка на полный перечень векторов в сессии -->
+            <storage type="EditableList&lt;Vector&gt;" name="Vectors"/>
+            <!-- ссылка на полный перечень лабораторных тестов в сессии -->
+            <storage type="EditableList&lt;VectorLabTest&gt;" name="LabTests"/>
+            <storage type="Vector" name="ParentVector"/>
+            <!-- можно ли перевешивать семпл на другой вектор-->
+            <storage type="bool" name="CanChangeParentVector"/>
+          </fields>            
+          <readonly>            
+            <fields name="datFieldCollectionDate,idfFieldCollectedByOffice" predicate="c => c.isPool || c.Used == 1"/>
+            <fields name="datAccession,idfsAccessionCondition,strFieldBarcode,idfVector,idfsVectorType,strVectorSubTypeName" predicate="c => false || c.Used == 1"/>  
+            <!-- дополнительная логика есть в панели VectorSampleListPanel-->
+            <fields name="idfsSpecimenType" predicate="c => (c.isPool &amp;&amp; (c.SampleTypesMatrix.Count(s => s.idfsVectorType == c.idfsVectorType) &lt;= 1))"/>
+            <fields name="*" predicate="c => true" />
+          </readonly>
+          <relations>
+            <relation name="SampleTypesMatrix" type="child"
+                  table="VectorType2SampleTypeLookup"
+                  source="idfsVectorType"
+                  target="" internal="false" lazy="false"/>
+          </relations>
+          <lookups>            
+            <lookup name="FieldCollectedByOffice" table="OrganizationLookup" source="idfFieldCollectedByOffice" target="idfInstitution">
+                <params>
+                    <param name="ID" const="null" />
+                </params>
+            </lookup>
+            <lookup name="AccessionCondition" table="BaseReference" section="rftAccessionCondition" source="idfsAccessionCondition" target="idfsBaseReference" />
+            <lookup name="VectorType" table="BaseReference" section="rftVectorType" source="idfsVectorType" target="idfsBaseReference" />
+            <lookup name="VectorSubType" table="BaseReference" section="rftVectorSubType" source="idfsVectorSubType" target="idfsBaseReference" />
+            <lookup name="Region" table="RegionLookup" source="idfsRegion" target="idfsRegion">
+              <params>
+                <param name="CountryID" lambda="c => eidss.model.Core.EidssSiteContext.Instance.CountryID" type="long" />
+                <param name="ID" const="null" />
+              </params>
+            </lookup>
+            <lookup name="Rayon" table="RayonLookup" source="idfsRayon" target="idfsRayon">
+              <params>
+                <param name="RegionID" lambda="c => c.idfsRegion ?? 0" type="long" />
+                <param name="ID" const="null" />
+              </params>
+            </lookup>
+          </lookups>
+          <storage>            
+            <insert name="spLabSample_Create" />
+            <update name="spLabSample_Update" />
+            <delete name="spLabSample_Delete" />
+            <candelete name="spVectorSample_CanDelete"/>
+          </storage>
+          <extenders>
+            <creating>                    
+              <scalar_extender target="idfMaterial" class="GetNewIDExtender" />
+            </creating>
+            <created>
+              <db_lambda_extender target="idfMaterial" type="long" lambda="(c,m) => { _LoadSampleTypesMatrix(m,c); return c.idfMaterial; }" />
+              <lambda_extender target="CanChangeParentVector" type="bool" lambda="c => true" />              
+            </created>
+            <loaded>
+              <lambda_extender target="CanChangeParentVector" type="bool" lambda="c => false" />              
+            </loaded>
+            <deleting>
+              <custom_extender>
+                <text>
+                  var fieldTests = FieldTests.Where(ft => ft.idfMaterial == idfMaterial).ToList();
+                  foreach(var ft in fieldTests)
+                  {
+                    ft.MarkToDelete();
+                  }
+                </text>
+              </custom_extender>
+            </deleting>
+          </extenders>
+          <handlers>
+            <fieldhandler>
+              <!--<lambda_handler target="strSpecimenName" field="idfsSpecimenType" type="string" lambda='c => c.SampleType == null ? "" : c.SampleType.SampleName' />-->
+              <lambda_handler target="idfParty" field="idfVector" type="long" lambda='c => c.idfVector.HasValue ? c.idfVector.Value : c.idfParty.Value' />
+              <lambda_handler target="strVectorTypeName" field="idfsVectorType" type="string" lambda='c => c.VectorType == null ? "" : c.VectorType.name'/>
+              <lambda_handler target="strVectorSubTypeName" field="idfsVectorSubType" type="string" lambda='c => c.VectorSubType == null ? "" : c.VectorSubType.name'/>
+              <lambda_handler target="strRegionName" field="idfsRegion" type="string" lambda='c => c.Region == null ? "" : c.Region.strRegionName'/>
+              <lambda_handler target="strRayonName" field="idfsRayon" type="string" lambda='c => c.Rayon == null ? "" : c.Rayon.strRayonName'/>
+              <custom_handler field="idfsSpecimenType">
+                <text>
+                  var matrix = obj.SampleTypesMatrix.FirstOrDefault(m => m.idfsSampleType == obj.idfsSpecimenType);
+                  if (matrix != null) obj.strSpecimenName = matrix.SampleName;
+                </text>                
+              </custom_handler>              
+            </fieldhandler>
+          </handlers>
+          <validators>
+            <change>
+                <!-- FieldCollectionDate≤FieldSentDate 
+                <predicate_validator field="datAccession" predicate="c => PredicateValidator.CompareDates(c.datFieldSentDate, c.datAccession)" message="datFieldSentDate_datAccession_msgId" />-->
+            </change>
+            <post>
+              <required_validator target="strFieldBarcode" label="VectorSample.strFieldBarcode" />
+              <required_validator target="idfsSpecimenType" />
+              <required_validator target="idfParty" />
+              <custom_validator method="CustomValidations" />
+            </post>
+            <delete>              
+              <custom_validator method="CheckCanDelete" />
+            </delete>
+          </validators>
+          <actions>
+            <standard>
+              <remove type="Edit"/>
+              <remove type="Create"/>
+            </standard>
+            <action name="Create" type="Create">
+              <visual panel="Group" alignment="Right">
+                <regular caption="strCreate_Id" icon="add" tooltip="tooltipCreate_Id" />
+              </visual>
+              <run>
+                <params>
+                  <param name="parentVector" type="Vector" />
+                  <param name="idfsSpecimenType" type="long?" />
+                </params>
+                <creating>
+                  <lambda_extender target="ParentVector" type="Vector" lambda='c => parentVector' />
+                  <lambda_extender target="idfVector" type="long" lambda='c => parentVector.idfVector' />
+                  <lambda_extender target="idfParty" type="long" lambda='c => parentVector.idfVector' />
+                  <lambda_extender target="isPool" type="bool" lambda='c => parentVector.IsPoolVectorType' />
+                  <lambda_extender target="idfVectorSurveillanceSession" type="long" lambda='c => parentVector.idfVectorSurveillanceSession' />
+                  <lambda_extender target="idfsVectorType" type="long" lambda='c => parentVector.idfsVectorType' />
+                  <lambda_extender target="idfsSpecimenType" type="long" lambda='c => idfsSpecimenType.HasValue ? idfsSpecimenType.Value != 0 ? idfsSpecimenType.Value : c.idfsSpecimenType : c.idfsSpecimenType' />
+                  <lambda_extender target="SessionSamples" type="EditableList&lt;VectorSample&gt;" lambda='c => parentVector.Samples' />
+                  <lambda_extender target="FieldTests" type="EditableList&lt;VectorFieldTest&gt;" lambda='c => parentVector.FieldTests' />
+                  <lambda_extender target="Vectors" type="EditableList&lt;Vector&gt;" lambda='c => parentVector.Vectors' />
+                  <lambda_extender target="LabTests" type="EditableList&lt;VectorLabTest&gt;" lambda='c => parentVector.LabTests' />
+                  <lambda_extender target="idfsVectorSubType" type="long" lambda='c => parentVector.idfsVectorSubType' />
+                </creating>
+                <created>
+                  <lambda_extender target="datFieldCollectionDate" type="DateTime?" lambda='c => c.isPool ? parentVector.datCollectionDateTime : DateTime.Now.Date' />
+                  <lambda_extender target="idfFieldCollectedByOffice" type="long?" lambda='c => c.isPool ? parentVector.idfCollectedByOffice : c.idfFieldCollectedByOffice' />
+                  <lambda_extender target="isJustCreated" type="bool" lambda='c => true' />
+                  <lambda_extender target="strVectorSubTypeName" type="string" lambda="c => parentVector.strSpecies"/>
+                  <lambda_extender target="strVectorID" type="string" lambda="c => parentVector.strVectorID"/>
+                </created>
+              </run>
+            </action>
+          </actions>
+        </table>       
+    </tables>
+
+</object>

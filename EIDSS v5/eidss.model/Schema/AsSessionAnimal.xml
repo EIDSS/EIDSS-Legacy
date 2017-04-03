@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="AsSessionAnimal"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spASSessionAnimals_SelectDetail" type="detaillist" />
+  </storage>
+
+  <tables>
+    <table name="AsSessionAnimal">
+      <properties ></properties>
+      <fields>        
+      </fields>
+      <readonly>
+      </readonly>
+      <relations>
+      </relations>
+      <lookups>
+        <lookup name="AnimalGender" table="BaseReference" section="rftAnimalGenderList" source="idfsAnimalGender" target="idfsBaseReference" >
+          <filters>
+            <filter predicate="c => ((c.intHACode.GetValueOrDefault() &amp; (int)HACode.Livestock) != 0) || !c.intHACode.HasValue || c.idfsBaseReference == obj.idfsAnimalGender" />
+          </filters>
+        </lookup>
+        <lookup name="AnimalAge" table="AnimalAgeLookup" source="idfsAnimalAge" target="idfsReference"  >
+          <params>
+            <param name="HACode" lambda='c => c.idfsSpeciesType.ToString()' type="string" />
+          </params>
+        </lookup>
+        <!--<lookup name="AnimalAge" table="BaseReference" section="rftAnimalAgeList" source="idfsAnimalAge" target="idfsBaseReference" />-->
+      </lookups>
+      <storage>
+        <post name="spASSessionAnimals_Post"/>
+      </storage>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfAnimal" class="GetNewIDExtender"/>
+        </creating>
+        <created>
+        </created>
+        <loaded>
+        </loaded>
+        <posting>
+
+        </posting>
+      </extenders>
+      <handlers>
+        <fieldhandler>                    
+        </fieldhandler>
+      </handlers>
+
+      <actions>
+        <action name="CreateAnimalCopy" type="Create">
+          <run>
+            <params>
+              <param name="animal" type="AsSessionAnimal" />
+            </params>
+            <creating>
+              <value_extender target="AnimalAge" value="animal.AnimalAge"/>
+              <value_extender target="AnimalGender" value="animal.AnimalGender"/>
+              <value_extender target="idfSpecies" value="animal.idfSpecies"/>
+              <value_extender target="strAnimalCode" value='"(new animal)"'/>
+              <value_extender target="idfMonitoringSession" value="animal.idfMonitoringSession"/>
+            </creating>
+          </run>
+        </action>
+        <action name="CreateInSession" type="Create">
+          <run>
+            <params>
+              <param name="line" type="AsSessionTableViewItem"/>
+            </params>
+            <creating>
+              <value_extender target="idfMonitoringSession" value="line.idfMonitoringSession"/>
+              <value_extender target="idfSpecies" value="line.idfSpecies"/>
+              <value_extender target="strAnimalCode" value="line.strAnimalCode"/>
+              <value_extender target="idfsAnimalAge" value="line.idfsAnimalAge"/>
+              <value_extender target="idfsAnimalGender" value="line.idfsAnimalGender"/>
+              <value_extender target="strName" value="line.strName"/>
+              <value_extender target="strColor" value="line.strColor"/>
+            </creating>
+          </run>
+        </action>
+        <action name="Create" type="Create">
+          <run>
+            <params>
+              <param name="idfSpecies" type="long?"/>
+              <param name="strAnimalCode" type="string"/>
+              <param name="idfsAnimalAge" type="long?"/>
+              <param name="idfsAnimalSex" type="long?"/>
+              <param name="strName" type="string"/>
+              <param name="strColor" type="string"/>
+            </params>
+            <creating>
+              <value_extender target="idfSpecies" value="idfSpecies"/>
+              <value_extender target="strAnimalCode" value="strAnimalCode"/>
+              <value_extender target="idfsAnimalAge" value="idfsAnimalAge"/>
+              <value_extender target="idfsAnimalGender" value="idfsAnimalSex"/>
+              <value_extender target="strName" value="strName"/>
+              <value_extender target="strColor" value="strColor"/>
+            </creating>
+          </run>
+        </action>
+      </actions>
+    </table>
+  </tables>
+
+</object>

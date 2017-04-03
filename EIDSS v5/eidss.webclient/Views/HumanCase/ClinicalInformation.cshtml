@@ -1,0 +1,133 @@
+﻿@model eidss.model.Schema.HumanCase
+           
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+@using eidss.webclient.Areas.Therapy;
+
+<div class="yScrollable smallTabPanelContent">
+    <table class="bordered">
+        <tr>        
+            <td class="sectionName" colspan="6">      
+                @Translator.GetMessageString("titleGeneralInformation")  
+            </td>
+        </tr> 
+        <tr>
+            <td colspan="3">
+                @Html.LabelFor(m => m.idfsTentativeDiagnosis)
+            </td>
+            <td class="medium">
+                @Html.BvEditbox(Model, "strReadOnlyTentativeDiagnosis1")
+            </td>
+            <td colspan="2">                           
+            </td>                        
+        </tr>
+        <tr>
+            <td colspan="3">                       
+                @Html.LabelFor(m => m.idfsInitialCaseStatus)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, "InitialCaseStatus")
+            </td>
+            <td class="small">
+                @Html.LabelFor(m => m.datExposureDate)
+            </td>
+            <td class="medium">
+                @Html.BvDatebox(Model, "datExposureDate")
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                @Html.LabelFor(m => m.datOnSetDate)
+            </td>  
+            <td class="medium">
+                @Html.BvEditbox(Model, "strReadOnlyOnSetDate")
+            </td>     
+            <td>
+                @Html.LabelFor(m => m.idfPointGeoLocation)
+            </td>                 
+            <td colspan="2" class="noIndent"> 
+                @Html.Action("InlineGeoLocationPicker", "GeoLocation", new { root = Model.idfCase, location = Model.PointGeoLocation })
+            </td>                        
+        </tr>
+        <tr>
+            <td colspan="3">
+                @Html.LabelFor(m => m.strSoughtCareFacility)
+            </td>
+            <td class="medium noIndent">
+                @Html.Action("InlineOrganizationPicker", "Organization", new { obj = Model, objectId = Model.idfCase, idfsOrganizationPropertyName = "idfSoughtCareFacility",
+                                                                               strOrganizationPropertyName = "strSoughtCareFacility", idfsEmployeePropertyName = "",
+                                                                               strEmployeePropertyName = ""})   
+            </td>
+            <td class="small">
+                @Html.LabelFor(m => m.datFirstSoughtCareDate)
+            </td>
+            <td>
+                @Html.BvDatebox(Model, "datFirstSoughtCareDate")
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                @Html.LabelFor(m => m.idfsNonNotifiableDiagnosis)
+            </td>
+            <td class="medium">
+                @Html.BvCombobox(Model, "NonNotifiableDiagnosis")
+            </td>
+            <td colspan="2">                           
+            </td>                        
+        </tr>
+        <tr>
+            <td class="small">                       
+                @Html.LabelFor(m => m.idfsYNHospitalization)
+            </td>
+            <td class="small">
+                @Html.BvCombobox(Model, "Hospitalization")
+            </td>
+            <td class="small">
+                @Html.LabelFor(m => m.strHospitalizationPlace)
+            </td>
+            <td class="medium">
+                @Html.BvEditbox(Model, "strHospitalizationPlace", true)
+            </td>
+            <td class="small">
+                @Html.LabelFor(m => m.datHospitalizationDate)
+            </td>
+            <td>
+                @Html.BvDatebox(Model, "datHospitalizationDate")
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                @Html.LabelFor(m => m.idfsYNAntimicrobialTherapy)
+            </td>
+            <td class="medium">
+                @Html.BvCombobox(Model, "AntimicrobialTherapyUsed")
+            </td>
+            <td colspan="2">                           
+            </td>   
+        </tr>
+        </table>
+
+        <table class="bordered">
+        <tr>        
+            <td class="sectionName" colspan="6">      
+                @Translator.GetMessageString("AntimicrobialTherapy")  
+            </td>
+        </tr>         
+        </table>
+
+         @Html.HumanAntimicrobialTherapy(Model.idfCase, Model.ObjectIdent + "AntimicrobialTherapy", Model.AntimicrobialTherapy, Model.IsReadOnly("AntimicrobialTherapy") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit))
+
+        <table class="bordered">
+        <tr>
+            <td class="sectionName" colspan="6">
+                @Html.LabelFor(m=>m.strClinicalNotes)             
+            </td>        
+        </tr>
+        <tr>
+            <td colspan="6">
+                @Html.BvTextArea(Model, "strClinicalNotes")
+            </td>        
+        </tr>
+    </table>            
+</div>
+

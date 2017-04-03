@@ -1,0 +1,26 @@
+﻿@{
+    Layout = null;
+}
+@using bv.model.Model.Core
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>@ViewBag.Title</title>
+
+        <link href="@Url.Content("~/Content/Styles/Common.css")" rel="stylesheet" type="text/css" />  
+
+        <script src="@Url.Content("~/Scripts/Common/Config.js")" type="text/javascript"></script>
+
+        @(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.web20.css").Add("telerik.rtl.css")/*.Combined(true).Compress(true)*/))
+         <script type="text/javascript">
+                $(document).ready(function () {
+                    $('div[class="t-status"]').hide();
+                });
+        </script>
+    </head>
+    <body>
+        <div>
+            @RenderBody()
+        </div> 
+     </body>
+</html>

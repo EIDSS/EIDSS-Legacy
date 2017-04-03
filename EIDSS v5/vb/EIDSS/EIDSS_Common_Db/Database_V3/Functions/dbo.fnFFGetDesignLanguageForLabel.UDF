@@ -1,0 +1,35 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'dbo.fnFFGetDesignLanguageForLabel') and xtype in (N'FN', N'IF', N'TF'))
+drop function dbo.fnFFGetDesignLanguageForLabel
+GO
+
+-- проверяет, если ли для указанного лейбла представление на указанном языке. 
+-- Если нет, то возвращает дефолтный язык, для которого есть представление.
+Create function dbo.fnFFGetDesignLanguageForLabel
+(
+	@LangID Nvarchar(50)
+	,@idfDecorElement Bigint
+)
+returns bigint
+as
+Begin
+	--
+	Declare @result Bigint
+	Set @result = dbo.fnGetLanguageCode(@LangID);  
+	
+	If Not Exists(Select Top 1 1 From dbo.ffDecorElement Where [idfDecorElement] =  @idfDecorElement And idfsLanguage = @result And intRowStatus = 0) 
+			Set @result = dbo.fnGetLanguageCode('en');
+		
+	return	@result;
+end
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

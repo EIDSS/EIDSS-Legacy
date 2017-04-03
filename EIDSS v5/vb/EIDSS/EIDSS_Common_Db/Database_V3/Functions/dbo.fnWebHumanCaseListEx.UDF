@@ -1,0 +1,274 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fnWebHumanCaseListEx]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[fnWebHumanCaseListEx]
+GO
+
+/*
+	select * from dbo.fnWebHumanCaseListEx('en')
+*/
+
+CREATE FUNCTION dbo.fnWebHumanCaseListEx
+(
+	@LangID nvarchar(50)
+)
+RETURNS TABLE 
+AS
+RETURN 
+(
+	select		--tlbCase.idfCase,
+				--tlbCase.idfOutbreak,
+				tlbCase.strCaseID,
+				tlbCase.datEnteredDate,
+				tlbHumanCase.strLocalIdentifier,
+				tlbHumanCase.strNote,
+				tlbCase.idfsShowDiagnosis as	[idfsShowDiagnosis.ID],
+				ShowDiagnosis.Name as			[idfsShowDiagnosis.Name],
+
+				--tlbCase.idfsCaseProgressStatus,
+				--tlbHumanCase.idfsFinalState,
+				--tlbHumanCase.idfsHospitalizationStatus,
+				--tlbHumanCase.idfsHumanAgeType,
+				--tlbHumanCase.idfsYNAntimicrobialTherapy,
+				--tlbHumanCase.idfsYNHospitalization,
+				--tlbHumanCase.idfsYNSpecimenCollected,
+				--tlbHumanCase.idfsYNRelatedToOutbreak,
+				--tlbHumanCase.idfsOutcome,
+				--tlbHumanCase.idfsTentativeDiagnosis,
+				--tlbHumanCase.idfsFinalDiagnosis,
+				--tlbHumanCase.idfsInitialCaseStatus,
+				--tlbHumanCase.idfSentByOffice,
+				--tlbHumanCase.idfReceivedByOffice,
+				--tlbHumanCase.idfInvestigatedByOffice,
+				--tlbHumanCase.idfPointGeoLocation,
+				--tlbHumanCase.idfEpiObservation,
+				--tlbEpiObservation.idfsFormTemplate as idfsEPIFormTemplate,
+				--tlbHumanCase.idfCSObservation,
+				--tlbCSObservation.idfsFormTemplate as idfsCSFormTemplate,
+				tlbHumanCase.datNotificationDate,
+				tlbHumanCase.datCompletionPaperFormDate,
+				tlbHumanCase.datFirstSoughtCareDate,
+				tlbHumanCase.datModificationDate,
+				tlbHumanCase.datHospitalizationDate,
+				tlbHumanCase.datFacilityLastVisit,
+				tlbHumanCase.datExposureDate,
+				tlbHumanCase.datDischargeDate,
+				tlbHumanCase.datOnSetDate,
+				tlbHumanCase.datInvestigationStartDate,
+				tlbHumanCase.datTentativeDiagnosisDate,
+				tlbHumanCase.datFinalDiagnosisDate,
+				
+				tlbHumanCase.strSentByFirstName,
+				tlbHumanCase.strSentByPatronymicName,
+				tlbHumanCase.strSentByLastName,
+				tlbHumanCase.strReceivedByFirstName,
+				tlbHumanCase.strReceivedByPatronymicName,
+				tlbHumanCase.strReceivedByLastName,
+
+				--tlbHumanCase.strNote,
+				--tlbHumanCase.strCurrentLocation,
+				--tlbHumanCase.strHospitalizationPlace,
+				--tlbHumanCase.strLocalIdentifier,
+				--tlbHumanCase.strSoughtCareFacility,
+				--tlbHumanCase.strSentByFirstName,
+				--tlbHumanCase.strSentByPatronymicName,
+				--tlbHumanCase.strSentByLastName,
+				--tlbHumanCase.strReceivedByFirstName,
+				--tlbHumanCase.strReceivedByPatronymicName,
+				--tlbHumanCase.strReceivedByLastName,
+				--tlbHumanCase.strEpidemiologistsName,
+				--tlbHumanCase.strNotCollectedReason,
+				--tlbHumanCase.strClinicalDiagnosis,
+				tlbHumanCase.intPatientAge,
+				tlbHumanCase.strCurrentLocation,
+				--tlbHumanCase.blnClinicalDiagBasis,
+				--tlbHumanCase.blnLabDiagBasis,
+				--tlbHumanCase.blnEpiDiagBasis,
+				--tlbHumanCase.strClinicalNotes,
+				--tlbHumanCase.strSummaryNotes,
+				--tlbHumanCase.idfsFinalCaseStatus,
+				--tlbHuman.idfHuman,
+				--tlbHuman.idfsOccupationType,
+				--tlbHuman.idfRegistrationAddress,
+				tlbHuman.datDateOfDeath,
+				tlbHuman.strHomePhone,
+				tlbHuman.strEmployerName,
+				tlbHuman.datDateOfBirth as datDateOfBirth,
+				'*****' as strFirstName,
+				'*****' as strLastName,
+
+				dbo.fnCreateGeoLocationString
+				(	@LangID,
+					GeoLocation.idfsGeoLocationType,
+					GeoLocation.Country,
+					GeoLocation.Region,
+					GeoLocation.Rayon,
+					GeoLocation.Latitude,
+					GeoLocation.Longitude,
+					GeoLocation.Description,
+					GeoLocation.PostalCode,
+					GeoLocation.SettlementType,
+					GeoLocation.Settlement,
+					GeoLocation.Street,
+					GeoLocation.House,
+					GeoLocation.Building,
+					GeoLocation.Appartment,
+					GeoLocation.ResidentType,
+					GeoLocation.Alignment,
+					GeoLocation.Distance,
+					GeoLocation.GroundType
+				) as LocationName,
+				
+				tlbHumanCase.idfSentByOffice	as [idfSentByOffice.ID],
+				SentBy.Name						as [idfSentByOffice.Name],
+
+				tlbHumanCase.idfReceivedByOffice	as [idfReceivedByOffice.ID],
+				ReceivedBy.Name						as [idfReceivedByOffice.Name],
+
+				--tlbHuman.strRegistrationPhone,
+				--tlbHuman.strWorkPhone,
+				--tlbCase.idfsSite,
+
+				tlbCase.idfsCaseProgressStatus	as [idfsCaseProgressStatus.ID],
+				CPS.Name						as [idfsCaseProgressStatus.Name],
+
+				tlbHumanCase.idfsFinalState as [idfsFinalState.ID],
+				FS.Name						as [idfsFinalState.Name],
+
+				tlbHumanCase.idfsHospitalizationStatus	as [idfsHospitalizationStatus.ID],
+				HS.Name									as [idfsHospitalizationStatus.Name],
+				
+				tlbHumanCase.idfsHumanAgeType	as [idfsHumanAgeType.ID],
+				HAT.Name						as [idfsHumanAgeType.Name],
+
+				tlbHumanCase.idfsYNHospitalization	as [idfsYNHospitalization.ID],
+				Hospitalization.Name				as [idfsYNHospitalization.Name],
+
+				tlbHumanCase.idfsYNRelatedToOutbreak	as [idfsYNRelatedToOutbreak.ID],
+				RelatedToOutbreak.Name					as [idfsYNRelatedToOutbreak.Name],
+
+				tlbHumanCase.idfsOutcome	as [idfsOutcome.ID],
+				Outcome.Name				as [idfsOutcome.Name],
+
+				tlbHuman.idfsHumanGender	as [idfsHumanGender.ID],
+				HumanGender.Name			as [idfsHumanGender.Name],
+
+				tlbHumanCase.idfsTentativeDiagnosis	as [idfsTentativeDiagnosis.ID],
+				TentativeDiagnosis.Name				as [idfsTentativeDiagnosis.Name],
+
+				tlbHumanCase.idfsFinalDiagnosis	as [idfsFinalDiagnosis.ID],
+				FinalDiagnosis.Name				as [idfsFinalDiagnosis.Name],
+
+				tlbHumanCase.idfsInitialCaseStatus	as [idfsInitialCaseStatus.ID],
+				InitialCaseStatus.Name				as [idfsInitialCaseStatus.Name],
+
+				tlbHumanCase.idfsFinalCaseStatus	as [idfsFinalCaseStatus.ID],
+				FinalCaseStatus.Name				as [idfsFinalCaseStatus.Name],
+
+				--tlbHuman.idfsHumanGender,
+				--tlbHuman.strFirstName,
+				--tlbHuman.strSecondName,
+				--tlbHuman.strLastName,
+/*
+				tlbGeoLocation.idfsCountry	as [idfsCountry.ID],
+				Country.Name				as [idfsCountry.Name],
+
+				tlbGeoLocation.idfsRegion	as [idfsRegion.ID],
+				Region.Name					as [idfsRegion.Name],
+
+				tlbGeoLocation.idfsRayon	as [idfsRayon.ID],
+				Rayon.Name					as [idfsRayon.Name],
+*/
+				CurrentResidence.[idfsCountry.ID]	as [CurrentResidence.idfsCountry.ID],
+				CurrentResidence.[idfsCountry.Name]	as [CurrentResidence.idfsCountry.Name],
+				CurrentResidence.[idfsRegion.ID]	as [CurrentResidence.idfsRegion.ID],
+				CurrentResidence.[idfsRegion.Name]	as [CurrentResidence.idfsRegion.Name],
+				CurrentResidence.[idfsRayon.ID]		as [CurrentResidence.idfsRayon.ID],
+				CurrentResidence.[idfsRayon.Name]	as [CurrentResidence.idfsRayon.Name],
+				CurrentResidence.[idfsSettlement.ID]as [CurrentResidence.idfsSettlement.ID],
+				CurrentResidence.[idfsSettlement.Name]as [CurrentResidence.idfsSettlement.Name],
+				'*****'								as [CurrentResidence.Street],
+				CurrentResidence.strPostCode		as [CurrentResidence.strPostCode],
+
+				EmployerAddress.[idfsCountry.ID]	as [EmployerAddress.idfsCountry.ID],
+				EmployerAddress.[idfsCountry.Name]	as [EmployerAddress.idfsCountry.Name],
+				EmployerAddress.[idfsRegion.ID]		as [EmployerAddress.idfsRegion.ID],
+				EmployerAddress.[idfsRegion.Name]	as [EmployerAddress.idfsRegion.Name],
+				EmployerAddress.[idfsRayon.ID]		as [EmployerAddress.idfsRayon.ID],
+				EmployerAddress.[idfsRayon.Name]	as [EmployerAddress.idfsRayon.Name],
+				EmployerAddress.[idfsSettlement.ID]	as [EmployerAddress.idfsSettlement.ID],
+				EmployerAddress.[idfsSettlement.Name]as [EmployerAddress.idfsSettlement.Name],
+				'*****'								as [EmployerAddress.Street],
+				EmployerAddress.strPostCode			as [EmployerAddress.strPostCode],
+
+				
+				tlbHuman.idfsNationality	as [idfsNationality.ID],
+				Nationality.Name			as [idfsNationality.Name]
+	/*,
+				Settlement.Name as Settlement*/
+
+	from		tlbHumanCase
+	inner join	tlbCase
+	on			tlbCase.idfCase = tlbHumanCase.idfHumanCase
+				and tlbCase.intRowStatus = 0
+	left join	(
+		tlbParty
+		inner join	tlbHuman
+		on			tlbHuman.idfHuman = tlbParty.idfParty
+		left join	fnWebAddressTable(@LangID) CurrentResidence
+		on			CurrentResidence.idfGeoLocation=tlbHuman.idfCurrentResidenceAddress
+		left join	fnWebAddressTable(@LangID) EmployerAddress
+		on			EmployerAddress.idfGeoLocation=tlbHuman.idfEmployerAddress
+				)
+	on			tlbParty.idfCase = tlbHumanCase.idfHumanCase
+				and tlbParty.idfsPartyType = 10072006			-- Human
+				and tlbParty.intRowStatus = 0
+	left join	fnReference_Full(@LangID) CPS
+	on			CPS.idfsReference=tlbCase.idfsCaseProgressStatus
+	left join	fnReference_Full(@LangID) FS
+	on			FS.idfsReference=tlbHumanCase.idfsFinalState
+	left join	fnReference_Full(@LangID) HS
+	on			HS.idfsReference=tlbHumanCase.idfsHospitalizationStatus
+	left join	fnReference_Full(@LangID) HAT
+	on			HAT.idfsReference=tlbHumanCase.idfsHumanAgeType
+	left join	fnReference_Full(@LangID) Hospitalization
+	on			Hospitalization.idfsReference=tlbHumanCase.idfsYNHospitalization
+	left join	fnReference_Full(@LangID) RelatedToOutbreak
+	on			RelatedToOutbreak.idfsReference=tlbHumanCase.idfsYNRelatedToOutbreak
+	left join	fnReference_Full(@LangID) HumanGender
+	on			HumanGender.idfsReference=tlbHuman.idfsHumanGender
+	left join	fnReference_Full(@LangID) Outcome
+	on			Outcome.idfsReference=tlbHumanCase.idfsOutcome
+	left join	fnReference_Full(@LangID) TentativeDiagnosis
+	on			TentativeDiagnosis.idfsReference=tlbHumanCase.idfsTentativeDiagnosis
+	left join	fnReference_Full(@LangID) FinalDiagnosis
+	on			FinalDiagnosis.idfsReference=tlbHumanCase.idfsFinalDiagnosis
+	left join	fnReference_Full(@LangID) InitialCaseStatus
+	on			InitialCaseStatus.idfsReference=tlbHumanCase.idfsInitialCaseStatus
+	left join	fnReference_Full(@LangID) FinalCaseStatus
+	on			FinalCaseStatus.idfsReference=tlbHumanCase.idfsFinalCaseStatus
+	left join	fnReference_Full(@LangID) ShowDiagnosis
+	on			ShowDiagnosis.idfsReference=tlbCase.idfsShowDiagnosis
+	left join	fnReference_Full(@LangID) Nationality
+	on			Nationality.idfsReference=tlbHuman.idfsNationality
+/*
+	left join	fnGisReference(@LangID,19000001) Country
+	on			Country.idfsReference=tlbGeoLocation.idfsCountry
+	left join	fnGisReference(@LangID,19000003) Region
+	on			Region.idfsReference=tlbGeoLocation.idfsRegion
+	left join	fnGisReference(@LangID,19000002) Rayon
+	on			Rayon.idfsReference=tlbGeoLocation.idfsRayon*/
+
+	left join	fnGeoLocationAsRow(@LangID) GeoLocation
+	on			GeoLocation.idfGeoLocation = tlbHuman.idfCurrentResidenceAddress --idfPointGeoLocation
+
+	left join	fnInstitution(@LangID)SentBy
+	on			SentBy.idfOffice=tlbHumanCase.idfSentByOffice
+	left join	fnInstitution(@LangID)ReceivedBy
+	on			ReceivedBy.idfOffice=tlbHumanCase.idfReceivedByOffice
+
+)
+GO

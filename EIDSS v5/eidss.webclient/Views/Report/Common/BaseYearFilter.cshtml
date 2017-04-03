@@ -1,0 +1,27 @@
+﻿@model eidss.model.Reports.Common.BaseYearModel
+           
+<table id="BaseDateFilterTable" >
+    <tr>
+        <td class="medium">
+            @Html.LabelFor(m => m.Year)
+        </td>
+        <td class="large">
+            <div class='tdContainer'>
+                @{
+                    @(Html.Telerik().NumericTextBoxFor(m => m.Year)
+                          .Name("Year")
+                          .Value(Model.Year)
+                          .DecimalDigits(0)
+                          .NumberGroupSeparator("")
+                          .MinValue(2000)
+                          .MaxValue(2030)
+                          .HtmlAttributes(new {@class = "requiredField"})
+                          )
+                }
+            </div>
+        </td>
+        <td></td>
+      
+    </tr>
+  
+</table>

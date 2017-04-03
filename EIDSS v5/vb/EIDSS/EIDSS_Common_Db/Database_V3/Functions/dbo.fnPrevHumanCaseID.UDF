@@ -1,0 +1,88 @@
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnPrevHumanCaseID]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnPrevHumanCaseID]
+GO
+
+--##SUMMARY Returns id of the previous human case for the specified number in the list of human cases entered at the same site.
+
+--##REMARKS Author: Mirnaya O.
+--##REMARKS Create date: 28.01.2010
+
+--##RETURNS Function returns id of the previous human case for the specified number in the list of human cases entered at the same site.
+
+
+/*
+--Example of a call of function:
+declare @idfCase		bigint
+select dbo.fnPrevHumanCaseID (@idfCase)
+
+*/
+
+
+create	function	fnPrevHumanCaseID
+(
+	@idfCase	as bigint	--##PARAM @Number Id of the human case
+)
+returns bigint
+as
+begin
+
+declare @res bigint
+set @res = null
+
+declare	@datEnteredDate	datetime
+declare	@strCaseID		nvarchar(200)
+declare	@idfsSite		bigint
+
+select			@datEnteredDate	= tlbCase.datEnteredDate,
+				@strCaseID		= tlbCase.strCaseID,
+				@idfsSite		= tlbCase.idfsSite
+from			tlbHumanCase
+inner join		tlbCase
+on				tlbCase.idfCase = tlbHumanCase.idfHumanCase
+				and tlbCase.intRowStatus = 0
+inner join		(
+	tlbParty
+	inner join	tlbHuman
+	on			tlbHuman.idfHuman = tlbParty.idfParty
+				)
+on				tlbParty.idfCase = tlbHumanCase.idfHumanCase
+				and tlbParty.idfsPartyType = 10072006			-- Human
+				and tlbParty.intRowStatus = 0
+where			tlbHumanCase.idfHumanCase = @idfCase
+
+
+select top 1	@res = tlbHumanCase.idfHumanCase
+from			tlbHumanCase
+inner join		tlbCase
+on				tlbCase.idfCase = tlbHumanCase.idfHumanCase
+				and tlbCase.intRowStatus = 0
+inner join		(
+	tlbParty
+	inner join	tlbHuman
+	on			tlbHuman.idfHuman = tlbParty.idfParty
+				)
+on				tlbParty.idfCase = tlbHumanCase.idfHumanCase
+				and tlbParty.idfsPartyType = 10072006			-- Human
+				and tlbParty.intRowStatus = 0
+where			tlbCase.idfsSite = @idfsSite
+				and	(	(tlbCase.datEnteredDate < @datEnteredDate)
+						or ((tlbCase.datEnteredDate = @datEnteredDate)
+							and (tlbCase.strCaseID < @strCaseID))
+					)
+order by		tlbCase.datEnteredDate desc, tlbCase.strCaseID desc
+
+return @res
+end
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

@@ -1,0 +1,37 @@
+﻿@model eidss.model.Schema.VetCase
+@using bv.common.Configuration
+@using eidss.webclient.Areas.HerdEpi
+@using eidss.webclient.Utils
+
+@(Html.Telerik().TabStrip()
+    .Name("EpiSection")
+    .ClientEvents(events => events.OnSelect("onLvstkTabSelect"))
+    .Items(items =>
+    {
+        items.Add()
+            .Text(Translator.GetMessageString("strHerdSpeciesInfo"))
+            .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "strHerdSpeciesInfo" } : new { })
+            .Content(
+                @<text>
+                <div class="smallTabPanelContent">
+                    @Html.HerdSpeciesList(Model.idfCase, Model.Farm.ObjectIdent + "FarmTree", Model.Farm.FarmTree, Model.IsClosed || Model.Farm.IsReadOnly("FarmTree") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit))
+                </div>
+                </text>);
+
+        items.Add()
+            .Text(Translator.GetMessageString("sectionTitleEpiInfo"))
+            .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "sectionTitleEpiInfo" } : new { })
+            .Content(
+                @<text>
+                    <div class="yScrollable smallTabPanelContent" id="LvstckEpiFlexForm"></div>
+                </text>);
+
+        items.Add()
+            .Text(Translator.GetMessageString("sectionTitleControlMeasures"))
+            .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "sectionTitleControlMeasures" } : new { })
+            .Content(
+                @<text>
+                    <div class="yScrollable smallTabPanelContent" id="CMFlexForm"></div>
+                </text>);
+    })
+    .SelectedIndex(0))

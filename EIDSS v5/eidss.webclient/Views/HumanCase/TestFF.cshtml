@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Human Case and FF Test";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using eidss.webclient.Areas.FlexForms;
+@using eidss.webclient.Utils;
+
+@functions
+{
+    string ShowEpiFF()
+    {
+        eidss.webclient.Areas.FlexForms.Extenders.ShowFlexibleForm(Html, Model.idfCase, Model.EpiFormTemplate, Model.idfEpiObservation, Model.EpiActivityParameters);
+        return String.Empty;
+    }
+
+    string ShowCsFF()
+    {
+        eidss.webclient.Areas.FlexForms.Extenders.ShowFlexibleForm(Html, Model.idfCase, Model.CsFormTemplate, Model.idfCSObservation, Model.CsActivityParameters);
+        return String.Empty;
+    }
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.Raw(eidss.webclient.Utils.Extenders.IdentificationAndHeartbeat(Html, "idfCase", Model.idfCase))
+    
+	<b>idfCase=@Model.idfCase</b><p />
+    @Html.Label("-------");<p />
+    <b>idfsEpiFormTempate=@Model.EpiFormTemplate.idfsFormTemplate</b><p />
+    <b>idfEpiObservation=@Model.idfEpiObservation</b><p />
+    @Html.Label("-------");<p />
+    <b>idfsCsFormTemplate=@Model.CsFormTemplate.idfsFormTemplate</b><p />    
+    <b>idfCSObservation=@Model.idfCSObservation</b><p />
+    
+	<input type="submit" value="Save FF" />    
+	
+    <h3>Epi Part</h3>
+    <table border="1">
+        <tr>
+            <td>            
+                @ShowEpiFF();
+            </td>
+        </tr>
+    </table>
+    
+    <h3>CS Part</h3>
+    <table border="1">
+        <tr>
+            <td>
+                @ShowCsFF();
+            </td>
+        </tr>
+    </table>
+}

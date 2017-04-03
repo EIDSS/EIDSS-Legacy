@@ -1,0 +1,97 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnWeekDatepart]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnWeekDatepart]
+GO
+
+
+
+CREATE    function fnWeekDatepart (@date dateTime)
+returns int
+as
+begin
+
+declare @res int
+declare @diff int
+
+declare @FirstDayOfYear datetime
+declare @FirstDayOfSecondWeek datetime
+declare @FD2W int
+declare @FirstDayOfResFirstWeek datetime
+declare @FDR1W int
+
+
+set @FirstDayOfYear = dateadd(day, 1 - day(@date), @date)
+set @FirstDayOfYear = dateadd(month, 1 - month(@date), @FirstDayOfYear)
+set @FirstDayOfSecondWeek = @FirstDayOfYear
+set @diff = 0
+while datepart(week, @FirstDayOfSecondWeek) <= 1
+begin
+	set @diff = @diff + 1
+	set @FirstDayOfSecondWeek = dateadd(day, @diff, @FirstDayOfYear)
+end
+set @FD2W = day(@FirstDayOfSecondWeek)
+if @@DateFirst = 1
+begin
+	if @FD2W = 8
+		set @FDR1W = 1
+	else set @FDR1W = @FD2W
+end
+else begin
+	if @FD2W >= @@DateFirst
+		set  @FDR1W = @FD2W - @@DateFirst + 1
+	else set @FDR1W = @FD2W - @@DateFirst + 8
+end
+set @FirstDayOfResFirstWeek = dateadd(day, @FDR1W - 1, @FirstDayOfYear)
+
+set @diff = datediff(day, @FirstDayOfResFirstWeek, @date)
+
+if @diff < 0
+begin
+	set @FirstDayOfYear = dateadd(year, -1, @FirstDayOfYear)
+	set @FirstDayOfSecondWeek = @FirstDayOfYear
+	set @diff = 0
+	while datepart(week, @FirstDayOfSecondWeek) <= 1
+	begin
+		set @diff = @diff + 1
+		set @FirstDayOfSecondWeek = dateadd(day, @diff, @FirstDayOfYear)
+	end
+	set @FD2W = day(@FirstDayOfSecondWeek)
+	if @@DateFirst = 1
+	begin
+		if @FD2W = 8
+			set @FDR1W = 1
+		else set @FDR1W = @FD2W
+	end
+	else begin
+		if @FD2W >= @@DateFirst
+			set  @FDR1W = @FD2W - @@DateFirst + 1
+		else set @FDR1W = @FD2W - @@DateFirst + 8
+	end
+	set @FirstDayOfResFirstWeek = dateadd(day, @FDR1W - 1, @FirstDayOfYear)
+end
+
+set @diff = datediff(day, @FirstDayOfResFirstWeek, @date)
+set	@res = @diff / 7 + 1
+
+
+return @res
+end
+
+
+
+
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

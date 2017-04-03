@@ -1,0 +1,56 @@
+﻿@model eidss.model.Schema.AsCampaign
+@using eidss.webclient.Utils;
+
+<table class="bordered">
+    <tr>
+        <td class="small">
+            @Html.LabelFor(m => m.strCampaignID)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strCampaignID", false)
+        </td>
+        <td class="small">
+           @Html.LabelFor(m=>m.datCampaignDateStart) 
+        </td>
+        <td>
+            @Html.BvDatebox(Model, "datCampaignDateStart")
+        </td>
+    </tr>
+    <tr>
+        <td class="small">
+            @Html.LabelFor(m => m.strCampaignName)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strCampaignName", false)
+        </td>
+        <td class="small">
+           @Html.LabelFor(m=>m.datCampaignDateEnd) 
+        </td>
+        <td>
+            @Html.BvDatebox(Model, "datCampaignDateEnd")
+        </td>
+    </tr>
+    <tr>
+        <td class="small">
+            @Html.LabelFor(m => m.idfsCampaignType)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, "CampaignType")
+        </td>
+        <td class="small">
+            @Html.LabelFor(m=>m.strCampaignAdministrator)           
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strCampaignAdministrator")
+        </td>
+    </tr>
+    <tr>
+        <td class="small">
+            @Html.LabelFor(m => m.idfsCampaignStatus)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, "CampaignStatus", clientOnChange: "onCampaignStatusChange")
+        </td>
+    </tr>  
+</table>
+

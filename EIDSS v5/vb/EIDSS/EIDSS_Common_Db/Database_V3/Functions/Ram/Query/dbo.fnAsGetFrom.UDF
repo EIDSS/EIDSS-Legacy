@@ -1,0 +1,148 @@
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnAsGetFrom]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnAsGetFrom]
+GO
+
+--##SUMMARY Returns updated from condition for specified search table from specified query
+--##SUMMARY including ordinary and GIS reference tables.
+
+
+--##REMARKS Author: Mirnaya O.
+--##REMARKS Create date: 27.04.2010
+
+--##RETURNS Function returns updated from condition for specified search table from specified query
+--##RETURNS including ordinary and GIS reference tables.
+
+
+/*
+--Example of a call of function:
+declare	@idflQuery			bigint
+declare	@idfSearchTable		bigint
+declare	@strJoinType		varchar(15)
+declare	@strFrom			nvarchar(MAX)
+declare	@strJoinCondition	nvarchar(2000)
+
+
+select	dbo.fnAsGetFrom
+		(	@idflQuery,
+			@idfSearchTable,
+			@strJoinType,
+			@strFrom,
+			@strJoinCondition
+		)
+
+*/
+
+
+create	function	fnAsGetFrom
+(
+	@idflQuery				bigint,			--##PARAM @idflQuery Id of specified query 
+	@idfSearchTable			bigint,			--##PARAM @idfSearchTable Id of specified search table included in the query
+	@strJoinType			varchar(15),	--##PARAM @strJoinType Type of the join of specified table (from, inner join, or left join)
+	@strFrom				nvarchar(MAX),	--##PARAM @strFrom Initial from condition of specified search table
+	@strJoinCondition		nvarchar(2000)	--##PARAM @strJoinCondition Condition of join between epecified search table and its parent search table in the query
+)
+returns nvarchar(MAX)
+as
+begin
+
+	-- Define result from condition
+	declare @from		nvarchar(MAX)
+
+	if	exists	(
+			select	*
+			from		tasSearchField sf
+			inner join	trtBaseReference br_sf
+			on			br_sf.idfsBaseReference = sf.idfsSearchField
+						and br_sf.intRowStatus = 0
+			where		sf.idfSearchTable = @idfSearchTable
+						and sf.idfsSearchFieldType = 10081003		-- FF Field
+				)
+	begin
+		-- Create from condition for FF tables
+		set @from = dbo.fnAsGetFFFrom	(
+							@idflQuery, 
+							@idfSearchTable, 
+							@strFrom,
+							@strJoinCondition
+										)
+	end
+	else begin
+		-- Create from condition for non FF tables
+
+		-- Define from condition for lookups (ordinary and GIS reference tables)
+		declare @strLookup	nvarchar(MAX)
+		set @strLookup = ''
+
+		-- Define Separator
+		declare	@s			varchar(20)
+		set @s = '
+				'
+
+		-- Generate from condition
+		select		@strLookup = @strLookup + 
+					IsNull	(
+						-- Non GIS reference table from
+						'left join	fnReference(@LangID, ' + cast(sf.idfsReferenceType as varchar(20)) + ') ' +
+						'[ref_' + sf.strSearchFieldAlias + '] ' + @s + 
+						'on		[ref_' + sf.strSearchFieldAlias + '].idfsReference = ' + sf.strFieldText + @s,
+						-- GIS reference table from
+						IsNull	(
+						'left join	fnGisExtendedReference(@LangID, ' + cast(sf.idfsGISReferenceType as varchar(20)) + ') ' +
+						'[ref_GIS_' + sf.strSearchFieldAlias + '] ' + @s + 
+						'on		[ref_GIS_' + sf.strSearchFieldAlias + '].idfsReference = ' + sf.strFieldText + @s,
+						-- None
+						''		)
+							)	
+		from		tasQuerySearchField qsf
+		inner join	(
+			tasQuerySearchObject qso
+			inner join	tasQuery q
+			on			q.idflQuery = qso.idflQuery
+					)
+		on			qso.idfQuerySearchObject = qsf.idfQuerySearchObject
+					and qso.idflQuery = @idflQuery
+		inner join	(
+			tasSearchField sf
+			inner join	trtBaseReference br_sf
+			on			br_sf.idfsBaseReference = sf.idfsSearchField
+						and br_sf.intRowStatus = 0
+					)
+		on			sf.idfsSearchField = qsf.idfsSearchField
+					and sf.idfSearchTable = @idfSearchTable
+					and sf.idfsSearchFieldType <> 10081003			-- FF Field
+					and (	sf.idfsReferenceType is not null
+							or sf.idfsGISReferenceType is not null
+						)
+		where		(	IsNull(q.blnAddAllKeyFieldValues, 0) = 0
+						or	(	IsNull(q.blnAddAllKeyFieldValues, 0) = 1
+								and sf.strSearchFieldAlias not in
+									(	'sflHC_PatientCRRayon',
+										'sflHC_PatientCRRegion',
+										'sflHC_FinalDiagnosis',
+										'sflHC_FinalDiagnosisCode',
+										'sflVC_FarmAddressRayon',
+										'sflVC_FarmAddressRegion',
+										'sflVC_Diagnosis'
+									)
+							)
+					)
+
+		set	@from = replace(@strJoinType + '	' + replace(@strFrom, '{1}', @strLookup + @s + '{1}') + @s + IsNull(@strJoinCondition, ''), '{0}', '')
+
+	end
+
+	return @from
+
+end
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO

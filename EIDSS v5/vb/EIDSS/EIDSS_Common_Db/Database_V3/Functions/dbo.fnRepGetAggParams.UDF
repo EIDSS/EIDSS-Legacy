@@ -1,0 +1,63 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF  EXISTS (SELECT TOP 1 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fnRepGetAggParams]')) 
+Drop Function [dbo].[fnRepGetAggParams]
+GO
+
+-- =============================================
+-- Author:		Vasilyev I.
+-- Create date: 
+-- Description:
+-- =============================================
+
+
+--##SUMMARY Select Date and administrative uniot for aggregate case report.
+--##REMARKS Author: Vasilyev I.
+--##REMARKS Create date: 08.12.2009
+
+--##RETURNS Doesn't use
+
+/*
+--Example of a call of function:
+select * from dbo.fnRepGetAggParams (69750000000, 'ru')
+*/
+
+Create Function dbo.fnRepGetAggParams
+(
+	@idfActivity	as bigint,
+	@LangID			as nvarchar(50) = 'en'
+)
+Returns Table
+as
+return
+	
+	select 
+	(	
+		ISNULL(rfCountry.[Name],'') + ISNULL(rfRegion.[Name],'') +
+		ISNULL(rfRayon.[NAME],'') + ISNULL(rfSettlement.[Name],'')
+	)	as AdmUnitName,
+	tAggr.datStartDate, 
+	tAggr.datFinishDate,
+	tAggr.idfAggrCase		as idfActivity
+
+	from		dbo.tlbAggrCase as tAggr
+ 	 left join	fnGisReference(@LangID, 19000001 /*'rftCountry'*/) rfCountry 
+			on	rfCountry.idfsReference = tAggr.idfsAdministrativeUnit
+	 left join	fnGisReference(@LangID, 19000003 /*'rftRegion'*/)  rfRegion 
+			on	rfRegion.idfsReference = tAggr.idfsAdministrativeUnit
+	 left join	fnGisReference(@LangID, 19000002 /*'rftRayon'*/)   rfRayon 
+			on	rfRayon.idfsReference = tAggr.idfsAdministrativeUnit
+	 left join	fnGisReference(@LangID, 19000004 /*'rftSettlement'*/) rfSettlement
+			on	rfSettlement.idfsReference = tAggr.idfsAdministrativeUnit
+		 where	tAggr.idfAggrCase = @idfActivity
+		   and	tAggr.intRowStatus = 0
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

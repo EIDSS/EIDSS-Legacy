@@ -1,0 +1,58 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fn_Event_SelectList]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fn_Event_SelectList]
+GO
+
+
+
+
+
+-- select * from dbo.fn_Event_SelectList('ka')
+
+
+CREATE   FUNCTION dbo.fn_Event_SelectList(@LangID as nvarchar(50))
+returns table 
+as
+return
+select			EventType.[Name] as strEventTypeName, 
+				tstEvent.idfEventID, 
+				tstEvent.idfObjectID, 
+				tstEvent.strInformationString, 
+				tstEvent.strNote, 
+			    tstEvent.idfsEventTypeID,
+				tstEvent.datEventDatatime,
+				IsNull(tlbPerson.strFirstName, '') + ' ' + 
+				IsNull(tlbPerson.strSecondName, '') + ' ' + 
+				IsNull(tlbPerson.strFamilyName, '')  as PersonName
+
+from			(
+	tstEvent 
+	inner join		fnReference(@LangID,19000025) as EventType --'rftEventType'
+	on				tstEvent.idfsEventTypeID = EventType.idfsReference
+				)
+left outer join	(
+	tstUserTable 
+/*
+	inner join		Employee 
+	on				Employee.idfEmployee = UserTable.idfEmployee
+					--and (Employee.intRowStatus = 0 or Employee.intRowStatus is null) 
+*/
+	inner join		tlbPerson 
+	on				tlbPerson.idfPerson = tstUserTable.idfPerson
+				)
+on				tstUserTable.idfUserID = tstEvent.idfUserID
+
+WHERE
+	tstEvent.idfsEventTypeID <> 10025001 --'evtLanguageChanged'
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

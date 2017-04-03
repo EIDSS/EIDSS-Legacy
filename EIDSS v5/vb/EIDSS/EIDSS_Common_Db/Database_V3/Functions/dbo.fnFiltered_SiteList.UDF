@@ -1,0 +1,43 @@
+--##SUMMARY Returns list of sites resived information from selected site.
+--##SUMMARY Used by other "filtered" sp.
+
+--##REMARKS Author: Zhdanova A.
+--##REMARKS Create date: 20.09.2010
+
+--##RETURNS Function returns the list parent sites + selected site
+
+
+/*
+--Example of a call of function:
+select * from fnFiltered_SiteList ('A02')
+
+*/
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[fnFiltered_SiteList]') AND xtype in (N'FN', N'IF', N'TF'))
+DROP FUNCTION [dbo].[fnFiltered_SiteList]
+GO 
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE FUNCTION [dbo].[fnFiltered_SiteList](
+	@ShortID VARCHAR(36) --##PARAM @ShortID -- short SiteID from selected site
+	)
+RETURNS TABLE 
+AS 
+RETURN 
+SELECT parent.[strSiteID], parent.[idfsSite]
+FROM [tstSiteRelation] AS a
+INNER JOIN [tstSite] AS parent
+ON a.[idfsParentSite] = parent.[idfsSite]
+INNER JOIN [tstSite] AS related
+ON a.[idfsRelativeSite] = related.[idfsSite]
+WHERE related.[strSiteID] = @ShortID
+UNION 
+SELECT [strSiteID],[idfsSite]
+FROM [tstSite]
+WHERE [strSiteID] = @ShortID
+
+GO 

@@ -1,0 +1,34 @@
+﻿@model eidss.model.Reports.Common.BaseIntervalModel
+           
+<table id="BaseIntervalFilterTable" >
+    <tr>
+        <td class="medium">
+            @Html.LabelFor(m => m.StartDate)
+        </td>
+        <td class="large">
+            @{
+                @(Html.Telerik().DatePicker()
+                      .Name("StartDate")
+                      .Value(Model.StartDate)
+                      .HtmlAttributes(new {@class = "requiredField"})
+                      .ClientEvents(c => c.OnChange("paperForm.OnStartDateChanged"))
+                      )
+            }
+        </td>
+        <td class="medium">
+            @Html.LabelFor(m => m.EndDate)
+        </td>
+        <td class="large">
+            @{
+                @(Html.Telerik().DatePicker()
+                      .Name("EndDate")
+                      .Value(Model.EndDate)
+                      .HtmlAttributes(new {@class = "requiredField"})
+                      .ClientEvents(c => c.OnChange("paperForm.OnEndDateChanged"))
+                      )
+            }
+        </td>
+        <td></td>
+    </tr>
+   
+</table>

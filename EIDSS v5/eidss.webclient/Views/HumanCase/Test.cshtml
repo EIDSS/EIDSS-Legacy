@@ -1,0 +1,9 @@
+﻿@model eidss.model.Schema.Patient           
+@{
+    ViewBag.Title = "Test";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using eidss.webclient.Areas.Address;
+<h2>Test</h2>
+
+@Html.Address(Model.idfCase, Model.CurrentResidenceAddress)

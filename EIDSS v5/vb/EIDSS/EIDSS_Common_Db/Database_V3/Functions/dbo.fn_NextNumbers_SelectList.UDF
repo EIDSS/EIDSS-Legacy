@@ -1,0 +1,62 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fn_NextNumbers_SelectList]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fn_NextNumbers_SelectList]
+GO
+
+
+--##SUMMARY Selects list of numbering objects for NextNumbersList form
+
+--##REMARKS Author: Zurin M.
+--##REMARKS Create date: 24.11.2009
+
+--##RETURNS Doesn't use
+
+/*
+--Example of a call of procedure:
+
+SELECT * FROM fn_NextNumbers_SelectList('en')
+*/
+
+
+
+
+
+
+
+CREATE     function dbo.fn_NextNumbers_SelectList(
+	@LangID as nvarchar(50)--##PARAM @LangID - language ID
+)
+returns table 
+as
+return
+
+select		nn.[idfsNumberName], 
+			nn.[strPrefix], 
+ 			intNumberValue =
+			case IsNull(nn.blnUseAlphaNumericValue, 0)
+				when 0 then cast(IsNull(nn.[intNumberValue], 0) as varchar(100))
+				when 1 then dbo.fnAlphaNumeric(IsNull(nn.[intNumberValue], 0), ISNULL(intMinNumberLength,4))
+			end,
+			nn.[intMinNumberLength], 
+			fnReference.[Name] as strObjectName
+
+from		dbo.tstNextNumbers nn
+
+left join	fnReference(@LangID, 19000057/*rftNumberingType*/) 
+on			fnReference.idfsReference = nn.idfsNumberName
+
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

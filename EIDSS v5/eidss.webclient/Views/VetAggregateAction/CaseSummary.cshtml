@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = Translator.GetMessageString("titleVetAggregateActionSummaryForm");
+    ViewBag.FormCode = "V14";
+    Layout = "~/Views/Shared/_AggregateSummaryLayout.cshtml";    
+}
+@using bv.common.Configuration
+@using eidss.webclient.Utils;
+
+<div>
+    @using (Html.BeginForm())
+    {
+        @Html.Action("AggregateSummaryHeader", "CommonAggregate", new { caseType = eidss.model.Enums.AggregateCaseType.VetAggregateAction })
+        <table class="bordered">
+            <tr>
+                <td class="sectionName">
+                    @Translator.GetMessageString("titleSummaryInfo") 
+                </td>
+            </tr>            
+        </table>   
+        @(Html.Telerik().TabStrip()
+            .Name("TabStrip")
+            .Items(items =>
+            {
+                items.Add()
+                    .Text(Translator.GetMessageString("titleDiagnosticInvestigation"))
+                    .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "titleDiagnosticInvestigation" } : new { })
+                    .Content(
+                        @<text>
+                            <div class="ffSummaryInfo" id="divDiagnosticFfSummary">                                        
+                            </div>
+                        </text>);
+                items.Add()
+                    .Text(Translator.GetMessageString("tabTitleTreatmentProphylacticMeasures"))
+                    .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleTreatmentProphylacticMeasures" } : new { })
+                    .Content(
+                        @<text>
+                            <div class="ffSummaryInfo" id="divProphilacticFfSummary">                                        
+                            </div>
+                        </text>);
+                items.Add()
+                    .Text(Translator.GetMessageString("tabTitleVeterinarySanitaryMeasures"))
+                    .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleVeterinarySanitaryMeasures" } : new { })
+                    .Content(
+                        @<text>
+                            <div class="ffSummaryInfo" id="divSanitaryFfSummary">                                        
+                            </div>
+                        </text>);
+            }).SelectedIndex(0)
+        )          
+    }
+</div>

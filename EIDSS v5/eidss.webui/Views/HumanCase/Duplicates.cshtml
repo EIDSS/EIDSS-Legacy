@@ -1,0 +1,69 @@
+﻿@model eidss.model.Schema.HumanCaseListItem.Accessor
+@{
+    ViewBag.Title = "Duplicates";
+    Layout = "../Shared/_EmptyLayout.cshtml";
+}
+<script language="javascript" type="text/javascript">
+    function CloseWin() {
+//        $('div[class="t-widget t-window"]').hide(); //.data('tWindow').close();
+        //        $('div[class="t-overlay"]').hide();
+      //  $("#dialog").dialog({ hide: 'slide' })
+    }
+
+    function ViewCase() {
+        window.location = "/HumanCase/Details/" + $('#grid_selecteditem').val();
+    }
+
+    function ClearSelection(e) {
+        $("#grid_selecteditem").val("");
+    }
+
+    $(document).ready(function () {
+        form = $('#form');
+        $("#Grid tbody>tr").click(function () {
+            var id = $(this).find("[name='id']").attr('value');
+            $("#grid_selecteditem").val(id);
+        });
+    });
+
+</script>
+<input type="hidden" id="grid_selecteditem" />
+@using eidss.webui.Utils
+@using (bv.model.BLToolkit.DbManagerProxy dbmanager = bv.model.BLToolkit.DbManagerFactory.Factory.Create())
+{
+    @(Html.Telerik().Grid(Model.SelectListT(dbmanager, (bv.model.Model.Core.FilterParams)ViewBag.Filter))
+                .Name("Grid")
+                .Columns(columns =>
+                {
+                    columns.Bound(x => x.idfCase).Template(@<text><input type="hidden" name="id" value="@item.idfCase" />@item.strCaseID</text>).Title(Translator.GetString("strCaseID"));
+                    columns.Bound(x => x.strLocalIdentifier).Title(Translator.GetString("strLocalIdentifier"));
+                    columns.Bound(x => x.datEnteredDate).Format("{0:MM/dd/yyyy}").Title(Translator.GetString("datEnteredDate"));
+                    columns.Bound(x => x.DiagnosisName).Title(Translator.GetString("DiagnosisName"));
+                    //change diagnosis to tentative diagnosis
+                    columns.Bound(x => x.DiagnosisName).Title(Translator.GetString("TentativeDiagnosisName"));
+                    columns.Bound(x => x.PatientName).Title(Translator.GetString("PatientName"));
+                    columns.Bound(x => x.Age).Title(Translator.GetString("Age"));
+                })
+                .DataKeys(dataKeys => dataKeys.Add(h => h.strCaseID))
+                .Scrollable(scrolling => scrolling.Height(270))
+                .Pageable(pager => pager.PageSize(eidss.webui.Configurations.GridDisplayRowsSettings.HUMAN_CASE_LIST))
+                .Resizable(resizing => resizing.Columns(true))
+                .Selectable()
+                .Sortable()
+                .Editable(p => p.Enabled(true))
+                .ClientEvents(events => events.OnDataBound("ClearSelection"))
+                .HtmlAttributes(new { style = "height:270px" })
+    ) 
+}
+<table width="100%">
+<tr>
+    <td align="right">        
+        <button id="bMainPanel_Refresh" type="button" onclick="ViewCase();">                            
+                View
+        </button>                    
+        <button id="bMainPanel_Close" type="button" onclick="CloseWin();">                            
+                Close
+        </button>        
+    </td> 
+</tr>
+</table>

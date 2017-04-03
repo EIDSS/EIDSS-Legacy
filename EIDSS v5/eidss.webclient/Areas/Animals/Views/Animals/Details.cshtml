@@ -1,0 +1,87 @@
+﻿@model eidss.model.Schema.AnimalListItem
+@{    
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+<link href="../../../../Content/Styles/PopupWindow.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('form').ajaxForm(function (data) {
+            if (data == 'ok')
+                parent.gridItemAdded('@ViewData["name"]'); //('@Url.Action("Refresh", "Animals", new RouteValueDictionary { { "area", "Animals" }, { "root", ViewData["root"] }, { "name", ViewData["name"] } })', 'AnimalListContainer');
+            else
+                ShowEidssErrorNotification(data, function () { });            
+        });
+
+    });
+
+    function setIdfSpeciesValue(e) {
+        var ddl = $('#' + e.target.id).data('tComboBox');        
+        ddl.value('@Model.idfSpecies');
+    }
+
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });
+</script>
+@using eidss.webclient.Utils
+<h2>@Translator.GetMessageString("AddAnimalWindowTitle")</h2>
+<div class="popupContent">
+@using (Html.BeginForm())
+{          
+    <input type="hidden" id="idfAnimal" name="idfAnimal" value="@Model.idfAnimal" />
+    <table>
+        <tr>
+            <td class="medium">
+                @Html.LabelFor(model => model.strHerdSpecies)
+            </td>
+            <td>
+                @(Html.BvCombobox(Model, "idfSpecies")
+                    .ClientEvents(events =>
+                    {
+                        events.OnLoad("setIdfSpeciesValue");
+                        events.OnChange("onAnimalSpeciesChanged");
+                    })
+                    .BindTo(ViewBag.SpeciesSelection)
+                )
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.strAnimalCode)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, "strAnimalCode")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.idfsAnimalAge)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, "AnimalAge", false).DataBinding(b => b.Ajax().Select("SelectAnimalAge", "Animals", new RouteValueDictionary { { "idfAnimal", Model.idfAnimal } }))
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.idfsAnimalGender)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, "AnimalGender")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.idfsAnimalCondition)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, "AnimalCondition")
+            </td>
+        </tr>
+    </table>
+    <div class="popupBottomButtonPanel">
+        <input type="button" class="popupButton" onclick="parent.cancelItemAdding();" value="@Translator.GetMessageString("Cancel")" />
+        <input type="submit" class="popupButton" value="@Translator.GetMessageString("Ok")" />
+    </div>  
+}
+</div>

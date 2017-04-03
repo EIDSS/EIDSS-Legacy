@@ -1,0 +1,798 @@
+﻿/*----------------------------------------------------------
+The base background-color for this template is #D7EAFE. 
+The base border-color of tables for this template is #7FA5D7. 
+The base border-color of input for this template is #789ed2. 
+----------------------------------------------------------*/
+
+/* Size settings */
+.xsmall
+{
+	width: 50px!important;
+	min-width: 50px!important;
+	max-width: 50px!important;
+}
+.small
+{
+	width: 100px!important;
+	min-width: 100px!important;
+	max-width: 100px!important;
+}
+.medium
+{
+	width: 150px;
+	min-width: 150px;
+	max-width: 150px;
+}
+.large
+{
+	width: 200px;
+	min-width: 200px;
+	max-width: 200px;
+}
+.xlarge
+{
+	width: 250px;
+	min-width: 250px;
+	max-width: 250px;
+}
+.xxlarge
+{
+    width: 370px; 
+    min-width: 370px;
+	max-width: 370px;
+} 
+.fillAll
+{
+    width: 100%;
+    min-width: 100%;    
+}
+.autoWidth,
+.autoWidth table
+{
+    width: auto;    
+}
+.twoParts,
+.threeParts,
+.fourParts
+{
+    width: auto;
+}
+.twoParts > td
+{
+    width:50%;
+}
+.threeParts > td
+{
+    width: 33%;
+}
+.fourParts td
+{
+    width: 25%;
+}
+.largeDetailsWindow /* For NumanCase and VetCase */
+{
+	width: 980px; /* = 1024 - (margin-right of .detailsWindow) - (margin-left of .detailsWindow) - (scroll width ~ 14px) */
+	min-width: 980px;   
+	max-width: 980px;  
+}
+.smallDetailsWindow /* For Samples */
+{    
+    width: 800px;
+    min-width: 800px;
+    max-width: 800px;
+}
+.smallTabPanelContent 
+{
+    width:100%;
+    max-width:100%; 
+    height: 420px;
+    min-height: 420px;
+    max-height: 420px;    
+}
+.mediumTabPanelContent
+{
+    width:100%;
+    max-width:100%; 
+    height: 470px;
+    min-height: 470px;
+    max-height: 470px;      
+}
+.largeTabPanelContent
+{
+    width:100%;
+    max-width:100%; 
+    height: 500px;
+    min-height: 500px;
+    max-height: 500px;      
+}
+.smallFFPanel
+{
+    width:100%;
+    max-width:100%; 
+    min-height: 300px;    
+} 
+
+/*----------------------------------------------------------*/
+
+/* Required fields. Border and background-color is the same for all controls */
+.requiredTd input[type="text"],
+input[type="text"].requiredField
+{
+    border: 1px solid #ff0000!important; /* = 'border' of [.requiredField .t-dropdown-wrap] = 'border' of [.requiredField .t-input] */
+    background-color: #ffffe1; /* = 'background-color' of [.requiredField .t-dropdown-wrap] = 'background-color' of [.requiredField .t-input] */
+}
+.requiredField .t-input /* Input in telerik ComboBox */
+{
+    border-color: #ff0000!important; /* = 'border' of [.requiredField .t-dropdown-wrap] = 'border' of input[type="text"].requiredField */
+    background-color: #ffffe1; /* = 'background-color' of [.requiredField .t-dropdown-wrap] = 'background-color' of input[type="text"].requiredField */
+}
+.requiredField .t-dropdown-wrap /* Div in telerik ComboBox */
+{
+    border-color: #ff0000;  /* = 'border' of [.requiredField .t-input] = 'border' of input[type="text"].requiredField */
+    background-color: #ffffe1; /* = 'background-color' of [.requiredField .t-input] = 'background-color' of input[type="text"].requiredField */
+}
+.field-validation-error
+{
+    color: #ff0000; /* = 'color' of .validation-summary-errors*/
+}
+.field-validation-valid
+{
+    display: none;
+}
+.input-validation-error
+{
+    border: 1px solid #ff0000;
+    background-color: #ffeeee;
+}
+.validation-summary-errors
+{    
+    color: #ff0000; /* = 'color' of .field-validation-error*/
+    font-weight: bold;
+}
+.validation-summary-valid
+{
+    display: none;
+}
+/*----------------------------------------------------------*/
+
+/* Styles of telerik controls */
+div.t-state-active /* Main area of selected telerik tab */
+{
+    padding: 7px!important; /* 'important' is required for IE */
+    background-color: #D7EAFE;
+    font-size: 12px;    
+}
+.fFPanel div.t-tabstrip /* telerik tab */
+{
+    overflow: hidden;
+    height: 100%;    
+}
+div.t-tabstrip.t-header .t-tabstrip-items .t-item /* telerik tab header */
+{
+    margin-right: 3px!important;
+}
+.fFPanel div.t-state-active /* selected telerik tab */
+{
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+.fFPanel div.t-grid-content table tr
+{
+    min-height: 25px;
+}
+div.t-grid-content, /* Content of telerik grid */
+td.t-edit-container, /* Edit area in telerik grid */
+tr.t-no-data /* Area with message "No records to display" in telerik grid */
+{
+    background-color: #D7EAFE;
+}
+tr.t-grid-new-row { /* New row in telerik grid (click button "Add" -> tr.t-grid-new-row) */
+    display: none;  
+}
+td.t-edit-container { /* Edited row in telerik grid (click button "Edit" -> td.t-edit-container) */
+    display: none;  
+}
+div.t-grid-content table tr
+{
+    height: 20px;
+}
+div.t-picker-wrap, /* DateTimePicker */
+div.t-numerictextbox, /* NumericTextBox */
+div.t-datepicker /* DatePicker*/
+{
+    height: 18px!important;
+    min-height: 18px!important;
+    max-height: 18px!important;
+}
+div.t-numerictextbox input.t-input, /* Input in NumericTextBox */
+/*div.t-dropdown-wrap, /* Div in telerik ComboBox */
+div.t-numerictextbox input.t-input /* Input in NumericTextBox */
+{
+    height: 16px!important;
+    min-height: 16px!important;
+    max-height: 16px!important;
+    border: 1px solid #789ed2!important;
+    border-collapse: collapse;    
+}
+div.t-datepicker input.t-input, /* Input in DatePicker */
+div.t-picker-wrap input.t-input /* Input in DateTimePicker */
+{
+    height: 16px!important;
+    min-height: 16px!important;
+    max-height: 16px!important;
+    border: 1px solid #789ed2;
+    border-collapse: collapse;
+}
+div.t-dropdown-wrap /* Div in telerik ComboBox */
+{    
+    border: 1px solid #789ed2;
+    border-collapse: collapse;
+}
+div.t-datepicker.t-state-disabled input.t-input /* Input in DatePicker (ReadOnly state) */
+{
+    height: 16px!important;
+    min-height: 16px!important;
+    max-height: 16px!important;
+    border: 1px solid #789ed2!important;
+	border-collapse: collapse;    
+	color: #5379b7!important;  /* 'important' is required for IE */
+	background-color: #b5d2f1;		
+}
+div.t-widget.t-calendar.t-datepicker-calendar .t-content .t-week-header th /* days of week in DateTimePicker */
+{
+     text-align: right;    
+}
+li.t-state-active /* Name of selected telerik tab */
+{
+     background-color: #D7EAFE;
+     font-size: 11,5px;
+}
+div.ffGrid /* telerik grid for ff */
+{    
+    width: 100%;
+    max-height: 300px!important;
+}
+div.ffGrid .t-grid-toolbar a.t-grid-action
+{
+    margin-right: 2px;    
+}
+div.ffGrid .t-grid-header .t-grid-header-wrap
+{      
+    width: 100%;      
+}
+div.ffGrid .t-grid-header .t-grid-header-wrap th.t-last-header
+{        
+    padding: 0px!important;
+    border-right-width: 0px;  
+}
+div.ffGrid .t-grid-header .t-grid-header-wrap .t-header table
+{    
+    table-layout: auto;
+    text-align: center;
+    word-wrap: normal;
+    word-break: keep-all;
+    -ms-word-break: keep-all; /* for IE */ 
+    white-space: pre-wrap;  
+    padding: 0px;
+    margin: 0px;
+    border: 1px solid #4a70ae!important; /* = 'border' of telerik separator */ 
+    border-collapse: collapse;  
+}
+div.ffGrid .t-grid-header .t-grid-header-wrap .t-header table tr,
+div.ffGrid .t-grid-header .t-grid-header-wrap .t-header table td
+{
+    word-wrap: normal;
+    word-break: keep-all;
+    -ms-word-break: keep-all; /* for IE */  
+    white-space: pre-wrap; 
+    overflow: visible;
+    padding: 0px;
+    margin: 0px;
+    border: 1px solid #4a70ae!important; /* = 'border' of telerik separator */     
+    border-collapse: collapse;
+}
+div.ffGrid .t-last-header.t-header
+{
+    overflow: visible; /* important for header scrollable */
+}
+div.ffGrid .t-grid-header
+{
+    padding-right: 0px;
+}
+div.ffGrid,
+div.ffGrid .t-grid-header,
+div.ffGrid .t-grid-content,
+div.ffGrid .t-grid-content table,
+div.ffGrid .t-grid-content table tr,
+div.ffGrid .t-grid-content table td,
+div.ffGrid .t-grid-content .t-last table,
+div.ffGrid .t-grid-content .t-last table tr,
+div.ffGrid .t-grid-content .t-last table td,
+div.ffGrid .t-grid-content input
+{ 
+    box-sizing: border-box;
+}
+div.ffGrid .t-grid-content
+{    
+    height: 170px!important;
+    min-height: 170px!important;
+    overflow: visible!important;
+    overflow-y: scroll!important;
+}
+div.ffGrid .readonlyFfCell
+{
+    padding-left: 5px;
+}
+div.ffGrid .t-grid-content table
+{    
+    table-layout: auto;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+div.ffGrid .t-grid-content tr,
+div.ffGrid .t-grid-content td
+{   
+    padding: 0px;
+    border-style: none;    
+    border-width: 0px;      
+}
+div.tToolBarLeftPanel /* Custom section in toolbar of teleric grid  */
+{
+    float: left;
+    width: 50%;
+    height: 100%;
+    vertical-align: middle;
+}
+div.tToolBarLeftPanel .t-button-icon /* Custom section in toolbar of teleric grid. Grid's button  */
+{
+    float: left;
+    margin-right: 2px;
+}
+div.tToolBarLeftPanel .t-numerictextbox /* Custom section in toolbar of teleric grid. Numeric textbox style  */
+{
+    margin-top: 2px;
+}
+div.tToolBarSearchPanel /* Custom section in toolbar of teleric grid. Grid's search panel  */
+{
+    float: left;
+    width: 50%;
+    padding: 0px!important;
+    margin: 0px!important;
+}
+div.tToolBarSearchPanel table, /* Custom section in toolbar of teleric grid. Grid's search panel  */
+div.tToolBarSearchPanel tr,
+div.tToolBarSearchPanel td
+{    
+    padding: 0px!important;
+    margin: 0px!important;
+    border-width: 0px;
+}
+div.tToolBarSearchPanel .searchText /* Custom section in toolbar of teleric grid. Grid's search panel text  */
+{
+    float: none;    
+}
+div.tToolBarSearchPanel .searchButton /* Custom section in toolbar of teleric grid. Grid's search panel button  */
+{
+    float: none;
+    margin-right: 2px;
+}
+.tToolBarControl /* Custom control in toolbar of teleric grid  */
+{
+    vertical-align: middle;
+}
+span.tToolBarButton /* Spesial style for standart action button in toolbar of teleric grid */
+{
+    margin-left:0;
+}
+a.t-state-enabled /* Allways enabled teleric grid button */
+{    
+}
+a.t-grid-bv-edit /* Edit button with custom handler */
+{    
+}
+.aggrSummary
+{
+    width: 974px;
+    min-width: 974px; 
+    max-width: 974px; 
+}
+.detailsGrid .t-grid-content .smallheight /* content of telerik grid */
+{
+    height: 150px !important;    
+}
+.detailsGrid .t-grid-content /* content of telerik grid */
+{
+    height: 200px!important;    
+}
+.detailsGrid .t-grid-toolbar /* toolbar of telerik grid */
+{
+    height: 25px;    
+}
+.detailsGrid .t-button-icon /* button in toolbar of telerik grid */
+{    
+    float: right;
+    margin-left: 2px;
+}
+.detailsGrid .t-button-icon.bvButton /* button in toolbar of telerik grid */
+{
+    height: 23px!important;    
+    font-size: 100%;
+    line-height: 1.435;
+}
+.ffSummaryInfo
+{
+    
+}
+.summaryHeader
+{
+    width: 974px;
+    min-width: 974px; 
+    max-width: 974px; 
+}
+.summaryGrid .t-grid-content /* content of telerik grid */
+{
+    height: 100px!important;    
+}
+.t-combobox /* first div of combobox */
+{
+    width: 100%!important;    /* for firefox, 'important' is required */    
+}
+.t-dropdown-wrap, /* second div of combobox */
+.t-dropdown-wrap .t-select.t-header /* select button of combobox */
+{    
+    height: 18px!important;
+}
+.t-combobox .t-input
+{
+    height: 16px!important;
+    line-height: 16px!important;
+}
+.t-input
+{
+    height: 16px!important;
+    line-height: 16px;
+    border-color: #789ed2!important;
+}
+.t-numerictextbox /* for teleric numeric control */
+{
+    width: 100%!important;
+    height: 18px!important;
+}
+.t-numerictextbox input.t-input /* for teleric numeric control */
+{
+    width: 100%!important;
+    height: 16px!important;
+} 
+
+/*----------------------------------------------------------*/
+
+/* Common styles */
+button.magnifierButton /* Button with text ".." */
+{
+    padding-top: 0px;
+    padding-bottom: 0px;
+    height: 22px;    
+}
+button.magnifierButton img
+{
+    height: 16px;
+    padding: 0px;
+    margin: 0px;  
+}
+div.detailsPage
+{
+    width: 100%;
+    height: 100%;     
+    padding: 0px;
+    margin: 0px;
+    border: none;     
+}
+div.detailsPage table
+{
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    border-width: 0px;
+}
+div.detailsPage td
+{
+    padding: 3px;
+    padding-right: 6px;    
+    margin: 0px;
+    border: none;
+    border-width: 0px;
+}
+div.scroll
+{
+     overflow: scroll;     
+}
+div.tdContainer
+{
+    margin-right: 4px; /* fix for IE (100% 'input' width) */   
+}
+div.tdContainer input[type="text"]
+{
+    width: 100%;    
+    height: 16px!important;
+    border-color: #789ed2;
+}
+div.tdFfContainer
+{
+    text-align: center;
+}
+div.tdFfContainer input,
+div.tdFfContainer input.t-input
+{
+    width: 90%!important;     
+    border-color: #789ed2;
+    box-sizing: border-box;
+}
+input[type="radio"]:focus,
+input[type="checkbox"]:focus,
+a:focus
+{
+    outline: none; /* remove dotted outline on form checkbox radio buttons */
+}
+input[type="button"].coloredButton
+{      
+    width: 100%;
+    white-space: normal; /* for multiline text */
+    margin: 0px;
+    border-color: #789ed2;
+    border-style: solid;    
+    border-width: 2px;   
+    background-color: #7FA5D7;     
+    background-image: -ms-linear-gradient(top, #D7EAFE, #7FA5D7); /* for IE */
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0.15, #D7EAFE),
+        color-stop(0.58, #7FA5D7)
+    );
+    background-image: -moz-linear-gradient(
+        center bottom,
+        #D7EAFE 15%,
+        #7FA5D7 58%
+    );
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#D7EAFE, endColorstr=#7FA5D7)";   /* For IE */   
+}
+input[type="text"]
+{
+    height: 16px!important;
+}
+input[type="text"].readonlyField,
+textarea.readonlyField
+{
+    height: 16px!important;
+    border-color: #789ed2;
+	color: #5379b7;
+	background-color: #b5d2f1;	
+}
+fieldset /* TODO: check page with fieldset */
+{    
+    padding: 3px;
+    padding-right: 8px;    
+    border: 1px solid #ddd;
+}
+label
+{
+    width: auto;
+    white-space: pre-line;
+    word-wrap: break-word;
+    word-break: keep-all;
+    -ms-word-break: keep-all; /* for IE */    
+}
+legend /* TODO: check page with fieldset */
+{
+    color: #5176B3;   
+    font-weight: bold;    
+}
+table.detailsTitleContent
+{
+    height: 40px;   /* = 'height' of [table.detailsTitleContent td ] = 'height' of [table.detailsTitleContent tr ] */
+}
+table.detailsTitleContent td
+{
+    height: 40px;  /* = 'height' of [table.detailsTitleContent ] = 'height' of [table.detailsTitleContent tr ] */
+    padding: 0;     
+    margin: 0;
+    border-color: #789ed2;
+    border-collapse: collapse;
+    border-bottom-width: 1px;    
+    border-spacing: 0px;       
+}
+table.detailsTitleContent tr
+{
+    height: 40px;   /* = 'height' of [table.detailsTitleContent ] = 'height' of [table.detailsTitleContent td ] */
+}
+td.multiRowColumn
+{
+    vertical-align:top;
+    padding: 0px;
+}
+td.sectionName, /* Title of bordered table */
+div.sectionName
+{
+    padding: 3px;
+    border: 1px solid #7FA5D7!important; /* = border of .bordered */   
+    color: #5176B3;   
+	background-color: #b5d2f1;     
+    font-weight: bold;    
+}
+td.selectButton /* Button with text ".." */
+{    
+    width: 20px;  
+    padding-left: 0px!important;   
+    margin: 0px; 
+}
+td.titleImage
+{
+    width: 50px; 
+    vertical-align: top;
+    text-align: left;  
+}
+textarea
+{
+    width: 100%;
+    height: 80px;
+    min-height: 30px; 
+    padding-right: 0px;    
+    border: 1px solid;
+    border-color: #789ed2!important;  /* important is required for IE */            
+}
+
+.detailsBody /* Required if main div scrolling but action buttons has frosen position. */
+{       
+    position: absolute; /* detailsBottomPanel must have the same position */    
+    top: 0px;
+    bottom: 50px;   /* = ('height' of bottomButtonPanel) + ('bottom' of bottomButtonPanel) + 10 */ 
+    overflow: auto; 
+    width: 100%;               
+}
+.detailsBottomPanel /* Required if main div scrolling but action buttons has frosen position. */
+{    
+    position: absolute;   /* detailsBody must have the same position */   
+}
+.detailsTitle
+{
+	width: 100%;
+	min-width: 100%;	
+	background-image: url(/Content/images/menubg.png);
+    background-repeat: repeat-x;	
+}
+.detailsViewContainer
+{
+    width: 100%;
+    height: 100%;
+    min-height: 600px;    
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    background-color: #FFFFFF;     
+    font-size: 12px;      
+}
+.detailsViewContainer input,
+.detailsViewContainer table,
+.detailsViewContainer textarea
+{
+    font-size:11px;
+}
+.detailsWindow
+{	
+	height: 100%;
+    padding: 0px;
+	margin: 15px;	
+	border: 1px solid #7FA5D7!important; /* 'important' is required fir IE */
+	border-collapse: collapse;        
+    background-color: #D7EAFE;
+    /* Scrollbar for IE */
+	scrollbar-3dlight-color: #5379b7; 
+    scrollbar-arrow-color: #3c4f69; 
+    scrollbar-base-color: #5379b7; 
+    scrollbar-darkshadow-color: #3c4f69; 
+    scrollbar-face-color: #7FA5D7; 
+    scrollbar-highlight-color: #9cc2ec; 
+    scrollbar-shadow-color: #5379b7;   
+    scrollbar-track-color: #b5d2f1;	
+}
+.bordered,
+.bordered th
+{
+	border: 1px solid #7FA5D7!important; /* = border of .sectionName */
+}
+.invisible 
+{ 
+    display: none!important; /* 'important' is required for telerik DatePicker */
+}
+.ffLabelTd
+{
+    width: 70%;
+}
+.ffLabel
+{
+    padding-left: 3px;
+    font-weight: bold;
+}
+.yScrollable
+{
+    overflow-x: hidden;
+    overflow-y: scroll;    
+}
+.radioList,
+.checkBox
+{
+	list-style: none;
+	border-width: 0px;	
+	padding: 0px;
+	margin: 0px;
+}
+.radioList li,
+.checkBox li
+{
+	line-height: 28px;	
+}
+.leftAlign
+{
+    text-align: left;
+}
+.noIndent
+{
+    padding: 0px!important;
+    margin: 0px;
+}
+.rightAlign
+{
+    text-align: right;
+}
+.titleText
+{
+    height: 40px; 	    
+    border-width: 0px;
+    margin-left: 5px;
+    font-weight: bold;
+    font-size: 17px;  
+    border-color: #789ed2;
+    border-bottom-width: 1px;	
+    color: #FFFFFF; 
+}
+.titleFormCode
+{
+    text-align: right;
+    padding-right: 5px;
+}
+
+.popupContentInNewWin
+{    
+    overflow: hidden;
+    width: 98%;
+    min-width: 98%;
+    max-width: 98%;
+    height: 98%;
+    min-height: 100%;
+    padding-left: 1%;    
+    padding-right: 1%;    
+    margin: 0;
+    border-width: 0;   
+    background-color: #D7EAFE;       
+}
+.errorMessage
+{
+    height: 100%;
+    min-height: 100%;
+    max-height: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+.errorMessage table,
+.errorMessage tr,
+.errorMessage td
+{    
+    padding: 0px;
+    margin: 0px;
+}
+.ffMessage 
+{
+    padding: 10px 3px;    
+}

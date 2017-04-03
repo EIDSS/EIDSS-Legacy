@@ -1,0 +1,76 @@
+﻿@model eidss.model.Schema.ContactedCasePerson
+@{
+    ViewBag.Title = Translator.GetMessageString("titleContactDetails");
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+}
+           
+@using eidss.mobileclient.Utils
+
+<script src="@Url.Content("~/Scripts/EIDSS.Contacts.js")" type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript">
+    $(function () {
+        InitAccordion();
+    });         
+</script>
+
+<table>
+    <tr>
+        @if ((bool)ViewBag.CanUpdate)
+        {
+            <td>
+                <input type="button" value="@Translator.GetMessageString("Search")" onclick="StoreContactAndOpenPatientsList('@ViewBag.RootKey', '@Model.idfContactedCasePerson')" />         
+            </td>
+            <td>
+                <input type="submit" value="@Translator.GetMessageString("Ok")" onclick="ShowEidssDialogOKPromptWithActionSaveExecutionAndCloseWindow(onSaveAndCloseContactedCasePerson, '@ViewBag.RootKey');" />         
+            </td>
+            <td>
+                <input type="button" value="@Translator.GetMessageString("Cancel")" onclick="ShowEidssDialogCancelPromptWithActionCancelExecution(onCancelContactEdit, '@ViewBag.RootKey');" />                                  
+            </td>
+        }
+        else
+        {
+            <td>
+                <input type="button" value="@Translator.GetMessageString("Cancel")" onclick="ShowEidssDialogClosePromptWithActionCloseExecution(onCancelContactEdit, '@ViewBag.RootKey');" />                                  
+            </td>
+        }
+    </tr>
+</table>   
+
+@using (Html.BeginForm())
+{
+    @Html.Hidden("idfContactedCasePerson", Model.idfContactedCasePerson) 
+    <div id="accordion">
+	    <h3><a href="#">@Translator.GetMessageString("titlePersonInformation")</a></h3>
+	    <div>
+		    @Html.Partial(@"../ContactedCasePerson/PersonInformation", Model.Person)        
+	    </div>
+	    <h3><a href="#">@Translator.GetMessageString("titleContactInformation")</a></h3>
+	    <div>
+		    @Html.Partial(@"../ContactedCasePerson/ContactInformation", Model)        
+	    </div>	    
+    </div>
+}
+
+<table>
+    <tr>
+        @if ((bool)ViewBag.CanUpdate)
+        {
+            <td>
+                <input type="button" value="@Translator.GetMessageString("Search")" onclick="StoreContactAndOpenPatientsList('@ViewBag.RootKey', '@Model.idfContactedCasePerson')" />         
+            </td>
+            <td>
+                <input type="submit" value="@Translator.GetMessageString("Ok")" onclick="ShowEidssDialogOKPromptWithActionSaveExecutionAndCloseWindow(onSaveAndCloseContactedCasePerson, '@ViewBag.RootKey');" />         
+            </td>
+            <td>
+                <input type="button" value="@Translator.GetMessageString("Cancel")" onclick="ShowEidssDialogCancelPromptWithActionCancelExecution(onCancelContactEdit, '@ViewBag.RootKey');" />                                  
+            </td>
+        }
+        else
+        {
+            <td>
+                <input type="button" value="@Translator.GetMessageString("Cancel")" onclick="ShowEidssDialogClosePromptWithActionCloseExecution(onCancelContactEdit, '@ViewBag.RootKey');" />                                  
+            </td>
+        }
+    </tr>
+</table>

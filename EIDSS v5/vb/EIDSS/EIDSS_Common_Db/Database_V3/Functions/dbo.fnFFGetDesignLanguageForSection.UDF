@@ -1,0 +1,40 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnFFGetDesignLanguageForSection]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnFFGetDesignLanguageForSection]
+GO
+
+-- провер€ет, если ли дл€ указанной секции представление на указанном €зыке. 
+-- ≈сли нет, то возвращает дефолтный €зык, дл€ которого есть представление.
+Create function dbo.fnFFGetDesignLanguageForSection
+(
+	@LangID Nvarchar(50)
+	,@idfsSection Bigint
+	,@idfsFormTemplate Bigint	
+)
+returns bigint
+as
+Begin
+	--
+	Declare @result Bigint
+	Set @result = dbo.fnGetLanguageCode(@LangID);  
+	If (@idfsFormTemplate Is Null) begin	
+		If Not Exists(Select Top 1 1 From dbo.ffSectionDesignOption Where [idfsSection] =  @idfsSection And idfsLanguage = @result And idfsFormTemplate Is Null And [intRowStatus]=0) 
+			Set @result = dbo.fnGetLanguageCode('en');
+	End Else Begin
+		If Not Exists(Select Top 1 1 From dbo.ffSectionDesignOption Where [idfsSection] =  @idfsSection And idfsLanguage = @result And idfsFormTemplate = @idfsFormTemplate And [intRowStatus]=0) 
+			Set @result = dbo.fnGetLanguageCode('en');
+	End	
+	
+	return	@result;
+end
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

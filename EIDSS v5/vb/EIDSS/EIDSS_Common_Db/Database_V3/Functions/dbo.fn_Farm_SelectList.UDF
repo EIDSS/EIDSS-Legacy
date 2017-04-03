@@ -1,0 +1,75 @@
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+ 
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fn_Farm_SelectList]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fn_Farm_SelectList]
+GO
+
+
+
+--##SUMMARY Returns list of farms that are notrelated with cases (root farms).
+
+--##REMARKS Author: Zurin M.
+--##REMARKS Create date: 15.11.2009
+
+--##RETURNS Returns list of farms that are notrelated with cases (root farms).
+
+
+
+/*
+select * from fn_Farm_SelectList ('en')
+*/
+
+
+CREATE     Function fn_Farm_SelectList(
+	@LangID as nvarchar(50) --##PARAM @LangID - language ID
+)
+returns table 
+as
+return
+SELECT  
+	idfFarm, 
+	strContactPhone, 
+	strInternationalName, 
+	strNationalName, 
+	strFarmCode,
+	idfsOwnershipStructure,
+	idfsLivestockProductionType,
+	tlbGeoLocation.idfsCountry,
+	tlbGeoLocation.idfsRegion,
+	tlbGeoLocation.idfsRayon,
+	tlbGeoLocation.idfsSettlement,
+	tlbHuman.strLastName,
+	tlbHuman.strFirstName,
+	tlbHuman.strSecondName
+FROM tlbFarm
+INNER JOIN tlbParty ON
+	tlbFarm.idfFarm = tlbParty.idfParty 
+LEFT JOIN	tlbHuman ON
+	tlbHuman.idfHuman = tlbFarm.idfHuman
+LEFT JOIN	tlbGeoLocation ON
+	tlbGeoLocation.idfGeoLocation = tlbFarm.idfFarmAddress
+WHERE 
+		tlbParty.intRowStatus = 0
+	and tlbParty.idfRootParty is null
+	and tlbParty.idfCase is null
+	and tlbParty.idfMonitoringSession is null
+
+
+
+
+
+
+
+
+
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

@@ -1,0 +1,86 @@
+﻿@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+@using eidss.model.Enums;
+@using bv.model.Model.Core;
+
+<table class="bordered">
+    <tr>
+        <td class="sectionName" colspan="4">
+            @Translator.GetMessageString("titleSummaryAggregateSettings") 
+        </td>
+    </tr>
+    <tr>
+        <td class="large">
+            @Translator.GetString("lblAdministrativeLevel")     
+        </td>
+        <td>
+            @(Html.Telerik().ComboBox()
+           .Name("cbAreaType")
+           .BindTo(new SelectList((List<BaseReference>)ViewBag.AreaType, "idfsBaseReference", "name"))
+           .HtmlAttributes(new { @class = "requiredField" })
+           .ClientEvents(events => events.OnChange("onAreaTypeChange")))
+        </td>
+        <td class="large">
+            @Translator.GetString("lblTimeIntervalUnit")     
+        </td>
+        <td>
+            @(Html.Telerik().ComboBox()
+           .Name("cbPeriodType")
+           .BindTo(new SelectList((List<BaseReference>)ViewBag.PeriodType, "idfsBaseReference", "name"))
+           .HtmlAttributes(new { @class = "requiredField"})
+           .ClientEvents(events => events.OnChange("onPeriodTypeChange")))
+        </td>
+    </tr>
+    <tr>
+        <td class="sectionName" colspan="4">
+            @switch ((AggregateCaseType)ViewBag.CaseType)
+            {
+                case AggregateCaseType.HumanAggregateCase:
+                case AggregateCaseType.VetAggregateCase:
+                    @Translator.GetMessageString("strSelectedAggregateCases")
+                    break;
+                case AggregateCaseType.VetAggregateAction:
+                    @Translator.GetMessageString("strSelectedAggregateActions")
+                    break;
+            }  
+        </td>
+    </tr>
+    <tr>
+        <td colspan="4" class="rightAlign">
+            <input type="button" id="btNew" class="coloredButton medium" value="@Translator.GetMessageString("strNew")" onclick="ShowAggregateCaseItemEditor('@ViewBag.DetailAggregateCasePath', true, '@ViewBag.AggregateCaseDetailTitle');" />
+            <input type="button" id="btEdit" class="coloredButton medium" value="@Translator.GetMessageString("Edit")" onclick="ShowAggregateCaseItemEditor('@ViewBag.DetailAggregateCasePath', false, '@ViewBag.AggregateCaseDetailTitle');" />
+            <input type="button" id="btSelect" class="coloredButton medium" value="@Translator.GetMessageString("Select")" onclick="ShowAggregateCaseItemPicker('@ViewBag.AggregateCasePickerPath', '@ViewBag.AggregateCasePickerTitle');" />
+            <input type="button" id="btRemove" class="coloredButton medium" value="@Translator.GetMessageString("Remove")" onclick="onRemoveAggrCaseButtonClick();" />
+            <input type="button" id="btRemoveAll" class="coloredButton medium" value="@Translator.GetMessageString("btRemoveAll")" onclick="onRemoveAllAggrCasesButtonClick();" />
+        </td>
+    </tr>
+</table>
+<div>
+    @switch ((AggregateCaseType)ViewBag.CaseType)
+    {
+        case AggregateCaseType.HumanAggregateCase:                                        
+            @(Html.BvFullGrid<HumanAggregateCaseListItem.HumanAggregateCaseListItemGridModel, HumanAggregateCaseListItem.HumanAggregateCaseListItemGridModelList>(
+                Session.SessionID,
+                new HumanAggregateCaseListItem.HumanAggregateCaseListItemGridModelList(AutoGridRoots.HumanAggregateCaseSummaryHeaderList, (List<HumanAggregateCaseListItem>)ViewBag.GridModel),
+                eidss.webclient.Configurations.GridDisplayRowsSettings.HUMAN_AGGREGATE_CASE_LIST,
+                "summaryGrid",
+                "AggregateCaseGrid"));
+            break;
+        case AggregateCaseType.VetAggregateCase:                       
+            @(Html.BvFullGrid<VetAggregateCaseListItem.VetAggregateCaseListItemGridModel, VetAggregateCaseListItem.VetAggregateCaseListItemGridModelList>(
+                Session.SessionID,
+                new VetAggregateCaseListItem.VetAggregateCaseListItemGridModelList(AutoGridRoots.VetAggregateCaseSummaryHeaderList, (List<VetAggregateCaseListItem>)ViewBag.GridModel),
+                eidss.webclient.Configurations.GridDisplayRowsSettings.VET_AGGREGATE_CASE_LIST,
+                "summaryGrid",
+                "AggregateCaseGrid"));
+            break;
+        case AggregateCaseType.VetAggregateAction:
+            @(Html.BvFullGrid<VetAggregateActionListItem.VetAggregateActionListItemGridModel, VetAggregateActionListItem.VetAggregateActionListItemGridModelList>(
+                Session.SessionID,
+                new VetAggregateActionListItem.VetAggregateActionListItemGridModelList(AutoGridRoots.VetAggregateActionSummaryHeaderList, (List<VetAggregateActionListItem>)ViewBag.GridModel),
+                eidss.webclient.Configurations.GridDisplayRowsSettings.VET_AGGREGATE_ACTION_LIST,
+                "summaryGrid",
+                "AggregateCaseGrid"));
+            break;                    
+    }                     
+</div>

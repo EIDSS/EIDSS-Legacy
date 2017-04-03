@@ -1,0 +1,46 @@
+﻿@model eidss.model.Schema.AsSession
+@using eidss.webclient.Utils
+<table class="bordered">
+    <tr>
+        <td class="sectionName" colspan="2">@Translator.GetMessageString("Address")
+        </td>
+    </tr>
+    <tr>
+        <td class="small">
+            @Html.LabelFor(m => m.idfsCountry)
+        </td>
+        <td>
+            @Html.BvReadOnlyEditbox(Model, "strReadOnlyCountry")
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.idfsRegion)
+        </td>
+        <td>
+            @(Html.BvCombobox(Model, "Region", false, "onRegionChanged")
+                .DataBinding(b => b.Ajax()
+                .Select("SelectRegion", "AsSession", new RouteValueDictionary { { "idfSession", Model.idfMonitoringSession } })))
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.idfsRayon)
+        </td>
+        <td>
+            @(Html.BvCombobox(Model, "Rayon", false, "onRayonChanged")
+                .DataBinding(b => b.Ajax()
+                                .Select("SelectRayon", "AsSession", new RouteValueDictionary { { "idfSession", Model.idfMonitoringSession } })))
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.idfsSettlement)
+        </td>
+        <td>
+            @(Html.BvCombobox(Model, "Settlement", false, "onSettlementChanged")
+                .DataBinding(b => b.Ajax()
+                                .Select("SelectSettlement", "AsSession", new RouteValueDictionary { { "idfSession", Model.idfMonitoringSession } })))
+        </td>
+    </tr>
+</table>

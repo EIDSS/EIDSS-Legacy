@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="LinkObject"
+        connection="TestConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="spLinkObject_SelectDetail" />
+    </storage>
+
+    <tables>
+        <table name="LinkObject">
+            <keys>
+                <key name="LinkID" />
+            </keys>
+            <storage>
+            </storage>
+            <extenders>
+                <creating>
+                    <value_extender target="LinkID" value="1000002" />
+                </creating>
+            </extenders>
+        </table>
+    </tables>
+
+</object>

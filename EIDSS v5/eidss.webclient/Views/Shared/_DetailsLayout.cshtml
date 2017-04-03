@@ -1,0 +1,149 @@
+﻿@using System.Web.UI.WebControls
+@using bv.common.Configuration
+@using bv.common.Enums;
+@using bv.model.Model.Core;
+@using System.Web;
+@using eidss.webclient.Utils
+@using Extenders = eidss.webclient.Areas.ActionPanel.Extenders
+
+@functions
+{
+    IObjectAccessor GetAccessor()
+    {
+        var result = Model as IObjectAccessor;
+        if (result == null)
+        {
+            if (Model is IObject)
+            {
+                result = ((IObject)Model).GetAccessor();
+            }
+        }
+        return result;
+    }
+    
+    string ModelName()
+    {
+        if (Model is IObject)
+        {
+            return (Model as IObject).ObjectName;
+        }
+        return "";
+    }
+
+    string RenderMainPanel()
+    {
+        IObjectAccessor accessor = GetAccessor();
+        if (accessor != null) Extenders.RenderActionPanel(Html, accessor, Model as IObject, ActionsPanelType.Main);
+        return String.Empty;
+    }
+}
+
+<!DOCTYPE html>
+<html>    
+    <head>
+        <title>@(Config.GetBoolSetting("AutoTestingVersion") ? "bvid=" + ModelName() + "; " + ViewBag.Title : ViewBag.Title)</title>
+               
+        <link href="@Url.Content("~/Content/Styles/Common.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/Styles/Details.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/Styles/PopupWindow.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/Styles/SearchPanel.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/Styles/ErrorPage.css")" rel="stylesheet" type="text/css" />
+        <script src="@Url.Content("~/Scripts/jquery-1.4.4.min.js")" type="text/javascript"></script>           
+        <!-- Translations -->
+        <script src="@Url.Content(String.Format("~/Scripts/Messages/EIDSS.BvMessages.{0}.js", Cultures.GetCulture(ModelUserContext.CurrentLanguage)))" type="text/javascript" ></script>
+        <!-- Common -->        
+        <script src="@Url.Content("~/Scripts/Common/Config.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/Common/WindowsShow.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/Common/Dialogs.js")" type="text/javascript"></script>
+        <script src='@Url.Content("~/Scripts/Common/BvGrid.js")' type="text/javascript"></script>   
+        <script src="@Url.Content("~/Scripts/Aggregate/CommonScript.js")" type="text/javascript"></script>     
+        <script src="@Url.Content("~/Scripts/Common/ActionsPanelScripts.js")" type="text/javascript" ></script>       
+        <script src="@Url.Content("~/Scripts/Common/CustomActions.js")" type="text/javascript" ></script>       
+        <script src="@Url.Content("~/Scripts/Common/FormRefresh.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/Common/SearchPicker.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/Common/Map.js")" type="text/javascript"></script>
+
+        @(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.web20.css").Add("telerik.rtl.css")/*.Combined(true).Compress(true)*/))
+        
+        <script type="text/javascript">
+        
+            var heartbeatUrl = '/' + GetSiteLanguage() + '/System/Heartbeat';
+
+            $(document).ready(function () {
+                serverTimeOffsetInHours = @System.TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now).Hours;
+            });
+            
+            $(window).load(function () {                
+                $.ajaxSetup({ cache: false });
+                if ($("#ErrorMessage").val()) {
+                    hideLoading();
+                    ShowEidssErrorNotification($("#ErrorMessage").val(), function() {
+                    });
+                    return;
+                } else if ($("#SaveAndExitClick") && $("#SaveAndExitClick").val() == '1') {
+                    setTimeout("CloseFocusPopUpWindow();", 2000);
+                    return;
+                }
+                hideLoading();
+                
+                $(".yScrollable").scroll(function() {
+                    $(".t-animation-container").hide();
+                });
+            });
+ 
+            document.onkeypress = function(e) {
+                var e = window.event || e;
+                if (e.keyCode == 13) {
+                    return false;
+                }
+            };           
+            
+        </script>
+    </head>
+    <body class="detailsViewContainer">
+       @(Html.Telerik().Window()
+            .Name("Message")
+            .Modal(true)
+            .Visible(false)
+            .Draggable(true)            
+            .ClientEvents
+                (events => events.OnClose("OnCloseMessageWindow"))
+             )
+        <input id='MapOpenerId' type='hidden' value='' />
+        <div class="content detailsPage"  @(Config.GetBoolSetting("AutoTestingVersion") ? "bvid=" + ModelName() : "")>
+            <div class="detailsBody">            
+                @RenderBody()   
+            </div>
+            <!-- bottom action panel -->
+            <div class="bottomButtonPanel detailsBottomPanel">
+                @RenderMainPanel()
+            </div>         
+        </div>        
+        <div id="error">
+            <span class="errorMessage">
+                <input id='ErrorMessage' name='ErrorMessage' type='hidden' value='@ViewData["ErrorMessage"]' />
+            </span>            
+        </div> 
+        
+        <div id="loading" class="loader">
+            <img id="loadingImg" src='@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/ajax-loader.gif"))' alt="" />                   
+        </div>           
+        @Html.Telerik().ScriptRegistrar().jQuery(false).Globalization(true).DefaultGroup(group =>
+            group.Add("/jquery.validate.js")
+            .Add("/2010.3.1318/telerik.common.js")
+            .Add("/2010.3.1318/telerik.list.js")
+            .Add("/2010.3.1318/telerik.combobox.js")
+            .Add("/2010.3.1318/telerik.calendar.js")
+            .Add("/2010.3.1318/telerik.datepicker.js")
+            .Add("/2010.3.1318/telerik.timepicker.js")
+            .Add("/2010.3.1318/telerik.datetimepicker.js")
+            .Add("/2010.3.1318/telerik.treeview.js")
+            .Add("/2010.3.1318/telerik.grid.js")
+            .Add("/2010.3.1318/telerik.textbox.js")
+            .Add("/2010.3.1318/telerik.draganddrop.js")
+            .Add("/2010.3.1318/telerik.grid.resizing.js")
+            .Add("/2010.3.1318/telerik.grid.reordering.js")
+            /*.Combined(true).Compress(true)*/
+        )
+    </body>    
+</html>

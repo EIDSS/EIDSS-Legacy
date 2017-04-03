@@ -1,0 +1,51 @@
+﻿
+@using eidss.webclient.Utils
+@model eidss.webclient.Models.Reports.ExternalComparativeModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/BaseFilter", Model)
+
+    @Html.Partial("AZ/FromYearToYearFilter", Model.YearModel)
+    <table id="ExternalComparativeFilterTable" >
+        <tr>
+            <td class="medium">
+                @Html.LabelFor(m => m.StartMonth)
+            </td>
+            <td class="large">
+                
+                @{
+                    @(Html.Telerik().ComboBox()
+                          .Name("StartMonth")
+                          .BindTo(Model.SelectedJanuaryMonthList.ConvertToSelectListItem())
+                          .ClientEvents(c => c.OnChange("paperForm.OnMonthChanged"))
+                          )
+                }
+                
+            </td>
+            <td class="medium">
+                @Html.LabelFor(m => m.EndMonth)
+            </td>
+            <td class="large">
+                
+                @{
+                    @(Html.Telerik().ComboBox()
+                          .Name("EndMonth")
+                          .BindTo(Model.SelectedCurrentMonthList.ConvertToSelectListItem())
+                          .ClientEvents(c => c.OnChange("paperForm.OnMonthChanged"))
+                          )
+                }
+                
+            </td>
+            <td></td>
+        </tr>
+    </table>
+
+    @Html.Partial("Common/AddressFilter", Model.Address)
+
+    @Html.Partial("Common/ExportButtons", Model)
+}

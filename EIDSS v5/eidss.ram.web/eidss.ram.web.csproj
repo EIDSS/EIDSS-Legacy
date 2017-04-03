@@ -1,0 +1,755 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8564EC38-65CA-4045-99D6-9939D731FCAA}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>eidss.ram.web</RootNamespace>
+    <AssemblyName>eidss.ram.web</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ExcludeGeneratedDebugSymbol>true</ExcludeGeneratedDebugSymbol>
+    <ExcludeApp_Data>true</ExcludeApp_Data>
+    <PublishDatabases>false</PublishDatabases>
+    <DeployIisAppPath>eidss/AVR</DeployIisAppPath>
+    <FilesToIncludeForPublish>OnlyFilesToRunTheApp</FilesToIncludeForPublish>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Accessibility">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="BruTile, Version=0.5.3.0, Culture=neutral, PublicKeyToken=00e75fd79e391f40, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dlls\gis\BruTile.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Charts.v11.1.Core, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Data.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.PivotGrid.v11.1.Core, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Printing.v11.1.Core, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxEditors.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxGridView.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxGridView.v11.1.Export, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxPivotGrid.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Web.ASPxPivotGrid.v11.1.Export, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Web.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v11.1.Extensions, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v11.1.UI, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v11.1.Web, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraNavBar.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraPivotGrid.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraTreeList.v11.1, Version=11.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Projections, Version=1.0.0.28088, Culture=neutral, PublicKeyToken=272632bddd08a38b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dlls\gis\DotSpatial.Projections.dll</HintPath>
+    </Reference>
+    <Reference Include="GIS_V5, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dlls\gis\GIS_V5.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dlls\gis\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zlib, Version=1.9.1.5, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dlls\Ionic.Zlib.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.SqlServer.Types, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dlls\gis\Microsoft.SqlServer.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpMap, Version=0.9.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dlls\gis\SharpMap.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpMap.Extensions, Version=0.9.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dlls\gis\SharpMap.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.DynamicData">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Entity">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.ApplicationServices">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.Web.Mvc">
+      <HintPath>..\dlls\Telerik.Web.Mvc.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Common.ar-IQ.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Common.ar-IQ1.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Common.kk-KZ.resx">
+      <SubType>Designer</SubType>
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Common.kk-KZ.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Common.uk-UA.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Common.uk-UA.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Chart.aspx" />
+    <Content Include="Components\WebPivotGrid.ascx" />
+    <Content Include="Content\Images\MapMarkers\1.png" />
+    <Content Include="Content\Images\MapMarkers\11.png" />
+    <Content Include="Content\Images\MapMarkers\12.png" />
+    <Content Include="Content\Images\MapMarkers\13.png" />
+    <Content Include="Content\Images\MapMarkers\14.png" />
+    <Content Include="Content\Images\MapMarkers\15.png" />
+    <Content Include="Content\Images\MapMarkers\16.png" />
+    <Content Include="Content\Images\MapMarkers\2.png" />
+    <Content Include="Content\Images\MapMarkers\3.png" />
+    <Content Include="Content\Images\MapMarkers\4.png" />
+    <Content Include="Content\Images\MapMarkers\5.png" />
+    <Content Include="Content\Images\MapMarkers\6.png" />
+    <Content Include="Content\Images\MapMarkers\7.png" />
+    <Content Include="Content\Images\MapMarkers\8.png" />
+    <Content Include="Content\Images\poly_grad_legend_.png" />
+    <Content Include="Content\LeafMap\css\mobile.css" />
+    <Content Include="Content\LeafMap\css\screen.css" />
+    <Content Include="Content\LeafMap\dist\images\marker-shadow.png" />
+    <Content Include="Content\LeafMap\dist\images\marker.png" />
+    <Content Include="Content\LeafMap\dist\images\popup-close.png" />
+    <Content Include="Content\LeafMap\dist\images\zoom-in.png" />
+    <Content Include="Content\LeafMap\dist\images\zoom-out.png" />
+    <Content Include="Content\LeafMap\dist\leaflet.css" />
+    <Content Include="Content\LeafMap\dist\leaflet.ie.css" />
+    <Content Include="Content\map_avr_marker.js" />
+    <Content Include="Content\map_avr_pie.js" />
+    <Content Include="Content\Toolbar\checkbox.png" />
+    <Content Include="Content\Toolbar\checkbox_info.png" />
+    <Content Include="Content\Toolbar\checkbox_layer.png" />
+    <Content Include="Content\Toolbar\checkbox_meas.png" />
+    <Content Include="Content\Toolbar\marker.png" />
+    <Content Include="MapTest.aspx" />
+    <Content Include="Report.aspx" />
+    <Content Include="Map.aspx" />
+    <Content Include="Scripts\jquery-1.4.1-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.4.1.js" />
+    <Content Include="Scripts\jquery-1.4.1.min.js" />
+    <Content Include="Scripts\jquery.custom_radio_checkbox.js" />
+    <Content Include="Scripts\LeafMap\eidss-map-include.js" />
+    <Content Include="Scripts\LeafMap\leaflet-include.js" />
+    <Content Include="Scripts\LeafMap\src\control\Control.Attribution.js" />
+    <Content Include="Scripts\LeafMap\src\control\Control.js" />
+    <Content Include="Scripts\LeafMap\src\control\Control.Layers.js" />
+    <Content Include="Scripts\LeafMap\src\control\Control.Zoom.js" />
+    <Content Include="Scripts\LeafMap\src\core\Browser.js" />
+    <Content Include="Scripts\LeafMap\src\core\Class.js" />
+    <Content Include="Scripts\LeafMap\src\core\Events.js" />
+    <Content Include="Scripts\LeafMap\src\core\Handler.js" />
+    <Content Include="Scripts\LeafMap\src\core\Util.js" />
+    <Content Include="Scripts\LeafMap\src\dom\DomEvent.DoubleTap.js" />
+    <Content Include="Scripts\LeafMap\src\dom\DomEvent.js" />
+    <Content Include="Scripts\LeafMap\src\dom\DomUtil.js" />
+    <Content Include="Scripts\LeafMap\src\dom\Draggable.js" />
+    <Content Include="Scripts\LeafMap\src\dom\transition\Transition.js" />
+    <Content Include="Scripts\LeafMap\src\dom\transition\Transition.Native.js" />
+    <Content Include="Scripts\LeafMap\src\dom\transition\Transition.Timer.js" />
+    <Content Include="Scripts\LeafMap\src\geometry\Bounds.js" />
+    <Content Include="Scripts\LeafMap\src\geometry\LineUtil.js" />
+    <Content Include="Scripts\LeafMap\src\geometry\Point.js" />
+    <Content Include="Scripts\LeafMap\src\geometry\PolyUtil.js" />
+    <Content Include="Scripts\LeafMap\src\geometry\Transformation.js" />
+    <Content Include="Scripts\LeafMap\src\geo\crs\CRS.EPSG3395.js" />
+    <Content Include="Scripts\LeafMap\src\geo\crs\CRS.EPSG3857.js" />
+    <Content Include="Scripts\LeafMap\src\geo\crs\CRS.EPSG4326.js" />
+    <Content Include="Scripts\LeafMap\src\geo\crs\CRS.js" />
+    <Content Include="Scripts\LeafMap\src\geo\LatLng.js" />
+    <Content Include="Scripts\LeafMap\src\geo\LatLngBounds.js" />
+    <Content Include="Scripts\LeafMap\src\geo\projection\Projection.js" />
+    <Content Include="Scripts\LeafMap\src\geo\projection\Projection.LonLat.js" />
+    <Content Include="Scripts\LeafMap\src\geo\projection\Projection.Mercator.js" />
+    <Content Include="Scripts\LeafMap\src\geo\projection\Projection.SphericalMercator.js" />
+    <Content Include="Scripts\LeafMap\src\handler\DoubleClickZoom.js" />
+    <Content Include="Scripts\LeafMap\src\handler\Handler.js" />
+    <Content Include="Scripts\LeafMap\src\handler\MapDrag.js" />
+    <Content Include="Scripts\LeafMap\src\handler\MarkerDrag.js" />
+    <Content Include="Scripts\LeafMap\src\handler\ScrollWheelZoom.js" />
+    <Content Include="Scripts\LeafMap\src\handler\ShiftDragZoom.js" />
+    <Content Include="Scripts\LeafMap\src\handler\TouchZoom.js" />
+    <Content Include="Scripts\LeafMap\src\layer\FeatureGroup.js" />
+    <Content Include="Scripts\LeafMap\src\layer\GeoJSON.js" />
+    <Content Include="Scripts\LeafMap\src\layer\ImageOverlay.js" />
+    <Content Include="Scripts\LeafMap\src\layer\LayerGroup.js" />
+    <Content Include="Scripts\LeafMap\src\layer\marker\Icon.js" />
+    <Content Include="Scripts\LeafMap\src\layer\marker\Marker.Drag.js" />
+    <Content Include="Scripts\LeafMap\src\layer\marker\Marker.js" />
+    <Content Include="Scripts\LeafMap\src\layer\marker\Marker.Popup.js" />
+    <Content Include="Scripts\LeafMap\src\layer\Popup.js" />
+    <Content Include="Scripts\LeafMap\src\layer\tile\TileLayer.Canvas.js" />
+    <Content Include="Scripts\LeafMap\src\layer\tile\TileLayer.js" />
+    <Content Include="Scripts\LeafMap\src\layer\tile\TileLayer.WMS.js" />
+    <Content Include="Scripts\LeafMap\src\layer\vector\canvas\Circle.Canvas.js" />
+    <Content Include="Scripts\LeafMap\src\layer\vector\canvas\Path.Canvas.js" />
+    <Content Include="Scripts\LeafMap\src\layer\vector\canvas\Polygon.Canvas.js" />
+    <Content Include="Scripts\LeafMap\src\layer\vector\canvas\Polyline.Canvas.js" />
+    <Content Include="Scripts\LeafMap\src\layer\vector\Circle.js" />
+    <Content Include="Scripts\LeafMap\src\layer\vector\CircleMarker.js" />
+    <Content Include="Scripts\LeafMap\src\layer\vector\MultiPoly.js" />
+    <Content Include="Scripts\LeafMap\src\layer\vector\Path.js" />
+    <Content Include="Scripts\LeafMap\src\layer\vector\Path.Popup.js" />
+    <Content Include="Scripts\LeafMap\src\layer\vector\Path.SVG.js" />
+    <Content Include="Scripts\LeafMap\src\layer\vector\Path.VML.js" />
+    <Content Include="Scripts\LeafMap\src\layer\vector\Polygon.js" />
+    <Content Include="Scripts\LeafMap\src\layer\vector\Polyline.js" />
+    <Content Include="Scripts\LeafMap\src\Leaflet.js" />
+    <Content Include="Scripts\LeafMap\src\map\anim\Map.PanAnimation.js" />
+    <Content Include="Scripts\LeafMap\src\map\anim\Map.ZoomAnimation.js" />
+    <Content Include="Scripts\LeafMap\src\map\ext\Map.Control.js" />
+    <Content Include="Scripts\LeafMap\src\map\ext\Map.Geolocation.js" />
+    <Content Include="Scripts\LeafMap\src\map\ext\Map.PanAnimation.js" />
+    <Content Include="Scripts\LeafMap\src\map\ext\Map.Popup.js" />
+    <Content Include="Scripts\LeafMap\src\map\ext\Map.ZoomAnimation.js" />
+    <Content Include="Scripts\LeafMap\src\map\handler\Map.BoxZoom.js" />
+    <Content Include="Scripts\LeafMap\src\map\handler\Map.DoubleClickZoom.js" />
+    <Content Include="Scripts\LeafMap\src\map\handler\Map.Drag.js" />
+    <Content Include="Scripts\LeafMap\src\map\handler\Map.ScrollWheelZoom.js" />
+    <Content Include="Scripts\LeafMap\src\map\handler\Map.TouchZoom.js" />
+    <Content Include="Scripts\LeafMap\src\map\Map.js" />
+    <Content Include="Scripts\MapPlot\changes.txt" />
+    <Content Include="Scripts\MapPlot\copyright.txt" />
+    <Content Include="Scripts\MapPlot\example.min.js" />
+    <Content Include="Scripts\MapPlot\excanvas.js" />
+    <Content Include="Scripts\MapPlot\excanvas.min.js" />
+    <Content Include="Scripts\MapPlot\gpl-2.0.txt" />
+    <Content Include="Scripts\MapPlot\jqPlotCssStyling.txt" />
+    <Content Include="Scripts\MapPlot\jqPlotOptions.txt" />
+    <Content Include="Scripts\MapPlot\jquery.jqplot.css" />
+    <Content Include="Scripts\MapPlot\jquery.jqplot.js" />
+    <Content Include="Scripts\MapPlot\jquery.jqplot.min.css" />
+    <Content Include="Scripts\MapPlot\jquery.jqplot.min.js" />
+    <Content Include="Scripts\MapPlot\jquery.js" />
+    <Content Include="Scripts\MapPlot\jquery.min.js" />
+    <Content Include="Scripts\MapPlot\MIT-LICENSE.txt" />
+    <Content Include="Scripts\MapPlot\optionsTutorial.txt" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.barRenderer.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.barRenderer.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.BezierCurveRenderer.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.BezierCurveRenderer.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.blockRenderer.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.blockRenderer.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.bubbleRenderer.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.bubbleRenderer.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.canvasAxisLabelRenderer.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.canvasAxisLabelRenderer.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.canvasAxisTickRenderer.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.canvasAxisTickRenderer.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.canvasOverlay.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.canvasOverlay.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.canvasTextRenderer.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.canvasTextRenderer.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.categoryAxisRenderer.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.categoryAxisRenderer.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.ciParser.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.ciParser.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.cursor.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.cursor.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.dateAxisRenderer.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.dateAxisRenderer.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.donutRenderer.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.donutRenderer.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.dragable.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.dragable.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.enhancedLegendRenderer.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.enhancedLegendRenderer.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.funnelRenderer.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.funnelRenderer.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.highlighter.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.highlighter.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.json2.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.json2.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.logAxisRenderer.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.logAxisRenderer.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.mekkoAxisRenderer.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.mekkoAxisRenderer.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.mekkoRenderer.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.mekkoRenderer.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.meterGaugeRenderer.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.meterGaugeRenderer.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.ohlcRenderer.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.ohlcRenderer.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.pieRenderer.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.pieRenderer.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.pointLabels.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.pointLabels.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.pyramidAxisRenderer.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.pyramidAxisRenderer.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.pyramidGridRenderer.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.pyramidGridRenderer.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.pyramidRenderer.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.pyramidRenderer.min.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.trendline.js" />
+    <Content Include="Scripts\MapPlot\plugins\jqplot.trendline.min.js" />
+    <Content Include="Scripts\MapPlot\README.txt" />
+    <Content Include="Scripts\MapPlot\syntaxhighlighter\scripts\shAutoloader.js" />
+    <Content Include="Scripts\MapPlot\syntaxhighlighter\scripts\shAutoloader.min.js" />
+    <Content Include="Scripts\MapPlot\syntaxhighlighter\scripts\shBrushJScript.js" />
+    <Content Include="Scripts\MapPlot\syntaxhighlighter\scripts\shBrushJScript.min.js" />
+    <Content Include="Scripts\MapPlot\syntaxhighlighter\scripts\shBrushXml.js" />
+    <Content Include="Scripts\MapPlot\syntaxhighlighter\scripts\shBrushXml.min.js" />
+    <Content Include="Scripts\MapPlot\syntaxhighlighter\scripts\shCore.js" />
+    <Content Include="Scripts\MapPlot\syntaxhighlighter\scripts\shCore.min.js" />
+    <Content Include="Scripts\MapPlot\syntaxhighlighter\styles\shCore.css" />
+    <Content Include="Scripts\MapPlot\syntaxhighlighter\styles\shCore.min.css" />
+    <Content Include="Scripts\MapPlot\syntaxhighlighter\styles\shCoreDefault.css" />
+    <Content Include="Scripts\MapPlot\syntaxhighlighter\styles\shCoreDefault.min.css" />
+    <Content Include="Scripts\MapPlot\syntaxhighlighter\styles\shThemeDefault.css" />
+    <Content Include="Scripts\MapPlot\syntaxhighlighter\styles\shThemeDefault.min.css" />
+    <Content Include="Scripts\MapPlot\syntaxhighlighter\styles\shThemejqPlot.css" />
+    <Content Include="Scripts\MapPlot\syntaxhighlighter\styles\shThemejqPlot.min.css" />
+    <Content Include="Scripts\MapPlot\usage.txt" />
+    <Content Include="Styles\Site.css" />
+    <Content Include="Default.aspx" />
+    <Content Include="Global.asax" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\EIDSSAssemblyInfo.cs">
+      <Link>EIDSSAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="App_GlobalResources\Common.ar-IQ1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Common.ar-IQ.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Common.az-Latn-AZ.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Common.az-Latn-AZ.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Common.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Common.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Common.hy-AM.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Common.hy-AM.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Common.ka-GE.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Common.ka-GE.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Common.kk-KZ.designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Common.kk-KZ.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Common.ru-RU.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Common.ru-RU.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Common.uk-UA.designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Common.uk-UA.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\DevExpress_Web_ASPxPivotGrid_v11_1.ru-RU.designer.cs">
+      <DependentUpon>DevExpress_Web_ASPxPivotGrid_v11_1.ru-RU.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\DevExpress_Web_ASPxPivotGrid_v11_1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DevExpress_Web_ASPxPivotGrid_v11_1.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Chart.aspx.cs">
+      <DependentUpon>Chart.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Chart.aspx.designer.cs">
+      <DependentUpon>Chart.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Export\WebChartExporter.cs" />
+    <Compile Include="Components\Export\WebBaseExporter.cs" />
+    <Compile Include="Components\Export\WebMapExporter.cs" />
+    <Compile Include="Components\Export\WebPivotGridExporter.cs" />
+    <Compile Include="Components\Export\WebExportFormat.cs" />
+    <Compile Include="Components\WebPivotGrid.ascx.cs">
+      <DependentUpon>WebPivotGrid.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Components\WebPivotGrid.ascx.designer.cs">
+      <DependentUpon>WebPivotGrid.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Components\WebPostable.cs" />
+    <Compile Include="Components\WebRamFormView.cs" />
+    <Compile Include="Default.Master.cs">
+      <DependentUpon>Default.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.Master.designer.cs">
+      <DependentUpon>Default.Master</DependentUpon>
+    </Compile>
+    <Compile Include="MapTest.aspx.cs">
+      <DependentUpon>MapTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MapTest.aspx.designer.cs">
+      <DependentUpon>MapTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report.aspx.cs">
+      <DependentUpon>Report.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report.aspx.designer.cs">
+      <DependentUpon>Report.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Map.aspx.cs">
+      <DependentUpon>Map.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Map.aspx.designer.cs">
+      <DependentUpon>Map.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Site.Master.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Site.Master.designer.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\BasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="tmp\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Site.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\bv.common\bv.common.csproj">
+      <Project>{BEE76B17-720D-4B65-996A-5712912B3ACF}</Project>
+      <Name>bv.common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\bv.model\bv.model.csproj">
+      <Project>{9067327E-1960-4326-ACB9-D982DDBEAA76}</Project>
+      <Name>bv.model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\bv.winclient\bv.winclient.csproj">
+      <Project>{B0163672-F328-4D02-9B71-FB698EDAF815}</Project>
+      <Name>bv.winclient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.core\eidss.core.csproj">
+      <Project>{BF545ECD-F673-4C71-9362-57C01DF13062}</Project>
+      <Name>eidss.core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.gis.common\eidss.gis.common.csproj">
+      <Project>{A9B1EE20-AC3C-404E-B9AD-110AD63BBEA6}</Project>
+      <Name>eidss.gis.common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.gis\eidss.gis.csproj">
+      <Project>{20D52400-EAEF-4ECA-A006-242683176310}</Project>
+      <Name>eidss.gis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.model\eidss.model.csproj">
+      <Project>{E4B87B63-D5F2-4F9F-B39C-A7714896D1DE}</Project>
+      <Name>eidss.model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utils\GeospatialServices\GeospatialServices.csproj">
+      <Project>{4FD433D5-7B79-4879-85E8-74B4F977C3F3}</Project>
+      <Name>GeospatialServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\EIDSS\EIDSS.RAM\EIDSS.RAM.csproj">
+      <Project>{D068D455-22BB-4C94-AA32-593AE9077304}</Project>
+      <Name>EIDSS.RAM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\EIDSS\EIDSS.RAM_DB\EIDSS.RAM_DB.csproj">
+      <Project>{75A1FF29-BB1F-4376-A548-B98258961633}</Project>
+      <Name>EIDSS.RAM_DB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\EIDSS\EIDSS_Common\EIDSS_Common.vbproj">
+      <Project>{119CC05A-2F6C-4FC8-AC74-79BB76E3C1C0}</Project>
+      <Name>EIDSS_Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\Shared\bvwin_common\bvwin_common.vbproj">
+      <Project>{B3E5BA6B-FAA3-4A7D-8236-3F8842D61CD4}</Project>
+      <Name>bvwin_common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\Shared\bv_common\bvcommon.vbproj">
+      <Project>{BA2844A8-F629-4B02-ACD6-B60063E4D27F}</Project>
+      <Name>bvcommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\Shared\bv_dbcommon\bvdb_common.vbproj">
+      <Project>{6C48BB93-277D-4804-B280-F6130E29EB81}</Project>
+      <Name>bvdb_common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_LocalResources\Chart.aspx.resx" />
+    <Content Include="App_LocalResources\Chart.aspx.ru-RU.resx" />
+    <Content Include="App_GlobalResources\Common.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Common.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Common.ru-RU.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Common.ru-RU.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_LocalResources\Report.aspx.resx" />
+    <Content Include="App_LocalResources\Report.aspx.ru-RU.resx" />
+    <Content Include="App_GlobalResources\DevExpress_Web_ASPxPivotGrid_v11_1.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>DevExpress_Web_ASPxPivotGrid_v11_1.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\DevExpress_Web_ASPxPivotGrid_v11_1.ru-RU.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>DevExpress_Web_ASPxPivotGrid_v11_1.ru-RU.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_LocalResources\Map.aspx.resx" />
+    <Content Include="App_LocalResources\Map.aspx.ru-RU.resx" />
+    <Content Include="App_GlobalResources\Common.hy-AM.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Common.hy-AM.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Common.ka-GE.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Common.ka-GE.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\Common.az-Latn-AZ.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Common.az-Latn-AZ.designer.cs</LastGenOutput>
+    </Content>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Default.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\MapPlot\syntaxhighlighter\LGPL-LICENSE" />
+    <None Include="Scripts\MapPlot\syntaxhighlighter\MIT-LICENSE" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>False</AutoAssignPort>
+          <DevelopmentServerPort>60285</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  -->
+  <Target Name="BeforeBuild">
+  </Target>
+  <PropertyGroup Label="AfterBuildDependsOn">
+    <AfterBuildDependsOn>
+      PopulateGisDlls;
+      PopulateGisData;
+      PostprocessOutput
+    </AfterBuildDependsOn>
+  </PropertyGroup>
+  <Target Name="AfterBuild" DependsOnTargets="$(AfterBuildDependsOn)" />
+  <Target Name="PopulateGisDlls">
+    <PropertyGroup>
+      <GIS_Dlls_TargetPath>$(TargetDir)</GIS_Dlls_TargetPath>
+      <GIS_Dlls_TargetPath Condition="!$(WebProjectOutputDirInsideProject)">$(OutDir)_PublishedWebsites\$(MSBuildProjectName)\bin\</GIS_Dlls_TargetPath>
+    </PropertyGroup>
+    <ItemGroup>
+      <GIS_Dlls Include="$(SolutionDir)dlls\gis\*.*" />
+    </ItemGroup>
+    <Message Importance="low" Text="GIS_Dlls_TargetPath = $(GIS_Dlls_TargetPath)" />
+    <Message Importance="low" Text="GIS_Dlls:%0d%0a%09@(GIS_Dlls, '%0d%0a%09')" />
+    <Copy
+      SourceFiles="@(GIS_Dlls)"
+      DestinationFiles="@(GIS_Dlls->'$(GIS_Dlls_TargetPath)%(Filename)%(Extension)')"
+      UseHardlinksIfPossible="true">
+
+      <Output TaskParameter="CopiedFiles" ItemName="FileWrites" />
+      <Output TaskParameter="CopiedFiles" ItemName="CopiedGIS_Dlls" />
+    </Copy>
+    <Message Importance="low" Text="CopiedGIS_Dlls:%0d%0a%09@(CopiedGIS_Dlls, '%0d%0a%09')" />
+  </Target>
+  <Target Name="PopulateGisData">
+    <PropertyGroup>
+      <GIS_Data_TargetPath>$(TargetDir)gdal_data\</GIS_Data_TargetPath>
+      <GIS_Data_TargetPath Condition="!$(WebProjectOutputDirInsideProject)">$(OutDir)_PublishedWebsites\$(MSBuildProjectName)\bin\gdal_data\</GIS_Data_TargetPath>
+    </PropertyGroup>
+    <ItemGroup>
+      <GIS_Data Include="$(SolutionDir)dlls\gis\Data\**\*" />
+    </ItemGroup>
+    <Message Importance="low" Text="GIS_Data_TargetPath = $(GIS_Data_TargetPath)" />
+    <Message Importance="low" Text="GIS_Data:%0d%0a%09@(GIS_Data, '%0d%0a%09')" />
+    <RemoveDir Directories="$(GIS_Data_TargetPath)" Condition=" Exists('$(GIS_Data_TargetPath)') " />
+    <Copy
+      SourceFiles="@(GIS_Data)"
+      DestinationFiles="@(GIS_Data->'$(GIS_Data_TargetPath)%(RecursiveDir)%(Filename)%(Extension)')"
+      UseHardlinksIfPossible="true">
+
+      <Output TaskParameter="CopiedFiles" ItemName="FileWrites" />
+      <Output TaskParameter="CopiedFiles" ItemName="CopiedGIS_Data" />
+    </Copy>
+    <Message Importance="low" Text="CopiedGIS_Data:%0d%0a%09@(CopiedGIS_Data, '%0d%0a%09')" />
+  </Target>
+  <Target Name="PostprocessOutput">
+    <PropertyGroup>
+      <UnwantedOutputFiles>$(TargetDir)</UnwantedOutputFiles>
+      <UnwantedOutputFiles Condition="!$(WebProjectOutputDirInsideProject)">$(OutDir)_PublishedWebsites\$(MSBuildProjectName)\bin\Interop.ADOX.dll</UnwantedOutputFiles>
+    </PropertyGroup>
+    <Message Importance="low" Text="UnwantedOutputFiles = $(UnwantedOutputFiles)" />
+    <Delete Files="$(UnwantedOutputFiles)" Condition=" Exists( '$(UnwantedOutputFiles)' ) ">
+      <Output TaskParameter="DeletedFiles" ItemName="_deletedUnwantedOutputFiles" />
+    </Delete>
+    <Message Importance="low" Text="Deleted Unwanted Output Files:%0d%0a%09@(_deletedUnwantedOutputFiles, '%0d%0a%09')" />
+  </Target>
+  <PropertyGroup>
+    <SourcesToPrepare>$(OutDir)_PublishedWebsites\$(MSBuildProjectName)\</SourcesToPrepare>
+    <DestinationFolder>$(IntermediateDistribDir)eidss.avr\</DestinationFolder>
+    <ZipPath>$(IntermediateDistribDir)eidss.avr.zip</ZipPath>
+  </PropertyGroup>
+  <Import Project="$(BuildTools)PrepareToDistrib.targets" Condition=" Exists('$(BuildTools)PrepareToDistrib.targets') " />
+</Project>

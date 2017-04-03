@@ -1,0 +1,117 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fnTestListOptimized]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[fnTestListOptimized]
+GO
+
+
+
+--##SUMMARY Returns list of all tests performed on any site.
+--##REMARKS Author: Vdovin.
+--##REMARKS Create date: 01.10.2010
+
+-- select * from fnTestListOptimized('en')
+
+
+create function [dbo].[fnTestListOptimized](@LangID as nvarchar(50))
+returns table
+as
+return
+select			
+				tlbTesting.idfTesting,--used anyway
+				tlbTesting.idfsTestType,--needed
+				tlbTesting.idfObservation,
+
+				TestType.[Name] as TestType,
+				TestResult.[Name] as TestResult,
+				Category.Name as TestCategory,
+				Diagnosis.Name as DiagnosisName,
+				tlbTesting.idfsDiagnosis,
+
+				tlbBatchTest.idfBatchTest,
+
+				tlbBatchTest.strBarcode as BatchTestCode,
+				tlbBatchTest.datPerformedDate,
+				tlbBatchTest.idfsBatchStatus,
+				StatusType.[Name] as [Status],
+
+				tlbContainer.strBarcode,
+				tlbContainer.idfsSite,
+				SpecimenType.Name as SpecimenType,
+				tlbMaterial.strCalculatedCaseID as CaseID, 
+				tlbMaterial.idfsSpecimenType,
+				tlbCase.idfCase,
+
+				Department.Name as DepartmentName,
+				tlbMaterial.datFieldCollectionDate,
+				tlbMaterial.strFieldBarcode,
+				tlbMaterial.strCalculatedHumanName as HumanName, 
+				Animal.AnimalName
+
+
+from		tlbTesting 
+
+inner join	tlbContainer
+on			tlbContainer.idfContainer=tlbTesting.idfContainer
+
+inner join	tlbMaterial
+on			tlbContainer.idfMaterial=tlbMaterial.idfMaterial
+
+inner join	tlbParty
+on			tlbParty.idfParty = tlbMaterial.idfParty
+			and tlbParty.intRowStatus=0
+left join	dbo.fnReference(@LangID,19000087) SpecimenType --rftSpecimenType
+on			SpecimenType.idfsReference = tlbMaterial.idfsSpecimenType
+
+left join	tlbCase
+on			tlbCase.idfCase=tlbParty.idfCase
+
+left join	tlbBatchTest
+on			tlbTesting.idfBatchTest=tlbBatchTest.idfBatchTest
+
+left join	fnAnimalList(@LangID) Animal
+on			tlbMaterial.idfParty=Animal.idfParty
+
+left join	fnDepartment(@LangID) Department
+on			Department.idfDepartment=tlbContainer.idfInDepartment
+
+inner join	dbo.fnReference(@LangID, 19000097 ) TestType --rftTestType
+on			TestType.idfsReference = tlbTesting.idfsTestType
+
+left join	fnReference(@LangID, 19000096 ) TestResult --rftTestResult
+on			TestResult.idfsReference = tlbTesting.idfsTestResult
+
+left join	fnReference(@LangID, 19000095 ) Category --rftTestForDiseaseType
+on			Category.idfsReference = tlbTesting.idfsTestForDiseaseType
+
+left join	fnReference(@LangID, 19000019 ) Diagnosis --rftTestForDiseaseType
+on			Diagnosis.idfsReference = tlbTesting.idfsDiagnosis
+
+left join	dbo.fnReference(@LangID, 19000001 ) StatusType --rftActivityStatus
+on			StatusType.idfsReference = tlbTesting.idfsTestStatus
+
+LEFT JOIN dbo.trtObjectTypeToObjectType ot ON
+	ot.idfsRelatedObjectType = 10060012
+	AND ot.idfsParentObjectType = 10060009
+	
+JOIN fnGetPermissionOnSample(NULL, NULL) GetPermission ON
+	GetPermission.idfMaterial = tlbMaterial.idfMaterial
+	AND CASE
+			WHEN ot.idfsStatus = 10107003 
+				THEN ISNULL(GetPermission.intPermission, 2)
+			ELSE 2
+		END = 2
+
+where		tlbTesting.intRowStatus=0
+			and tlbContainer.intRowStatus = 0
+			and tlbMaterial.intRowStatus=0
+			and tlbTesting.idfExtBatchTest is null
+			and tlbContainer.idfsSite=dbo.fnSiteID()
+
+
+
+

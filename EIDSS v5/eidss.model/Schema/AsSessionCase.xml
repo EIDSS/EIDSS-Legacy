@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="AsSessionCase"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spASSessionCases_SelectDetail" type="detaillist" />
+  </storage>
+
+  <tables>
+    <table name="AsSessionCase" hacodable="true">
+      <grid>
+        <item name="idfCase" key="true" visible="false"/>
+        <item name="strCaseID"/>
+        <item name="datEnteredDate"/>
+        <item name="strCaseStatus"/>
+        <item name="strDiagnosis"/>        
+        <item name="strGeoLocation"/>
+        <item name="strAddress"/>
+      </grid>
+      <labels>
+        <item name="datEnteredDate" labelId="AsSessionCase.datEnteredDate"/>
+        <item name="strCaseStatus" labelId="AsSessionCase.strCaseStatus"/>
+        <item name="strGeoLocation" labelId="AsSessionCase.strGeoLocation"/>
+        <item name="strAddress" labelId="AsSessionCase.strAddress"/>
+      </labels>
+      <fields>
+        
+      </fields>
+      <readonly>
+      </readonly>
+      <relations>
+      </relations>
+      <lookups>
+        <!--lookup name="SampleType" table="BaseReference" section="rftSpecimenType" source="idfsSpecimenType" target="idfsBaseReference">
+          <filters>
+            <filter predicate="c => c.idfsBaseReference != (long)SampleTypeEnum.Unknown"/>
+          </filters>
+        </lookup-->
+      </lookups>
+      <storage>
+      </storage>
+      <extenders>
+        <creating>
+          <!--<scalar_extender target="idfMaterial" class="GetNewIDExtender" />
+          <lambda_extender target="datFieldCollectionDate" type="DateTime?" lambda="c => DateTime.Now.Date" />-->
+        </creating>
+        <loaded>
+        </loaded>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <!--<lambda_handler target="strSpecimenName" field="idfsSpecimenType" type="string" lambda='c => c.SampleType == null ? "" : c.SampleType.name' />-->          
+        </fieldhandler>
+      </handlers>
+      <validators>
+        <post>
+            <!--required_validator target="SampleType" /-->
+        </post>
+      </validators>
+      <!--actions-->
+        <!--<action name="CreateCopy" visible="false" type="Create" caption="" icon="" tooltip="">
+          <params>
+            <param name="original" type="AsSessionSample"/>
+          </params>
+          <creating>
+            <value_extender target="idfMonitoringSession" value="original.idfMonitoringSession"/>
+            <value_extender target="datFieldCollectionDate" value="original.datFieldCollectionDate"/>
+            <value_extender target="idfsSpecimenType" value="original.idfsSpecimenType"/>
+          </creating>
+        </action>-->
+      <!--/actions-->
+    </table>
+
+  </tables>
+
+</object>

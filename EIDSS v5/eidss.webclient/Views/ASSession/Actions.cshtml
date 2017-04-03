@@ -1,0 +1,27 @@
+﻿@model eidss.model.Schema.AsSession
+@using eidss.webclient.Utils
+@using eidss.webclient.Areas.ActiveSurveillence
+<div class="yScrollable smallTabPanelContent">
+    <table class="bordered">
+        <tr>
+            <td class="sectionName" colspan="2">@Translator.GetString("titleActions")
+            </td>
+        </tr>
+    </table>
+    
+    @Html.Actions(Model.idfMonitoringSession, Model.ObjectIdent + "Actions", Model.Actions, Model.IsReadOnly("Actions"))
+   
+    @*<table>
+        <tr>
+            <td class="sectionName" colspan="2">@Html.LabelFor(m=>m.strComments)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div>
+                    @Html.BvTextArea(Model, "strComments")
+                </div>
+            </td>
+        </tr>
+    </table>*@
+</div>

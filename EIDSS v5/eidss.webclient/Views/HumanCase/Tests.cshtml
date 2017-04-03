@@ -1,0 +1,59 @@
+﻿@model eidss.model.Schema.HumanCase
+           
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+@using eidss.webclient.Areas.Sample;
+
+<script type="text/javascript">
+    $(window).load(function () {
+        if ($("#ErrorMessage").val()) {
+            $("#ShowTestsReportClick").val('');
+        }
+        if ($("#ShowTestsReportClick") && $("#ShowTestsReportClick").val() == '1') {
+            ShowHumanTestsReport();
+        }
+    });           
+</script>
+
+<input type="hidden" id="ShowTestsReportClick" name='ShowTestsReportClick' value="@ViewBag.ShowTestsReportClick" />
+
+<div class="yScrollable mediumTabPanelContent">
+    <table class="bordered">
+        <tr>    
+            <td class="sectionName" colspan="3">
+                @Translator.GetMessageString("tabTitleTests")
+            </td>
+        </tr>  
+        <tr>
+            <td class="small">
+                @Html.LabelFor(m => m.idfsYNTestsConducted)
+            </td>
+            <td class="medium">
+                @Html.BvCombobox(Model, "TestsConducted")
+            </td>
+            <td class="fillAll rightAlign">
+            </td>
+        </tr>
+    </table>
+
+    @Html.CaseTestsGrid(Model.idfCase, Model.ObjectIdent + "CaseTests", Model.CaseTests, Model.IsReadOnly("CaseTests") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit || !Model.GetPermissions().CanExecute("CanAddTestResults")), (int)eidss.model.Enums.HACode.Human)
+    
+    <table class="bordered">
+        <tr>        
+            <td class="sectionName" colspan="3">
+                @Translator.GetMessageString("titleResultSummary")
+            </td>
+        </tr>   
+        <tr>        
+            <td class="small">
+            </td>
+            <td class="medium">
+            </td>
+            <td class="fillAll rightAlign">
+                <input type="button" id="btnPrintTests" value="@Translator.GetMessageString("titlePaperForms")" onclick="onShowTestsReport(true)"/>
+            </td>
+        </tr>  
+    </table>               
+        
+    @Html.CaseTestValidationsGrid(Model.idfCase, Model.ObjectIdent + "CaseTestValidations", Model.CaseTestValidations, Model.IsReadOnly("CaseTestValidations") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit || (!Model.GetPermissions().CanExecute("CanValidateTestInterpretation") && !Model.GetPermissions().CanExecute("CanValidateTestResult"))))           
+</div>

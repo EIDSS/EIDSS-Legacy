@@ -1,0 +1,81 @@
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS OFF 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[fnFirstHumanCase]') and xtype in (N'FN', N'IF', N'TF'))
+drop function [dbo].[fnFirstHumanCase]
+GO
+
+--##SUMMARY Returns id of the first human case entered at the specified site.
+
+--##REMARKS Author: Mirnaya O.
+--##REMARKS Create date: 28.01.2010
+
+--##RETURNS Function returns id of the first human case entered at the specified site.
+
+
+/*
+--Example of a call of function:
+declare @idfsSite	bigint
+select dbo.fnFirstHumanCase (@idfsSite)
+
+*/
+
+
+create	function	fnFirstHumanCase
+(
+	@idfsSite as bigint --##PARAM @idfsSite Site Id
+)
+returns bigint
+as
+begin
+
+declare @res bigint
+set @res = null
+
+select			@res = tlbFirstHumanCase.idfHumanCase
+from			tlbHumanCase as tlbFirstHumanCase
+inner join		tlbCase as tlbFirstCase
+on				tlbFirstCase.idfCase = tlbFirstHumanCase.idfHumanCase
+				and tlbFirstCase.intRowStatus = 0
+inner join		(
+	tlbParty as tlbFirstParty
+	inner join	tlbHuman as tlbFirstHuman
+	on			tlbFirstHuman.idfHuman = tlbFirstParty.idfParty
+				)
+on				tlbFirstParty.idfCase = tlbFirstHumanCase.idfHumanCase
+				and tlbFirstParty.idfsPartyType = 10072006			-- Human
+				and tlbFirstParty.intRowStatus = 0
+left join		(
+	tlbHumanCase as tlbMinHumanCase
+	inner join		tlbCase as tlbMinCase
+	on				tlbMinCase.idfCase = tlbMinHumanCase.idfHumanCase
+					and tlbMinCase.intRowStatus = 0
+	inner join		(
+		tlbParty as tlbMinParty
+		inner join	tlbHuman as tlbMinHuman
+		on			tlbMinHuman.idfHuman = tlbMinParty.idfParty
+					)
+	on				tlbMinParty.idfCase = tlbMinHumanCase.idfHumanCase
+					and tlbMinParty.idfsPartyType = 10072006		-- Human
+					and tlbMinParty.intRowStatus = 0
+				)
+on				tlbMinCase.idfsSite = @idfsSite
+				and	(	(tlbMinCase.datEnteredDate < tlbFirstCase.datEnteredDate)
+						or ((tlbMinCase.datEnteredDate = tlbFirstCase.datEnteredDate)
+							and (tlbMinCase.strCaseID < tlbFirstCase.strCaseID))
+					)
+where			tlbFirstCase.idfsSite = @idfsSite
+				and tlbMinHumanCase.idfHumanCase is null
+
+return @res
+end
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+

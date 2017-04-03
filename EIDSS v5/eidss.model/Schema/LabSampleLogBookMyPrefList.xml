@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="LabSampleLogBookMyPrefListItem"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        inherited="LabSampleLogBookBaseList.xml"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<tables>
+		<table name="LabSampleLogBookMyPrefListItem">
+      <extfilters>
+        <filter>
+          <join>
+            inner join tstLocalSamplesTestsPreferences as pref
+                on pref.idfMaterial = fn_SampleLogBook_SelectList.idfMaterial
+                and isnull(pref.idfTesting, 0) = isnull(fn_SampleLogBook_SelectList.idfTesting, 0)
+          </join>
+          <where>
+            <expr param=".true." lambda='() => "(pref.idfUserID = " + ModelUserContext.Instance.CurrentUser.ID.ToString() + ")"'/>
+          </where>
+        </filter>
+      </extfilters>
+			<searchpanel>
+        <item name="datCreationDate" editor="Date" labelId="datAccession" range="true" rangeDefDates="true"/>
+      </searchpanel>
+      <actions child="LabSample">
+        <action name="RemoveFromPreferences" type="Action">
+          <visual panel="Main" alignment="Left" enablePredicate='(c, p, b) => c != null' >
+            <regular caption="titleRemoveFromPreferences" icon="Delete_Remove" tooltip="titleRemoveFromPreferences"/>
+          </visual>
+          <hierarchy relatedList="LabSampleLogBookListItem"/>
+          <run>
+            <preUI webType="JScript"/>
+            <params>
+              <param name="id" type="long"/>
+            </params>
+            <preText>
+              manager.SetSpCommand("dbo.spLocalSamplesTestsPreference_Remove"
+                , manager.Parameter("idfTestingOrMaterial", id)
+                , manager.Parameter("idfUserID", (long)ModelUserContext.Instance.CurrentUser.ID)
+                ).ExecuteNonQuery();
+              return true;
+            </preText>
+          </run>
+        </action>
+      </actions>
+      <!--actions child="LabSample">
+        <action name="RemoveFromPreferences" caption="titleRemoveFromPreferences" tooltip="titleRemoveFromPreferences" panel="Main" alignment="Left" type="Custom" icon ="Delete_Remove"
+                  related-lists="LabSampleLogBookMyPrefListItem">
+          <params>
+            <param name="id" type="long"/>
+          </params>
+          <text>
+            manager.SetSpCommand("dbo.spLocalSamplesTestsPreference_Remove"
+                , manager.Parameter("idfTestingOrMaterial", id)
+                , manager.Parameter("idfUserID", (long)ModelUserContext.Instance.CurrentUser.ID)
+                ).ExecuteNonQuery();
+          </text>
+        </action>
+      </actions-->
+		</table>
+	</tables>
+</object>

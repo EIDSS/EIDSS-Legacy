@@ -1,0 +1,62 @@
+﻿@model List<OrganizationListItem>
+@{
+    ViewBag.Title = Translator.GetMessageString("titleDetails");
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+@using eidss.mobileclient.Utils
+@using eidss.model.Schema;
+
+<script language="javascript" type="text/javascript">
+    $(window).load(function () { 
+        var page = $("div.page");
+        var hasItems = '@(ViewBag.ItemsCount > 0)'.toLowerCase(); 
+        if (page && hasItems == 'true') {
+            page.removeClass("defaultHeigth");
+        }
+    });         
+</script>
+
+@using (Html.BeginForm())
+{   
+    <input type="submit" value="@Translator.GetMessageString("Search")" />
+    <input type="button" value="@Translator.GetMessageString("Cancel")" onclick="var lang = GetSiteLanguage(); document.location.href = '/'+ lang + '@Session["ReturnUrl"]';" />
+    <table>
+        <tr>
+            <td>
+                <label>@Translator.GetMessageString("titleOrganizationName")</label>
+            </td>
+        </tr>          
+        <tr>
+            <td class="searchText">
+                <input type="text" id="tbSearch" name="tbSearch" value="@ViewBag.TextForSearch" />
+            </td>
+        </tr>        
+    </table>     
+    if (ViewBag.ItemsCount == 0)
+    {
+        <label>@Translator.GetMessageString("msgNoRecords")</label> 
+    }
+    if (ViewBag.ItemsCount > 100)
+    {
+        <label>@Translator.GetMessageString("msgFirstHundredRecords")</label> 
+    }
+    if (ViewBag.ItemsCount > 0)
+    {        
+        <ul class="searchResults">  
+            @{ var i = 1; }     
+            @foreach (OrganizationListItem organization in Model)
+            { 
+                <li>
+                    <a href="@Url.Action("SetFacility", "Organization", new { organizationId = organization.idfInstitution })">
+                        @(i). @organization.FullName (@organization.name)
+                    </a>
+                </li>
+                if (i == 100)
+                {
+                    break;
+                }
+                { i++; }
+            }           
+        </ul>
+    }   
+}

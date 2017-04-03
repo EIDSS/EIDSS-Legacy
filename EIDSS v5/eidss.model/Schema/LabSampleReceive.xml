@@ -1,0 +1,285 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="LabSampleReceive"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="spLabSampleReceive_SelectDetail" />
+	</storage>
+	<tables>
+		<table name="LabSampleReceive">
+        <properties auditObject="daoSample" auditTable="tlbMaterial" permissionAction="AccessionIn1" />
+            <labels>
+                <item name="idfsInitialDiagnosis" labelId="idfsDiagnosis"/>
+                <item name="CurrentResidence" labelId="titleCurrentResidence"/>
+                <item name="strLocalIdentifier" labelId="strLocalId"/>                
+            </labels>
+            <fields>
+              <calculated name="strAntibiotics" type="string" depends="Antibiotics" 
+                          lambda='c => c.Antibiotics.Aggregate("", (a,b) => (a == "" ? "" : a + ", ") + b.strAntimicrobialTherapyName)'/>
+            </fields>
+            <readonly>
+                <fields name="strSampleNotes,Samples" predicate="c => false" />
+                <fields name="strFieldCollectedByOffice,strFieldCollectedByPerson" predicate="c => true" />
+                <fields name="*" predicate="c => true" />
+            </readonly>
+            <relations>
+              <relation name="Samples" table="LabSampleReceiveItem" internal="true" type="child" source="IDCase" target="ParentID" lazy="false" />
+              <relation name="Animals" table="LabSampleReceiveAnimal" internal="true" type="child" source="IDCase" target="ParentID" lazy="false" />
+              <relation name="Antibiotics" table="LabSampleReceiveAntibiotic" internal="true" type="child" source="IDCase" target="idfHumanCase" lazy="false" />
+              <relation name="Vectors" table="LabSampleReceiveVector" internal="true" type="child" source="IDCase" target="ParentID" lazy="false" />
+              <relation name="Diagnosis" table="LabSampleReceiveDiagnosis" internal="true" type="child" source="IDCase" target="idfCase" lazy="false" />
+            </relations>
+            <storage>
+                <post name="spLabSampleReceive_ModifyCase"/>
+            </storage>
+            <postorder>
+                <item name="this"/>
+                <item name="Samples"/>
+            </postorder>
+            <extenders>
+              <creating>
+                <lambda_extender target="ID" type="long" lambda="c => 0"/>
+                <lambda_extender target="IDCase" type="long" lambda="c => 0"/>
+              </creating>
+              <loaded>
+                <lambda_list_extender list="Samples" type="EditableList&lt;LabSampleReceiveAnimal&gt;" target="Animals" lambda="c => c.Animals"/>
+                <lambda_list_extender list="Samples" type="EditableList&lt;LabSampleReceiveDiagnosis&gt;" target="Diagnosis" lambda="c => c.Diagnosis"/>
+              </loaded>
+            </extenders>
+            <actions>
+              <standard>
+                <remove type="Create"/>
+                <remove type="Delete"/>
+              </standard>
+              <action name="AccessionInReport"  type="Action">
+                <visual panel="Main" alignment="Left">
+                  <regular caption="titlePaperForms"  icon="Report" tooltip="titlePaperForms"/>
+                </visual>
+                <run>
+                  <preUI webType="JScript"/>
+                  <params>
+                    <param name="ObjID" type="long"/>
+                  </params>
+                </run>
+              </action>
+            </actions>
+        </table>
+        <table name="LabSampleReceiveItem">
+            <grid>
+              <item name="idfMaterial" visible="false" key="true"/>
+              <item name="idfsAccessionCondition" visible="false" />
+              <item name="strSpecimenName" type="string" />
+              <!--item name="strFieldBarcode2" type="string" readonly="true" predicate="c => c.idfsCaseType != (long)eidss.model.Enums.CaseTypeEnum.Human" />
+              <item name="strFieldBarcode" type="string" readonly="true" predicate="c => c.idfsCaseType == (long)eidss.model.Enums.CaseTypeEnum.Human" />
+              <item name="AnimalID" type="string" readonly="true" predicate="c => c.idfsCaseType == (long)eidss.model.Enums.CaseTypeEnum.Livestock" />
+              <item name="Species" type="string" readonly="true" predicate="c => c.idfsCaseType != (long)eidss.model.Enums.CaseTypeEnum.Human" /-->
+              <item name="strFieldBarcode2" type="string" />
+              <item name="strFieldBarcode" type="string" />
+              <item name="AnimalID" type="string" />
+              <item name="Species" type="string" />
+              <item name="strBarcode" type="string" />
+              <item name="datFieldCollectionDate" />
+              <item name="datAccession"  />
+              <item name="strAccessionCondition" type="string"  />
+              <item name="strNote" type="string"  />
+              <item name="strDepartment" type="string"  />
+              <item name="strFreezer" type="string"  />
+            </grid>
+            <labels>
+                <item name="strAccessionCondition" labelId="idfsAccessionCondition"/>
+                <item name="strSpecimenName" labelId="idfsSpecimenType"/>
+                <item name="strFieldBarcode" labelId="strFieldBarcodeLocal"/>
+                <item name="strFieldBarcode2" labelId="strFieldBarcodeField"/>
+                <item name="strBarcode" labelId="strLabBarcode"/>
+                <item name="strNote" labelId="strComment"/>
+                <item name="strFreezer" labelId="strFreezerName"/>
+                <item name="idfAccesionByPerson" labelId="strFieldCollectedByPerson"/>
+                <item name="idfFieldCollectedByOffice" labelId="strFieldCollectedByOffice"/>
+                <item name="idfFieldCollectedByPerson" labelId="strFieldCollectedByPerson"/>
+                <item name="idfInDepartment" labelId="DepartmentName"/>
+            </labels>
+            <fields>
+              <storage name="NewObject" type="bool"/>
+              <storage name="IsNewAcceeded" type="bool"/>
+              <storage name="FilterByDiagnosis" type="bool"/>
+              <!--storage name="strBarcodeSaved" type="string"/-->
+              <storage name="strNoteSaved" type="string"/>
+              <storage name="Animals" type="EditableList&lt;LabSampleReceiveAnimal&gt;"/>
+              <storage name="Diagnosis" type="EditableList&lt;LabSampleReceiveDiagnosis&gt;"/>
+              <calculated name="IsAccessionAllowed" type="bool" depends="idfsAccessionCondition"
+                          lambda="c => c.AccessionCondition == null" />                
+              <calculated name="strAccessionByPerson" type="string" depends="idfAccesionByPerson"
+                          lambda='c => c.AccessionByPerson == null ? "" : c.AccessionByPerson.FullName' />
+              <calculated name="strAccessionCondition" type="string" depends="idfsAccessionCondition"
+                          lambda='c => c.AccessionCondition == null ? "" : c.AccessionCondition.name' />
+              <calculated name="CaseObjectIdent" type="string" depends="idfCase,idfMonitoringSession" lambda='c => "LabSampleReceive_" + (c.idfCase == null ? c.idfMonitoringSession + 1 : c.idfCase + 1) + "_"' />
+              <calculated name="strDepartment" type="string" depends="Department,idfInDepartment" lambda='c => c.Department == null ? "" : c.Department.name'/>
+              <calculated name="strFreezer" type="string" depends="Freezer,idfSubdivision" lambda='c => c.Freezer == null ? "" : c.Freezer.Path'/>
+              <calculated name="AnimalID" type="string" depends="idfParty,Animals"
+                          lambda='c => c.idfCase == null || c.Animals == null || c.Animals.Count == 0 || c.idfParty == null ? "" : c.Animals.Where(a => a.idfParty == c.idfParty).Single().strAnimalCode' />
+              <calculated name="Species" type="string" depends="SpeciesName,idfParty,Animals"
+                          lambda='c => c.Animals == null || c.Animals.Count == 0 || c.idfParty == null ? c.SpeciesName : c.Animals.Where(a => a.idfParty == c.idfParty).Single().strSpecies' />
+              <calculated name="CaseHACode" type="int?" depends="idfsCaseType"
+                          lambda="c => (c.idfsCaseType == (long)eidss.model.Enums.CaseTypeEnum.Human ? (int)HACode.Human :
+                                       (c.idfsCaseType == (long)eidss.model.Enums.CaseTypeEnum.Livestock ? (int)HACode.Livestock : 
+                                       (c.idfsCaseType == (long)eidss.model.Enums.CaseTypeEnum.Avian ? (int)HACode.Avian : 
+                                       (int)HACode.Livestock)))"/>
+            </fields>
+            <readonly>
+              <!--fields name="strBarcode,strNote" predicate="c => !c.IsNewAcceeded || c.idfsAccessionCondition == (long)AccessionConditionEnum.Rejected" /-->
+              <fields name="Animal,Spec,SampleType,FilterByDiagnosis,strFieldBarcode,datFieldCollectionDate,AccessionByPerson,idfFieldCollectedByOffice,idfFieldCollectedByPerson" predicate="c => !c.IsNew" />
+              <fields name="strBarcode,datAccession,strCondition,AccessionCondition,strNote,Department" predicate="c => !c.IsNewAcceeded" />
+              <fields name="*" predicate="c => true" />
+            </readonly>
+            <lookups>
+              <lookup name="SampleType" table="SampleTypeForDiagnosisLookup" source="idfsSpecimenType" target="idfsReference">
+                <filters>
+                  <filter predicate="c => (c.intHACode &amp; obj.CaseHACode) != 0 || c.idfsReference == obj.idfsSpecimenType"/>
+                  <filter predicate="c => !obj.FilterByDiagnosis ? 
+                                (
+                                    c.idfsDiagnosis == 0
+                                )
+                                :
+                                (
+                                    obj.Diagnosis
+                                        .Where(i => i.idfsSpeciesType == 0 || i.idfsSpeciesType == null || (obj.Animal != null &amp;&amp; i.idfsSpeciesType == obj.Animal.idfsSpeciesType))
+                                        .Any(i => i.idfsDiagnosis == c.idfsDiagnosis) 
+                                )"/>
+                  <filter predicate="c => c.idfsReference != (long)SampleTypeEnum.Unknown"/>
+                  <filter distinct="SampleTypeForDiagnosisLookupComparator" />
+                </filters>
+              </lookup>
+              <lookup name="AccessionCondition" table="BaseReference" section="rftAccessionCondition" source="idfsAccessionCondition" target="idfsBaseReference" />                
+                <lookup name="AccessionByPerson" table="PersonLookup" source="idfAccesionByPerson" target="idfPerson">
+                    <params>
+                        <param name="OfficeID" type="long" lambda="c => eidss.model.Core.EidssSiteContext.Instance.OrganizationID"/>
+                        <param name="ID" const="null" />
+                    </params>
+                </lookup>
+                <lookup name="Department" table="DepartmentLookup" source="idfInDepartment" target="idfDepartment" >
+                    <params>
+                        <param name="OrganizationID" type="long" lambda="c => eidss.model.Core.EidssSiteContext.Instance.OrganizationID"/>
+                        <param name="ID" const="null" />
+                    </params>
+                </lookup>
+                <lookup name="Freezer" table="FreezerTreeLookup" source="idfSubdivision" target="ID" />
+              <lookup name="Animal" table="LabSampleReceiveAnimal" existinglookup="Animals" source="idfParty" target="idfAnimal">
+                <filters>
+                  <filter predicate="c => c.idfAnimal != null"/>
+                </filters>
+              </lookup>
+              <lookup name="Spec" table="LabSampleReceiveAnimal" existinglookup="Animals" source="idfParty" target="idfSpecies">
+                <filters>
+                  <filter predicate="c => c.idfAnimal == null"/>
+                </filters>
+              </lookup>
+            </lookups>
+            <storage>
+                <post name="spLabSampleReceive_PostDetail"/>
+            </storage>
+            <extenders>
+              <creating>
+                <lambda_extender target="FilterByDiagnosis" type="bool" lambda="c => false"/>
+              </creating>
+              <loading>
+                <lambda_extender target="FilterByDiagnosis" type="bool" lambda="c => false"/>
+                <!--lambda_extender target="strBarcodeSaved" type="string" lambda="c => c.strBarcode"/-->
+                <lambda_extender target="strNoteSaved" type="string" lambda="c => c.strNote"/>
+              </loading>
+            </extenders>
+            <handlers>
+              <fieldhandler>
+                <lambda_handler target="strSpecimenName" field="idfsSpecimenType" type="string" lambda='c => c.SampleType == null ? "" : c.SampleType.name' />
+                <!--lambda_handler target="strBarcode" field="idfsAccessionCondition" type="string" lambda='c => c.idfsAccessionCondition == (long)AccessionConditionEnum.Rejected ? "" : c.strBarcodeSaved'/-->
+                <lambda_handler target="strNote" field="idfsAccessionCondition" type="string" lambda='c => c.idfsAccessionCondition == (long)AccessionConditionEnum.Rejected ? "" : c.strNoteSaved'/>
+                <!--lambda_handler target="strBarcodeSaved" field="strBarcode" type="string" lambda="c => string.IsNullOrEmpty(c.strBarcode) ? c.strBarcodeSaved : c.strBarcode"/-->
+                <lambda_handler target="strNoteSaved" field="strNote" type="string" lambda="c => string.IsNullOrEmpty(c.strNote) ? c.strNoteSaved : c.strNote"/>
+                <lambda_handler target="strFieldBarcode2" field="strFieldBarcode" type="string" lambda="c => c.strFieldBarcode"/>
+                <lookup_handler lookup="SampleType" field="FilterByDiagnosis" />
+                <lookup_handler lookup="SampleType" field="idfParty" />
+              </fieldhandler>
+            </handlers>
+            <validators>
+                <change>
+                    <!-- FieldCollectionDate≤FieldSentDate -->
+                    <predicate_validator field="datFieldCollectionDate" predicate="c => PredicateValidator.CompareDates(c.datFieldCollectionDate, c.datFieldSentDate)" message="Collection Date_Sent Date" />
+                    <predicate_validator field="datFieldSentDate" predicate="c => PredicateValidator.CompareDates(c.datFieldCollectionDate, c.datFieldSentDate)" message="Collection Date_Sent Date" />
+                    <!-- FieldSentDate≤AccessionDate -->
+                    <predicate_validator field="datFieldSentDate" predicate="c => PredicateValidator.CompareDates(c.datFieldSentDate, c.datAccession)" message="Date Sent_Accession Date" />
+                    <predicate_validator field="datAccession" predicate="c => PredicateValidator.CompareDates(c.datFieldSentDate, c.datAccession)" message="Date Sent_Accession Date" />
+                </change>
+                <post>
+                  <required_validator target="idfsSpecimenType" property="SampleType" />
+                  <required_validator target="Spec" property="Spec" label="Species" predicate="c => c.idfsCaseType == (long)eidss.model.Enums.CaseTypeEnum.Avian" />
+                  <required_validator target="Animal" property="Animal" label="AnimalID" predicate="c => c.idfsCaseType == null || c.idfsCaseType == (long)eidss.model.Enums.CaseTypeEnum.Livestock" />
+                  <required_validator target="strBarcode" label="strLabBarcode" predicate="c => c.IsNewAcceeded /*&amp;&amp; c.idfsAccessionCondition != (long)AccessionConditionEnum.Rejected*/" /> <!-- bugno 3788 -->
+                  <required_validator target="idfsAccessionCondition" property="AccessionCondition" predicate="c => c.IsNewAcceeded" />
+                  <required_validator target="datAccession" property="datAccession" predicate="c => c.IsNewAcceeded" />
+                  <required_validator target="strNote" field="strComments" label="strComments" predicate="c => c.IsNewAcceeded &amp;&amp; c.idfsAccessionCondition != (long)AccessionConditionEnum.AcceptedInGoodCondition" />
+                  <required_validator target="idfAccesionByPerson" property="AccessionByPerson" label="strFieldCollectedByPerson" predicate="c => c.IsNewAcceeded" />
+                </post>
+              <delete>
+                <predicate_validator predicate="c => c.idfsAccessionCondition == null || c.IsNew" message="msgCantDeleteRecord" />
+              </delete>
+            </validators>
+            <actions>
+                <action name="Create" type="Create">
+                  <run>
+                    <params>
+                      <param name="idfCase" type="long?"/>
+                      <param name="idfMonitoringSession" type="long?"/>
+                      <param name="idfsCaseType" type="long?"/>
+                      <param name="Animals" type="EditableList&lt;LabSampleReceiveAnimal&gt;"/>
+                      <param name="Diagnosis" type="EditableList&lt;LabSampleReceiveDiagnosis&gt;"/>
+                    </params>
+                    <creating>
+                      <lambda_extender target="idfCase" type="long?" lambda='c => idfCase' />
+                      <lambda_extender target="idfMonitoringSession" type="long?" lambda='c => idfMonitoringSession' />
+                      <lambda_extender target="idfsCaseType" type="long?" lambda='c => idfsCaseType' />
+                      <scalar_extender target="idfMaterial" class="GetNewIDExtender" />
+                      <lambda_extender target="datFieldCollectionDate" type="DateTime?" lambda="c => DateTime.Now.Date" />
+                      <lambda_extender target="datAccession" type="DateTime?" lambda="c => DateTime.Now.Date" />
+                      <lambda_extender target="Animals" type="EditableList&lt;LabSampleReceiveAnimal&gt;" lambda='c => Animals' />
+                      <lambda_extender target="Diagnosis" type="EditableList&lt;LabSampleReceiveDiagnosis&gt;" lambda='c => Diagnosis' />
+                    </creating>
+                    <created>
+                      <lambda_extender target="AccessionCondition" type="BaseReference" lambda="c => c.AccessionConditionLookup.Where(l => l.idfsBaseReference == (long)AccessionConditionEnum.AcceptedInGoodCondition).SingleOrDefault()"/>
+                      <lambda_extender target="AccessionByPerson" type="PersonLookup" lambda="c => c.AccessionByPersonLookup.Where(l => l.idfPerson == (long)EidssUserContext.User.EmployeeID).SingleOrDefault()"/>
+                      <db_lambda_extender target="strBarcode" type="string" lambda='(c,m) => 
+                            m.SetSpCommand("dbo.spGetNextNumber", (long)NumberingObjectEnum.Specimen, DBNull.Value, DBNull.Value)
+                            .ExecuteScalar&lt;string&gt;(ScalarSourceType.OutputParameter, "NextNumberValue")' />
+                      <lambda_extender target="IsNewAcceeded" type="bool" lambda="c => true"/>
+                    </created>
+                  </run>
+                </action>
+                <action name="AccessionIn" type="Action">
+                  <run>
+                    <preText>
+                        obj.AccessionCondition = obj.AccessionConditionLookup.Where(l => l.idfsBaseReference == (long)AccessionConditionEnum.AcceptedInGoodCondition).SingleOrDefault();
+                        obj.AccessionByPerson = obj.AccessionByPersonLookup.Where(l => l.idfPerson == (long)EidssUserContext.User.EmployeeID).SingleOrDefault();
+                        obj.strBarcode = manager.SetSpCommand("dbo.spGetNextNumber", (long)NumberingObjectEnum.Specimen, DBNull.Value, DBNull.Value)
+                            .ExecuteScalar&lt;string&gt;(ScalarSourceType.OutputParameter, "NextNumberValue");
+                        obj.datAccession = DateTime.Now;
+                        obj.IsNewAcceeded = true;
+                        return true;
+                    </preText>
+                  </run>
+                </action>
+            </actions>
+        </table>
+    <table name="LabSampleReceiveAnimal" tostring="c => c.idfAnimal == null ? c.strSpecies : c.strAnimalCode">
+    </table>
+    <table name="LabSampleReceiveAntibiotic">
+    </table>
+    <table name="LabSampleReceiveVector">
+    </table>
+    <table name="LabSampleReceiveDiagnosis">
+      <keys>
+        <key name="idfsDiagnosis"/>
+      </keys>
+    </table>
+  </tables>
+
+</object>

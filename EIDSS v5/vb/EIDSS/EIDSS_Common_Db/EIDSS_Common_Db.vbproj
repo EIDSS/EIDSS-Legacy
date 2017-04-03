@@ -1,0 +1,945 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B66DEB84-FBE3-44E4-9B72-1E459CE0E50D}</ProjectGuid>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>eidss_db</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyMode>None</AssemblyOriginatorKeyMode>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionStrict>On</OptionStrict>
+    <RootNamespace>EIDSS</RootNamespace>
+    <StartupObject>EIDSS.%28None%29</StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <MyType>Windows</MyType>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <TargetFrameworkProfile />
+    <PublishUrl>http://localhost/eidss_db/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>..\..\..\eidss.main\bin\Debug\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>..\..\..\eidss.main\bin\Release\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032,42353,42354,42355</NoWarn>
+    <DebugType>Full</DebugType>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Management">
+      <Name>System.Management</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\..\..\bv.common\bv.common.csproj">
+      <Project>{BEE76B17-720D-4B65-996A-5712912B3ACF}</Project>
+      <Name>bv.common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\bv.model\bv.model.csproj">
+      <Project>{9067327E-1960-4326-ACB9-D982DDBEAA76}</Project>
+      <Name>bv.model</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\eidss.core\eidss.core.csproj">
+      <Project>{BF545ECD-F673-4C71-9362-57C01DF13062}</Project>
+      <Name>eidss.core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\bv_common\bvcommon.vbproj">
+      <Project>{BA2844A8-F629-4B02-ACD6-B60063E4D27F}</Project>
+      <Name>bvcommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\bv_dbcommon\bvdb_common.vbproj">
+      <Name>bvdb_common</Name>
+      <Project>{6C48BB93-277D-4804-B280-F6130E29EB81}</Project>
+      <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EIDSS_Common\EIDSS_Common.vbproj">
+      <Name>EIDSS_Common</Name>
+      <Project>{119CC05A-2F6C-4FC8-AC74-79BB76E3C1C0}</Project>
+      <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="bv.common" />
+    <Import Include="bv.common.Core" />
+    <Import Include="bv.common.db" />
+    <Import Include="bv.common.db.Core" />
+    <Import Include="bv.common.Diagnostics" />
+    <Import Include="bv.common.Objects" />
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\EIDSSAssemblyInfo.vb">
+      <Link>EIDSSAssemblyInfo.vb</Link>
+    </Compile>
+    <Compile Include="AggregateCase\AggregateHeader_DB.vb" />
+    <Compile Include="AggregateCase\AggregateSummary_DB.vb" />
+    <Compile Include="AssemblyInfo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CasePanels\CaseSamples_Db.vb" />
+    <Compile Include="CasePanels\CaseTestsDetail_Db.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\EIDSS_DbUtils.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\EIDSS_SettingsService.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\EIDSS_SiteService.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\NumberingService.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\StringIDGenerator.vb" />
+    <Compile Include="Dialogs\AddressSelectDialog_DB.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dialogs\Address_DB.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dialogs\ExactLocation_Db.vb" />
+    <Compile Include="Dialogs\LocationSelectDialog_DB.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dialogs\Location_DB.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dialogs\Rayon_DB.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dialogs\Settlement_DB.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dialogs\TestResult2Test_DB.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Event Log\Event_DB.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Event Log\NotificationSubscription_DB.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Event Log\SecurityEventLog_DB.vb" />
+    <Compile Include="Notification\EmNotify_DB.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Notification\NotificationManager.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Notification\ServiceConfiguration.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Outbreak\Outbreak_DB.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Update\UpdateMessenger.vb" />
+    <Content Include="Database_V3\Functions\dbo.fnAddressAsRow.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnAlphaNumeric.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnContainerList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnCreateAddressString.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnCreateExactPointString.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnCreateGeoLocationString.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnCreateRelativePointString.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnDepartment.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnGeoLocationAsRow.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnGeoLocationString.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnGetContext.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnGetLanguageCode.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnGisReference.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnInstitution.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnReference.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnSiteID.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnSiteOption.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnUserID.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fn_BatchTest_SelectList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fn_Event_SelectList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fn_LabTest_SelectList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fn_Outbreak_SelectList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fn_Sample_SelectList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fn_VetCase_SelectList.UDF" />
+    <Content Include="Database_V3\Procedures\dbo.spAddress_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAddress_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAudit_CreateNewEvent.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAvianFarmProduction_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAvianFarmProduction_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spBaseReference_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spBaseReference_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spBaseReference_SysPost.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spClearContextData.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spCountry_SelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spDepartment_Delete.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spDepartment_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spDiagnosis_SelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spEventLog_CheckProcessed.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spEventLog_CreateNewEvent.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spEventLog_IsNtfyServiceRunning.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spEventLog_IsSubscribed.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spEventLog_MarkAsProcessed.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spEventLog_MarkAsProcessedBatch.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spEventLog_SelectNewEvents.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spEventLog_SubscribeToAllEvents.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spFarmPanel_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spFarmPanel_PostOwnerData.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spFarmPanel_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spGeoLocation_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spGeoLocation_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spGetNextAliquotNumber.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spGetNextNumber.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spGetNextNumberRange.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spGetSiteInfo.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spgisGetNewID.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spHACode_SelectCheckList.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabSampleAliquote_Create.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabSampleDerivative_Create.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabSampleReceive_ModifyCase.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabSampleReceive_PostDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabSampleReceive_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabSampleVariant_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabSample_Create.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLivestockFarmProduction_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLivestockFarmProduction_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLocalSiteOptions_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLookupTables_GetModified.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spMeasureReference_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spMeasureReference_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spNextNumbers_Init.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spNextNumber_Init.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spNotificationSubscription_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spNotificationSubscription_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spOrganization_CanDelete.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spOrganization_Delete.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spOrganization_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spOrganization_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spOrganization_SelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spOutbreak_CanDelete.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spOutbreak_Delete.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spOutbreak_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spOutbreak_PostCaseList.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spOutbreak_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spOutbreak_SelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spPerson_Delete.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spPerson_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spPerson_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spPerson_SelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spPostalCode_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spPostalCode_SelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spProphilacticActionList_SelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spRayon_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spRayon_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spRayon_SelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spRayon_Validate.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spReference_SelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spRegion_SelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spSanitaryActionList_SelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spSetContext.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spSetContextData.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spSettlement_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spSettlement_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spSettlement_SelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spSettlement_Validate.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spStatisticType_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spStatisticType_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spStreet_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spStreet_SelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spStringTranslation_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spsysGetNewID.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spTempCreateAccount.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spTempCreateSite.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spTempCreateUser.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spTestResult2Test_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spTestResult2Test_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spVetCase_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spVetCase_SelectDetail.PRC" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Database_V3\Functions\dbo.fnAggregateSettings.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnAnimalList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnCanCaseBeAddedToOutbreak.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnCreateNameString.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnCurrentCountry.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnEvaluatePermissions.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnFFGetFullPathBySections.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnGetPermissionOnDiagnosis.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnGetPermissionOnHumanCase.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnGetPermissionOnObjectOrType.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnGetPermissionOnOutbreak.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnGetPermissionOnSample.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnGetPermissionOnSite.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnGetPermissionOnVetCase.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnGisExtendedReference.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnIsCaseInOutbreak.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnMaterialList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnPolicyDefaultValue.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnPolicyValue.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnReferenceLookup.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnReferenceWithNoneValue.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnReference_Full.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnSiteType.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnsysGetColumnExtendedProperty.udf" />
+    <Content Include="Database_V3\Functions\dbo.fnsysSplitList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnTestList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnTriggersWork.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnWebAddressTable.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnWebAnimalsList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnWebHumanCaseList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnWebHumanCaseListEx.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnWebSampleList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnWebTestList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnWebVetCaseList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnWeekDatediff.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnWeekDatepart.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fn_AggregateCase_SelectList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fn_CaseSamples.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fn_Farm_SelectList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fn_HumanCase_SelectList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fn_NextNumbers_SelectList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fn_ObjectActorRelations.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fn_Organization_SelectList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fn_Person_SelectList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fn_RepositorySchema.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fn_RepositoryScheme_SelectList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fn_SampleDestruction_SelectList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fn_SampleTransfer_SelectList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fn_SiteActivationServer_SelectList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fn_Statistic_SelectList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fn_SystemFunction_SelectList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fn_UserGroup_SelectList.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fn_UsersAndGroups_SelectList.UDF" />
+    <Content Include="Database_V3\Functions\Ram\Query\dbo.fnAsGetFFFrom.UDF" />
+    <Content Include="Database_V3\Functions\Ram\Query\dbo.fnAsGetFrom.UDF" />
+    <Content Include="Database_V3\Functions\Ram\Query\dbo.fnAsGetFullJoinFrom.UDF" />
+    <Content Include="Database_V3\Procedures\dbo.spAggregateCaseExists.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAggregateCaseHeader_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAggregateCaseHeader_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAggregateCaseSummary_GetObservationsList.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAggregateCase_Delete.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAggregateCase_GetStartupParameters.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAggregateCase_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAggregateDiagnosticActionMatrix_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAggregateDiagnosticActionMatrix_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAggregateHumanCaseMatrix_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAggregateHumanMatrix_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAggregateMatrixVersionHeader_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAggregateMatrixVersion_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAggregateMatrixVersion_SelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAggregateObservation_GetMatrixVersion.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAggregateProphylacticActionMatrix_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAggregateProphylacticActionMatrix_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAggregateSanitaryActionMatrix_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAggregateSanitaryActionMatrix_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAggregateSettings_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAggregateSettings_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAggregateVetCaseMatrix_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAggregateVetCaseMatrix_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAnimalAgeList_SelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAvianFarmDetail_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAvianFarmDetail_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spCaseSamples_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spCaseTestsValidation_Update.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spCaseTests_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spCase_DiagnosisList.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spChangePassword.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spCheckPermission.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spCheckVersion.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spDepartment_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spDepartment_SelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spDiagnosisReference_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spDiagnosisReference_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spEvaluatePermissions.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spEventLog_EventForObjectExists.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spEvent_GetCaseType.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spEvent_GetOutbreakType.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spFarm_CanDelete.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spFarm_Delete.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spFarm_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spFarm_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spFreezerSubdivision_Validate.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spFreezerTree.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spGeoLocation_CreateCopy.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spGetBarcodeRange.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spGetContextData.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spGetDataAuditEvent.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spGetQueryPage.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spHumanCaseSamples_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabBatch_AddTest.prc" />
+    <Content Include="Database_V3\Procedures\dbo.spLabBatch_Create.prc" />
+    <Content Include="Database_V3\Procedures\dbo.spLabBatch_Finalize.prc" />
+    <Content Include="Database_V3\Procedures\dbo.spLabBatch_RemoveTest.prc" />
+    <Content Include="Database_V3\Procedures\dbo.spLabBatch_SelectDetail.prc" />
+    <Content Include="Database_V3\Procedures\dbo.spLabBatch_Update.prc" />
+    <Content Include="Database_V3\Procedures\dbo.spLabExtBatch_Create.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabSampleDestruction_Delete.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabSampleDestruction_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabSampleDestruction_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabSampleOnSite.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabSampleReceive_CheckCase.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabSampleTransfer_Create.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabSampleTransfer_Manage.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabSampleTransfer_Receive.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabSampleTransfer_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabSampleTransfer_Send.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabSampleTransfer_Update.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabSample_Delete.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabSample_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabSample_Store.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabSample_Update.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabTestAssign_SelectList.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabTest_CanDelete.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabTest_Create.prc" />
+    <Content Include="Database_V3\Procedures\dbo.spLabTest_Delete.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabTest_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabTest_Update.prc" />
+    <Content Include="Database_V3\Procedures\dbo.spLoginChallenge.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLoginUser.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLoginUserInternal.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLogin_Validate.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLogSecurityEvent.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spMaterialForDisease_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spMaterialForDisease_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spNextNumbers_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spNextNumbers_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spNotification_Create.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spNotification_GetCount.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spNotification_Process.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spNotification_SelectUnprocessed.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spObjectAccess.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spObjectAccess_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spObjectTypeTree.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spObjectTypeTree_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spObservation_Delete.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spPatient_SelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spPensideTestResult_SelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spPensideTests_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spPensideTest_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spRepositoryScheme_CanDelete.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spRepositoryScheme_Delete.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spRepositoryScheme_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spRepository_SelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spSecurityPolicy_List.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spSecurityPolicy_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spSetPassword.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spSettlementType_SelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spSiteActivationServer_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spSiteActivationServer_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spSite_GetChildSites.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spSite_GetParentSite.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spSite_SelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spSpecCreateTriggers2.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spStatistic_Delete.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spStatistic_Exists.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spStatistic_GetAreaType.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spStatistic_GetDataType.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spStatistic_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spStatistic_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spsysBaseReferenceToCountry_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spsysBaseReference_Delete.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spsysWriteExtPropertiesForTable.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spTempSetupSite.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.sptemp_CreateVetCase.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spTestResult_SelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spUserGroup.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spUserGroupContent.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spUserGroupContent_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spUserGroup_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spUser_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spVaccination_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spVaccination_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spVetAggregateAction_Delete.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spVetAggregateAction_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spVetAggregateCase_Delete.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spVetAggregateCase_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spVetCaseAnimals_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spVetCaseAnimals_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spVetCaseLog_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spVetCaseLog_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spVetCase_CanDelete.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spVetCase_Delete.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spVetFarmTree_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spVetFarmTree_SelectDetail.PRC" />
+    <Content Include="Database_V3\Functions\dbo.fn_SetMinMaxTime.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnRepGetHumanCaseProperties.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnAddressString.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnRepGetAggParams.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnJoinPersonName.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnRepGetVetCaseProperties.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnRepGetHumanCaseForAge.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnLocalReference.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnTestListOptimized.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnSampleListOptimized.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnBaseReferenceCode.UDF" />
+    <None Include="Database_V3\Functions\dbo.fnFFCheckForRemoveParameter.udf" />
+    <None Include="Database_V3\Functions\dbo.fnFFCheckForRemoveParameterFixedPresetValue.udf" />
+    <None Include="Database_V3\Functions\dbo.fnFFCheckForRemoveParameterType.udf" />
+    <None Include="Database_V3\Functions\dbo.fnFFCheckForRemoveSection.udf" />
+    <None Include="Database_V3\Functions\dbo.fnFFGetDesignLanguageForLabel.UDF" />
+    <None Include="Database_V3\Functions\dbo.fnFFTemplateHasMandatoryFields.udf" />
+    <None Include="Database_V3\Functions\dbo.fnFiltered_FullSiteList.UDF" />
+    <None Include="Database_V3\Functions\dbo.fnFiltered_RayonOrganizationList.UDF" />
+    <None Include="Database_V3\Functions\dbo.fnFiltered_SiteList.UDF" />
+    <None Include="Database_V3\Functions\dbo.fnVetCaseGetShowDiagnosis.UDF" />
+    <None Include="Database_V3\Functions\Ram\Query\dbo.fnAsGetSearchCondition.PRC" />
+    <None Include="Database_V3\Functions\Ram\Query\dbo.fnAsGetSearchOperator.UDF" />
+    <None Include="Database_V3\Functions\Ram\Query\dbo.fnAsGetSearchValue.UDF" />
+    <Content Include="Database_V3\Procedures\dbo.spAddress_SelectDetailFull.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spSampleTypeReference_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spSampleTypeReference_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spSpeciesTypeReference_Post.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spSpeciesTypeReference_SelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spAvianFarmDetailAndCopy_Post.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepVetSanitarySelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabSample_CheckAccession.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabSample_MaterialExists.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spLabSample_BarcodeExists.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spAggregateMatrixVersion_CorrectDefault.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spASCampaign_ContainsDiagnosis.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spBaseReference_CanDelete.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spCaseSamples_Post.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spDiagnosis_CanClearHACode.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetDeterminantTypes.prc" />
+    <None Include="Database_V3\Procedures\dbo.spLabSample_CheckAccessionForSpecies.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spOutbreak_PopulateCaseInfo.prc" />
+    <None Include="Database_V3\Procedures\dbo.spspecGetFromTranslation.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spSpeciesTypeReference_CanDelete.prc" />
+    <None Include="Database_V3\Procedures\dbo.spSampleTypeReference_CanDelete.prc" />
+    <None Include="Database_V3\Procedures\dbo.spAgeForSpecies_Post.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spAgeForSpecies_SelectDetail.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spASCampaign_CanRemoveDiagnosis.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spASCampaign_HasSession.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spAsSessionAction_Post.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spAsSessionAction_SelectDetail.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spASSession_AddAnimalToCase.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spASSession_CanDelete.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spASSession_CreateCase.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spASSession_CreateCaseForDiagnosis.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spASSession_Delete.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spASSession_PopulateFarmData.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spChangeDiagnosisHistory_Post.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spChangeDiagnosisHistory_SelectDetail.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spDerivativeForSampleType_Post.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spDerivativeForSampleType_SelectDetail.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetFormTemplate.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spFiltered_CheckAggCase.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spFiltered_CheckASS.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spFiltered_CheckBatchTest.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spFiltered_CheckDataAudit.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spFiltered_CheckEvent.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spFiltered_CheckExternalBatch.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spFiltered_CheckGeoLocation.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spFiltered_CheckHumanCase.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spFiltered_CheckNotification.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spFiltered_CheckNotificationPost.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spFiltered_CheckObservation.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spFiltered_CheckOutbreak.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spFiltered_CheckParty.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spFiltered_CheckTransferIN.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spFiltered_CheckTransferOut.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spFiltered_CheckVetCase.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spLabDerivativeTypes.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spspecInsertToTranslation.PRC" />
+    <None Include="Database_V3\Procedures\dbo.sptemp_GetVetCaseParams.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spWebHumanCaseDetail.PRC" />
+    <Content Include="Database_V3\Procedures\dbo.spWebVetCaseDetail.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepASSession.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepASSessionFarm.PRC" />
+    <None Include="Database_V3\Procedures\GIS\dbo.spGisSetWKBSettlement.PRC" />
+    <None Include="Database_V3\Procedures\Ram\Lookup\dbo.spAsPopulationGenderStatisticsSelectLookup.PRC" />
+    <None Include="Database_V3\Procedures\Ram\Lookup\dbo.spAsPopulationStatisticsSelectLookup.PRC" />
+    <None Include="Database_V3\Procedures\Ram\Lookup\dbo.spAsSearchTableSelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepHumAnnualInfectiousDisease.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepHumMonthlyInfectiousDisease.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepHumMonthlyInfectiousDiseaseFatal.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepHumAntibioticResistanceCard.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepVetPreventiveMeasures.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepHumSerologyResearchCard.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepHumMicrobiologyResearchCard.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepVetProphilacticMeasures.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepJournal60B.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepHumFormN1Header.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepHumFormN1InfectiousDiseases.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepVetDiagnosisInvDiagnosisSelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepVetDiagnosisInvSpeciesSelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepVetDiagnosisInvTypeSelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepVetProphylacticDiagnosisSelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepVetProphylacticSpeciesSelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepVetProphylacticTypeSelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepHumFormN1Location.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepHumInfectiousAddressHeader.PRC" />
+    <None Include="Database_V3\Procedures\Reports\dbo.spRepVetPlannedDiagnosticTests.PRC" />
+    <None Include="Database_V3\Procedures\Reports\dbo.spRepVetPlannedDiagnosticTests_Country.PRC" />
+    <None Include="Database_V3\Procedures\Reports\dbo.spRepVetPreventiveMeasures_Country.PRC" />
+    <None Include="Database_V3\Procedures\Reports\dbo.spRepVetProphilacticMeasures_Country.PRC" />
+    <None Include="Database_V3\Procedures\Updater\dbo.spEIDSSUpdate_GetCurrentLanguage.prc" />
+    <None Include="Database_V3\Procedures\Updater\dbo.spEIDSSUpdate_CanRunApplication.prc" />
+    <None Include="Database_V3\Procedures\Updater\dbo.spEIDSSUpdate_CanStartUpdate.prc" />
+    <None Include="Database_V3\Procedures\Updater\dbo.spEIDSSUpdate_CanUpdateBlock.prc" />
+    <None Include="Database_V3\Procedures\Updater\dbo.spEIDSSUpdate_CreateRunningApps.prc" />
+    <None Include="Database_V3\Procedures\Updater\dbo.spEIDSSUpdate_CreateUpdateBlock.prc" />
+    <None Include="Database_V3\Procedures\Updater\dbo.spEIDSSUpdate_DeleteRunningApps.prc" />
+    <None Include="Database_V3\Procedures\Updater\dbo.spEIDSSUpdate_DeleteUpdateBlock.prc" />
+    <None Include="Database_V3\Procedures\Updater\dbo.spEIDSSUpdate_GetRunningApps.prc" />
+    <None Include="Database_V3\Procedures\Updater\dbo.spEIDSSUpdate_ManageUsers.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFarmTree_CreateCopy.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spFarm_CreateCopy.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spHumanCaseDeduplicationLinks_Post.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spHumanCaseDeduplicationMaterial_Post.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spHumanCaseDeduplicationMaterial_SelectDetail.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spHumanCaseDeduplication_SelectDetail.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spRootFarmTree_Post.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spRootFarmTree_SelectDetail.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spsysUpdateTableAndColumnListForAudit.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spUserGroup_Delete.PRC" />
+    <None Include="Database_V3\Procedures\GIS\dbo.spGisDeleteUserLayer.PRC" />
+    <None Include="Database_V3\Procedures\GIS\dbo.spGisInsertUserFeature.PRC" />
+    <None Include="Database_V3\Procedures\GIS\dbo.spGisInsertUserLayer.PRC" />
+    <None Include="Database_V3\Procedures\GIS\dbo.spGisLocalizedLabels.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepGetBaseParameters.PRC" />
+    <Content Include="Database_V3\Procedures\Ram\Layout\dbo.spAsGetPredefinedReports.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepHumChangedDiagnosis.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepUniEventLog.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepHumMonthlyMorbidityMortality.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepVetYearlyVeterinarySituation.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepHumSummaryOfInfectionDiseases.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepHumNotificationForm.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepHumCaseForm.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepHumTherapy.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepGetAggSumParamAdmUnit.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepUniOutbreakReport.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepLimBatchTest.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepLimCaseTests.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepLimCaseTestsValidation.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepLimContainerContent.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepLimContainerLocation.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepLimTestResults.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepLimSampleTransferForm.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepLimLabSampleReceive.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepVetYearSampleCountReport.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepVetYearSampleReportBySampleType.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepVetSamplesReportbySampleTypesWithinRegions.PRC" />
+    <None Include="Database_V3\Functions\dbo.fnFFCheckForRemoveTemplate.udf" />
+    <None Include="Database_V3\Functions\dbo.fnFFCheckForSaveTemplateDeterminants.udf" />
+    <None Include="Database_V3\Functions\dbo.fnFFCheckForTemplateHasObservations.udf" />
+    <None Include="Database_V3\Functions\dbo.fnFFGetDesignLanguageForParameter.UDF" />
+    <None Include="Database_V3\Functions\dbo.fnFFGetDesignLanguageForSection.UDF" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepHumCaseFormContacts.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepHumCaseFormSpecimens.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepVetAvianCase.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepVetLivestockCase.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepVetHerdDetails.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepVetVaccination.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepVetDiagnosis.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepVetPensideTestsList.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepVetSamplesCollectionAvian.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepVetSamplesCollectionLivestock.PRC" />
+    <None Include="Database_V3\Functions\dbo.fnFFGetTypeActivityParameters.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnFirstHumanCase.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnHumanCaseCount.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnHumanCaseIDByNumber.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnHumanCaseNumber.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnLastHumanCase.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnNextHumanCaseID.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fnPrevHumanCaseID.UDF" />
+    <Content Include="Database_V3\Functions\dbo.fn_Patient_SelectList.UDF" />
+    <None Include="Database_V3\Functions\dbo.fnGetPasswordHash.UDF" />
+    <None Include="Database_V3\Functions\dbo.fn_ASCampaign_SelectList.UDF" />
+    <None Include="Database_V3\Functions\dbo.fn_ASSession_SelectList.UDF" />
+    <None Include="Database_V3\Functions\dbo.fn_DataAudit_SelectList.UDF" />
+    <None Include="Database_V3\Functions\dbo.fn_HumanCaseDeduplication_SelectList.UDF" />
+    <None Include="Database_V3\Functions\dbo.fnDateCutTime.UDF" />
+    <None Include="Database_V3\Functions\dbo.fnDateUpLimit.UDF" />
+    <None Include="Database_V3\Functions\dbo.fn_SecurityEventLog_SelectList.UDF" />
+    <None Include="Database_V3\Functions\dbo.fn_Settlement_SelectList.UDF" />
+    <None Include="Database_V3\Procedures\dbo.spASCampaign_SelectLookup.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spASFarmTree_Post.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spASFarmTree_SelectDetail.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spASSessionAnimals_Post.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spASSessionAnimals_SelectDetail.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spASSessionDiagnosis_Post.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spASSessionFarms_Post.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spASSession_PopulateCampaignData.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spASSession_Post.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spASSession_SelectDetail.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spCanDelete.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spAntimicrobialTherapy_Delete.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spAntimicrobialTherapy_Post.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spAntimicrobialTherapy_SelectDetail.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spASCampaignDiagnosis_Post.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spASCampaign_CanClose.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spASCampaign_CanDelete.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spASCampaign_Delete.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spASCampaign_Post.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spASCampaign_SelectDetail.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spContactedCasePerson_Post.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spContactedCasePerson_SelectDetail.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spDataAudit_SelectDetail.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spDiagnosis_CanDelete.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spFarm_CreateRootCopy.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetActivityParameters.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetActualTemplate.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetDeterminants.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetFormTypes.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetHACodeList.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetLabels.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetLines.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetObservations.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetParameterEditors.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetParameterFixedPresetValue.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetParameterReferenceType.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetParameters.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetParametersDeletedFromTemplate.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetParameterSelectList.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetParametersSearch.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetParameterTemplate.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetPredefinedStub.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetReferenceTypes.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetReferenceTypesList.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetRuleConstant.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetRuleFunctions.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetRuleParameterForAction.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetRuleParameterForFunction.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetRules.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetSections.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetSectionTemplate.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetTemplateDeterminantValues.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetTemplates.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFGetTemplatesByParameter.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFParameterUsed.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFRemoveActivityParameters.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFRemoveLabel.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFRemoveLine.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFRemoveParameter.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFRemoveParameterFixedPresetValue.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFRemoveParameterReferenceType.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFRemoveParameterTemplate.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFRemoveRule.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFRemoveRuleConstant.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFRemoveRuleParameterForAction.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFRemoveRuleParameterForFunction.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFRemoveSection.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFRemoveSectionTemplate.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFRemoveSectionTemplateRecursive.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFRemoveTemplate.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFRemoveTemplateDesignOptions.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFRemoveTemplateDeterminantValues.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFSaveActivityParameters.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFSaveLabel.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFSaveLine.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFSaveParameterDesignOptions.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFSaveParameterFixedPresetValue.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFSaveParameterReferenceType.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFSaveParameters.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFSaveParameterTemplate.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFSaveRuleConstant.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFSaveRuleParameterForAction.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFSaveRuleParameterForFunction.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFSaveRules.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFSaveSectionDesignOptions.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFSaveSections.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFSaveSectionTemplate.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFSaveSectionTemplateRecursive.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFSaveTemplate.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFSaveTemplateDeterminantValues.prc" />
+    <None Include="Database_V3\Procedures\dbo.spFFSectionUsed.prc" />
+    <None Include="Database_V3\Procedures\dbo.spHumanCase_CanDelete.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spHumanCase_Delete.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spHumanCase_Post.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spHumanCase_SelectDetail.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spLabSample_Post.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spObservation_Post.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spOutbreak_PostNotes.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spPatientInformation_SelectLookup.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spPatient_CanDelete.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spPatient_CreateCopyOfRoot.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spPatient_Delete.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spPatient_Post.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spPatient_SelectDetail.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spPerson_CanDelete.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spProphylacticAction_CanDelete.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spSanitaryAction_CanDelete.prc" />
+    <None Include="Database_V3\Procedures\dbo.spSettlement_CanDelete.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spSettlement_Delete.PRC" />
+    <None Include="Database_V3\Procedures\dbo.sptemp_CreateVetCaseParams.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spTestForDisease_Post.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spTestForDisease_SelectDetail.PRC" />
+    <None Include="Database_V3\Procedures\dbo.spThrowException.prc" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepVetGetObservations.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepGetNumberNameList.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepGetBarcode.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepGetSampleBarcode.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepDeleteBarcodeLayout.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepGetBarcodeLayout.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepPostBarcodeLayout.PRC" />
+    <Content Include="Database_V3\Procedures\Ram\Lookup\dbo.spAsLayoutSelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\Ram\Lookup\dbo.spAsQuerySelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\Ram\Lookup\dbo.spAsAggregateFunctionSelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\Ram\Lookup\dbo.spAsQuerySearchFieldSelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\Ram\Layout\dbo.spAsLayoutPost.PRC" />
+    <Content Include="Database_V3\Procedures\Reports\dbo.spRepLimBatchTestDetails.PRC" />
+    <Content Include="Database_V3\Procedures\Ram\Layout\dbo.spAsLayoutSelectDetail.PRC" />
+    <Content Include="Database_V3\Procedures\Ram\Layout\dbo.spAsLayoutSelectAggregateDetail.PRC" />
+    <Content Include="Database_V3\Procedures\Ram\System\dbo.spAsReferencePost.PRC" />
+    <Content Include="Database_V3\Procedures\Ram\Layout\dbo.spAsLayout_Delete.PRC" />
+    <Content Include="Database_V3\Procedures\Ram\System\dbo.spAsReferenceDelete.PRC" />
+    <Content Include="Database_V3\Procedures\Ram\Layout\dbo.spAsLayoutAggregatePost.PRC" />
+    <Content Include="Database_V3\Procedures\Ram\Lookup\dbo.spAsFolderSelectLookup.PRC" />
+    <Content Include="Database_V3\Procedures\Ram\Layout\dbo.spAsFolderPost.PRC" />
+    <Content Include="Database_V3\Procedures\Ram\Layout\dbo.spAsFolderDelete.PRC" />
+    <Content Include="Database_V3\Procedures\Ram\Layout\dbo.spAsLayoutParentPost.PRC" />
+    <None Include="Database_V3\Procedures\GIS\dbo.spGisUpdateUserFeature.PRC" />
+    <None Include="Database_V3\Procedures\GIS\dbo.spGisUpdateUserLayer.PRC" />
+    <Content Include="Database_V3\Procedures\Ram\Layout\dbo.spAsLayoutPublish.PRC" />
+    <Content Include="Database_V3\Procedures\Ram\Layout\dbo.spAsFolderPublish.PRC" />
+    <None Include="Database_V3\Procedures\Ram\Layout\dbo.spAsFolderMakeLocal.PRC" />
+    <None Include="Database_V3\Procedures\Ram\Layout\dbo.spAsLayoutMakeLocal.PRC" />
+    <Content Include="Database_V3\Procedures\Ram\Lookup\dbo.spAsGisSelectLookup.PRC" />
+    <None Include="Database_V3\Procedures\Ram\Lookup\dbo.spAsParameterSelectLookup.PRC" />
+    <None Include="Database_V3\Procedures\Ram\Lookup\dbo.spAsSearchFieldSelectLookup.PRC" />
+    <None Include="Database_V3\Procedures\Ram\Lookup\dbo.spAsSearchObjectToSearchObject_SelectLookup.PRC" />
+    <None Include="Database_V3\Procedures\Ram\Lookup\dbo.spAsSearchObject_SelectLookup.PRC" />
+    <None Include="Database_V3\Procedures\Ram\Query\dbo.spAsQueryMakeLocal.PRC" />
+    <None Include="Database_V3\Procedures\Ram\Query\dbo.spAsQuerySearchObjectMakeLocal.PRC" />
+    <None Include="Database_V3\Procedures\Ram\Query\dbo.spAsQuerySearchObjectPublish.PRC" />
+    <None Include="Database_V3\Procedures\Ram\Query\dbo.spAsQueryPublish.PRC" />
+    <None Include="Database_V3\Procedures\Ram\Query\dbo.spAsQueryConditionGroup_Post.PRC" />
+    <None Include="Database_V3\Procedures\Ram\Query\dbo.spAsQueryFunction_Post.PRC" />
+    <None Include="Database_V3\Procedures\Ram\Query\dbo.spAsQuerySearchFieldCondition_Post.PRC" />
+    <None Include="Database_V3\Procedures\Ram\Query\dbo.spAsQuerySearchField_Post.PRC" />
+    <None Include="Database_V3\Procedures\Ram\Query\dbo.spAsQuerySearchObject_DeleteConditions.PRC" />
+    <None Include="Database_V3\Procedures\Ram\Query\dbo.spAsQuerySearchObject_Post.PRC" />
+    <None Include="Database_V3\Procedures\Ram\Query\dbo.spAsQuerySearchObject_SelectConditionGroupTree.PRC" />
+    <None Include="Database_V3\Procedures\Ram\Query\dbo.spAsQuerySearchObject_SelectDetail.PRC" />
+    <None Include="Database_V3\Procedures\Ram\Query\dbo.spAsQuerySearchObject_SelectFieldList.PRC" />
+    <None Include="Database_V3\Procedures\Ram\Query\dbo.spAsQuery_Post.PRC" />
+    <None Include="Database_V3\Procedures\Ram\Query\dbo.spAsQuery_SelectDetail.PRC" />
+    <None Include="Database_V3\Procedures\Ram\Query\dbo.spAsQuery_SelectObjectTree.PRC" />
+    <None Include="Database_V3\Procedures\Ram\Query\dbo.spQuery_CanDelete.PRC" />
+    <None Include="Database_V3\Procedures\Ram\Query\dbo.spQuery_Delete.PRC" />
+    <None Include="Database_V3\Procedures\Reports\dbo.spRepGetFreezerBarcode.PRC" />
+    <None Include="Database_V3\Procedures\Updater\dbo.spEIDSSUpdate_RemoveApplications.prc" />
+    <None Include="Database_V3\Scripts\Avian Flu Template.sql" />
+    <None Include="Database_V3\Scripts\CreateUNITemplates.sql" />
+    <None Include="Database_V3\Scripts\FillFFParameter.sql" />
+    <None Include="Database_V3\Scripts\FillFFParameterPresetValues.sql" />
+    <None Include="Database_V3\Scripts\FillFFParameterType.sql" />
+    <None Include="Database_V3\Scripts\FillFFSections.sql" />
+    <None Include="Database_V3\Scripts\Vet Cases for CDR.sql" />
+    <None Include="Database_V3\Triggers\dbo.trtlbMaterial_Calculate.TRG" />
+    <None Include="Database_V3\Triggers\dbo.trtlbHuman_Calculate.TRG" />
+    <None Include="Database_V3\Views\dbo.vwAreaInfo.sql" />
+    <None Include="Migrated rules for EIDSS_Common_Db.ruleset" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Database_V3\Functions\Ram\PredefinedReports\" />
+    <Folder Include="My Project\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

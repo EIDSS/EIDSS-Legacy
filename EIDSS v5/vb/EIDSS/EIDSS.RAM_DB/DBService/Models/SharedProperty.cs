@@ -1,0 +1,30 @@
+namespace EIDSS.RAM_DB.DBService.Models
+{
+    public enum SharedProperty
+    {
+        ChartDataVertical,
+        QueryResult,
+        SelectedQueryId,
+        SelectedLayoutId,
+        SelectedFolderId,
+        ShowAllItems,
+        StandardReports,
+        StartUpParameters,
+        AtLeastOneFieldVisible,
+        ControlsView,
+        PivotData,
+        GetMapDataTableCallback,
+        GetAvailableMapFieldViewCallback,
+        GetDenominatorDataViewCallback,
+        GetStatDateDataViewCallback,
+        ResetReportDataCallback,
+        PivotAccessible,
+        ExportStrategy,
+        FilterText,
+        PivotName,
+        ChartName,
+        MapName,
+        MapHasChanges,
+        UseArchiveData,
+    }
+}

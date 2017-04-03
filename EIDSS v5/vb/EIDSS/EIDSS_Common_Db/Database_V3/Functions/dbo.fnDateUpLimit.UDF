@@ -1,0 +1,46 @@
+GO
+/****** Object:  UserDefinedFunction [dbo].[fnDateUpLimit]    Script Date: 05/24/2007 21:39:50 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[fnDateUpLimit]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[fnDateUpLimit]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+
+
+
+--##SUMMARY Returns the date without time part that corresponds to the start of the next day
+--##REMARKS Author: Zurin M.
+--##REMARKS Create date: 06.04.2010
+
+--##RETURNS Returns the date without time part that corresponds to the start of the next day
+
+
+
+
+/*
+Example of function call:
+
+SELECT dbo.fnDateUpLimit(GetDate())
+
+*/
+
+CREATE       FUNCTION [dbo].[fnDateUpLimit](@Date DateTime)
+RETURNS DateTime 
+AS
+BEGIN
+	RETURN DATEADD(day,1,dbo.fnDateCutTime(@Date))
+END	
+
+GO
+
+
+
+
+
+
+

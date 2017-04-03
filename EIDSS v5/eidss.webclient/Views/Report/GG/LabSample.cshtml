@@ -1,0 +1,46 @@
+﻿@model eidss.model.Reports.GG.LabSampleModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/BaseFilter", Model)
+
+    <table id="DiagnosisTable" >
+        <tr>
+            <td class="medium">
+                @Html.LabelFor(m => m.SampleId)
+            </td>
+            <td class="large">
+                <div class='tdContainer'>
+                    @Html.TextBoxFor(m => m.SampleId, new Dictionary<string, object>{{"class", "requiredField"}})
+                </div>
+            </td>
+            <td colspan="3"></td>
+        </tr>
+        <tr>
+            <td class="medium">
+                @Html.LabelFor(m => m.FirstName)
+            </td>
+            <td class="large">
+                <div class='tdContainer'>
+                    @Html.TextBoxFor(m => m.FirstName)
+                </div>
+            </td>
+            <td class="medium">
+                @Html.LabelFor(m => m.LastName)
+            </td>
+            <td class="large">
+                <div class='tdContainer'>
+                    @Html.TextBoxFor(m => m.LastName)
+                </div>
+            </td>
+            <td></td>
+        </tr>
+    </table>
+
+    @Html.Partial("Common/ExportButtons", Model)
+}

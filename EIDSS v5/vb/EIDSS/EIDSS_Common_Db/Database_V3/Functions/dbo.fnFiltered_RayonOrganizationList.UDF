@@ -1,0 +1,38 @@
+--##SUMMARY Returns list of sites with rayons. Rayon defined by organization address.
+--##SUMMARY Used by other "filtered" sp.
+
+--##REMARKS Author: Zhdanova A.
+--##REMARKS Create date: 22.12.2010
+
+--##RETURNS Function returns the list sites + rayons.
+
+
+/*
+--Example of a call of function:
+select * from fnFiltered_RayonOrganizationList ()
+order by idfsSite
+*/
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[dbo].[fnFiltered_RayonOrganizationList]') AND xtype in (N'FN', N'IF', N'TF'))
+DROP FUNCTION [dbo].[fnFiltered_RayonOrganizationList]
+GO 
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE FUNCTION [dbo].[fnFiltered_RayonOrganizationList]()
+RETURNS TABLE 
+AS 
+RETURN 
+SELECT a.[idfsSite], a.[strSiteID], c.[idfsRayon]
+FROM (	SELECT [strSiteID], MAX([idfsSite]) AS [idfsSite] 
+		FROM [tstSite] 
+		GROUP BY [strSiteID]
+	) AS a0
+INNER JOIN [tstSite] AS a ON a0.[idfsSite] = a.[idfsSite]
+INNER JOIN [tlbOffice] AS b ON a.[idfOffice] = b.[idfOffice]
+INNER JOIN [tlbGeoLocation] AS c ON b.[idfLocation] = c.[idfGeoLocation]
+WHERE a.[intRowStatus] = 0
+GO 

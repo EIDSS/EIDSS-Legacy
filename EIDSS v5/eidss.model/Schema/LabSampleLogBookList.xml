@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="LabSampleLogBookListItem"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        inherited="LabSampleLogBookBaseList.xml"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<tables>
+		<table name="LabSampleLogBookListItem">
+			<searchpanel>
+        <item name="datCreationDate" editor="Date" labelId="datAccession" mandatory="true" range="true" 
+	    			  default="DateTime.Today.AddDays(-bv.common.Configuration.BaseSettings.DefaultDateFilter)" rangeDefDates="true"/>
+      </searchpanel>
+      <grid>				
+				<item name="strBarcode" action="ActionEditLabSample" />
+				<item name="SpecimenType" />
+				<item name="datCreationDate"/>
+        <item name="strSampleConditionReceivedStatus"/>
+        <item name="CaseID"/>
+        <item name="DiagnosisName"/>
+        <item name="TestType" action="ActionEditTest" />
+        <item name="TestCategory"/>
+        <item name="Status"/>
+        <item name="TestResult"/>
+        <item name="datStartedDate"/>
+        <item name="datConcludedDate"/>
+        <item name="datConcludedDate"/>        
+			</grid>
+      <actions child="LabSample">
+        <action name="AddToPreferences" type="Action">
+          <visual panel="Main" alignment="Left" enablePredicate='(c, p, b) => c != null' >
+            <regular caption="titleAddToPreferences" icon="add" tooltip="titleAddToPreferences"/>
+          </visual>
+          <hierarchy relatedList="LabSampleLogBookMyPrefListItem"/>
+          <run>
+            <preUI webType="JScript"/>
+            <params>
+              <param name="id" type="long"/>
+            </params>
+            <preText>
+              manager.SetSpCommand("dbo.spLocalSamplesTestsPreference_Add"
+                , manager.Parameter("idfTestingOrMaterial", id)
+                , manager.Parameter("idfUserID", (long)ModelUserContext.Instance.CurrentUser.ID)
+                ).ExecuteNonQuery();
+              return true;
+            </preText>
+          </run>
+        </action>
+        <action name="ActionEditLabSample" type="Action">                
+          <run>
+            <preUI webType="JScript"/>                  
+          </run>
+        </action>
+        <action name="ActionEditTest" type="Action">                
+          <run>
+            <preUI webType="JScript"/>                  
+          </run>
+        </action>       
+      </actions>
+      <!--actions child="LabSample">
+        <action name="AddToPreferences" caption="titleAddToPreferences" tooltip ="titleAddToPreferences" panel="Main" alignment="Left" type="Custom" icon="add"
+                    related-lists="LabSampleLogBookMyPrefListItem">
+          <params>
+            <param name="id" type="long"/>
+          </params>
+          <text>
+            manager.SetSpCommand("dbo.spLocalSamplesTestsPreference_Add"
+                , manager.Parameter("idfTestingOrMaterial", id)
+                , manager.Parameter("idfUserID", (long)ModelUserContext.Instance.CurrentUser.ID)
+                ).ExecuteNonQuery();
+          </text>
+        </action>
+      </actions-->
+		</table>
+	</tables>
+</object>

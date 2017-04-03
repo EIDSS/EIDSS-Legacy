@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="PersonListItem"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="fn_Person_SelectList" type="fnlist" />
+		<count name="spPerson_SelectCount"/>
+	</storage>
+
+	<tables>
+		<table name="PersonListItem">
+      <properties auditObject="daoPerson" auditTable="tlbPerson" permissionObject="Person" lookupcachename="Person" />
+      <help win="EmployeeDetailForm" web="web_persons"/>
+
+      <searchpanel>				
+				<item name="idfRankName" editor="Lookup" labelId="strRankName"
+					lookupName="PositionLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+				<item name="strFamilyName" editor="Text" labelId="strLastName"/>
+				<item name="strFirstName" editor="Text" labelId="strFirstName"/>
+				<item name="strSecondName" editor="Text" labelId="strSecondName"/>
+			</searchpanel>
+
+			<grid>
+				<item name="idfEmployee" key="true" visible="false" />
+				<item name="Organization" defaultSort="Ascending"/>
+        <item name="OrganizationFullName"/>
+				<item name="strRankName"/>
+				<item name="strFamilyName"/>
+				<item name="strFirstName"  />
+				<item name="strSecondName"  />
+			</grid>
+
+			<labels>
+        <item name="OrganizationFullName" labelId="Organization.Name"/>
+        <item name="Organization" labelId="Abbreviation"/>
+				<item name="strFamilyName" labelId="strLastName"/>
+			</labels>
+
+			<lookups>
+				<lookup name="Position" table="BaseReference" section="rftPosition" source="idfRankName" target="idfsBaseReference" />
+			</lookups>
+
+			<storage>
+				<delete name="spPerson_Delete"/>
+				<candelete name="spPerson_CanDelete"/>
+			</storage>
+
+			<actions child="Person">
+        <standard>
+          <remove type="Report"/>
+        </standard>        
+			</actions>
+		</table>
+	</tables>
+
+</object>

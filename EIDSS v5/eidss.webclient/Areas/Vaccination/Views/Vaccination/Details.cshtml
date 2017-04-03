@@ -1,0 +1,111 @@
+﻿@model eidss.model.Schema.VaccinationListItem
+@{ 
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+@using eidss.webclient.Utils
+<script src="../../../../Scripts/jquery.form.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('form').ajaxForm(function (data) {
+            if (data == 'ok')
+                parent.gridItemAdded('@ViewData["name"]');
+            else
+                ShowEidssErrorNotification(data, function () { });
+        });
+    });
+    function setIdfSpeciesValue(e) {
+        var ddl = $('#' + e.target.id).data('tComboBox');
+        ddl.value('@Model.idfSpecies');
+    }
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    }); 
+</script>
+<h2>
+    @ViewBag.Title</h2>
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        <table>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.strDiagnosis)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, "Diagnosis")
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.datVaccinationDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, "datVaccinationDate", limitMaxDate: true)
+                </td>
+            </tr>
+            <tr>
+                <td class="medium">
+                    @Html.LabelFor(model => model.idfSpecies)
+                </td>
+                <td>
+                    @(Html.BvCombobox(Model, "idfSpecies")
+                    .ClientEvents(events => events.OnLoad("setIdfSpeciesValue"))
+                    .BindTo(ViewBag.HerdsAndSpecies)
+             )
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.intNumberVaccinated)
+                </td>
+                <td>
+                    @Html.BvNumeric(Model, "intNumberVaccinated", 0)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.idfsVaccinationType)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, "VaccinationType")
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.idfsVaccinationRoute)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, "VaccinationRoute")
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.strLotNumber)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, "strLotNumber")
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.strManufacturer)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, "strManufacturer")
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.strNote)
+                </td>
+                <td>
+                    @Html.BvTextArea(Model, "strNote")
+                </td>
+            </tr>
+        </table>
+        <div class="popupBottomButtonPanel">
+            <input type="button" class="popupButton" onclick="parent.cancelItemAdding();" value="@Translator.GetMessageString("Cancel")" />
+            <input type="submit" class="popupButton" value="@Translator.GetMessageString("Ok")" />
+        </div>  
+    }
+</div>

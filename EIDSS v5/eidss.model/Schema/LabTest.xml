@@ -1,0 +1,358 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="LabTest"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="spLabTestEditable_SelectDetail" />
+	</storage>
+	<tables>
+		<table name="LabTest">
+      <properties newTestResultEvent="true" auditObject="daoTest" auditTable="tlbTesting" permissionObject="Test" />
+
+            <labels>
+                <item name="strNote" labelId="strComments"/>
+                <item name="DepartmentName" labelId="strLaboratory"/>
+                <item name="idfsDiagnosis" labelId="TestDiagnosis2"/>
+            </labels>
+            <fields>
+              <storage name="idfsTestStatusOriginal" type="long?"/>
+              <calculated name="strOriginalTestResult" type="string" depends="AmendmentHistory,TestResultRef" 
+                          lambda='c => c.AmendmentHistory.Count == 0 ? (c.TestResultRef == null ? "" : c.TestResultRef.name) : c.AmendmentHistory.OrderBy(a => a.datAmendmentDate).First().strOldTestResult'/>
+            </fields>
+            <readonly>
+                <fields name="AmendmentHistory" predicate="c => false"/>
+                <fields name="ResultEnteredByPerson,strMonitoringSessionID,strCaseID,DepartmentName,strBarcode,strOriginalTestResult,BatchTestCode" predicate="c => true"/>
+                <fields name="TestResultRef,strNote,TestedByPerson,datStartedDate,datConcludedDate,ValidatedByPerson" predicate="c => c.idfsTestStatus == (long)BatchStatusEnum.Undefined || c.idfsTestStatus == (long)BatchStatusEnum.Amended || c.idfsTestStatusOriginal == (long)BatchStatusEnum.Completed" />
+                <fields name="*" predicate="c => c.idfsTestStatusOriginal == (long)BatchStatusEnum.Completed || c.idfsTestStatusOriginal == (long)BatchStatusEnum.Amended" />
+            </readonly>
+            <relations>
+                <relation name="Sample" table="LabSample" internal="false" type="link" lazy="true" source="idfContainer" target="idfContainer" />
+                <relation name="SampleInfo" table="LabTestSample" internal="true" type="link" lazy="false" source="idfContainer" target="idfContainer" />
+                <relation name="AmendmentHistory" table="LabTestAmendmentHistory" internal="true" type="child" lazy="false" source="idfTesting" target="idfTesting" />
+                <relation name="FFPresenter" table="FFPresenterModel" internal="false" type="link" source="idfObservation" target="CurrentObservation.HasValue?_FFPresenter.CurrentObservation.Value:0" lazy="false" />
+            </relations>
+            <lookups>
+                <lookup name="TestStatus" table="BaseReference" section="rftActivityStatus" source="idfsTestStatus" target="idfsBaseReference">
+                    <filters>
+                        <filter predicate='c => 
+                                (obj.idfsTestStatusOriginal == (long)BatchStatusEnum.Undefined &amp;&amp; (c.idfsBaseReference == (long)BatchStatusEnum.Completed || c.idfsBaseReference == (long)BatchStatusEnum.InProcess || c.idfsBaseReference == (long)BatchStatusEnum.Undefined)) ||
+                                (obj.idfsTestStatusOriginal == (long)BatchStatusEnum.InProcess &amp;&amp; (c.idfsBaseReference == (long)BatchStatusEnum.Completed || c.idfsBaseReference == (long)BatchStatusEnum.InProcess || c.idfsBaseReference == (long)BatchStatusEnum.Undefined)) ||
+                                (obj.idfsTestStatusOriginal == (long)BatchStatusEnum.Completed &amp;&amp; (c.idfsBaseReference == (long)BatchStatusEnum.Completed || c.idfsBaseReference == (long)BatchStatusEnum.Amended)) ||
+                                (obj.idfsTestStatusOriginal == (long)BatchStatusEnum.Amended &amp;&amp; (c.idfsBaseReference == (long)BatchStatusEnum.Amended))
+                                ' />
+                    </filters>
+                </lookup>
+              <lookup name="TestTypeRef" table="BaseReference" section="rftTestType" source="idfsTestType" target="idfsBaseReference">
+                <filters>
+                  <filter predicate="c => (c.intHACode &amp; obj.intHACode) != 0 || c.idfsBaseReference == obj.idfsTestType"/>
+                </filters>
+              </lookup>
+              <lookup name="TestResultRef" table="TestResultLookup" source="idfsTestResult" target="idfsReference">
+                <filters>
+                  <filter predicate="c => c.idfsTestType == obj.idfsTestType"/>
+                </filters>
+              </lookup>
+                <lookup name="TestForDiseaseType" table="BaseReference" section="rftTestForDiseaseType" source="idfsTestForDiseaseType" target="idfsBaseReference" />
+                <lookup name="Diagnosis" table="TestDiagnosisLookup" source="idfsDiagnosis" target="idfsDiagnosis">
+                    <params>
+                        <param name="idfMaterial" type="long?" lambda="c => c.idfContainer"/>
+                    </params>
+                </lookup>
+                <lookup name="ValidatedByPerson" table="PersonLookup" source="idfValidatedByPerson" target="idfPerson">
+                    <params>
+                        <param name="OfficeID" type="long?" lambda="c => c.idfValidatedByOffice"/>
+                        <param name="ID" const="null" />
+                    </params>
+                </lookup>
+                <lookup name="TestedByPerson" table="PersonLookup" source="idfTestedByPerson" target="idfPerson">
+                    <params>
+                        <param name="OfficeID" type="long?" lambda="c => c.idfTestedByOffice"/>
+                        <param name="ID" const="null" />
+                    </params>
+                </lookup>
+            </lookups>
+            <storage>
+                <post name="spLabTestEditable_Post"/>
+                <candelete name="spLabTest_CanDelete"/>
+            </storage>
+            <postorder>
+                <item name="this"/>
+                <item name="AmendmentHistory"/>
+                <item name="FFPresenter"/>
+            </postorder>
+            <extenders>
+                <creating>
+                    <scalar_extender target="idfTesting" class="GetNewIDExtender" />
+                    <scalar_extender target="idfObservation" class="GetNewIDExtender" />
+                    <lambda_extender target="idfValidatedByOffice" type="long?" lambda='c => eidss.model.Core.EidssSiteContext.Instance.OrganizationID' />
+                    <lambda_extender target="idfTestedByOffice" type="long?" lambda='c => eidss.model.Core.EidssSiteContext.Instance.OrganizationID' />
+                    <lambda_extender target="blnNonLaboratoryTest" type="bool" lambda='c => false' />
+                    <custom_extender>
+                        <text>
+                            obj.FFPresenter = FFPresenterModel.Accessor.Instance(null).SelectByKey(manager, obj.idfObservation);
+                            obj.FFPresenter.SetProperties(EidssSiteContext.Instance.CountryID, null, FFTypeEnum.TestDetails, obj.idfObservation);
+                            if (obj.FFPresenter.CurrentTemplate != null) obj.idfsFormTemplate = obj.FFPresenter.CurrentTemplate.idfsFormTemplate;
+                        </text>
+                    </custom_extender>
+                </creating>
+                <loading>
+                  <lambda_extender target="idfsTestStatusOriginal" type="long?" lambda="c => c.idfsTestStatus"/>
+                  <lambda_extender target="idfValidatedByOffice" type="long?" lambda='c => c.idfValidatedByOffice ?? eidss.model.Core.EidssSiteContext.Instance.OrganizationID' />
+                </loading>
+                <loaded>
+                    <custom_extender>
+                        <text>
+                            if (obj.idfsFormTemplate.HasValue) obj.FFPresenter.SetProperties(obj.idfsFormTemplate.Value);
+                        </text>
+                    </custom_extender>
+                </loaded>
+              <!--posting>
+                    <lambda_extender target="idfResultEnteredByOffice" type="long?" lambda='c => eidss.model.Core.EidssSiteContext.Instance.OrganizationID' />
+                    <lambda_extender target="idfResultEnteredByPerson" type="long?" lambda='c => (long)ModelUserContext.Instance.CurrentUser.EmployeeID' />
+                </posting-->
+            </extenders>
+            <handlers>
+                <fieldhandler>
+                  <lookup_handler lookup="TestTypeRef" field="idfsCaseType" />
+                  <lookup_handler lookup="TestTypeRef" field="intHACode" />
+                  <lookup_handler lookup="TestResultRef" field="idfsTestType" />
+                  <lambda_handler field="idfsTestStatus" target="TestResultRef" type="TestResultLookup" lambda="c => (c.idfsTestStatusOriginal == (long)BatchStatusEnum.InProcess &amp;&amp; c.idfsTestStatus == (long)BatchStatusEnum.Undefined) ? null : c.TestResultRef"/>
+                  <lambda_handler field="idfsTestStatus" target="strNote" type="string" lambda="c => (c.idfsTestStatusOriginal == (long)BatchStatusEnum.InProcess &amp;&amp; c.idfsTestStatus == (long)BatchStatusEnum.Undefined) ? null : c.strNote"/>
+                  <lambda_handler field="idfsTestStatus" target="TestedByPerson" type="PersonLookup" lambda="c => (c.idfsTestStatusOriginal == (long)BatchStatusEnum.InProcess &amp;&amp; c.idfsTestStatus == (long)BatchStatusEnum.Undefined) ? null : c.TestedByPerson"/>
+                  <lambda_handler field="idfsTestStatus" target="ValidatedByPerson" type="PersonLookup" lambda="c => (c.idfsTestStatusOriginal == (long)BatchStatusEnum.InProcess &amp;&amp; c.idfsTestStatus == (long)BatchStatusEnum.Undefined) ? null : c.ValidatedByPerson"/>
+                  <lambda_handler field="idfsTestStatus" target="datStartedDate" type="DateTime?" lambda="c => (c.idfsTestStatusOriginal == (long)BatchStatusEnum.InProcess &amp;&amp; c.idfsTestStatus == (long)BatchStatusEnum.Undefined) ? null : c.datStartedDate"/>
+                  <lambda_handler field="idfsTestStatus" target="datConcludedDate" type="DateTime?" lambda="c => (c.idfsTestStatusOriginal == (long)BatchStatusEnum.InProcess &amp;&amp; c.idfsTestStatus == (long)BatchStatusEnum.Undefined) ? null : c.datConcludedDate"/>
+                  <lambda_handler field="idfsTestResult" target="idfResultEnteredByOffice" type="long?"
+                                  lambda='c => c.idfsTestResult == null ? (long?)null : eidss.model.Core.EidssSiteContext.Instance.OrganizationID' />
+                  <lambda_handler field="idfsTestResult" target="idfResultEnteredByPerson" type="long?"
+                                  lambda='c => c.idfsTestResult == null ? (long?)null : (long)ModelUserContext.Instance.CurrentUser.EmployeeID' />
+                  <lambda_handler field="idfsTestResult" target="ResultEnteredByPerson" type="string"
+                                  lambda='c => c.idfsTestResult == null ? null : ModelUserContext.Instance.CurrentUser.FullName' />
+                  <lambda_handler field="idfsTestStatus" target="idfResultEnteredByOffice" type="long?"
+                                  lambda='c => (c.idfsTestStatus == null || c.idfsTestStatus == (long)BatchStatusEnum.Undefined) ? null : (c.idfsTestResult == null ? (long?)null : eidss.model.Core.EidssSiteContext.Instance.OrganizationID)' />
+                  <lambda_handler field="idfsTestStatus" target="idfResultEnteredByPerson" type="long?"
+                                  lambda='c => (c.idfsTestStatus == null || c.idfsTestStatus == (long)BatchStatusEnum.Undefined) ? null : (c.idfsTestResult == null ? (long?)null : (long)ModelUserContext.Instance.CurrentUser.EmployeeID)' />
+                  <lambda_handler field="idfsTestStatus" target="ResultEnteredByPerson" type="string"
+                                  lambda='c => (c.idfsTestStatus == null || c.idfsTestStatus == (long)BatchStatusEnum.Undefined) ? "" : (c.idfsTestResult == null ? null : ModelUserContext.Instance.CurrentUser.FullName)' />
+                  <custom_handler field="idfsDiagnosis">
+                        <text>
+                            if (obj.idfsDiagnosis != 0 &amp;&amp; obj.idfsTestType.HasValue)
+                            {
+                                using (var manager = DbManagerFactory.Factory.Create(ModelUserContext.Instance))
+                                {
+                                    long? idfsTestForDiseaseType = manager.SetSpCommand("dbo.spLabTest_GetDefaultCategory"
+                                        , manager.Parameter("idfsDiagnosis", obj.idfsDiagnosis)
+                                        , manager.Parameter("idfsTestType", obj.idfsTestType)
+                                        ).ExecuteScalar&lt;long?&gt;();
+                                    if (idfsTestForDiseaseType.HasValue)
+                                        obj.TestForDiseaseType = obj.TestForDiseaseTypeLookup.Where(a => a.idfsBaseReference == idfsTestForDiseaseType.Value).SingleOrDefault();
+                                }
+                            }
+                        </text>
+                    </custom_handler>
+                    <custom_handler field="idfsTestType">
+                        <text>
+                            if (obj.idfsDiagnosis != 0 &amp;&amp; obj.idfsTestType.HasValue)
+                            {
+                                using (var manager = DbManagerFactory.Factory.Create(ModelUserContext.Instance))
+                                {
+                                    long? idfsTestForDiseaseType = manager.SetSpCommand("dbo.spLabTest_GetDefaultCategory"
+                                        , manager.Parameter("idfsDiagnosis", obj.idfsDiagnosis)
+                                        , manager.Parameter("idfsTestType", obj.idfsTestType)
+                                        ).ExecuteScalar&lt;long?&gt;();
+                                    if (idfsTestForDiseaseType.HasValue)
+                                        obj.TestForDiseaseType = obj.TestForDiseaseTypeLookup.Where(a => a.idfsBaseReference == idfsTestForDiseaseType.Value).SingleOrDefault();
+                                }
+                            }
+                        </text>
+                    </custom_handler>
+                </fieldhandler>
+            </handlers>
+            <validators>
+              <change>
+                <predicate_validator field="idfsTestStatus" message="mbSureToUndefinedStatus" shouldAsk="true"
+                                     predicate="c => !(c.idfsTestStatusOriginal == (long)BatchStatusEnum.InProcess &amp;&amp; c.idfsTestStatus == (long)BatchStatusEnum.Undefined)" />
+                <predicate_validator field="datStartedDate" predicate="c => PredicateValidator.CompareDates(c.datStartedDate, c.datConcludedDate)" message="datBatchStartDate_ConcludedDate_msgId" />
+                <predicate_validator field="datConcludedDate" predicate="c => PredicateValidator.CompareDates(c.datStartedDate, c.datConcludedDate)" message="datBatchStartDate_ConcludedDate_msgId" />
+                <predicate_validator field="datStartedDate" predicate="c => PredicateValidator.CompareDates(c.datCreationDate, c.datStartedDate)" message="datAccessionDate_BatchStartDate_msgId" />
+              </change>
+                <post>
+                    <required_validator target="idfsTestType" property="TestTypeRef" />
+                    <required_validator target="idfsTestForDiseaseType" property="TestForDiseaseType" />
+                    <required_validator target="idfsDiagnosis" property="Diagnosis" />
+                    <required_validator target="idfsTestStatus" property="TestStatus" />
+                    <required_validator target="idfsTestResult" property="TestResultRef" predicate="c => (c.idfsTestStatus == (long)BatchStatusEnum.Completed || c.idfsTestStatus == (long)BatchStatusEnum.Amended)" />
+                    <required_validator target="idfTestedByPerson" property="TestedByPerson" predicate="c => (c.idfsTestStatus == (long)BatchStatusEnum.Completed)" />
+                    <required_validator target="datStartedDate" predicate="c => (c.idfsTestStatus == (long)BatchStatusEnum.Completed)" />
+                    <required_validator target="datConcludedDate" predicate="c => (c.idfsTestStatus == (long)BatchStatusEnum.Completed)" />
+                    <required_validator target="idfValidatedByPerson" property="ValidatedByPerson" predicate="c => (c.idfsTestStatus == (long)BatchStatusEnum.Completed)" />
+                </post>
+            </validators>
+            <actions>
+              <standard>
+                <remove type="Create"/>
+                <remove type="Delete"/>
+              </standard>
+              <action name="TestResultReport" type="Action">
+                <visual panel="Main" alignment="Left">
+                  <regular caption="titlePaperForms" icon="Report" tooltip=""/>
+                </visual>
+                <run>
+                  <preUI webType="JScript"/>
+                  <params>
+                    <param name="ObjID" type="long"/>
+                    <param name="CSObjID" type="long"/>
+                    <param name="TypeID" type="long"/>
+                  </params>
+                </run>
+              </action>
+                <action name="Create" type="Create">
+                  <run>
+                    <params>
+                      <param name="idfContainer" type="long"/>
+                    </params>
+                    <creating>
+                      <lambda_extender target="SampleInfo" type="LabTestSample" lambda="c => SampleInfoAccessor.CreateNewT(manager, c)" />
+                      <lambda_extender target="idfContainer" type="long" lambda='c => idfContainer' />
+                      <lambda_extender target="idfsTestStatusOriginal" type="long?" lambda="c => (long)BatchStatusEnum.Undefined"/>
+                    </creating>
+                    <created>
+                      <lambda_extender target="TestStatus" type="BaseReference" lambda="c => c.TestStatusLookup.Where(l => l.idfsBaseReference == (long)BatchStatusEnum.Undefined).SingleOrDefault()"/>
+                      <lambda_extender target="TestForDiseaseType" type="BaseReference" lambda="c => c.TestForDiseaseTypeLookup.Where(l => l.idfsBaseReference == (long)TestForDiseaseTypeEnum.Presumptive).SingleOrDefault()"/>
+                      <lambda_extender target="Diagnosis" type="TestDiagnosisLookup"
+                                       lambda='c => 
+                                          c.Sample.idfMonitoringSession == null 
+                                            ? c.DiagnosisLookup.Where(l => l.idfsDiagnosis == c.Sample.idfsShowDiagnosis).SingleOrDefault()
+                                            : c.DiagnosisLookup.FirstOrDefault()
+                                          ' />
+                      <lambda_extender target="strCaseID" type="string" lambda='c => c.Sample.strCaseID' />
+                      <lambda_extender target="idfCase" type="long?" lambda='c => c.Sample.idfCase' />
+                      <lambda_extender target="strMonitoringSessionID" type="string" lambda='c => c.Sample.strMonitoringSessionID' />
+                      <lambda_extender target="idfMonitoringSession" type="long?" lambda='c => c.Sample.idfMonitoringSession' />
+                      <lambda_extender target="idfsCaseType" type="long?" lambda='c => c.Sample.idfsCaseType' />
+                      <lambda_extender target="intHACode" type="int" lambda='c => c.Sample.intHACode' />
+                      <lambda_extender target="datCreationDate" type="DateTime?" lambda='c => c.Sample.datCreationDate' />
+                      <lambda_extender target="SampleInfo.idfContainer" type="long" lambda='c => idfContainer' />
+                      <lambda_extender target="SampleInfo.strBarcode" type="string" lambda='c => c.Sample.strBarcode' />
+                      <lambda_extender target="SampleInfo.SpecimenType" type="string" lambda='c => c.Sample.SpecimenType' />
+                      <lambda_extender target="SampleInfo.datFieldCollectionDate" type="DateTime?" lambda='c => c.Sample.datFieldCollectionDate' />
+                      <lambda_extender target="SampleInfo.HumanName" type="string" lambda='c => string.IsNullOrEmpty(c.Sample.SpeciesName) ? c.Sample.HumanName : c.Sample.SpeciesName' />
+                    </created>
+                  </run>
+                </action>
+                <action name="AmendTest"  type="Action">
+                  <visual panel="Main" alignment="Right" 
+                          enablePredicate="(c, p, b) => (c as LabTest).idfsTestStatusOriginal == (long)BatchStatusEnum.Completed || (c as LabTest).idfsTestStatusOriginal == (long)BatchStatusEnum.Amended">
+                    <regular caption="Amend" icon="" tooltip="" />
+                  </visual>
+                  <permissions type="CanAmendTest"/>
+                  <run>
+                    <preUI webType="JScript"/>
+                    <params>
+                        <param name="item" type="LabTestAmendmentHistory"/>
+                    </params>
+                    <preText>
+                        obj.strNote = item.strNewNote;
+                        obj.TestResultRef = obj.TestResultRefLookup.Where(l => l.idfsReference == item.idfsNewTestResult).SingleOrDefault();
+                        obj.TestStatus = obj.TestStatusLookup.Where(l => l.idfsBaseReference == (long)BatchStatusEnum.Amended).SingleOrDefault();
+                        if (obj.AmendmentHistory.Where(c => c.IsNew).SingleOrDefault() == null)
+                        {
+                            obj.AmendmentHistory.Add(item);
+                        }
+                        return true;
+                    </preText>
+                  </run>
+                </action>
+            </actions>
+        </table>
+        <table name="LabTestSample">
+            <labels>
+              <item name="strBarcode" labelId="SampleID"/>
+              <item name="HumanName" labelId="HumanSpeciesName"/>
+              <item name="datFieldCollectionDate" labelId="DateCollected" />
+            </labels>
+            <readonly>
+                <fields name="*" predicate="c => true" />
+            </readonly>
+          <personaldata>
+            <group name="Human_PersonName">
+              <item name="HumanName"/>
+            </group>
+          </personaldata>
+        </table>
+        <table name="LabTestAmendmentHistory">
+            <properties newTestAmendmentEvent="true" />
+            <grid>
+                <item name="idfTestAmendmentHistory" key="true" visible="false"/>
+                <item name="datAmendmentDate" />
+                <item name="strName" type="string"  />
+                <item name="strOffice" type="string" />
+                <item name="strNewTestResult" type="string"  />
+                <item name="strReason" type="string"  />
+            </grid>
+            <labels>
+                <item name="strName" labelId="strAmendByPerson"/>
+              <item name="strOffice" labelId="strOfficeAmendedBy"/>
+            </labels>
+            <fields>
+                <calculated name="CaseObjectIdent" type="string" depends="idfTesting" lambda='c => "LabTest_" + c.idfTesting + "_"' />
+            </fields>
+            <lookups>
+              <lookup name="OldTestResult" table="TestResultLookup" source="idfsOldTestResult" target="idfsReference">
+                <filters>
+                  <filter predicate="c => c.idfsTestType == (obj.Parent as LabTest).idfsTestType"/>
+                </filters>
+              </lookup>
+              <lookup name="NewTestResult" table="TestResultLookup" source="idfsNewTestResult" target="idfsReference">
+                <filters>
+                  <filter predicate="c => c.idfsTestType == (obj.Parent as LabTest).idfsTestType"/>
+                </filters>
+              </lookup>
+            </lookups>
+            <storage>
+                <post name="spLabTestAmendmentHistory_Post"/>
+            </storage>
+            <handlers>
+                <fieldhandler>
+                    <lambda_handler field="NewTestResult" target="strNewTestResult" type="string" lambda='c => c.NewTestResult == null ? "" : c.NewTestResult.name'/>
+                </fieldhandler>
+            </handlers>
+            <validators>
+                <post>
+                  <required_validator target="strReason" />
+                  <required_validator target="idfsNewTestResult" property="NewTestResult" />
+                  <predicate_validator message="errReasonForChangeIsTooShort" predicate="c => !c.IsNew || c.strReason.Length &gt;= 6" />
+                  <predicate_validator message="New_test_result_as_old_one" predicate="c => !c.IsNew || c.idfsOldTestResult != c.idfsNewTestResult" />
+                </post>
+            </validators>
+            <actions>
+              <action name="Create" type="Create">
+                <run>
+                  <params>
+                      <param name="idfTesting" type="long"/>
+                      <param name="idfsOldTestResult" type="long?"/>
+                      <param name="strOldNote" type="string"/>
+                  </params>
+                  <creating>
+                      <scalar_extender target="idfTestAmendmentHistory" class="GetNewIDExtender" />
+                      <lambda_extender target="datAmendmentDate" type="DateTime" lambda='c => DateTime.Now' />
+                      <lambda_extender target="idfAmendByOffice" type="long" lambda='c => eidss.model.Core.EidssSiteContext.Instance.OrganizationID' />
+                      <lambda_extender target="idfAmendByPerson" type="long" lambda='c => (long)ModelUserContext.Instance.CurrentUser.EmployeeID' />
+                      <lambda_extender target="strOffice" type="string" lambda='c => eidss.model.Core.EidssSiteContext.Instance.OrganizationName' />
+                      <lambda_extender target="strName" type="string" lambda='c => ModelUserContext.Instance.CurrentUser.FullName' />
+                      <lambda_extender target="idfTesting" type="long" lambda='c => idfTesting' />
+                      <lambda_extender target="strOldNote" type="string" lambda='c => strOldNote' />
+                  </creating>
+                  <created>
+                      <lambda_extender target="OldTestResult" type="TestResultLookup" lambda='c => c.OldTestResultLookup.Where(l => l.idfsReference == idfsOldTestResult).SingleOrDefault()' />
+                      <lambda_extender target="strOldTestResult" type="string" lambda='c => c.OldTestResult == null ? "" : c.OldTestResult.name' />
+                  </created>
+                </run>
+              </action>
+            </actions>
+        </table>
+    </tables>
+
+</object>

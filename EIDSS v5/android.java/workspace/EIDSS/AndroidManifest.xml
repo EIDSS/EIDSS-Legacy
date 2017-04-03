@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.bv.eidss"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="10"
+        android:targetSdkVersion="17" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/ApplicationName"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.bv.eidss.StartActivity"
+            android:label="@string/ApplicationName" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.bv.eidss.SetLocalPasswordActivity" />
+        <activity android:name="com.bv.eidss.ChangeLocalPasswordActivity" />
+        <activity android:name="com.bv.eidss.LocalLoginActivity" />
+        <activity android:name="com.bv.eidss.MainActivity" />
+        <activity android:name="com.bv.eidss.OptionsActivity" />
+        <activity android:name="com.bv.eidss.HumanCaseActivity" />
+        <activity android:name="com.bv.eidss.HumanCaseListActivity" />
+        <activity android:name="com.bv.eidss.LoadReferencesActivity" />
+        <activity android:name="com.bv.eidss.SynchronizeHumanCaseActivity" />
+    </application>
+</manifest>

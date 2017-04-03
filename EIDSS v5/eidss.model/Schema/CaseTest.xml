@@ -1,0 +1,319 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="CaseTest"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="spCaseTests_SelectDetail" type="detaillist" />
+    </storage>
+
+    <tables>
+        <table name="CaseTest">
+          <grid>
+              <item name="idfTesting" visible="false" key="true"/>
+              <item name="idfsTestStatus" visible="false" />
+              <item name="blnNonLaboratoryTest" visible="false" />
+              
+              <item name="strBarcode" type="string" />
+              <item name="SpecimenType" type="string" />
+              <item name="strFieldBarcode" type="string" />
+              <item name="strFieldBarcode2" type="string" />
+              <item name="strFarmCode" type="string" />
+              <item name="AnimalName" type="string" />
+              <item name="AnimalID" type="string" />
+              <item name="TestName" type="string" />
+              <item name="DiagnosisName" type="string" />              
+              <item name="datConcludedDate" />
+              <item name="datReceivedDate" />
+              <item name="DepartmentName" type="string"/>
+              <item name="TestType" type="string" />
+              <item name="TestStatus" type="string" />
+              <item name="TestResult" type="string" />
+          </grid>          
+          <labels>
+              <item name="strBarcode" labelId="strLabBarcode"/>
+              <item name="strFieldBarcode" labelId="strFieldBarcodeField"/>
+              <item name="strFieldBarcode2" labelId="strFieldBarcodeLocal"/>
+              <item name="DiagnosisName" labelId="TestDiagnosis2"/>              
+              <item name="TestResult" labelId="TestResultObservation"/>
+              <item name="TestType" labelId="TestCategory"/>              
+          </labels>
+            <fields>
+              <!--prnt storage name="AsSessionSamples" type="EditableList&lt;AsSessionSample&gt;"/>
+              <storage name="HumanCaseSamples" type="EditableList&lt;HumanCaseSample&gt;"/>
+              <storage name="VetCaseSamples" type="EditableList&lt;VetCaseSample&gt;"/>
+              <storage name="CaseTestValidations" type="EditableList&lt;CaseTestValidation&gt;"/>
+              <storage name="CaseDiagnosis" type="List&lt;DiagnosisLookup&gt;"/>
+              <storage name="AsSessionDiseases" type="EditableList&lt;AsSessionDisease&gt;"/-->
+              <storage name="strPerformedByOffice" type="string" />
+              <calculated name="AsSessionSamples" type="EditableList&lt;AsSessionSample&gt;" depends="Parent" lambda="c => c.Parent is AsSession ? (c.Parent as AsSession).ASSamples : null"/>
+              <calculated name="HumanCaseSamples" type="EditableList&lt;HumanCaseSample&gt;" depends="Parent" lambda="c => 
+                          {
+                              if (c.Parent is HumanCase)
+                              {
+                                  (c.Parent as HumanCase).Samples.Sort(
+                                      ((a,b) =>
+                                          {
+                                              if (a.idfsSpecimenType == (long)SampleTypeEnum.Unknown) return 1;
+                                              if (b.idfsSpecimenType == (long)SampleTypeEnum.Unknown) return -1;
+                                              return 0; //a.ToString().CompareTo(b.ToString());
+                                          })
+                                      );
+                                  return (c.Parent as HumanCase).Samples;
+                              }
+                              return null;
+                          }
+                          "/>
+              <calculated name="VetCaseSamples" type="EditableList&lt;VetCaseSample&gt;" depends="Parent" lambda="c => c.Parent is VetCase ? (c.Parent as VetCase).Samples : null"/>
+              <calculated name="CaseTestValidations" type="EditableList&lt;CaseTestValidation&gt;" depends="Parent"
+                          lambda="c => c.Parent is AsSession ? (c.Parent as AsSession).CaseTestValidations : (
+                                       c.Parent is HumanCase ? (c.Parent as HumanCase).CaseTestValidations : (
+                                       c.Parent is VetCase ? (c.Parent as VetCase).CaseTestValidations : (null)))"/>
+              <calculated name="CaseDiagnosis" type="List&lt;DiagnosisLookup&gt;" depends="Parent"
+                          lambda="c => c.Parent is AsSession ? new List&lt;DiagnosisLookup&gt;(c.AsSessionDiseases.Where(d => !d.IsMarkedToDelete).Select(d => d.Diagnosis).Where(d => d != null).Distinct()) : (
+                                       c.Parent is HumanCase ? (c.Parent as HumanCase).DiagnosisAll : (
+                                       c.Parent is VetCase ? (c.Parent as VetCase).DiagnosisAll : (null)))"/>
+              <calculated name="AsSessionDiseases" type="EditableList&lt;AsSessionDisease&gt;" depends="Parent"
+                          lambda="c => c.Parent is AsSession ? (c.Parent as AsSession).Diseases : null" />
+
+              <calculated name="CaseObjectIdent" type="string" depends="idfCase" lambda='c => (c.HumanCaseSamples != null ? "HumanCase_" : (c.VetCaseSamples != null ? "VetCase_" : "AsSession_")) + c.idfCase + "_"' />
+              <calculated name="CaseHACode" type="int?" depends="Parent"
+                          lambda="c => c.Parent is AsSession ? (int)eidss.model.Enums.HACode.Livestock : (
+                                       c.Parent is HumanCase ? (int)eidss.model.Enums.HACode.Human : (
+                                       c.Parent is VetCase ? (c.Parent as VetCase)._HACode : 0x7FFF))"/>
+              <calculated name="AnimalID" type="string" depends="AnimalName" lambda="c => c.AnimalName"/>
+            </fields>
+            <readonly>
+                <fields name="SpecimenType,TestStatus,strFarmCode,strPerformedByOffice" predicate="c => true" />
+                <fields name="idfPerformedByOffice,PerformedByOffice,datReceivedDate,strContactPerson" predicate="c => !(c.HumanCaseSample != null &amp;&amp; c.HumanCaseSample.idfsSpecimenType == (long)SampleTypeEnum.Unknown)" />
+                <fields name="*" predicate="c => c.CaseTestValidations.Where(i => !i.IsMarkedToDelete &amp;&amp; i.idfTesting == c.idfTesting).Count() != 0" />
+            </readonly>
+            <relations>
+              <relation name="FFPresenter" table="FFPresenterModel" internal="false" type="link" source="idfObservation" target="CurrentObservation.HasValue?_FFPresenter.CurrentObservation.Value:0" lazy="false" />
+            </relations>
+            <lookups>
+              <lookup name="TestTypeRef" table="BaseReference" section="rftTestType" source="idfsTestType" target="idfsBaseReference">
+                <filters>
+                  <filter predicate="c => (c.intHACode &amp; obj.CaseHACode) != 0 || c.idfsBaseReference == obj.idfsTestType"/>
+                </filters>
+              </lookup>
+              <lookup name="TestResultRef" table="TestResultLookup" source="idfsTestResult" target="idfsReference">
+                <filters>
+                  <filter predicate="c => c.idfsTestType == obj.idfsTestType"/>
+                </filters>
+              </lookup>
+                <lookup name="TestForDiseaseType" table="BaseReference" section="rftTestForDiseaseType" source="idfsTestForDiseaseType" target="idfsBaseReference" />
+                <lookup name="TestStatusRef" table="BaseReference" section="rftActivityStatus" source="idfsTestStatus" target="idfsBaseReference"/>
+                <lookup name="HumanCaseSample" table="HumanCaseSample" existinglookup="HumanCaseSamples" source="idfContainerHuman" target="idfMaterial">
+                    <filters>
+                        <filter predicate="c => !c.IsMarkedToDelete"/>
+                    </filters>
+                </lookup>
+                <lookup name="VetCaseSample" table="VetCaseSample" existinglookup="VetCaseSamples" source="idfContainerVet" target="idfMaterial">
+                    <filters>
+                        <filter predicate="c => !c.IsMarkedToDelete"/>
+                    </filters>
+                </lookup>
+                <lookup name="AsSessionSample" table="AsSessionSample" existinglookup="AsSessionSamples" source="idfContainerAsSession" target="idfMaterial">
+                    <filters>
+                        <filter predicate="c => !c.IsMarkedToDelete"/>
+                    </filters>
+                </lookup>
+                <lookup name="Diagnosis" table="DiagnosisLookup" existinglookup="CaseDiagnosis" source="idfsDiagnosis" target="idfsDiagnosis">
+                  <filters>
+                    <filter predicate="c => this.AsSessionSample == null ? true : 
+                            this.AsSessionDiseases.Any(i => i.idfsDiagnosis == c.idfsDiagnosis &amp;&amp; (i.idfsSpeciesType == null || i.idfsSpeciesType == 0 || i.idfsSpeciesType == this.AsSessionSample.idfsSpeciesType))"/>
+                  </filters>
+                </lookup>
+                <lookup name="PerformedByOffice" table="OrganizationLookup" source="idfPerformedByOffice" target="idfInstitution">
+                  <params>
+                    <param name="ID" const="null" />
+                  </params>
+                </lookup>
+            </lookups>
+          <storage>            
+            <post name="spLabTestEditable_Post"/>
+            <candelete name="spLabTest_CanDelete"/>
+          </storage>
+          <postorder>
+            <item name="this"/>
+            <item name="FFPresenter"/>
+          </postorder>
+          <deleteorder>
+            <!--item name="FFPresenter"/-->
+            <item name="this"/>
+          </deleteorder>
+          <extenders>
+            <creating>
+              <scalar_extender target="idfTesting" class="GetNewIDExtender" />
+              <scalar_extender target="idfObservation" class="GetNewIDExtender" />
+              <lambda_extender target="blnNonLaboratoryTest" type="bool" lambda='c => true' />
+              <custom_extender>
+                <text>
+                  obj.FFPresenter = FFPresenterModel.Accessor.Instance(null).SelectByKey(manager, obj.idfObservation);
+                  obj.FFPresenter.SetProperties(EidssSiteContext.Instance.CountryID, null, FFTypeEnum.TestDetails, obj.idfObservation);
+                  if (obj.FFPresenter.CurrentTemplate != null) obj.idfsFormTemplate = obj.FFPresenter.CurrentTemplate.idfsFormTemplate;
+                </text>
+              </custom_extender>
+            </creating>
+            <created>
+              <lambda_extender target="TestStatusRef" type="BaseReference" lambda="c => c.TestStatusRefLookup.Where(a => a.idfsBaseReference == (long)BatchStatusEnum.Completed).SingleOrDefault()"/>
+              <lambda_extender target="TestStatus" type="string" lambda='c => c.TestStatusRef == null ? "" : c.TestStatusRef.name'/>
+              <custom_extender>
+                <text>
+                  if (obj.HumanCaseSamples != null &amp;&amp; obj.HumanCaseSamples.Count(c => c.idfsSpecimenType == (long)SampleTypeEnum.Unknown) == 0)
+                  {
+                      var s = HumanCaseSample.Accessor.Instance(m_CS).Create(manager, obj.Parent, null, null, null, null, null, null);
+                      s.SampleTypeWithUnknown = s.SampleTypeWithUnknownLookup.FirstOrDefault(c => c.idfsReference == (long)SampleTypeEnum.Unknown);
+                      obj.HumanCaseSamples.Add(s);
+                  }
+                </text>
+              </custom_extender>
+            </created>
+            <loaded>
+              <custom_extender>
+                <text>
+                  if (obj.idfsFormTemplate.HasValue) obj.FFPresenter.SetProperties(obj.idfsFormTemplate.Value);
+                </text>
+              </custom_extender>
+                <lambda_extender target="idfContainerHuman" type="long" lambda="c => c.idfContainer"/>
+                <lambda_extender target="idfContainerVet" type="long" lambda="c => c.idfContainer"/>
+                <lambda_extender target="idfContainerAsSession" type="long" lambda="c => c.idfContainer"/>
+            </loaded>
+              <posting>
+                  <lambda_extender target="idfContainer" type="long" lambda='c => c.idfContainerHuman.HasValue ? c.idfContainerHuman.Value : (c.idfContainerVet.HasValue ? c.idfContainerVet.Value : (c.idfContainerAsSession.HasValue ? c.idfContainerAsSession.Value : c.idfContainer))' />
+              </posting>
+          </extenders>
+            <handlers>
+                <fieldhandler>
+                  <lookup_handler lookup="TestResultRef" field="idfsTestType" />
+                  <lambda_handler field="idfPerformedByOffice" target="strPerformedByOffice" type="string" lambda='c => c.PerformedByOffice != null ? c.PerformedByOffice.name : ""'/>
+                  <lambda_handler field="idfContainerHuman" target="SpecimenType" type="string" lambda='c => c.HumanCaseSample == null ? "" : c.HumanCaseSample.strSpecimenName'/>
+                  <lambda_handler field="idfContainerVet" target="SpecimenType" type="string" lambda='c => c.VetCaseSample == null ? "" : c.VetCaseSample.strSpecimenName'/>
+                  <lambda_handler field="idfContainerAsSession" target="SpecimenType" type="string" lambda='c => c.AsSessionSample == null ? "" : c.AsSessionSample.strSpecimenName'/>
+                  <lambda_handler field="idfContainerHuman" target="strFieldBarcode" type="string" lambda='c => c.HumanCaseSample == null ? "" : c.HumanCaseSample.strFieldBarcode'/>
+                  <lambda_handler field="idfContainerVet" target="strFieldBarcode" type="string" lambda='c => c.VetCaseSample == null ? "" : c.VetCaseSample.strFieldBarcode'/>
+                  <lambda_handler field="idfContainerAsSession" target="strFieldBarcode" type="string" lambda='c => c.AsSessionSample == null ? "" : c.AsSessionSample.strFieldBarcode'/>
+                  <lambda_handler field="idfContainerAsSession" target="strFarmCode" type="string" lambda='c => c.AsSessionSample == null ? "" : c.AsSessionSample.strFarmCode'/>
+                  <lambda_handler field="idfContainerAsSession" target="AnimalName" type="string" lambda='
+                                  c => {
+                                      if (c.AsSessionSample != null)
+                                      {
+                                          if (string.IsNullOrEmpty(c.AsSessionSample.strAnimalCode))
+                                          {
+                                              if (c.AsSessionSample.Parent is AsSession)
+                                              {
+                                                  var sp = (c.AsSessionSample.Parent as AsSession).ASSpecies.
+                                                      FirstOrDefault(s => s.idfsReference == c.AsSessionSample.idfsSpeciesType);
+                                                  if (sp != null)
+                                                  {
+                                                      var an = (c.AsSessionSample.Parent as AsSession).ASAnimals.
+                                                              FirstOrDefault(a => a.idfSpecies == sp.idfSpecies);
+                                                      if (an != null)
+                                                          return an.strAnimalCode;
+                                                  }
+                                              }
+                                          }
+                                          return c.AsSessionSample.strAnimalCode;
+                                      }
+                                      return "";
+                                  }'/>
+                  <lambda_handler field="idfContainerAsSession" target="Diagnosis" type="DiagnosisLookup" 
+                                  lambda='c => c.DiagnosisLookup == null ? null : c.DiagnosisLookup.Where(i => i.idfsDiagnosis == obj.idfsDiagnosis).SingleOrDefault()' />
+                  <lambda_handler field="idfsTestType" target="TestName" type="string" lambda='c => c.TestTypeRef == null ? "" : c.TestTypeRef.name'/>
+                  <lambda_handler field="idfsTestForDiseaseType" target="TestType" type="string" lambda='c => c.TestForDiseaseType == null ? "" : c.TestForDiseaseType.name'/>
+                  <lambda_handler field="idfsTestResult" target="TestResult" type="string" lambda='c => c.TestResultRef == null ? "" : c.TestResultRef.name'/>
+                  <lambda_handler field="idfsDiagnosis" target="DiagnosisName" type="string" lambda='c => c.Diagnosis == null ? "" : c.Diagnosis.name'/>
+                  <custom_handler field="idfsDiagnosis">
+                      <text>
+                          if (obj.idfsDiagnosis != 0 &amp;&amp; obj.idfsTestType.HasValue)
+                          {
+                              using (var manager = DbManagerFactory.Factory.Create(ModelUserContext.Instance))
+                              {
+                                  long? idfsTestForDiseaseType = manager.SetSpCommand("dbo.spLabTest_GetDefaultCategory"
+                                      , manager.Parameter("idfsDiagnosis", obj.idfsDiagnosis)
+                                      , manager.Parameter("idfsTestType", obj.idfsTestType)
+                                      ).ExecuteScalar&lt;long?&gt;();
+                                  if (idfsTestForDiseaseType.HasValue)
+                                      obj.TestForDiseaseType = obj.TestForDiseaseTypeLookup.Where(a => a.idfsBaseReference == idfsTestForDiseaseType.Value).SingleOrDefault();
+                              }
+                          }
+                      </text>
+                  </custom_handler>
+                  <custom_handler field="idfsTestType">
+                      <text>
+                          if (obj.idfsDiagnosis != 0 &amp;&amp; obj.idfsTestType.HasValue)
+                          {
+                              using (var manager = DbManagerFactory.Factory.Create(ModelUserContext.Instance))
+                              {
+                                  long? idfsTestForDiseaseType = manager.SetSpCommand("dbo.spLabTest_GetDefaultCategory"
+                                      , manager.Parameter("idfsDiagnosis", obj.idfsDiagnosis)
+                                      , manager.Parameter("idfsTestType", obj.idfsTestType)
+                                      ).ExecuteScalar&lt;long?&gt;();
+                                  if (idfsTestForDiseaseType.HasValue)
+                                      obj.TestForDiseaseType = obj.TestForDiseaseTypeLookup.Where(a => a.idfsBaseReference == idfsTestForDiseaseType.Value).SingleOrDefault();
+                              }
+                          }
+                      </text>
+                  </custom_handler>
+                </fieldhandler>
+            </handlers>
+            <validators>
+              <change>
+                <predicate_validator field="datConcludedDate" message="datFieldCollectionDate_datConcludedDate_msgId"
+                                     predicate="c => PredicateValidator.CompareDates(c.HumanCaseSample == null || c.HumanCaseSample.idfsSpecimenType == (long)SampleTypeEnum.Unknown ? c.datConcludedDate : c.HumanCaseSample.datFieldCollectionDate, c.datConcludedDate)" />
+                <predicate_validator field="datConcludedDate" message="datFieldCollectionDate_datConcludedDate_msgId"
+                                     predicate="c => PredicateValidator.CompareDates(c.VetCaseSample == null || c.VetCaseSample.idfsSpecimenType == (long)SampleTypeEnum.Unknown ? c.datConcludedDate : c.VetCaseSample.datFieldCollectionDate, c.datConcludedDate)" />
+                <predicate_validator field="datConcludedDate" message="datFieldCollectionDate_datConcludedDate_msgId"
+                                     predicate="c => PredicateValidator.CompareDates(c.AsSessionSample == null || c.AsSessionSample.idfsSpecimenType == (long)SampleTypeEnum.Unknown ? c.datConcludedDate : c.AsSessionSample.datFieldCollectionDate, c.datConcludedDate)" />
+              </change>
+              <post>
+                <required_validator target="idfContainerHuman" property="HumanCaseSample" predicate="c => c.blnNonLaboratoryTest &amp;&amp; c.HumanCaseSamples != null" message="ErrMandatoryComboboxRequired" />
+                <required_validator target="idfContainerVet" property="VetCaseSample" predicate="c => c.blnNonLaboratoryTest &amp;&amp; c.VetCaseSamples != null" message="ErrMandatoryComboboxRequired"/>
+                <required_validator target="idfContainerAsSession" property="AsSessionSample" predicate="c => c.blnNonLaboratoryTest &amp;&amp; c.AsSessionSamples != null" message="ErrMandatoryComboboxRequired"/>
+                <required_validator target="idfsTestType" property="TestTypeRef" predicate="c => c.blnNonLaboratoryTest" />
+                <required_validator target="idfsDiagnosis" property="Diagnosis" predicate="c => c.blnNonLaboratoryTest" />
+                <required_validator target="idfsTestResult" property="TestResultRef" label="TestResultObservation" predicate="c => c.blnNonLaboratoryTest" />
+              </post>
+              <delete>
+                <predicate_validator predicate="c => c.CaseTestValidations.Where(i => !i.IsMarkedToDelete &amp;&amp; i.idfTesting == c.idfTesting).Count() == 0" 
+                                      message="msgCantDeleteRecord" />
+                <!--custom_validator method="CheckCanDelete" /-->
+              </delete>
+            </validators>
+          <actions>
+            <action name="Create" type="Create">
+              <run>
+                <params>
+                  <param name="idfCase" type="long" />
+                  <!--prnt param name="HumanCaseSamples" type="EditableList&lt;HumanCaseSample&gt;"/>
+                        <param name="VetCaseSamples" type="EditableList&lt;VetCaseSample&gt;"/>
+                        <param name="AsSessionSamples" type="EditableList&lt;AsSessionSample&gt;"/>
+                        <param name="CaseTestValidations" type="EditableList&lt;CaseTestValidation&gt;"/>
+                        <param name="CaseDiagnosis" type="List&lt;DiagnosisLookup&gt;"/>
+                        <param name="AsSessionDiseases" type="EditableList&lt;AsSessionDisease&gt;"/-->
+                </params>
+                <creating>
+                  <lambda_extender target="idfCase" type="long" lambda='c => idfCase' />
+                  <!--prnt lambda_extender target="HumanCaseSamples" type="EditableList&lt;HumanCaseSample&gt;" lambda='c => HumanCaseSamples' />
+                        <lambda_extender target="VetCaseSamples" type="EditableList&lt;VetCaseSample&gt;" lambda='c => VetCaseSamples' />
+                        <lambda_extender target="AsSessionSamples" type="EditableList&lt;AsSessionSample&gt;" lambda='c => AsSessionSamples' />
+                        <lambda_extender target="CaseTestValidations" type="EditableList&lt;CaseTestValidation&gt;" lambda='c => CaseTestValidations' />
+                        <lambda_extender target="CaseDiagnosis" type="List&lt;DiagnosisLookup&gt;" lambda='c => CaseDiagnosis' />
+                        <lambda_extender target="AsSessionDiseases" type="EditableList&lt;AsSessionDisease&gt;" lambda='c => AsSessionDiseases' /-->
+                </creating>
+                <created>
+                  <!--prnt lambda_extender target="CaseDiagnosis" type="List&lt;DiagnosisLookup&gt;" 
+                                         lambda='c => c.CaseDiagnosis != null ? c.CaseDiagnosis
+                                         : new List&lt;DiagnosisLookup&gt;(c.AsSessionDiseases.Where(d => !d.IsMarkedToDelete).Select(d => d.Diagnosis).Where(d => d != null).Distinct())' /-->
+                  <lambda_extender target="Diagnosis" type="DiagnosisLookup" lambda='c => c.DiagnosisLookup.FirstOrDefault()' />
+                  <lambda_extender target="DiagnosisName" type="string" lambda='c => c.Diagnosis == null ? "" : c.Diagnosis.name' />
+                </created>
+              </run>
+            </action>
+          </actions>
+        </table>
+    </tables>
+
+</object>

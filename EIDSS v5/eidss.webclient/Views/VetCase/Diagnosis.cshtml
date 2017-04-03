@@ -1,0 +1,67 @@
+﻿@model eidss.model.Schema.VetCase
+           
+@using eidss.webclient.Utils
+
+<table class="bordered">
+    <tr>
+        <td class="sectionName" colspan="4">            
+            @Translator.GetMessageString("tabSectionClinicalDiagnosis")                      
+        </td>
+    </tr>
+    <tr>
+        <td class="medium">
+            @Html.LabelFor(m=>m.idfsTentativeDiagnosis)
+        </td>
+        <td class="xlarge">
+            @Html.BvCombobox(Model, "TentativeDiagnosis")
+        </td>
+        <td class="small">
+            @Html.BvEditbox(Model, "strTentativeDiagnosisOIECode", false) 
+        </td>
+        <td>
+            @Html.BvDatebox(Model, "datTentativeDiagnosisDate")
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.idfsTentativeDiagnosis1)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, "TentativeDiagnosis1")
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strTentativeDiagnosis1OIECode", false) 
+        </td>
+        <td>
+            @Html.BvDatebox(Model, "datTentativeDiagnosis1Date")
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.idfsTentativeDiagnosis2)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, "TentativeDiagnosis2")
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strTentativeDiagnosis2OIECode", false) 
+        </td>
+        <td>
+            @Html.BvDatebox(Model, "datTentativeDiagnosis2Date")
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m=>m.idfsFinalDiagnosis)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, "FinalDiagnosis")
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strFinalDiagnosisOIECode", false) 
+        </td>
+        <td>
+            @Html.BvDatebox(Model, "datFinalDiagnosisDate")
+        </td>
+    </tr>
+</table>
