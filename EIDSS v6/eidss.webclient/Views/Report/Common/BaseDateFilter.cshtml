@@ -1,0 +1,41 @@
+﻿@using Kendo.Mvc.UI
+@using eidss.webclient.Utils
+@model eidss.model.Reports.Common.BaseDateModel
+        
+<table id="BaseDateFilterTable" class="level1">
+    <tr>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.Year)
+        </td>
+        <td class="largereport">
+            @{
+                @*TODO Placeholder == NumberGroupSeparator?*@
+                @(
+                Html.Kendo().NumericTextBox()
+                    .Name("Year")
+                        .Value(Model.Year)
+                        .Min(2000)
+                        .Max(2030)
+                        .Decimals(0)
+                        .Format("0000")
+                        .HtmlAttributes(new {@class = "requiredField"})
+                        .Placeholder("")
+                        )
+            }
+        </td>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.Month)
+        </td>
+        <td class="largereport">
+            <div class='tdContainer'>
+                @{
+                    @(Html.Kendo().ComboBox()
+                    .BindTo(Model.SelectedMonthList.ConvertToSelectListItem())
+                    .HtmlAttributes(Model.IsMonthMandatory ? new {@class = "requiredField"} : null)
+                    .Name("Month"))
+                }
+            </div>
+        </td>
+        <td></td>
+    </tr>
+</table>

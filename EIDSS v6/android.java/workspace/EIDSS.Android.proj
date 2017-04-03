@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">Android</Platform>
+    <ProjectGuid>{97553568-FE1C-4D28-ADD9-F4463BDF7C3B}</ProjectGuid>
+    <ProjectName>EIDSS</ProjectName>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Android' ">
+    <ConfigurationRecognized>true</ConfigurationRecognized>
+    <OutDir>$(MSBuildProjectDirectory)\bin\Debug\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Android' ">
+    <ConfigurationRecognized>true</ConfigurationRecognized>
+    <OutDir>$(MSBuildProjectDirectory)\bin\Release\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup>
+    <APK>.apk</APK>
+    <TargetFileName>$(ProjectName)$(APK)</TargetFileName>
+    <TargetPath>$(OutDir)$(TargetFileName)</TargetPath>
+  </PropertyGroup>
+  <Target Name="CheckConfiguration" BeforeTargets="Build">
+    <Message Condition=" 'true' != '$(ConfigurationRecognized)' " Text="Configuration '$(Configuration)' is unsupported. Build will be skipped!" />
+  </Target>
+  <PropertyGroup>
+    <BuildDependsOn>
+      BeforeBuild;
+      CoreBuild;
+      AfterBuild
+    </BuildDependsOn>
+  </PropertyGroup>
+  <Target Name="Build" DependsOnTargets="$(BuildDependsOn)" Condition=" 'true' == '$(ConfigurationRecognized)' " Outputs="$(TargetPath)" />
+  <PropertyGroup>
+    <RebuildDependsOn>
+      Clean;
+      BeforeBuild;
+      CoreBuild;
+      AfterBuild
+    </RebuildDependsOn>
+  </PropertyGroup>
+  <Target Name="Rebuild" DependsOnTargets="$(RebuildDependsOn)" Condition=" 'true' == '$(ConfigurationRecognized)' " Outputs="$(TargetPath)" />
+  <PropertyGroup>
+    <CleanDependsOn>
+    </CleanDependsOn>
+  </PropertyGroup>
+  <Target Name="Clean" DependsOnTargets="$(CleanDependsOn)" Condition=" 'true' == '$(ConfigurationRecognized)' " />
+  <Target Name="BeforeBuild" />
+  <PropertyGroup>
+    <CoreBuildDependsOn>
+      PrepareForBuild;
+      RunAnt;
+      PretendAccustomedOutput;
+      GetTargetPath
+    </CoreBuildDependsOn>
+  </PropertyGroup>
+  <Target Name="CoreBuild" DependsOnTargets="$(CoreBuildDependsOn)" />
+  <Target Name="PrepareForBuild">
+    <MakeDir Directories="$(OutDir)" />
+  </Target>
+  <Target Name="RunAnt">
+    <Exec WorkingDirectory="$(MSBuildProjectDirectory)" Command="ant -f $(ProjectName)\build.xml clean $(Configuration.ToLower())" />
+  </Target>
+  <Target Name="PretendAccustomedOutput">
+    <PropertyGroup>
+      <_antOutDir>$(MSBuildProjectDirectory)\$(ProjectName)\bin\</_antOutDir>
+      <_builtApk>$(ProjectName.ToLower())-$(Configuration.ToLower())</_builtApk>
+    </PropertyGroup>
+    <ItemGroup>
+      <APKfile Include="$(_antOutDir)$(_builtApk)$(APK)" Condition=" Exists( '$(_antOutDir)$(_builtApk)$(APK)' ) " />
+      <APKfile Include="$(_antOutDir)$(_builtApk)*$(APK)" Condition=" !Exists( '$(_antOutDir)$(_builtApk)$(APK)' ) " />
+      <AntOutput Include="$(_antOutDir)**\*" Exclude="@(APKfile)" />
+    </ItemGroup>
+    <Copy SourceFiles="@(APKfile)" DestinationFiles="$(TargetPath)" />
+    <Copy SourceFiles="@(AntOutput)" DestinationFiles="@(AntOutput->'$(OutDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
+  <PropertyGroup Label="AfterBuildDependsOn">
+    <AfterBuildDependsOn>
+      PrepareIntermediateDrop
+    </AfterBuildDependsOn>
+  </PropertyGroup>
+  <Target Name="AfterBuild" DependsOnTargets="$(AfterBuildDependsOn)" />
+  <Target Name="PrepareIntermediateDrop">
+    <PropertyGroup>
+      <_intermediateDistribDir>$(IntermediateDistribDir)Setup\EIDSS_Android\</_intermediateDistribDir>
+    </PropertyGroup>
+    <ItemGroup>
+      <_androidApp Include="$(TargetPath)" />
+    </ItemGroup>
+    <MakeDir Directories="$(_intermediateDistribDir)" Condition=" '' != '@(_androidApp)' " />
+    <Copy SourceFiles="@(_androidApp)" DestinationFolder="$(_intermediateDistribDir)" />
+  </Target>
+  <!--
+  ================================================================================================
+  GetTargetPath
+
+    This stand-alone target returns the name of the build product (i.e. APK) that would be
+    produced if we built this project.
+  ================================================================================================
+  -->
+  <Target Name="GetTargetPath" Outputs="$(TargetPath)">
+    <Error Condition=" '' == '$(BinariesRoot)' and '' == '$(OutDir)' " Text="Neither OutDir property nor BinariesRoot is set!" />
+    <ItemGroup Condition="!Exists( '$(TargetPath)' )">
+      <_targetPath Include="$(BinariesRoot)**\$(TargetFileName)" />
+    </ItemGroup>
+    <PropertyGroup>
+      <TargetPath Condition="!Exists( '$(TargetPath)' )">%(_targetPath.FullPath)</TargetPath>
+    </PropertyGroup>
+    <Error Condition=" !Exists( '$(TargetPath)' )" Text="Failed to get TargetPath. Probably project $(MSBuildProjectFile) has not been built yet." />
+    <Message Text="TargetPath = $(TargetPath)" />
+  </Target>
+</Project>

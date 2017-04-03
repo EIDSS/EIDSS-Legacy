@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="Observation"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="spFFGetObservations" type="simplelist" />
+	</storage>
+	<tables>
+		<table name="Observation">
+      <extenders>
+        <creating>
+          <scalar_extender target="idfObservation" class="GetNewIDExtender" />
+        </creating>
+      </extenders>
+      <actions>
+        <action name="SelectDetailList" type="Loadlist"/>
+      </actions>
+		</table>
+	</tables>
+
+</object>

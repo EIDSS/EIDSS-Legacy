@@ -1,0 +1,55 @@
+﻿@using Kendo.Mvc.UI
+@using eidss.webclient.Utils
+@model eidss.webclient.Models.Reports.ExternalComparativeModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/ExportButtons", Model)
+    <div class="bluelayout">
+        <div class="tabPanelContent">
+
+            @Html.Partial("Common/BaseFilter", Model)
+
+            @Html.Partial("AZ/FromYearToYearFilter", Model.YearModel)
+            <table id="ExternalComparativeFilterTable" >
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.StartMonth)
+                    </td>
+                    <td class="largereport">
+                
+                        @{
+                            @(Html.Kendo().ComboBox()
+                                  .BindTo(Model.SelectedJanuaryMonthList.ConvertToSelectListItem())
+                                  .Name("StartMonth")
+                                  .Events(c => c.Change("paperForm.OnMonthChanged"))
+                                  )
+                        }
+                
+                    </td>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.EndMonth)
+                    </td>
+                    <td class="largereport">
+                
+                        @{
+                            @(Html.Kendo().ComboBox()
+                                  .BindTo(Model.SelectedCurrentMonthList.ConvertToSelectListItem())
+                                  .Name("EndMonth")
+                                  .Events(c => c.Change("paperForm.OnMonthChanged"))
+                                  )
+                        }
+                
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+
+            @Html.Partial("Common/AddressFilter", Model.Address)
+        </div>
+    </div>
+}

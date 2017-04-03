@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="Vector"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spVectorTypeReferenceMaster_SelectDetail" type= "detailone" />
+  </storage>
+
+  <tables>
+    <table name="VectorTypeReferenceMaster">
+      <properties auditObject="daoReference" auditTable="trtBaseReference" permissionObject="Reference">
+        <lookupcache>
+          <item name="rftVectorType"/>
+        </lookupcache>
+      </properties>
+      <help win="Vector_Types_Editor"/>
+      <relations>
+        <relation name="VectorTypes" table="VectorTypeReference" internal="false" type="child" lazy="false" source="idfsReferenceType" target="idfsReferenceType" />
+      </relations>
+      <lookups>
+      </lookups>
+      <storage>
+        <post  name="spDummy_Post"/>
+        <delete />
+        <candelete  name=''/>
+      </storage>
+      <postorder>
+        <item name="VectorTypes" />
+      </postorder>
+      <deleteorder>
+        <item name="VectorTypes" />
+      </deleteorder>
+      <extenders>
+        <creating>
+        </creating>
+        <created>
+        </created>
+        <loading>
+        </loading>
+        <posting>
+        </posting>
+        <posted>
+        </posted>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+        </fieldhandler>
+      </handlers>
+
+      <validators>
+        <childchange>
+          <container name="VectorTypes" field="strDefaultName" filter="c => true">
+            <!--duplicate_validator field="strDefaultName" container="VectorTypes" /-->
+            <!--required_child_validator container="VectorTypes" field="strDefaultName"  /-->
+            <required_validator target="strDefaultName" child="true" />
+          </container>
+          <container name="VectorTypes" field="strTranslatedName" filter="c => true">
+            <!--duplicate_validator field="strTranslatedName" container="VectorTypes" filter="c => ModelUserContext.CurrentLanguage != Localizer.lngEn"/-->
+            <!--required_child_validator container="VectorTypes" field="strTranslatedName" /-->
+            <required_validator target="strTranslatedName" child="true" predicate="c => ModelUserContext.CurrentLanguage != Localizer.lngEn"/>
+          </container>
+        </childchange>
+        <post>
+          <duplicate_list_validator collection="VectorTypes" type="VectorTypeReference" filter="c => !c.IsMarkedToDelete">
+            <item field="strDefaultName" inMsg="true" />
+          </duplicate_list_validator>
+          <duplicate_list_validator collection="VectorTypes" type="VectorTypeReference" filter="c => !c.IsMarkedToDelete &amp;&amp; ModelUserContext.CurrentLanguage != Localizer.lngEn">
+            <item field="strTranslatedName" inMsg="true" />
+          </duplicate_list_validator>
+        </post>
+
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <remove type="Delete"/>
+        </standard>
+        <action name="DeleteVector" type="Action">
+          <visual panel="Main" alignment ="Right"  visiblePredicate = "ActionMetaItem.DefaultDeleteGroupItemVisiblePredicate">
+            <regular caption ="strDelete_Id" tooltip ="tooltipDelete_Id" icon ="Delete_Remove"/>
+          </visual>
+        </action>
+      </actions>
+    </table>
+  </tables>
+
+</object>

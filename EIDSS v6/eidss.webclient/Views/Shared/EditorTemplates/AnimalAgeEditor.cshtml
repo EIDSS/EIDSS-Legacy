@@ -1,0 +1,12 @@
+﻿@using Kendo.Mvc.UI
+
+@(Html.Kendo().ComboBox()
+    .Name("AnimalAge") // Name of the widget should be the same as the name of the property
+    .DataValueField("Key") 
+    .DataTextField("name") 
+    .DataSource(source => source.Read(read => read.Action("SelectAnimalAge", "System")))
+    .Events(e => e.DataBound("function(e) { bvComboBox.onDataBoundAnimalAge(e); }")
+                  .Open("function(e) { bvComboBox.onOpen(e, 200); }"))
+    .HtmlAttributes(new { @class="smallGridEditor" })
+    )
+

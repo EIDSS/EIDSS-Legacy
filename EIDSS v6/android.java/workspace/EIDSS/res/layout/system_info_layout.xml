@@ -1,0 +1,99 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    
+  <TextView
+      android:id="@+id/Statistics"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/Statistics" />
+
+  <TextView
+      android:id="@+id/HumanCasesTotal"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignTop="@id/Statistics"
+      android:layout_marginLeft="10dp"
+      android:layout_toRightOf="@id/Statistics" />
+
+  <TextView
+      android:id="@+id/VeterinaryCasesTotal"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignLeft="@id/HumanCasesTotal"
+      android:layout_below="@id/HumanCasesTotal" />
+
+  <TextView
+      android:id="@+id/labelDateOnlineSynchronization"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/VeterinaryCasesTotal"
+      android:text="@string/DateOnlineSynchronization"
+      android:layout_marginTop="10dp"
+	 />
+  <TextView
+      android:id="@+id/DateOnlineSynchronization"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/labelDateOnlineSynchronization" />
+
+  <TextView
+      android:id="@+id/labelDateReferencesUpdate"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/DateOnlineSynchronization"
+      android:text="@string/DateReferencesUpdate"
+      android:layout_marginTop="10dp"
+	/>
+
+  <TextView
+    android:id="@+id/DateReferencesUpdate"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/labelDateReferencesUpdate"
+    />
+
+  <TextView
+      android:id="@+id/labelEidssVersion"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/DateReferencesUpdate"
+      android:layout_marginTop="10dp"
+      />
+  <TextView
+    android:id="@+id/EidssVersion"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/VersionTemporary"
+    android:layout_alignTop="@id/labelEidssVersion"
+    android:layout_toRightOf="@id/labelEidssVersion"
+    android:layout_marginLeft="10dp"
+    />
+  <!-- TextView
+    android:id="@+id/EidssVersion"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignTop="@id/labelEidssVersion"
+    android:layout_toRightOf="@id/labelEidssVersion"
+    android:layout_marginLeft="10dp"
+    />
+  <TextView
+    android:id="@+id/Copyright"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/Copyright"
+    android:layout_below="@id/labelEidssVersion"
+    android:layout_marginTop="10dp"
+    /-->
+
+  <TextView
+    android:id="@+id/BuildNumber"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/BuildNumber"
+    android:layout_below="@id/EidssVersion"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="10dp"
+    />
+
+</RelativeLayout>

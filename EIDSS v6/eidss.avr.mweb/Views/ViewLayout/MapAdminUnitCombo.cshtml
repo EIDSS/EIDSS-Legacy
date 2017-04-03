@@ -1,0 +1,14 @@
+﻿@model eidss.model.Avr.View.AvrView
+
+@Html.DevExpress().ComboBox(settings => {
+    settings.Name = "cbMapDefAdminUnit";
+    settings.CallbackRouteValues = new { Controller = "ViewLayout", Action = "GetDataColumns", layoutId = ViewBag.LayoutId, viewName = "MapAdminUnitCombo" };
+        settings.ControlStyle.CssClass = "wide";
+        settings.Enabled = !Model.IsReadOnly && eidss.model.Core.AvrPermissions.UpdatePermission;
+        settings.Properties.ValueType = typeof(string);
+        settings.Properties.TextField = "FullPath";
+        settings.Properties.ValueField = "UniquePath";
+        settings.Properties.EnableCallbackMode = true;
+        settings.Properties.CallbackPageSize = 20;
+        settings.Properties.ClientSideEvents.ValueChanged = "viewGridForm.OnMapDefAdminUnitSelectionChanged";
+}).BindList(eidss.model.Avr.View.AvrView.GetMapAdminUnitList(Model)).Bind(Model.MapAdminUnitViewColumn).GetHtml()

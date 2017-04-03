@@ -1,0 +1,50 @@
+﻿@model eidss.model.Reports.KZ.DiagnosticInvestigationModel
+
+
+<table id="MultiFilterTable" >
+    <tr>
+        <td class="medium">
+            @Html.LabelFor(m => m.CheckedDiagnosis)
+        </td>
+        <td colspan="3" >
+            <div class="scrollable xxxlargeInternal" >
+                @foreach (var item in Model.DiagnosisList)
+                {
+                    <input type="checkbox" id="@item.Value" value="@item.Value" name="CheckedDiagnosis" />
+                    @Html.Label(item.Text)
+                    <br />
+                }
+            </div>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td class="medium">
+            @Html.LabelFor(m => m.CheckedInvestigationTypes)
+        </td>
+        <td class="large">
+            <div class="scrollable largeInternal" >
+                @foreach (var item in Model.InvestigationTypeList)
+                {
+                    <input type="checkbox" id="@item.Value" value="@item.Value" name="CheckedInvestigationTypes" />
+                    @Html.Label(item.Text)
+                    <br />
+                }
+            </div>
+        </td>
+        <td class="medium">
+            @Html.LabelFor(m => m.CheckedSpecies)
+        </td>
+        <td class="large">
+            <div class="scrollable largeInternal" >
+                @foreach (var item in Model.SpeciesList)
+                {
+                    <input type="checkbox" id="@item.Value" value="@item.Value" name="CheckedSpecies" />
+                    @Html.Label(item.Text)
+                    <br />
+                }
+            </div>
+        </td>
+        <td></td>
+    </tr>
+</table>

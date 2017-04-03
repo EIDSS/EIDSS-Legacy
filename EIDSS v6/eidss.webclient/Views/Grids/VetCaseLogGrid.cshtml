@@ -1,0 +1,7 @@
+﻿@model eidss.model.Schema.VetCaseLog.VetCaseLogGridModelList
+@using eidss.model.Schema
+@using eidss.webclient.Utils;
+
+@(Html.BvDetailsFormGrid<VetCaseLog.VetCaseLogGridModel, VetCaseLog.VetCaseLogGridModelList>(
+    (string)ViewBag.VetCaseLogName, Model, "detailsGrid", "vetCase.showVetCaseLogGridEditWindow", null, (bool)ViewBag.IsReadOnly)
+)

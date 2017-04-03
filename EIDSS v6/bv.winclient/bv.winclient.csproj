@@ -1,0 +1,520 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B0163672-F328-4D02-9B71-FB698EDAF815}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>bv.winclient</RootNamespace>
+    <AssemblyName>bv.winclient</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\eidss.main\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v14.1, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Printing.v14.1.Core, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.PivotGrid.v14.1.Core, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Utils.v14.1, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraBars.v14.1, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Charts.v14.1.Core, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraCharts.v14.1.Wizard, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraCharts.v14.1, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v14.1, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPrinting.v14.1, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraGrid.v14.1, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraNavBar.v14.1, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPivotGrid.v14.1, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Sparkline.v14.1.Core, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Utils.v14.1.UI, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraReports.v14.1.Extensions, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraReports.v14.1, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraTreeList.v14.1, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\BvAssemblyInfo.cs">
+      <Link>BvAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="ActionPanel\ActionPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ActionPanel\ActionPanel.designer.cs">
+      <DependentUpon>ActionPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ActionPanel\BaseActionPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ActionPanel\BaseActionPanel.Designer.cs">
+      <DependentUpon>BaseActionPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ActionPanel\DropDownActionHelper.cs" />
+    <Compile Include="ActionPanel\GroupActionPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ActionPanel\GroupActionPanel.Designer.cs">
+      <DependentUpon>GroupActionPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BasePanel\BaseDetailPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BasePanel\BaseDetailPanel.Designer.cs">
+      <DependentUpon>BaseDetailPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BasePanel\BaseFormManager.cs" />
+    <Compile Include="BasePanel\BaseGroupPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BasePanel\BaseGroupPanel.Designer.cs">
+      <DependentUpon>BaseGroupPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BasePanel\BasePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BasePanel\BaseListlPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BasePanel\BaseListlPanel.Designer.cs">
+      <DependentUpon>BaseListlPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BasePanel\BasePanelPopup.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="BasePanel\BaseGridlPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BasePanel\BaseGridlPanel.Designer.cs">
+      <DependentUpon>BaseGridlPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BasePanel\BasePanelPopupHelper.cs" />
+    <Compile Include="BasePanel\BasePanelRepositoryPopup.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="BasePanel\CustomPopupContainerEdit.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="BasePanel\CustomPopupContainerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BasePanel\FormDisposer.cs" />
+    <Compile Include="BasePanel\IApplicationForm.cs" />
+    <Compile Include="BasePanel\IBaseListPanel.cs" />
+    <Compile Include="BasePanel\IBasePanel.cs" />
+    <Compile Include="BasePanel\IChildListPanel.cs" />
+    <Compile Include="BasePanel\IDetailPanel.cs" />
+    <Compile Include="BasePanel\IMasterDetail.cs" />
+    <Compile Include="BasePanel\InlineMode.cs" />
+    <Compile Include="BasePanel\IPopupControl.cs" />
+    <Compile Include="BasePanel\ITranslationView.cs" />
+    <Compile Include="BasePanel\LifeTimeState.cs" />
+    <Compile Include="BasePanel\ListPanelComponents\ActionButtonEventArgs.cs" />
+    <Compile Include="BasePanel\ListPanelComponents\BaseListGridControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BasePanel\ListPanelComponents\BaseListGridControl.Designer.cs">
+      <DependentUpon>BaseListGridControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BasePanel\ListPanelComponents\BvBaseDataControllerHelper.cs" />
+    <Compile Include="BasePanel\ListPanelComponents\BvCurrencyDataController.cs" />
+    <Compile Include="BasePanel\ListPanelComponents\BvGridControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="BasePanel\ListPanelComponents\BvGridView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="BasePanel\ListPanelComponents\FocusedItemChangedEventArgs.cs" />
+    <Compile Include="BasePanel\ListPanelComponents\SelectedItemsChangedEventArgs.cs" />
+    <Compile Include="BasePanel\RepositoryItemCustomPopupContainerEdit.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Core\ActivityMonitor.cs" />
+    <Compile Include="Core\BvForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Core\BvForm.Designer.cs">
+      <DependentUpon>BvForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\BvLookupColumnInfo.cs" />
+    <Compile Include="Core\BvXtraUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\ChooseWithGridForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Core\ChooseWithGridForm.Designer.cs">
+      <DependentUpon>ChooseWithGridForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\DesktopResourceUsage.cs" />
+    <Compile Include="Core\FormClosingMode.cs" />
+    <Compile Include="Core\Help2.cs" />
+    <Compile Include="Core\Help2Provider.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Core\InputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Core\InputForm.Designer.cs">
+      <DependentUpon>InputForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\LabelContolPair.cs" />
+    <Compile Include="Core\LabelControlColumn.cs" />
+    <Compile Include="Core\LabelControlList.cs" />
+    <Compile Include="Core\IListFormsContainer.cs" />
+    <Compile Include="Core\MenuAction.cs" />
+    <Compile Include="Core\MenuActionManager.cs" />
+    <Compile Include="Core\OneInstanceApp.cs" />
+    <Compile Include="Core\PopupMenuWrapper.cs" />
+    <Compile Include="Core\SqlExceptionHandler.cs" />
+    <Compile Include="Core\TranslationTool\ControlDesigner.cs" />
+    <Compile Include="Core\TranslationTool\ControlDesignerEventArgs.cs" />
+    <Compile Include="Core\TranslationTool\ControlEdge.cs" />
+    <Compile Include="Core\TranslationTool\DesignControlManager.cs" />
+    <Compile Include="Core\TranslationTool\DesignElement.cs" />
+    <Compile Include="Core\TranslationTool\NavBarControlHelper.cs" />
+    <Compile Include="Core\TranslationTool\TranslationButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Core\TranslationTool\TranslationToolHelperWinClient.cs" />
+    <Compile Include="Core\TranslationTool\ControlDesignerProxy.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Core\TranslationTool\UndoControlState.cs" />
+    <Compile Include="Core\TranslationTool\UndoOperation.cs" />
+    <Compile Include="Core\TranslationTool\UndoStack.cs" />
+    <Compile Include="Core\WaitDialog.cs" />
+    <Compile Include="Core\WinClientContext.cs" />
+    <Compile Include="Layout\ActionEventArgs.cs" />
+    <Compile Include="Localization\DxControlsHelper.cs" />
+    <Compile Include="Layout\ILayout.cs" />
+    <Compile Include="Layout\LayoutCorrector.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Layout\LayoutEmpty.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Layout\LayoutEmpty.Designer.cs">
+      <DependentUpon>LayoutEmpty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layout\LayoutGroup.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Layout\LayoutGroup.Designer.cs">
+      <DependentUpon>LayoutGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layout\LayoutHelper.cs" />
+    <Compile Include="Layout\LayoutSimple.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Core\ErrorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Core\ErrorForm.Designer.cs">
+      <DependentUpon>ErrorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\MessageForm.cs" />
+    <Compile Include="Core\Splash.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Core\WindowsAPI.cs" />
+    <Compile Include="Core\WinUtils.cs" />
+    <Compile Include="Layout\LayoutSimple.designer.cs">
+      <DependentUpon>LayoutSimple.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layout\LayoutAdvanced.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Layout\LayoutAdvanced.Designer.cs">
+      <DependentUpon>LayoutAdvanced.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Localization\BarLocalizer.cs" />
+    <Compile Include="Localization\ChartLocalizer.cs" />
+    <Compile Include="Localization\DevXLocalizer.cs" />
+    <Compile Include="Localization\EditorsLocalizer.cs" />
+    <Compile Include="Localization\GridLocalizer.cs" />
+    <Compile Include="Localization\NavBarLocalizer.cs" />
+    <Compile Include="Localization\PivotGridLocalizer.cs" />
+    <Compile Include="Localization\SystemLanguages.cs" />
+    <Compile Include="Localization\TreeLocalizer.cs" />
+    <Compile Include="Localization\XtraPrintingLocalizer.cs" />
+    <Compile Include="Localization\XtraReportLocalizer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SearchPanel\BaseSearchPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SearchPanel\BaseSearchPanel.Designer.cs">
+      <DependentUpon>BaseSearchPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SearchPanel\ISearchControlFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SearchPanel\LinkedContent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SearchPanel\SearchControlFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SearchPanel\SearchPanelConstants.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SearchPanel\SearchPanelDataBinder.cs" />
+    <Compile Include="SearchPanel\SearchPanelEventArgs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SearchPanel\SearchPanelHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SearchPanel\Validate\BaseValidator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SearchPanel\Validate\GroupValidator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SearchPanel\Validate\IValidator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SearchPanel\Validate\MandatoryValidator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SearchPanel\Validate\ValidatorHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\bltoolkit.3.2.dev\BLToolkit.4.csproj">
+      <Project>{0C325F5D-E50E-4340-8724-D29896CCC583}</Project>
+      <Name>BLToolkit.4</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\bv.common\bv.common.csproj">
+      <Project>{BEE76B17-720D-4B65-996A-5712912B3ACF}</Project>
+      <Name>bv.common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\bv.model\bv.model.csproj">
+      <Project>{9067327E-1960-4326-ACB9-D982DDBEAA76}</Project>
+      <Name>bv.model</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ActionPanel\ActionPanel.resx">
+      <DependentUpon>ActionPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActionPanel\BaseActionPanel.resx">
+      <DependentUpon>BaseActionPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasePanel\BasePanel.resx">
+      <DependentUpon>BasePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\BvXtraUserControl.resx">
+      <DependentUpon>BvXtraUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\ChooseWithGridForm.resx">
+      <DependentUpon>ChooseWithGridForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\ErrorForm.ar-IQ.resx">
+      <DependentUpon>ErrorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\ErrorForm.az-Latn-AZ.resx">
+      <DependentUpon>ErrorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\ErrorForm.hy-am.resx">
+      <DependentUpon>ErrorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\ErrorForm.ka-GE.resx">
+      <DependentUpon>ErrorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\ErrorForm.kk-kz.resx">
+      <DependentUpon>ErrorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\ErrorForm.resx">
+      <DependentUpon>ErrorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\ErrorForm.ru-RU.resx">
+      <DependentUpon>ErrorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\ErrorForm.uk-ua.resx">
+      <DependentUpon>ErrorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\ErrorForm.uz-Cyrl-UZ.resx">
+      <DependentUpon>ErrorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\ErrorForm.uz-Latn-UZ.resx">
+      <DependentUpon>ErrorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\InputForm.resx">
+      <DependentUpon>InputForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\Splash.ar-IQ.resx">
+      <DependentUpon>Splash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\Splash.az-Latn-AZ.resx">
+      <DependentUpon>Splash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\Splash.hy-am.resx">
+      <DependentUpon>Splash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\Splash.ka-GE.resx">
+      <DependentUpon>Splash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\Splash.kk-KZ.resx">
+      <DependentUpon>Splash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\Splash.resx">
+      <DependentUpon>Splash.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\Splash.ru-RU.resx">
+      <DependentUpon>Splash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\Splash.uk-UA.resx">
+      <DependentUpon>Splash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\Splash.uz-Cyrl-UZ.resx">
+      <DependentUpon>Splash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\Splash.uz-Latn-UZ.resx">
+      <DependentUpon>Splash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasePanel\ListPanelComponents\BaseListGridControl.resx">
+      <DependentUpon>BaseListGridControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutAdvanced.ar-IQ.resx">
+      <DependentUpon>LayoutAdvanced.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutAdvanced.az-latn-az.resx">
+      <DependentUpon>LayoutAdvanced.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutAdvanced.hy-am.resx">
+      <DependentUpon>LayoutAdvanced.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutAdvanced.ka-ge.resx">
+      <DependentUpon>LayoutAdvanced.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutAdvanced.kk-kz.resx">
+      <DependentUpon>LayoutAdvanced.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutAdvanced.ru-RU.resx">
+      <DependentUpon>LayoutAdvanced.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutAdvanced.uk-ua.resx">
+      <DependentUpon>LayoutAdvanced.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutEmpty.resx">
+      <DependentUpon>LayoutEmpty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutGroup.ar-IQ.resx">
+      <DependentUpon>LayoutGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutGroup.az-latn-az.resx">
+      <DependentUpon>LayoutGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutGroup.hy-am.resx">
+      <DependentUpon>LayoutGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutGroup.ka-ge.resx">
+      <DependentUpon>LayoutGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutGroup.kk-kz.resx">
+      <DependentUpon>LayoutGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutGroup.resx">
+      <DependentUpon>LayoutGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutGroup.ru-RU.resx">
+      <DependentUpon>LayoutGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutGroup.uk-ua.resx">
+      <DependentUpon>LayoutGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutSimple.resx">
+      <DependentUpon>LayoutSimple.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layout\LayoutAdvanced.resx">
+      <DependentUpon>LayoutAdvanced.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchPanel\BaseSearchPanel.ar-IQ.resx">
+      <DependentUpon>BaseSearchPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchPanel\BaseSearchPanel.az-latn-az.resx">
+      <DependentUpon>BaseSearchPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchPanel\BaseSearchPanel.hy-am.resx">
+      <DependentUpon>BaseSearchPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchPanel\BaseSearchPanel.ka-ge.resx">
+      <DependentUpon>BaseSearchPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchPanel\BaseSearchPanel.kk-kz.resx">
+      <DependentUpon>BaseSearchPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchPanel\BaseSearchPanel.resx">
+      <DependentUpon>BaseSearchPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchPanel\BaseSearchPanel.ru-ru.resx">
+      <DependentUpon>BaseSearchPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchPanel\BaseSearchPanel.uk-ua.resx">
+      <DependentUpon>BaseSearchPanel.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

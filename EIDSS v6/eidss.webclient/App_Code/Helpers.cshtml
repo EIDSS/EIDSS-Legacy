@@ -1,0 +1,16 @@
+﻿@using bv.model.Model.Core
+@functions
+{
+    public IObjectAccessor GetAccessor(object modelObject)
+    {
+        var result = modelObject as IObjectAccessor;
+        if (result == null)
+        {
+            if (Model is IObject)
+            {
+                result = ((IObject)modelObject).GetAccessor();
+            }
+        }
+        return result;
+    }
+}

@@ -1,0 +1,59 @@
+﻿@using Kendo.Mvc.UI
+@using eidss.webclient.Utils
+@model eidss.model.Reports.Common.AddressMultiselectModel
+
+<table id="AddressFilterTable" class="level1">
+
+    <tr>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.RegionId)
+        </td>
+        <td class="largereport">
+            @{
+                @(Html.Kendo().DropDownList()
+                        .Name("RegionList")
+                        .DataTextField("Text")
+                        .DataValueField("Value")
+                        .Template("<input type=\"checkbox\"checkedname=\"${ data.Text }\" value=\"${ data.Value }\" class=\"check-item\" id=\"chb${ data.Value }\"/><span>${ data.Text }</span>")
+                        .Events(e => e.Select("bvCheckedComboBox.onCheckedComboBoxChanged").Change("paperForm.OnRegionMultiselectChanged")
+                        .DataBound("function(e) { bvCheckedComboBox.bindCheckedComboBoxClickEvent('RegionList', '');}"))
+                        .BindTo(Model.GetSelectedRegions().ConvertToSelectListItem())
+                 )
+                      //Name("Address.RegionId").Events(c => c))
+            }
+            
+        </td>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.RayonId)
+        </td>
+        <td class="largereport">
+            @{
+                @(Html.Kendo().DropDownList()
+                        .Name("RayonList")
+                        .DataTextField("Text")
+                        .DataValueField("Value")
+                        .Template("<input type=\"checkbox\"checkedname=\"${ data.Text }\" value=\"${ data.Value }\" class=\"check-item\" id=\"chb${ data.Value }\"/><span>${ data.Text }</span>")
+                        .Events(e => e.Select("bvCheckedComboBox.onCheckedComboBoxChanged")
+                        .DataBound("function(e) { bvCheckedComboBox.bindCheckedComboBoxClickEvent('RayonList', '');}"))
+                        .BindTo(Model.GetRayons().ConvertToSelectListItem()) 
+                      )
+            }
+        </td>
+        <td></td>
+    </tr>
+    @*
+    <tr>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.SettlementId)
+        </td>
+        <td class="largereport">
+            @{
+                @(Html.Kendo().ComboBox()
+                      .BindTo(Model.GetSettlements().ConvertToSelectListItem())
+                      .Name("Address.SettlementId"))
+            }
+        </td>
+        <td></td>
+    </tr>
+    *@
+</table>

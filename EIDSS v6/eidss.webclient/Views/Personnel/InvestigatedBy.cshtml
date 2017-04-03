@@ -1,0 +1,28 @@
+﻿@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+@using eidss.model.Core
+@using eidss.model.Schema
+
+<div class="sectionTitle">
+    @Translator.GetMessageString("titleSectionInvetigated")
+</div>
+
+@Html.Action("SelectPerson", "Personnel", new { vcase = Model, idfsOfficePropertyName = "idfInvestigatedByOffice", strOfficePropertyName = "strInvestigatedByOffice",
+                    idfsPersonPropertyName = "idfPersonInvestigatedBy", strPersonPropertyName = "strPersonInvestigatedBy", showEditPersonButton = true, HACode = (Model as VetCase)._HACode })
+
+<table class="level1">
+    <tr>
+        <td class="xlarge firstLabel">
+            @Translator.GetString("datAssignedDate")
+        </td>
+        <td class="large">
+            @Html.BvDatebox(Model as VetCase, m => m.datAssignedDate)
+        </td>   
+        <td class="xlarge label">
+            @Translator.GetString("datInvestigationDate")
+        </td>
+        <td class="xlarge">
+            @Html.BvDatebox(Model as VetCase, m => m.datInvestigationDate)
+        </td>  
+    </tr>                
+</table>

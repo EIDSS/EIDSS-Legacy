@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="ActivityParameter"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+    <storage>
+        <get name="spFFGetActivityParameters" type="detaillist" />
+    </storage>
+    <tables>
+        <table name="ActivityParameter">
+          <keys>
+                <key name="idfsParameter"/>
+                <key name="idfObservation"/>
+                <key name="idfRow"/>
+          </keys>
+          <fields>
+            <storage name="IsDynamicParameter" type="bool"/>
+          </fields>
+          <storage>
+                <post name="spFFSaveActivityParameters"/>
+                <delete name="spFFRemoveActivityParameters"/>
+            </storage>
+          <extenders>
+                <creating>
+                  <lambda_extender target="idfRow" type="long" lambda="c => -1"/>
+                  <lambda_extender target="IsDynamicParameter" type="bool" lambda="c => false"/>
+                  <!--<scalar_extender target="idfRow" class="GetNewIDExtender" />-->
+                </creating>
+          </extenders>
+          <actions>
+            <action name="Create" type="Create">
+              <run>
+                <params>
+                  <param name="idfsParameter" type="long"/>
+                  <param name="idfObservation" type="long"/>
+                  <param name="idfsFormTemplate" type="long"/>
+                </params>
+                <creating>
+                  <lambda_extender target="idfsParameter" type="long" lambda='c => idfsParameter' />
+                  <lambda_extender target="idfObservation" type="long" lambda='c => idfObservation' />
+                  <lambda_extender target="idfsFormTemplate" type="long" lambda='c => idfsFormTemplate' />
+                  <!-- TODO определиться, как задать номер строки для табличных (м.б. во входные параметры) -->
+                  <lambda_extender target="intNumRow" type="int?" lambda='c => 0' />
+                </creating>
+              </run>
+            </action>
+          </actions>
+        </table>
+    </tables>
+</object>

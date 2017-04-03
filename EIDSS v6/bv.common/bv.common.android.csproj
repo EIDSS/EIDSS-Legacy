@@ -1,0 +1,316 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BEE76B17-720D-4B65-996A-5712912B3ACF}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>bv.common</RootNamespace>
+    <AssemblyName>bv.common</AssemblyName>
+    <TargetFrameworkVersion>v2.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\android\EIDSS\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;MONO</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\android\EIDSS\bin\Release\</OutputPath>
+    <DefineConstants>TRACE;MONO</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\BvAssemblyInfo.cs">
+      <Link>BvAssemblyInfo.cs</Link>
+    </Compile>
+    <None Include="Configuration\AppConfigWriter.cs" />
+    <Compile Include="Configuration\BaseSettings.cs" />
+    <None Include="Configuration\Config.cs" />
+    <None Include="Configuration\ConfigWriter.cs" />
+    <None Include="Configuration\ConnectionCredentials.cs" />
+    <None Include="Configuration\ConnectionStringParser.cs" />
+    <None Include="Configuration\UserConfigWriter.cs" />
+    <Compile Include="Core\ClassLoader.cs" />
+    <Compile Include="Core\Cryptor.cs" />
+    <Compile Include="Core\EventLayerSettings.cs" />
+    <Compile Include="Core\Localizer.cs" />
+    <None Include="Core\MemoryManager.cs" />
+    <Compile Include="Core\OsVersionHelper.cs" />
+    <Compile Include="Core\PermissionHelper.cs" />
+    <Compile Include="Core\ReflectionHelper.cs" />
+    <None Include="Core\RegistryHelper.cs" />
+    <Compile Include="Core\StandardErrorHelper.cs" />
+    <Compile Include="Core\Utils.cs" />
+    <Compile Include="CsvReader\CachedCsvReader.cs" />
+    <Compile Include="CsvReader\CachedCsvReader.CsvBindingList.cs" />
+    <Compile Include="CsvReader\CachedCsvReader.CsvPropertyDescriptor.cs" />
+    <Compile Include="CsvReader\CachedCsvReader.CsvRecordComparer.cs" />
+    <Compile Include="CsvReader\CsvReader.cs" />
+    <Compile Include="CsvReader\CsvReader.DataReaderValidations.cs" />
+    <Compile Include="CsvReader\CsvReader.RecordEnumerator.cs" />
+    <Compile Include="CsvReader\Events\ParseErrorEventArgs.cs" />
+    <Compile Include="CsvReader\Exceptions\MalformedCsvException.cs" />
+    <Compile Include="CsvReader\Exceptions\MissingFieldCsvException.cs" />
+    <Compile Include="CsvReader\MissingFieldAction.cs" />
+    <Compile Include="CsvReader\ParseErrorAction.cs" />
+    <Compile Include="CsvReader\Resources\ExceptionMessage.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExceptionMessage.resx</DependentUpon>
+    </Compile>
+    <Compile Include="CsvReader\ValueTrimmingOptions.cs" />
+    <Compile Include="Diagnostics\ConsoleOutput.cs" />
+    <Compile Include="Diagnostics\DataDiag.cs" />
+    <Compile Include="Diagnostics\Dbg.cs" />
+    <Compile Include="Diagnostics\DebugDetalizationLevel.cs" />
+    <None Include="Diagnostics\DebugFileOutput.cs" />
+    <Compile Include="Diagnostics\IDebugOutput.cs" />
+    <Compile Include="Diagnostics\InternalErrorException.cs" />
+    <Compile Include="Diagnostics\StandardOutput.cs" />
+    <Compile Include="Enums\ActionPanelPositions.cs" />
+    <Compile Include="Enums\ActionsAlignment.cs" />
+    <Compile Include="Enums\ActionsPanelType.cs" />
+    <Compile Include="Enums\ActionTypes.cs" />
+    <Compile Include="Enums\ConnectionStringPart.cs" />
+    <Compile Include="Enums\ActionsAppType.cs" />
+    <Compile Include="Enums\GisCaseType.cs" />
+    <Compile Include="Enums\StandardError.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\BaseStringsStorage.cs" />
+    <Compile Include="Resources\BvMessages.cs" />
+    <None Include="Resources\Images\BaseImagesStorage.cs" />
+    <None Include="Resources\Images\ImagesStorage.cs" />
+    <Compile Include="Resources\XtraStrings.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CsvReader\Resources\ExceptionMessage.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExceptionMessage.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>LumenWorks.Framework.IO.Csv.Resources</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\BvMessages.az-Latn-AZ.resx">
+      <DependentUpon>BvMessages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\BvMessages.hy-am.resx">
+      <DependentUpon>BvMessages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\BvMessages.ka-GE.resx">
+      <DependentUpon>BvMessages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\BvMessages.kk-KZ.resx">
+      <DependentUpon>BvMessages.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\BvMessages.resx">
+      <DependentUpon>BvMessages.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\BvMessages.ru-RU.resx">
+      <DependentUpon>BvMessages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\BvMessages.uk-UA.resx">
+      <DependentUpon>BvMessages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Images\ImagesStorage.resx">
+      <DependentUpon>ImagesStorage.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ImagesStorage.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\XtraStrings.az-Latn-AZ.resx">
+      <DependentUpon>XtraStrings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\XtraStrings.hy-AM.resx">
+      <DependentUpon>XtraStrings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\XtraStrings.ka-GE.resx">
+      <DependentUpon>XtraStrings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\XtraStrings.kk-KZ.resx">
+      <DependentUpon>XtraStrings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\XtraStrings.resx">
+      <DependentUpon>XtraStrings.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\XtraStrings.ru-RU.resx">
+      <DependentUpon>XtraStrings.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\XtraStrings.uk-UA.resx">
+      <DependentUpon>XtraStrings.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\row_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\row.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\row_delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Active-Surveillance-Campaign-small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Active-Surveillance-Session-small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Images\Active-Surviellance-Campaign-%28large%29.png" />
+    <Content Include="Resources\Images\Active-Surviellance-Campaign-Journal-%28large%29.png" />
+    <Content Include="Resources\Images\Active-Surviellance-Campaign-Journal-%28small%29.png" />
+    <Content Include="Resources\Images\Active-Surviellance-Session-%28large%29.png" />
+    <Content Include="Resources\Images\Active-Surviellance-Session-Journal-%28large%29.png" />
+    <Content Include="Resources\Images\Active-Surviellance-Session-Journal-%28small%29.png" />
+    <Content Include="Resources\Images\add.png" />
+    <Content Include="Resources\Images\Aliquots_Derivatives-%28large%29.png" />
+    <Content Include="Resources\Images\Aliquots_Derivatives-%28small%29.png" />
+    <Content Include="Resources\Images\armenia-flag%282%29.png" />
+    <Content Include="Resources\Images\armeniaflag.png" />
+    <Content Include="Resources\Images\Avian Case %28small%29.png" />
+    <Content Include="Resources\Images\Avian-Case-%28large%29.png" />
+    <Content Include="Resources\Images\azerbaijan-flag%282%29.png" />
+    <Content Include="Resources\Images\azerbaijan-flag.png" />
+    <Content Include="Resources\Images\Batch-%28large%29.png" />
+    <Content Include="Resources\Images\Batch-%28small%29.png" />
+    <Content Include="Resources\Images\Batch-Journal-%28large%29.png" />
+    <Content Include="Resources\Images\Batch-Journal-%28small%29.png" />
+    <Content Include="Resources\Images\Boolean2.png" />
+    <Content Include="Resources\Images\Browse5.png" />
+    <Content Include="Resources\Images\Clear_Cancel-Changes1.png" />
+    <Content Include="Resources\Images\Close.png" />
+    <Content Include="Resources\Images\copy.png" />
+    <Content Include="Resources\Images\date.png" />
+    <Content Include="Resources\Images\Date1.png" />
+    <Content Include="Resources\Images\Delete_Remove.png" />
+    <Content Include="Resources\Images\doun.png" />
+    <Content Include="Resources\Images\edit.png" />
+    <Content Include="Resources\Images\EIDSS-Client-Agent4.png" />
+    <Content Include="Resources\Images\Farm-%28large%29.png" />
+    <Content Include="Resources\Images\Farm-Journal-%28large%29.png" />
+    <Content Include="Resources\Images\Farm-Journal-%28small%29.png" />
+    <Content Include="Resources\Images\Freezer-%28large%29.png" />
+    <Content Include="Resources\Images\Freezer-Journal-%28large%29.png" />
+    <Content Include="Resources\Images\Freezer-Journal-%28small%29.png" />
+    <Content Include="Resources\Images\georgia-flag%282%29.png" />
+    <Content Include="Resources\Images\georgia_flag.png" />
+    <Content Include="Resources\Images\Help-%28large%291.png" />
+    <Content Include="Resources\Images\Help-%28small%291.png" />
+    <Content Include="Resources\Images\help-small.png" />
+    <Content Include="Resources\Images\help.png" />
+    <Content Include="Resources\Images\Human-Aggregate-Entry-%28large%29.png" />
+    <Content Include="Resources\Images\Human-Aggregate-Entry-%28small%29.png" />
+    <Content Include="Resources\Images\Human-Case-%28large%29.png" />
+    <Content Include="Resources\Images\Human-Case-%28small%291.png" />
+    <Content Include="Resources\Images\Human-Case-De-duplication-%28large%29.png" />
+    <Content Include="Resources\Images\Human-Case-De-duplication-%28small%29.png" />
+    <Content Include="Resources\Images\iconRefresh_Id.png" />
+    <Content Include="Resources\Images\kazakhstan-flag%282%29.png" />
+    <Content Include="Resources\Images\kazakhstan-flag.png" />
+    <Content Include="Resources\Images\left.png" />
+    <Content Include="Resources\Images\Livestock Case %28large%29.png" />
+    <Content Include="Resources\Images\Livestock Case %28small%29.png" />
+    <Content Include="Resources\Images\logo-large.png" />
+    <Content Include="Resources\Images\logo-middle.png" />
+    <Content Include="Resources\Images\logo-small.png" />
+    <Content Include="Resources\Images\Move-All-left.png" />
+    <Content Include="Resources\Images\Move-All-Right.png" />
+    <Content Include="Resources\Images\numeric.png" />
+    <Content Include="Resources\Images\Outbreak-%28large%29.png" />
+    <Content Include="Resources\Images\Outbreak-%28small%29.png" />
+    <Content Include="Resources\Images\Outbreak-Journal-%28large%29.png" />
+    <Content Include="Resources\Images\Outbreak-Journal-%28small%29.png" />
+    <Content Include="Resources\Images\Paper-Forms5.png" />
+    <Content Include="Resources\Images\papper form.ico" />
+    <Content Include="Resources\Images\paste.png" />
+    <Content Include="Resources\Images\Person-%28large%29.png" />
+    <Content Include="Resources\Images\Persons-List-%28large%29.png" />
+    <Content Include="Resources\Images\Print-Barcodes.ico" />
+    <Content Include="Resources\Images\Print-Barcodes1.png" />
+    <Content Include="Resources\Images\query_big.png" />
+    <Content Include="Resources\Images\refresh.png" />
+    <Content Include="Resources\Images\Report.png" />
+    <Content Include="Resources\Images\Right.png" />
+    <Content Include="Resources\Images\russia-flag.png" />
+    <Content Include="Resources\Images\russianfederation.png" />
+    <Content Include="Resources\Images\Sample-%28large%29.png" />
+    <Content Include="Resources\Images\Sample-Accession-%28large%29.png" />
+    <Content Include="Resources\Images\Sample-Accession-%28small%29.png" />
+    <Content Include="Resources\Images\Sample-Disposition-%28large%29.png" />
+    <Content Include="Resources\Images\Sample-Disposition-%28small%29.png" />
+    <Content Include="Resources\Images\Sample-Disposition-Journal-%28large%29.png" />
+    <Content Include="Resources\Images\Sample-Disposition-Journal-%28small%29.png" />
+    <Content Include="Resources\Images\Sample-Journal-%28large%29.png" />
+    <Content Include="Resources\Images\Sample-Journal-%28small%29.png" />
+    <Content Include="Resources\Images\Sample-Transfer-%28large%29.png" />
+    <Content Include="Resources\Images\Sample-Transfer-in-%28small%29.png" />
+    <Content Include="Resources\Images\Sample-Transfer-Journal-%28large%29.png" />
+    <Content Include="Resources\Images\Sample-Transfer-Journal-%28small%29.png" />
+    <Content Include="Resources\Images\Sample-Transfer-Out-%28small%29.png" />
+    <Content Include="Resources\Images\Save.png" />
+    <Content Include="Resources\Images\Search-for-Duplicates2.png" />
+    <Content Include="Resources\Images\Search-Human-Case-%28large%29.png" />
+    <Content Include="Resources\Images\Search-Human-Case-%28small%29.png" />
+    <Content Include="Resources\Images\Search-Human-Case-in-Browse-Mode-%28large%29.png" />
+    <Content Include="Resources\Images\Search-Human-Case-in-Browse-Mode-%28small%291.png" />
+    <Content Include="Resources\Images\Search-Human-Cases-for-de-duplication-%28lagre%29.png" />
+    <Content Include="Resources\Images\Search-Human-Cases-for-de-duplication-%28small%29.png" />
+    <Content Include="Resources\Images\Search-Vet-Case-%28large%29.png" />
+    <Content Include="Resources\Images\Search-Vet-Case-%28small%292.png" />
+    <Content Include="Resources\Images\Search.png" />
+    <Content Include="Resources\Images\Select-Tests-%28large%29.png" />
+    <Content Include="Resources\Images\Select-Tests-%28small%29.png" />
+    <Content Include="Resources\Images\Select2.png" />
+    <Content Include="Resources\Images\Show_Hide-Search.png" />
+    <Content Include="Resources\Images\String4.png" />
+    <Content Include="Resources\Images\Test Journal %28large%29.png" />
+    <Content Include="Resources\Images\Test-%28large%29.png" />
+    <Content Include="Resources\Images\Test-Journal-%28small%29.png" />
+    <Content Include="Resources\Images\ukraine-flag%282%29.png" />
+    <Content Include="Resources\Images\ukraine-flag.png" />
+    <Content Include="Resources\Images\united-states-flag.png" />
+    <Content Include="Resources\Images\up.png" />
+    <Content Include="Resources\Images\usa-flag-icon.png" />
+    <Content Include="Resources\Images\Vet Aggregate Actions Entry %28large%29.png" />
+    <Content Include="Resources\Images\Vet-Aggregate-Actions-Entry-%28large%29.png" />
+    <Content Include="Resources\Images\Vet-Aggregate-Actions-Entry-%28small%29.png" />
+    <Content Include="Resources\Images\Vet-Aggregate-Entry-%28large%29.png" />
+    <Content Include="Resources\Images\Vet-Aggregate-Entry-%28small%29.png" />
+    <Content Include="Resources\Images\Vet-Aggregate-Entry-%28small%291.png" />
+    <Content Include="Resources\Images\View-Human-Aggregate-Case-Summary-%28large%29.png" />
+    <Content Include="Resources\Images\View-Human-Aggregate-Case-Summary-%28small%29.png" />
+    <Content Include="Resources\Images\View-Vet-Aggregate-Action-Summary-%28large%29.png" />
+    <Content Include="Resources\Images\View-Vet-Aggregate-Action-Summary-%28small%29.png" />
+    <Content Include="Resources\Images\View-Vet-Aggregate-Case-Summary-%28large%29.png" />
+    <Content Include="Resources\Images\View-Vet-Aggregate-Case-Summary-%28small%291.png" />
+    <Content Include="Resources\Images\View1.png" />
+    <None Include="Resources\Vector Surveillance Sessions List %28small%29%2804%29.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+</Project>

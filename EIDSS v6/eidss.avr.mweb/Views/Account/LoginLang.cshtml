@@ -1,0 +1,117 @@
+﻿@{
+    ViewBag.Title = Translator.GetMessageString("EIDSSLogin");
+    Layout = "~/Views/Shared/_DefaultLayout.cshtml";
+}
+
+@model eidss.avr.mweb.Models.Login
+@using bv.common.Configuration
+@using eidss.avr.mweb.Utils
+@using eidss.web.common.Utils
+
+<script language="javascript" type="text/javascript">
+    $(document).ready(function() {
+        defaultPage.loginPageOnLoad();
+    });
+</script>
+
+@if (BaseSettings.TranslationMode)
+{
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+<div class="langSelect">
+    <div class="currentLanguageWrapper">
+        <div class="currentLanguage" id="curLanguage">
+            @{
+                var selectedLang = Model.SupportedLanguages.FirstOrDefault(x => x.Value == ViewBag.SelectedLanguage) ?? Model.SupportedLanguages.First();
+            }
+            <table>
+                <tr>
+                    <td>
+                        <input type="hidden" name="LanguagePreference" id="LanguagePreference" value="@selectedLang.Value"/>
+                        <img class="curFlag" src="@string.Format("../../Content/Images/Flags/{0}.png", selectedLang.Value)"/>
+                    </td>
+                    <td class="curLangName">
+                        @selectedLang.Text
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="langList" id="languagePanel">
+        <ul>
+            @foreach (var li in Model.SupportedLanguages)
+            {
+                <li class="langItem" data-key="@li.Value">
+                    <table>
+                        <tr>
+                            <td>
+                                <img class="supportedFlag" src="@string.Format("../../Content/Images/Flags/{0}.png", li.Value)"/>
+                            </td>
+                            <td class="supportedLangName">
+                                @li.Text
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+            }
+        </ul>
+        <div class="arrowBorder"></div>
+        <div class="arrow"></div>
+    </div>
+</div>
+<table class="login">
+    <tr>
+        <td>
+        </td>
+        <td>
+            <div class="errorMessage" id='errorMessageSpan'>@Html.Encode(Model.ErrorMessage)</div> 
+        </td>
+    </tr>
+    <tr>
+        <td class="loginLabel">
+            @Html.LabelFor(m => m.Organization)
+        </td>
+        <td class="loginField">
+            <span class="k-textbox">
+                @Html.EditorFor(m => m.Organization, new { @class = "k-textbox" })
+                <a href="#" class="k-icon k-i-close" tabindex="-1">&nbsp;</a>
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td class="loginLabel">
+            @Html.LabelFor(m => m.UserName)
+        </td>
+        <td class="loginField">
+            <span class="k-textbox">
+                <input type="text" id="prevent_autofill_usr" style="display:none"/>
+                @Html.EditorFor(m => m.UserName, new { @class = "k-textbox" })
+                <a href="#" class="k-icon k-i-close" tabindex="-1">&nbsp;</a>
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td class="loginLabel">
+            @Html.LabelFor(m => m.Password)
+        </td>
+        <td class="loginField">
+            <input type="password" id="prevent_autofill_pwd" style="display:none"/>
+            @Html.PasswordFor(m => m.Password, new { @class = "k-textbox" })
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="changePasswordLink">
+            <a href="#" onclick="javascript:defaultPage.goToChangePassword();">@Translator.GetMessageString("btChangePassword")</a>
+        </td>   
+    </tr>
+    <tr>
+        <td colspan="2" class="loginButtons">
+    @if (BaseSettings.TranslationMode)
+    {
+            <input id="btnTranslationTool" class="button" type="button" value="@Translator.GetMessageString("btTranslationTool")" onclick="avrTranslation.OpenTranslationWindow();" />
+    }
+            <input type="submit" class="button" value="@Translator.GetMessageString("btActionLogIn")" onclick="return defaultPage.validateLoginPage();" />
+        </td>   
+    </tr>
+</table>

@@ -1,0 +1,137 @@
+﻿@model eidss.model.Schema.Address
+
+@using eidss.model.Core
+@using eidss.webclient.Utils;
+
+<input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+<table class="level1 twoColumns">  
+    @if((bool)ViewBag.IsCountryFieldVisible)
+    {
+        <tr>
+            <td class="small firstLabel">
+                @Html.LabelFor(m => m.idfsCountry)
+            </td>
+            <td class="xlarge">
+                @Html.BvCombobox(Model, m => m.Country, true, "address.onCountryChanged", readOnly: Model.IsHiddenPersonalData("Street"))
+            </td>
+            @if ((bool)ViewBag.IsForeignAddressFieldVisible)
+            {
+                <td class="small label">
+                    @Html.BvLabel(Model, m => m.strForeignAddress)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strForeignAddress, true)
+                </td>
+            }
+            else
+            {    
+                <td colspan="2">
+                </td>
+            }
+        </tr>
+    }
+    <tr>
+        <td class="small firstLabel">
+            @Html.LabelFor(m => m.idfsRegion)
+        </td>
+        <td class="xlarge">
+            @Html.BvCombobox(Model, m => m.Region, false, "address.onRegionChanged", readOnly: Model.IsHiddenPersonalData("Street"))
+        </td>
+        <td class="small label">
+            @Html.LabelFor(m => m.idfsRayon)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, m => m.Rayon, false, "address.onRayonChanged", readOnly: Model.IsHiddenPersonalData("Street"))
+        </td>
+    </tr>
+    <tr>
+        <td class="small firstLabel">
+            @Html.LabelFor(m => m.idfsSettlement)
+        </td>
+        <td>
+            @if (Model.IsHiddenPersonalData("Settlement"))
+            {
+                @Html.BvHiddenPersonalData(Model, m => m.Settlement)
+            }
+            else
+            {
+                @Html.BvCombobox(Model, m => m.Settlement, false, "address.onSettlementChanged", readOnly: Model.IsHiddenPersonalData("Street"))
+            }
+        </td>
+        <td class="label">
+            @Html.LabelFor(m => m.strStreetName)
+        </td>
+        <td>
+           @if (Model.IsHiddenPersonalData("Street"))
+           {
+                @Html.BvHiddenPersonalData(Model, m => m.Street)
+           }
+           else
+           {
+            @Html.BvCombobox(Model, m => m.Street, false)
+           }
+        </td>
+    </tr>
+    <tr>
+        @if (EidssSiteContext.Instance.IsUsaAddressFormat)
+         {
+             <td class="firstLabel">
+                 @Html.LabelFor(m => m.strBuilding)/&shy;@Html.LabelFor(m => m.strHouse)/&shy;@Html.LabelFor(m => m.strApartment)
+             </td>
+             <td class="building">
+                 @Html.BvEditbox(Model, m => m.strBuilding, true)
+                 @Html.BvEditbox(Model, m => m.strHouse, true)
+                 @Html.BvEditbox(Model, m => m.strApartment, true)
+             </td>
+         }
+         else
+         {
+             <td class="firstLabel">
+                 @Html.LabelFor(m => m.strHouse)/&shy;@Html.LabelFor(m => m.strBuilding)/&shy;@Html.LabelFor(m => m.strApartment)
+             </td>
+             <td class="building">
+                 @Html.BvEditbox(Model, m => m.strHouse, true)
+                 @Html.BvEditbox(Model, m => m.strBuilding, true)
+                 @Html.BvEditbox(Model, m => m.strApartment, true)
+             </td>
+         }
+        <td class="small label">
+            @Html.LabelFor(m => m.strPostCode)
+        </td>
+        <td>
+            @if (Model.IsHiddenPersonalData("PostCode"))
+            {
+                @Html.BvHiddenPersonalData(Model, m => m.PostCode)
+            }
+            else
+            {
+                @Html.BvCombobox(Model, m => m.PostCode, false)
+            }
+        </td>
+    </tr>
+    @if ((bool)ViewBag.IsCoordinatesFieldsVisible)
+    {
+        <tr>
+            <td class="firstLabel">
+                @Html.LabelFor(m => m.dblLongitude)<br/>(&#177;&#35;.&#35;&#35;&#35;&#35;&#35;&#176;)
+            </td>
+            <td>
+                @Html.BvNumeric(Model, m => m.dblLongitude, 5, -180, 180)
+            </td>
+            <td class="label">
+                @Html.LabelFor(m => m.dblLatitude)<br/>(&#177;&#35;.&#35;&#35;&#35;&#35;&#35;&#176;)
+            </td>
+            <td>
+                @Html.BvNumeric(Model, m => m.dblLatitude, 5, -90, 90)
+            </td>
+            <td>
+            @if (!Model.IsHiddenPersonalData("dblLongitude"))
+            {
+                <button type='button' class='button smallImageButton' onclick='ShowMap("@Model.ObjectIdent");'>
+                    <img src="@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/globe1.png"))" alt="Select" />
+                </button>
+            }
+            </td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,26 @@
+﻿@{
+    Layout = null;
+}
+@using bv.common.Configuration
+@using bv.model.Model.Core
+@using eidss.web.common.Utils
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>@ViewBag.Title</title>
+
+        <script type="text/javascript">
+                $(document).ready(function () {
+                    $('div[class="t-status"]').hide();
+                });
+        </script>
+    </head>
+    <body>
+        @if (BaseSettings.TranslationMode){
+            <input type="button" value="@Translator.GetMessageString("btTranslationTool")" onclick="bvTranslation.OpenTranslationWindow();" />
+        }
+        <div>
+            @RenderBody()
+        </div> 
+     </body>
+</html>

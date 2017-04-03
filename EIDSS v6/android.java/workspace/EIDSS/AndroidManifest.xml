@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest package="com.bv.eidss"
+    android:versionCode="1"
+    android:versionName="1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-sdk
+        android:minSdkVersion="10"
+        android:targetSdkVersion="15" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" /> --> 
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/ApplicationName"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.bv.eidss.StartActivity"
+            android:label="@string/ApplicationName" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.bv.eidss.SetLocalPasswordActivity" />
+        <activity android:name="com.bv.eidss.ChangeLocalPasswordActivity" />
+        <activity android:name="com.bv.eidss.LocalLoginActivity" />
+        <activity android:name="com.bv.eidss.MainActivity" />
+        <activity android:name="com.bv.eidss.OptionsActivity" />
+        <activity android:name="com.bv.eidss.SettingsActivity" />
+        <activity android:name="com.bv.eidss.HumanCaseActivity" />
+        <activity android:name="com.bv.eidss.HumanCaseListActivity" />
+        <activity android:name="com.bv.eidss.VetCaseListActivity" />
+        <activity android:name="com.bv.eidss.VetCaseActivity" />
+        <activity android:name="com.bv.eidss.LoadReferencesActivity" />
+        <activity android:name="com.bv.eidss.SynchronizeHumanCaseActivity" />
+        <activity android:name="com.bv.eidss.SynchronizeVetCaseActivity" />
+        <activity android:name="com.bv.eidss.SynchronizeCasesActivity" />
+        <activity android:name="com.bv.eidss.FileBrowser" />
+        <activity android:name="com.bv.eidss.SystemInfoActivity" />
+        <activity android:name="com.bv.eidss.GeoLocationHelper" />
+        <activity android:name="com.bv.eidss.GetLocationActivity" />
+        <activity android:name="com.bv.eidss.AppDownloadActivity" />
+    </application>
+</manifest>

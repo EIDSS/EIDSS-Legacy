@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="LabSampleTransferListItem"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="fn_SampleTransfer_SelectList" type="fnlist" />
+		<count name="spLabSampleTransfer_SelectCount"/>		
+	</storage>
+
+	<tables>
+		<table name="LabSampleTransferListItem">
+      <properties auditObject="daoSample" auditTable="tlbMaterial" permissionAction="SampleTransfer"/>
+      <help win="lab_l09"/>
+
+      <searchpanel>
+				<item name="strBarcode" editor="Text" labelId="LabSampleTransferListItem.strBarcode"/>
+				<item name="TransferFrom" editor="Text" labelId="TransferFrom"/>
+				<item name="TransferTo" editor="Text" labelId="TransferTo"/>
+			</searchpanel>
+
+			<grid>
+				<item name="idfTransferOut" key="true" visible="false" />
+				<item name="strBarcode"  />
+				<item name="TransferFrom"  />
+				<item name="TransferTo"  />
+			</grid>
+
+			
+			
+			<labels>
+				<item name="strBarcode" labelId="LabSampleTransferListItem.strBarcode"/>
+			</labels>
+			
+			<storage>
+				<delete name="spReadOnlyObject_Delete"/>
+				<candelete name="spReadOnlyObject_CanDelete"/>
+			</storage>
+			
+			<actions child="LabSampleTransfer">
+        <standard>
+          <remove type="Create"/>
+          <remove type="Delete"/>
+        </standard>
+			</actions>
+		</table>
+	</tables>
+
+</object>

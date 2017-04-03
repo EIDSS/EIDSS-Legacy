@@ -1,0 +1,29 @@
+﻿@model eidss.model.Schema.CaseTestValidation.CaseTestValidationGridModelList
+@using eidss.model.Schema
+@using eidss.webclient.Configurations
+@using eidss.webclient.Utils;
+@using eidss.web.common.Utils;
+      
+@{
+    var gridName = (string)ViewBag.CaseTestValidationsName;
+}
+
+<input type="hidden" id="hdnCaseTestValidationsGridName" value="@ViewBag.CaseTestValidationsName"/>
+
+@(Html.BvDetailsFormGrid<CaseTestValidation.CaseTestValidationGridModel, CaseTestValidation.CaseTestValidationGridModelList>(
+      (string)ViewBag.CaseTestValidationsName, Model, "detailsGrid", "sample.showCaseTestValidationGridEditWindow", "sample.onCaseTestValidationGridRowSelect", 
+      (bool)ViewBag.IsReadOnly, false, false, true, false, (string)ViewBag.ExcludeColumns, null,
+      selectionType: (bool)ViewBag.WithCreateCaseButton ? GridRowSelectionType.Single : GridRowSelectionType.None)
+      .ToolBar(toolBar =>
+               toolBar.Template(
+                   @<text>
+                        <input type='button' disabled="disabled" class='button k-state-disabled' data-role='grid-add-button' id="btnNewCaseTestValidation" value='@Translator.GetMessageString("strNew")' 
+                               onclick='bvGrid.addRow("@Model.ListKey", "@ViewBag.CaseTestValidationsName", sample.showCaseTestValidationGridEditWindow)'/>
+                        @if ((bool) ViewBag.WithCreateCaseButton)
+                        {
+                            <input type='button' disabled="disabled" class="button k-state-disabled" data-role='grid-on-row-button' id="btnCreateCase" value='@Translator.GetMessageString("titleCreateCase")'
+                                   onclick="@string.Format("asSession.CreateCaseClick('{0}');", gridName)"/>
+                        }
+                    </text>)
+      ))       
+ 

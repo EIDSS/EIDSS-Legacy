@@ -1,0 +1,16 @@
+﻿@model eidss.model.Schema.VsSession
+
+@{
+    var objName = Model.ObjectIdent + "Summaries";
+    var readOnly = Model.IsReadOnly("Summaries") || (Model.GetPermissions() != null && Model.GetPermissions().IsReadOnlyForEdit);
+}
+<div class="tabPanelContent">
+    @Html.Action("VsSessionSummariesGrid", "Grids",
+             new
+                 {
+                     root = Model.idfVectorSurveillanceSession,
+                     name = objName,
+                     summaries = Model.Summaries,
+                     isReadOnly = readOnly
+                 })
+</div>

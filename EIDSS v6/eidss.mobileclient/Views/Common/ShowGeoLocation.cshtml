@@ -1,0 +1,47 @@
+﻿@model eidss.model.Schema.GeoLocation
+           
+@using eidss.mobileclient.Utils
+
+<table>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.strDescription)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvEditBox(Model, "strDescription")
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.idfsRegion)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvDropDownList(Model, "Region", string.Format("new function(e) {{ onRegionChanged('{0}', '{1}', 'GeoLocation'); }}", Model.ObjectIdent, Model.idfGeoLocation))
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.idfsRayon)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvDropDownList(Model, "Rayon", string.Format("new function(e) {{ onRayonChanged('{0}', '{1}', 'GeoLocation'); }}", Model.ObjectIdent, Model.idfGeoLocation))
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.idfsSettlement)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvDropDownList(Model, "Settlement")
+        </td>
+    </tr>     
+</table>  
+@Html.Action("ShowCoordinatesGeoLocation", "Common", new { geoLocation = Model })    

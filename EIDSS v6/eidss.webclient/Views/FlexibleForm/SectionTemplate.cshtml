@@ -1,0 +1,16 @@
+﻿@model eidss.model.Model.FlexibleForms.FlexNodes.FlexNode
+     
+@{
+    var className = Model.Level == 1 ? "sectionTitle" : "ffLabel";
+}
+<div class="@className">
+    @Model.GetSectionTemplate().NationalName
+</div> 
+   
+@if (Model.ChildListCount > 0)
+{
+    foreach (var node in Model.ChildList)
+    {
+        @Html.Partial("FlexNode", node)
+    }
+}

@@ -1,0 +1,140 @@
+﻿@using System;
+@using System.Web.UI.WebControls
+@using Kendo.Mvc.UI
+@using bv.common.Configuration
+@using bv.common.Enums;
+@using bv.model.Model.Core;
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+@using System.Web;
+@using eidss.webclient.Utils
+
+@functions
+{
+    IObjectAccessor GetAccessor()
+    {
+        var result = Model as IObjectAccessor;
+        if (result == null)
+        {
+            if (Model is IObject)
+            {
+                result = ((IObject)Model).GetAccessor();
+            }
+        }
+        return result;
+    }
+    
+    string ModelName()
+    {
+        if (Model is IObject)
+        {
+            return (Model as IObject).ObjectName;
+        }
+        return "";
+    }
+
+    string RenderMainPanel()
+    {
+        IObjectAccessor accessor = GetAccessor();
+        if (accessor != null) Html.RenderActionPanel(accessor, Model as IObject, ActionsPanelType.Main);
+        return String.Empty;
+    }
+}
+
+<!DOCTYPE html>
+<html>    
+    <head>
+        <title>@(Config.GetBoolSetting("AutoTestingVersion") ? "bvid=" + ModelName() + "; " + ViewBag.Title : ViewBag.Title)</title>
+               
+        <link href="@Url.Content("~/Content/Kendo/kendo.common.min.css")" rel="stylesheet" />
+        <link href="@Url.Content("~/Content/Kendo/kendo.uniform.min.css")" rel="stylesheet" />
+
+        <link href="@Url.Content("~/Content/Styles/Common.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/Styles/Details.css")" rel="stylesheet" type="text/css" />
+
+        <script src="@Url.Content("~/Scripts/jquery-1.9.1.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/Kendo/min/kendo.web.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/Kendo/min/kendo.aspnetmvc.min.js")" type="text/javascript"></script>
+        @*<script src="@Url.Content("~/Scripts/Kendo/min/kendo.timezones.min.js")" type="text/javascript"></script>*@
+        
+        <!-- Translations -->
+        <script src="@Url.Content(String.Format("~/Scripts/Kendo/min/cultures/kendo.culture.{0}.min.js", Cultures.GetCultureStandard(ModelUserContext.CurrentLanguage)))" type="text/javascript" ></script>
+        <script src="@Url.Content(String.Format("~/Scripts/Messages/EIDSS.BvMessages.{0}.js", Cultures.GetCulture(ModelUserContext.CurrentLanguage)))" type="text/javascript" ></script>
+        <!-- Common -->        
+        <script src='@Url.Content("~/Scripts/jquery.form.js")' type="text/javascript"></script>    
+        <script src="@Url.Content("~/Scripts/EIDSS/ActionsPanelScripts.js")" type="text/javascript" ></script> 
+        <script src="@Url.Content("~/Scripts/EIDSS/Config.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/WidgetsFacades/GridFacade.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/WidgetsFacades/WindowFacade.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/WidgetsFacades/NumericTextBoxFacade.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/WidgetsFacades/ComboBoxFacade.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/WidgetsFacades/GlobalizationFacade.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/WidgetsFacades/DatePickerFacade.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/WidgetsFacades/TabStripFacade.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/WidgetsFacades/ValidatorFacade.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/WidgetsFacades/CommonWidgetsFacade.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/EIDSS/Map.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/EIDSS/BvUrls.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/EIDSS/Common.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/EIDSS/Dialogs.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/EIDSS/BvComboBox.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/EIDSS/BvGrid.js")" type="text/javascript"></script>
+        <script src='@Url.Content("~/Scripts/EIDSS/SearchPicker.js")' type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/EIDSS/FfGrid.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/EIDSS/DetailPage.js")" type="text/javascript" ></script>        
+        <script src="@Url.Content("~/Scripts/EIDSS/Actions.js")" type="text/javascript" ></script>      
+        <script src="@Url.Content("~/Scripts/EIDSS/CustomActions.js")" type="text/javascript" ></script>
+        <script src="@Url.Content("~/Scripts/EIDSS/FormRefresher.js")" type="text/javascript"></script>  
+        <script src="@Url.Content("~/Scripts/EIDSS/ListForm.js")" type="text/javascript"></script>  
+        <script src='@Url.Content("~/Scripts/EIDSS/Address.js")' type="text/javascript"></script>
+        <script src='@Url.Content("~/Scripts/EIDSS/BvComboBox.js")' type="text/javascript"></script>
+        <script src='@Url.Content("~/Scripts/EIDSS/AggregateCase.js")' type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/EIDSS/TwinkleTextBox.js")" type="text/javascript"></script>  
+        <script src="@Url.Content("~/Scripts/EIDSS/SearchPanel.js")" type="text/javascript"></script>  
+        
+        <script type="text/javascript">
+            var heartbeatUrl = bvUrls.getByPath('/System/Heartbeat');
+            $(document).ready(function () {
+                kendo.culture('@Cultures.GetCultureStandard(ModelUserContext.CurrentLanguage)');
+                detailPage.onLoad(@TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now).Hours);
+            });
+        </script>
+    </head>
+    <body class="detailsViewContainer">
+        <div class="page">
+            <div class="detailPageContent">
+                <div class="detailHeader">
+                    <span class="formTitle">
+                        @ViewBag.Title
+                    </span>
+                    <span class="formNumber">
+                        @ViewBag.Number
+                    </span>
+    @if (BaseSettings.TranslationMode)
+    {
+                    <span class="formNumberTranslation">
+                       | 
+                    </span>
+                    <span class="formNumberTranslation">
+                       <a class="formNumberTranslation" href='javascript:bvTranslation.OpenTranslationWindow();'>@Translator.GetMessageString("btTranslationTool")</a>
+                    </span>
+    }
+                </div>
+                @RenderMainPanel()
+                <input type="hidden" id="IsNewCase" value="@ViewBag.IsNewCase" />
+                @RenderBody()   
+            </div>
+        </div> 
+        <div id="DialogWindow"></div>         
+        <div id="PopupWindow"></div>       
+        <div id="MapWindow"></div>       
+    @if (BaseSettings.TranslationMode)
+    {
+        <div id="TranslationWindow"></div>       
+        <div id="SplitWindow"></div>       
+    }
+        <div id="loading" class="loader">
+            <img id="loadingImg" class="loaderImg" src='@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/ajax-loader.gif"))' alt="" />
+        </div>   
+    </body>    
+</html>

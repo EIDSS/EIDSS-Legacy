@@ -1,0 +1,38 @@
+﻿@model eidss.smartphone.web.Models.LoginModel
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>Login</h2>
+@using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Log in Form</legend>
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.Organization)
+                @Html.TextBoxFor(m => m.Organization)
+                @Html.ValidationMessageFor(m => m.Organization)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.UserName)
+                <input type="text" id="prevent_autofill_usr" style="display:none"/>
+                @Html.TextBoxFor(m => m.UserName)
+                @Html.ValidationMessageFor(m => m.UserName)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.Password)
+                <input type="password" id="prevent_autofill_pwd" style="display:none"/>
+                @Html.PasswordFor(m => m.Password)
+                @Html.ValidationMessageFor(m => m.Password)
+            </li>
+        </ol>
+        <input type="submit" value="Log in" />
+    </fieldset>
+}
+

@@ -1,0 +1,30 @@
+﻿@model eidss.model.Reports.Common.LabCaseModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/ExportButtons", Model)
+    <div class="bluelayout">
+        <div class="tabPanelContent">
+        
+            @Html.Partial("Common/BaseFilter", Model)
+
+            <table id="DiagnosisTable" >
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.CaseId)
+                    </td>
+                    <td class="largereport">
+                        <span class='tdContainer'>
+                            @Html.TextBoxFor(m => m.CaseId, new Dictionary<string, object> {{"class", "requiredField"}})
+                        </span>
+                    </td>
+                    <td colspan="3"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+}

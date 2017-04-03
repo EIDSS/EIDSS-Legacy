@@ -1,0 +1,120 @@
+﻿@model eidss.model.Schema.CaseTestValidation
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml"; 
+}
+@using bv.common.Configuration
+@using bv.model.Model.Core
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+<input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        <div class="windowButtonsPn">
+            <input type="button" class="windowButton" onclick="sample.saveAndCloseCaseTestValidationGridEditWindow('@(Model.CaseObjectIdent)');" value="@Translator.GetMessageString("Ok")"/>                        
+            <input type="button" class="windowButton" onclick="bvPopup.closeDefaultPopup()" value="@Translator.GetMessageString("Cancel")"/>        
+        </div>  
+        <div class="windowSeparator"></div>    
+        @Html.Hidden("idfTestValidation", Model.idfTestValidation)
+        <table class="level1"> 
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Html.LabelFor(m => m.Diagnosis)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.Diagnosis, width: EditorControlWidth.Large)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.LabelFor(m => m.TestName)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.TestName)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.LabelFor(m => m.TestType)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.TestType)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.LabelFor(m => m.idfsInterpretedStatus)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.RuleInOut, true, null, null, "CanValidateTestResult.Execute")
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.LabelFor(m => m.strInterpretedComment)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strInterpretedComment, true, null, "CanValidateTestResult.Execute")
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.LabelFor(m => m.datInterpretationDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datInterpretationDate)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.LabelFor(m => m.InterpretedName)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.InterpretedName, true)
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                    @Html.BvCheckBox(Model, m => m.blnValidateStatus, true, null, "CanValidateTestInterpretation.Execute")
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.LabelFor(m => m.strValidateComment)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strValidateComment, true, null, "CanValidateTestInterpretation.Execute")
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.LabelFor(m => m.datValidationDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datValidationDate)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.LabelFor(m => m.ValidatedName)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.ValidatedName, true)
+                </td>                            
+            </tr>
+        </table>    
+    }           
+</div>

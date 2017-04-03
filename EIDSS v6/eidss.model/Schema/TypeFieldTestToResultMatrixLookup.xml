@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="TypeFieldTestToResultMatrixLookup"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="spTypeFieldTestToResultMatrix_SelectLookup" type="lookuplist" cache="true"/>
+    </storage>
+
+    <tables>
+        <table name="TypeFieldTestToResultMatrixLookup" tostring="c => c.strPensideTestResultName" lookupcachename="rftTestResult">
+        <!--<table name="TypeFieldTestToResultMatrixLookup" tostring="c => c.strPensideTestTypeName" lookupcachename="rftTestResult">-->
+            <keys>
+                <key name="ID" />
+            </keys>            
+        </table>
+    </tables>
+
+</object>
+

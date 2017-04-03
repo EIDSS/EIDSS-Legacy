@@ -1,0 +1,152 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="2dp"
+    >
+         
+      <ImageView
+          android:id="@+id/Footer"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="2dp"
+          android:layout_marginRight="16dp"
+          android:src="@drawable/line"
+          />
+      
+      <TextView
+          android:id="@+id/labelSpeciesType"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignBottom="@+id/DeleteSpecies"
+          android:textStyle="bold|italic"
+          android:text="@string/SpeciesType" />
+
+      <Button
+          android:id="@+id/DeleteSpecies"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentRight="true"
+          android:layout_gravity="right"
+          android:text="@string/Minus" />
+
+      <Spinner
+          android:id="@+id/SpeciesTypeLookup"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/DeleteSpecies" />
+          
+      <TextView
+          android:id="@+id/labelStartOfSigns"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/SpeciesTypeLookup"
+          android:text="@string/StartOfSigns" />
+      <Button
+          android:id="@+id/StartOfSignsClearButton"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/labelStartOfSigns"
+          android:text="@string/ClearDate"
+          android:layout_alignParentRight="true"
+          />
+      <Button
+          android:id="@+id/StartOfSignsButton"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_toLeftOf="@id/StartOfSignsClearButton"
+          android:layout_alignTop="@id/StartOfSignsClearButton"
+          android:text="@string/GetDate"
+          />
+
+      <EditText
+          android:id="@+id/StartOfSigns"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_alignTop="@id/StartOfSignsButton"
+          android:layout_toLeftOf="@id/StartOfSignsButton"
+          android:enabled="false"
+          android:inputType="date"
+          android:singleLine="true" />
+          
+	  <LinearLayout
+          android:id="@+id/layoutNumbers"
+	      android:layout_width="fill_parent"
+	      android:layout_height="wrap_content"
+	      android:layout_below="@id/StartOfSignsClearButton"
+	      android:orientation="horizontal"
+	      android:baselineAligned="false"
+		  >
+
+	  <LinearLayout
+	      android:layout_width="match_parent"
+	      android:layout_height="wrap_content"
+	      android:layout_gravity="left"
+	      android:layout_weight="1"
+	      android:orientation="vertical" >
+ 			
+      <TextView
+          android:id="@+id/labelTotal"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/Total"
+          />
+
+      <EditText
+          android:id="@+id/Total"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:gravity="left"
+          android:inputType="number"
+          android:singleLine="true"
+		  />
+
+	  </LinearLayout>
+
+	  <LinearLayout
+	      android:layout_width="match_parent"
+	      android:layout_height="wrap_content"
+	      android:layout_gravity="center_horizontal"
+	      android:layout_weight="1"
+	      android:orientation="vertical" >
+
+      <TextView
+          android:id="@+id/labelDead"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/Dead"
+          />
+
+      <EditText
+          android:id="@+id/Dead"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:inputType="number"
+          android:singleLine="true" />
+
+	  </LinearLayout>
+
+	  <LinearLayout
+	      android:layout_width="match_parent"
+	      android:layout_height="wrap_content"
+	      android:layout_gravity="right"
+	      android:layout_weight="1"
+	      android:orientation="vertical" >
+
+      <TextView
+          android:id="@+id/labelSick"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/Sick"
+          />
+
+      <EditText
+          android:id="@+id/Sick"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:inputType="number"
+          android:singleLine="true" />
+
+	  </LinearLayout>
+	  </LinearLayout>
+
+</RelativeLayout>

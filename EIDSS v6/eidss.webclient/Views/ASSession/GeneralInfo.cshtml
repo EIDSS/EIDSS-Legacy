@@ -1,0 +1,36 @@
+﻿@model eidss.model.Schema.AsSession
+           
+@using Kendo.Mvc.UI
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+
+@(Html.Kendo().TabStrip()
+    .Name("GeneralInfo")
+    .Animation(animation => animation.Enable(false))
+    .HtmlAttributes(new { @class = "innerTabs oneLineHeightInnerTab" })
+    .Items(items =>
+    {
+        items.Add()
+            .Text(Translator.GetMessageString("Address"))
+            .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "Address" } : new { })
+            .Content(Html.Partial(@"../ASSession/Address", Model).ToHtmlString());
+        items.Add()
+            .Text(Translator.GetMessageString("sectionDiseasesList"))
+            .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "sectionDiseasesList" } : new { })
+            .Content(
+                    @<text>
+                        @Html.Action("AsSessionDiseasesGrid", "Grids",
+                            new
+                            {
+                                root = Model.idfMonitoringSession,
+                                name = Model.ObjectIdent + "Diseases",
+                                diseaseslist = Model.Diseases,
+                                isReadOnly = Model.IsReadOnly("Diseases") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit)
+                            })
+                    </text>);
+
+    })
+    .SelectedIndex(0))
+

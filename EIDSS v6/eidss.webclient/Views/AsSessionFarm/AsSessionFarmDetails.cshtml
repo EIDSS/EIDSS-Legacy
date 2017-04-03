@@ -1,0 +1,39 @@
+﻿@model eidss.model.Schema.FarmPanel           
+
+@using Kendo.Mvc.UI
+@using eidss.web.common.Utils
+@using bv.common.Configuration
+@using eidss.webclient.Utils
+
+ 
+    @(Html.Kendo().TabStrip()
+            .Name("Farm")
+            .HtmlAttributes(new { @class = "twoLinesHeightTab" })
+            .Animation(animation => animation.Enable(false))
+            .Items(items =>
+            {
+                items.Add()
+                    .Text(Translator.GetMessageString("titleFarmDetails"))
+                    .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "titleFarmDetails" } : new { })
+                    .Content(
+                        @<text>
+                        <div class="tabPanelContent">
+                            @Html.Partial("../Farm/Panel", Model)
+                        </div>
+                        </text>);
+                items.Add()
+                    .Text(Translator.GetMessageString("strHerdSpeciesInfo"))
+                    .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "strHerdSpeciesInfo" } : new { })
+                    .Content(
+                        @<text>
+                        <div class="tabPanelContent">
+                            @Html.Action("HerdOrFlockList", "ASSessionFarm", new {
+                                        root = ViewBag.IdfRoot,
+                                        listName = Model.ObjectIdent + "FarmTree",
+                                        items = Model.FarmTree,
+                                        readOnly = Model.IsReadOnly("FarmTree") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit)
+                                    })
+                        </div>
+                        </text>);
+            }).SelectedIndex(Model.IsNew ? 0 : 1)
+            )

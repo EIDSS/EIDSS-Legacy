@@ -1,0 +1,37 @@
+﻿@model eidss.model.Model.FlexibleForms.FlexNodes.FlexNode
+@using eidss.model.Model.FlexibleForms.FlexNodes;
+@using eidss.model.Model.FlexibleForms.Helpers;
+@using eidss.web.common.Utils;
+
+<div class="ffGridBanded-content">
+@{
+    var sectionTemplate = Model.GetSectionTemplate();
+
+    if (!Model.FFModel.IsSummary && !Model.HasStubChildren) 
+    {
+ 
+    <div class="sectionTitle">
+        @sectionTemplate.NationalName
+    </div>
+    }
+
+    var gridName = String.Format("idfsSection_{0}", sectionTemplate.idfsSection);
+    var btAddName = "btAdd" + gridName;
+    var btCopyName = "btCopy" + gridName;
+
+    if (!Model.HasStubChildren && !Model.FFModel.ReadOnly)
+    {
+        <div class="rightAlign">
+         <button class="button" id="@btAddName" type="button" onclick=' ffGrid.showEditDialog("@gridName", true, "@sectionTemplate.NationalName"); '>
+            @Translator.GetMessageString("Add")
+        </button>
+        <button disabled="disabled" class="button k-state-disabled" id="@btCopyName" type="button" data-role='grid-on-row-button' onclick=' ffGrid.copyRow("@gridName"); '>
+            @Translator.GetBvMessageString("strCopy_Id")
+        </button>
+        </div>
+    }
+}
+
+@Html.Partial("SectionTemplateOnlyTable", Model)
+
+</div>

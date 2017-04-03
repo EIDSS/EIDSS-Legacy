@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="AsSessionCase"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spASSessionCases_SelectDetail" type="detaillist" />
+  </storage>
+
+  <tables>
+    <table name="AsSessionCase" hacodable="true">
+      <grid>
+        <item name="idfCase" key="true" visible="false"/>
+        <item name="strCaseID"/>
+        <item name="datEnteredDate"/>
+        <item name="strCaseStatus"/>
+        <item name="strDiagnosis"/>        
+        <item name="strGeoLocation"/>
+        <item name="strAddress"/>
+      </grid>
+      <labels>
+        <item name="datEnteredDate" labelId="AsSessionCase.datEnteredDate"/>
+        <item name="strCaseStatus" labelId="AsSessionCase.strCaseStatus"/>
+        <item name="strGeoLocation" labelId="AsSessionCase.strGeoLocation"/>
+        <item name="strAddress" labelId="AsSessionCase.strAddress"/>
+      </labels>
+    </table>
+
+  </tables>
+
+</object>

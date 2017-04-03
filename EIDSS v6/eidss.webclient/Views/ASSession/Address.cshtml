@@ -1,0 +1,45 @@
+﻿@model eidss.model.Schema.AsSession
+
+@using eidss.model.Core
+@using eidss.webclient.Utils;
+
+<div class="tabPanelContent">
+    <input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+    <table class="level1">  
+        <tr>
+            <td class="xlarge firstLabel">
+                @Html.LabelFor(m => m.idfsCountry)
+            </td>
+            <td class="large">
+                @Html.BvCombobox(Model, m => m.Country, true, "address.onCountryChanged")
+            </td>
+            <td class="xlarge label">
+                @Html.LabelFor(m => m.idfsRegion)
+            </td>
+            <td class="large">
+                @Html.BvCombobox(Model, m => m.Region, false, "address.onRegionChanged")
+            </td>
+        </tr>
+        <tr>
+            <td class="firstLabel">
+                @Html.LabelFor(m => m.idfsRayon)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, m => m.Rayon, false, "address.onRayonChanged")
+            </td>
+            <td class="label">
+                @Html.LabelFor(m => m.idfsSettlement)
+            </td>
+            <td>
+                @if (Model.IsHiddenPersonalData("Settlement"))
+                {
+                    @Html.BvHiddenPersonalData(Model, m => m.Settlement)
+                }
+                else
+                {
+                    @Html.BvCombobox(Model, m => m.Settlement, false, "address.onSettlementChanged")
+                }
+            </td>
+        </tr>
+    </table>
+</div>

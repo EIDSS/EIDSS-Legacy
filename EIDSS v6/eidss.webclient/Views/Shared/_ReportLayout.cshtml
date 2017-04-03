@@ -1,0 +1,108 @@
+﻿@using Kendo.Mvc.UI
+@using bv.model.Model.Core
+@using eidss.webclient.Utils
+
+<!DOCTYPE html>
+<html>    
+    <head>
+        <title>@ViewBag.Title</title>
+               
+        <link href="@Url.Content("~/Content/Kendo/kendo.common.min.css")" rel="stylesheet" />
+        <link href="@Url.Content("~/Content/Kendo/kendo.uniform.min.css")" rel="stylesheet" />
+        
+        <link href="@Url.Content("~/Content/Styles/Common.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/Styles/Details.css")" rel="stylesheet" type="text/css" />
+        
+        <link href="@Url.Content("~/Content/Styles/Report.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/Styles/PopupWindow.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/Styles/ErrorPage.css")" rel="stylesheet" type="text/css" />
+        <script src="@Url.Content("~/Scripts/jquery-1.9.1.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/Kendo/min/kendo.web.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/Kendo/min/kendo.aspnetmvc.min.js")" type="text/javascript"></script>
+        @*<script src="@Url.Content("~/Scripts/Kendo/min/kendo.timezones.min.js")" type="text/javascript"></script>*@
+
+        <script src='@Url.Content("~/Scripts/jquery.form.js")' type="text/javascript"></script>  
+
+        <!-- Translations -->
+        <script src="@Url.Content(String.Format("~/Scripts/Kendo/min/cultures/kendo.culture.{0}.min.js", Cultures.GetCultureStandard(ModelUserContext.CurrentLanguage)))" type="text/javascript" ></script>
+        <script src="@Url.Content(String.Format("~/Scripts/Messages/EIDSS.BvMessages.{0}.js", Cultures.GetCulture(ModelUserContext.CurrentLanguage)))" type="text/javascript" > </script>
+        <!-- Common -->        
+        <script src="@Url.Content("~/Scripts/EIDSS/Config.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/EIDSS/Dialogs.js")" type="text/javascript"></script>   
+        <script src="@Url.Content("~/Scripts/EIDSS/FormRefresher.js")" type="text/javascript"></script>  
+        <script src="@Url.Content("~/Scripts/EIDSS/PaperForm.js")" type="text/javascript"> </script>
+        <script src="@Url.Content("~/Scripts/WidgetsFacades/WindowFacade.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/WidgetsFacades/GlobalizationFacade.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/WidgetsFacades/GridFacade.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/WidgetsFacades/ComboboxFacade.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/WidgetsFacades/DatePickerFacade.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/WidgetsFacades/ValidatorFacade.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/WidgetsFacades/CommonWidgetsFacade.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/WidgetsFacades/NumericTextBoxFacade.js")" type="text/javascript"></script>
+        
+        <script src="@Url.Content("~/Scripts/EIDSS/Common.js")" type="text/javascript"></script>   
+        <script src="@Url.Content("~/Scripts/EIDSS/BvUrls.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/EIDSS/Dialogs.js")" type="text/javascript"></script>   
+        <script src="@Url.Content("~/Scripts/EIDSS/BvGrid.js")" type="text/javascript"></script>   
+        <script src="@Url.Content("~/Scripts/EIDSS/Actions.js")" type="text/javascript"></script>  
+        <script src="@Url.Content("~/Scripts/EIDSS/CustomActions.js")" type="text/javascript"></script>  
+        <script src="@Url.Content("~/Scripts/EIDSS/DetailPage.js")" type="text/javascript"></script>  
+        <script src="@Url.Content("~/Scripts/EIDSS/TwinkleTextBox.js")" type="text/javascript"></script>  
+        <script src="@Url.Content("~/Scripts/EIDSS/SearchPanel.js")" type="text/javascript"></script>  
+        <script src="@Url.Content("~/Scripts/EIDSS/ListForm.js")" type="text/javascript"></script>  
+        <script src="@Url.Content("~/Scripts/EIDSS/BvCheckedComboBox.js")" type="text/javascript"></script> 
+        <script src="@Url.Content("~/Scripts/EIDSS/BvComboBox.js")" type="text/javascript"></script> 
+        <script type="text/javascript">
+
+            $(window).load(function() {
+                $.ajaxSetup({ cache: false });
+            });
+
+            $(document).ready(function () {
+                kendo.culture('@Cultures.GetCultureStandard(ModelUserContext.CurrentLanguage)');
+            });
+
+            document.onkeypress = function (e) {
+                e = window.event || e;
+                if (e.keyCode == 13) {
+                    return false;
+                }
+                return true;
+            };
+
+        </script>
+    </head>
+    <body class="detailsViewContainer">
+        @Html.Heartbeat()
+        @(
+            Html.Kendo().Window()
+            .Name("Message")
+              .Modal(true)
+              .Visible(false)
+              .Draggable(true)
+              .Events(events => events.Close("bvPopup.closeDefaultPopup"))
+        )
+        <div id="test"></div>
+        <input id='MapOpenerId' type='hidden' value='' />
+        <div class="page">
+            <div class="detailPageContent">
+                <div class="detailHeader">
+                    <span class="formTitle">
+                        @ViewBag.Title
+                    </span>
+                    <span class="formNumber">
+                        @ViewBag.Number
+                    </span>
+                </div>  
+                <div class="tabPanelContent">
+                    @RenderBody()   
+                </div>
+            </div>
+        </div>
+        <div id="error">
+            <span class="errorMessage">
+                <input id='ErrorMessage' name='ErrorMessage' type='hidden' value='@ViewData["ErrorMessage"]' />
+            </span>            
+        </div>
+    </body>    
+</html>

@@ -1,0 +1,15 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />    
+    @(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.webblue.css").Combined(true).Compress(true)))</head>
+<body class="detailsviewcontainer">
+    <div>
+        @RenderBody()
+    </div>    
+</body>
+</html>

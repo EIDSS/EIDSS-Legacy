@@ -1,0 +1,502 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="Vector"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+ 
+    <storage>
+        <get name="spVector_SelectDetail" type="detaillist" />
+    </storage>
+
+    <tables>
+        <table name="Vector" tostring='c => String.Format("{0}/{1}/{2}", strVectorID, strVectorType, strSpecies)'>
+          <properties permissionObject="VsSession"/>
+      <help win="vss_pool_form"/>
+            <grid>
+              <item name="idfVector" visible="false" key="true"/>
+              <item name="strVectorID" action="ActionEditVector"/>
+              <item name="strFieldVectorID" />             
+              <item name="strRegion"/>
+              <item name="strRayon" />
+              <item name="strSettlement" />
+              <item name="dblLongitude" format="{0:F5}"/>
+              <item name="dblLatitude" format="{0:F5}"/>
+              <item name="intElevation" />
+              <item name="strSurrounding" />
+              <item name="datCollectionDateTime"/>
+              <item name="strDayPeriod"/>
+              <item name="strCollectedByPerson" />
+              <item name="strCollectedByOffice"/>              
+              <item name="strSpecies"/>
+              <item name="intQuantity" />
+              <item name="strSex" type="String"/>
+              <item name="strEctoparasitesCollected" />
+              <item name="strHostVector" />
+              <item name="strCollectionMethod"/>
+              <item name="strBasisOfRecord"/>
+              <item name="strGEOReferenceSources"/>
+              <item name="strIdentifiedByPerson"/>
+              <item name="strIdentifiedByOffice"/>
+              <item name="datIdentifiedDateTime"/>
+              <item name="strIdentificationMethod"/>
+              <item name="strVectorSpecificData" type="String"/>
+            </grid>
+            <labels>
+              <!--item labelId="idfsCountry" name="strCountry"/-->
+              <item labelId="idfsVectorSurveillanceStatus" name="strVSStatus"/>
+              <!--баг 8854<item labelId="idfSpecies" name="idfsVectorSubType"/>--> 
+              <item labelId="TestDiagnosisName" name="intDiagnosis"/>
+              <item labelId="VectorSample.idfFieldCollectedByOffice" name="strCollectedByOffice"/>              
+              <item labelId="idfsVectorType" name="strVectorType"/>
+              <item labelId="idfsAnimalGender" name="strSex"/>
+              <item labelId="Vector.strComment" name="strComment"/>
+              <item labelId="Vector.strVectorID" name="strVectorID"/>
+              <item labelId="Vector.strFieldVectorID" name="strFieldVectorID"/>
+              <item labelId="Vector.strSettlement" name="strSettlement"/>
+              <item labelId="VsSessionListItem.dblLongitude" name="dblLongitude"/>
+              <item labelId="VsSessionListItem.dblLatitude" name="dblLatitude"/>
+              <item labelId="Vector.idfFieldCollectedByPerson" name="strCollectedByPerson"/>
+              <item labelId="idfHostVector" name="strHostVector"/>
+              <item labelId="idfHostVector" name="HostVector"/>
+              <item labelId="LocationDisplayName" name="Location"/>
+            </labels>
+            <fields>
+              <calculated name="Session" type="VsSession" lambda="c => Parent as VsSession" depends="Parent"/>
+              <calculated name="datStartDateFromSession" type="DateTime?" lambda="c => c.Session != null ? c.Session.datStartDate : DateTime.Now" depends="Parent"/>
+              <calculated name="Vectors" type="EditableList&lt;Vector&gt;" depends="Session" lambda="c => c.Session != null ? c.Session.Vectors : null"/>
+              <calculated name="IsPoolVectorType" type="bool"
+                      depends="idfsVectorType"
+                      lambda="c => c.GetIsPoolVectorType(c.idfsVectorType)" />
+              <calculated name="CaseObjectIdent" type="string" depends="idfVectorSurveillanceSession" lambda='c => "Vectors_" + c.idfVectorSurveillanceSession + "_"' />
+              <calculated name="strVectorSpecificData" type="string" depends="" lambda='c => c.RecalculateVectorSpecificData()' />
+              <storage name="openMode" type="int"/>
+              <storage name="intOriginalOrder" type="int"/>
+              <storage name="intPostOrder" type="int"/>
+              <calculated name="SamplesAll" type="EditableList&lt;VectorSample&gt;" depends="Vectors" lambda="c => { var list = new EditableList&lt;VectorSample&gt;(); foreach (var vector in c.Vectors) list.AddRange(vector.Samples); return list;}"/>
+              <calculated name="VectorsWithoutThisVectorSelectList" type="EditableList&lt;Vector&gt;" depends="Vectors" lambda="c => c.VectorsWithoutThisVector()"/>
+            </fields>
+            <readonly>              
+              <fields name="strVectorID" predicate="c => true"/>              
+              <fields name="strSessionID" predicate="c => true"/>
+              <fields name="strVectorType" predicate="c => true"/>
+              <!--
+              <fields name="VectorType" predicate="c => Samples.Count(s => !s.IsMarkedToDelete) > 0"/>
+              <fields name="VectorSubType" predicate="c => Samples.Count(s => !s.IsMarkedToDelete) > 0"/>
+              -->
+              <fields name="strCollectedByOffice,strCollectedByPerson,strIdentifiedByOffice,strIdentifiedByPerson" predicate="c => true"/>
+              <fields name="Collector" predicate="c => CollectedByOffice == null"/>
+              <fields name="Identifier" predicate="c => IdentifiedByOffice == null"/>
+              <fields name="*" predicate="c => c.ReadOnly" />              
+            </readonly>
+            <invisible>
+              <fields name="HostVector" predicate='c => !c.GetIsPoolVectorType(c.idfsVectorType)'/>  
+            </invisible>
+            <relations>
+              <relation name="Location" table="GeoLocation" internal="false" type="link" source="idfLocation" target="idfGeoLocation" lazy="false" />
+              <relation name="FFPresenter" table="FFPresenterModel" internal="false" type="link" source="idfObservation" target="CurrentObservation" lazy="false" />
+              <relation name="Samples" table="VectorSample" internal="false" type="child" lazy="false" source="idfVector" target="idfVector" />
+              <relation name="FieldTests" table="VectorFieldTest" internal="false" type="child" source="idfVector" target="idfVector" lazy="false" />
+              <relation name="LabTests" table="VectorLabTest" internal="false" type="child" source="idfVector" target="idfVector" lazy="false" />
+            </relations>
+            <lookups>
+              <lookup name="HostVector" table="Vector" existinglookup="VectorsWithoutThisVectorSelectList" source="idfHostVector" target="idfVector" notaddempty="true" />
+              <lookup name="CollectedByOffice" table="OrganizationLookup" source="idfCollectedByOffice" target="idfInstitution">
+                  <params>
+                    <param name="ID" const="null" />
+                    <param name="intHACode" const="null" />
+                  </params>
+                <filters>
+                  <filter predicate="c => (((c.intHACode??0) &amp; (int)HACode.Vector) != 0) || c.idfInstitution == obj.idfCollectedByOffice" />
+                </filters>
+              </lookup>
+              <lookup name="IdentifiedByOffice" table="OrganizationLookup" source="idfIdentifiedByOffice" target="idfInstitution">
+                  <params>
+                    <param name="ID" const="null" />
+                    <param name="intHACode" const="null" />
+                  </params>
+                <filters>
+                  <filter predicate="c => (((c.intHACode??0) &amp; (int)HACode.Vector) != 0) || c.idfInstitution == obj.idfIdentifiedByOffice" />
+                </filters>
+              </lookup>
+              <lookup name="Surrounding" table="BaseReference" section="rftSurrounding" source="idfsSurrounding" target="idfsBaseReference" />
+              <lookup name="DayPeriod" table="BaseReference" section="rftCollectionTimePeriod" source="idfsDayPeriod" target="idfsBaseReference" />
+              <lookup name="CollectionMethod" table="CollectionMethodLookup" source="idfsCollectionMethod" target="idfsCollectionMethod" >
+                <params>
+                  <param name="idfsVectorType" type="long" lambda="c => c.idfsVectorType"/>
+                </params>
+              </lookup>
+              <lookup name="BasisOfRecord" table="BaseReference" section="rftBasisOfRecord" source="idfsBasisOfRecord" target="idfsBaseReference" />
+              <lookup name="VectorType" table="VectorTypeLookup" source="idfsVectorType" target="idfsBaseReference" />
+              <lookup name="VectorSubType" table="VectorSubTypeLookup" source="idfsVectorSubType" target="idfsBaseReference">
+                <params>
+                  <param name="VectorTypeID" lambda="c => c.idfsVectorType > 0 ? c.idfsVectorType : 0" type="long" />
+                  <param name="ID" const="null" />
+                </params>
+              </lookup>
+              <lookup name="AnimalGender" table="BaseReference" section="rftAnimalSex" source="idfsSex" target="idfsBaseReference" >
+                <filters>
+                  <filter predicate="c => ((c.intHACode &amp; (int)HACode.Vector) != 0) || c.idfsBaseReference == obj.idfsSex" />
+                </filters>
+              </lookup>
+              <lookup name="IdentificationMethod" table="BaseReference" section="rftIdentificationMethod" source="idfsIdentificationMethod" target="idfsBaseReference" />
+
+              <lookup name="Collector" table="PersonLookup" source="idfCollectedByPerson" target="idfPerson" >
+                  <params>
+                    <param name="OfficeID" lambda="c => c.idfCollectedByOffice" type="long?" />
+                    <param name="ID" const="null" />
+                    <param name="ShowUsersOnly" const="false"/>
+                    <param name="intHACode" const="null"/>
+                  </params>
+              </lookup>
+              <lookup name="Identifier" table="PersonLookup" source="idfIdentifiedByPerson" target="idfPerson" >
+                  <params>
+                    <param name="OfficeID" lambda="c => c.idfIdentifiedByOffice ?? 0" type="long?" />
+                    <param name="ID" const="null" />
+                    <param name="ShowUsersOnly" const="false"/>
+                    <param name="intHACode" const="null"/>
+                  </params>
+              </lookup>
+              <lookup name="EctoparasitesCollected" table="BaseReference" section="rftYesNoValue" source="idfsEctoparasitesCollected" target="idfsBaseReference" />
+            </lookups>
+            <storage>
+                <post />
+                <delete />
+            </storage>
+            <postorder>
+              <item name="Location" />
+              <item name="this" />
+              <item name="Samples"/>
+              <item name="FieldTests"/>
+              <item name="FFPresenter" />
+            </postorder>
+            <deleteorder>
+              <item name="FFPresenter" />
+              <item name="FieldTests"/>
+              <item name="Samples"/>
+              <item name="this" />
+              <item name="Location" />                
+            </deleteorder>
+            <extenders>
+              <creating>
+                <scalar_extender target="idfVector" class="GetNewIDExtender" />
+                <db_lambda_extender target="strVectorID" type="string" lambda='(c,m) => 
+                        m.SetSpCommand("dbo.spGetNextNumber", (long)NumberingObjectEnum.VsVector, DBNull.Value, DBNull.Value)
+                        .ExecuteScalar&lt;string&gt;(ScalarSourceType.OutputParameter, "NextNumberValue")' />
+                
+                <lambda_extender target="Location" type="GeoLocation" lambda="c => c.Location == null ? LocationAccessor.CreateWithCountry(manager, c) : c.Location" />
+                <lambda_extender target="intQuantity" type="int" lambda='c => 1' />
+                <lambda_extender target="datCollectionDateTime" type="DateTime" lambda="c => DateTime.Now"/>
+                <scalar_extender target="idfObservation" class="GetNewIDExtender" />                  
+                <custom_extender>
+                      <text>
+                        obj.FFPresenter = FFPresenterModel.Accessor.Instance(null).SelectByKey(manager, obj.idfObservation);
+                        obj.FFPresenter.SetProperties(EidssSiteContext.Instance.CountryID, obj.idfsVectorType, FFTypeEnum.VectorTypeSpecificData, obj.idfObservation.Value, obj.idfVector);
+                        if (obj.FFPresenter.CurrentTemplate != null)
+                        {
+                          obj.idfsFormTemplate = obj.FFPresenter.CurrentTemplate.idfsFormTemplate;
+                          obj.OnPropertyChanged("FFPresenter");
+                        }
+                      </text>
+                </custom_extender>
+                <lambda_extender target="openMode" type="int" lambda="c => 0"/>
+              </creating>
+              <created>
+                <!-- set default country as current country of database -->
+                <!--lambda_extender target="Country" type="CountryLookup" lambda='c => 
+                                      c.CountryLookup.Where(a => a.idfsCountry == EidssSiteContext.Instance.CountryID)
+                                      .SingleOrDefault()'/-->
+                <lambda_extender target="idfVectorSurveillanceSession" type="long" lambda="c => c.Session != null ? c.Session.idfVectorSurveillanceSession : c.idfVectorSurveillanceSession"/>
+              </created>
+              <loading>
+              </loading>
+              <loaded>
+                <lambda_extender target="strVectorType" type="string" lambda='c => c.VectorType == null ? String.Empty : c.VectorType.strTranslatedName'/>
+                <lambda_extender target="strSpecies" type="string" lambda='c => c.VectorSubTypeLookup == null ? String.Empty : c.VectorSubTypeLookup.FirstOrDefault(p => p.idfsBaseReference == c.idfsVectorSubType).name'/>
+                <custom_extender>
+                  <text>
+                    if (obj.idfsFormTemplate.HasValue) 
+                    { 
+                      obj.FFPresenter.SetProperties(obj.idfsFormTemplate.Value, obj.idfVector);
+                      obj.OnPropertyChanged("FFPresenter");
+                    }
+                  </text>
+                </custom_extender>
+              </loaded>
+              <posting>
+                  <db_lambda_extender target="strVectorID" type="string" lambda='(c,m) => 
+                        c.strVectorID != "(new)" 
+                        ? c.strVectorID 
+                        : m.SetSpCommand("dbo.spGetNextNumber", (long)NumberingObjectEnum.VsVector, DBNull.Value, DBNull.Value)
+                        .ExecuteScalar&lt;string&gt;(ScalarSourceType.OutputParameter, "NextNumberValue")' />
+                </posting>
+              <posted>
+              </posted>
+            </extenders>
+            <handlers>
+              <fieldhandler>
+                <!--scalar_handler class="SetScalarHandler" target="Region" field="idfsCountry" lambda="(o, fld, prev_fld) => null" />
+                <scalar_handler class="SetScalarHandler" target="Rayon" field="idfsRegion" lambda="(o, fld, prev_fld) => null" />
+                <scalar_handler class="SetScalarHandler" target="Settlement" field="idfsRayon" lambda="(o, fld, prev_fld) => null" /-->
+
+                <scalar_handler class="SetScalarHandler" target="Collector" field="idfCollectedByOffice" lambda="(o, fld, prev_fld) => null" />
+                <scalar_handler class="SetScalarHandler" target="Identifier" field="idfIdentifiedByOffice" lambda="(o, fld, prev_fld) => null" />
+
+                <lambda_handler target="strVectorType" field="idfsVectorType" type="string" lambda='c => c.VectorType == null ? String.Empty : c.VectorType.strTranslatedName'/>
+                <lambda_handler target="strSpecies" field="idfsVectorSubType" type="string" lambda='c => c.VectorSubTypeLookup == null ? String.Empty : c.VectorSubTypeLookup.FirstOrDefault(p => p.idfsBaseReference == c.idfsVectorSubType).name'/>
+
+                <lookup_handler lookup="CollectionMethod" field="idfsVectorType" />
+                <lookup_handler lookup="VectorSubType" field="idfsVectorType"  />
+                <lookup_handler lookup="Collector" field="idfCollectedByOffice" />
+                <lookup_handler lookup="Identifier" field="idfIdentifiedByOffice" />
+                <lambda_handler target="strSurrounding" field="idfsSurrounding" type="string" lambda='c => c.Surrounding == null ? "" : c.Surrounding.name'/>
+                <lambda_handler target="strCollectedByOffice" field="idfCollectedByOffice" type="string" lambda='c => c.CollectedByOffice == null ? "" : c.CollectedByOffice.name'/>
+                <lambda_handler target="strCollectedByPerson" field="idfCollectedByPerson" type="string" lambda='c => c.Collector == null ? "" : c.Collector.FullName'/>
+                <lambda_handler target="strCollectionMethod" field="idfsCollectionMethod" type="string" lambda='c => c.CollectionMethod == null ? "" : c.CollectionMethod.CMName'/>
+                <lambda_handler target="strBasisOfRecord" field="idfsBasisOfRecord" type="string" lambda='c => c.BasisOfRecord == null ? "" : c.BasisOfRecord.name'/>
+                <lambda_handler target="strSex" field="idfsSex" type="string" lambda='c => c.AnimalGender == null ? "" : c.AnimalGender.name'/>
+                <lambda_handler target="strIdentifiedByOffice" field="idfIdentifiedByOffice" type="string" lambda='c => c.IdentifiedByOffice == null ? "" : c.IdentifiedByOffice.name'/>
+                <lambda_handler target="strIdentifiedByPerson" field="idfIdentifiedByPerson" type="string" lambda='c => c.Identifier == null ? "" : c.Identifier.FullName'/>
+                <lambda_handler target="strIdentificationMethod" field="idfsIdentificationMethod" type="string" lambda='c => c.IdentificationMethod == null ? "" : c.IdentificationMethod.name'/>
+                <lambda_handler target="strDayPeriod" field="idfsDayPeriod" type="string" lambda='c => c.DayPeriod == null ? "" : c.DayPeriod.name'/>
+                <lambda_handler target="HostVector" field="IsPoolVectorType" type="Vector" lambda='c => !c.IsPoolVectorType ? null : c.HostVector'/>
+                <!--
+                <lambda_handler target="idfHostVector" field="HostVector" type="long?" lambda='c => {long? result = null; if (c.HostVector != null) result = c.HostVector.idfVector; return result;}'/> 
+                -->
+                <!--<lambda_handler target="strHostVector" field="HostVector" type="string" lambda='c => c.HostVector != null ? c.HostVector.strVectorID : c.strHostVector'/>-->
+                <lambda_handler target="strEctoparasitesCollected" field="idfsEctoparasitesCollected" type="string" lambda='c => c.idfsEctoparasitesCollected != null ? c.EctoparasitesCollectedLookup.FirstOrDefault(p => p.idfsBaseReference == c.idfsEctoparasitesCollected).name : c.strEctoparasitesCollected'/>
+                <lambda_handler target="VectorSubType" field="idfsVectorType" type="VectorSubTypeLookup" lambda="c => null"/>
+                
+                <!-- set FF templates -->
+                  
+                <custom_handler field="idfsVectorType">
+                  <text>
+                    obj.RefreshFF();
+                  </text>
+                </custom_handler>
+                
+                <custom_handler field="VectorType">
+                  <text>
+                    obj.RefreshFF();
+                  </text>
+                </custom_handler>
+                
+                <!--
+                <custom_handler field="idfCollectedByOffice">
+                  <text>
+                    obj.FillSamplesDefaultProperties();
+                  </text>
+                </custom_handler>
+                
+                <custom_handler field="datCollectionDateTime">
+                  <text>
+                    obj.FillSamplesDefaultProperties();
+                  </text>
+                </custom_handler>
+                -->
+                
+                <lookup_handler lookup="Collector" field="idfCollectedByOffice" />
+                <lookup_handler lookup="Identifier" field="idfIdentifiedByOffice" />
+
+                <!--TODO получилось неодинаковое решение для семплов и полевых тестов -->
+                <lambda_list_handler field="idfsVectorSubType" target="strVectorSubTypeName" list="Samples" type="string" lambda="c => obj.VectorSubType != null? obj.VectorSubType.name : String.Empty" />
+                <!--<lambda_list_handler field="idfsVectorSubType" target="strVectorSubTypeName" list="FieldTests" type="string" lambda="c => obj.VectorSubType != null? obj.VectorSubType.strDefault : String.Empty" />-->
+                <lambda_list_handler field="strVectorID" target="strVectorID" list="Samples" type="string" lambda="c => obj.strVectorID"/>
+              </fieldhandler>
+              <childhandler>
+                <lambda_handler target="strCountry" container="Location" field="idfsCountry" type="string" lambda='c => c.Location.Country == null ? "" : c.Location.Country.strCountryName'/>
+                <lambda_handler target="strRegion" container="Location" field="idfsRegion" type="string" lambda='c => c.Location.Region == null ? "" : c.Location.Region.strRegionName'/>
+                <lambda_handler target="strRayon" container="Location" field="idfsRayon" type="string" lambda='c => c.Location.Rayon == null ? "" : c.Location.Rayon.strRayonName'/>
+                <lambda_handler target="strSettlement" container="Location" field="idfsSettlement" type="string" lambda='c => c.Location.Settlement == null ? "" : c.Location.Settlement.strSettlementName'/>
+                <lambda_handler target="dblLatitude" container="Location" field="dblLatitude" type="double?" lambda='c => c.Location.dblLatitude'/>
+                <lambda_handler target="dblLongitude" container="Location" field="dblLongitude" type="double?" lambda='c => c.Location.dblLongitude'/>
+              </childhandler>
+            </handlers>
+            <validators>
+              <chains>
+                <item field="datIdentifiedDateTime" type="DateTime">
+                  <item field="datCollectionDateTime" type="DateTime">
+                    <item field="CurrentDate" value="DateTime.Now" />
+                  </item>
+                </item>
+                <item field="datIdentifiedDateTime" type="DateTime">
+                  <item field="CurrentDate" value="DateTime.Now" />
+                </item>
+                <item field="datStartDateFromSession" type="DateTime">
+                  <item field="datCollectionDateTime">
+                  </item>
+                </item>
+              </chains>
+              <post>
+                  <required_validator target="VectorType" label="idfsVectorType"/>
+                  <!--9776-->
+                  <!--<required_validator target="strVectorID"/>-->                               
+                  <required_validator target="idfCollectedByOffice" property="CollectedByOffice" label="VectorSample.idfFieldCollectedByOffice"/>
+                  <required_validator target="strCollectedByOffice" />
+                  <required_validator target="datCollectionDateTime" />
+                  <required_validator target="idfVectorSurveillanceSession"/>
+                  <required_validator target="idfsVectorType" property="strVectorType" />
+                  <required_validator target="idfsVectorSubType" property="VectorSubType" label="strHerdSpecies" />
+                  <required_validator target="intQuantity"/>
+                  <required_validator target="Location.LocationDisplayName"/>
+                  <required_validator target="Location.strReadOnlyAdaptiveFullName"/>
+                  <!--<custom_validator_manager method="CheckSamples" />-->
+                  <custom_validator method="CustomValidations" />
+                </post>
+              <delete>
+                  <predicate_validator field="" property="" predicate="v => v.Samples.Count == 0" message="msgCantDeleteRecord" />
+                </delete>
+            </validators>
+         <actions>
+          <standard>
+            <remove type="Ok"/>
+            <remove type="Create"/>
+            <remove type="Cancel"/>
+          </standard>
+          <action name="VectorOk" type="Action" forceClose="true">
+            <visual panel="Main" alignment="Right" visiblePredicate="(c, a, p, b) => c != null ? !c.ReadOnly : true">
+              <regular caption="strOK_Id" tooltip="tooltipOK_Id" icon=""/>
+            </visual>
+            <run>
+              <preUI webType="JScript" methodName="vector.vectorDetailOk"/>
+              <preText>
+                return (obj.GetAccessor() as IObjectValidator).Validate(manager, obj, true, true, true);
+              </preText>
+            </run>
+          </action>
+           <action name="Cancel" type="Cancel">
+             <visual panel="Main" alignment="Right" app="Win">
+               <regular caption="strCancel_Id" tooltip="tooltipCancel_Id" icon=""/>
+               <readOnly caption="strOK_Id" tooltip="tooltipOK_Id" icon=""/>
+             </visual>
+           </action>
+           <action name="Create" type="Create" >
+            <visual panel="Group" alignment="Right" enablePredicate="(a, p, b) => a != null ? (a.Environment != null ? !a.Environment.ReadOnly : !a.ReadOnly) : true">
+              <regular caption="strCreate_Id" tooltip="tooltipCreate_Id" icon="add" />
+            </visual>
+            <run>
+              <preUI webType="JScript" methodName="Vector.vectorDetailCancel"/>
+              <params>
+                <param name="idfVectorSurveillanceSession" type="long"/>
+                <param name="datCollectionDateTime" type="DateTime"/>
+                <param name="strSessionID" type="string"/>
+                <param name="Location" type="GeoLocation"/>
+              </params>
+              <creating>
+                <lambda_extender target="idfVectorSurveillanceSession" type="long" lambda="c => idfVectorSurveillanceSession"/>
+                <lambda_extender target="datCollectionDateTime" type="DateTime" lambda="c => datCollectionDateTime"/>
+                <lambda_extender target="strSessionID" type="string" lambda="c => strSessionID"/>
+                <custom_extender>
+                  <text>
+                    obj.Location = LocationAccessor.CreateWithCountry(manager, obj);
+                    obj.CopyLocation(Location);
+                    /*
+                    obj.Location.strDescription = Location.strDescription;
+                    obj.Location.blnGeoLocationShared = Location.blnGeoLocationShared;
+                    obj.Location.Region = Location.idfsRegion.HasValue ? Location.RegionLookup.SingleOrDefault(c => c.idfsRegion == Location.idfsRegion.Value) : obj.Location.Region;
+                    obj.Location.Rayon = Location.idfsRayon.HasValue ? Location.RayonLookup.SingleOrDefault(c => c.idfsRayon == Location.idfsRayon.Value) : obj.Location.Rayon;
+                    obj.Location.Settlement = Location.idfsSettlement.HasValue ? Location.SettlementLookup.SingleOrDefault(c => c.idfsSettlement == Location.idfsSettlement.Value) : obj.Location.Settlement;
+                    obj.Location.dblLatitude = Location.dblLatitude;
+                    obj.Location.dblLongitude = Location.dblLongitude;
+                    obj.Location.dblDistance = Location.dblDistance;
+                    obj.Location.dblAccuracy = Location.dblAccuracy;
+                    obj.Location.GeoLocationType = Location.GeoLocationType;
+                    obj.Location.GroundType = Location.GroundType;
+                    
+                    <!--TODO разобраться почему эти поля не вычисляются в штатном порядке-->
+                    obj.strRegion = obj.Location.Region == null ? "" : obj.Location.Region.strRegionName;
+                    obj.strRayon = obj.Location.Rayon == null ? "" : obj.Location.Rayon.strRayonName;
+                    obj.strSettlement = obj.Location.Settlement == null ? "" : obj.Location.Settlement.strSettlementName;
+                    obj.dblLatitude = obj.Location.dblLatitude;
+                    obj.dblLongitude = obj.Location.dblLongitude;
+                    */
+                  </text>
+                </custom_extender>
+              </creating>
+            </run>
+          </action>
+           <action name="CopyVector" type="Action">
+              <visual panel="Group" alignment ="Right" enablePredicate='(c, p, b) => c != null &amp;&amp; !c.Key.Equals(PredefinedObjectId.FakeListObject) &amp;&amp; (c.Environment != null ? !c.Environment.ReadOnly : !c.ReadOnly)'>
+                <regular caption ="strCopy_Id" tooltip ="tooltipAdd_Id" icon =""/>
+              </visual>
+              <run>
+                <preUI webType="JScript"/>
+              </run>
+            </action>
+           <action name="VectorCancel" type="Action">
+             <visual panel="Main" alignment="Right" app="Web">
+               <regular caption="strCancel_Id" tooltip="tooltipCancel_Id" icon=""/>
+             </visual>
+             <run>
+               <preUI webType="JScript" methodName="vector.vectorDetailCancel"/>
+             </run>
+           </action>
+           <action name="ActionEditVector" type="Action">
+              <run>
+               <preUI webType="JScript"/>
+             </run>
+           </action>
+          </actions>
+      </table>
+      <table name="VectorItem">
+        <keys>
+          <key name="idfVectorSurveillanceSession" />
+        </keys>
+        <storage>
+        </storage>
+      </table>
+      <!--фейковый объект, чтобы вписаться в структуру форм-->
+      <table name="CopyDialogWindowItem">
+        <keys>
+          <key name="ID" />
+          <!--фейковое поле-->
+        </keys>
+        <fields>
+          <storage name="blnNeedCopyGeneralData" type="bool"/>
+          <storage name="blnNeedCopyFF" type="bool"/>
+          <storage name="blnNeedCopySamples" type="bool"/>
+          <storage name="blnNeedCopyFT" type="bool"/>
+          <storage name="idfVectorSurveillanceSession" type="long"/>
+          <storage name="idfVector" type="long"/>
+          <calculated name="CaseObjectIdent" type="string" depends="idfVectorSurveillanceSession" lambda='c => "VsSession_" + c.idfVectorSurveillanceSession + "_"' />
+        </fields>
+        <readonly>
+          <fields name="blnNeedCopyGeneralData" predicate="c => true"/>
+          <fields name="*" predicate="c => c.ReadOnly" />
+        </readonly>
+        <extenders>
+          <creating>
+            <lambda_extender target="blnNeedCopyGeneralData" type="bool" lambda="c => true" />
+            <lambda_extender target="blnNeedCopyFF" type="bool" lambda="c => false" />
+            <lambda_extender target="blnNeedCopySamples" type="bool" lambda="c => false" />
+            <lambda_extender target="blnNeedCopyFT" type="bool" lambda="c => false" />
+          </creating>
+        </extenders>
+        <actions>
+          <standard>
+            <remove type="Create"/>
+            <remove type="Ok"/>
+            <remove type="Cancel"/>
+            <remove type="Delete"/>
+            <remove type="Save"/>
+          </standard>
+          <action name="Ok" type="Close" >
+            <visual panel="Main" alignment ="Right" >
+              <regular caption ="strSelect_Id" tooltip ="tooltipSelect_Id" icon =""/>
+            </visual>
+            <run>
+              <preUI webType="JScript"/>
+            </run>
+          </action>
+          <action name="Cancel" type="Close">
+            <visual panel="Main" alignment ="Right" >
+              <regular caption ="strCancel_Id" tooltip ="tooltipCancel_Id" icon =""/>
+            </visual>
+            <run>
+              <preUI webType="JScript" methodName="vector.vectorDetailCancel" />
+            </run>
+          </action>
+        </actions>
+      </table>
+    </tables>
+
+</object>

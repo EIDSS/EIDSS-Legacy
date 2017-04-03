@@ -1,0 +1,35 @@
+﻿@model eidss.model.Schema.VetAggregateCase
+@{
+    ViewBag.Title = Translator.GetMessageString("titleVetAggregateCaseTitle");
+    ViewBag.Number = "V10";
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+    
+}
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+<script src="@Url.Content("~/Scripts/EIDSS/FlexForms.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/EIDSS/AggregateCase.js")" type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript">
+    $(window).load(function () {           
+        aggregateCase.toFlexFormCaseReload();
+    });
+    
+    $(document).ready(function () {
+    });
+</script>
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@using (Html.BeginForm())
+{       
+    @Html.IdentificationAndHeartbeat("idfAggrCase", Model.idfAggrCase) 
+      
+    <div class="tabPanelContent bordered">
+        @Html.Partial("../VetAggregateCase/DetailsContent", Model)
+    </div>    
+}

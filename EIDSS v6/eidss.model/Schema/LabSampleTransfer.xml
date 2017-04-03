@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="LabSampleTransfer"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="spLabSampleTransfer_SelectDetail" />
+	</storage>
+	<tables>
+		<table name="LabSampleTransfer">
+      <properties auditObject="daoSample" auditTable="tlbMaterial" permissionAction="SampleTransfer" />
+      <fields></fields>
+
+      <extenders>
+        <posting>
+          <lambda_extender target="datModificationForArchiveDate" type="DateTime?" lambda="c => c.HasChanges ? DateTime.Now : c.datModificationForArchiveDate"/>
+        </posting>
+      </extenders>
+		</table>
+	</tables>
+
+</object>

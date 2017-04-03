@@ -1,0 +1,212 @@
+﻿@model bv.model.Model.Core.SearchPanelMetaItem           
+@using eidss.webui.Utils;
+@functions
+{
+
+    HtmlString InsertAdjavantHiddens()
+    {
+        return new HtmlString(String.Format(
+            "<input type='hidden' id='Lookup_{0}SlaveName' value='Lookup_{1}'/><input type='hidden' id='Lookup_{0}ParameterString' value='valueFieldName={1}&parameterName={0}&parameterValue=*value*'/>",
+            Model.Name,
+            Model.Dependent
+            ));
+    }
+
+    enum CBoxEditorType
+    {
+        Master,
+        Dependant,
+        Normal
+    }
+
+    CBoxEditorType GetCurrentType()
+    {
+        if (!String.IsNullOrWhiteSpace(Model.Dependent))
+            return CBoxEditorType.Master;
+        if (ViewData["IsDependant"] != null)
+            if ((bool)ViewData["IsDependant"])
+                return CBoxEditorType.Dependant;
+        return CBoxEditorType.Normal;
+    }
+
+    IEnumerable<SelectListItem> GetOperators(bv.model.Model.Core.EditorType type)
+    {
+        switch (type)
+        {
+            case bv.model.Model.Core.EditorType.Text:
+                return new List<SelectListItem> {
+                    new SelectListItem { Value = "=", Text = "="},
+                    new SelectListItem { Value = "LIKE", Text = "LIKE" },
+                    new SelectListItem { Value = "<>", Text = "<>" } 
+                    };
+            case bv.model.Model.Core.EditorType.Lookup:
+                return new List<SelectListItem>
+                {
+                    new SelectListItem{ Value = "=", Text = "=" },
+                    new SelectListItem{ Value = "<>", Text = "<>" }
+                };
+            default:
+                return new List<SelectListItem> 
+                {
+                    new SelectListItem{ Value = "=", Text = "=" },
+                    new SelectListItem{ Value = "<>", Text = "<>" },
+                    new SelectListItem{ Value = ">", Text = ">" },
+                    new SelectListItem{ Value = "<", Text = "<" },
+                    new SelectListItem{ Value = ">=", Text = ">=" },
+                    new SelectListItem{ Value = "<=", Text = "<=" }
+                };
+        }
+    }
+
+    String GetControlName(string baseName, string intervalPart = "")
+    {
+        if (Model.Location == bv.model.Model.Core.SearchPanelLocation.Combobox)
+        {
+            if (!baseName.StartsWith("CBox"))
+                baseName = String.Format("CBox.Value");
+
+            return String.Format("{0}.{1}", baseName, ViewData["ObjNameIndex"]);
+        }
+        else
+        {
+            if (intervalPart.Length > 0)
+                intervalPart += ".";
+            return String.Format("{0}.{1}{2}", baseName, intervalPart, Model.Name.Replace(" ", ""));
+        }
+    }
+
+    IEnumerable<SelectListItem> GetSource()
+    {
+        if (ViewData["LookupList"] == null)
+            return new List<SelectListItem>();
+
+        var result = (IEnumerable<SelectListItem>)ViewData["LookupList"];
+
+        if (ViewData["Value"] == null)
+            return result;
+
+        result.Where(x => x.Value.Equals(ViewData["Value"].ToString(), StringComparison.InvariantCultureIgnoreCase)).First().Selected = true;
+        return result;
+    }
+}
+
+<script language="javascript" type="text/javascript"></script>
+
+@if (Model.EditorType == bv.model.Model.Core.EditorType.Date && Model.IsRange)
+{
+    <a href="#" onclick='FillStandardRange("month", "@GetControlName("Date", "From").Replace(".", "_")", "@GetControlName("Date", "To").Replace(".", "_")");'>@Translator.GetString("this month")</a>
+    <a href="#" onclick='FillStandardRange("quarter", "@GetControlName("Date", "From").Replace(".", "_")", "@GetControlName("Date", "To").Replace(".", "_")");'>@Translator.GetString("this quarter")</a>            
+    <a href="#" onclick='FillStandardRange("year", "@GetControlName("Date", "From").Replace(".", "_")", "@GetControlName("Date", "To").Replace(".", "_")");'>@Translator.GetString("this year")</a>
+    @SearchPanelHelper.CloseTableCell();
+}
+
+@if (Model.Location == bv.model.Model.Core.SearchPanelLocation.Combobox)
+{
+    @(Html.Telerik().ComboBox()
+        .Name(GetControlName("CBox.Operand"))
+        .BindTo(GetOperators(Model.EditorType))
+        .HtmlAttributes(new { style = "width:50px; float:bottom" })
+        )
+    <text>&nbsp;</text>
+}
+else
+{
+    <label style="float:left;">@Translator.GetString(Model.LabelId.Replace("_LblId", ""))</label> 
+}
+@switch (Model.EditorType)
+{
+    case bv.model.Model.Core.EditorType.Date:
+        if (Model.IsRange)
+        {
+            <div style="float:right">&nbsp;from&nbsp;
+                @(Html.Telerik().DatePicker()
+                    .Name(GetControlName("Date", "From"))
+                    .Value(ViewData["ValueFrom"] as DateTime?))                    
+                &nbsp;to&nbsp;
+                @(Html.Telerik().DatePicker()
+                    .Name(GetControlName("Date", "To"))
+                    .Value(ViewData["ValueTo"] as DateTime?))
+            </div>
+        }
+        else
+        {
+                 @(Html.Telerik().DatePicker()
+                    .Name(GetControlName("Date")))
+        }
+        break;
+    case bv.model.Model.Core.EditorType.Datetime:
+        if (Model.IsRange)
+        {
+            <text>&nbsp;from&nbsp;</text>
+            @(Html.Telerik().DateTimePicker()
+                .Name(GetControlName("DateTime", "From"))
+                .Value(ViewData["ValueFrom"] as DateTime?))
+            <text>&nbsp;to&nbsp;</text>
+            @(Html.Telerik().DateTimePicker()
+                .Name(GetControlName("DateTime", "To"))
+                .Value(ViewData["ValueTo"] as DateTime?))
+        }
+        else
+        {
+            @(Html.Telerik().DateTimePicker()
+                .Name(GetControlName("DateTime"))
+                .Value(ViewData["Value"] as DateTime?))
+        }
+        break;
+    case bv.model.Model.Core.EditorType.Numeric:
+        @(Html.Telerik().IntegerTextBox()
+            .Name(GetControlName("Int"))
+            .Value(ViewData["Value"] as int?))
+    break;
+    case bv.model.Model.Core.EditorType.Lookup:
+    //if cbox is a master of other value, insert additional hiddens and client event
+    //if cbox is a dependant of other value, add load event handler
+    var specificType = GetCurrentType();
+    if (specificType == CBoxEditorType.Normal)
+    {
+            @(Html.Telerik().ComboBox()
+                .Name(GetControlName("Lookup"))
+                .BindTo(GetSource())
+                .HtmlAttributes(new { style = "float: right; width:162px" }))                
+    }
+    else
+    {
+        if (specificType == CBoxEditorType.Master)
+        {
+                @(Html.Telerik().ComboBox()
+                    .Name(GetControlName("Lookup"))
+                    .AutoFill(true)
+                    .DataBinding(binding => binding.Ajax().Select("GetLookupSource", "Search", new { valueFieldName = Model.Name, initValue = ViewData["Value"] }))
+                    .HighlightFirstMatch(true)
+                    .HtmlAttributes(new { style = "float: right; width:162px" })
+                    .ClientEvents(events =>
+                    {
+                        events.OnChange("OnComboboxMasterChange");
+                        events.OnLoad("OnComboboxSlaveLoad");
+                    })
+                )
+                @InsertAdjavantHiddens()
+        }
+        else
+        {
+                @(Html.Telerik().ComboBox()
+                    .Name(GetControlName("Lookup"))
+                    .AutoFill(true)
+                    .DataBinding(binding => binding.Ajax().Select("GetLookupSource", "Search"))
+                    .HtmlAttributes(new { style = "float: right; width:162px" })
+                    .HighlightFirstMatch(true)
+                    .ClientEvents(events =>
+                    {
+                        events.OnLoad("OnComboboxSlaveLoad");
+                    })
+                )
+        }
+    }
+
+    break;
+    case bv.model.Model.Core.EditorType.Text:
+        @(Html.TextBox(GetControlName("String"),
+            ViewData["Value"],
+            new { style = "float:right;valign:top;width:160px;" }))
+    break;
+}

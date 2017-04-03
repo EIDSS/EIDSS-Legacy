@@ -1,0 +1,12 @@
+﻿@model eidss.model.Schema.VetCase
+           
+@using eidss.web.common.Utils
+
+<div class="tabPanelContent">
+<div class="sectionTitle">
+    @Translator.GetMessageString("tabTitleVetCasePensideTests")
+</div>
+    @Html.Action("PensideTestsGrid", "Grids", new { root = Model.idfCase, name = Model.ObjectIdent + "PensideTests", tests = Model.PensideTests,
+                                                     isReadOnly = Model.IsReadOnly("PensideTests") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit),
+                                                     HACode = Model._HACode.HasValue ? Model._HACode.Value : 0 })
+</div>

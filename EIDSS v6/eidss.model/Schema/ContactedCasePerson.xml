@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="ContactedCasePerson"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="spContactedCasePerson_SelectDetail" type="detaillist" />
+    </storage>
+
+    <tables>
+        <table name="ContactedCasePerson">
+            <grid>
+              <item name="idfContactedCasePerson" visible="false" key="true"/>
+              <item name="idfHuman" visible="false"/>              
+              <item name="strFullName" type="string" />
+              <item name="idfsPersonContactType" visible="false" />
+              <item name="strPersonContactType" type="string" />                           
+              <item name="datDateOfLastContact" />
+              <item name="strPlaceInfo" type="string" />
+              <item name="strCurrentResidenceAddress" type="string" />
+              <item name="idfsSettlement" visible="false"/>
+              <item name="idfsRegion" visible="false"/>
+              <item name="idfsRayon" visible="false"/>
+              <item name="GeoLocationNameWithHiddenPersonalData" type="string"/>
+              <item name="strComments" type="string"/>
+            </grid>
+            <labels>
+              <item name="strFullName" labelId="strName"/>
+              <item name="strCurrentResidenceAddress" labelId="strRegistrationAddress"/>
+              <item name="GeoLocationNameWithHiddenPersonalData"  labelId="strRegistrationAddress"/>
+            </labels>
+            <fields>
+              <storage name="NewObject" type="bool"/>
+              <calculated name="CaseObjectIdent" type="string" depends="idfHumanCase" lambda='c => "HumanCase_" + c.idfHumanCase + "_"' />
+              <calculated name="strFullName" type="string" depends="Person"
+                          lambda='c => c.Person.strLastName + " " + c.Person.strFirstName + " " + c.Person.strSecondName' />
+              <calculated name="strCurrentResidenceAddress" type="string" depends="Person"
+                          lambda='c => c._Person == null ? c.strPatientInformation : bv.common.Core.Utils.Join(", ", new List&lt;string&gt;(){ c._Person.CurrentResidenceAddress != null ? c._Person.CurrentResidenceAddress.strReadOnlyAdaptiveFullName : "", c._Person.strHomePhone })' />
+              <storage name="GeoLocationNameWithHiddenPersonalData" type="string"/>              
+            </fields>
+            <readonly>
+              <fields name="strName,strCurrentResidenceAddress" predicate="c => true" />              
+            </readonly>
+            <relations>
+                <!-- idfHumanCase -->
+                <relation name="Person" table="Patient" internal="false" type="link" lazy="true" source="idfHuman" target="idfHuman" />
+            </relations>            
+            <lookups>
+                <lookup name="PersonContactType" table="BaseReference" section="rftContact_Type" source="idfsPersonContactType" target="idfsBaseReference" notaddempty="true" />
+            </lookups>
+            <storage>
+                <post name="spContactedCasePerson_Post"/>            
+                <delete />
+            </storage>
+            <postorder>
+                <item name="Person"/>
+                <item name="this"/>
+            </postorder>
+            <deleteorder>
+                <item name="this"/>
+                <item name="Person"/>
+            </deleteorder>
+            <extenders>
+                <creating>
+                    <scalar_extender target="idfContactedCasePerson" class="GetNewIDExtender" />
+                    <lambda_extender target="Person" type="Patient" lambda="c => PersonAccessor.Create(manager, c, c.idfHuman)" />
+                    <scalar_extender target="Person.idfRootHuman" class="GetNewIDExtender" />
+                </creating>
+                <created>
+                    <lambda_extender target="PersonContactType" type="BaseReference"
+                                     lambda='c => c.PersonContactTypeLookup.Where(a => a.idfsBaseReference == (long)PersonContactTypeEnum.Family).SingleOrDefault()'/>                  
+                </created>
+            </extenders>
+            <handlers>
+                <fieldhandler>
+                  <lambda_handler target="strPersonContactType" field="idfsPersonContactType" type="string" lambda='c => c.PersonContactType == null ? "" : c.PersonContactType.name' />
+                  <lambda_handler target="strName" field="idfHuman" type="string" lambda='c => c.Person == null ? "" : c.Person.strName' />                
+                </fieldhandler>
+            </handlers>
+            <validators>
+                <childchange>
+                  <!-- 27.	DOB≤DLC -->
+                  <container name="Person" field="datDateofBirth">
+                    <predicate_validator container="Person" field="datDateofBirth" predicate="(c,i) => PredicateValidator.CompareDates(i.datDateofBirth, c.datDateOfLastContact)" message="Date of Birth_Date of last contact" />
+                  </container>
+                </childchange>
+                <post>
+                  <required_validator target="Person.strLastName" />
+                  <required_validator target="idfsPersonContactType" property="PersonContactType" />
+                  <predicate_validator predicate="c => c.Parent is HumanCase ? (c.Parent as HumanCase).ContactedPerson.Count(j => 
+                        !j.IsMarkedToDelete 
+                        &amp;&amp; j.idfContactedCasePerson != c.idfContactedCasePerson
+                        &amp;&amp; j.Person.strFirstName == c.Person.strFirstName
+                        &amp;&amp; j.Person.strLastName == c.Person.strLastName
+                        &amp;&amp; j.Person.strSecondName == c.Person.strSecondName
+                        &amp;&amp; j.Person.datDateofBirth == c.Person.datDateofBirth
+                        &amp;&amp; j.Person.idfsHumanGender == c.Person.idfsHumanGender
+                        &amp;&amp; j.Person.CurrentResidenceAddress.idfsCountry == c.Person.CurrentResidenceAddress.idfsCountry
+                        &amp;&amp; j.Person.CurrentResidenceAddress.idfsRegion == c.Person.CurrentResidenceAddress.idfsRegion
+                        &amp;&amp; j.Person.CurrentResidenceAddress.idfsRayon == c.Person.CurrentResidenceAddress.idfsRayon
+                        &amp;&amp; j.Person.CurrentResidenceAddress.idfsSettlement == c.Person.CurrentResidenceAddress.idfsSettlement
+                        &amp;&amp; j.Person.CurrentResidenceAddress.strStreetName == c.Person.CurrentResidenceAddress.strStreetName
+                        &amp;&amp; j.Person.CurrentResidenceAddress.strPostCode == c.Person.CurrentResidenceAddress.strPostCode
+                        &amp;&amp; j.Person.CurrentResidenceAddress.strBuilding == c.Person.CurrentResidenceAddress.strBuilding
+                        &amp;&amp; j.Person.CurrentResidenceAddress.strApartment == c.Person.CurrentResidenceAddress.strApartment
+                        &amp;&amp; j.Person.CurrentResidenceAddress.strHouse == c.Person.CurrentResidenceAddress.strHouse
+                        ) == 0 : true" message="mbContactExist">
+                    <params>
+                      <param type="string" lambda="c => c.strFullName"/>
+                    </params>
+                  </predicate_validator>
+                </post>                
+            </validators>
+          <actions>
+            <standard>
+              <remove type="Create"/>
+            </standard>
+            <action name="Create" type="Create">
+              <run>
+                <params>
+                  <param name="idfHumanCase" type="long" />
+                </params>
+                <creating>
+                  <lambda_extender target="idfHumanCase" type="long" lambda='c => idfHumanCase' />
+                  <lambda_extender target="Person" type="Patient" lambda="c => PersonAccessor.Create(manager, c, idfHumanCase)" />
+                </creating>
+              </run>
+            </action>
+          </actions>
+        </table>
+    </tables>
+
+</object>

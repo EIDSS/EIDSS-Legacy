@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <!-- The configuration and platform will be used to determine which
+         assemblies to include from solution and project documentation
+         sources -->
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>e1ae2e74-531f-4e9e-bdb8-a20c13a4f7c3</ProjectGuid>
+    <SHFBSchemaVersion>1.9.5.0</SHFBSchemaVersion>
+    <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual
+         Studio adds them anyway -->
+    <AssemblyName>eidss.opensource.win</AssemblyName>
+    <RootNamespace>eidss.opensource.win</RootNamespace>
+    <Name>eidss.opensource.win</Name>
+    <!-- SHFB properties -->
+    <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
+    <OutputPath>.\Help\</OutputPath>
+    <HtmlHelpName>eidss.opensource.win</HtmlHelpName>
+    <Language>en-US</Language>
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SyntaxFilters>CSharp</SyntaxFilters>
+    <SdkLinkTarget>Blank</SdkLinkTarget>
+    <RootNamespaceContainer>True</RootNamespaceContainer>
+    <PresentationStyle>VS2010</PresentationStyle>
+    <Preliminary>False</Preliminary>
+    <NamingMethod>Guid</NamingMethod>
+    <HelpTitle>EIDSS Opensource Win</HelpTitle>
+    <ContentPlacement>AboveNamespaces</ContentPlacement>
+    <RootNamespaceTitle>EIDSS Opensource Win</RootNamespaceTitle>
+    <VisibleItems>InheritedMembers, InheritedFrameworkMembers</VisibleItems>
+    <MissingTags>None</MissingTags>
+    <DocumentationSources>
+      <DocumentationSource sourceFile="..\eidss.main\bin\Debug\bv.winclient.dll" />
+      <DocumentationSource sourceFile="..\eidss.main\bin\Debug\eidss.winclient.dll" />
+      <DocumentationSource sourceFile="..\eidss.main\bin\Debug\bv_common.dll" />
+      <DocumentationSource sourceFile="..\eidss.main\bin\Debug\bvdb_common.dll" />
+      <DocumentationSource sourceFile="..\eidss.main\bin\Debug\bvwin_common.dll" />
+      <DocumentationSource sourceFile="..\eidss.main\bin\Debug\eidss.avr.dll" />
+      <DocumentationSource sourceFile="..\eidss.main\bin\Debug\eidss.avr_db.dll" />
+      <DocumentationSource sourceFile="..\eidss.main\bin\Debug\eidss.main.exe" />
+      <DocumentationSource sourceFile="..\eidss.main\bin\Debug\EIDSS.RAM.dll" />
+      <DocumentationSource sourceFile="..\eidss.main\bin\Debug\EIDSS.RAM_DB.dll" />
+      <DocumentationSource sourceFile="..\eidss.main\bin\Debug\EIDSS.Reports.dll" />
+      <DocumentationSource sourceFile="..\eidss.main\bin\Debug\eidss_admin.dll" />
+      <DocumentationSource sourceFile="..\eidss.main\bin\Debug\eidss_admin_db.dll" />
+      <DocumentationSource sourceFile="..\eidss.main\bin\Debug\eidss_common.dll" />
+      <DocumentationSource sourceFile="..\eidss.main\bin\Debug\eidss_db.dll" />
+      <DocumentationSource sourceFile="..\eidss.main\bin\Debug\eidss_forms.dll" />
+      <DocumentationSource sourceFile="..\eidss.main\bin\Debug\eidss_human.dll" />
+      <DocumentationSource sourceFile="..\eidss.main\bin\Debug\eidss_human_db.dll" />
+      <DocumentationSource sourceFile="..\eidss.main\bin\Debug\eidss_lims.dll" />
+      <DocumentationSource sourceFile="..\eidss.main\bin\Debug\eidss_lims_db.dll" />
+      <DocumentationSource sourceFile="..\eidss.main\bin\Debug\EIDSS_ObjectAccess.dll" />
+      <DocumentationSource sourceFile="..\eidss.main\bin\Debug\eidss_vet.dll" />
+      <DocumentationSource sourceFile="..\eidss.main\bin\Debug\eidss_vet_db.dll" />
+      <DocumentationSource sourceFile="..\eidss.main\bin\Debug\EIDSS_WebServiceExport.dll" />
+    </DocumentationSources>
+  </PropertyGroup>
+  <!-- There are no properties for these groups.  AnyCPU needs to appear in
+       order for Visual Studio to perform the build.  The others are optional
+       common platform types that may appear. -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Win32' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Win32' ">
+  </PropertyGroup>
+  <!-- Import the SHFB build targets -->
+  <Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" />
+</Project>

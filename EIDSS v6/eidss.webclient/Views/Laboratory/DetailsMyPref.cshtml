@@ -1,0 +1,96 @@
+﻿@model eidss.model.Schema.LaboratorySectionMaster
+@{
+    ViewBag.Title = @Translator.GetMessageString("tabMyPreferences");
+    ViewBag.Number = "L25";
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+}
+@using Kendo.Mvc.UI
+@using bv.common.Configuration
+@using bv.common.Enums
+@using bv.model.Model.Core
+@using eidss.model.Schema
+@using eidss.web.common.Utils
+@using eidss.webclient.Configurations
+@using eidss.webclient.Utils;
+
+
+<link href="@Url.Content("~/Content/Styles/ListFormDetails.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/Content/Styles/SearchPanel.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/Content/Styles/LaboratorySection.css")" rel="stylesheet" type="text/css" />
+
+<script src="@Url.Content("~/Scripts/EIDSS/PopupMenu.js")" type="text/javascript"></script>  
+<script src="@Url.Content("~/Scripts/EIDSS/Laboratory.js")" type="text/javascript"></script>  
+<script src='@Url.Content("~/Scripts/EIDSS/Organization.js")' type="text/javascript"></script>
+<script src='@Url.Content("~/Scripts/EIDSS/Employee.js")' type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/EIDSS/FlexForms.js")" type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        $.ajaxSetup({
+            cache: true
+        });
+        
+        $("#bFirstSearchClick").val("0");
+        listForm.pageOnLoad();
+        popupMenu.pageOnLoad('ContentLabSectionMyPref', @Model.idfsLaboratorySection);
+        laboratory.resizeTable();
+        $(window).on('resize', function () {
+            laboratory.resizeTable();
+        });
+        $(".k-header.checkColumn span").remove();
+        $(".k-header.checkColumn").append("<div class='k-link' style='padding-bottom: 0.3em; padding-top: 0.4em; '><input onclick='bvGrid.selectUnselectAllRowsInDefaultGrid()' id='idSelectUnselectAll' type='checkbox' /></div>");
+    });
+</script>
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@using (Html.BeginForm())
+{
+    @Html.IdentificationAndHeartbeat("idfsLaboratorySection", Model.idfsLaboratorySection)
+    @Html.Hidden("ID", Model.idfsLaboratorySection)
+}
+
+@Html.PopuMenu(LaboratorySectionItem.Accessor.Instance(null), "SelectLabMyPref")
+
+<div class="content">
+    <table>
+        <tr>
+            <td>
+                @Html.SearchPanelSimple(LaboratorySectionItem.Accessor.Instance(null), c => (c as LaboratorySectionItem).bIsMyPref = true)
+            </td>
+            <td>
+                <div class="topButtonPanel">
+                    <!--top action panel-->
+                    @{ Html.RenderActionPanel(LaboratorySectionItem.Accessor.Instance(null), null, ActionsPanelType.Top); }
+                </div>
+            </td>
+        </tr>
+    </table>
+<div class="listForm">
+    <div id="searchpanel" class="customSearchPanel">
+        @Html.SearchPanel(LaboratorySectionItem.Accessor.Instance(null), (bv.model.Model.Core.FilterParams)ViewBag.Filter, (bv.model.Model.Core.IObject)ViewBag.InitObject, (bv.model.Model.Core.FilterParams)ViewBag.StaticFilter, Model.idfsLaboratorySection, true, c => (c as LaboratorySectionItem).bIsMyPref = true)
+    </div>
+    <table class="lfSearchPanelTable">
+        <tr>
+            <td class="lfSearchPanelTd">
+                @Html.SearchPanelOperator()
+            </td>
+            <td class="lfGridTd">
+                @using (var manager = bv.model.BLToolkit.DbManagerFactory.Factory.Create(eidss.model.Core.EidssUserContext.Instance))
+                {
+                    Html.ListFormGrid<LaboratorySectionItem.LaboratorySectionItemGridModel, LaboratorySectionItem.LaboratorySectionItemGridModelList>(
+                        new LaboratorySectionItem.LaboratorySectionItemGridModelList((long)AutoGridRoots.LabSampleBookPreference),
+                        LaboratorySectionItem.Accessor.Instance(null), "Laboratory", "IndexAjaxMy", selectionType: GridRowSelectionType.Multi,
+                        editScript: "laboratory.Details", deleteScript: "laboratory.Delete"
+                        )
+                        //.Selectable(selectable => selectable.Mode(GridSelectionMode.Single).Type(GridSelectionType.Cell))
+                        .Events(e => e.DataBound("laboratory.onGridDataBound"))
+                        .Render();
+                }
+            </td>
+        </tr>
+    </table>
+</div>
+</div>

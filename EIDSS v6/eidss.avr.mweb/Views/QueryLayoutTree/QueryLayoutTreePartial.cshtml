@@ -1,0 +1,229 @@
+﻿@using System.Drawing
+@using System.Web.UI.WebControls
+@using bv.common.Core
+@using eidss.avr.mweb.Utils
+@using eidss.model.Avr.Tree
+@using eidss.model.Resources
+@using eidss.web.common.Utils
+@model List<AvrTreeElement>
+
+@{
+    var treeList = Html.DevExpress().TreeList(
+    settings =>
+        {
+            settings.Name = "treeList";
+            settings.CallbackRouteValues = new {Controller = "QueryLayoutTree", Action = "QueryLayoutTreePartial"};
+            settings.Width = Unit.Percentage(100);
+
+            settings.AutoGenerateColumns = false;
+            settings.KeyFieldName = "ID";
+            settings.ParentFieldName = "ParentID";
+            settings.RootValue = null;
+
+            settings.SettingsSelection.Enabled = true;
+            settings.SettingsSelection.AllowSelectAll = false;           
+            settings.Styles.SelectedNode.Border.BorderWidth = 1;
+            settings.Styles.SelectedNode.Border.BorderStyle = BorderStyle.Solid;
+            settings.Styles.SelectedNode.Border.BorderColor = Color.FromArgb(0, 0, 0);
+            settings.Settings.GridLines = System.Web.UI.WebControls.GridLines.Horizontal;
+            
+            settings.Styles.Node.CssClass = "treeClass";
+            settings.CommandColumn.Width = Unit.Pixel(60);
+            
+            settings.Columns.Add(c =>
+            {
+                c.FieldName = "ID";
+                c.Visible = false;
+            });
+            settings.Columns.Add(c =>
+                {
+                    c.FieldName = "QueryID";
+                    c.Visible = false;
+                });
+            settings.Columns.Add(c =>
+                {
+                    c.FieldName = "ElementType";
+                    c.Visible = false;
+                });
+            settings.SetDataCellTemplateContent(c =>
+                {
+                    string imageUrl;
+                    string nodeTemplate;
+                    var elemType = DataBinder.Eval(c.DataItem, "ElementType").ToString();
+                    switch (elemType)
+                    {
+                        case "Query":
+                            imageUrl = "/Content/Images/query_16x16.png";
+                            nodeTemplate = Utils.Str(DataBinder.Eval(c.DataItem, "NationalName"));
+                            break;
+                        case "Layout":
+                            imageUrl = "/Content/Images/layout_16x16.png";
+                            nodeTemplate = string.Format("<a href='javascript:void(0)' onclick='queryTreeList.showPivot({0},{1})' class='layoutLink{2}'>{3}</a>",
+                                         //Url.Action("Layout", "Layout", new { queryId = DataBinder.Eval(c.DataItem, "QueryID"), layoutId = DataBinder.Eval(c.DataItem, "ID") }),
+                                         DataBinder.Eval(c.DataItem, "QueryID"),  DataBinder.Eval(c.DataItem, "ID"),
+                                         true.Equals(DataBinder.Eval(c.DataItem, "IsPublished")) ? " published" : "", DataBinder.Eval(c.DataItem, "NationalName"));
+                            break;
+                        default:
+                            imageUrl = "/Content/Images/folder_16x16.png";
+                            nodeTemplate = Utils.Str(DataBinder.Eval(c.DataItem, "NationalName"));
+                            break;
+                    }
+
+                    var template = string.Format("<div title='{0}'><img src='{1}' alt='' />{2}</div>",DataBinder.Eval(c.DataItem, "Description"),imageUrl, nodeTemplate);
+                    ViewContext.Writer.Write(template);
+                });
+
+            settings.Columns.Add(c =>
+                {
+                    c.FieldName = "NationalName";
+                    c.Width = Unit.Percentage(100);
+                    c.Caption = Translator.GetString("strTranslatedName");
+                });
+            
+            settings.Columns.Add(c =>
+            {
+                c.FieldName = "ReadOnly";
+                c.Visible = false;
+            });
+
+            settings.Columns.Add(c =>
+            {
+                c.FieldName = "IsShared";
+                c.Visible = false;
+            });
+            
+            settings.Columns.Add(c =>
+            {
+                c.FieldName = "DescriptionID";
+                c.Visible = false;
+            });
+
+            settings.Columns.Add(c =>
+            {
+                c.FieldName = "Description";
+                c.Visible = false;
+            });
+            settings.Columns.Add(c =>
+            {
+                c.FieldName = "DescriptionEnglish";
+                c.Visible = false;
+            });
+            
+            settings.SettingsBehavior.ColumnResizeMode = ColumnResizeMode.Disabled;
+            
+            settings.HtmlRowPrepared = (sender, e) =>
+                {
+                    //TODO почему-то сюда не попадает. Надо обращаться к значению поля ReadOnly
+                    //e.Row.Font.Bold = true;
+                    //if (Equals(e.GetValue("ReadOnly"), true))
+                    //    e.Row.Font.Bold = true;
+                };
+
+            settings.HtmlDataCellPrepared = (sender, e) =>
+            {
+                //TODO это надо делать в HtmlRowPrepared, но обработчик почему-то не вызывается
+                if (e.Column.FieldName == "NationalName")
+                {
+                    var id = Convert.ToInt64(e.NodeKey);
+                    var tree = Session["QueryTree"] as List<AvrTreeElement>;
+                    if (tree != null)
+                    {
+                        var node = tree.FirstOrDefault(c => c.ID == id);
+                        if (node != null)
+                        {
+                            if (node.IsPublished)
+                                e.Cell.CssClass = "published";
+                        }
+                    }
+                }
+            };
+
+            settings.CommandColumn.Width = Unit.Pixel(20);
+
+            settings.CommandColumn.ButtonType = ButtonType.Image;
+            settings.CommandColumn.Visible = true;
+            settings.CommandColumn.NewButton.Visible = false;
+            settings.CommandColumn.EditButton.Visible = true;
+            settings.CommandColumn.EditButton.Image.Url = "/Content/Images/edit.png";
+            settings.CommandColumn.DeleteButton.Visible = false;
+            //settings.CommandColumn.DeleteButton.Image.Url = "/Content/Images/trash.png";
+            settings.SettingsEditing.Mode = TreeListEditMode.EditFormAndDisplayNode;
+            settings.SettingsEditing.AllowNodeDragDrop = true;
+            //settings.SettingsBehavior.AllowFocusedNode = true;
+
+            settings.SettingsEditing.UpdateNodeRouteValues = new {Controller = "QueryLayoutTree", Action = "QueryLayoutTreeUpdatePartial"};
+            settings.SettingsEditing.AddNewNodeRouteValues = new { Controller = "QueryLayoutTree", Action = "QueryLayoutTreeAddPartial" };
+            settings.SettingsEditing.NodeDragDropRouteValues = new {Controller = "QueryLayoutTree", Action = "QueryLayoutTreeMovePartial"};
+            settings.SettingsEditing.DeleteNodeRouteValues = new {Controller = "QueryLayoutTree", Action = "QueryLayoutTreeDeletePartial" };
+            settings.SettingsEditing.ConfirmDelete = false;
+
+            settings.ClientSideEvents.SelectionChanged = "queryTreeList.checkedChanged";
+            settings.ClientSideEvents.EndCallback = "queryTreeList.showEditNodes";
+            settings.ClientSideEvents.BeginCallback = "queryTreeList.getCalledEvent";
+            settings.ClientSideEvents.CallbackError = "queryTreeList.callbackErrorHandle";
+            settings.ClientSideEvents.CustomButtonClick = "queryTreeList.customButtonClick";
+           
+            settings.SettingsBehavior.ExpandCollapseAction = TreeListExpandCollapseAction.NodeDblClick;
+            settings.SettingsCookies.StoreExpandedNodes = true;
+            settings.SettingsCookies.StoreSelection = true;
+            
+            settings.SetEditFormTemplateContent(c => Html.RenderPartial("QueryLayoutTreeEditNodePartial", QueryLayoutTreeHelper.GetTreeElement(c)));
+            
+            settings.PreRender = (sender, e) =>
+                {
+                    var treeListControl = (MVCxTreeList) sender;
+                    treeListControl.ExpandAll();
+
+                    if (treeListControl.Nodes.Count > 0) treeListControl.Nodes[0].Selected = true;
+                };
+
+            settings.CustomJSProperties = (sender, e) =>
+            {
+                //TODO это правильный способ передачи на Client Side, но на C.S. он не виден
+                /*
+                e.Properties["cpDeleteNodeError"] = "test";
+                var x = e.Properties["cpDeleteNodeError"];
+                var y = x;
+                */
+                var keys = e.Properties.Keys.ToList();
+                var x = keys.FirstOrDefault(c => c == "cpSelectedNode");
+                if (x == null) e.Properties["cpSelectedNode"] = 0;
+            };
+
+            settings.BeforeGetCallbackResult = (sender, e) =>
+                {
+                    var tl = (MVCxTreeList)sender;
+                    tl.UnselectAll();
+                    
+                };
+
+            settings.HtmlRowPrepared = (s, e) =>
+                {
+                    if(e.GetValue("ElementType") != null)
+                    {
+                        if (Equals(e.GetValue("ElementType").ToString(), "Query"))
+                        {
+                            e.Row.Attributes.Add("nodeType", "queryNode");
+                        }
+                        if (Equals(e.GetValue("ElementType").ToString(), "Layout"))
+                        {
+                            e.Row.Attributes.Add("nodeType", "layoutNode");
+                            e.Row.Attributes.Add("queryId", e.GetValue("QueryID").ToString());
+                        }
+                        if (Equals(e.GetValue("ElementType").ToString(), "Folder"))
+                        {
+                            e.Row.Attributes.Add("nodeType", "folderNode");
+                            e.Row.Attributes.Add("queryId", e.GetValue("QueryID").ToString());
+                        }
+                    }
+                };
+            if (eidss.model.Core.AvrPermissions.DeletePermission)
+            {
+                var deleteButton = new TreeListCommandColumnCustomButton { ID = "btnDelete", Text = @Translator.GetBvMessageString("strDelete_Id") };
+                deleteButton.Image.Url = Url.Content("~/Content/Images/trash.png");
+                settings.CommandColumn.CustomButtons.Add(deleteButton);
+            }
+        });
+}
+
+@treeList.Bind(Model).GetHtml()

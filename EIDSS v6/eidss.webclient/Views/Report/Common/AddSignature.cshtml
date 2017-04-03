@@ -1,0 +1,16 @@
+﻿@using bv.common.Core
+@using eidss.model.Enums
+@using eidss.model.Resources
+@if (eidss.model.Core.EidssUserContext.User.HasPermission(PermissionHelper.ExecutePermission(EIDSSPermissionObject.CanSignReport)))
+{
+    <table id="SignatureTable" >
+       
+        <tr>
+            <td class="mediumreport">
+                @Html.CheckBox("AddSignature", false)
+                @EidssFields.Get("AddSignature")
+            </td>
+            <td colspan="2"></td>
+        </tr>
+    </table>
+}

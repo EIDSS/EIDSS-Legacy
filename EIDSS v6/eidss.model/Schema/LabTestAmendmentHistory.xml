@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="LabTestAmendment"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spLabTestAmendmentHistory_SelectDetail"  type="detaillist" />
+  </storage>
+  <tables>
+    <table name="LabTestAmendment">
+      <help win="amend_test_result"/>
+      <grid>
+        <item name="idfTestAmendmentHistory" key="true" visible="false"/>
+        <item name="datAmendmentDate" />
+        <item name="strName" type="string"  />
+        <item name="strOffice" type="string"  />
+        <item name="strOldTestResult" type="string" />
+        <item name="strNewTestResult" type="string"  />
+        <!--<item name="strOldNote" type="string"  />-->
+        <item name="strReason" type="string"  />
+      </grid>
+      <labels>
+        <item name="strName" labelId="strAmendByPerson"/>
+        <item name="strOffice" labelId="strOfficeAmendedBy"/>
+     </labels>
+      <keys>
+        <key name="idfTestAmendmentHistory"/>
+      </keys>
+      <fields>
+        <calculated name="datAmendmentDateNullable" type="DateTime?" depends="datAmendmentDate" lambda="c => c.datAmendmentDate == DateTime.MinValue ? (DateTime?)null : c.datAmendmentDate"/>
+      </fields>
+      <readonly>
+        <fields name="*" predicate="c => true" />
+      </readonly>
+      <lookups>
+        <lookup name="OldTestResult" table="BaseReference" section="rftTestResult" source="idfsOldTestResult" target="idfsBaseReference" />
+        <lookup name="NewTestResult" table="BaseReference" section="rftTestResult" source="idfsNewTestResult" target="idfsBaseReference" />
+      </lookups>
+      <storage>
+        <post name="spLabTestAmendmentHistory_Post"/>
+      </storage>
+      <handlers>
+        <fieldhandler>
+          <lambda_handler field="idfsNewTestResult" target="strNewTestResult" type="string" lambda='c => c.NewTestResult == null ? "" : c.NewTestResult.name'/>
+        </fieldhandler>
+      </handlers>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <remove type="Edit"/>
+          <remove type="Delete"/>
+          <remove type="Cancel"/>
+        </standard>
+        <action name="Create" type="Create">
+          <run>
+            <params>
+              <param name="idfTesting" type="long"/>
+              <param name="idfsOldTestResult" type="long?"/>
+              <param name="idfsNewTestResult" type="long?"/>
+              <param name="strReason" type="string"/>
+            </params>
+            <creating>
+              <scalar_extender_external target="idfTestAmendmentHistory" class="GetNewIDExtender" />
+              <lambda_extender target="datAmendmentDate" type="DateTime" lambda='c => DateTime.Now' />
+              <lambda_extender target="idfAmendByOffice" type="long" lambda='c => eidss.model.Core.EidssSiteContext.Instance.OrganizationID' />
+              <lambda_extender target="idfAmendByPerson" type="long" lambda='c => (long)ModelUserContext.Instance.CurrentUser.EmployeeID' />
+              <lambda_extender target="strOffice" type="string" lambda='c => eidss.model.Core.EidssSiteContext.Instance.OrganizationName' />
+              <lambda_extender target="strName" type="string" lambda='c => ModelUserContext.Instance.CurrentUser.FullName' />
+              <lambda_extender target="idfTesting" type="long" lambda='c => idfTesting' />
+              <lambda_extender target="strReason" type="string" lambda='c => strReason' />
+            </creating>
+            <created>
+              <lambda_extender target="OldTestResult" type="BaseReference" lambda='c => c.OldTestResultLookup.SingleOrDefault(l => l.idfsBaseReference == idfsOldTestResult)' />
+              <lambda_extender target="strOldTestResult" type="string" lambda='c => c.OldTestResult == null ? "" : c.OldTestResult.name' />
+              <lambda_extender target="NewTestResult" type="BaseReference" lambda='c => c.NewTestResultLookup.SingleOrDefault(l => l.idfsBaseReference == idfsNewTestResult)' />
+              <lambda_extender target="strNewTestResult" type="string" lambda='c => c.NewTestResult == null ? "" : c.NewTestResult.name' />
+            </created>
+          </run>
+        </action>
+      </actions>
+    </table>
+  </tables>
+
+</object>

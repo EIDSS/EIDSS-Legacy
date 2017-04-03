@@ -1,0 +1,21 @@
+﻿@model eidss.webclient.Models.Reports.RBEModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/ExportButtons", Model)
+    <div class="bluelayout">
+        <div class="tabPanelContent">
+        
+            @Html.Partial("Common/BaseFilter", Model)
+
+            @Html.Partial("Common/BaseYearQuarterFilter", Model)
+
+            @Html.Partial("Common/AddressMultiselectFilter", Model.Address)
+
+            @Html.Partial("Common/AddSignature")
+        </div>
+    </div>
+}

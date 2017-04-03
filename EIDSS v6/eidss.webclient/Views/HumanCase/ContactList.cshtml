@@ -1,0 +1,15 @@
+﻿@model eidss.model.Schema.HumanCase
+           
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+
+<div class="tabPanelContent">
+    @Html.Action("HumanContactedPersonGrid", "Grids",
+        new
+        {
+            root = Model.idfCase,
+            name = Model.ObjectIdent + "ContactedPerson",
+            personList = Model.ContactedPerson,
+            isReadOnly = Model.IsReadOnly("ContactedPerson") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit)
+        })
+</div>

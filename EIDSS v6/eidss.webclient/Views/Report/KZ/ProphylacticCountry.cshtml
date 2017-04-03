@@ -1,0 +1,20 @@
+﻿@model eidss.model.Reports.KZ.ProphylacticModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/ExportButtons", Model)
+    <div class="bluelayout">
+        <div class="tabPanelContent">
+        
+            @Html.Partial("Common/BaseFilter", Model)
+
+            @Html.Partial("Common/BaseIntervalFilter", Model)
+
+            @Html.Partial("KZ/ProphylacticFilter", Model)
+        </div>
+    </div>
+}

@@ -1,0 +1,14 @@
+﻿@model eidss.model.Avr.View.AvrView
+
+@Html.DevExpress().ComboBox(settings => {
+    settings.Name = "cbMapDefDataGradient";
+    settings.CallbackRouteValues = new { Controller = "ViewLayout", Action = "GetDataColumns", layoutId = ViewBag.LayoutId, viewName = "MapDefGradientCombo" };//GetMapDefGradientColumns
+    settings.ControlStyle.CssClass = "wide";
+    settings.Enabled = !Model.IsReadOnly && eidss.model.Core.AvrPermissions.UpdatePermission;
+    settings.Properties.ValueType = typeof(string);
+    settings.Properties.TextField = "FullPath";
+    settings.Properties.ValueField = "UniquePath";
+    settings.Properties.EnableCallbackMode = true;
+    settings.Properties.CallbackPageSize = 20;
+    settings.Properties.ClientSideEvents.ValueChanged = "viewGridForm.OnMapDefDataGradientSelectionChanged";
+}).BindList(eidss.model.Avr.View.AvrView.GetMapDefGradientList(Model)).Bind(Model.GradientColumn).GetHtml()

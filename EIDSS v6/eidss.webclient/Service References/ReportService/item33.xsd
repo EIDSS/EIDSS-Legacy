@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/eidss.model.Reports.GG" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/eidss.model.Reports.GG" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8098/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" />
+  <xs:complexType name="LabSampleModel">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" base="q1:BaseModel">
+        <xs:sequence>
+          <xs:element name="_x003C_FirstName_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_LastName_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_SampleId_x003E_k__BackingField" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="LabSampleModel" nillable="true" type="tns:LabSampleModel" />
+  <xs:complexType name="Hum60BJournalModel">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q2="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" base="q2:BaseIntervalModel">
+        <xs:sequence>
+          <xs:element name="_x003C_Diagnosis_x003E_k__BackingField" nillable="true" type="xs:long" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Hum60BJournalModel" nillable="true" type="tns:Hum60BJournalModel" />
+  <xs:complexType name="MonthInfectiousDiseaseModel">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q3="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" base="q3:BaseDateModel">
+        <xs:sequence>
+          <xs:element name="_x003C_AddSignature_x003E_k__BackingField" type="xs:boolean" />
+          <xs:element name="_x003C_RayonFilter_x003E_k__BackingField" nillable="true" type="tns:RayonModel" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="MonthInfectiousDiseaseModel" nillable="true" type="tns:MonthInfectiousDiseaseModel" />
+  <xs:complexType name="RayonModel">
+    <xs:sequence>
+      <xs:element name="_x003C_RegionRayonComplexId_x003E_k__BackingField" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RayonModel" nillable="true" type="tns:RayonModel" />
+  <xs:complexType name="IntermediateInfectiousDiseaseSurrogateModel">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q4="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" base="q4:BaseIntervalModel">
+        <xs:sequence>
+          <xs:element name="_x003C_RayonId_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_RayonName_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_RegionId_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_RegionName_x003E_k__BackingField" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="IntermediateInfectiousDiseaseSurrogateModel" nillable="true" type="tns:IntermediateInfectiousDiseaseSurrogateModel" />
+  <xs:complexType name="AnnualInfectiousDiseaseModel">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q5="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" base="q5:BaseYearModel">
+        <xs:sequence>
+          <xs:element name="_x003C_RayonFilter_x003E_k__BackingField" nillable="true" type="tns:RayonModel" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AnnualInfectiousDiseaseModel" nillable="true" type="tns:AnnualInfectiousDiseaseModel" />
+</xs:schema>

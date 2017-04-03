@@ -1,0 +1,50 @@
+﻿@using Kendo.Mvc.UI
+@using eidss.webclient.Utils
+@model eidss.model.Reports.Common.AddressModel
+
+<table id="AddressFilterTable" class="level1">
+
+    <tr>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.RegionId)
+        </td>
+        <td class="largereport">
+            @{
+                @(Html.Kendo().ComboBox()
+                      .BindTo(Model.GetSelectedRegions().ConvertToSelectListItem())
+                      .Name("Address.RegionId").Events(c => c.Change("paperForm.OnRegionChanged")))
+            }
+            
+        </td>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.RayonId)
+        </td>
+        <td class="largereport">
+            @{
+                @(Html.Kendo().ComboBox()
+                      .BindTo(Model.GetRayons().ConvertToSelectListItem())
+                      .Name("Address.RayonId")
+                      .Events(c => c.Change("paperForm.OnRayonChanged")
+                      ))
+            }
+        </td>
+        <td></td>
+    </tr>
+    @if (Model.IsSettlementVisible)
+    {
+        <tr>
+            <td class="mediumreport">
+                @Html.LabelFor(m => m.SettlementId)
+            </td>
+            <td class="largereport">
+                @{
+                    @(Html.Kendo().ComboBox()
+                          .BindTo(Model.GetSettlements().ConvertToSelectListItem())
+                          .Name("Address.SettlementId"))
+                    }
+            </td>
+            <td></td>
+        </tr>
+    }
+    
+</table>

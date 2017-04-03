@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<object name="SiteActivationServerListItem" connection="EidssConnectionString" generator="ObjectGenerator.xslt" xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="fn_SiteActivationServer_SelectList" type="fnlist" />
+		<count name="spSiteActivationServer_SelectCount"/>
+	</storage>
+
+	<tables>
+		<table name="SiteActivationServerListItem">
+      <properties permissionObject="EIDSSSite"/>
+      <help win="EIDSS_sites"/>
+			<searchpanel>
+				<item name="strSiteID" editor="Text" labelId="strSiteID"  />
+				<item name="strSiteName" editor="Text" labelId="strSiteName" />
+
+				<item name="idfsSiteType" editor="Lookup" labelId="strSiteType" lookupName="SiteTypeLookup"
+					  lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+
+				<item name="idfsCountry" editor="Lookup" labelId="idfsCountry" lookupName="CountryNameLookup"
+					  lookupType="CountryLookup" lookupText="c.strCountryName" lookupValue="c.idfsCountry" />
+
+				<item name="name" editor="Text" labelId="Abbreviation" />
+				<item name="strServerName" editor="Text" labelId="strServerName" />
+				<item name="strHASCsiteID" editor="Text" labelId="strHASCsiteID" />
+
+			</searchpanel>
+
+			<grid>
+				<item name="idfsSite" visible="false" key="true"  />
+				<item name="strSiteID"  />
+				<item name="strSiteName" />
+				<item name="strSiteType"  />
+				<item name="Country"  />
+				<item name="name"  />
+				<item name="strServerName"  />
+				<item name="strHASCsiteID"  />
+			</grid>
+
+			<labels>
+				<item name="Country" labelId="idfsCountry"/>
+				<item name="name" labelId="Abbreviation"/>
+			</labels>
+			<lookups>
+				<lookup name="CountryName" table="CountryLookup" source="idfsCountry" target="idfsCountry" />
+				<lookup name="SiteType" table="BaseReference" section="rftSiteType" source="idfsSiteType" target="idfsBaseReference" />
+
+			</lookups>
+
+			<storage>
+				<delete name="spReadOnlyObject_Delete"/>
+				<candelete name="spReadOnlyObject_CanDelete"/>
+			</storage>
+
+			<actions child="SiteActivationServer">
+        <standard>
+          <remove type="Create"/>
+          <remove type="Delete"/>
+          <remove type="Report"/>
+        </standard>
+			</actions>
+		</table>
+	</tables>
+
+</object>

@@ -1,0 +1,132 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    
+  <ScrollView android:id="@+id/Scroll"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <RelativeLayout android:id="@+id/RelativeLayout01"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+    
+		  <TextView
+		    android:id="@+id/labelApplicationMode"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/ApplicationMode"
+		    />
+		  <Spinner
+		    android:id="@+id/ApplicationMode"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_below="@id/labelApplicationMode"
+		    />
+		          
+		  <TextView
+		    android:id="@+id/labelNumberRecordsList"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/NumberRecordsList"
+		    android:layout_below="@id/ApplicationMode"
+		    />
+		  <EditText
+		    android:id="@+id/NumberRecordsList"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:inputType="number"
+		    android:maxLength="3"
+		    android:hint="@string/OneToHundred"
+		    android:singleLine="true"
+		    android:layout_below="@id/labelNumberRecordsList"
+		    />
+		          
+		  <TextView
+		    android:id="@+id/labelServerUrl"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/ServerUrl"
+		    android:layout_below="@id/NumberRecordsList"
+		    />
+		  <EditText
+		    android:id="@+id/ServerUrl"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_below="@id/labelServerUrl"
+		    android:inputType="textUri"
+		    android:singleLine="true"
+		    />
+		  <Button
+		    android:id="@+id/CheckConnection"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/CheckConnection"
+		    android:layout_below="@id/ServerUrl"
+		    />
+		          
+		  <TextView
+		    android:id="@+id/labelApplicationLockingTimeout"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/ApplicationLockingTimeout"
+		    android:layout_below="@id/CheckConnection"
+		    />
+		  <EditText
+		    android:id="@+id/ApplicationLockingTimeout"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:inputType="number"
+		    android:maxLength="3"
+		    android:hint="@string/OneToHundred"
+		    android:singleLine="true"
+		    android:layout_below="@id/labelApplicationLockingTimeout"
+		    />
+		          
+		  <TextView
+		    android:id="@+id/labelServerResponseTimeout"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/ServerResponseTimeout"
+		    android:layout_below="@id/ApplicationLockingTimeout"
+		    />
+		  <EditText
+		    android:id="@+id/ServerResponseTimeout"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:inputType="number"
+		    android:maxLength="3"
+		    android:hint="@string/OneToHundred"
+		    android:singleLine="true"
+		    android:layout_below="@id/labelServerResponseTimeout"
+		    />
+		
+		  <Button
+		    android:id="@+id/RestoreDefaults"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/RestoreDefaults"
+		    android:layout_marginTop="10dp"
+		    android:layout_below="@id/ServerResponseTimeout"
+		    />
+		
+		  <Button
+		    android:id="@+id/OkButton"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignTop="@id/RestoreDefaults"
+		    android:layout_toRightOf="@id/RestoreDefaults"
+		    android:text="@string/Ok"
+		    />
+		
+		  <Button
+		    android:id="@+id/CancelButton"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignTop="@id/RestoreDefaults"
+		    android:layout_toRightOf="@id/OkButton"
+		    android:text="@string/Cancel"
+			/>
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

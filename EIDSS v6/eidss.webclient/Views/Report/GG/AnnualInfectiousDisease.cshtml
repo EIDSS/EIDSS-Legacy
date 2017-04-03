@@ -1,0 +1,22 @@
+﻿@model eidss.model.Reports.GG.AnnualInfectiousDiseaseModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/ExportButtons", Model)
+    <div class="bluelayout">
+        <div class="tabPanelContent">
+        
+            @Html.Partial("Common/BaseFilter", Model)
+
+            @Html.Partial("Common/BaseYearFilter", Model)
+
+            @Html.Partial("GG/RayonFilter", Model.RayonFilter)
+
+            
+        
+        </div>
+    </div>
+}

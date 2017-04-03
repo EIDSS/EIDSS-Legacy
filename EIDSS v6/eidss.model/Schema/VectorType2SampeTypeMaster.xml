@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="Vector"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spVectorTypeMaster_SelectDetail" type= "detailone" />
+  </storage>
+
+  <tables>
+    <table name="VectorType2SampleTypeMaster">
+      <properties auditObject="daoReference" auditTable="trtBaseReference" permissionObject="Reference">
+        <events>
+          <create name="MatrixChanged" predicate="c => c.HasChanges" addinfo="VectorType2SampleTypeMasterDetail"/>
+          <change name="MatrixChanged" predicate="c => c.HasChanges" addinfo="VectorType2SampleTypeMasterDetail"/>
+        </events>
+      </properties>
+      <help win="Vector_Type-Sample_type_matrix"/>
+      <readonly>
+        <fields name="VectorType" predicate="c => false" ignoreReadOnly="true"/>
+      </readonly>
+      <relations>
+        <relation name="VectorType2SampleType" table="VectorType2SampleType" internal="false" type="child" lazy="false" source="idfsVectorType" target="idfsVectorType" />
+      </relations>
+      <lookups>
+        <lookup name="VectorType" table="BaseReference" section="rftVectorType" source="idfsVectorType" target="idfsBaseReference" />
+      </lookups>
+      <storage>
+        <post  name="spDummy_Post"/>
+        <delete />
+        <candelete  name=''/>
+      </storage>
+      <postorder>
+        <item name="VectorType2SampleType" />
+      </postorder>
+      <deleteorder>
+        <item name="VectorType2SampleType" />
+      </deleteorder>
+      <extenders>
+        <creating>
+        </creating>
+        <created>
+        </created>
+        <loading>
+        </loading>
+        <posting>
+        </posting>
+        <posted>
+        </posted>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+        </fieldhandler>
+      </handlers>
+
+      <validators>
+        <childchange>
+          <container name="VectorType2SampleType" field="idfsSampleType"  filter="c => true">
+            <!--duplicate_reference_validator field="idfsSampleType" label ="SpecimenType" container="VectorType2SampleType" predicate="(master,i) => master.VectorType2SampleType.Where(c => 
+                                                            (long)c.Key != (long)i.Key 
+                                                            &amp;&amp; c.idfsSampleType == i.idfsSampleType
+                                                            &amp;&amp; c.idfsVectorType == i.idfsVectorType
+                                                            &amp;&amp; !c.IsMarkedToDelete  
+                                                            &amp;&amp; !i.IsMarkedToDelete
+                                                            ).Count() == 0"/-->
+            <!--required_child_validator container="VectorType2SampleType" field="idfsSampleType" predicate ="(c,i) => (i.idfsSampleType != null)"/-->
+            <required_validator target="idfsSampleType" child="true"/>
+          </container>
+        </childchange>
+        <post>
+          <duplicate_list_validator collection="VectorType2SampleType" type="VectorType2SampleType" filter="c => !c.IsMarkedToDelete">
+            <item field="idfsSampleType" lookup="SampleType" inMsg="true" />
+            <item field="idfsVectorType" />
+          </duplicate_list_validator>
+        </post>
+
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <remove type="Delete"/>
+        </standard>
+        <action name="DeleteSampleType" type="Action">
+          <visual panel="Main" alignment ="Right" visiblePredicate = "ActionMetaItem.DefaultDeleteGroupItemVisiblePredicate">
+            <regular caption ="strDelete_Id" tooltip ="tooltipDelete_Id" icon ="Delete_Remove"/>
+          </visual>
+        </action>
+      </actions>
+    </table>
+
+  </tables>
+</object>

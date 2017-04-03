@@ -1,0 +1,141 @@
+﻿@model bv.model.Model.Core.IObjectAccessor
+@{
+    ViewBag.Title = "FilterTest";
+}
+@using bv.model.Model.Core;
+@using eidss.mobileclient.Utils;
+
+@functions
+{   
+    String SessionKey()
+    {
+        return String.Format("SearchPanelItemsCaching{0}", Model.GetType());
+    }
+
+    String ModelToSession()
+    {
+        if (Session[SessionKey()] == null)
+        {
+            Session[SessionKey()] = Model;
+        }
+        return "";
+    }
+
+    byte GetComboCount()
+    {
+        return 4;
+    }
+
+    
+    ViewDataDictionary GetDataForItem(string fieldName, IEnumerable<SelectListItem> lookuplist = null, bool isdependant = false)
+    {
+
+        var vd = new ViewDataDictionary();
+        foreach(var item in    GetValuePair(fieldName))
+        {
+            if (!vd.ContainsKey(item.Key))
+            {
+                vd.Add(item);
+            }
+        }
+        if (lookuplist != null)
+        {
+            vd.Add("LookupList", lookuplist);
+            vd.Add("IsDependant", isdependant);
+            vd.Add("SessionKey", SessionKey());
+        }
+        vd.Add("InitObject", ViewBag.InitObject);
+        return vd;
+    }
+    
+    
+    List<KeyValuePair<string,object>> GetValuePair(string fieldName)
+    {
+        
+        var list = new List<KeyValuePair<string,object>>();
+
+        FilterParams values = null;
+        if (ViewBag.Filter == null)      
+        {  
+            values = SearchPanelHelper.GetDefaultFilter((Model as IObjectMeta).SearchPanelMeta, null);
+        }
+        else
+        {
+            values = ((FilterParams)ViewBag.Filter);
+        }
+
+        //ViewData["Value"] = null;
+        if (values.Contains(fieldName))
+        {
+            for(int i=0;i<values.ValueCount(fieldName);i++)
+            {
+                string viewDataField = "Value";
+                                                       
+                object value = values.Value(fieldName, i);
+                var operation = values.Operation(fieldName, i);
+                if (operation == null && value == null)
+                {
+                    value = "true";
+                }
+                else
+                {
+                    if (operation == ">" || operation == ">=")
+                    {
+                        viewDataField += "From";
+                    }
+                    else
+                    {
+                        if (operation == "<"|| operation == "<=")
+                        {
+                            viewDataField += "To";
+                        }
+                        else
+                        {
+                            if (operation.Equals("like", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                if (value.ToString().StartsWith("%") && value.ToString().EndsWith("%"))
+                                {
+                                    value = value.ToString().Substring(1, value.ToString().Length - 2);
+                                }
+                            }
+                        }
+                    }
+                }
+               list.Add(new KeyValuePair<string, object>(viewDataField, value));
+            }
+        }
+                
+        return list;        
+    }
+    
+}
+
+<script type="text/javascript" language="javascript">
+    $(window).load(function () {
+        $("#Lookup_idfsRegion").trigger("change");
+    });  
+</script>
+
+<script src="@Url.Content("~/Scripts/EIDSS.CommonScript.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/EIDSS.Panel.js")" type="text/javascript"></script>
+
+@ModelToSession()
+
+@foreach (var t in (Model as IObjectMeta).SearchPanelMeta.Where(m => m.Location == SearchPanelLocation.Main))
+{               
+    if (t.EditorType == EditorType.Lookup)
+    {
+        @Html.Partial("../Search/SearchPanelMetaItem",
+            t,
+            GetDataForItem(
+                t.Name,  
+                SearchPanelHelper.GetLookup((Model as IObjectCreator), t, null), 
+                ((Model as IObjectMeta).SearchPanelMeta.Where(m => m.Dependent == t.Name && m.Location == SearchPanelLocation.Main).Count() > 0)
+            )
+        )
+    }
+    else
+    {                                                
+        @Html.Partial("../Search/SearchPanelMetaItem", t, GetDataForItem(t.Name)) 
+    }                                                            
+}

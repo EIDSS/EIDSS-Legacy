@@ -1,0 +1,6 @@
+﻿@using System.Web.UI.WebControls
+@using DevExpress.XtraPivotGrid.Customization
+@using eidss.avr.mweb.Utils;
+
+@Html.DevExpress().PivotGrid(LayoutPivotGridHelper.LayoutPivotGridSettings(Request)).Bind(Model.PivotData).GetHtml()
+

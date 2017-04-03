@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="ParameterTemplate"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+    <storage>
+        <get name="spFFGetParameterTemplate" type="simplelist" /> <!-- cache="true" -->
+    </storage>
+    <tables>
+        <table name="ParameterTemplate">
+            <keys>
+                <key name="idfsParameter"/>
+                <key name="idfsFormTemplate"/>
+                <key name="langid"/>
+            </keys>
+          <fields>
+            <storage name="RootKeyID" type="long"/>
+          </fields>
+            <relations>
+                <relation name="FormType" table="FormType" internal="false" type="link" source="idfsFormType" target="idfsFormType" />
+                <relation name="ParentSection" table="Section" internal="false" type="sibling" source="idfsSection" target="idfsSection" paramsonly="true">
+                    <params>
+                        <param name="idfsFormType" type="Int64?" lambda="c => null" />
+                        <param name="idfsSection" type="Int64?" lambda="c => c.idfsSection" />
+                        <param name="idfsParentSection" type="Int64?" lambda="c => null" />
+                    </params>
+                </relation>
+                <relation name="SelectList" table="ParameterSelect" lazy="false" internal="false" type="child" source="idfsParameter" target="idfsParameter" paramsonly="true">
+                    <params>
+                        <param name="idfsParameter" type="Int64?" lambda="c => c.idfsParameter" />
+                        <param name="idfsParameterType" type="Int64?" lambda="c => c.idfsParameterType" />
+                        <param name="intHACode" type="Int64?" lambda="c => c.intHACode" />
+                    </params>
+                </relation>
+            </relations>
+          <extenders>
+            <loaded>
+              <insert_extender target="SelectList" index="0" type="ParameterSelect" lambda="c => SelectListAccessor.CreateDefault(manager, c, c.idfsParameter, c.idfsParameterType, c.intHACode)"/>
+            </loaded>
+          </extenders>
+
+          <actions>
+            <action name="SelectDetailList" type="Loadlist" />
+          </actions>
+        </table>
+    </tables>
+</object>

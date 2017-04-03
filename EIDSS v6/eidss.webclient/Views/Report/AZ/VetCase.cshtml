@@ -1,0 +1,139 @@
+﻿
+@using eidss.webclient.Utils
+@using Kendo.Mvc.UI
+@model eidss.webclient.Models.Reports.VetCasesModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/ExportButtons", Model)
+    <div class="bluelayout">
+        <div class="tabPanelContent">
+
+            @Html.Partial("Common/BaseFilter", Model)
+
+            <table id="VetCaseFilterTable" >
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.StartYear)
+                    </td>
+                    <td class="largereport">
+                        <div class='tdContainer'>
+                            @{
+                                @(
+                                    Html.Kendo().NumericTextBox()
+                                        .Name("StartYear")
+                                        .Value(Model.StartYear)
+                                        .Min(2000)
+                                        .Max(2040)
+                                        .Decimals(0)
+                                        .HtmlAttributes(new {@class = "requiredField"})
+                                        .Placeholder("")
+                                        .Events(c => c.Change("paperForm.OnVetStartYearChanged"))
+                                        .Format("g")
+                                      )
+                            }
+                        </div>
+                    </td>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.StartMonth)
+                    </td>
+                    <td class="largereport">
+                
+                        @{
+                            @(Html.Kendo().ComboBox()
+                                  .BindTo(Model.SelectedCurrentMonthList.ConvertToSelectListItem())
+                                  .Name("StartMonth")
+                                  .Events(c => c.Change("paperForm.OnVetMonthChanged"))
+                                  )
+                        }
+                    </td>
+                    <td></td>
+                </tr>
+        
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.EndYear)
+                    </td>
+                    <td class="largereport">
+                        <div class='tdContainer'>
+                            @{
+                                @(
+                                    Html.Kendo().NumericTextBox()
+                                        .Name("EndYear")
+                                        .Value(Model.EndYear)
+                                        .Min(2000)
+                                        .Max(2040)
+                                        .Decimals(0)
+                                        .HtmlAttributes(new {@class = "requiredField"})
+                                        .Placeholder("")
+                                        .Events(c => c.Change("paperForm.OnVetEndYearChanged"))
+                                        .Format("g")
+                                      )
+                            }
+                        </div>
+                    </td>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.EndMonth)
+                    </td>
+                    <td class="largereport">
+                
+                        @{
+                            @(Html.Kendo().ComboBox()
+                                  .BindTo(Model.SelectedCurrentMonthList.ConvertToSelectListItem())
+                                  .Name("EndMonth")
+                                  .Events(c => c.Change("paperForm.OnVetMonthChanged"))
+                                  )
+                        }
+                    </td>
+                    <td></td>
+                </tr>
+        
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.Address.RegionId) 
+                    </td>
+                    <td class="largereport">
+                        @{
+                            @(Html.Kendo().ComboBox()
+                                  .BindTo(Model.Address.GetSelectedRegions().ConvertToSelectListItem())
+                                  .Name("Address.RegionId")
+                                  .Events(c => c.Change("paperForm.OnRegionChanged"))
+                                  )
+                        }
+                    </td>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.Address.RayonId)
+                    </td>
+                    <td class="largereport">
+                        @{
+                            @(Html.Kendo().ComboBox()
+                                  .BindTo(Model.Address.GetRayons().ConvertToSelectListItem())
+                                  .Name("Address.RayonId")
+                                  )
+                        }
+                    </td>
+                    <td></td>
+                </tr>
+        
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.OrganizationEnteredById)
+                    </td>
+                    <td class="largereport">
+                
+                        @{
+                            @(Html.Kendo().ComboBox()
+                                  .BindTo(Model.OrganizationList.ConvertToSelectListItem())
+                                  .Name("OrganizationEnteredById")
+                                  )
+                        }
+                    </td>
+                    <td colspan="3"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+}

@@ -1,0 +1,133 @@
+﻿@model List<eidss.model.Avr.Tree.AvrTreeElement>
+@using eidss.model.Resources
+@using eidss.web.common.Utils
+@using bv.common.Configuration
+
+@{
+    ViewBag.Title = @Translator.GetMessageString("titleAVR");
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+<script src="@Url.Content("~/Scripts/EIDSS/TreeList.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        queryTreeList.initTreeList('@eidss.model.Core.AvrPermissions.InsertPermission');
+        queryTreeList.showEditNodes();
+    });
+    
+    
+    //TODO перенести в Menu.js. Почему-то контрол падает, если этот код выполнять оттуда.
+    function MenuItemClick(s, e) {
+        var queryIdvalue = $.cookie('queryId');//$.session.get('queryId');
+        if (queryIdvalue == null || queryIdvalue == '') return;
+        var exportTypeValue = -1;
+
+        if (e.item.name == "mnuExportToXlsx") {
+            exportTypeValue = 0;
+        } else if (e.item.name == "mnuExportToXls") {
+            exportTypeValue = 1;
+        }else if (e.item.name == "mnuExportToMdb") {
+            exportTypeValue = 2;
+        }
+        if (exportTypeValue == -1) return;
+        
+        var url = avrUrls.getExportQueryUrl();
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            type: 'GET',
+            data: {
+                queryId: queryIdvalue,
+                exportType: exportTypeValue
+            },
+            success: function (data) {
+                window.location = data.url;
+            }
+        });
+    } 
+
+        
+</script>
+<style>
+    .dxWeb_edtCheckBoxUnchecked_DevEx{
+        background-image: url('@Url.Content("~/Content/Images/sprite.png")');
+        background-position: 0 -46px;
+    }
+    .dxWeb_edtCheckBoxChecked_DevEx
+    {
+        background-image: url('@Url.Content("~/Content/Images/sprite.png")');
+        background-position: -15px -46px;
+    }    
+    .dxWeb_edtCheckBoxUnchecked_Office2010Blue{
+        background-image: url('@Url.Content("~/Content/Images/sprite.png")');
+        background-position: 0 -46px;
+    }
+    .dxWeb_edtCheckBoxChecked_Office2010Blue
+    {
+        background-image: url('@Url.Content("~/Content/Images/sprite.png")');
+        background-position: -15px -46px;
+    }    
+</style>
+
+@if (BaseSettings.TranslationMode)
+{
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Hidden("hSelectedNodeId",Model.Count>0?Model[0].ID:0);
+    <div>
+@*        <div class="k-menu-horizontal customTitle">@Translator.GetMessageString("titleAVR")</div>*@
+        <div class="topButtonPanel">
+            
+            <table class="actionPanel">
+                <tbody>
+                    <tr>
+                        <td class="reportButtons">
+                            @Html.DevExpress().Menu(
+                                settings =>
+                                    {
+                                        settings.Name = "avrMainMenu";
+                                        settings.AllowSelectItem = true;
+                                        settings.EnableClientSideAPI = true;
+                                        settings.EnableHotTrack = true;
+                                        settings.EnableAnimation = true;
+                                        settings.AppearAfter = 300;
+                                        settings.DisappearAfter = 500;
+                                        settings.MaximumDisplayLevels = 0;
+                                        settings.ShowPopOutImages = DefaultBoolean.True;
+                                        //settings.Style.Value = "";
+                                        //TODO вставить стили
+                                        //settings.Styles.Node.CssClass = "treeClass";
+                                        settings.Items.Add(item => {
+                                                                       item.Text = EidssMenu.Instance.GetString("MenuExport");
+                                                                       item.Name = "mnuExport";
+                                                                       item.Items.Add(EidssMenu.Instance.GetString("MenuExport1"), "mnuExportToXlsx");//.NavigateUrl = DevExpressHelper.GetUrl(new { Controller = "Menu", Action = "QueryLine" });
+                                                                       item.Items.Add(EidssMenu.Instance.GetString("MenuExport2"), "mnuExportToXls");
+                                                                       item.Items.Add(EidssMenu.Instance.GetString("MenuExport3"), "mnuExportToMdb");
+                                        });
+
+                                        settings.ClientSideEvents.ItemClick = "MenuItemClick";
+                        
+                                    }).GetHtml()
+                        </td>
+                        <td class="actionButtons">
+                            <input id="btnOpenPivot" class="button" type="button" value='@Translator.GetMessageString("PivotGrid")' disabled="disabled" onclick="queryTreeList.showPivot('','');"/>
+                            <input id="btnCopy" class="button" type="button" value='@Translator.GetMessageString("CopyLayout")' disabled="disabled" onclick="queryTreeList.copy();"/>
+                            <input id="btnAddFolder" class="button" type="button" value='@Translator.GetMessageString("NewFolder")' disabled="disabled" onclick="queryTreeList.addFolder();"/>
+                            <input id="btnAddLayout" class="button" type="button" value='@Translator.GetMessageString("NewLayout")' disabled="disabled" onclick="queryTreeList.addLayout();"/>
+                    @if (BaseSettings.TranslationMode)
+                    {
+                            <input id="btnTranslationTool" class="button" type="button" value='@Translator.GetMessageString("btTranslationTool")' onclick="avrTranslation.OpenTranslationWindow();" />
+                    }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        @Html.Partial("QueryLayoutTreePartial", Model)
+    </div>
+}

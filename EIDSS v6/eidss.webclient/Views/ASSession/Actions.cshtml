@@ -1,0 +1,15 @@
+﻿@model eidss.model.Schema.AsSession
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+@using eidss.webclient.Areas.ActiveSurveillence
+<div class="tabPanelContent">
+    @Html.Action("AsSessionActionsGrid", "Grids",
+        new
+        {
+            root = Model.idfMonitoringSession,
+            name = Model.ObjectIdent + "Actions",
+            actionslist = Model.Actions,
+            isReadOnly = Model.IsReadOnly("Actions") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit)
+        })
+   
+</div>

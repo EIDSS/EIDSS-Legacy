@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<object name="AggergateDeduplicationBaseListItem" connection="EidssConnectionString" generator="ObjectGenerator.xslt" xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="fn_AggregateCaseDeduplication_SelectList" type="fnlist" filter-object="AggrCase" />
+    <count name="spHumanAggregateCase_SelectCount"/>
+  </storage>
+
+  <tables>
+    <table name="AggergateDeduplicationBaseListItem">
+      <properties auditObject="daoAgregateHumanCase" auditTable="tlbAggrCase" permissionObject="HumanCase"/>
+      <!--<help web="web_to_search_for_a_human_aggregate" win ="HumanAggregateCaseSummary"/>-->
+      <searchpanel>
+      </searchpanel>
+      <grid>
+        <item name="idfAggrCase" key="true" visible="false" />
+        <item name="intDuplicateGroup" />
+        <item name="strCaseID" action="ActionEditHumanAggregateCase" />
+        <item name="datStartDate" />
+        <item name="strPeriodName" />
+        <item name="strRegion" />
+        <item name="strRayon" />
+        <item name="strSettlement" />
+        <item name="strInstitutionName" />
+        <item name="datEnteredByDate" />
+        <item name="strMatrixName" />
+        <item name="strTemplateName" />
+      </grid>
+      <labels>
+        <item name="strRegion" labelId="idfsRegion" />
+        <item name="strRayon" labelId="idfsRayon" />
+        <item name="strSettlement" labelId="strSettlement" />
+        <item name="strCaseID" labelId="strCaseID" />
+        <item name="strPeriodName" labelId="idfsPeriodType" />
+      </labels>
+        <readonly>
+            <fields name="*" predicate="c => false" />
+        </readonly>
+        <relations>
+            <!--<relation name="Settings" table="AggregateSettings" internal="false" lazy="true" type="link" source="idfsAggrCaseType" target="idfsAggrCaseType" />-->
+        </relations>
+      <lookups>
+      </lookups>
+      <storage>
+        <delete name="spHumanAggregateCase_Delete"/>
+      </storage>
+      <extenders>
+          <creating>
+          </creating>
+        <created>
+        </created>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+        </fieldhandler>
+      </handlers>
+      
+      <actions child="HumanAggregateCase">
+        <standard>
+          <remove type="Create"/>
+          <remove type="Report"/>
+        </standard>
+        <action name="FindDuplicates" type="Action">
+          <visual alignment="Right" panel="Top">
+            <regular caption="strFindDuplicates_Id" tooltip="strFindDuplicates_Id"  icon=""/>
+          </visual>
+          <!--<permissions type=""/>-->
+          
+        </action>
+        <action name="ActionEditHumanAggregateCase" type="Action">                
+          <run>
+            <preUI webType="JScript"/>                  
+          </run>
+        </action>
+      </actions>
+    </table>
+  </tables>
+
+</object>
+
+

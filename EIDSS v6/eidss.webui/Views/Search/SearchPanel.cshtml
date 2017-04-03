@@ -1,0 +1,151 @@
+﻿@model bv.model.Model.Core.IObjectAccessor
+@{
+    ViewBag.Title = "FilterTest";
+}
+@using bv.model.Model.Core;
+@using eidss.webui.Utils;
+
+@functions
+{   
+    String ModelToSession()
+    {
+        if (Session["ModelSessionStorage"] == null)
+            Session["ModelSessionStorage"] = Model;
+        return "";
+    }
+
+    byte GetComboCount()
+    {
+        return 4;
+    }
+
+    KeyValuePair<string, object> GetValuePair(string fieldName)
+    {
+        
+        if (ViewBag.Filter == null)
+            return new KeyValuePair<string, object>("Value", null);
+        
+        var values = ((FilterParams)ViewBag.Filter);
+
+
+        //ViewData["Value"] = null;
+        if (values.Contains(fieldName))
+        {
+            string viewDataField = "Value";
+            
+            object value = values.Value(fieldName);
+            var operation = values.Operation(fieldName);
+            if (operation == ">" || operation == ">=")
+                viewDataField += "From";
+            else
+                if (operation == "<"|| operation == "<=")
+                    viewDataField += "To";
+                else
+                    if (operation.Equals("like", StringComparison.InvariantCultureIgnoreCase))
+                        if (value.ToString().StartsWith("%") && value.ToString().EndsWith("%"))
+                            value = value.ToString().Substring(1, value.ToString().Length - 2);
+           
+            return new KeyValuePair<string, object>(viewDataField, value);
+        }
+
+
+        return new KeyValuePair<string, object>("Value", null);
+    }
+    
+}
+<script type="text/javascript" language="javascript">
+    function ReloadPartial(e) {
+        var query = '@Url.Action("SearchPanelMetaItem", "Search")';
+        var index = e.target.id.substring(e.target.id.lastIndexOf("_") + 1);
+        $.get(
+                query,
+                {
+                    valueFieldName: e.value,
+                    objIndex: index
+                },
+                function (data) {
+                    $("#combocontainer" + index).html(data);
+                }
+            );
+    }
+
+//    /*if combobox has a value reload the editor control*/
+//    $(function () {
+//        var cboxes= $("input[name^='CBox.Item']");
+////        for(c in cboxes) {
+////        if (c.val().length > 0)
+////            alert(c.val());
+////            }
+//    });    
+</script>
+<script type="text/javascript" language="javascript" src="/Scripts/Search/Panel.js" ></script>
+@ModelToSession()
+<a href="#" class="searchoptions" onclick="Show('Additional');">advanced search >></a>
+<div style="margin:5px;">
+<div id="MainSearchPanel">
+    <table width="100%" class="tablecontainer">
+        @foreach (var t in (Model as IObjectMeta).SearchPanelMeta.Where(m => m.Location == SearchPanelLocation.Main))
+        {
+            <tr>
+                <td>
+                    @if (t.EditorType == EditorType.Lookup)
+                    {
+                        @Html.Partial("../Search/SearchPanelMetaItem",
+                                        t,
+                                        new ViewDataDictionary { 
+                                            new KeyValuePair<string, object>("LookupList", //+ t.Name.Replace(" ", ""), 
+                                                                            SearchPanelHelper.GetLookup((Model as IObjectCreator), t)),
+                                            new KeyValuePair<string, object>("IsDependant", 
+                                                                            ((Model as IObjectMeta).SearchPanelMeta.Where(m => m.Dependent == t.Name && m.Location == SearchPanelLocation.Main).Count() > 0)),
+                                            GetValuePair(t.Name)                                                                            
+                                        })
+                    }
+                    else
+                    {                                                
+                        @Html.Partial("../Search/SearchPanelMetaItem", t, new ViewDataDictionary {GetValuePair(t.Name)}) 
+                    }
+                </td>
+            </tr>                                           
+        }
+    </table>    
+</div>
+<div id="AdditionalSearchPanel" class="SearchPanel" style="display: none;">
+    <table width="100%" class="tablecontainer" style="padding:20px">
+        @foreach (var t in (Model as IObjectMeta).SearchPanelMeta.Where(m => m.Location == SearchPanelLocation.Additional))
+        {
+            <tr>
+                <td>
+                    @Html.Partial("../Search/SearchPanelMetaItem", t)
+                </td>
+            </tr>
+        }
+    </table>
+    <table class="tablecontainer" width="100%">
+        @for (byte i = 0; i < GetComboCount(); i++)
+        {
+            <tr>
+                <td>
+                    @(Html.Telerik().ComboBox()
+                            .Name("CBox.Item." + i.ToString())
+                                .BindTo(SearchPanelHelper.GetComboSource((Model as IObjectMeta).SearchPanelMeta)).ClientEvents(events => events
+                                .OnChange("ReloadPartial")
+                            )
+                            .HtmlAttributes(new { style = "width:132px" })
+                            )
+                </td>
+                <td nowrap="nowrap">
+                    <div id="@String.Format("combocontainer{0}", i)" style="display: inline; width: 50px;">
+                        @Html.Partial("../Search/SearchPanelMetaItem",
+                                (Model as IObjectMeta).SearchPanelMeta.Where(m => m.Location == SearchPanelLocation.Combobox).FirstOrDefault(),
+                                new ViewDataDictionary { 
+                                     new KeyValuePair<string, object>("ObjNameIndex", i.ToString()) 
+                                })
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+    <a href="#" class="searchoptions" onclick="Hide('Additional');">&lt;&lt; hide</a>
+    @*<a href="#" class="searchoptions" onclick="Hide('Combo');">&lt;&lt; hide</a>*@
+</div>
+</div>

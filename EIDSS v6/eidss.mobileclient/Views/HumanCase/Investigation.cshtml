@@ -1,0 +1,29 @@
+﻿@model eidss.model.Schema.HumanCase
+@{
+    ViewBag.Title = Translator.GetMessageString("tabTitleNotification"); 
+    Layout = "~/Views/Shared/_HumanCaseDetailsLayout.cshtml";
+}
+
+@using eidss.mobileclient.Utils
+
+<script language="javascript" type="text/javascript">
+    $(function () {
+        var tabs = [1, 5];
+        SelectTabs(tabs);
+        InitAccordion();
+    });         
+</script>
+
+@using (Html.BeginForm())
+{
+    <div id="accordion">
+	    <h3><a href="#">@Translator.GetMessageString("titleInitialInvestigationInformation")</a></h3>
+	    <div>
+		    @Html.Partial(@"../HumanCase/InitialInvestigationInformation", Model)        
+	    </div>
+	    <h3><a href="#">@Translator.GetMessageString("titleLocationOfExposure")</a></h3>
+	    <div>
+            @Html.Action("LocationOfExposure", "HumanCase", new { humanCase = Model })        
+	    </div>	    
+    </div>
+}

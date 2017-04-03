@@ -1,0 +1,66 @@
+﻿@model List<FarmListItem>
+@{
+    ViewBag.Title = Translator.GetMessageString("titleFarmsList"); 
+    Layout = "~/Views/Shared/_ListFormLayout.cshtml";
+}
+@using eidss.mobileclient.Utils
+@using eidss.model.Schema;
+
+<script src="@Url.Content("~/Scripts/EIDSS.Farm.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/EIDSS.FormRefresh.js")" type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript">
+    $(window).load(function () { 
+        var page = $("div.page");
+        var hasItems = '@(ViewBag.ItemsCount > 0)'.toLowerCase(); 
+        if (page && hasItems == 'true') {
+            page.removeClass("defaultHeigth");
+        }
+    });         
+</script>
+
+@using (Html.BeginForm())
+{        
+    <input type="button" value="@Translator.GetMessageString("Cancel")" onclick="document.location.href='@Url.Action("FarmDetails", "VetCase", new { id = ViewBag.IdfCase })';" />
+    <br />
+    <br />    
+    if (ViewBag.ItemsCount > 100)
+    {
+        <label>@Translator.GetMessageString("msgFirstHundredRecords")</label> 
+    }        
+    <table class="bvGrid" id="FarmsList">        
+        @if (ViewBag.ItemsCount == 0)
+        {
+            <tr>
+                <td colspan="5">
+                    @Translator.GetMessageString("msgNoRecords")
+                </td>
+            </tr>
+        }   
+        @{ var i = 1; }      
+        @foreach (FarmListItem farm in Model)
+        {
+            var className = i % 2 == 0 ? "alternate" : "general";
+            <tr class="@className">                
+                <td>
+                    <a href="javascript:onFarmSelected('@ViewBag.IdfCase', '@farm.idfFarm')">
+                        @farm.strFarmCode
+                    </a>                    
+                </td>                
+                <td>
+                    @farm.strNationalName, @farm.strLastName @farm.strFirstName @farm.strSecondName
+                </td>                
+            </tr>
+            <tr class="@className">
+                <td colspan="2">
+                    @farm.strAddressDefaultString
+                </td>
+            </tr>
+            if (i == 100)
+            {
+                break;
+            }
+            { i++; }
+        }        
+    </table> 
+}

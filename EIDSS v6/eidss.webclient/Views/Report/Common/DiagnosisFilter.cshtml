@@ -1,0 +1,22 @@
+﻿@using Kendo.Mvc.UI
+@using bv.model.Model.Core
+@using eidss.webclient.Utils
+@model eidss.model.Reports.Common.DiagnosisModel
+
+<table class='level1'>
+    <tr>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.DiagnosisId)
+        </td>
+        <td class="largereport">
+            @{
+                @(Html.Kendo().ComboBox()
+                    .Events(e => e.Open("function(e) { bvComboBox.onOpen(e, " + (int)EditorControlWidth.Large + "); }"))
+                    .BindTo(Model.ItemsList.ConvertToSelectListItem())
+                    .Name("DiagnosisId")
+                      )
+                }
+        </td>
+        <td ></td>
+    </tr>
+</table>

@@ -1,0 +1,84 @@
+@using eidss.avr.mweb.Utils
+@using bv.common.Configuration
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    
+        <link href="@Url.Content("~/Content/Kendo/kendo.common.min.css")" rel="stylesheet" />
+
+
+        <link href="@Url.Content("~/Content/Kendo/kendo.silver.min.css")" rel="stylesheet" />
+        
+        <link href="@Url.Content("~/Content/Styles/Common.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/Styles/ListForm.css")" rel="stylesheet" type="text/css" />
+    
+        <script src="@Url.Content("~/Scripts/jquery-1.11.1.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/globalize.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/cultures/globalize.cultures.js")" type="text/javascript"></script>
+        @*<script src="@Url.Content("~/Scripts/knockout-2.0.0.js")" type="text/javascript"></script>*@
+
+        <script src="@Url.Content(String.Format("~/Scripts/Messages/EIDSS.BvMessages.{0}.js", Cultures.GetCulture(bv.model.Model.Core.ModelUserContext.CurrentLanguage)))" type="text/javascript" ></script>
+        <script src="@Url.Content("~/Scripts/EIDSS/avrUrls.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/EIDSS/Common.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/EIDSS/DefaultPage.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/EIDSS/Menu.js")" type="text/javascript"></script> 
+        
+        <script src="@Url.Content("~/Scripts/EIDSS/Dialogs.js")" type="text/javascript"></script> 
+        <script src="@Url.Content("~/Scripts/EIDSS/CheckComboBox.js")" type="text/javascript"></script>
+    
+        <script src="@Url.Content("~/Scripts/jquery.session.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/jquery.cookie.js")" type="text/javascript"></script>
+
+        <script src="@Url.Content("~/Scripts/EIDSS/ConfirmationDlg.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/EIDSS/WarningDlg.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/EIDSS/ViewGrid.js")" type="text/javascript"></script>
+
+        <script src="@Url.Content("~/Scripts/EIDSS/AggregateColumnDlg.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/EIDSS/TranslationTool.js")" type="text/javascript"></script> 
+    
+@*        <script src="@Url.Content("~/Scripts/EIDSS/Operations.js")" type="text/javascript"></script>*@
+
+    <!-- Translations -->
+            @Html.DevExpress().GetStyleSheets( 
+            new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = GeneralSettings.Theme}, 
+            new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = GeneralSettings.Theme }, 
+            new StyleSheet { ExtensionSuite = ExtensionSuite.HtmlEditor, Theme = GeneralSettings.Theme }, 
+            new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = GeneralSettings.Theme}, 
+            new StyleSheet { ExtensionSuite = ExtensionSuite.PivotGrid, Theme = GeneralSettings.Theme },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.Chart, Theme = GeneralSettings.Theme },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.Report, Theme = GeneralSettings.Theme },
+	        new StyleSheet { ExtensionSuite = ExtensionSuite.Scheduler, Theme = GeneralSettings.Theme },
+	        new StyleSheet { ExtensionSuite = ExtensionSuite.TreeList, Theme = GeneralSettings.Theme }
+        )
+        @Html.DevExpress().GetScripts( 
+            new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout }, 
+            new Script { ExtensionSuite = ExtensionSuite.HtmlEditor }, 
+            new Script { ExtensionSuite = ExtensionSuite.GridView }, 
+            new Script { ExtensionSuite = ExtensionSuite.PivotGrid },
+            new Script { ExtensionSuite = ExtensionSuite.Editors }, 
+            new Script { ExtensionSuite = ExtensionSuite.Chart },
+            //new Script { ExtensionSuite = ExtensionSuite.Report },
+	        new Script { ExtensionSuite = ExtensionSuite.Scheduler },
+	        new Script { ExtensionSuite = ExtensionSuite.TreeList }
+        )
+    
+    
+</head>
+    <body>
+        <div class="page homePage">
+            <div class="titlePanel">@ViewBag.Title</div>
+            @Html.Heartbeat()
+            @Html.Partial("ConfirmationDlg")
+            @Html.Partial("WarningDlg")
+    @if (BaseSettings.TranslationMode)
+    {
+            @Html.Partial("TranslationToolDlg", new bv.common.Resources.TranslationTool.TranslatorContainer())
+    }
+            <div class="content">
+                @RenderBody()
+            </div>
+        </div>
+    </body>
+</html>

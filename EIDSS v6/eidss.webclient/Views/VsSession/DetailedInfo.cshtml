@@ -1,0 +1,32 @@
+﻿@using Kendo.Mvc.UI
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@model eidss.model.Schema.VsSession
+           
+<div class="tabPanelContent subTab">
+    @(Html.Kendo().TabStrip()
+              .Name("DetailedInfoTabStrip")
+              //.Events(events => events.Select("function(e){ vssession.onTabSelect(e, '" + Model.idfVectorSurveillanceSession + "', 'DetailedInfoTabStrip'); }"))
+              .Animation(animation => animation.Enable(false))
+              .HtmlAttributes(new { @class = "innerTabs oneLineHeightInnerTab" })
+              .Items(items =>
+                  {
+                      items.Add()
+                           .Text(Translator.GetMessageString("tabTitleVectorsShort"))
+                           .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleVectors" } : new { })
+                           .Content(Html.Partial(@"../VsSession/Vectors", Model).ToHtmlString());
+                      items.Add()
+                           .Text(Translator.GetMessageString("tabTitleSamples"))
+                           .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleSamples" } : new { })
+                           .Content(Html.Partial(@"../VsSession/Samples", Model).ToHtmlString());
+                      items.Add()
+                           .Text(Translator.GetMessageString("tabTitleFieldTests"))
+                           .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleFieldTests" } : new { })
+                           .Content(Html.Partial(@"../VsSession/FieldTests", Model).ToHtmlString());
+                      items.Add()
+                           .Text(Translator.GetMessageString("tabTitleLabTests"))
+                           .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleLabTests" } : new { })
+                           .Content(Html.Partial(@"../VsSession/LabTests", Model).ToHtmlString());
+                  }).SelectedIndex(0))
+
+</div>

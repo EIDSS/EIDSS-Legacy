@@ -1,0 +1,73 @@
+﻿
+@using Kendo.Mvc.UI
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+@model eidss.webclient.Models.Reports.VetLabModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/ExportButtons", Model)
+    <div class="bluelayout">
+        <div class="tabPanelContent">
+
+            @Html.Partial("Common/BaseFilter", Model)
+
+            <table id="VetLabFilterTable" >
+    
+                <tr>
+                    <td class="mediumreport">
+                        @Translator.GetMessageString("titleCountry") 
+                    </td>
+                    <td class="largereport">
+                        <span class="tdContainer">
+                            @Html.TextBox("CountryName", @Translator.GetMessageString("titleAzerbaijan"), new {@readonly = "readonly",@class = "readonlyField", @maxlength="200"})
+                        </span>
+                    </td>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.OrganizationEnteredById)
+                    </td>
+                    <td class="largereport">
+                
+                        @{
+                            @(Html.Kendo().ComboBox()
+                                  .BindTo(Model.OrganizationList.ConvertToSelectListItem())
+                                  .Name("OrganizationEnteredById"))
+                        }
+                    </td>
+                    <td ></td>
+                </tr>
+        
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.Address.RegionId) 
+                    </td>
+                    <td class="largereport">
+                        @{
+                            @(Html.Kendo().ComboBox()
+                                  .BindTo(Model.Address.GetSelectedRegions().ConvertToSelectListItem())
+                                  .Events(c => c.Change("paperForm.OnRegionChanged"))
+                                  .Name("Address.RegionId"))
+                        }
+                    </td>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.Address.RayonId)
+                    </td>
+                    <td class="largereport">
+                        @{
+                            @(Html.Kendo().ComboBox()
+                                  .BindTo(Model.Address.GetRayons().ConvertToSelectListItem())
+                                  .Name("Address.RayonId"))
+                        }
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+
+            @Html.Partial("AZ/AFPSurveillanceFilter", Model)
+        </div>
+    </div>
+}

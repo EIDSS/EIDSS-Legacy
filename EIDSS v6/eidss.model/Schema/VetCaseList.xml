@@ -1,0 +1,400 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="VetCaseListItem"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="fn_VetCase_SelectList" type="fnlist" filter-object="VetCase" />
+	  <count name="spVetCase_SelectCount"/>
+  </storage>
+
+  <tables>
+    <table name="VetCaseListItem">
+      <properties permissionObject="VetCase" auditObject="daoVetCase" auditTable="tlbVetCase"/>
+      <help web="VC_V01" win="VC_V01"/>
+      <extfilters>
+        <filter>
+          <join>
+            INNER JOIN( select distinct idfVetCase as idfCase from tlbMaterial
+            WHERE strFieldBarcode LIKE @strFieldBarcode
+            ) as m
+            on m.idfCase =  fn_VetCase_SelectList.idfCase
+          </join>
+          <where>
+            <expr param="strFieldBarcode" value="1=1"/>
+          </where>
+        </filter>
+        <filter>
+          <join>
+          </join>
+          <where>
+            <expr param="bWithDiagnosisOnly" value="(idfsTentativeDiagnosis is not null OR idfsTentativeDiagnosis1 is not null OR idfsTentativeDiagnosis2 is not null OR idfsFinalDiagnosis is not null)"/>
+          </where>
+        </filter>
+        <filter>
+          <join>
+          </join>
+          <where>
+            <expr param="idfsDiagnosis" value="(@finalDiagnosisOnly = 1 AND idfsFinalDiagnosis = @idfsDiagnosis) OR (@finalDiagnosisOnly = 0 AND (idfsTentativeDiagnosis = @idfsDiagnosis OR idfsTentativeDiagnosis1 = @idfsDiagnosis OR idfsTentativeDiagnosis2 = @idfsDiagnosis OR idfsFinalDiagnosis = @idfsDiagnosis))"/>
+            <expr param="finalDiagnosisOnly" value="1=1"/>
+          </where>
+        </filter>
+        <filter>
+          <join>
+            left join (select distinct idfPerson from tlbPerson where intRowStatus = 0) as person
+                on person.idfPerson = fn_VetCase_SelectList.idfPersonEnteredBy
+          </join>
+          <where>
+              <expr param="idfPerson" lambda='() =>  (String.IsNullOrEmpty(EidssUserContext.User.EmployeeID.ToString())) ? "@idfPerson = 0" : String.Format("(@idfPerson = 0 OR person.idfPerson = {0})",EidssUserContext.User.EmployeeID.ToString())' />
+          </where>
+        </filter>
+        <filter isDistinct='true'>
+          <join>
+            LEFT JOIN( select distinct farm.idfFarm, species.idfsSpeciesType from tlbFarm farm
+            INNER JOIN tlbHerd herd ON
+            herd.idfFarm=farm.idfFarm
+            AND herd.intRowStatus = 0
+            INNER JOIN tlbSpecies species ON
+            herd.idfHerd=species.idfHerd
+            AND herd.intRowStatus = 0
+            where farm.intRowStatus = 0) as s
+            ON
+            dbo.fn_VetCase_SelectList.idfFarm = s.idfFarm
+          </join>
+          <where>
+            <expr param="idfsSpeciesType" value="s.idfsSpeciesType {0} @idfsSpeciesType" />
+          </where>
+        </filter>
+        <filter isDistinct="true">
+          <join>
+            LEFT JOIN( select distinct farm.idfFarm, 
+            animal.idfsAnimalAge, 
+            animal.strAnimalCode, 
+            animal.idfsAnimalGender, 
+            animal.idfsAnimalCondition 
+            from tlbFarm farm
+            INNER JOIN tlbHerd herd ON
+            herd.idfFarm=farm.idfFarm
+            AND herd.intRowStatus = 0
+            INNER JOIN tlbSpecies species ON
+            herd.idfHerd=species.idfHerd
+            AND herd.intRowStatus = 0
+            INNER JOIN tlbAnimal animal ON
+            animal.idfSpecies=species.idfSpecies
+            AND animal.intRowStatus = 0
+            where farm.intRowStatus = 0) as a
+            ON
+            dbo.fn_VetCase_SelectList.idfFarm = a.idfFarm
+          </join>
+          <where>
+            <expr param="idfsAnimalAge" value="a.idfsAnimalAge {0} @idfsAnimalAge" />
+            <expr param="idfsAnimalGender" value="a.idfsAnimalGender {0} @idfsAnimalGender" />
+            <expr param="idfsAnimalCondition" value="a.idfsAnimalCondition {0} @idfsAnimalCondition" />
+            <expr param="strAnimalCode" value="ISNULL(a.strAnimalCode,N'') {0} @strAnimalCode" />
+          </where>
+        </filter>
+        <filter>
+          <join>
+            inner join trtDiagnosisToDiagnosisGroup as dg
+                on (
+                  dg.idfsDiagnosis = fn_VetCase_SelectList.idfsTentativeDiagnosis or
+                  dg.idfsDiagnosis = fn_VetCase_SelectList.idfsTentativeDiagnosis1 or
+                  dg.idfsDiagnosis = fn_VetCase_SelectList.idfsTentativeDiagnosis2 or
+                  dg.idfsDiagnosis = fn_VetCase_SelectList.idfsFinalDiagnosis
+                  )
+                  and dg.intRowStatus = 0
+          </join>
+          <where>
+            <expr param="idfsDiagnosisGroup" value="dg.idfsDiagnosisGroup {0} @idfsDiagnosisGroup" />
+          </where>
+        </filter>
+        <!--<filter>
+          <join>
+            INNER JOIN tlbFarm farm1 ON
+            dbo.fn_VetCase_SelectList.idfFarm = farm1.idfFarm
+          </join>
+          <where>
+            <expr param="idfsOwnershipStructure" value="farm1.idfsOwnershipStructure {0} @idfsOwnershipStructure" />
+
+            <expr param="strContactPhone" value="ISNULL(farm1.strContactPhone,N'') {0} @strContactPhone" />
+            <expr param="strFax" value="ISNULL(farm1.strFax,N'') {0} @strFax" />
+          </where>
+        </filter>-->
+      </extfilters>
+      <searchpanel>
+        <item name="strCaseID" editor="Text" labelId="strCaseID" />
+        <item name="idfsDiagnosis" isParam="true" editor="Lookup" editorWidth="Large" labelId="idfsDiagnosis" dependent="finalDiagnosisOnly"
+					lookupName="DiagnosisLookup" lookupType="DiagnosisLookup" lookupText="c.name" lookupValue="c.idfsDiagnosis"/>
+         <item name="finalDiagnosisOnly" editor="Flag" isParam="true" labelId="ReturnOnlyFinalDiagnosis" default="c => false"/>
+        <item name="datDiagnosisDate" editor="Date" labelId="datDiagnosisDate" range="true"/>
+        <item name="idfsDiagnosisGroup" editor="Lookup" labelId="strDiagnosisGroup" isParam="true"
+          lookupName="DiagnosisGroupLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        <item name="idfsCaseClassification" editor="Lookup" labelId="idfsCaseStatus"
+					lookupName="CaseClassificationLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        <item name="idfsCaseProgressStatus" editor="Lookup" labelId="idfsCaseProgressStatus"
+					lookupName="CaseProgressStatusLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        <item name="idfsCaseReportType" editor="Lookup" labelId="idfsCaseReportType" 
+					lookupName="CaseReportTypeLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        <item name="idfsCaseTypeNullable" editor="Lookup" labelId="idfsCaseType"
+					lookupName="CaseTypeLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        <item name="datEnteredDate" editor="Date" labelId="datEnteredDateSearchPanel" rangeDefDates="true" range="true" mandatory="true"
+					default="c => DateTime.Today.AddDays(-bv.common.Configuration.BaseSettings.DefaultDateFilter)"/>
+        <item name="datInvestigationDate" editor="Date" labelId="datInvestigationDate" range="true"/>
+        <item name="strFieldBarcode" isParam="true" editor="Text" labelId="VetCaseList.strFieldBarCode" />
+        <!-- local sample id -->
+        <item name="intTotalAnimalQty" editor="Numeric" labelId="intTotalAnimalQtyFull" range="true" />
+        <item name="strOwnerFirstName" editor="Text" labelId="OwnerFirstName"/>
+        <item name="strOwnerLastName" editor="Text" labelId="OwnerLastName" />       
+        <item name="idfsRegion" editor="Lookup" labelId="idfsRegion"  dependent="idfsRayon"
+					lookupName="RegionLookup" lookupType="RegionLookup" lookupText="c.strRegionName" lookupValue="c.idfsRegion"
+					defaultoper="="  />
+        <item name="idfsRayon" editor="Lookup" labelId="idfsRayon"  dependent="idfsSettlement"
+					lookupName="RayonLookup" lookupType="RayonLookup" lookupText="c.strRayonName" lookupValue="c.idfsRayon"/>
+        <item name="idfsSettlement" editor="Lookup" labelId="strTownOrVillage" 
+					lookupName="SettlementLookup" lookupType="SettlementLookup" lookupText="c.strSettlementName" lookupValue="c.idfsSettlement"/>
+        
+        <item location="Combobox" name="strAnimalCode" editor="Text" labelId="strAnimalCode" defaultoper="="  isParam="true"/>
+        <item location="Combobox" name="idfsAnimalAge" editor="Lookup" labelId="AnimalAge" defaultoper="="
+              lookupName="AnimalAgeLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference" isParam="true"/>
+        <item location="Combobox" name="idfsAnimalGender" editor="Lookup" labelId="AnimalSex" defaultoper="="
+              lookupName="AnimalGenderLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference" isParam="true"/>
+        <item location="Combobox" name="idfsAnimalCondition" editor="Lookup" labelId="AnimalCondition" defaultoper="="
+              lookupName="AnimalConditionLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference" isParam="true"/>
+        <item location="Combobox" name="idfsSpeciesType" editor="Lookup" labelId="idfsSpeciesType" defaultoper="="
+              lookupName="SpeciesTypeLookup" lookupType="SpeciesTypeLookup" lookupText="c.name" lookupValue="c.idfsBaseReference" isParam="true"/>
+
+
+        <item location="Combobox" name="idfsOwnershipStructure" editor="Lookup" labelId="idfsOwnershipStructure" defaultoper="="
+              lookupName="OwnershipStructureLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        <item location="Combobox" name="idfsLivestockProductionType" editor="Lookup" labelId="LivestockProductionType" defaultoper="="
+              lookupName="LivestockProductionTypeLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        <item location="Combobox" name="idfsMovementPattern" editor="Lookup" labelId="idfsMovementPattern" defaultoper="="
+              lookupName="MovementPatternLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        <item location="Combobox" name="idfsGrazingPattern" editor="Lookup" labelId="idfsGrazingPattern" defaultoper="="
+              lookupName="GrazingPatternLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        <item location="Combobox" name="idfsAvianProductionType" editor="Lookup" labelId="AvianProductionType" defaultoper="="
+              lookupName="AvianFarmProductionTypeLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        <item location="Combobox" name="idfsAvianFarmType" editor="Lookup" labelId="AvianFarmType" defaultoper="="
+              lookupName="AvianFarmTypeLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        <item location="Combobox" name="idfsIntendedUse" editor="Lookup" labelId="idfsIntendedUse" defaultoper="="
+              lookupName="FarmIntendedUseLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+
+        <item location="Combobox" name="strFarmCode" editor="Text" labelId="strFarmCode" defaultoper="="/>
+        <item location="Combobox" name="FarmName" editor="Text" labelId="strFarmFullName" defaultoper="="/>
+        <item location="Combobox" name="strOwnerMiddleName" editor="Text" labelId="OwnerMiddleName" defaultoper="="/>
+        <item location="Combobox" name="strContactPhone" editor="Text" labelId="ContactPhone" defaultoper="="/>
+        <item location="Combobox" name="strFax" editor="Text" labelId="strFax" defaultoper="=" />
+        <item location="Combobox" name="strEmail" editor="Text" labelId="strEmail" defaultoper="="/>
+
+        <item location="Combobox" name="uidOfflineCaseID" editor="Text" labelId="" isParam="true" defaultoper="=" />
+
+        <item name="idfsSite" editor="Lookup" labelId="lbDataEntrySiteID"
+						lookupName="SiteLookup" lookupType="SiteLookup" lookupText="c.strSiteName" lookupValue="c.idfsSite">
+          <columns>
+            <column name="strSiteName" />
+            <column name="strSiteID"  />
+          </columns>
+        </item>
+        <item name="idfPerson" editor="Flag" isParam="true" labelId="lblMyVetCases" />
+      </searchpanel>
+
+		<grid>
+      <item name="idfCase" visible="false" key="true"/>
+			<item name="strCaseID" action="ActionEditVetCase" />
+			<item name="datEnteredDate"  />
+			<item name="datInvestigationDate" defaultSort="Ascending"  />
+			<item name="DiagnosisName"  />
+			<item name="AddressName"  />
+			<item name="strOwnerLastName" />
+			<item name="intTotalAnimalQty"/>
+			<item name="strCaseType"  />
+			<item name="CaseClassificationName"  />
+			<item name="CaseStatusName"  />
+			<item name="strCaseReportType"  />
+      <item name="idfsRegion" visible="false"/>
+      <item name="idfsRayon" visible="false"/>
+      <item name="idfsSettlement" visible="false"/>
+		</grid>		
+		<labels>
+			<item name="datEnteredDate"  labelId="datEnteredDateSearchPanel"/>
+			<item name="CaseClassificationName"  labelId="idfsCaseClassificationShort"/>
+			<item name="strCaseType"  labelId="idfsCaseType"/>			
+      <item name="intTotalAnimalQty" labelId="intTotalAnimalQtyFull"/>
+      <item name="CaseStatusName" labelId="idfsCaseStatusShort"/>
+      <item name="DiagnosisName" labelId="strDiagnoses" />
+      <item name="AddressName" labelId="FarmAddress" />
+      <item name="strOwnerLastName" labelId="strOwnerName" />
+      <item name="strCaseReportType" labelId="idfsCaseReportType" />
+    </labels>
+      <fields>
+        <!--<storage name="strAnimalCode" type="string" />-->
+        <storage name="idfsAnimalAge" type="long?" />
+        <storage name="idfsAnimalGender" type="long?" />
+        <storage name="idfsAnimalCondition" type="long?" />
+        <storage name="idfsSpeciesType" type="long?" />
+        <storage name="idfsDiagnosis" type="long?" />
+        <storage name="finalDiagnosisOnly" type="bool?" />
+        <storage name="idfsDiagnosisGroup" type="long?" />
+      </fields>
+      <readonly>
+        <fields name="finalDiagnosisOnly" predicate="c => c.idfsDiagnosis == null"/>
+      </readonly>
+      <personaldata>
+        <group name="Vet_Farm_Settlement">
+          <item name="strOwnerLastName"/>
+          <item name="strOwnerFirstName"/>
+          <item name="strOwnerMiddleName"/>
+          <item name="strFarmCode"/>
+          <item name="FarmName"/>
+          <item name="strContactPhone"/>
+          <item name="strFax"/>
+          <item name="strEmail"/>
+          <item name="AddressName"/>          
+          <item name="Settlement"/>
+          <item name="idfsSettlement"/>
+        </group>
+        <group name="Vet_Farm_Details">
+          <item name="strOwnerLastName"/>
+          <item name="strOwnerFirstName"/>
+          <item name="strOwnerMiddleName"/>
+          <item name="strFarmCode"/>
+          <item name="FarmName"/>
+          <item name="strContactPhone"/>
+          <item name="strFax"/>
+          <item name="strEmail"/>
+          <item name="AddressName"/>
+        </group>
+      </personaldata>
+      <lookups>
+        <lookup name="Country" table="CountryLookup" source="idfsCountry" target="idfsCountry" />
+        <lookup name="Region" table="RegionLookup" source="idfsRegion" target="idfsRegion">
+          <params>
+            <param name="CountryID" lambda="c => c.idfsCountry ?? 0" type="long" />
+            <param name="ID" const="null" />
+          </params>
+        </lookup>
+        <lookup name="Rayon" table="RayonLookup" source="idfsRayon" target="idfsRayon">
+          <params>
+            <param name="RegionID" lambda="c => c.idfsRegion ?? 0" type="long" />
+            <param name="ID" const="null" />
+          </params>
+        </lookup>
+        <lookup name="Settlement" table="SettlementLookup" source="idfsSettlement" target="idfsSettlement">
+          <params>
+            <param name="RayonID" lambda="c => c.idfsRayon ?? 0" type="long" />
+            <param name="ID" const="null" />
+          </params>
+        </lookup>
+        <lookup name="CaseProgressStatus" table="BaseReference" section="rftCaseProgressStatus" source="idfsCaseProgressStatus" target="idfsBaseReference" />
+        <lookup name="Diagnosis" table="DiagnosisLookup" source="idfsDiagnosis" target="idfsDiagnosis">
+          <filters>
+            <filter predicate="c => !EidssUserContext.User.DenyDiagnosis.ContainsKey(c.idfsDiagnosis)"/>
+            <filter predicate="c => ((c.intHACode &amp; (int)HACode.LivestockAvian) != 0) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+            <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+          </filters>
+        </lookup>
+        <lookup name="CaseClassification" table="BaseReference" section="rftCaseClassification" source="idfsCaseClassification" target="idfsBaseReference" >
+          <filters>
+            <filter predicate="c => (c.intHACode &amp; (int)HACode.LivestockAvian) != 0"/>
+          </filters>
+        </lookup>
+        <lookup name="CaseType" table="BaseReference" section="rftCaseType" source="idfsCaseTypeNullable" target="idfsBaseReference">
+          <filters>
+            <filter predicate="c => c.idfsBaseReference == (long)CaseTypeEnum.Livestock || c.idfsBaseReference == (long)CaseTypeEnum.Avian"/>
+          </filters>
+        </lookup>
+        <lookup name="CaseReportType" table="BaseReference" section="rftCaseReportType" source="idfsCaseReportType" target="idfsBaseReference" >
+        <filters>
+          <filter predicate="c => c.idfsBaseReference != (long)eidss.model.Enums.CaseReportType.Both"/>
+        </filters>
+        </lookup>
+        <lookup name="AnimalAge" table="BaseReference" section="rftAnimalAgeList" source="idfsAnimalAge" target="idfsBaseReference" />
+        <lookup name="AnimalGender" table="BaseReference" section="rftAnimalSex" source="idfsAnimalGender" target="idfsBaseReference" />
+        <lookup name="AnimalCondition" table="BaseReference" section="rftAnimalCondition" source="idfsAnimalCondition" target="idfsBaseReference" />
+        <lookup name="SpeciesType" table="BaseReference" section="rftSpeciesList" source="idfsSpeciesType" target="idfsBaseReference" />
+        <!--lookup name="SpeciesType" table="SpeciesTypeLookup" source="idfsSpeciesType" target="idfsBaseReference" /-->
+        <lookup name="OwnershipStructure" table="BaseReference" section="rftOwnershipType" source="idfsOwnershipStructure" target="idfsBaseReference" />
+        <lookup name="AvianFarmType" table="BaseReference" section="rftAvianFarmType" source="idfsAvianFarmType" target="idfsBaseReference" />
+        <lookup name="DiagnosisGroup" table="BaseReference" section="rftDiagnosisGroup" source="idfsDiagnosisGroup" target="idfsBaseReference" />
+        <lookup name="Site" table="SiteLookup" source="idfsSite" target="idfsSite" />
+      </lookups>
+      <storage>
+          <delete name="spVetCase_Delete"/>
+          <candelete name="spVetCase_CanDelete"/>
+      </storage>
+      <extenders>
+        <created>
+          <!-- set default country as current country of database -->
+          <lambda_extender target="Country" type="CountryLookup" lambda='c => 
+                                     c.CountryLookup.Where(a => a.idfsCountry == eidss.model.Core.EidssSiteContext.Instance.CountryID)
+                                     .SingleOrDefault()'/>
+          <lambda_extender target="Region" type="RegionLookup" lambda='c => 
+                                     BaseSettings.DefaultRegionInSearch == true?
+                                     c.RegionLookup.Where(a => a.idfsRegion == eidss.model.Core.EidssSiteContext.Instance.RegionID)
+                                     .SingleOrDefault(): null'/>
+          <lambda_extender target="CaseReportType" type="BaseReference" lambda='c => 
+                                     c.CaseReportTypeLookup.Where(a => a.idfsBaseReference == (long)eidss.model.Enums.CaseReportType.Passive)
+                                     .SingleOrDefault()'/>
+        </created>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+<!--          <scalar_handler class="SetScalarHandler" target="Region" field="idfsCountry" lambda="(o, fld, prev_fld) => null" />-->
+<!--          <scalar_handler class="SetScalarHandler" target="Rayon" field="idfsRegion" lambda="(o, fld, prev_fld) => null" />-->
+<!--          <scalar_handler class="SetScalarHandler" target="Settlement" field="idfsRayon" lambda="(o, fld, prev_fld) => null" />-->
+		  <lambda_handler field="idfsCountry" target="Region" type="RegionLookup" lambda="c => null"/>
+		  <lambda_handler field="idfsRegion" target="Rayon" type="RayonLookup" lambda="c => null"/>
+		  <lambda_handler field="idfsRayon" target="Settlement" type="SettlementLookup" lambda="c => null"/>
+
+          <lookup_handler lookup="Region" field="idfsCountry" />
+          <lookup_handler lookup="Rayon" field="idfsRegion" />
+          <lookup_handler lookup="Settlement" field="idfsRayon" />
+        </fieldhandler>
+      </handlers>
+      <actions child="VetCase">
+        <standard>
+          <remove type="Create"/>
+        </standard>
+		    <action name="CreateLivestock" type="Action">
+          <visual alignment="Right" panel="Top">
+            <regular caption="strCreateLivestock_Id" tooltip="strCreateLivestock_Id"  icon="Livestock_Case__small_"/>
+          </visual>
+          <permissions type="VetCase.Insert"/>
+          <run>
+            <preUI webType="JScript" methodName="vetCase.CreateLivestock"/>
+			      <params> 
+				      <param name="key" type="object" />
+				      <param name="item" type="IObject" />
+				      <param name="listPanel" type="object" /> 
+			      </params>
+            <preText>
+              return new ActResult(true, ObjectAccessor.CreatorInterface&lt;VetCase&gt;().CreateNew(manager, null, (int)HACode.Livestock));
+            </preText>
+          </run>
+        </action>
+		    <action name="CreateAvian" type="Action">
+          <visual alignment="Right" panel="Top">
+            <regular caption="strCreateAvian_Id" tooltip="strCreateAvian_Id"  icon="Avian_Case__small_"/>
+          </visual>
+          <permissions type="VetCase.Insert"/>
+          <run>
+            <preUI webType="JScript" methodName="vetCase.CreateAvian"/>
+            <params>
+              <param name="key" type="object" />
+              <param name="item" type="IObject" />
+              <param name="listPanel" type="object" />
+            </params>
+          </run>
+        </action>
+        <action name="ActionEditVetCase" type="Action">                
+          <run>
+            <preUI webType="JScript"/>                  
+          </run>
+        </action>
+  	  </actions>
+    </table>
+  </tables>
+
+</object>
+

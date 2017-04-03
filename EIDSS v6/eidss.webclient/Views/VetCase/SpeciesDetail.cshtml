@@ -1,0 +1,80 @@
+﻿@model eidss.model.Schema.VetFarmTree
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        //ChangeMessageWindowHeigth();
+    });
+</script>
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        <div class="windowButtonsPn">                  
+            <input type="button" class="windowButton" onclick=" vetCase.saveAndCloseSpeciesGridEditWindow('@(Model.idfParentParty)'); " value="@Translator.GetMessageString("Ok")"/>     
+            <input type="button" class="windowButton" onclick=" bvPopup.closeDefaultPopup(); " value="@Translator.GetMessageString("Cancel")"/>  
+        </div>
+        <div class="windowSeparator"></div>
+        @Html.HiddenFor(x=>x.idfParty)
+        @Html.Hidden("IdfCaseVetCase", (long)ViewBag.IdfCase)
+        <table class="level1">    
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Html.LabelFor(model => model.strSpeciesName)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.SpeciesType)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.LabelFor(model => model.intTotalAnimalQty)
+                </td>
+                <td>
+                    @Html.BvNumeric(Model, m => m.intTotalAnimalQty, 0)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.LabelFor(model => model.intSickAnimalQty)
+                </td>
+                <td>
+                    @Html.BvNumeric(Model, m => m.intSickAnimalQty, 0)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.LabelFor(model => model.intDeadAnimalQty)
+                </td>
+                <td>
+                    @Html.BvNumeric(Model, m => m.intDeadAnimalQty, 0)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.LabelFor(model => model.strNote)
+                </td>
+                <td>
+                    @Html.BvTextArea(Model, m => m.strNote)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.LabelFor(model => model.datStartOfSignsDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datStartOfSignsDate)
+                </td>
+            </tr>
+        </table>
+    }
+</div>

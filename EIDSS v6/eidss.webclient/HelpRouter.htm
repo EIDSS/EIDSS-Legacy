@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<!--This file has to be included into the Help package as a defualt. Please rename it to 'index.htm' before copying.-->
+    <title></title>
+    <script type="text/javascript">
+        function GetPortNumber() {
+            var url = window.location.href;
+            var url_parts = url.split('/');
+            var domain_name_parts = url_parts[2].split(':');
+            if (domain_name_parts.length > 1)
+                return domain_name_parts[1];
+            return null;
+        }
+
+        var referrer = window.opener.document.URL;
+        var expr = new RegExp('(http(s?)\://)', 'ig');
+        var currentLang = referrer.replace(expr, '', '$1'); ;
+        currentLang = currentLang.substring(currentLang.indexOf("/") + 1, currentLang.length);
+        currentLang = currentLang.substring(0, currentLang.indexOf("/"));
+
+        var prt = GetPortNumber();
+        if (prt) prt = ':' + prt; else prt = '';
+
+        var ind = document.URL.indexOf('?');
+        var gp = document.URL.substring(ind + 1, document.URL.length);
+        if (ind > 0)
+            gp = document.URL.match(expr) + document.domain + prt + '/Help/' + currentLang + '/index.html?' + gp;
+        else
+            gp = document.URL.match(expr) + document.domain + prt + '/Help/' + currentLang + '/index.html?system_requirements_and_set-up.htm';
+        document.location = gp; 
+</script>
+</head>
+<body>
+</body>
+</html>

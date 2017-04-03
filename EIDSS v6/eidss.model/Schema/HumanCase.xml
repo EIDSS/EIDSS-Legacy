@@ -1,0 +1,953 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="HumanCase"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="spHumanCase_SelectDetail" />
+    </storage>
+
+    <tables>
+        <table name="HumanCase">
+          <properties auditObject="daoHumanCase" auditTable="tlbHumanCase" permissionObject="HumanCase">
+            <events>
+              <create name="HumanCaseCreatedLocal" startReplication="false" />
+              <change name="HumanCaseDiagnosisChangedLocal" fields="idfsTentativeDiagnosis,idfsFinalDiagnosis" />
+              <change name="HumanCaseClassificationChangedLocal" fields="idfsInitialCaseStatus,idfsFinalCaseStatus" />
+              <change name="ClosedHumanCaseReopenedLocal" predicate="c => c.idfsCaseProgressStatus == (long)CaseStatusEnum.InProgress &amp;&amp; c.idfsCaseProgressStatus_Original == (long)CaseStatusEnum.Closed" />
+              <change name="HumanTestResultRegistrationLocal" predicate="c => c.CaseTests.Count(i => i.IsNew &amp;&amp; !i.IsMarkedToDelete) > 0" />
+            </events>
+          </properties>
+          <help web="HC_H02"/>
+            <labels>
+              <item name="strSampleNotes" labelId="strNotes"/>
+              <item name="datFinalDiagnosisDate" labelId="lblDatChangedDiagnosis"/>
+              <item name="strPersonEnteredBy" labelId="strPersonEnteredByOfficer"/>
+            </labels>
+            <fields>
+                <!-- The value of the field Diagnosis: if the Changed Diagnosis (if known) field is not blank, 
+                     then its value is displayed, otherwise – the value of the Diagnosis field -->
+                <!--calculated name="strEnteredByOrganization" type="string" depends="" lambda="c => EidssUserContext.User.Organization"/-->
+                <calculated name="strDiagnosis" type="string" depends="idfsFinalDiagnosis,idfsTentativeDiagnosis"
+                            lambda='c => c.FinalDiagnosis == null ? (c.TentativeDiagnosis == null ? "" : c.TentativeDiagnosis.name) : c.FinalDiagnosis.name' />
+                <calculated name="idfsDiagnosis" type="long?" depends="idfsFinalDiagnosis,idfsTentativeDiagnosis"
+                            lambda="c => c.idfsFinalDiagnosis == null ? (c.idfsTentativeDiagnosis == null ? null : c.idfsTentativeDiagnosis) : c.idfsFinalDiagnosis" setter=''/>
+                <calculated name="DiagnosisAll" type="List&lt;DiagnosisLookup&gt;"
+                              depends="idfsFinalDiagnosis,idfsTentativeDiagnosis"
+                              lambda='c => idfsDiagnosis == null ? new List&lt;DiagnosisLookup&gt;() : new List&lt;DiagnosisLookup&gt;(new [] { c.FinalDiagnosis ?? c.TentativeDiagnosis } )'/>
+
+                <!-- The field Case Classification: if the Final Case Classification field is not blank, 
+                     then its value is displayed, otherwise – the value of the Initial Case Classification -->
+                <calculated name="strCaseClassification" type="string" depends="idfsInitialCaseStatus,idfsFinalCaseStatus"
+                            lambda='c => c.FinalCaseClassification == null ? (c.InitialCaseClassification == null ? "" : c.InitialCaseClassification.name) : c.FinalCaseClassification.name' />
+              
+                <!-- Rules for calculating age by date of birth (DOB) are as follows:
+                    1. If the value of the Date of symptoms onset field is not blank, then date of symptoms is used for calculating age and age units;
+                    2. If the value of the Date of symptoms onset field is blank and the value of the Notification date field is not blank, then notification date is used for calculating age and age units;
+                    3. If the value of the Date of symptoms onset and Notification date fields are blank, then the value of the Entered Date field is used for calculating age and age units; case entered date is always specified automatically by the system.
+                    4. Let D be the date which is used for calculating age and age type. 
+                        a.	If the difference between D and DOB is equal to or greater than a year, then age is a number of complete years of the patient on the date D, and age type is “Years”.
+                        b.	If the difference between D and DOB is less than a year and equal to or greater than a month, then age is a number of complete months of the patient on the date D, and age type is “Month”.
+                        c.	If the difference between D and DOB is less than a month, then age is a number of days of the patient on the date D, and age type is “Days”.-->
+                <calculated name="datD" type="DateTime?" depends="datOnSetDate,datNotificationDate,datEnteredDate"
+                            lambda='c => c.datOnSetDate != null ? c.datOnSetDate : (c.datNotificationDate ?? c.datEnteredDate)'/>
+                <calculated name="IsClosed" type="bool" depends="idfsCaseProgressStatus" dependonpost="yes"
+                            lambda="c => (c.idfsCaseProgressStatus == (long)CaseStatusEnum.Closed) &amp;&amp; !c.IsDirty" />              
+                <calculated name="IsEnabledCaseProgressStatus" type="bool" depends="idfsCaseProgressStatus" dependonpost="yes"
+                            lambda='c => (c.idfsCaseProgressStatus == (long)CaseStatusEnum.InProgress) || (c.idfsCaseProgressStatus == (long)CaseStatusEnum.Closed &amp;&amp; c.IsDirty) || (c.idfsCaseProgressStatus == (long)CaseStatusEnum.Closed &amp;&amp; !c.IsDirty &amp;&amp; c.GetPermissions().CanExecute("CanReopenClosedCase"))' />
+                <calculated name="strReadOnlyLocalIdentifier" type="string" depends="strLocalIdentifier" lambda='c => c.strLocalIdentifier' />                
+                <calculated name="strReadOnlyNotificationDate" type="string" depends="datNotificationDate" 
+                            lambda='c => c.datNotificationDate == null ? (string)null : c.datNotificationDate.Value.ToString()' />
+                <calculated name="strReadOnlyFacilityLastVisit" type="string" depends="datFacilityLastVisit" 
+                            lambda='c => c.datFacilityLastVisit == null ? (string)null : c.datFacilityLastVisit.Value.ToString()' />
+                <calculated name="strReadOnlyEnteredDate" type="string" depends="datEnteredDate"
+                            lambda='c => c.datEnteredDate == null ? (string)null : c.datEnteredDate.Value.ToString()' />
+                <calculated name="strReadOnlyModificationDate" type="string" depends="datModificationDate"
+                            lambda='c => c.datModificationDate == null ? (string)null : c.datModificationDate.Value.ToString()' />
+                <calculated name="strReadOnlyOnSetDate" type="string" depends="datOnSetDate" 
+                            lambda='c => c.datOnSetDate == null ? (string)null : c.datOnSetDate.Value.ToString("d")' />
+                <calculated name="strReadOnlyDiagnosisDate" type="string" depends="datTentativeDiagnosisDate,datFinalDiagnosisDate"                             
+                            lambda='c => c.datFinalDiagnosisDate == null ? 
+                                   (c.datTentativeDiagnosisDate == null ? (string)null : c.datTentativeDiagnosisDate.Value.ToString()) : c.datFinalDiagnosisDate.Value.ToString()' />
+                <calculated name="strReadOnlyFinalDiagnosisDate" type="string" depends="idfsTentativeDiagnosis,datTentativeDiagnosisDate,datFinalDiagnosisDate"                             
+                            lambda='c => c.FinalDiagnosis == null ? 
+                                   (c.datTentativeDiagnosisDate == null ? (string)null : c.datTentativeDiagnosisDate.Value.ToString()) : 
+                                   (c.datFinalDiagnosisDate == null ? (string)null : c.datFinalDiagnosisDate.Value.ToString())' />
+                <calculated name="strReadOnlyTentativeDiagnosis1" type="string" depends="idfsTentativeDiagnosis" 
+                            lambda='c => c.idfsTentativeDiagnosis == null ? (string)null : c.TentativeDiagnosis.name' />
+                <calculated name="strReadOnlyDiagnosis" type="string" depends="idfsFinalDiagnosis,idfsTentativeDiagnosis"
+                            lambda='c => c.FinalDiagnosis == null ? (c.TentativeDiagnosis == null ? "" : c.TentativeDiagnosis.name) : c.FinalDiagnosis.name' />
+                <calculated name="isChangeDiagnosisReasonEnter" type="bool" depends="idfsChangeDiagnosisReason" 
+                            lambda='c => idfsChangeDiagnosisReason.HasValue' />
+                <calculated name="blnEnableTestsConductedCalc" type="bool" depends="" 
+                            lambda="c => c.CaseTests == null || c.CaseTests.Where(i => !i.IsMarkedToDelete &amp;&amp; i.idfsTestStatus == (long)TestStatus.Finalized).Count() == 0"/>
+                <calculated name="buttonGeoLocationPicker" type="string" depends="idfPointGeoLocation" lambda='c => ""'/>                
+                <calculated name="buttonSearchforDuplicates" type="string" depends="idfCase" lambda='c => ""'/>
+                <!--calculated name="strHospital" type="string" depends="idfHospital,idfsHospitalizationStatus" lambda='c => !c.idfHospital.HasValue || c.idfHospital == 0 || c.idfsHospitalizationStatus != (long)HospitalizationStatus.Hospital || c.HospitalLookup.SingleOrDefault(i => i.idfInstitution == c.idfHospital) == null ? "" : c.HospitalLookup.Single(i => i.idfInstitution == c.idfHospital).name'/-->
+              <storage name="strHospital" type="string"/>
+              <storage name="idfsChangeDiagnosisReason" type="long?"/>
+            </fields>
+            <readonly>
+                <fields name="strPersonEnteredBy,strOfficeEnteredBy" predicate="c => true" />
+                <fields name="strDiagnosis,strCaseClassification,strCaseID,datEnteredDate,datModificationDate,strReadOnlyEnteredDate,strReadOnlyModificationDate" predicate="c => true" />
+                <fields name="strReadOnlyLocalIdentifier,strReadOnlyTentativeDiagnosis1,strReadOnlyDiagnosis" predicate="c => true" />
+                <fields name="strSentByOffice,strReceivedByOffice,strInvestigatedByOffice" predicate="c => true" />
+                <fields name="strHospital" predicate="c => true" />
+                <fields name="strSoughtCareFacility" predicate="c => true" />
+                <fields name="TestsConducted,idfsYNTestsConducted" predicate="c => c.IsClosed || c.ReadOnly || (c.blnEnableTestsConducted != null &amp;&amp; !c.blnEnableTestsConducted.Value) || !c.blnEnableTestsConductedCalc" />
+                <fields name="SentByPerson,idfSentByPerson" predicate="c => c.IsClosed || c.ReadOnly || c.idfSentByOffice == null" />
+                <fields name="strSentByPerson,strReceivedByPerson,strInvestigatedByPerson" predicate="c => true" />
+                <fields name="ReceivedByPerson,idfReceivedByPerson" predicate="c => c.IsClosed || c.ReadOnly || c.idfReceivedByOffice == null" />
+                <fields name="strReadOnlyNotificationDate,strReadOnlyFacilityLastVisit,strReadOnlyOnSetDate,strReadOnlyDiagnosisDate, strReadOnlyFinalDiagnosisDate" predicate="c => true" />
+                <fields name="idfsCaseProgressStatus,CaseProgressStatus" predicate="c => c.ReadOnly || !c.IsEnabledCaseProgressStatus" />
+                <fields name="strOutbreakID" predicate="c => true" />
+                <fields name="idfOutbreak" predicate='c => c.IsClosed || c.ReadOnly || c.RelatedToOutbreak == null || c.idfsYNRelatedToOutbreak != (long)YesNoUnknownValuesEnum.Yes'/>
+                <fields name="AntimicrobialTherapy" predicate='c => c.IsClosed || c.ReadOnly || c.AntimicrobialTherapyUsed == null || c.idfsYNAntimicrobialTherapy != (long)YesNoUnknownValuesEnum.Yes'/>
+                <fields name="Samples" predicate='c => c.IsClosed || c.ReadOnly || c.SpecimenCollected == null || c.idfsYNSpecimenCollected != (long)YesNoUnknownValuesEnum.Yes'/>
+                <fields name="CaseTests,CaseTestValidations" predicate='c => c.IsClosed || c.ReadOnly'/>
+                <fields name="strSampleNotes" predicate='c => c.IsClosed || c.ReadOnly || c.SpecimenCollected == null || c.idfsYNSpecimenCollected != (long)YesNoUnknownValuesEnum.Yes'/>
+                <fields name="NotCollectedReason,idfsNotCollectedReason" predicate='c => c.IsClosed || c.ReadOnly || c.SpecimenCollected == null || c.idfsYNSpecimenCollected == (long)YesNoUnknownValuesEnum.Yes || c.idfsYNSpecimenCollected == (long)YesNoUnknownValuesEnum.Unknown'/>
+                <fields name="datHospitalizationDate,strHospitalizationPlace" predicate='c => c.IsClosed || c.ReadOnly || c.Hospitalization == null || c.idfsYNHospitalization != (long)YesNoUnknownValuesEnum.Yes'/>
+                <fields name="strCurrentLocation" predicate="c => c.IsClosed || c.ReadOnly || c.PatientLocationType == null || c.idfsHospitalizationStatus != (long)PatientLocationTypeEnum.Other"/>
+                <fields name="idfHospital" predicate="c => c.IsClosed || c.ReadOnly || c.PatientLocationType == null || c.idfsHospitalizationStatus != (long)PatientLocationTypeEnum.Hospital"/>
+                <fields name="datFinalDiagnosisDate" predicate="c => c.IsClosed || c.ReadOnly || c.idfsFinalDiagnosis == null" />
+                <fields name="datTentativeDiagnosisDate" predicate="c => c.IsClosed || c.ReadOnly || c.idfsTentativeDiagnosis == null" />
+                <fields name="intPatientAge,idfsHumanAgeType" predicate="c => c.IsClosed || c.ReadOnly || c.Patient.datDateofBirth != null" />
+                <fields name="blnClinicalDiagBasis,blnEpiDiagBasis,blnLabDiagBasis" predicate="c => c.IsClosed || c.ReadOnly || c.idfsTentativeDiagnosis == null &amp;&amp; c.idfsFinalDiagnosis == null" />
+                <fields name="datFinalCaseClassificationDate" predicate="c => c.IsClosed || c.ReadOnly || c.FinalCaseClassification == null || c.idfsFinalCaseStatus == null" />
+                <fields name="buttonGeoLocationPicker" predicate="c => c.IsClosed || c.ReadOnly" />
+                <fields name="buttonSearchforDuplicates" predicate="c => c.IsClosed || c.ReadOnly" />
+                <fields name="*" predicate="c => c.IsClosed || c.ReadOnly" />
+            </readonly>
+            <personaldata>
+              <group name="Human_PersonName">
+                <item name="Patient.strLastName"/>
+                <item name="Patient.strFirstName"/>
+                <item name="Patient.strMiddleName"/>
+                <item name="Patient.strSecondName"/>
+                <item name="Patient.strName"/>
+                <item name="Patient.PersonIDType"/>
+                <item name="Patient.strPersonID"/>
+              </group>
+              <group name="Human_PersonAge">
+                <item name="Patient.datDateofBirth"/>
+                <item name="Patient.intPatientAgeFromCase"/>
+                <item name="Patient.idfsHumanAgeTypeFromCase"/>
+                <item name="Patient.HumanAgeType"/>
+              </group>
+              <group name="Human_PersonSex">
+                <item name="Patient.Gender"/>
+                <item name="Patient.idfsGender"/>                
+              </group>
+              <group name="Human_CurrentResidence_Settlement">
+                <item name="Patient.CurrentResidenceAddress.Settlement"/>
+                <item name="Patient.CurrentResidenceAddress.idfsSettlement"/>
+                <item name="Patient.CurrentResidenceAddress.PostCode"/>
+                <item name="Patient.CurrentResidenceAddress.Street"/>
+                <item name="Patient.CurrentResidenceAddress.strPostCode"/>
+                <item name="Patient.CurrentResidenceAddress.strStreetName"/>
+                <item name="Patient.CurrentResidenceAddress.strApartment"/>
+                <item name="Patient.CurrentResidenceAddress.strHouse"/>
+                <item name="Patient.CurrentResidenceAddress.strBuilding"/>
+                <item name="Patient.strHomePhone"/>
+              </group>              
+              <group name="Human_CurrentResidence_Details">
+                <item name="Patient.CurrentResidenceAddress.PostCode"/>
+                <item name="Patient.CurrentResidenceAddress.Street"/>
+                <item name="Patient.CurrentResidenceAddress.strPostCode"/>
+                <item name="Patient.CurrentResidenceAddress.strStreetName"/>
+                <item name="Patient.CurrentResidenceAddress.strApartment"/>
+                <item name="Patient.CurrentResidenceAddress.strHouse"/>
+                <item name="Patient.CurrentResidenceAddress.strBuilding"/>
+                <item name="Patient.strHomePhone"/>
+              </group>
+              <group name="Human_CurrentResidence_Coordinates">
+                <item name="Patient.CurrentResidenceAddress.dblLongitude"/>
+                <item name="Patient.CurrentResidenceAddress.dblLatitude"/>                
+              </group>              
+              <group name="Human_Employer_Settlement">
+                <item name="Patient.EmployerAddress.PostCode"/>
+                <item name="Patient.EmployerAddress.Street"/>
+                <item name="Patient.EmployerAddress.Settlement"/>
+                <item name="Patient.EmployerAddress.idfsSettlement"/>
+                <item name="Patient.EmployerAddress.strPostCode"/>
+                <item name="Patient.EmployerAddress.strStreetName"/>
+                <item name="Patient.EmployerAddress.strApartment"/>
+                <item name="Patient.EmployerAddress.strHouse"/>
+                <item name="Patient.EmployerAddress.strBuilding"/>
+                <item name="Patient.strEmployerName"/>
+                <item name="strWorkPhone"/>
+              </group>
+              <group name="Human_Employer_Details">
+                <item name="Patient.EmployerAddress.PostCode"/>
+                <item name="Patient.EmployerAddress.Street"/>
+                <item name="Patient.EmployerAddress.strPostCode"/>
+                <item name="Patient.EmployerAddress.strStreetName"/>
+                <item name="Patient.EmployerAddress.strApartment"/>
+                <item name="Patient.EmployerAddress.strHouse"/>
+                <item name="Patient.EmployerAddress.strBuilding"/>
+                <item name="Patient.strEmployerName"/>
+                <item name="strWorkPhone"/>
+              </group>
+              <group name="Human_PermanentResidence_Settlement">
+                <item name="RegistrationAddress.PostCode"/>
+                <item name="RegistrationAddress.Street"/>                
+                <item name="RegistrationAddress.Settlement"/>
+                <item name="RegistrationAddress.idfsSettlement"/>
+                <item name="RegistrationAddress.strPostCode"/>
+                <item name="RegistrationAddress.strStreetName"/>
+                <item name="RegistrationAddress.strApartment"/>
+                <item name="RegistrationAddress.strHouse"/>
+                <item name="RegistrationAddress.strBuilding"/>
+                <item name="strRegistrationPhone"/>
+                <item name="RegistrationAddress.strForeignAddress"/>
+              </group>
+              <group name="Human_PermanentResidence_Details">
+                <item name="RegistrationAddress.PostCode"/>
+                <item name="RegistrationAddress.Street"/>
+                <item name="RegistrationAddress.strPostCode"/>
+                <item name="RegistrationAddress.strStreetName"/>
+                <item name="RegistrationAddress.strApartment"/>
+                <item name="RegistrationAddress.strHouse"/>
+                <item name="RegistrationAddress.strBuilding"/>
+                <item name="strRegistrationPhone"/>
+                <item name="RegistrationAddress.strForeignAddress"/>
+              </group>
+              <group name="Human_PermanentResidence_Coordinates">
+                <item name="RegistrationAddress.dblLongitude"/>
+                <item name="RegistrationAddress.dblLatitude"/>                
+              </group>
+              <group name="Human_Contact_Settlement">
+                <item name="ContactedPersonList"/>
+                <item name="ContactedPerson.strFullName" islist="true"/>
+                <item name="ContactedPerson.Person.RegistrationAddress.Settlement"  islist="true"/>
+                <item name="ContactedPerson.Person.RegistrationAddress.idfsSettlement" islist="true"/>
+                <item name="ContactedPerson.Person.RegistrationAddress.strPostCode" islist="true"/>
+                <item name="ContactedPerson.Person.RegistrationAddress.strStreetName" islist="true"/>
+                <item name="ContactedPerson.Person.RegistrationAddress.strApartment" islist="true"/>
+                <item name="ContactedPerson.Person.RegistrationAddress.strHouse" islist="true"/>
+                <item name="ContactedPerson.Person.RegistrationAddress.strBuilding" islist="true"/>                
+              </group>
+              <group name="Human_Contact_Details">
+                <item name ="ContactedPersonList"/>
+                <item name="ContactedPerson.strFullName" islist="true"/>
+                <item name="ContactedPerson.Person.RegistrationAddress.strPostCode" islist="true"/>
+                <item name="ContactedPerson.Person.RegistrationAddress.strStreetName" islist="true"/>
+                <item name="ContactedPerson.Person.RegistrationAddress.strApartment" islist="true"/>
+                <item name="ContactedPerson.Person.RegistrationAddress.strHouse" islist="true"/>
+                <item name="ContactedPerson.Person.RegistrationAddress.strBuilding" islist="true"/>
+              </group>
+            </personaldata>
+            <invisible>
+                <fields name="NotCollectedReason,idfsNotCollectedReason" predicate='c => c.SpecimenCollected == null || c.idfsYNSpecimenCollected == (long)YesNoUnknownValuesEnum.Yes || c.idfsYNSpecimenCollected == (long)YesNoUnknownValuesEnum.Unknown'/>
+                <fields name="datDischargeDate" predicate='c => c.Outcome == null || c.idfsOutcome == (long)OutcomeTypeEnum.Died || c.idfsOutcome == (long)OutcomeTypeEnum.Unknown'/>
+                <fields name="datDateOfDeath" predicate='c => c.Outcome == null || c.idfsOutcome == (long)OutcomeTypeEnum.Recovered || c.idfsOutcome == (long)OutcomeTypeEnum.Unknown'/>
+                <fields name="idfHospital" predicate='c => c.idfsHospitalizationStatus == null || c.idfsHospitalizationStatus != (long)HospitalizationStatus.Hospital'/>
+                <fields name="strCurrentLocation" predicate='c => c.idfsHospitalizationStatus == null || c.idfsHospitalizationStatus != (long)HospitalizationStatus.Other'/>
+                <fields name="*" predicate="c => false" />
+            </invisible>
+            <relations>
+              <!-- idfOutbreak -->
+              <relation name="PointGeoLocation" table="GeoLocation" internal="false" type="link" lazy="false" source="idfPointGeoLocation" target="idfGeoLocation" />
+              <!-- FF -->
+              <relation name="FFPresenterCs" table="FFPresenterModel" internal="false" type="link" source="idfCSObservation" target="CurrentObservation" lazy="false" validationprevicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext &amp;&amp; !eidss.model.Core.EidssUserContext.User.HasPermission(PermissionHelper.ExecutePermission(EIDSSPermissionObject.UseSimplifiedHumanCaseReportForm))" />
+              <relation name="FFPresenterEpi" table="FFPresenterModel" internal="false" type="link" source="idfEpiObservation" target="CurrentObservation" lazy="false" validationprevicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext &amp;&amp; !eidss.model.Core.EidssUserContext.User.HasPermission(PermissionHelper.ExecutePermission(EIDSSPermissionObject.UseSimplifiedHumanCaseReportForm))" /> 
+               
+              <relation name="Patient" table="Patient" internal="false" type="link" lazy="false" source="idfHuman" target="idfHuman" />
+              <relation name="RegistrationAddress" table="Address" internal="false" type="link" lazy="false" source="idfRegistrationAddress" target="idfGeoLocation" />
+              <!-- idfsSite -->
+              <relation name="CaseTests" table="CaseTest" internal="false" type="child" lazy="false" source="idfCase" target="" />
+              <relation name="CaseTestValidations" table="CaseTestValidation" internal="false" type="child" lazy="false" source="idfCase" target="" />
+              <relation name="ContactedPerson" table="ContactedCasePerson" internal="false" type="child" lazy="false" source="idfCase" target="idfHumanCase" />
+              <relation name="Samples" table="HumanCaseSample" internal="false" type="child" lazy="false" source="idfCase" target="idfCase" />
+              <relation name="AntimicrobialTherapy" table="AntimicrobialTherapy" internal="false" type="child" lazy="false" source="idfCase" target="idfHumanCase" />
+              <relation name="DiagnosisHistory" table="ChangeDiagnosisHistory" internal="false" type="child" lazy="false" source="idfCase" target="idfHumanCase" />
+            </relations>
+            <lookups>
+                <lookup name="CaseProgressStatus" table="BaseReference" section="rftCaseProgressStatus" source="idfsCaseProgressStatus" target="idfsBaseReference" notaddempty="true" />
+                <lookup name="InitialCaseClassification" table="InitialCaseClassificationLookup" source="idfsInitialCaseStatus" target="idfsReference" />
+                <lookup name="FinalCaseClassification" table="FinalCaseClassificationLookup" source="idfsFinalCaseStatus" target="idfsReference" />
+                <lookup name="PatientState" table="BaseReference" section="rftPatientState" source="idfsFinalState" target="idfsBaseReference" />
+                <lookup name="PatientLocationType" table="BaseReference" section="rftHospStatus" source="idfsHospitalizationStatus" target="idfsBaseReference" />
+                <lookup name="AntimicrobialTherapyUsed" table="BaseReference" section="rftYesNoValue" source="idfsYNAntimicrobialTherapy" target="idfsBaseReference" />
+                <lookup name="Hospitalization" table="BaseReference" section="rftYesNoValue" source="idfsYNHospitalization" target="idfsBaseReference" />
+                <lookup name="SpecimenCollected" table="BaseReference" section="rftYesNoValue" source="idfsYNSpecimenCollected" target="idfsBaseReference" />
+                <lookup name="RelatedToOutbreak" table="BaseReference" section="rftYesNoValue" source="idfsYNRelatedToOutbreak" target="idfsBaseReference" />
+                <lookup name="TestsConducted" table="BaseReference" section="rftYesNoValue" source="idfsYNTestsConducted" target="idfsBaseReference" />
+                <lookup name="Outcome" table="BaseReference" section="rftOutcome" source="idfsOutcome" target="idfsBaseReference" />
+                <lookup name="TentativeDiagnosis" table="DiagnosisLookup" source="idfsTentativeDiagnosis" target="idfsDiagnosis">
+                  <filters>
+                    <filter predicate="c => ((c.intHACode &amp; (int)HACode.Human) != 0) || c.idfsDiagnosis == obj.idfsTentativeDiagnosis" />
+                    <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsTentativeDiagnosis" />
+                  </filters>
+                </lookup>
+                <lookup name="FinalDiagnosis" table="DiagnosisLookup" source="idfsFinalDiagnosis" target="idfsDiagnosis">
+                  <filters>
+                    <filter predicate="c => ((c.intHACode &amp; (int)HACode.Human) != 0) || c.idfsDiagnosis == obj.idfsFinalDiagnosis" />
+                    <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsFinalDiagnosis" />
+                  </filters>
+                </lookup>
+              <!--lookup name="InitialCaseStatus" table="BaseReference" section="rftCaseStatus" source="idfsInitialCaseStatus" target="idfsBaseReference">
+                  <filters>
+                    <filter predicate="c => c.intHACode.GetValueOrDefault() == 98"/>
+                  </filters>
+                </lookup-->
+                <lookup name="NonNotifiableDiagnosis" table="BaseReference" section="rftNonNotifiableDiagnosis" source="idfsNonNotifiableDiagnosis" target="idfsBaseReference" />
+              <!--lookup name="FinalCaseStatus" table="BaseReference" section="rftCaseStatus" source="idfsFinalCaseStatus" target="idfsBaseReference" >
+                  <filters>
+                    <filter predicate="c => (c.intHACode.GetValueOrDefault() &amp; (int)HACode.Human) != 0"/>
+                  </filters>
+                </lookup-->
+                <lookup name="OccupationType" table="BaseReference" section="rftOccupationType" source="idfsOccupationType" target="idfsBaseReference" />
+                <lookup name="NotCollectedReason" table="BaseReference" section="rftNotCollectedReason" source="idfsNotCollectedReason" target="idfsBaseReference" />
+                <lookup name="SentByOffice" table="OrganizationLookup" source="idfSentByOffice" target="idfInstitution">
+                  <params>
+                    <param name="ID" const="null" />
+                    <param name="intHACode" type="int" lambda="c => (int)HACode.Human" />
+                  </params>
+                  <filters>
+                    <filter predicate="c => (((c.intHACode??0) &amp; (int)HACode.Human) != 0) || c.idfInstitution == obj.idfSentByOffice" />
+                  </filters>
+                </lookup>
+                <lookup name="ReceivedByOffice" table="OrganizationLookup" source="idfReceivedByOffice" target="idfInstitution">
+                  <params>
+                    <param name="ID" const="null" />
+                    <param name="intHACode" type="int" lambda="c => (int)HACode.Human" />
+                  </params>
+                  <filters>
+                    <filter predicate="c => (((c.intHACode??0) &amp; (int)HACode.Human) != 0) || c.idfInstitution == obj.idfReceivedByOffice" />
+                  </filters>
+              </lookup>
+              <lookup name="InvestigatedByOffice" table="OrganizationLookup" source="idfInvestigatedByOffice" target="idfInstitution">
+                <params>
+                  <param name="ID" const="null" />
+                  <param name="intHACode" type="int" lambda="c => (int)HACode.Human" />
+                </params>
+                <filters>
+                  <filter predicate="c => (((c.intHACode??0) &amp; (int)HACode.Human) != 0) || c.idfInstitution == obj.idfInvestigatedByOffice" />
+                </filters>
+              </lookup>
+              <lookup name="Hospital" table="OrganizationLookup" source="idfHospital" target="idfInstitution">
+                <params>
+                  <param name="ID" const="null" />
+                  <param name="intHACode" type="int" lambda="c => (int)HACode.Human" />
+                </params>
+                <filters>
+                  <filter predicate="c => (((c.intHACode??0) &amp; (int)HACode.Human) != 0) || c.idfInstitution == obj.idfHospital" />
+                </filters>
+              </lookup>
+              <lookup name="SentByPerson" table="WiderPersonLookup" source="idfSentByPerson" target="idfPerson">
+                <params>
+                  <param name="OfficeID" lambda="c => c.idfSentByOffice ?? -1" type="long" />
+                  <param name="ID" const="null" />
+                  <param name="ShowUsersOnly" const="false"/>
+                  <param name="intHACode" const="null"/>
+                </params>
+              </lookup>
+              <lookup name="ReceivedByPerson" table="WiderPersonLookup" source="idfReceivedByPerson" target="idfPerson">
+                <params>
+                  <param name="OfficeID" lambda="c => c.idfReceivedByOffice ?? -1" type="long" />
+                  <param name="ID" const="null" />
+                  <param name="ShowUsersOnly" const="false"/>
+                  <param name="intHACode" const="null"/>
+                </params>
+              </lookup>
+              <lookup name="InvestigatedByPerson" table="WiderPersonLookup" source="idfInvestigatedByPerson" target="idfPerson">
+                <params>
+                  <param name="OfficeID" lambda="c => c.idfInvestigatedByOffice ?? -1" type="long" />
+                  <param name="ID" const="null" />
+                  <param name="ShowUsersOnly" const="false"/>
+                  <param name="intHACode" const="null"/>
+                </params>
+              </lookup>
+            </lookups>
+            <storage>
+              <post />
+              <delete />
+              <candelete />
+            </storage>
+            <postorder>
+              <item name="Patient"/>
+              <item name="PointGeoLocation"/>
+              <item name="this"/>
+              <item name="ContactedPerson"/>
+              <item name="Samples"/>
+              <item name="CaseTests"/>
+              <item name="AntimicrobialTherapy"/>
+              <item name="DiagnosisHistory"/>
+              <item name="CaseTestValidations"/>             
+              <item name="FFPresenterCs"/>
+              <item name="FFPresenterEpi"/>
+            </postorder>
+            <deleteorder>
+              <item name="FFPresenterEpi"/>
+              <item name="FFPresenterCs"/>              
+              <item name="DiagnosisHistory"/>
+              <item name="AntimicrobialTherapy"/>
+              <item name="CaseTests"/>
+              <item name="Samples"/>
+              <item name="ContactedPerson"/>
+              <item name="this"/>
+              <item name="PointGeoLocation"/>
+              <item name="Patient"/>
+            </deleteorder>
+            <extenders>
+                <creating>
+                    <scalar_extender target="idfCase" class="GetNewIDExtender" />
+                    <scalar_extender target="idfEpiObservation" class="GetNewIDExtender" />
+                    <scalar_extender target="idfCSObservation" class="GetNewIDExtender" />
+                    <lambda_extender target="strCaseID" type="string" lambda='c => string.Empty' />
+                    <scalar_extender target="idfsSite" class="GetSiteIDExtender" />
+                    <!-- Create Patient object with HumanCase creating and set case's id as creating method param -->
+                    <lambda_extender target="Patient" type="Patient" lambda="c => PatientAccessor.Create(manager, c, c.idfCase)" />
+                    <scalar_extender target="Patient.idfRootHuman" class="GetNewIDExtender" />
+                    <!-- Copy registration address from Patient's registration address -->
+                    <lambda_extender target="RegistrationAddress" type="Address" lambda="c => c.Patient.RegistrationAddress" />
+                    <!-- Create geolocation -->
+                    <lambda_extender target="PointGeoLocation" type="GeoLocation" lambda="c => PointGeoLocationAccessor.CreateWithoutCountry(manager, c)" />
+
+                    <!-- The field Date Entered will be populated automatically when the case is created -->
+                    <lambda_extender target="datEnteredDate" type="DateTime?" lambda="c => DateTime.Now" />   
+                </creating>
+                <created>
+                    <lambda_extender target="CaseProgressStatus" type="BaseReference" lambda="c => c.CaseProgressStatusLookup.Where(l => l.idfsBaseReference == (long)CaseStatusEnum.InProgress).SingleOrDefault()"/>
+                    <!--<lambda_extender target="idfPersonEnteredBy" type="long" lambda="c => (long)EidssUserContext.User.EmployeeID"/>-->
+                    <lambda_extender target="strPersonEnteredBy" type="string" lambda="c => EidssUserContext.User.FullName"/>
+                    <lambda_extender target="strOfficeEnteredBy" type="string" lambda="c => EidssUserContext.User.Organization"/>
+                    <custom_extender>
+                      <text>
+                        if (EidssUserContext.Instance != null)
+                          if (EidssUserContext.User != null)
+                          {                             
+                            if (EidssUserContext.User.EmployeeID != null)
+                            {
+                              long em;
+                              if (long.TryParse(EidssUserContext.User.EmployeeID.ToString(), out em))
+                              obj.idfPersonEnteredBy = em;
+                            }
+                            if (eidss.model.Core.EidssUserContext.User.HasPermission(PermissionHelper.ExecutePermission(EIDSSPermissionObject.UseSimplifiedHumanCaseReportForm)))
+                            {
+                              obj.strNote = eidss.model.Resources.EidssMessages.Get("msgSimplifiedHumanCaseMode") ?? "";
+                            }
+                          }                        
+                      </text>
+                    </custom_extender>
+                  <custom_extender>
+                    <text>
+                      var accFF = FFPresenterModel.Accessor.Instance(null);
+                      obj.FFPresenterCs = accFF.SelectByKey(manager, obj.idfCSObservation);
+                      obj.FFPresenterCs.SetProperties(EidssSiteContext.Instance.CountryID, null, FFTypeEnum.HumanClinicalSigns, obj.idfCSObservation.Value, obj.idfCase);
+                      obj.FFPresenterCs.DynamicParameterEnabled = true;
+                      obj.FFPresenterEpi = accFF.SelectByKey(manager, obj.idfEpiObservation);
+                      obj.FFPresenterEpi.SetProperties(EidssSiteContext.Instance.CountryID, null, FFTypeEnum.HumanEpiInvestigations, obj.idfEpiObservation.Value, obj.idfCase);
+                    </text>
+                  </custom_extender>
+                </created>
+                <loading>
+                </loading>
+                <loaded>
+                  <lambda_extender target="TestsConducted" type="BaseReference"
+                                   lambda="c => (c.blnEnableTestsConducted == null || c.blnEnableTestsConducted.Value || c.TestsConductedLookup == null || c.blnEnableTestsConductedCalc) ? c.TestsConducted : c.TestsConductedLookup.Where(i => i.idfsBaseReference == (long)YesNoUnknownValuesEnum.Yes).SingleOrDefault()"/>
+                  <lambda_list_extender list="CaseTests" type="long" target="idfTesting" lambda="c => { (t.GetAccessor() as CaseTest.Accessor).LoadLookup_TestNameRef(manager, t); return t.idfTesting; }"/>
+                  <lambda_extender target="Patient.RegistrationAddress.blnForceReadOnly" type="bool"
+                                   lambda="c => c.blnPermantentAddressAsCurrent.HasValue &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? true : false"/>
+                  <lambda_extender target="RegistrationAddress.blnForceReadOnly" type="bool"
+                                   lambda="c => c.blnPermantentAddressAsCurrent.HasValue &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? true : false"/>
+                  <lambda_extender target="strHospital" type="string"
+                                   lambda='c => !c.idfHospital.HasValue || c.idfHospital == 0 || c.idfsHospitalizationStatus != (long)HospitalizationStatus.Hospital || c.HospitalLookup.SingleOrDefault(i => i.idfInstitution == c.idfHospital) == null ? "" : c.HospitalLookup.Single(i => i.idfInstitution == c.idfHospital).name'/>
+                  <custom_extender>
+                    <text>
+                      if (obj.idfCSObservation.HasValue &amp;&amp; obj.idfsCSFormTemplate.HasValue)
+                      {
+                        obj.FFPresenterCs.SetProperties(obj.idfsCSFormTemplate.Value, obj.idfCase);
+                        obj.FFPresenterCs.DynamicParameterEnabled = true;
+                      }
+                      if (obj.idfEpiObservation.HasValue &amp;&amp; obj.idfsEPIFormTemplate.HasValue)
+                      {
+                        obj.FFPresenterEpi.SetProperties(obj.idfsEPIFormTemplate.Value, obj.idfCase);
+                      }
+                    </text>
+                  </custom_extender>
+                </loaded>
+                <posting>
+                  <lambda_extender target="datModificationForArchiveDate" type="DateTime?" lambda="c => c.HasChanges ? DateTime.Now : c.datModificationForArchiveDate"/>
+                  <db_lambda_extender target="strCaseID" type="string" lambda='(c,m) => 
+                      !string.IsNullOrEmpty(c.strCaseID) 
+                      ? c.strCaseID 
+                      : m.SetSpCommand("dbo.spGetNextNumber", (long)NumberingObjectEnum.HumanCase, DBNull.Value, DBNull.Value)
+                      .ExecuteScalar&lt;string&gt;(ScalarSourceType.OutputParameter, "NextNumberValue")' />
+                    
+                  <!-- In the field Date Last Saved the current date will be inserted each time the changes are saved -->
+                  <lambda_extender target="datModificationDate" type="DateTime?" lambda="c => DateTime.Now" />
+                  <lambda_extender target="intPatientAge" type="int?" lambda="c => c.Patient.intPatientAgeFromCase"/>
+                  <lambda_extender target="idfsHumanAgeType" type="long?" lambda="c => c.Patient.idfsHumanAgeTypeFromCase"/>
+                </posting>
+            </extenders>
+            <handlers>
+                <fieldhandler>
+                    <lambda_handler target="Patient.intPatientAgeFromCase" field="datD" type="int?" lambda="c => c.CalcPatientAge()" />
+                    <lambda_handler target="Patient.HumanAgeType" field="datD" type="BaseReference" 
+                                    lambda="c => c.Patient.HumanAgeTypeLookup.Where(a => a.idfsBaseReference == c.CalcPatientAgeType()).SingleOrDefault()" />
+                    <!-- If the patient is in a hospital, the Hospital name text-field can be filled in (otherwise this field is blocked), 
+                         if he or she is neither at home nor in a hospital, the Other location name can also be given in the text-field (otherwise this field is blocked). -->
+                    <lambda_handler target="strCurrentLocation" field="idfsHospitalizationStatus" type="string" lambda="c => null"/>
+                    <!--lambda_handler target="Hospital" field="idfsHospitalizationStatus" type="OrganizationLookup" lambda="c => c.idfsHospitalizationStatus == (long)HospitalizationStatus.Hospital ? c.Hospital : null"/-->
+                    <lambda_handler target="idfHospital" field="idfsHospitalizationStatus" type="long?" lambda='c => c.idfsHospitalizationStatus == (long)HospitalizationStatus.Hospital ? c.idfHospital : null'/>
+                    <lambda_handler target="strHospital" field="idfsHospitalizationStatus" type="string" lambda='c => c.idfsHospitalizationStatus == (long)HospitalizationStatus.Hospital ? c.strHospital : ""'/>
+                    <!-- If a user clears the Changed Diagnosis field, then the Date of Changed Diagnosis becomes blank and disabled. -->
+                    <lambda_handler target="datFinalDiagnosisDate" field="idfsFinalDiagnosis" type="DateTime?" 
+                                    lambda="c => c.idfsFinalDiagnosis == null ? null : c.datFinalDiagnosisDate"/>
+
+                    <!--lambda_handler field="blnPermantentAddressAsCurrent" target="Patient.RegistrationAddress" type="Address" 
+                                    lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.RegistrationAddress.CopyFieldsFrom(c.Patient.CurrentResidenceAddress) : c.Patient.RegistrationAddress.Clear()"/-->
+                    <custom_handler field="blnPermantentAddressAsCurrent">
+                      <text>
+                          if (obj.blnPermantentAddressAsCurrent.HasValue &amp;&amp; obj.blnPermantentAddressAsCurrent.Value)
+                          {
+                              obj.Patient.RegistrationAddress.CopyFieldsFrom(obj.Patient.CurrentResidenceAddress);
+                              obj.RegistrationAddress.CopyFieldsFrom(obj.Patient.CurrentResidenceAddress);
+                              obj.strRegistrationPhone = obj.Patient.strHomePhone;
+                          }
+                          else
+                          {
+                              obj.Patient.RegistrationAddress.Clear();
+                              obj.RegistrationAddress.Clear();
+                              obj.strRegistrationPhone = "";
+                          }
+                      </text>
+                    </custom_handler>
+                    <lambda_handler field="blnPermantentAddressAsCurrent" target="Patient.RegistrationAddress.blnForceReadOnly" type="bool" 
+                                    lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? true : false"/>
+                    <lambda_handler field="blnPermantentAddressAsCurrent" target="RegistrationAddress.blnForceReadOnly" type="bool" 
+                                    lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? true : false"/>
+                  
+                    <!-- change diagnosis -->
+                    <custom_handler field="idfsFinalDiagnosis">
+                        <text>
+                          if (obj.idfsFinalDiagnosis_Previous != obj.idfsFinalDiagnosis)
+                          {
+                              var historyItem = obj.DiagnosisHistory.Where(h => h.IsNew).SingleOrDefault();
+                              if (historyItem == null)
+                              {
+                                  int count = obj.DiagnosisHistory.Count;
+                                  if (count == 0 || count > 0 &amp;&amp; obj.idfsFinalDiagnosis_Previous.HasValue || count > 0 &amp;&amp; !obj.idfsFinalDiagnosis_Previous.HasValue  &amp;&amp; obj.DiagnosisHistory[count - 1].CurrentDiagnosis == null)
+                                  {
+                                      using (DbManagerProxy manager = DbManagerFactory.Factory.Create(ModelUserContext.Instance))
+                                      {
+                                          obj.DiagnosisHistory.Add(DiagnosisHistoryAccessor.Create(manager, obj, obj.idfCase, obj.idfsFinalDiagnosis_Previous, obj.idfsFinalDiagnosis));
+                                      }
+                                  }
+                              }
+                              else
+                              {
+                                  historyItem.CurrentDiagnosis = obj.FinalDiagnosisLookup.Where(a => a.idfsDiagnosis == obj.idfsFinalDiagnosis).SingleOrDefault();
+                              }
+                          }
+                        </text>
+                    </custom_handler>
+                  
+                    <custom_handler field="idfsFinalDiagnosis">
+                        <text>                          
+                          obj.blnClinicalDiagBasis = null;
+                          obj.blnEpiDiagBasis = null;
+                          obj.blnLabDiagBasis = null;
+                        </text>
+                    </custom_handler>
+
+                    <lambda_handler field="idfsYNHospitalization" target="datHospitalizationDate" type="DateTime?" 
+                                    lambda='c => (c.Hospitalization == null || c.idfsYNHospitalization != (long)YesNoUnknownValuesEnum.Yes) ? null : c.datHospitalizationDate' />
+                    <lambda_handler field="idfsYNHospitalization" target="strHospitalizationPlace" type="string"
+                                    lambda='c => (c.Hospitalization == null || c.idfsYNHospitalization != (long)YesNoUnknownValuesEnum.Yes) ? "" : c.strHospitalizationPlace' />
+
+                    <lambda_handler field="idfsYNSpecimenCollected" target="idfsNotCollectedReason" type="long?"
+                                    lambda='c => (c.SpecimenCollected == null || c.idfsYNSpecimenCollected == (long)YesNoUnknownValuesEnum.Yes || c.idfsYNSpecimenCollected == (long)YesNoUnknownValuesEnum.Unknown) ? null : c.idfsNotCollectedReason' />
+
+                    <lambda_handler field="idfsYNSpecimenCollected" target="strSampleNotes" type="string"
+                                    lambda='c => (c.SpecimenCollected == null || c.idfsYNSpecimenCollected == (long)YesNoUnknownValuesEnum.No || c.idfsYNSpecimenCollected == (long)YesNoUnknownValuesEnum.Unknown) ? "" : c.strSampleNotes' />
+
+                    <lambda_handler field="idfsOutcome" target="datDischargeDate" type="DateTime?"
+                                    lambda='c => (c.Outcome == null || c.idfsOutcome != (long)OutcomeTypeEnum.Recovered) ? null : c.datDischargeDate' />
+
+                    <lambda_handler field="idfsOutcome" target="datDateOfDeath" type="DateTime?"
+                                    lambda='c => (c.Outcome == null || c.idfsOutcome != (long)OutcomeTypeEnum.Died) ? null : c.datDateOfDeath' />
+
+                    <lambda_handler field="idfsYNRelatedToOutbreak" target="idfOutbreak" type="long?" 
+                                    lambda='c => (c.RelatedToOutbreak == null || c.idfsYNRelatedToOutbreak != (long)YesNoUnknownValuesEnum.Yes) ? null : c.idfOutbreak' />
+                    <lambda_handler field="idfsYNRelatedToOutbreak" target="strOutbreakID" type="string"
+                                    lambda='c => (c.RelatedToOutbreak == null || c.idfsYNRelatedToOutbreak != (long)YesNoUnknownValuesEnum.Yes) ? "" : c.strOutbreakID' />
+
+                    <lambda_handler field='idfsFinalCaseStatus' target='datFinalCaseClassificationDate' type='DateTime?'
+                                    lambda='c => eidss.model.Core.EidssSiteContext.Instance.CustomizationPackageID != (long) eidss.model.Enums.CustomizationPackage.Georgia &amp;&amp; c.idfsFinalCaseStatus.HasValue &amp;&amp; !c.idfsFinalCaseStatus_Previous.HasValue ? DateTime.Today : c.datFinalCaseClassificationDate'/>
+                  
+                    <scalar_handler class="SetScalarHandler" target="strCurrentLocation" field="idfsHospitalizationStatus" lambda='(o, fld, prev_fld) => ""' />
+                  
+                    <!-- set FF templates -->
+                    <custom_handler field="idfsDiagnosis">
+                        <text>
+                          using (var manager = DbManagerFactory.Factory.Create(ModelUserContext.Instance))
+                          {
+                            var idCountry = obj.Patient.CurrentResidenceAddress.idfsCountry;
+                            if (idCountry.HasValue)
+                            {
+                              obj.FFPresenterEpi.SetProperties(FFPresenterModel.LoadActualTemplate(idCountry.Value, obj.idfsDiagnosis, FFTypeEnum.HumanEpiInvestigations), obj.idfCase);
+                              obj.FFPresenterCs.SetProperties(FFPresenterModel.LoadActualTemplate(idCountry.Value, obj.idfsDiagnosis, FFTypeEnum.HumanClinicalSigns), obj.idfCase);
+                              obj.FFPresenterCs.DynamicParameterEnabled = true;
+                              obj.idfsCSFormTemplate = obj.FFPresenterCs.CurrentTemplate.idfsFormTemplate;
+                              obj.idfsEPIFormTemplate = obj.FFPresenterEpi.CurrentTemplate.idfsFormTemplate;
+                            }
+                          }                          
+                        </text>
+                    </custom_handler>
+                    <custom_handler field="idfsDiagnosis">
+                        <text>                          
+                          obj.blnClinicalDiagBasis = null;
+                          obj.blnEpiDiagBasis = null;
+                          obj.blnLabDiagBasis = null;
+                        </text>
+                    </custom_handler>
+                    <lookup_handler lookup="SentByPerson" field="idfSentByOffice" />
+                    <lookup_handler lookup="ReceivedByPerson" field="idfReceivedByOffice" />
+                    <lookup_handler lookup="InvestigatedByPerson" field="idfInvestigatedByOffice" />
+                    <scalar_handler class="SetScalarHandler" target="SentByPerson" field="idfSentByOffice" lambda="(o, fld, prev_fld) => null" />
+                    <scalar_handler class="SetScalarHandler" target="ReceivedByPerson" field="idfReceivedByOffice" lambda="(o, fld, prev_fld) => null" />
+                    <scalar_handler class="SetScalarHandler" target="InvestigatedByPerson" field="idfInvestigatedByOffice" lambda="(o, fld, prev_fld) => null" />
+
+
+                </fieldhandler>
+                <childhandler>
+                  <lambda_handler field="strHomePhone" container="Patient" type="string" target="strRegistrationPhone"
+                                  lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.strHomePhone : c.strRegistrationPhone" />
+
+                  <lambda_handler target="Patient.intPatientAgeFromCase" container="Patient" field="datDateofBirth" type="int?" lambda="c => c.CalcPatientAge()" />
+                    <lambda_handler target="Patient.HumanAgeType" container="Patient" field="datDateofBirth" type="BaseReference" 
+                                    lambda="c => c.Patient.HumanAgeTypeLookup.Where(a => a.idfsBaseReference == c.CalcPatientAgeType()).SingleOrDefault()" />
+                    <lambda_handler target="Patient.intPatientAgeFromCase" container="Patient" field="idfsHumanAgeTypeFromCase" type="int?"
+                                    lambda="c => c.Patient.idfsHumanAgeTypeFromCase == null ? c.Patient.intPatientAgeFromCase : 
+                                    ((c.Patient.idfsHumanAgeTypeFromCase == (long)HumanAgeTypeEnum.Years &amp;&amp; c.Patient.intPatientAgeFromCase &gt; 200) ? 200 :
+                                    ((c.Patient.idfsHumanAgeTypeFromCase == (long)HumanAgeTypeEnum.Month &amp;&amp; c.Patient.intPatientAgeFromCase &gt; 60) ? 60 :
+                                    ((c.Patient.idfsHumanAgeTypeFromCase == (long)HumanAgeTypeEnum.Days &amp;&amp; c.Patient.intPatientAgeFromCase &gt; 31) ? 31 :
+                                    c.Patient.intPatientAgeFromCase)))
+                                    "/>
+                  
+                  <lambda_handler container="Patient.CurrentResidenceAddress" field="Country" type="CountryLookup" target="Patient.RegistrationAddress.Country"
+                                  lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.CurrentResidenceAddress.Country : c.Patient.RegistrationAddress.Country" />
+                  <lambda_handler container="Patient.CurrentResidenceAddress" field="Country" type="CountryLookup" target="RegistrationAddress.Country"
+                                  lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.CurrentResidenceAddress.Country : c.RegistrationAddress.Country" />
+                  
+                  <lambda_handler container="Patient.CurrentResidenceAddress" field="Region" type="RegionLookup" target="Patient.RegistrationAddress.Region"
+                                  lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.CurrentResidenceAddress.Region : c.Patient.RegistrationAddress.Region" />
+                  <lambda_handler container="Patient.CurrentResidenceAddress" field="Region" type="RegionLookup" target="RegistrationAddress.Region"
+                                  lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.CurrentResidenceAddress.Region : c.RegistrationAddress.Region" />
+
+                  <lambda_handler container="Patient.CurrentResidenceAddress" field="Rayon" type="RayonLookup" target="Patient.RegistrationAddress.Rayon"
+                                  lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.CurrentResidenceAddress.Rayon : c.Patient.RegistrationAddress.Rayon" />
+                  <lambda_handler container="Patient.CurrentResidenceAddress" field="Rayon" type="RayonLookup" target="RegistrationAddress.Rayon"
+                                  lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.CurrentResidenceAddress.Rayon : c.RegistrationAddress.Rayon" />
+
+                  <lambda_handler container="Patient.CurrentResidenceAddress" field="Settlement" type="SettlementLookup" target="Patient.RegistrationAddress.Settlement"
+                                  lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.CurrentResidenceAddress.Settlement : c.Patient.RegistrationAddress.Settlement" />
+                  <lambda_handler container="Patient.CurrentResidenceAddress" field="Settlement" type="SettlementLookup" target="RegistrationAddress.Settlement"
+                                  lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.CurrentResidenceAddress.Settlement : c.RegistrationAddress.Settlement" />
+
+                  <lambda_handler container="Patient.CurrentResidenceAddress" field="strStreetName" type="string" target="Patient.RegistrationAddress.strStreetName"
+                                  lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.CurrentResidenceAddress.strStreetName : c.Patient.RegistrationAddress.strStreetName" />
+                  <lambda_handler container="Patient.CurrentResidenceAddress" field="strStreetName" type="string" target="RegistrationAddress.strStreetName"
+                                  lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.CurrentResidenceAddress.strStreetName : c.RegistrationAddress.strStreetName" />
+
+                  <lambda_handler container="Patient.CurrentResidenceAddress" field="strApartment" type="string" target="Patient.RegistrationAddress.strApartment"
+                                  lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.CurrentResidenceAddress.strApartment : c.Patient.RegistrationAddress.strApartment" />
+                  <lambda_handler container="Patient.CurrentResidenceAddress" field="strApartment" type="string" target="RegistrationAddress.strApartment"
+                                  lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.CurrentResidenceAddress.strApartment : c.RegistrationAddress.strApartment" />
+
+                  <lambda_handler container="Patient.CurrentResidenceAddress" field="strPostCode" type="string" target="Patient.RegistrationAddress.strPostCode"
+                                  lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.CurrentResidenceAddress.strPostCode : c.Patient.RegistrationAddress.strPostCode" />
+                  <lambda_handler container="Patient.CurrentResidenceAddress" field="strPostCode" type="string" target="RegistrationAddress.strPostCode"
+                                  lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.CurrentResidenceAddress.strPostCode : c.RegistrationAddress.strPostCode" />
+
+                  <lambda_handler container="Patient.CurrentResidenceAddress" field="strHouse" type="string" target="Patient.RegistrationAddress.strHouse"
+                                  lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.CurrentResidenceAddress.strHouse : c.Patient.RegistrationAddress.strHouse" />
+                  <lambda_handler container="Patient.CurrentResidenceAddress" field="strHouse" type="string" target="RegistrationAddress.strHouse"
+                                  lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.CurrentResidenceAddress.strHouse : c.RegistrationAddress.strHouse" />
+
+                  <lambda_handler container="Patient.CurrentResidenceAddress" field="strBuilding" type="string" target="Patient.RegistrationAddress.strBuilding"
+                                  lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.CurrentResidenceAddress.strBuilding : c.Patient.RegistrationAddress.strBuilding" />
+                  <lambda_handler container="Patient.CurrentResidenceAddress" field="strBuilding" type="string" target="RegistrationAddress.strBuilding"
+                                  lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.CurrentResidenceAddress.strBuilding : c.RegistrationAddress.strBuilding" />
+
+                  <lambda_handler container="Patient.CurrentResidenceAddress" field="strForeignAddress" type="string" target="Patient.RegistrationAddress.strForeignAddress"
+                                  lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.CurrentResidenceAddress.strForeignAddress : c.Patient.RegistrationAddress.strForeignAddress" />
+                  <lambda_handler container="Patient.CurrentResidenceAddress" field="strForeignAddress" type="string" target="RegistrationAddress.strForeignAddress"
+                                  lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.CurrentResidenceAddress.strForeignAddress : c.RegistrationAddress.strForeignAddress" />
+
+                  <lambda_handler container="Patient.CurrentResidenceAddress" field="blnForeignAddress" type="bool" target="Patient.RegistrationAddress.blnForeignAddress"
+                                  lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.CurrentResidenceAddress.blnForeignAddress : c.Patient.RegistrationAddress.blnForeignAddress" />
+                  <lambda_handler container="Patient.CurrentResidenceAddress" field="blnForeignAddress" type="bool" target="RegistrationAddress.blnForeignAddress"
+                                  lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.CurrentResidenceAddress.blnForeignAddress : c.RegistrationAddress.blnForeignAddress" />
+
+                  <lambda_handler container="Patient.CurrentResidenceAddress" field="dblLatitude" type="double?" target="Patient.RegistrationAddress.dblLatitude"
+                                  lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.CurrentResidenceAddress.dblLatitude : c.Patient.RegistrationAddress.dblLatitude" />
+                  <lambda_handler container="Patient.CurrentResidenceAddress" field="dblLatitude" type="double?" target="RegistrationAddress.dblLatitude"
+                                  lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.CurrentResidenceAddress.dblLatitude : c.RegistrationAddress.dblLatitude" />
+
+                  <lambda_handler container="Patient.CurrentResidenceAddress" field="dblLongitude" type="double?" target="Patient.RegistrationAddress.dblLongitude"
+                                  lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.CurrentResidenceAddress.dblLongitude : c.Patient.RegistrationAddress.dblLongitude" />
+                  <lambda_handler container="Patient.CurrentResidenceAddress" field="dblLongitude" type="double?" target="RegistrationAddress.dblLongitude"
+                                  lambda="c => c.blnPermantentAddressAsCurrent != null &amp;&amp; c.blnPermantentAddressAsCurrent.Value ? c.Patient.CurrentResidenceAddress.dblLongitude : c.RegistrationAddress.dblLongitude" />
+                </childhandler>
+                <childaddlist>
+                  <lambda_handler container="CaseTests" field="" filter="c => true" target="TestsConducted" type="BaseReference"
+                                  lambda="c => (c.CaseTests.Count(i => !i.IsMarkedToDelete) == 0) ? c.TestsConducted : c.TestsConductedLookup.Where(i => i.idfsBaseReference == (long)YesNoUnknownValuesEnum.Yes).SingleOrDefault()"/>
+                </childaddlist>
+            </handlers>
+            <validators>
+              <chains>
+                
+                <item field="datDateofBirth" type="DateTime" container="Patient"> <!-- Date of Birth (Notification tab, Demographic Information section) -->
+                  <item field="datDateOfDeath"> <!-- Date of Death shall be greater than Date of Birth -->
+                    <item field="CurrentDate" value="DateTime.Now" />
+                  </item>
+                  <item field="datFacilityLastVisit"> <!-- Date of last presence at work... (Notification tab, Demographic Information section) -->
+                    <item field="CurrentDate" value="DateTime.Now" />
+                  </item>
+                  <item field="datHospitalizationDate"> <!-- Date of hospitalization (Case Investigation  tab, Clinical Information subtab) -->
+                    <item field="CurrentDate" value="DateTime.Now" />
+                  </item>
+                  <item field="datDateOfLastContact" collection="ContactedPerson"> <!-- Date of last contact (Case Investigation  tab, Contact List subtab) -->
+                    <item field="CurrentDate" value="DateTime.Now" />
+                  </item>
+                  <item field="datFirstSoughtCareDate">
+                    <item field="CurrentDate" value="DateTime.Now" />
+                  </item>
+                  <item field="datFieldCollectionDate" collection="Samples" filter="c => !c.IsMarkedToDelete &amp;&amp; c.idfsSampleType != (long)SampleTypeEnum.Unknown">
+                    <item field="datFieldSentDate" nested="true" >
+                      <item field="CurrentDate" value="DateTime.Now" />
+                    </item>
+                  </item>
+                  <item field="datAccession" collection="Samples" filter="c => !c.IsMarkedToDelete &amp;&amp; c.idfsSampleType != (long)SampleTypeEnum.Unknown">
+                    <item field="CurrentDate" value="DateTime.Now" />
+                  </item>
+                  <item field="datExposureDate">
+                    <item field="datOnSetDate">
+                      <item field="datTentativeDiagnosisDate">
+                        <item field="datFinalDiagnosisDate">
+                          <item field="datFinalCaseClassificationDate" predicate="с => eidss.model.Core.EidssSiteContext.Instance.CustomizationPackageID != (long) eidss.model.Enums.CustomizationPackage.Georgia">
+                            <item field="CurrentDate" value="DateTime.Now" />
+                          </item>
+                        </item>
+                        <item field="datCompletionPaperFormDate">
+                          <item field="datNotificationDate">
+                              <item field="datEnteredDate" />
+                          </item>
+                        </item>
+                      </item>
+                    </item>
+                  </item>
+                </item>
+
+                <item field="datConcludedDate" type="DateTime" collection="CaseTests">
+                  <item field="CurrentDate" value="DateTime.Now" />
+                </item>
+                
+              </chains>
+              
+                <change>
+                  
+                  
+                    <!-- If any value is selected the Changed diagnosis (if known) field on the Notification tab and a user tries to select the same value
+                         in the Diagnosis field, then the system returns the previous value (even if it was blank) and displays message box
+                         ‘The changed diagnosis should differ from the initial diagnosis.’ -->
+                  <predicate_validator field="idfsFinalDiagnosis" predicate="c => !c.idfsTentativeDiagnosis.HasValue || !c.idfsFinalDiagnosis.HasValue || (c.idfsTentativeDiagnosis.HasValue &amp;&amp; c.idfsFinalDiagnosis.HasValue &amp;&amp; c.idfsFinalDiagnosis != c.idfsTentativeDiagnosis)" message="idfsFinalDiagnosis_idfsTentativeDiagnosis_msgId" >
+                    <params>
+                      <param type ="string" lambda='c => c.FinalDiagnosisLookup.Exists(a => a.idfsDiagnosis == c.idfsFinalDiagnosis) ? c.FinalDiagnosisLookup.Single(a => a.idfsDiagnosis == c.idfsFinalDiagnosis).name : ""'/>
+                      <param type ="string" lambda='c => c.TentativeDiagnosisLookup.Exists(a => a.idfsDiagnosis == c.idfsTentativeDiagnosis) ? c.TentativeDiagnosisLookup.Single(a => a.idfsDiagnosis == c.idfsTentativeDiagnosis).name : ""'/>
+                    </params>
+                  </predicate_validator>
+                  <predicate_validator field="idfsTentativeDiagnosis" predicate="c => !c.idfsTentativeDiagnosis.HasValue || !c.idfsFinalDiagnosis.HasValue || (c.idfsTentativeDiagnosis.HasValue &amp;&amp; c.idfsFinalDiagnosis.HasValue &amp;&amp; c.idfsFinalDiagnosis != c.idfsTentativeDiagnosis)" message="idfsFinalDiagnosis_idfsTentativeDiagnosis_msgId" >
+                    <params>
+                      <param type ="string" lambda='c => c.FinalDiagnosisLookup.Exists(a => a.idfsDiagnosis == c.idfsFinalDiagnosis) ? c.FinalDiagnosisLookup.Single(a => a.idfsDiagnosis == c.idfsFinalDiagnosis).name : ""'/>
+                      <param type ="string" lambda='c => c.TentativeDiagnosisLookup.Exists(a => a.idfsDiagnosis == c.idfsTentativeDiagnosis) ? c.TentativeDiagnosisLookup.Single(a => a.idfsDiagnosis == c.idfsTentativeDiagnosis).name : ""'/>
+                    </params>
+                  </predicate_validator>
+
+                    <!-- If the value of the field Hospitalization is Yes and at least one of two fields (Date of Hospitalization and Place of Hospitalization) 
+                         is not blank and a user tries to clear or change the value of the Hospitalization field, then confirmation dialog opens 
+                         ‘There is some information on hospitalization. Are you sure you want to delete it?’ with Yes and No buttons. If a user clicks 
+                         No, then the system cancels operation and the value of the Hospitalization field is not changed. If a user clicks Yes, 
+                         then Date of Hospitalization and Place of Hospitalization fields become blank and disabled, and the value of the Hospitalization field is changed. -->
+                    <predicate_validator field="idfsYNHospitalization" message="mbSureToDisableHosp" shouldAsk="true"
+                                         predicate='c => !((c.Hospitalization == null || c.idfsYNHospitalization != (long)YesNoUnknownValuesEnum.Yes)
+                                            &amp;&amp; (c.datHospitalizationDate != null || !string.IsNullOrEmpty(c.strHospitalizationPlace)))' />
+
+                    <!-- If the value of the field Antibiotic/Antiviral therapy administered before samples collection is Yes and the 
+                         Antibiotic table has at least one row and a user tries to clear or change the value of the Antibiotic/Antiviral therapy 
+                         administered before samples collection field, then the system cancels the operation and a message box 
+                         'It is impossible to disable the table of antibiotic or antiviral therapy because it contains some records.' appears.
+                    -->
+                    <predicate_validator field="idfsYNAntimicrobialTherapy" message="mbCannotDeleteAllAntibiotics"
+                                         predicate='c => !((c.AntimicrobialTherapyUsed == null || c.idfsYNAntimicrobialTherapy != (long)YesNoUnknownValuesEnum.Yes)
+                                            &amp;&amp; (c.AntimicrobialTherapy.Where(s => !s.IsMarkedToDelete).Count() &gt; 0))' />
+
+                    <predicate_validator field="idfsYNSpecimenCollected" message="mbCannotDeleteAllSpecimens"
+                                         predicate='c => !((c.SpecimenCollected == null || c.idfsYNSpecimenCollected != (long)YesNoUnknownValuesEnum.Yes)
+                                            &amp;&amp; (c.Samples.Where(s => !s.IsMarkedToDelete &amp;&amp; s.idfsSampleType != (long)SampleTypeEnum.Unknown).Count() &gt; 0))' />
+
+                    <predicate_validator field="idfsYNRelatedToOutbreak" message="mbSureToRemoveFromOutbreak" shouldAsk="true"
+                                         predicate='c => !((c.RelatedToOutbreak == null || c.idfsYNRelatedToOutbreak != (long)YesNoUnknownValuesEnum.Yes)
+                                            &amp;&amp; (c.idfOutbreak != null))' />
+
+                  <custom_validator field="idfOutbreak" method="CheckOutbreak" onYesAsk="c => c.ChangeOutbreakDiagnosis()" />
+                
+                </change>
+                <childchange>
+                  <container name="ContactedPerson" filter="c => !c.IsMarkedToDelete">
+                    <predicate_validator container="ContactedPerson" field="" predicate="(c,i) => c.ContactedPerson.Count(j => 
+                        !j.IsMarkedToDelete 
+                        &amp;&amp; j.idfContactedCasePerson != i.idfContactedCasePerson
+                        &amp;&amp; j.Person.strFirstName == i.Person.strFirstName
+                        &amp;&amp; j.Person.strLastName == i.Person.strLastName
+                        &amp;&amp; j.Person.strSecondName == i.Person.strSecondName
+                        &amp;&amp; j.Person.datDateofBirth == i.Person.datDateofBirth
+                        &amp;&amp; j.Person.idfsHumanGender == i.Person.idfsHumanGender
+                        &amp;&amp; j.Person.CurrentResidenceAddress.idfsCountry == i.Person.CurrentResidenceAddress.idfsCountry
+                        &amp;&amp; j.Person.CurrentResidenceAddress.idfsRegion == i.Person.CurrentResidenceAddress.idfsRegion
+                        &amp;&amp; j.Person.CurrentResidenceAddress.idfsRayon == i.Person.CurrentResidenceAddress.idfsRayon
+                        &amp;&amp; j.Person.CurrentResidenceAddress.idfsSettlement == i.Person.CurrentResidenceAddress.idfsSettlement
+                        &amp;&amp; j.Person.CurrentResidenceAddress.strStreetName == i.Person.CurrentResidenceAddress.strStreetName
+                        &amp;&amp; j.Person.CurrentResidenceAddress.strPostCode == i.Person.CurrentResidenceAddress.strPostCode
+                        &amp;&amp; j.Person.CurrentResidenceAddress.strBuilding == i.Person.CurrentResidenceAddress.strBuilding
+                        &amp;&amp; j.Person.CurrentResidenceAddress.strApartment == i.Person.CurrentResidenceAddress.strApartment
+                        &amp;&amp; j.Person.CurrentResidenceAddress.strHouse == i.Person.CurrentResidenceAddress.strHouse
+                        ) == 0" message="mbDuplicateContact" />
+                  </container>
+                </childchange>
+              
+                <childchangelist>
+                  <required_validator container="AntimicrobialTherapy" target="strAntimicrobialTherapyName" child="true"  />
+                  <required_validator container="Samples" target="idfsSampleType" child="true"/>
+                  <required_validator container="ContactedPerson" target="Person.strLastName" child="true"/>
+                </childchangelist>
+                <post>
+                  <!--required_validator target="InitialCaseClassification" property="InitialCaseClassification" /-->
+                  <required_validator property="CaseProgressStatus" target="idfsCaseProgressStatus"/>
+                    <!-- The case could not be saved unless the diagnosis is given -->
+                    <required_validator target="idfsTentativeDiagnosis" property="TentativeDiagnosis">
+                      <params>
+                        <param type="string" lambda='c => "HumanCase.idfsTentativeDiagnosis"'/>
+                      </params>
+                    </required_validator>
+                    <!-- The completion of the field Last Name is mandatory -->
+                    <required_validator target="Patient.strLastName" />
+                    <!-- The Region and Rayon information in Current Residence fields group is mandatory -->
+                    <required_validator target="Patient.CurrentResidenceAddress.idfsCountry" property="Patient.CurrentResidenceAddress.Country" />
+                    <required_validator target="Patient.CurrentResidenceAddress.idfsRegion" property="Patient.CurrentResidenceAddress.Region"/>
+                    <required_validator target="Patient.CurrentResidenceAddress.idfsRayon" property="Patient.CurrentResidenceAddress.Rayon"/>
+                  
+                    <required_validator target="datFinalCaseClassificationDate" predicate="c => c.idfsFinalCaseStatus == (long)eidss.model.Enums.CaseClassification.Confirmed &amp;&amp; eidss.model.Core.EidssSiteContext.Instance.CustomizationPackageID != (long) eidss.model.Enums.CustomizationPackage.Georgia"/>
+                    
+                  <predicate_validator predicate="c => (c.Patient.intPatientAgeFromCase.HasValue &amp;&amp; c.Patient.idfsHumanAgeTypeFromCase.HasValue) || (!c.Patient.intPatientAgeFromCase.HasValue &amp;&amp; !c.Patient.idfsHumanAgeTypeFromCase.HasValue)" 
+                                       message="intPatientAge_idfsHumanAgeType_msgId" />
+
+                  <required_validator target="NotCollectedReason" predicate="c => c.idfsYNSpecimenCollected == (long)YesNoUnknownValuesEnum.No"/>
+                  
+                  <!-- If there is at least one record with empty cell of the Name column in the Antibiotic grid
+                         and a user tries to click Add button assigned to the Antibiotic grid or save the case, the system cancels operation,
+                         the Case Investigation tab and the Clinical Information sub-tab open and message box 'Some records from the table of
+                         antibiotic and antiviral therapy are not defined. Please define or delete undefined records' appears. -->
+                  <custom_mandatory_validator name="datTentativeDiagnosisDate" fieldId="HumanCase_DiagnosisDate" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="Patient.strFirstName" fieldId="HumanCase_Patient_FirstName" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="Patient.datDateofBirth" fieldId="HumanCase_Patient_DateOfBirth" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="Patient.intPatientAgeFromCase" fieldId="HumanCase_Patient_Age" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="Patient.HumanAgeType" fieldId="HumanCase_Patient_AgeType" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="Patient.Gender" fieldId="HumanCase_Patient_Gender" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="Patient.CurrentResidenceAddress.Settlement" fieldId="HumanCase_Patient_CurrentResidence_Settlement" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="datOnSetDate" fieldId="HumanCase_DateOfSymptomsOnSet" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="Patient.RegistrationAddress.Region" fieldId="HumanCase_Patient_RegistrationAddress_Region" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="Patient.RegistrationAddress.Rayon" fieldId="HumanCase_Patient_RegistrationAddress_Rayon" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="Patient.RegistrationAddress.Settlement" fieldId="HumanCase_Patient_RegistrationAddress_Settlement" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="PointGeoLocation.strReadOnlyAdaptiveFullName" fieldId="HumanCase_PointGeoLocation" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext &amp;&amp; !eidss.model.Core.EidssUserContext.User.HasPermission(PermissionHelper.ExecutePermission(EIDSSPermissionObject.UseSimplifiedHumanCaseReportForm))"/>
+                  <custom_mandatory_validator name="datExposureDate" fieldId="HumanCase_ExposureDate" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext &amp;&amp; !eidss.model.Core.EidssUserContext.User.HasPermission(PermissionHelper.ExecutePermission(EIDSSPermissionObject.UseSimplifiedHumanCaseReportForm))"/>
+                  <custom_mandatory_validator name="InitialCaseClassification" fieldId="HumanCase_InitialCaseStatus" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext &amp;&amp; !eidss.model.Core.EidssUserContext.User.HasPermission(PermissionHelper.ExecutePermission(EIDSSPermissionObject.UseSimplifiedHumanCaseReportForm))"/>
+                  <custom_mandatory_validator name="idfsFinalState" fieldId="HumanCase_FinalCaseStatus" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="datCompletionPaperFormDate" fieldId="HumanCase_CompletionPaperFormDate" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="idfSentByOffice" fieldId="HumanCase_SentByOffice" label="idfSentByOffice2" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="strSentByOffice" fieldId="HumanCase_SentByOffice" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="idfSentByPerson" fieldId="HumanCase_SentByPerson" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="strSentByPerson" fieldId="HumanCase_SentByPerson" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <!--<custom_mandatory_validator name="SentByPerson" fieldId="HumanCase_SentByPerson" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>-->
+                  <custom_mandatory_validator name="Patient.PersonIDType" fieldId="HumanCase_Patient_PersonIdType" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+
+                  <predicate_validator predicate="c => c.Patient.CurrentResidenceAddress.dblLongitude.HasValue &amp;&amp; c.Patient.CurrentResidenceAddress.dblLatitude.HasValue || !c.Patient.CurrentResidenceAddress.dblLongitude.HasValue &amp;&amp; !c.Patient.CurrentResidenceAddress.dblLatitude.HasValue" message="msgCoordinatesAreNotDefined"/>
+                  <predicate_validator predicate="c => c.Patient.RegistrationAddress.dblLongitude.HasValue &amp;&amp; c.Patient.RegistrationAddress.dblLatitude.HasValue || !c.Patient.RegistrationAddress.dblLongitude.HasValue &amp;&amp; !c.Patient.RegistrationAddress.dblLatitude.HasValue" message="msgCoordinatesAreNotDefined"/>
+
+                  <predicate_validator predicate="c => c.Patient.CurrentResidenceAddress.IsCoordinatesInRayon() &amp;&amp;
+                                                       c.Patient.RegistrationAddress.IsCoordinatesInCountry() &amp;&amp;
+                                                       c.Patient.RegistrationAddress.IsCoordinatesInRegion() &amp;&amp;
+                                                       c.Patient.RegistrationAddress.IsCoordinatesInRayon()" 
+                                       messagePredicate='c => !c.Patient.CurrentResidenceAddress.IsCoordinatesInRayon() ? "msgCoordinatesOutOfRayon"
+                                                           : (!c.Patient.RegistrationAddress.IsCoordinatesInCountry() ? "msgCoordinatesOutOfCountry"
+                                                           : (!c.Patient.RegistrationAddress.IsCoordinatesInRegion() ? "msgCoordinatesOutOfRegion"
+                                                           : (!c.Patient.RegistrationAddress.IsCoordinatesInRayon() ? "msgCoordinatesOutOfRayon"
+                                                           : "")))'
+                                       shouldAsk="true"/>
+
+                  <custom_validator method="CustomValidations" />
+                    
+                  <container name="AntimicrobialTherapy" filter="c => true">
+                    <required_validator target="strAntimicrobialTherapyName" child="true"/>
+                  </container>
+                  <container name="Samples" filter="c => true">
+                    <required_validator target="idfsSampleType" child="true"/>
+                  </container>
+                  <container name="ContactedPerson" filter="c => true">
+                    <required_validator target="Person.strLastName" child="true"/>
+                  </container>
+                </post>
+            </validators>
+          <actions>
+            <standard>
+              <remove type="Create"/>
+            </standard>
+            <action name="CreateGeoLocation" type="Action">
+              <run>
+                <preText>
+                  if (obj.PointGeoLocation.IsNull)
+                  {
+                    obj.PointGeoLocation.Country = obj.Patient.CurrentResidenceAddress.Country;
+                    obj.PointGeoLocation.Region = obj.Patient.CurrentResidenceAddress.Region;
+                    obj.PointGeoLocation.Rayon = obj.Patient.CurrentResidenceAddress.Rayon;
+                  }
+                  return true;
+                </preText>
+              </run>
+            </action>
+            <action name="EmergencyNotificationReport" type="Action">
+              <visual panel="Main" alignment="Left">
+                <regular caption="titleEmergencyNotificationReport" icon="Report" tooltip="titleEmergencyNotificationReport"/>
+              </visual>
+              <run>
+                <preUI webType="JScript"/>
+                <params>
+                  <param name="id" type="long"/>
+                </params>
+              </run>
+            </action>
+            <action name="HumanInvestigationReport"  type="Action">
+              <visual panel="Main" alignment="Left" visiblePredicate="(o1, o2, p, r) => !eidss.model.Core.EidssUserContext.User.HasPermission(PermissionHelper.ExecutePermission(EIDSSPermissionObject.UseSimplifiedHumanCaseReportForm))">
+                <regular caption="titleCaseInvestigationReport" icon="Report" tooltip="titleCaseInvestigationReport"/>
+              </visual>
+              <run>
+                <preUI webType="JScript"/>
+                <params>
+                  <param name="caseId" type="long"/>
+                  <param name="epiId" type="long"/>
+                  <param name="csId" type="long"/>
+                  <param name="diagnosisId" type="long"/>
+              </params>
+              </run>
+            </action>
+          </actions>
+        </table>
+    </tables>
+
+</object>

@@ -1,0 +1,34 @@
+﻿@model eidss.model.Model.FlexibleForms.FlexNodes.FlexNode
+
+@{
+    var args = new RouteValueDictionary { { "flexNode", Model }, { "canUpdate", (bool)ViewBag.CanUpdate } };
+}
+    
+@if (Model.IsParameter() && Model.HasSectionSiblings)
+{
+    var parameterTemplate = Model.GetParameterTemplate();
+    <h3><a href="#">@parameterTemplate.NationalName</a></h3> 
+    <div>
+        @Html.Action("ParameterTemplateRender", "FlexForms", args)
+    </div>
+}
+else if (Model.IsParameter())
+{
+    @Html.Action("ParameterTemplateRender", "FlexForms", args)
+}
+else if (Model.IsSection())
+{
+    var section = Model.GetSectionTemplate();
+    if (section.blnGrid)
+    {
+        @Html.Action("SectionTemplateTableRender", "FlexForms", args)     
+    }
+    else
+    {
+        @Html.Action("SectionTemplateRender", "FlexForms", args)     
+    }
+}
+else if (Model.IsLabel())
+{
+    @Html.Action("LabelRender", "FlexForms", args)
+}

@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="TypeLabTestToResultMatrixLookup"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="spTypeLabTestToResultMatrix_SelectLookup" type="detaillist" cache="true"/>
+    </storage>
+
+    <tables>
+        <table name="TypeLabTestToResultMatrixLookup" tostring="c => c.strTestTypeName" lookupcachename="rftTestResult">
+            <keys>
+                <key name="ID" />
+            </keys>
+        </table>
+    </tables>
+
+</object>
+

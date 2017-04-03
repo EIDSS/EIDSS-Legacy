@@ -1,0 +1,161 @@
+﻿@model eidss.model.Schema.Outbreak
+@{
+    ViewBag.Title = @Translator.GetMessageString("frmOutbreak");
+    ViewBag.Number = "C11";
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+}
+@using Kendo.Mvc.UI
+@using bv.common.Configuration
+@using bv.model.Model.Core
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+<script src="@Url.Content("~/Scripts/EIDSS/GeoLocation.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/EIDSS/Outbreak.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/EIDSS/HumanCase.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/EIDSS/VetCase.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/EIDSS/VsSession.js")" type="text/javascript"></script>
+<script src='@Url.Content("~/Scripts/EIDSS/Organization.js")' type="text/javascript"></script>
+<script src='@Url.Content("~/Scripts/EIDSS/Employee.js")' type="text/javascript"></script>
+
+@*<input type="hidden" id="IsNewCase" value="@ViewBag.IsNewCase" />*@
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+@using (Html.BeginForm())
+{
+    @Html.IdentificationAndHeartbeat("idfOutbreak", Model.idfOutbreak)	  
+    
+    <div class="tabPanelContent bordered">
+        <div class="sectionTitle">
+            @Translator.GetMessageString("titleGeneralInformation")  
+        </div>
+        <table class="level1">
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Html.LabelFor(m => m.strOutbreakID)
+                </td>
+                <td class="large">
+                    @Html.BvEditbox(Model, m => m.strOutbreakID)
+                </td>
+                <td colspan="2">
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.LabelFor(m => m.datStartDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datStartDate)
+                </td>
+                <td class="xlarge label">
+                    @Html.LabelFor(m => m.datFinishDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datFinishDate)
+                </td>
+            </tr>    
+            <tr>
+                <td class="firstLabel">
+                    @Html.LabelFor(m => m.idfsDiagnosisOrDiagnosisGroup)
+                </td>
+                <td>
+                    @(Html.BvCombobox(Model, m => m.Diagnosis, false, width: EditorControlWidth.Large)
+                        .DataSource(source => 
+                                source.Read(read => 
+                                    read.Action("SelectDiagnosisOrDiagnosisGroup", "System", new { id = (long)Model.Key, lookup = "Diagnosis" })
+                                    )
+                                )
+                        .DataValueField("id")
+                        .DataTextField("name").Events(events => events.Change("bvComboBox.onChanged"))
+                        .Template("<div class='${data.classname}'>${ data.name }<div>")
+                     )
+                     
+                </td>
+                <td class="label">
+                    @Html.LabelFor(m => m.idfsOutbreakStatus)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.OutbreakStatus)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.LabelFor(m => m.idfGeoLocation)
+                </td>
+                <td>
+                    @Html.Action("InlineGeoLocationFullPicker", "GeoLocation", new { root = Model.idfGeoLocation, location = Model.Location })
+                </td>
+                <td class="label">
+                    @Html.LabelFor(m => m.strPrimaryCase)
+                </td>
+                <td>
+                    @Html.BvHidden(Model, m => m.idfPrimaryCaseOrSession)
+                    @Html.BvHidden(Model, m => m.idfsCasePrimaryType)
+                    <span class="picker">
+                        <span class="pickerWrap" id="@("divPrimaryCasePicker_" + Model.ObjectIdent + "strPrimaryCase")">
+                            @Html.BvEditbox(Model, m => m.strPrimaryCase)
+                            <span class="pickerSelect" onclick='outbreak.setPrimaryCase(@Model.idfOutbreak, 0)' id='@("btnPrimaryCasePickerClear_" + Model.ObjectIdent + "strPrimaryCase")'>
+                                <span class="k-icon k-i-close"></span>
+                            </span>
+                        </span>
+                    </span>
+                    <button id='@("btnPrimaryCasePickerView_" + Model.idfOutbreak + "_strPrimaryCase")' class="button smallImageButton" onclick='outbreak.viewPrimaryCase($("#@(Model.ObjectIdent + "idfPrimaryCaseOrSession")")[0].value, $("#@(Model.ObjectIdent + "idfsCasePrimaryType")")[0].value)' type="button" alt="View">
+                        <img src="@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/view_icon.png"))" alt="View" />
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.LabelFor(m => m.strDescription)
+                </td>
+                <td colspan="3" class="outbreakDescription">
+                    @Html.BvTextArea(Model, m => m.strDescription)
+                </td>
+            </tr>
+        </table>
+        <div class="sectionTitle">
+            @Translator.GetMessageString("titleRelatedCaseSessionReports")  
+        </div>
+        @Html.Action("OutbreakCaseGrid", "Grids",
+            new
+            {
+                root = Model.idfOutbreak,
+                name = Model.ObjectIdent + "Cases",
+                casesList = Model.Cases,
+                isReadOnly = Model.IsReadOnly("Cases") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit)
+            })
+        <table class="level1">
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Html.LabelFor(m => m.intCaseCount)
+                </td>
+                <td>
+                    @Html.BvNumeric(Model, m => m.intCaseCount, 0)
+                </td>
+                <td class="xlarge label">
+                    @Html.LabelFor(m => m.intCaseConfirmedCount)
+                </td>
+                <td>
+                    @Html.BvNumeric(Model, m => m.intCaseConfirmedCount, 0)
+                </td>
+            </tr>
+        </table>
+
+        <div class="sectionTitle">
+            @Translator.GetMessageString("titleNotes")  
+        </div>
+        @Html.Action("OutbreakNoteGrid", "Grids",
+            new
+            {
+                root = Model.idfOutbreak,
+                name = Model.ObjectIdent + "Notes",
+                notesList = Model.Notes,
+                isReadOnly = Model.IsReadOnly("Notes") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit)
+            })
+    </div>
+
+    
+    
+}

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="VetAggregateCaseDeduplicationListItem"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        inherited="AggergateDeduplicationBaseList.xml"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="fn_VetAggregateCaseDeduplication_SelectList" type="fnlist" filter-object="AggrCase" />
+    <count name="spVetAggregateCase_SelectCount"/>
+  </storage>
+
+  <tables>
+    <table name="VetAggregateCaseDeduplicationListItem">
+      <properties auditObject="daoAggregateVetCase" auditTable="tlbAggrCase" permissionObject="AccessToVetAggregateCase"/>
+      <help web="VAC_deduplication" win ="VAC_deduplication"/>
+
+    </table>
+  </tables>
+
+</object>
+
+

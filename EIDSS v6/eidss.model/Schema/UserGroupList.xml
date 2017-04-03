@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<object name="UserGroupListItem" connection="EidssConnectionString" generator="ObjectGenerator.xslt" xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="fn_UserGroup_SelectList" type="fnlist" />
+		<count name="spUserGroup_SelectCount"/>
+	</storage>
+
+	<tables>
+		<table name="UserGroupListItem">
+      <properties auditObject="daoUserGroup" auditTable="tlbEmployeeGroup" permissionObject="UserGroup"/>
+      <help win="User_Groups"/>
+      <searchpanel>
+				<item name="strName" editor="Text" labelId="strGroup" />
+				<item name="strDescription" editor="Text" labelId="strDescription" />
+			</searchpanel>
+
+			<grid>
+				<item name="idfEmployeeGroup" visible="false" key="true"  />
+				<item name="strName" />
+				<item name="strDescription"  />
+			</grid>
+      <labels>
+        <item name="strName" labelId="strGroupName"/>
+      </labels>
+
+      <storage>
+				<delete name="spUserGroupDetail_Delete"/>
+			</storage>
+
+			<actions child="UserGroupDetail">
+        <standard>
+          <remove type="Report"/>
+        </standard>
+			</actions>
+		</table>
+	</tables>
+
+</object>

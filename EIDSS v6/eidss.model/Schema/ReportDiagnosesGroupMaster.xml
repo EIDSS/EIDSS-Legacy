@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="ReportDiagnosesGroupMaster"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spReportDiagnosesGroup_SelectDetail" type= "detailone" />
+  </storage>
+
+  <tables>
+    <table name="ReportDiagnosesGroupMaster">
+      <!--TODO вставить реальные реквизиты аудита-->
+      <properties auditObject="daoReference" auditTable="trtDiagnosisAgeGroup"  permissionObject="Reference">
+        <lookupcache>
+          <item name="rftReportDiagnosisGroup"/>
+        </lookupcache>
+      </properties>    
+      <!--вставить реальный help-->
+      <help win="Age_Groups_Editor"/>
+      <relations>
+        <relation name="ReportDiagnosesGroups" table="ReportDiagnosesGroup" internal="false" type="child" lazy="false" source="idfsReportDiagnosesGroup" target="idfsReportDiagnosesGroup" />
+      </relations>      
+      <storage>
+        <post  name="spDummy_Post"/>
+        <delete />
+        <candelete  name=''/>
+      </storage>
+      <postorder>
+        <item name="ReportDiagnosesGroups" />
+      </postorder>
+      <deleteorder>
+        <item name="ReportDiagnosesGroups" />
+      </deleteorder>
+      <extenders>
+        <creating>
+          <custom_extender>
+            <text>
+              obj.m_IsNew = false;
+              var accMaster = ReportDiagnosesGroupMaster.Accessor.Instance(null);
+              accMaster._LoadReportDiagnosesGroups(manager, obj);
+            </text>
+          </custom_extender>
+        </creating>
+        <created>     
+        </created>
+        <loading>
+        </loading>
+        <posting>
+        </posting>
+        <posted>
+        </posted>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+        </fieldhandler>
+      </handlers>
+
+      <validators>
+        <childchange>
+          <!--
+          <container name="ReportDiagnosesGroups" field="strName" filter="c => true">
+            <required_validator target="strName" child="true" />            
+          </container>
+          <container name="ReportDiagnosesGroups" field="strTranslatedName" filter="c => ModelUserContext.CurrentLanguage != Localizer.lngEn">
+            <required_validator target="strTranslatedName" child="true"/>           
+          </container>
+          -->
+        </childchange>
+        <post>
+          <!--
+          <duplicate_list_validator collection="ReportDiagnosesGroups" type="ReportDiagnosesGroup" filter="c => !c.IsMarkedToDelete">
+            <item field="strName" inMsg="true" />
+          </duplicate_list_validator>
+          <duplicate_list_validator collection="ReportDiagnosesGroups" type="ReportDiagnosesGroup" filter="c => !c.IsMarkedToDelete &amp;&amp; ModelUserContext.CurrentLanguage != Localizer.lngEn">
+            <item field="strTranslatedName" inMsg="true" />
+          </duplicate_list_validator>
+          -->
+        </post>
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <remove type="Delete"/>
+        </standard>
+        <action name="DeleteGroup" type="Action">
+          <visual panel="Main" alignment ="Right"  visiblePredicate = "ActionMetaItem.DefaultDeleteGroupItemVisiblePredicate">
+            <regular caption ="strDelete_Id" tooltip ="tooltipDelete_Id" icon ="Delete_Remove"/>
+          </visual>
+        </action>
+      </actions>
+    </table>
+
+  </tables>
+</object>

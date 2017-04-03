@@ -1,0 +1,17 @@
+﻿@model eidss.model.Schema.FFPresenterModel
+    
+      
+@if ((Model != null) && (Model.TemplateFlexNode != null))
+{
+    <input type="hidden" id="FFKey" value="@ViewBag.FFKey"/>
+    <input type="hidden" id="FFpresenterId" value="@ViewBag.FFpresenterId"/>
+    <input type="hidden" id="FFRootId" value="@ViewBag.IDRoot"/>
+    <input type="hidden" id="FFObservationId" value="@ViewBag.IDObservation"/>
+    
+    <div>
+        @foreach (var node in Model.TemplateFlexNode.ChildList)
+        {
+            @Html.Partial("FlexNode", node)
+        }
+    </div>
+}

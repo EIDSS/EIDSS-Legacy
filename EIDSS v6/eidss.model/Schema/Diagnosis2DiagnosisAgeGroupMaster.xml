@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="Diagnosis2DiagnosisAgeGroupMaster"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spDiagnosisMaster_SelectDetail" type= "detailone" />
+  </storage>
+
+  <tables>
+    <table name="Diagnosis2DiagnosisAgeGroupMaster">
+      <properties auditObject="daoReference" auditTable="trtBaseReference" permissionObject="Reference">
+        <events>
+          <create name="MatrixChanged" predicate="c => c.HasChanges" addinfo="Diagnosis2DiagnosisAgeGroupMasterDetail"/>
+          <change name="MatrixChanged" predicate="c => c.HasChanges" addinfo="Diagnosis2DiagnosisAgeGroupMasterDetail"/>
+        </events>
+      </properties>
+      <help win="Age_Groups_Editor"/>
+      <readonly>
+        <fields name="Diagnosis" predicate="c => false" ignoreReadOnly="true"/>
+      </readonly>
+      <relations>
+        <relation name="DiagnosisAgeGroupToDiagnoses" table="DiagnosisAgeGroupToDiagnosis" internal="false" type="child" lazy="false" source="idfsDiagnosis" target="idfsDiagnosis" />
+      </relations>
+      <lookups>
+        <lookup name="Diagnosis" table="DiagnosisLookup" source="idfsDiagnosis" target="idfsDiagnosis">
+          <filters>
+            <filter predicate="c => ((c.intHACode &amp; (int)HACode.Human) != 0) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+            <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+          </filters>
+        </lookup>
+      </lookups>
+      <storage>
+        <post  name="spDummy_Post"/>
+        <delete />
+        <candelete  name=''/>
+      </storage>
+      <postorder>
+        <item name="DiagnosisAgeGroupToDiagnoses" />
+      </postorder>
+      <deleteorder>
+        <item name="DiagnosisAgeGroupToDiagnoses" />
+      </deleteorder>
+      <extenders>
+        <creating>
+          <custom_extender>
+            <text>
+              obj.m_IsNew = false;
+              var accMaster = Diagnosis2DiagnosisAgeGroupMaster.Accessor.Instance(null);
+              accMaster._LoadDiagnosisAgeGroupToDiagnoses(manager, obj);
+            </text>
+          </custom_extender>
+        </creating>
+        <created>
+        </created>
+        <loading>
+        </loading>
+        <posting>
+        </posting>
+        <posted>
+        </posted>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+        </fieldhandler>
+      </handlers>
+
+      <validators>
+        <childchange>
+          <container name="DiagnosisAgeGroupToDiagnoses" field="idfsDiagnosisAgeGroup"  filter="c => true">
+            <!--duplicate_reference_validator container="DiagnosisAgeGroupToDiagnoses" field="idfsDiagnosisAgeGroup" predicate="(master,i) => master.DiagnosisAgeGroupToDiagnoses.Where(c => 
+                                                              (long)c.Key != (long)i.Key 
+                                                              &amp;&amp; c.idfsDiagnosisAgeGroup == i.idfsDiagnosisAgeGroup
+                                                              &amp;&amp; c.idfsDiagnosis == i.idfsDiagnosis
+                                                              &amp;&amp; !c.IsMarkedToDelete
+                                                              &amp;&amp; !i.IsMarkedToDelete
+                                                              ).Count() == 0"/-->
+            <!--required_child_validator container="DiagnosisAgeGroupToDiagnoses" field="idfsDiagnosisAgeGroup" predicate ="(c,i) => (i.idfsDiagnosisAgeGroup != null)"/-->
+            <required_validator target="idfsDiagnosisAgeGroup" child="true"/>
+          </container>
+        </childchange>
+        <post>
+          <duplicate_list_validator collection="DiagnosisAgeGroupToDiagnoses" type="DiagnosisAgeGroupToDiagnosis" filter="c => !c.IsMarkedToDelete">
+            <item field="idfsDiagnosisAgeGroup" lookup="DiagnosisAgeGroup" inMsg="true" />
+            <item field="idfsDiagnosis" />
+          </duplicate_list_validator>
+        </post>
+
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <remove type="Delete"/>
+        </standard>
+        <action name="DeleteDiagnosisAgeGroup" type="Action">
+          <visual panel="Main" alignment ="Right" visiblePredicate = "ActionMetaItem.DefaultDeleteGroupItemVisiblePredicate">
+            <regular caption ="strDelete_Id" tooltip ="tooltipDelete_Id" icon ="Delete_Remove"/>
+          </visual>
+          <run>
+            <preUI webType="JScript"/>
+          </run>
+        </action>
+      </actions>
+    </table>
+
+  </tables>
+</object>

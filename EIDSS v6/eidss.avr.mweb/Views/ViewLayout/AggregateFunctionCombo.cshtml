@@ -1,0 +1,13 @@
+﻿@model eidss.model.Avr.View.AvrView
+@using eidss.avr.db.Common
+
+@Html.DevExpress().ComboBox(settings => {
+    settings.Name = "cbAggregate";
+    settings.CallbackRouteValues = new { Controller = "ViewLayout", Action = "GetDataColumns", layoutId = ViewBag.LayoutId, viewName = "AggregateFunctionCombo" };
+    settings.Properties.ValueType = typeof(long);
+    settings.Properties.TextField = "Name";
+    settings.Properties.ValueField = "ID";
+    settings.Properties.ClientSideEvents.ValueChanged = "aggregateForm.OnAggregateFunctionSelectionChanged";
+    settings.Properties.EnableClientSideAPI = true;
+}).BindList(AggrFunctionLookupHelper.GetViewFunctions()).Bind(Model.SelectedColBandObject().AggrFunction).GetHtml()
+

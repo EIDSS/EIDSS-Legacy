@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="Rule"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+    <storage>
+        <get name="spFFGetRules" type="simplelist" /> <!-- cache="true" -->
+    </storage>
+    <tables>
+        <table name="Rule">
+          <keys>
+            <key name="idfsFormTemplate"/>
+            <key name="langid"/>
+          </keys>
+          <relations>
+            <relation name="Actions" table="RuleAction" internal="false" type="child" lazy="false" source="idfsRule" target="idfsRule" />
+            <relation name="Constants" table="RuleConstant" internal="false" type="child" lazy="false" source="idfsRule" target="idfsRule" />
+            <relation name="Parameters" table="RuleParameter" internal="false" type="child" lazy="false" source="idfsRule" target="idfsRule" />
+          </relations>
+          <lookups>
+            <lookup name="Functions" table="RuleFunctionLookup" source="idfsRuleFunction" target="idfsRuleFunction" notaddempty="true" >
+              <params>
+                <param name="count" const="-1" />
+              </params>
+            </lookup>
+          </lookups>
+          
+          <actions>
+            <action name="SelectDetailList" type="Loadlist" />
+          </actions>
+        </table>
+    </tables>
+</object>

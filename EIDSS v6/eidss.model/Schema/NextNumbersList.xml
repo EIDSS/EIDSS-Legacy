@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="NextNumbersListItem"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="fn_NextNumbers_SelectList" type="fnlist" />
+		<count name="spNextNumbers_SelectCount"/>
+	</storage>
+
+	<tables>
+		<table name="NextNumbersListItem">
+      <properties auditObject="daoDocumentNumbering" auditTable="tstNextNumbers" permissionObject="DocumentNumbering"/>
+      <help win="Unique_Numbering_Schema"/>
+
+			<searchpanel>
+				<item name="strObjectName" editor="Text" labelId="strObjectName"/>
+				<item name="strPrefix" editor="Text" labelId="strPrefix"/>
+				<item name="intNumberValue" editor="Text" labelId="intNumberValue"/>
+				<item name="intMinNumberLength" editor="Numeric" range="true"  labelId="intMinNumberLength"/>
+			</searchpanel>
+
+			<grid>
+				<item name="idfsNumberName" key="true" visible="false" />
+				<item name="strObjectName"  />
+				<item name="strPrefix"  />
+				<item name="intNumberValue"/>
+				<item name="intMinNumberLength"/>
+			</grid>
+
+			<storage>
+				<delete name="spReadOnlyObject_Delete"/>
+				<candelete name="spReadOnlyObject_CanDelete"/>
+			</storage>
+
+			<actions child="NextNumbers">
+        <standard>
+          <remove type="Create"/>
+          <remove type="Delete"/>
+          <remove type="Report"/>
+        </standard>
+				<action name="PrintBarcode" type="Action">
+          <visual alignment="Right" panel="Top">
+            <regular caption="strPrintNumbers_Id" tooltip="strPrintNumbers_Id"  icon=""/>
+          </visual>
+          <run>
+					  <params>
+						  <param name="id" type="long" />
+						  <param name="item" type="IObject" />
+						  <param name="listPanel" type="object" />
+					  </params>
+					  <preText>
+              const string className = "BarcodeFactory";
+              var loadedObject = bv.common.Core.ClassLoader.LoadClass(className);
+              bv.common.Diagnostics.Dbg.Assert(loadedObject != null, "class {0} can't be loaded", className);
+              bv.common.Diagnostics.Dbg.Assert(loadedObject is IBarcodeFactory, "{0} doesn't implement IBarcodeFactory interface", className);
+              IBarcodeFactory factory = (IBarcodeFactory)loadedObject;
+              factory.ShowPreview(id);
+              return true;
+            </preText>
+          </run>
+				</action>
+			</actions>
+		</table>
+	</tables>
+
+</object>

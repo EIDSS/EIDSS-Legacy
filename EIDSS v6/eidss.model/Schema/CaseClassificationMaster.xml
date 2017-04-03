@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="CaseClassificationMaster"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <!--фейковая хранимка-->
+    <get name="spCaseClassificationMaster_SelectDetail" type= "detailone" />
+  </storage>
+
+  <tables>
+    <table name="CaseClassificationMaster">
+      <properties permissionObject="Reference">
+        <lookupcache>
+          <item name="rftCaseClassification"/>
+          <item name="InitialCaseClassification"/>
+          <item name="FinalCaseClassification"/>
+        </lookupcache>
+      </properties>
+      <!--TODO проставить везде актуальные реквизиты
+      <properties auditObject="daoReference" auditTable="trtDiagnosisAgeGroup"  permissionObject="Reference" lookupcachename="DiagnosisAgeGroup">
+        <events>
+          <create name="MatrixChanged" predicate="c => c.HasChanges" addinfo="DiagnosisAgeGroupMasterDetail"/>
+          <change name="MatrixChanged" predicate="c => c.HasChanges" addinfo="DiagnosisAgeGroupMasterDetail"/>
+        </events>
+      </properties>      
+      -->
+      <help win="EIDSS_Configuration"/>
+      <fields>
+      </fields>
+      <relations>
+        <relation name="CaseClassifications" table="CaseClassification" internal="false" type="child" lazy="false" source="idfsCaseClassification" target="idfsCaseClassification" />
+      </relations>
+      <lookups>
+        <!--<lookup name="DiagnosisGroup" table="BaseReference" section="rftDiagnosisGroup" source="idfsDiagnosisGroup" target="idfsBaseReference" />-->
+      </lookups>
+      <storage>
+        <post  name="spDummy_Post"/>
+        <delete />
+        <candelete  name=''/>
+      </storage>
+      <postorder>
+        <item name="CaseClassifications" />
+      </postorder>
+      <deleteorder>
+        <item name="CaseClassifications" />
+      </deleteorder>
+      <extenders>
+        <creating>
+          <custom_extender>
+            <text>
+              obj.m_IsNew = false;
+              var accMaster = CaseClassificationMaster.Accessor.Instance(null);
+              accMaster._LoadCaseClassifications(manager, obj);
+            </text>
+          </custom_extender>
+        </creating>
+        <created>     
+        </created>
+        <loading>
+        </loading>
+        <posting>
+        </posting>
+        <posted>
+        </posted>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+        </fieldhandler>
+      </handlers>
+      <validators>
+        <childchange>
+        </childchange>
+        <post>
+          <duplicate_list_validator collection="CaseClassifications" type="CaseClassification" filter="c => !c.IsMarkedToDelete">
+            <item field="CaseClassificationName" inMsg="true" />
+            <item field="CaseClassificationNameTranslated" inMsg="true" />
+          </duplicate_list_validator>
+          <container name="CaseClassifications" filter="c => true">
+            <required_validator target="idfsCaseClassification" child="true"/>
+            <required_validator target="CaseClassificationName" child="true"/>
+            <required_validator target="CaseClassificationNameTranslated" child="true"/>
+          </container>
+        </post>
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <remove type="Delete"/>
+        </standard>
+        <action name="DeleteCaseClassification" type="Action">
+          <visual panel="Main" alignment ="Right"  visiblePredicate = "ActionMetaItem.DefaultDeleteGroupItemVisiblePredicate">
+            <regular caption ="strDelete_Id" tooltip ="tooltipDelete_Id" icon ="Delete_Remove"/>
+          </visual>
+        </action>
+      </actions>
+    </table>
+
+  </tables>
+</object>

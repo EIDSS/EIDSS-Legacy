@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <!-- The configuration and platform will be used to determine which
+         assemblies to include from solution and project documentation
+         sources -->
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>dd683bc7-0296-4cbb-8b4f-369158a15cbc</ProjectGuid>
+    <SHFBSchemaVersion>1.9.5.0</SHFBSchemaVersion>
+    <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual
+         Studio adds them anyway -->
+    <AssemblyName>eidss.openapi.doc</AssemblyName>
+    <RootNamespace>eidss.openapi.doc</RootNamespace>
+    <Name>eidss.openapi.doc</Name>
+    <!-- SHFB properties -->
+    <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
+    <OutputPath>Help\</OutputPath>
+    <HtmlHelpName>eidss.openapi.doc</HtmlHelpName>
+    <Language>en-US</Language>
+    <DocumentationSources>
+      <DocumentationSource sourceFile="..\eidss.openapi.bll\bin\Debug\eidss.openapi.bll.XML" />
+      <DocumentationSource sourceFile="..\eidss.openapi.bll\bin\Debug\eidss.openapi.bll.dll" />
+      <DocumentationSource sourceFile="..\eidss.openapi.web\bin\eidss.openapi.web.XML" />
+      <DocumentationSource sourceFile="..\eidss.openapi.web\bin\eidss.openapi.web.dll" />
+      <DocumentationSource sourceFile="..\eidss.openapi.contract\bin\Debug\eidss.openapi.contract.dll" />
+      <DocumentationSource sourceFile="..\eidss.openapi.contract\bin\Debug\eidss.openapi.contract.XML" />
+    </DocumentationSources>
+    <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
+    <HelpFileFormat>HtmlHelp1</HelpFileFormat>
+    <IndentHtml>False</IndentHtml>
+    <KeepLogFile>True</KeepLogFile>
+    <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
+    <CppCommentsFixup>False</CppCommentsFixup>
+    <CleanIntermediates>True</CleanIntermediates>
+    <WebsiteSdkLinkType>None</WebsiteSdkLinkType>
+    <HtmlSdkLinkType>None</HtmlSdkLinkType>
+    <IncludeFavorites>True</IncludeFavorites>
+    <BinaryTOC>True</BinaryTOC>
+    <SyntaxFilters>CSharp</SyntaxFilters>
+    <SdkLinkTarget>Blank</SdkLinkTarget>
+    <RootNamespaceContainer>True</RootNamespaceContainer>
+    <PresentationStyle>VS2010</PresentationStyle>
+    <Preliminary>False</Preliminary>
+    <NamingMethod>MemberName</NamingMethod>
+    <HelpTitle>EIDSS Open API Class Library</HelpTitle>
+    <NonePlacement>AboveNamespaces</NonePlacement>
+    <VisibleItems>None</VisibleItems>
+    <ApiFilter>
+      <Filter entryType="Namespace" fullName="eidss.openapi.bll.Bll" isExposed="False" />
+<Filter entryType="Namespace" fullName="eidss.openapi.bll.Converters" isExposed="False" />
+<Filter entryType="Namespace" fullName="eidss.openapi.bll.Exceptions" isExposed="False">
+  <Filter entryType="Enumeration" fullName="eidss.openapi.bll.Exceptions.OpenApiErrorCode" filterName="OpenApiErrorCode" isExposed="True" />
+</Filter>
+<Filter entryType="Namespace" fullName="eidss.openapi.contract" isExposed="True">
+  <Filter entryType="Class" fullName="eidss.openapi.contract.Address" filterName="Address" isExposed="True">
+    <Filter entryType="Constructor" fullName="eidss.openapi.contract.Address.#ctor" filterName=".ctor" isExposed="False" />
+  </Filter>
+  <Filter entryType="Class" fullName="eidss.openapi.contract.Diagnosis" filterName="Diagnosis" isExposed="True">
+    <Filter entryType="Constructor" fullName="eidss.openapi.contract.Diagnosis.#ctor" filterName=".ctor" isExposed="False" />
+  </Filter>
+  <Filter entryType="Class" fullName="eidss.openapi.contract.HumanCase" filterName="HumanCase" isExposed="True">
+    <Filter entryType="Constructor" fullName="eidss.openapi.contract.HumanCase.#ctor" filterName=".ctor" isExposed="False" />
+  </Filter>
+  <Filter entryType="Class" fullName="eidss.openapi.contract.HumanCaseListFilter" filterName="HumanCaseListFilter" isExposed="True">
+    <Filter entryType="Constructor" fullName="eidss.openapi.contract.HumanCaseListFilter.#ctor" filterName=".ctor" isExposed="False" />
+  </Filter>
+  <Filter entryType="Class" fullName="eidss.openapi.contract.HumanCaseListItem" filterName="HumanCaseListItem" isExposed="True">
+    <Filter entryType="Constructor" fullName="eidss.openapi.contract.HumanCaseListItem.#ctor" filterName=".ctor" isExposed="False" />
+  </Filter>
+  <Filter entryType="Class" fullName="eidss.openapi.contract.Login" filterName="Login" isExposed="True">
+    <Filter entryType="Constructor" fullName="eidss.openapi.contract.Login.#ctor" filterName=".ctor" isExposed="False" />
+  </Filter>
+  <Filter entryType="Class" fullName="eidss.openapi.contract.Patient" filterName="Patient" isExposed="True">
+    <Filter entryType="Constructor" fullName="eidss.openapi.contract.Patient.#ctor" filterName=".ctor" isExposed="False" />
+  </Filter>
+  <Filter entryType="Class" fullName="eidss.openapi.contract.Reference" filterName="Reference" isExposed="True">
+    <Filter entryType="Constructor" fullName="eidss.openapi.contract.Reference.#ctor" filterName=".ctor" isExposed="False" />
+  </Filter>
+  <Filter entryType="Class" fullName="eidss.openapi.contract.Sample" filterName="Sample" isExposed="True">
+    <Filter entryType="Constructor" fullName="eidss.openapi.contract.Sample.#ctor" filterName=".ctor" isExposed="False" />
+  </Filter>
+</Filter>
+<Filter entryType="Namespace" fullName="eidss.openapi.web" isExposed="False">
+  <Filter entryType="Class" fullName="eidss.openapi.web.SoapService" filterName="SoapService" isExposed="True">
+    <Filter entryType="Constructor" fullName="eidss.openapi.web.SoapService.#ctor" filterName=".ctor" isExposed="False" />
+  </Filter>
+</Filter>
+<Filter entryType="Namespace" fullName="eidss.openapi.web.Areas.HelpPage" isExposed="False" />
+<Filter entryType="Namespace" fullName="eidss.openapi.web.Areas.HelpPage.Controllers" isExposed="False" />
+<Filter entryType="Namespace" fullName="eidss.openapi.web.Areas.HelpPage.Models" isExposed="False" />
+<Filter entryType="Namespace" fullName="eidss.openapi.web.Controllers" isExposed="True">
+  <Filter entryType="Class" fullName="eidss.openapi.web.Controllers.DiagnosisController" filterName="DiagnosisController" isExposed="False">
+    <Filter entryType="Method" fullName="eidss.openapi.web.Controllers.DiagnosisController.Get" filterName="Get" isExposed="True" />
+  </Filter>
+  <Filter entryType="Class" fullName="eidss.openapi.web.Controllers.FarmController" filterName="FarmController" isExposed="True">
+    <Filter entryType="Constructor" fullName="eidss.openapi.web.Controllers.FarmController.#ctor" filterName=".ctor" isExposed="False" />
+  </Filter>
+  <Filter entryType="Class" fullName="eidss.openapi.web.Controllers.GisController" filterName="GisController" isExposed="False">
+    <Filter entryType="Method" fullName="eidss.openapi.web.Controllers.GisController.Get" filterName="Get" isExposed="True" />
+  </Filter>
+  <Filter entryType="Class" fullName="eidss.openapi.web.Controllers.HomeController" filterName="HomeController" isExposed="False" />
+  <Filter entryType="Class" fullName="eidss.openapi.web.Controllers.HumanCaseController" filterName="HumanCaseController" isExposed="True">
+    <Filter entryType="Constructor" fullName="eidss.openapi.web.Controllers.HumanCaseController.#ctor" filterName=".ctor" isExposed="False" />
+  </Filter>
+  <Filter entryType="Class" fullName="eidss.openapi.web.Controllers.HumanCaseSampleController" filterName="HumanCaseSampleController" isExposed="True">
+    <Filter entryType="Constructor" fullName="eidss.openapi.web.Controllers.HumanCaseSampleController.#ctor" filterName=".ctor" isExposed="False" />
+  </Filter>
+  <Filter entryType="Class" fullName="eidss.openapi.web.Controllers.HumanCaseTestController" filterName="HumanCaseTestController" isExposed="True">
+    <Filter entryType="Constructor" fullName="eidss.openapi.web.Controllers.HumanCaseTestController.#ctor" filterName=".ctor" isExposed="False" />
+  </Filter>
+  <Filter entryType="Class" fullName="eidss.openapi.web.Controllers.HumanCaseTestInterpretationController" filterName="HumanCaseTestInterpretationController" isExposed="True">
+    <Filter entryType="Constructor" fullName="eidss.openapi.web.Controllers.HumanCaseTestInterpretationController.#ctor" filterName=".ctor" isExposed="False" />
+  </Filter>
+  <Filter entryType="Class" fullName="eidss.openapi.web.Controllers.OrganizationController" filterName="OrganizationController" isExposed="True">
+    <Filter entryType="Constructor" fullName="eidss.openapi.web.Controllers.OrganizationController.#ctor" filterName=".ctor" isExposed="False" />
+  </Filter>
+  <Filter entryType="Class" fullName="eidss.openapi.web.Controllers.OrganizationPersonController" filterName="OrganizationPersonController" isExposed="True">
+    <Filter entryType="Constructor" fullName="eidss.openapi.web.Controllers.OrganizationPersonController.#ctor" filterName=".ctor" isExposed="False" />
+  </Filter>
+  <Filter entryType="Class" fullName="eidss.openapi.web.Controllers.PatientController" filterName="PatientController" isExposed="True">
+    <Filter entryType="Constructor" fullName="eidss.openapi.web.Controllers.PatientController.#ctor" filterName=".ctor" isExposed="False" />
+  </Filter>
+  <Filter entryType="Class" fullName="eidss.openapi.web.Controllers.ReferenceController" filterName="ReferenceController" isExposed="False">
+    <Filter entryType="Method" fullName="eidss.openapi.web.Controllers.ReferenceController.Get" filterName="Get" isExposed="True" />
+  </Filter>
+  <Filter entryType="Class" fullName="eidss.openapi.web.Controllers.ValuesController" filterName="ValuesController" isExposed="False" />
+  <Filter entryType="Class" fullName="eidss.openapi.web.Controllers.VetCaseController" filterName="VetCaseController" isExposed="True">
+    <Filter entryType="Constructor" fullName="eidss.openapi.web.Controllers.VetCaseController.#ctor" filterName=".ctor" isExposed="False" />
+  </Filter>
+  <Filter entryType="Class" fullName="eidss.openapi.web.Controllers.VetCasePensideTestController" filterName="VetCasePensideTestController" isExposed="True">
+    <Filter entryType="Constructor" fullName="eidss.openapi.web.Controllers.VetCasePensideTestController.#ctor" filterName=".ctor" isExposed="False" />
+  </Filter>
+  <Filter entryType="Class" fullName="eidss.openapi.web.Controllers.VetCaseSampleController" filterName="VetCaseSampleController" isExposed="True">
+    <Filter entryType="Constructor" fullName="eidss.openapi.web.Controllers.VetCaseSampleController.#ctor" filterName=".ctor" isExposed="False" />
+  </Filter>
+  <Filter entryType="Class" fullName="eidss.openapi.web.Controllers.VetCaseTestController" filterName="VetCaseTestController" isExposed="True">
+    <Filter entryType="Constructor" fullName="eidss.openapi.web.Controllers.VetCaseTestController.#ctor" filterName=".ctor" isExposed="False" />
+  </Filter>
+  <Filter entryType="Class" fullName="eidss.openapi.web.Controllers.VetCaseTestInterpretationController" filterName="VetCaseTestInterpretationController" isExposed="True">
+    <Filter entryType="Constructor" fullName="eidss.openapi.web.Controllers.VetCaseTestInterpretationController.#ctor" filterName=".ctor" isExposed="False" />
+  </Filter>
+</Filter>
+<Filter entryType="Namespace" fullName="eidss.openapi.web.Utils" isExposed="False" /></ApiFilter>
+    <MissingTags>Summary, Parameter, Returns, Value, Remarks, Namespace, TypeParameter, IncludeTargets</MissingTags>
+    <RootNamespaceTitle>EIDSS Open API</RootNamespaceTitle>
+    <NamespaceSummaries>
+      <NamespaceSummaryItem name="eidss.openapi.contract" isDocumented="True" />
+    </NamespaceSummaries>
+    <SandcastlePath>
+    </SandcastlePath>
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+  <!-- There are no properties for these groups.  AnyCPU needs to appear in
+       order for Visual Studio to perform the build.  The others are optional
+       common platform types that may appear. -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  </PropertyGroup>
+  <!-- Import the SHFB build targets -->
+  <Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" />
+</Project>

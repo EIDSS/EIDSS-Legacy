@@ -1,0 +1,66 @@
+﻿@model eidss.model.Schema.Address
+
+@using eidss.model.Core
+@using eidss.webclient.Utils;
+
+<input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+<table class="level1"> 
+    <tr>
+        <td class="small">
+            @Html.LabelFor(m => m.idfsRegion)
+        </td>
+        <td class="medium">        
+            @Html.BvEditbox(Model, m => m.strReadOnlyRegion)
+        </td>
+        <td class="small">
+            @Html.LabelFor(m => m.idfsRayon)
+        </td>
+        <td class="medium">
+            @Html.BvEditbox(Model, m => m.strReadOnlyRayon)
+        </td>
+        <td class="small">
+            @Html.LabelFor(m => m.idfsSettlement)
+        </td>
+        <td class="medium">
+            @Html.BvEditbox(Model, m => m.strReadOnlySettlement)
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.strStreetName)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strReadOnlyStreet)
+        </td>
+        @if (EidssSiteContext.Instance.IsUsaAddressFormat)
+         {
+             <td class="label">
+                 @Html.LabelFor(m => m.strBuilding)/&shy;@Html.LabelFor(m => m.strHouse)/&shy;@Html.LabelFor(m => m.strApartment)
+             </td>
+             <td class="building">
+                 @Html.BvEditbox(Model, m => m.strBuilding, true)
+                 @Html.BvEditbox(Model, m => m.strHouse, true)
+                 @Html.BvEditbox(Model, m => m.strApartment, true)
+             </td>
+         }
+         else
+         {
+             <td class="label">
+                 @Html.LabelFor(m => m.strHouse)/&shy;@Html.LabelFor(m => m.strBuilding)/&shy;@Html.LabelFor(m => m.strApartment)
+             </td>
+             <td class="building">
+                 @Html.BvEditbox(Model, m => m.strHouse, true)
+                 @Html.BvEditbox(Model, m => m.strBuilding, true)
+                 @Html.BvEditbox(Model, m => m.strApartment, true)
+             </td>
+         }
+        <td>
+            @Html.LabelFor(m => m.strPostCode)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strReadOnlyPostCode)
+        </td>
+        <td></td>
+    </tr>
+</table>

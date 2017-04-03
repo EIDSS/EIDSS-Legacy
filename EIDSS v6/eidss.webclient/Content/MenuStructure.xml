@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<menu>
+  <item ref="MenuCatalogs" reskey="Journals" permission="">
+    <item ref="MenuFindHumanCase" reskey="Human Cases" permission="HumanCase.Select" url="/HumanCase/Index" />
+    <item ref="MenuFindVetCase" reskey="Veterinary Cases" permission="VetCase.Select" url="/VetCase/Index" />
+    <item ref="MenuOutbreak" reskey="Outbreaks" permission="Outbreak.Select" url="/Outbreak/Index" />
+    <item ref="MenuPatient" reskey="Persons" permission="Person.Select" url="/Person/Index" />
+    <item ref="MenuFarm" reskey="Farms" permission="AccessToFarmData.Select" url="/Farm/Index" />
+    <item ref="MenuFindAggregateCase" reskey="Human Aggregate Cases List" permission="HumanCase.Select" url="/HumanAggregateCase/Index" />
+    <item ref="MenuVetAggregateCaseList" reskey="Vet Aggregate Cases List" permission="VetCase.Select" denyCustomization="51577410000000" url="/VetAggregateCase/Index" />
+    <item ref="MenuVetAggregateActionList" reskey="Vet Aggregate Actions List" permission="VetCase.Select" url="/VetAggregateAction/Index" />
+    <item ref="MenuASCampaigns" reskey="Active Surveillance Campaigns" permission="Campaign.Select" url="/ASCampaign/Index"/>
+    <item ref="MenuASSessionList" reskey="Active Surveillance Sessions" permission="MonitoringSession.Select" url="/ASSession/Index" />
+    <item ref="MenuVsSessionList" reskey="Vector Surveillance Sessions List" permission="VsSession.Select" url="/VsSession/Index" />
+    <item ref="MenuLaboratorySection" reskey="Laboratory Section" permission="Sample.Select" url="/Laboratory/Details" popup="true"/>
+  </item>
+  <item ref="MenuCreate" reskey="Create" url="" permission="">
+    <item ref="MenuNewHumanCase" reskey="Human Case" permission="HumanCase.Insert" url="/HumanCase/Details" popup="true"/>
+    <item ref="MenuNewVetCaseAvian" reskey="Avian Case" permission="VetCase.Insert" url="/VetCase/Details/Avian/0" popup="true"/>
+    <item ref="MenuNewVetCaseLivestock" reskey="Livestock Case" permission="VetCase.Insert" url="/VetCase/Details/Lvstk/0" popup="true"/>
+    <item ref="MenuNewOutbreak" reskey="Outbreak" permission="Outbreak.Insert" url="/Outbreak/Details" popup="true"/>
+    <item ref="MenuNewAggregateCase" reskey="Human Aggregate Case" permission="AccessToHumanAggregateCase.Insert" url="/HumanAggregateCase/Details" popup="true"/>
+    <item ref="MenuNewVetAggregateCase" reskey="Vet Aggregate Case" permission="AccessToVetAggregateCase.Insert" denyCustomization="51577410000000" url="/VetAggregateCase/Details" popup="true"/>
+    <item ref="MenuNewVetAggregateAction" reskey="Vet Aggregate Action" permission="AccessToVetAggregateAction.Insert" url="/VetAggregateAction/Details" popup="true"/>
+    <item ref="MenuNewASCampaign" reskey="Active Surveillance Campaign" permission="Campaign.Insert" url="/ASCampaign/Details" popup="true"/>
+    <item ref="MenuNewASSession" reskey="Active Surveillance Session" permission="MonitoringSession.Insert" url="/ASSession/Details" popup="true"/>
+    <item ref="MenuNewVsSession" reskey="Vector Surveillance Session" permission="VsSession.Insert" url="/VsSession/Details" popup="true"/>
+  </item>
+  <item ref="MenuSearch" reskey="Search" permission="">
+    <item ref="MenuViewAggregateSummaryCase" reskey="Human Aggregate Case Summary" permission="AccessToHumanAggregateCase.Select" url="/HumanAggregateCase/Summary"/>
+    <item ref="MenuViewVetAggregateSummaryCase" reskey="Vet Aggregate Case Summary" permission="AccessToVetAggregateCase.Select" denyCustomization="51577410000000" url="/VetAggregateCase/Summary"/>
+    <item ref="MenuViewVetAggregateSummaryAction" reskey="Vet Aggregate Action Summary" permission="AccessToVetAggregateAction.Select" url="/VetAggregateAction/Summary"/>
+  </item>
+  <item ref="MenuReports" reskey="Reports" dynamic="true" permission="Report.Select">
+    <!--<item ref="MenuPaperForms" reskey="Paper Forms" permission="Report.Select" url="/System/PaperForms"/>-->
+    <!--item ref="MenuUniversalBarcodes" reskey="Print Barcodes" permission="Report.Select" url="/Report/PrintBarcodes" popup="true"/-->
+  </item>
+  <item ref="MenuRAM" reskey="RAM" permission="AVRReport.Select" urlTop="/Account/LaunchAVR" popup="true" notForArchive="true">
+  </item>
+  <item ref="MenuRequestReplication" reskey="Replicate Data" permission="ReplicateData.Execute" urlTop="javascript:notification.replicateData(%BaseSettings.CheckNotificationSeconds%);" siteTypeExclude="CDR" notForArchive="true">
+  </item>
+</menu>

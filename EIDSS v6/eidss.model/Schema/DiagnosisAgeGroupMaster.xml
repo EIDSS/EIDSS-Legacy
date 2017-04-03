@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="DiagnosisAgeGroupMaster"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spDiagnosisAgeGroup_SelectDetail" type= "detailone" />
+  </storage>
+
+  <tables>
+    <table name="DiagnosisAgeGroupMaster">
+      <properties auditObject="daoReference" auditTable="trtDiagnosisAgeGroup"  permissionObject="Reference">
+        <lookupcache>
+          <item name="DiagnosisAgeGroup"/>
+        </lookupcache>
+      </properties>      
+      <help win="Age_Groups_Editor"/>
+      <relations>
+        <relation name="DiagnosisAgeGroups" table="DiagnosisAgeGroup" internal="false" type="child" lazy="false" source="idfsDiagnosisAgeGroup" target="idfsDiagnosisAgeGroup" />
+      </relations>      
+      <storage>
+        <post  name="spDummy_Post"/>
+        <delete />
+        <candelete  name=''/>
+      </storage>
+      <postorder>
+        <item name="DiagnosisAgeGroups" />
+      </postorder>
+      <deleteorder>
+        <item name="DiagnosisAgeGroups" />
+      </deleteorder>
+      <extenders>
+        <creating>
+          <custom_extender>
+            <text>
+              obj.m_IsNew = false;
+              var accMaster = DiagnosisAgeGroupMaster.Accessor.Instance(null);
+              accMaster._LoadDiagnosisAgeGroups(manager, obj);
+            </text>
+          </custom_extender>
+        </creating>
+        <created>     
+        </created>
+        <loading>
+        </loading>
+        <posting>
+        </posting>
+        <posted>
+        </posted>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+        </fieldhandler>
+      </handlers>
+
+      <validators>
+        <childchange>          
+          <container name="DiagnosisAgeGroups" field="DiagnosisAgeGroupName" filter="c => true">
+            <required_validator target="DiagnosisAgeGroupName" child="true" />
+            <!--duplicate_validator field="DiagnosisAgeGroupName" container="DiagnosisAgeGroups" child="true"/-->
+          </container>
+          <container name="DiagnosisAgeGroups" field="DiagnosisAgeGroupNameTranslated" filter="c => ModelUserContext.CurrentLanguage != Localizer.lngEn">
+            <required_validator target="DiagnosisAgeGroupNameTranslated" child="true"/>
+            <!--duplicate_validator field="DiagnosisAgeGroupNameTranslated" container="DiagnosisAgeGroups" child="true"/-->
+          </container>
+          <container name="DiagnosisAgeGroups" filter="c => true">
+            <required_validator target="idfsDiagnosisAgeGroup" child="true"/>
+            <required_validator target="idfsAgeType" child="true"/>
+            <predicate_validator field="intLowerBoundary" predicate="(c,i) => item.intLowerBoundary >= 0"  message="intLowerBoundary"/>
+            <predicate_validator field="intUpperBoundary" predicate="(c,i) => item.intUpperBoundary > 0"  message="intUpperBoundary"/>
+            <predicate_validator field="intLowerBoundary" predicate="(c,i) => item.intLowerBoundary &lt; item.intUpperBoundary" message="intLowerBoundary and intUpperBoundary" />
+          </container>
+        </childchange>
+        <post>
+          <duplicate_list_validator collection="DiagnosisAgeGroups" type="DiagnosisAgeGroup" filter="c => !c.IsMarkedToDelete">
+            <item field="DiagnosisAgeGroupName" inMsg="true" />
+          </duplicate_list_validator>
+          <duplicate_list_validator collection="DiagnosisAgeGroups" type="DiagnosisAgeGroup" filter="c => !c.IsMarkedToDelete &amp;&amp; ModelUserContext.CurrentLanguage != Localizer.lngEn">
+            <item field="DiagnosisAgeGroupNameTranslated" inMsg="true" />
+          </duplicate_list_validator>
+        </post>
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <remove type="Delete"/>
+        </standard>
+        <action name="DeleteGroup" type="Action">
+          <visual panel="Main" alignment ="Right"  visiblePredicate = "ActionMetaItem.DefaultDeleteGroupItemVisiblePredicate">
+            <regular caption ="strDelete_Id" tooltip ="tooltipDelete_Id" icon ="Delete_Remove"/>
+          </visual>
+        </action>
+      </actions>
+    </table>
+
+  </tables>
+</object>

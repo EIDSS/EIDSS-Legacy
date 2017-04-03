@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="ParameterSelect"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+    <storage>
+        <get name="spFFGetParameterSelectList" type="simplelist" /> <!-- cache="true" -->
+    </storage>
+    <tables>
+        <table name="ParameterSelect">
+          <actions>
+            <action name="SelectDetailList" type="Loadlist" />
+            <action name="CreateDefault" type="Create">
+              <run>
+                <params>
+                  <param name="idfsParameter" type="long"/>
+                  <param name="idfsParameterType" type="long?"/>
+                  <param name="intHACode" type="int?"/>
+                </params>
+                <created>
+                  <lambda_extender target="idfsParameter" type="long" lambda="c => idfsParameter"/>
+                  <lambda_extender target="idfsParameterType" type="long?" lambda="c => idfsParameterType"/>
+                  <lambda_extender target="idfsValue" type="long" lambda="c => -1000"/>         
+                  <lambda_extender target="intOrder" type="int" lambda="c => -1"/>
+                  <lambda_extender target="intHACode" type="int?" lambda="c => intHACode"/>
+                  <lambda_extender target="langid" type="string" lambda="c => ModelUserContext.CurrentLanguage"/>
+                  <lambda_extender target="strValueCaption" type="string" lambda="c => String.Empty"/>
+                </created>
+              </run>
+            </action>
+          </actions>
+        </table>
+    </tables>
+</object>

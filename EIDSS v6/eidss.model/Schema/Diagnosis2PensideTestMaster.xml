@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="Vector"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spDiagnosisMaster_SelectDetail" type= "detailone" />
+  </storage>
+
+  <tables>
+    <table name="Diagnosis2PensideTestMaster">
+      <properties auditObject="daoReference" auditTable="trtBaseReference" permissionObject="Reference">
+        <events>
+          <create name="MatrixChanged" predicate="c => c.HasChanges" addinfo="Diagnosis2PensideTestMasterDetail"/>
+          <change name="MatrixChanged" predicate="c => c.HasChanges" addinfo="Diagnosis2PensideTestMasterDetail"/>
+        </events>
+      </properties>
+      <help win="Diagnosis-Penside_tests_matrix"/>
+      <readonly>
+        <fields name="Diagnosis" predicate="c => false" ignoreReadOnly="true"/>
+      </readonly>
+      <relations>
+        <relation name="Diagnosis2PensideTest" table="Diagnosis2PensideTest" internal="false" type="child" lazy="false" source="idfsDiagnosis" target="idfsDiagnosis" />
+      </relations>
+      <lookups>
+        <lookup name="Diagnosis" table="DiagnosisLookup" source="idfsDiagnosis" target="idfsDiagnosis">
+          <filters>
+            <filter predicate="c => ((c.intHACode &amp; (int)HACode.All) != 0) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+            <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+          </filters>
+        </lookup>
+      </lookups>
+      <storage>
+        <post  name="spDummy_Post"/>
+        <delete />
+        <candelete  name=''/>
+      </storage>
+      <postorder>
+        <item name="Diagnosis2PensideTest" />
+      </postorder>
+      <deleteorder>
+        <item name="Diagnosis2PensideTest" />
+      </deleteorder>
+      <extenders>
+        <creating>
+        </creating>
+        <created>
+        </created>
+        <loading>
+        </loading>
+        <posting>
+        </posting>
+        <posted>
+        </posted>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+        </fieldhandler>
+      </handlers>
+
+      <validators>
+        <childchange>
+          <container name="Diagnosis2PensideTest" field="idfsPensideTestName"  filter="c => true">
+            <!--duplicate_reference_validator field="idfsPensideTestName" container="Diagnosis2PensideTest" predicate="(master,i) => master.Diagnosis2PensideTest.Where(c => 
+                                                              (long)c.Key != (long)i.Key 
+                                                              &amp;&amp; c.idfsPensideTestName == i.idfsPensideTestName
+                                                              &amp;&amp; c.idfsDiagnosis == i.idfsDiagnosis
+                                                              &amp;&amp; !c.IsMarkedToDelete
+                                                              &amp;&amp; !i.IsMarkedToDelete
+                                                              ).Count() == 0"/-->
+            <!--required_child_validator container="Diagnosis2PensideTest" field="idfsPensideTestName" predicate ="(c,i) => (i.idfsPensideTestName != null)"/-->
+            <required_validator target="idfsPensideTestName" child="true"/>
+          </container>
+        </childchange>
+        <post>
+          <duplicate_list_validator collection="Diagnosis2PensideTest" type="Diagnosis2PensideTest" filter="c => !c.IsMarkedToDelete">
+            <item field="idfsPensideTestName" lookup="PensideTestType" inMsg="true" />
+            <item field="idfsDiagnosis" />
+          </duplicate_list_validator>
+        </post>
+
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <remove type="Delete"/>
+        </standard>
+        <action name="DeletePensideTest" type="Action">
+          <visual panel="Main" alignment ="Right" visiblePredicate = "ActionMetaItem.DefaultDeleteGroupItemVisiblePredicate">
+            <regular caption ="strDelete_Id" tooltip ="tooltipDelete_Id" icon ="Delete_Remove"/>
+          </visual>
+          <run>
+            <preUI webType="JScript"/>
+          </run>
+        </action>
+      </actions>
+    </table>
+
+  </tables>
+</object>

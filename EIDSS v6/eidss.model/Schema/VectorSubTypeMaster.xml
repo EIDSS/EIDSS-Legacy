@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="Vector"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spVectorTypeMaster_SelectDetail" type= "detailone" />
+  </storage>
+
+  <tables>
+    <table name="VectorSubTypeMaster">
+      <properties auditObject="daoReference" auditTable="trtBaseReference" permissionObject="Reference">
+        <lookupcache>
+          <item name="rftVectorSubType"/>
+        </lookupcache>
+      </properties>
+      <help win="Vector_species_types"/>
+      <readonly>
+        <fields name="VectorType" predicate="c => false" ignoreReadOnly="true"/>
+      </readonly>
+      <relations>
+        <relation name="VectorSubType" table="VectorSubType" internal="false" type="child" lazy="false" source="idfsVectorType" target="idfsVectorType" />
+      </relations>
+      <lookups>
+        <lookup name="VectorType" table="BaseReference" section="rftVectorType" source="idfsVectorType" target="idfsBaseReference" />
+      </lookups>
+      <storage>
+        <post  name="spDummy_Post"/>
+        <delete />
+        <candelete  name=''/>
+      </storage>
+      <postorder>
+        <item name="VectorSubType" />
+      </postorder>
+      <deleteorder>
+        <item name="VectorSubType" />
+      </deleteorder>
+      <extenders>
+        <creating>
+        </creating>
+        <created>
+        </created>
+        <loading>
+        </loading>
+        <posting>
+        </posting>
+        <posted>
+        </posted>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <custom_handler field="VectorType">
+            <text>
+              obj.AcceptChanges();
+            </text>
+          </custom_handler>
+        </fieldhandler>
+      </handlers>
+
+      <validators>
+        <childchange>
+          <container name="VectorSubType" field="strDefaultName" filter="c => true">
+            <!--duplicate_validator field="strDefaultName" container="VectorSubType" /-->
+            <!--required_child_validator container="VectorSubType" field="strDefaultName" /-->
+            <required_validator target="strDefaultName" child="true" />
+          </container>
+          <container name="VectorSubType" field="strTranslatedName" filter="c => ModelUserContext.CurrentLanguage != Localizer.lngEn">
+            <!--duplicate_validator field="strTranslatedName" container="VectorSubType" filter="c => true"/-->
+            <!--required_child_validator container="VectorSubType" field="strTranslatedName"/-->
+            <required_validator target="strTranslatedName" child="true"/>
+          </container>
+        </childchange>
+        <post>
+          <duplicate_list_validator collection="VectorSubType" type="VectorSubType" filter="c => !c.IsMarkedToDelete">
+            <item field="strDefaultName" inMsg="true" />
+          </duplicate_list_validator>
+          <duplicate_list_validator collection="VectorSubType" type="VectorSubType" filter="c => !c.IsMarkedToDelete &amp;&amp; ModelUserContext.CurrentLanguage != Localizer.lngEn">
+            <item field="strTranslatedName" inMsg="true" />
+          </duplicate_list_validator>
+        </post>
+        <!--<post>
+          <required_validator target="VectorTypes.strDefaultName" />
+          <required_validator target="VectorTypes.strTranslatedName" />  
+          </post>-->
+
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <remove type="Delete"/>
+        </standard>
+        <action name="DeleteVectorSubType" type="Action">
+          <visual panel="Main" alignment ="Right"  visiblePredicate = "ActionMetaItem.DefaultDeleteGroupItemVisiblePredicate">
+            <regular caption ="strDelete_Id" tooltip ="tooltipDelete_Id" icon ="Delete_Remove"/>
+          </visual>
+        </action>
+      </actions>
+    </table>
+
+  </tables>
+</object>

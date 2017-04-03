@@ -1,0 +1,20 @@
+﻿@using eidss.web.common.Utils
+@model eidss.model.Model.FlexibleForms.FlexNodes.FlexNode
+
+<div class="sectionTitle">
+    @Model.DataItem.LinkedObject
+</div>
+
+@if (Model.ChildListCount > 0)
+{
+    foreach (var node in Model.ChildList)
+    {
+        @Html.Partial("FlexNode", node)
+    }
+}
+@*панель управления*@
+<br/>
+<div class="sectionTitle">
+    <input class="button" type="button" value="@(Translator.GetMessageString("AddParameter"))" onclick="flexForms.AddParameterEditWindow();" />
+    <input class="button" type="button" value="@(Translator.GetMessageString("RemoveDifferences"))" onclick="flexForms.removeParameters();"/>
+</div>

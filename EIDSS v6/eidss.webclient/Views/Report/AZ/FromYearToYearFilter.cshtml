@@ -1,0 +1,52 @@
+﻿
+@using Kendo.Mvc.UI
+@model eidss.model.Reports.AZ.FromYearToYearModel
+
+<table id="FromYearToYearTable" >
+    <tr>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.Year1)
+        </td>
+        <td class="largereport">
+                    <div class='tdContainer'>
+                        @{
+                            @(
+                            Html.Kendo().NumericTextBox()
+                                .Name("YearModel.Year2")
+                                  .Value(Model.Year2)
+                                  .Min(2000)
+                                  .Max(2040)
+                                  .Decimals(0)
+                                  .HtmlAttributes(new {@class = "requiredField"})
+                                  .Placeholder("")
+                                  .Events(c => c.Change("paperForm.OnEndYearChanged"))
+                                  .Format("g")
+                                  )
+                        }
+            </div>
+
+        </td>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.Year2)
+        </td>
+        <td class="largereport">
+                        <div class='tdContainer'>
+                            @{
+                                @(
+                                    Html.Kendo().NumericTextBox()
+                                        .Name("YearModel.Year1")
+                                          .Value(Model.Year1)
+                                          .Min(2000)
+                                          .Max(2040)
+                                          .Decimals(0)
+                                          .HtmlAttributes(new {@class = "requiredField"})
+                                          .Placeholder("")
+                                          .Events(c => c.Change("paperForm.OnStartYearChanged"))
+                                          .Format("g")
+                                          )
+                            }
+            </div>
+        </td>
+        <td ></td>
+    </tr>
+</table>

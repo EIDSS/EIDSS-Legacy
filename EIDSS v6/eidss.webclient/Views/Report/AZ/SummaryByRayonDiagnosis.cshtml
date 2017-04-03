@@ -1,0 +1,30 @@
+﻿@using eidss.web.common.Utils
+@model eidss.model.Reports.AZ.SummaryByRayonDiagnosisModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/ExportButtons", Model)
+    <div class="bluelayout">
+        <div class="tabPanelContent">
+
+            @Html.Partial("Common/BaseFilter", Model)
+
+            @Html.Partial("Common/BaseIntervalFilterEx", Model)
+
+            @Html.Partial("Common/MultipleDiagnosisFilter"
+            , Model.MultipleDiagnosisFilter
+            , new ViewDataDictionary
+                {
+                    {"FilterName", "MultipleDiagnosisFilter.CheckedItems"}
+                    , {"Caption", Translator.GetMessageString("colDiseaseName")}
+                    , {"maxCheckedCount", ViewBag.MaxCheckedCount ?? 0}
+                })
+
+        </div>
+    </div>
+
+}

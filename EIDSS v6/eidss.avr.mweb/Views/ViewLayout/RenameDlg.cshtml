@@ -1,0 +1,45 @@
+﻿@using System.Web.UI.WebControls
+@using eidss.web.common.Utils
+@using DevExpress.Web.ASPxPopupControl
+
+    @Html.DevExpress().PopupControl(
+    settings =>
+    {
+        settings.Name = "pcRenameColumn";
+        settings.CallbackRouteValues = new { Controller = "ViewLayout", Action = "LoadRename" };
+        settings.ClientSideEvents.BeginCallback = "renameForm.OnPopupBeginCallback";
+        settings.LoadContentViaCallback = LoadContentViaCallback.OnFirstShow;
+        settings.Width = Unit.Pixel(720);
+        settings.Height = Unit.Pixel(200);
+        settings.AllowDragging = true;
+        settings.CloseAction = CloseAction.CloseButton;
+        settings.PopupAnimationType = AnimationType.Auto;
+        settings.HeaderText = Translator.GetMessageString("RenameColumnBand");
+        settings.Modal = true;
+        settings.EnableTheming = false;
+        settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+        settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+        settings.ControlStyle.CssClass = "k-window";
+        settings.Styles.Header.CssClass = "k-window-titlebar";
+        settings.ShowCloseButton = false;
+        
+
+        settings.SetContent(() =>
+        {
+            using (Html.BeginForm("RenameDlg", "ViewLayout", FormMethod.Post, new { id = "popupForm" }))
+            {
+                ViewContext.Writer.Write("<div class=\"level1\">");
+                ViewContext.Writer.Write("<input type=\"hidden\" name=\"layoutId\" value=\"" + ViewBag.LayoutId + "\"/>");
+                ViewContext.Writer.Write("<input type=\"hidden\" name=\"uniquePath\" value=\"" + ViewBag.UniquePath + "\"/>");
+                ViewContext.Writer.Write("<table class=\"level1\" style=\"margin:auto\">");
+                ViewContext.Writer.Write("<tr role=\"row\"><td class=\"firstLabel xmedium\"/><td class=\"secondLabel right\">");
+                ViewContext.Writer.Write("<input id=\"btnOk\" class=\"button windowButton\" type=\"submit\" value='" + @Translator.GetMessageString("Ok") + "' />");//onclick=\"pcRenameColumn.Hide();document.location.href='" + Url.Action("Rename", "ViewLayout", new { layoutId = ViewBag.LayoutId }) + "'\", new { layoutId = ViewBag.LayoutId, uniquePath = ViewBag.UniquePath }
+                ViewContext.Writer.Write("<input id=\"btnCancel\" class=\"button windowButton\" type=\"button\" value='" + @Translator.GetMessageString("Cancel") + "' onclick=\"pcRenameColumn.Hide();\"/>");
+                ViewContext.Writer.Write("</td></tr>");
+                ViewContext.Writer.Write("<tr><td class=\"firstLabel xmedium\"><label>" + ViewBag.Label + "</label></td>");
+                ViewContext.Writer.Write("<td class=\"secondLabel\"><input type=\"text\" name=\"displayName\" class=\"requiredField wide\" value=\"" + ViewBag.OriginalName + "\"/></td>");
+                ViewContext.Writer.Write("</tr></table></div>");
+            }
+        });
+
+    }).GetHtml()

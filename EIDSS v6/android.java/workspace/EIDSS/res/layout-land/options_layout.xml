@@ -1,0 +1,93 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+  <ScrollView android:id="@+id/Scroll"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <RelativeLayout android:id="@+id/RelativeLayout01"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+		  <TextView
+		    android:id="@+id/label1"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/Synchronization"
+		    />
+		
+		  <Button
+		      android:id="@+id/OnlineSynchronization"
+		      android:layout_width="wrap_content"
+		      android:layout_height="wrap_content"
+		      android:layout_below="@id/label1"
+		      android:layout_marginLeft="80dp"
+		      android:text="@string/OnlineSynchronization" />
+		
+		  <Button
+		      android:id="@+id/UnloadCasesFile"
+		      android:layout_width="0dp"
+		      android:layout_height="wrap_content"
+		      android:layout_toRightOf="@id/OnlineSynchronization"
+		      android:layout_alignTop="@id/OnlineSynchronization"
+		      android:layout_alignParentRight="true"
+		      android:text="@string/UnloadCasesFile" />
+		
+		  <TextView
+		    android:id="@+id/label2"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/LoadReferences"
+		    android:layout_below="@id/UnloadCasesFile"
+		    />
+		
+		  <Button
+		      android:id="@+id/LoadReferencesOnline"
+		      android:layout_width="wrap_content"
+		      android:layout_height="wrap_content"
+		      android:layout_below="@id/label2"
+		      android:layout_marginLeft="80dp"
+		      android:text="@string/LoadReferencesOnline" />
+		
+		  <Button
+		      android:id="@+id/LoadReferencesFile"
+		      android:layout_width="0dp"
+		      android:layout_height="wrap_content"
+		      android:layout_toRightOf="@id/LoadReferencesOnline"
+		      android:layout_alignTop="@id/LoadReferencesOnline"
+		      android:layout_alignParentRight="true"
+		      android:text="@string/LoadReferencesFile" />
+		
+		  <Button
+		      android:id="@+id/CheckForUpdates"
+		      android:layout_width="fill_parent"
+		      android:layout_height="wrap_content"
+		      android:layout_below="@id/LoadReferencesFile"
+		      android:layout_marginTop="10dp"
+		      android:text="@string/CheckForUpdates" />
+		
+		  <Button
+		      android:id="@+id/DeleteSynchronizedCases"
+		      android:layout_width="fill_parent"
+		      android:layout_height="wrap_content"
+		      android:layout_below="@id/CheckForUpdates"
+		      android:text="@string/DeleteSynchronizedCases" />
+		
+		  <Button
+		      android:id="@+id/SetPasswordButton"
+		      android:layout_width="fill_parent"
+		      android:layout_height="wrap_content"
+		      android:layout_below="@id/DeleteSynchronizedCases"
+		      android:text="@string/TitleChangeLocalPassword" />
+		
+		  <Button
+		      android:id="@+id/Settings"
+		      android:layout_width="fill_parent"
+		      android:layout_height="wrap_content"
+		      android:layout_below="@id/SetPasswordButton"
+		      android:text="@string/Options" />
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

@@ -1,0 +1,47 @@
+﻿@model eidss.model.Schema.HumanCaseListItem.Accessor
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using eidss.webui.Utils
+<h2>
+    Index</h2>
+<div id="searchpanel">
+    @using (Html.BeginForm())
+    { 
+        @Html.Partial(@"../Search/SearchPanel", Model)                
+        <input type="submit" value="Search" style="float: right; vertical-align: bottom" />
+        <input type="button" value="Clear" onclick="ClearSearch();" />
+        <input type="button" value="Cancel" onclick="$('#searchpanel').hide('slide');" />
+    }
+</div>
+@using (bv.model.BLToolkit.DbManagerProxy dbmanager = bv.model.BLToolkit.DbManagerFactory.Factory.Create())
+{
+    @(Html.Telerik().Grid(Model.SelectListT(dbmanager, (bv.model.Model.Core.FilterParams)ViewBag.Filter))
+                         .Name("Grid")
+                         .Columns(columns =>
+                         {
+                             //foreach (var c in Model.GridMeta)
+                             //{
+                             //    columns.Bound(c.Name).Title(Translator.GetString(c.LabelId));
+                             //}
+                             // columns.Bound(x => x.idfCase).Template(@<text><input type="hidden" name="id" value="@item.idfCase" /></text>).Width(0);                             
+                             columns.Bound(x => x.idfCase).Template(@<text><input type="hidden" name="id" value="@item.idfCase" />@item.strCaseID</text>).Title(Translator.GetString("strCaseID"));
+                             columns.Bound(x => x.datEnteredDate).Format("{0:MM/dd/yyyy}").Title(Translator.GetString("datEnteredDate"));
+                             columns.Bound(x => x.CaseStatusName).Title(Translator.GetString("CaseStatusName"));
+                             columns.Bound(x => x.DiagnosisName).Title(Translator.GetString("DiagnosisName"));
+                             columns.Bound(x => x.GeoLocationName).Title(Translator.GetString("GeoLocationName"));
+                             columns.Bound(x => x.PatientName).Title(Translator.GetString("PatientName"));
+                             columns.Bound(x => x.datDateofBirth).Format("{0:MM/dd/yyyy}").Title(Translator.GetString("datDateofBirth"));
+                             columns.Bound(x => x.Age).Title(Translator.GetString("Age"));
+                         })
+            .DataKeys(dataKeys => dataKeys.Add(h => h.strCaseID))
+            .Scrollable(scrolling => scrolling.Height(580))
+            .Pageable(pager => pager.PageSize(eidss.webui.Configurations.GridDisplayRowsSettings.HUMAN_CASE_LIST))
+            .Resizable(resizing => resizing.Columns(true))
+            .Selectable()
+            .Sortable()
+            .Editable(p => p.Enabled(true))
+            //.ClientEvents(events => events.OnDataBound("ClearSelection"))
+        ) 
+}

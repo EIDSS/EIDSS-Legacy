@@ -1,0 +1,611 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5FBDE423-85E7-46FD-B448-DBE7DC0EC63D}</ProjectGuid>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>eidss_human</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyMode>None</AssemblyOriginatorKeyMode>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionStrict>On</OptionStrict>
+    <RootNamespace>EIDSS</RootNamespace>
+    <StartupObject>EIDSS.%28None%29</StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <MyType>Windows</MyType>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <PublishUrl>http://localhost/eidss_human/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>..\..\..\eidss.main\bin\Debug\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>..\..\..\eidss.main\bin\Release\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032,42353,42354,42355</NoWarn>
+    <DebugType>none</DebugType>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\eidss.core\eidss.core.csproj">
+      <Project>{BF545ECD-F673-4C71-9362-57C01DF13062}</Project>
+      <Name>eidss.core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\eidss.model\eidss.model.csproj">
+      <Project>{E4B87B63-D5F2-4F9F-B39C-A7714896D1DE}</Project>
+      <Name>eidss.model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\eidss.winclient\eidss.winclient.csproj">
+      <Project>{428C1EFE-F1A1-441A-9C59-50AE279F887F}</Project>
+      <Name>eidss.winclient</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EIDSS_Human_Db\EIDSS_Human_Db.vbproj">
+      <Project>{8C8D6070-B163-40FB-8061-B521F1CC90A4}</Project>
+      <Name>EIDSS_Human_Db</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <Reference Include="DevExpress.Data.v14.1">
+      <Name>DevExpress.Data.v14.1</Name>
+      <AssemblyFolderKey>hklm\devexpress.net.v3</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v14.1">
+      <Name>DevExpress.Utils.v14.1</Name>
+      <AssemblyFolderKey>hklm\devexpress.net.v3</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v14.1">
+      <Name>DevExpress.XtraEditors.v14.1</Name>
+      <AssemblyFolderKey>hklm\devexpress.net.v3</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v14.1">
+      <Name>DevExpress.XtraPrinting.v14.1</Name>
+      <AssemblyFolderKey>hklm\devexpress.net.v3</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v14.1">
+      <Name>DevExpress.XtraGrid.v14.1</Name>
+      <AssemblyFolderKey>hklm\devexpress.net.v3</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\..\..\bltoolkit.3.2.dev\BLToolkit.4.csproj">
+      <Project>{0C325F5D-E50E-4340-8724-D29896CCC583}</Project>
+      <Name>BLToolkit.4</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\bv.common\bv.common.csproj">
+      <Project>{BEE76B17-720D-4B65-996A-5712912B3ACF}</Project>
+      <Name>bv.common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\bv.model\bv.model.csproj">
+      <Project>{9067327E-1960-4326-ACB9-D982DDBEAA76}</Project>
+      <Name>bv.model</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\bv.winclient\bv.winclient.csproj">
+      <Project>{B0163672-F328-4D02-9B71-FB698EDAF815}</Project>
+      <Name>bv.winclient</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\bvwin_common\bvwin_common.vbproj">
+      <Name>bvwin_common</Name>
+      <Project>{B3E5BA6B-FAA3-4A7D-8236-3F8842D61CD4}</Project>
+      <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\bv_common\bvcommon.vbproj">
+      <Project>{BA2844A8-F629-4B02-ACD6-B60063E4D27F}</Project>
+      <Name>bvcommon</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\bv_dbcommon\bvdb_common.vbproj">
+      <Name>bvdb_common</Name>
+      <Project>{6C48BB93-277D-4804-B280-F6130E29EB81}</Project>
+      <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EIDSS.FlexibleForms\EIDSS.FlexibleForms.csproj">
+      <Project>{8040D091-58E8-4FBE-8F46-D5200EEDAF69}</Project>
+      <Name>EIDSS.FlexibleForms</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EIDSS_Common\EIDSS_Common.vbproj">
+      <Name>EIDSS_Common</Name>
+      <Project>{119CC05A-2F6C-4FC8-AC74-79BB76E3C1C0}</Project>
+      <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EIDSS_Common_Db\EIDSS_Common_Db.vbproj">
+      <Name>EIDSS_Common_Db</Name>
+      <Project>{B66DEB84-FBE3-44E4-9B72-1E459CE0E50D}</Project>
+      <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EIDSS_Common_Forms\EIDSS_Common_Forms.vbproj">
+      <Name>EIDSS_Common_Forms</Name>
+      <Project>{389B8F77-0B61-46DB-B752-1ECDC502267D}</Project>
+      <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="bv.common" />
+    <Import Include="bv.common.Core" />
+    <Import Include="bv.common.db" />
+    <Import Include="bv.common.db.Core" />
+    <Import Include="bv.common.Diagnostics" />
+    <Import Include="bv.common.Objects" />
+    <Import Include="bv.common.win" />
+    <Import Include="bv.common.win.Core" />
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\EIDSSAssemblyInfo.vb">
+      <Link>EIDSSAssemblyInfo.vb</Link>
+    </Compile>
+    <Compile Include="AggregateCase\AggregateCaseDetail.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AggregateCase\AggregateSummaryCaseDetail.Designer.vb">
+      <DependentUpon>AggregateSummaryCaseDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AggregateCase\AggregateSummaryCaseDetail.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Human Case\HumanCaseDiagnosisHistory.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Human Case\HumanCaseDiagnosisChangeReason.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Human Case\HumanCaseDeduplicationDetail.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Human Case\HumanCaseDetail.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Human Case\HumanCaseSamplesPanel.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Human Case\HumanCaseSearch.vb" />
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Patient\PatientDetail.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Patient\Patient_Info.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Content Include="EIDSS_Human.sln" />
+    <None Include="Resources\Human Aggregate Cases Summary %28large%29%2810%29.png" />
+    <None Include="Migrated rules for EIDSS_Human.ruleset" />
+    <None Include="Resources\Search-Human-Case-%28large%29.png" />
+    <None Include="Resources\Close.png" />
+    <None Include="Resources\refresh.png" />
+    <None Include="Resources\Person-%28large%29.png" />
+    <None Include="Resources\Persons-List-%28large%29.png" />
+    <None Include="Resources\View1.png" />
+    <None Include="Resources\edit.png" />
+    <None Include="Resources\Search.png" />
+    <None Include="Resources\Human-Case-%28small%291.png" />
+    <None Include="Resources\Human-Case-%28large%29.png" />
+    <None Include="Resources\Search-Human-Cases-for-de-duplication-%28small%29.png" />
+    <None Include="Resources\Search-Human-Case-in-Browse-Mode-%28small%291.png" />
+    <None Include="Resources\Search-Human-Case-in-Browse-Mode-%28large%29.png" />
+    <None Include="Resources\Search-Human-Cases-for-de-duplication-%28lagre%29.png" />
+    <None Include="Resources\Human-Case-De-duplication-%28large%29.png" />
+    <None Include="Resources\Delete_Remove.png" />
+    <None Include="Resources\add.png" />
+    <None Include="Resources\Human-Case-De-duplication-%28small%29.png" />
+    <None Include="Resources\Clear_Cancel-Changes1.png" />
+    <None Include="Human Case\file-info.png" />
+    <None Include="Resources\Search-for-Duplicates2.png" />
+    <None Include="Resources\Browse5.png" />
+    <EmbeddedResource Include="AggregateCase\AggregateCaseDetail.ar-IQ.resx">
+      <DependentUpon>AggregateCaseDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\AggregateCaseDetail.az-Latn-AZ.resx">
+      <DependentUpon>AggregateCaseDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\AggregateCaseDetail.hy-am.resx">
+      <DependentUpon>AggregateCaseDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\AggregateCaseDetail.ka-GE.resx">
+      <DependentUpon>AggregateCaseDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\AggregateCaseDetail.kk-KZ.resx">
+      <DependentUpon>AggregateCaseDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\AggregateCaseDetail.resx">
+      <DependentUpon>AggregateCaseDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\AggregateCaseDetail.ru-RU.resx">
+      <DependentUpon>AggregateCaseDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\AggregateCaseDetail.uk-UA.resx">
+      <DependentUpon>AggregateCaseDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\AggregateSummaryCaseDetail.ar-IQ.resx">
+      <DependentUpon>AggregateSummaryCaseDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\AggregateSummaryCaseDetail.az-Latn-AZ.resx">
+      <DependentUpon>AggregateSummaryCaseDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\AggregateSummaryCaseDetail.hy-am.resx">
+      <DependentUpon>AggregateSummaryCaseDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\AggregateSummaryCaseDetail.ka-GE.resx">
+      <DependentUpon>AggregateSummaryCaseDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\AggregateSummaryCaseDetail.kk-KZ.resx">
+      <DependentUpon>AggregateSummaryCaseDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\AggregateSummaryCaseDetail.resx">
+      <DependentUpon>AggregateSummaryCaseDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\AggregateSummaryCaseDetail.ru-RU.resx">
+      <DependentUpon>AggregateSummaryCaseDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\AggregateSummaryCaseDetail.uk-UA.resx">
+      <DependentUpon>AggregateSummaryCaseDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDeduplicationDetail.ar-IQ.resx">
+      <DependentUpon>HumanCaseDeduplicationDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDeduplicationDetail.hy-am.resx">
+      <DependentUpon>HumanCaseDeduplicationDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDeduplicationDetail.kk-KZ.resx">
+      <DependentUpon>HumanCaseDeduplicationDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDeduplicationDetail.ru-KZ-Eidss.resx">
+      <DependentUpon>HumanCaseDeduplicationDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDeduplicationDetail.uk-UA.resx">
+      <DependentUpon>HumanCaseDeduplicationDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDetail.ar-IQ.resx">
+      <DependentUpon>HumanCaseDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDetail.hy-am.resx">
+      <DependentUpon>HumanCaseDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDetail.kk-KZ.resx">
+      <DependentUpon>HumanCaseDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDetail.uk-UA.resx">
+      <DependentUpon>HumanCaseDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDiagnosisChangeReason.ar-IQ.resx">
+      <DependentUpon>HumanCaseDiagnosisChangeReason.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDiagnosisChangeReason.hy-am.resx">
+      <DependentUpon>HumanCaseDiagnosisChangeReason.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDiagnosisChangeReason.kk-KZ.resx">
+      <DependentUpon>HumanCaseDiagnosisChangeReason.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDiagnosisChangeReason.uk-UA.resx">
+      <DependentUpon>HumanCaseDiagnosisChangeReason.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDiagnosisHistory.ar-IQ.resx">
+      <DependentUpon>HumanCaseDiagnosisHistory.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDiagnosisHistory.az-Latn-AZ.resx">
+      <DependentUpon>HumanCaseDiagnosisHistory.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDiagnosisHistory.hy-am.resx">
+      <DependentUpon>HumanCaseDiagnosisHistory.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDiagnosisHistory.ka-GE.resx">
+      <DependentUpon>HumanCaseDiagnosisHistory.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDiagnosisHistory.kk-KZ.resx">
+      <DependentUpon>HumanCaseDiagnosisHistory.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDiagnosisHistory.resx">
+      <DependentUpon>HumanCaseDiagnosisHistory.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDiagnosisHistory.ru-RU.resx">
+      <DependentUpon>HumanCaseDiagnosisHistory.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDiagnosisChangeReason.az-Latn-AZ.resx">
+      <DependentUpon>HumanCaseDiagnosisChangeReason.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDiagnosisChangeReason.ka-GE.resx">
+      <DependentUpon>HumanCaseDiagnosisChangeReason.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDiagnosisChangeReason.resx">
+      <DependentUpon>HumanCaseDiagnosisChangeReason.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDiagnosisChangeReason.ru-RU.resx">
+      <DependentUpon>HumanCaseDiagnosisChangeReason.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDeduplicationDetail.az-Latn-AZ.resx">
+      <DependentUpon>HumanCaseDeduplicationDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDeduplicationDetail.ka-GE.resx">
+      <DependentUpon>HumanCaseDeduplicationDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDeduplicationDetail.resx">
+      <DependentUpon>HumanCaseDeduplicationDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDeduplicationDetail.ru-RU.resx">
+      <DependentUpon>HumanCaseDeduplicationDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDetail.az-Latn-AZ.resx">
+      <DependentUpon>HumanCaseDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDetail.ka-GE.resx">
+      <DependentUpon>HumanCaseDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDetail.resx">
+      <DependentUpon>HumanCaseDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDetail.ru-RU.resx">
+      <DependentUpon>HumanCaseDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseDiagnosisHistory.uk-UA.resx">
+      <DependentUpon>HumanCaseDiagnosisHistory.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseSamplesPanel.ar-IQ.resx">
+      <DependentUpon>HumanCaseSamplesPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseSamplesPanel.az-Latn-AZ.resx">
+      <DependentUpon>HumanCaseSamplesPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseSamplesPanel.hy-am.resx">
+      <DependentUpon>HumanCaseSamplesPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseSamplesPanel.ka-GE.resx">
+      <DependentUpon>HumanCaseSamplesPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseSamplesPanel.kk-KZ.resx">
+      <DependentUpon>HumanCaseSamplesPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseSamplesPanel.resx">
+      <DependentUpon>HumanCaseSamplesPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseSamplesPanel.ru-RU.resx">
+      <DependentUpon>HumanCaseSamplesPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human Case\HumanCaseSamplesPanel.uk-UA.resx">
+      <DependentUpon>HumanCaseSamplesPanel.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="licenses.licx" />
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <SubType>Designer</SubType>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Patient\PatientDetail.ar-IQ.resx">
+      <DependentUpon>PatientDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Patient\PatientDetail.az-latn-az.resx">
+      <DependentUpon>PatientDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Patient\PatientDetail.hy-AM.resx">
+      <DependentUpon>PatientDetail.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Patient\PatientDetail.ka-GE.resx">
+      <DependentUpon>PatientDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Patient\PatientDetail.kk-KZ.resx">
+      <DependentUpon>PatientDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Patient\PatientDetail.resx">
+      <DependentUpon>PatientDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Patient\PatientDetail.ru-RU.resx">
+      <DependentUpon>PatientDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Patient\PatientDetail.uk-UA.resx">
+      <DependentUpon>PatientDetail.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Patient\Patient_Info.ar-IQ.resx">
+      <DependentUpon>Patient_Info.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Patient\Patient_Info.az-Latn-AZ.resx">
+      <DependentUpon>Patient_Info.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Patient\Patient_Info.hy-am.resx">
+      <DependentUpon>Patient_Info.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Patient\Patient_Info.ka-GE.resx">
+      <DependentUpon>Patient_Info.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Patient\Patient_Info.kk-KZ.resx">
+      <DependentUpon>Patient_Info.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Patient\Patient_Info.resx">
+      <DependentUpon>Patient_Info.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Patient\Patient_Info.ru-RU.resx">
+      <DependentUpon>Patient_Info.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Patient\Patient_Info.uk-UA.resx">
+      <DependentUpon>Patient_Info.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

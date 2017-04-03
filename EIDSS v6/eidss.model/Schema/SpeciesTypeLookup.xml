@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="SpeciesTypeLookup"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="spSpeciesTypeReference_SelectDetail" type="lookuplist" cache="true" />
+    </storage>
+
+    <tables>
+      
+        <table name="SpeciesTypeLookup" tostring="c => c.name" lookupcachename="rftSpeciesList">
+          <properties auditObject="daoReference" auditTable="trtSpeciesType" permissionObject="Reference"/>
+        </table>
+        <!--table name="HACodes">
+        </table-->
+    </tables>
+
+</object>
+

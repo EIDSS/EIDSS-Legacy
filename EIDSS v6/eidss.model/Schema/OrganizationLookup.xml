@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="OrganizationLookup"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="spOrganization_SelectLookup" type="lookuplist" cache="true"/>
+    </storage>
+
+    <tables>
+        <table name="OrganizationLookup" tostring="c => c.name" lookupcachename="Organization">
+            <keys>
+                <key name="idfInstitution" />
+            </keys>          
+        </table>      
+    </tables>
+
+</object>
+

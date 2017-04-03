@@ -1,0 +1,3037 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{428C1EFE-F1A1-441A-9C59-50AE279F887F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>eidss.winclient</RootNamespace>
+    <AssemblyName>eidss.winclient</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\eidss.main\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\eidss.main\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Printing.v14.1.Core, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Data.v14.1, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Utils.v14.1, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraBars.v14.1, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Charts.v14.1.Core, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraCharts.v14.1.Wizard, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v14.1, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v14.1, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v14.1, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraLayout.v14.1, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraNavBar.v14.1, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.PivotGrid.v14.1.Core, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPivotGrid.v14.1, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v14.1, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v14.1.Extensions, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Sparkline.v14.1.Core, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v14.1.UI, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v14.1, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraTreeList.v14.1, Version=14.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\EIDSSAssemblyInfo.cs">
+      <Link>EIDSSAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="ActiveSurveillance\AsCampaignListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ActiveSurveillance\AsCampaignListPanel.Designer.cs">
+      <DependentUpon>AsCampaignListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ActiveSurveillance\AsSessionListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ActiveSurveillance\AsSessionListPanel.Designer.cs">
+      <DependentUpon>AsSessionListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\CaseClassificationDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\CaseClassificationDetail.Designer.cs">
+      <DependentUpon>CaseClassificationDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\CaseClassificationMasterDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\CaseClassificationMasterDetail.Designer.cs">
+      <DependentUpon>CaseClassificationMasterDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\CustomReportRowsDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\CustomReportRowsDetail.Designer.cs">
+      <DependentUpon>CustomReportRowsDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\CustomReportRowsMasterDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\CustomReportRowsMasterDetail.Designer.cs">
+      <DependentUpon>CustomReportRowsMasterDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\ReportDiagnosesGroup2DiagnosisDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\ReportDiagnosesGroup2DiagnosisDetail.Designer.cs">
+      <DependentUpon>ReportDiagnosesGroup2DiagnosisDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\ReportDiagnosesGroup2DiagnosisMasterDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\ReportDiagnosesGroup2DiagnosisMasterDetail.Designer.cs">
+      <DependentUpon>ReportDiagnosesGroup2DiagnosisMasterDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\ReportDiagnosesGroupDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\ReportDiagnosesGroupDetail.Designer.cs">
+      <DependentUpon>ReportDiagnosesGroupDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\ReportDiagnosesGroupMasterDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\ReportDiagnosesGroupMasterDetail.Designer.cs">
+      <DependentUpon>ReportDiagnosesGroupMasterDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\Diagnosis2DiagnosisGroupDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\Diagnosis2DiagnosisGroupDetail.Designer.cs">
+      <DependentUpon>Diagnosis2DiagnosisGroupDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\Diagnosis2DiagnosisGroupMasterDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\Diagnosis2DiagnosisGroupMasterDetail.Designer.cs">
+      <DependentUpon>Diagnosis2DiagnosisGroupMasterDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\DAG2SAGDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\DAG2SAGDetail.Designer.cs">
+      <DependentUpon>DAG2SAGDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\DAG2SAGMasterDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\DAG2SAGMasterDetail.Designer.cs">
+      <DependentUpon>DAG2SAGMasterDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\Diagnosis2DiagnosisAgeGroupMasterDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\Diagnosis2DiagnosisAgeGroupMasterDetail.Designer.cs">
+      <DependentUpon>Diagnosis2DiagnosisAgeGroupMasterDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\DiagnosisAgeGroupToDiagnosisDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\DiagnosisAgeGroupToDiagnosisDetail.Designer.cs">
+      <DependentUpon>DiagnosisAgeGroupToDiagnosisDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\DiagnosisAgeGroupDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\DiagnosisAgeGroupDetail.Designer.cs">
+      <DependentUpon>DiagnosisAgeGroupDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\DiagnosisAgeGroupMasterDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\DiagnosisAgeGroupMasterDetail.Designer.cs">
+      <DependentUpon>DiagnosisAgeGroupMasterDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\LoginInfoDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\LoginInfoDetail.Designer.cs">
+      <DependentUpon>LoginInfoDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\OrganizationListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\OrganizationListPanel.Designer.cs">
+      <DependentUpon>OrganizationListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\PersonDetailPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\PersonDetailPanel.Designer.cs">
+      <DependentUpon>PersonDetailPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\PersonGroupInfoPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\PersonGroupInfoPanel.Designer.cs">
+      <DependentUpon>PersonGroupInfoPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\PersonListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\PersonListPanel.Designer.cs">
+      <DependentUpon>PersonListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\LoginInfoGroupPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\LoginInfoGroupPanel.Designer.cs">
+      <DependentUpon>LoginInfoGroupPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\SettlementListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\SettlementListPanel.Designer.cs">
+      <DependentUpon>SettlementListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\StatisticAbort.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Administration\StatisticAbort.Designer.cs">
+      <DependentUpon>StatisticAbort.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\Diagnosis2PensideTestDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\Diagnosis2PensideTestDetail.Designer.cs">
+      <DependentUpon>Diagnosis2PensideTestDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\Diagnosis2PensideTestMasterDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\Diagnosis2PensideTestMasterDetail.Designer.cs">
+      <DependentUpon>Diagnosis2PensideTestMasterDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AggregateCase\AggregateSummaryHeader.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AggregateCase\AggregateSummaryHeader.Designer.cs">
+      <DependentUpon>AggregateSummaryHeader.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AggregateCase\AreaComparer.cs" />
+    <Compile Include="AggregateCase\HumanAggregateCaseDeduplicationList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AggregateCase\HumanAggregateCaseDeduplicationList.Designer.cs">
+      <DependentUpon>HumanAggregateCaseDeduplicationList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AggregateCase\ObjectComparer.cs" />
+    <Compile Include="AggregateCase\PeriodComparer.cs" />
+    <Compile Include="AggregateCase\VetAggregateActionDeduplicationList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AggregateCase\VetAggregateActionDeduplicationList.Designer.cs">
+      <DependentUpon>VetAggregateActionDeduplicationList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AggregateCase\VetAggregateCaseDeduplicationList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AggregateCase\VetAggregateCaseDeduplicationList.Designer.cs">
+      <DependentUpon>VetAggregateCaseDeduplicationList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Audit\DataAuditListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Audit\DataAuditListPanel.Designer.cs">
+      <DependentUpon>DataAuditListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AggregateCase\HumanAggregateCaseList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AggregateCase\HumanAggregateCaseList.Designer.cs">
+      <DependentUpon>HumanAggregateCaseList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AggregateCase\VetAggregateActionList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AggregateCase\VetAggregateActionList.Designer.cs">
+      <DependentUpon>VetAggregateActionList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AggregateCase\VetAggregateCaseList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AggregateCase\VetAggregateCaseList.Designer.cs">
+      <DependentUpon>VetAggregateCaseList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceListPanel.Designer.cs">
+      <DependentUpon>BasicSyndromicSurveillanceListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceItemDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceItemDetail.Designer.cs">
+      <DependentUpon>BasicSyndromicSurveillanceItemDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceAggregateListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceAggregateListPanel.Designer.cs">
+      <DependentUpon>BasicSyndromicSurveillanceAggregateListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceAggregateHeaderDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceAggregateHeaderDetail.Designer.cs">
+      <DependentUpon>BasicSyndromicSurveillanceAggregateHeaderDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceAggregateDetailListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceAggregateDetailListPanel.Designer.cs">
+      <DependentUpon>BasicSyndromicSurveillanceAggregateDetailListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\LayoutBuilder.cs" />
+    <Compile Include="Core\LookupBinder.cs" />
+    <Compile Include="Core\LookupParams.cs" />
+    <Compile Include="FlexForms\Controls\DesignerHost.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FlexForms\Controls\DesignerHost.Designer.cs">
+      <DependentUpon>DesignerHost.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FlexForms\Controls\Line.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FlexForms\Controls\Line.Designer.cs">
+      <DependentUpon>Line.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FlexForms\Controls\Parameter.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FlexForms\Controls\Parameter.Designer.cs">
+      <DependentUpon>Parameter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FlexForms\Controls\ParameterHost.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FlexForms\Controls\ParameterHost.Designer.cs">
+      <DependentUpon>ParameterHost.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FlexForms\Controls\Label.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FlexForms\Controls\Label.Designer.cs">
+      <DependentUpon>Label.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FlexForms\Controls\Section.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FlexForms\Controls\Section.Designer.cs">
+      <DependentUpon>Section.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FlexForms\Controls\SectionTable.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FlexForms\Controls\SectionTable.Designer.cs">
+      <DependentUpon>SectionTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FlexForms\FFPresenter.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FlexForms\FFPresenter.Designer.cs">
+      <DependentUpon>FFPresenter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FlexForms\Helpers\FFRender.cs" />
+    <Compile Include="Helpers\AggregateHelper.cs" />
+    <Compile Include="Helpers\GridHelper.cs" />
+    <Compile Include="Human\DeduplicationLayout.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Human\DeduplicationLayout.Designer.cs">
+      <DependentUpon>DeduplicationLayout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Human\HumanCaseDeduplicationList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Human\HumanCaseDeduplicationList.Designer.cs">
+      <DependentUpon>HumanCaseDeduplicationList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Human\HumanCaseListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Human\HumanCaseListPanel.Designer.cs">
+      <DependentUpon>HumanCaseListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Human\PatientListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Human\PatientListPanel.Designer.cs">
+      <DependentUpon>PatientListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lab\BatchListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lab\BatchListPanel.Designer.cs">
+      <DependentUpon>BatchListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lab\LaboratorySectionAssignTest.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lab\LaboratorySectionAssignTest.Designer.cs">
+      <DependentUpon>LaboratorySectionAssignTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lab\LaboratorySectionAmendTestResult.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lab\LaboratorySectionAmendTestResult.Designer.cs">
+      <DependentUpon>LaboratorySectionAmendTestResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lab\LaboratorySectionTransferOut.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lab\LaboratorySectionTransferOut.Designer.cs">
+      <DependentUpon>LaboratorySectionTransferOut.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lab\LaboratorySectionGroupAccessionIn.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lab\LaboratorySectionGroupAccessionIn.Designer.cs">
+      <DependentUpon>LaboratorySectionGroupAccessionIn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lab\LaboratorySectionAcceptedReject.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lab\LaboratorySectionAcceptedReject.Designer.cs">
+      <DependentUpon>LaboratorySectionAcceptedReject.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lab\LaboratorySectionAcceptedInPoorCondition.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lab\LaboratorySectionAcceptedInPoorCondition.Designer.cs">
+      <DependentUpon>LaboratorySectionAcceptedInPoorCondition.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lab\LaboratorySectionCreateNew.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lab\LaboratorySectionCreateNew.Designer.cs">
+      <DependentUpon>LaboratorySectionCreateNew.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lab\LaboratorySectionCreateDerivative.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lab\LaboratorySectionCreateDerivative.Designer.cs">
+      <DependentUpon>LaboratorySectionCreateDerivative.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lab\LaboratorySectionMyPrefItemListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lab\LaboratorySectionMyPrefItemListPanel.Designer.cs">
+      <DependentUpon>LaboratorySectionMyPrefItemListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lab\LaboratorySectionItemListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lab\LaboratorySectionItemListPanel.Designer.cs">
+      <DependentUpon>LaboratorySectionItemListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lab\LaboratorySectionMasterDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lab\LaboratorySectionMasterDetail.Designer.cs">
+      <DependentUpon>LaboratorySectionMasterDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lab\LaboratorySectionCreateAliquot.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lab\LaboratorySectionCreateAliquot.Designer.cs">
+      <DependentUpon>LaboratorySectionCreateAliquot.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lab\LaboratorySectionUtils.cs" />
+    <Compile Include="Lab\LabTestAmendmentHistoryPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lab\LabTestAmendmentHistoryPanel.Designer.cs">
+      <DependentUpon>LabTestAmendmentHistoryPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lab\SampleDispositionListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lab\SampleDispositionListPanel.Designer.cs">
+      <DependentUpon>SampleDispositionListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lab\SampleListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lab\SampleListPanel.Designer.cs">
+      <DependentUpon>SampleListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lab\SampleTransferListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lab\SampleTransferListPanel.Designer.cs">
+      <DependentUpon>SampleTransferListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lab\TestListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lab\TestListPanel.Designer.cs">
+      <DependentUpon>TestListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Location\AddressDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Location\AddressDetail.Designer.cs">
+      <DependentUpon>AddressDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Location\AddressLookup.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Location\AddressLookup.Designer.cs">
+      <DependentUpon>AddressLookup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Location\AddressPopup.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Location\AddressPopup.Designer.cs">
+      <DependentUpon>AddressPopup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Location\Location.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Location\Location.designer.cs">
+      <DependentUpon>Location.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Location\LocationDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Location\LocationDetail.Designer.cs">
+      <DependentUpon>LocationDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Location\LocationLookup.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Location\LocationLookup.Designer.cs">
+      <DependentUpon>LocationLookup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Location\LocationPopup.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Location\LocationPopup.Designer.cs">
+      <DependentUpon>LocationPopup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ArchiveDataHelper.cs" />
+    <Compile Include="WinMenuReportRegistrator.cs" />
+    <Compile Include="Location\LocationRepositoryLookup.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Outbreaks\OutbreakListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Outbreaks\OutbreakListPanel.Designer.cs">
+      <DependentUpon>OutbreakListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="RepositorySchemes\RepositorySchemeListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RepositorySchemes\RepositorySchemeListPanel.Designer.cs">
+      <DependentUpon>RepositorySchemeListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Schema\WinClients.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WinClients.xml</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\DataArchiveSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\DataArchiveSettings.Designer.cs">
+      <DependentUpon>DataArchiveSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Security\EventLogListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Security\EventLogListPanel.Designer.cs">
+      <DependentUpon>EventLogListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Security\NextNumbersListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Security\NextNumbersListPanel.Designer.cs">
+      <DependentUpon>NextNumbersListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Security\ObjectAccessListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Security\ObjectAccessListPanel.Designer.cs">
+      <DependentUpon>ObjectAccessListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Security\SecurityEventLogListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Security\SecurityEventLogListPanel.Designer.cs">
+      <DependentUpon>SecurityEventLogListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Security\SecurityHelper.cs" />
+    <Compile Include="Security\SiteListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Security\SiteListPanel.Designer.cs">
+      <DependentUpon>SiteListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Security\UserGroupDetailPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Security\UserGroupDetailPanel.Designer.cs">
+      <DependentUpon>UserGroupDetailPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Security\UserGroupListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Security\UserGroupListPanel.Designer.cs">
+      <DependentUpon>UserGroupListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\StatisticListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\StatisticListPanel.Designer.cs">
+      <DependentUpon>StatisticListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Security\UserGroupMemberListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Security\UserGroupMemberListPanel.Designer.cs">
+      <DependentUpon>UserGroupMemberListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\VectorType2PensideTestMasterDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\VectorType2PensideTestMasterDetail.Designer.cs">
+      <DependentUpon>VectorType2PensideTestMasterDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\VectorType2PensideTestDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\VectorType2PensideTestDetail.Designer.cs">
+      <DependentUpon>VectorType2PensideTestDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\VectorType2SampleTypeMasterDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\VectorType2SampleTypeMasterDetail.Designer.cs">
+      <DependentUpon>VectorType2SampleTypeMasterDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\VectorType2SampleTypeDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\VectorType2SampleTypeDetail.Designer.cs">
+      <DependentUpon>VectorType2SampleTypeDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\VectorType2CollectionMethodDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\VectorType2CollectionMethodDetail.Designer.cs">
+      <DependentUpon>VectorType2CollectionMethodDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\VectorType2CollectionMethodMasterDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\VectorType2CollectionMethodMasterDetail.Designer.cs">
+      <DependentUpon>VectorType2CollectionMethodMasterDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Security\UsersAndGroupsListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Security\UsersAndGroupsListPanel.Designer.cs">
+      <DependentUpon>UsersAndGroupsListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VectorSurveillance\VsSessionSummaryDiagnosisPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="VectorSurveillance\VsSessionSummaryDiagnosisPanel.Designer.cs">
+      <DependentUpon>VsSessionSummaryDiagnosisPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VectorSurveillance\VsSessionSummaryPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="VectorSurveillance\VsSessionSummaryPanel.Designer.cs">
+      <DependentUpon>VsSessionSummaryPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VectorSurveillance\CopyDialogWindow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="VectorSurveillance\CopyDialogWindow.Designer.cs">
+      <DependentUpon>CopyDialogWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VectorSurveillance\PanelWorkModes.cs" />
+    <Compile Include="VectorSurveillance\VectorLabTestListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="VectorSurveillance\VectorLabTestListPanel.Designer.cs">
+      <DependentUpon>VectorLabTestListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VectorSurveillance\VectorDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="VectorSurveillance\VectorDetail.Designer.cs">
+      <DependentUpon>VectorDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VectorSurveillance\VectorListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="VectorSurveillance\VectorListPanel.Designer.cs">
+      <DependentUpon>VectorListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VectorSurveillance\VectorFieldTestListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="VectorSurveillance\VectorFieldTestListPanel.Designer.cs">
+      <DependentUpon>VectorFieldTestListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VectorSurveillance\VectorSampleListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="VectorSurveillance\VectorSampleListPanel.Designer.cs">
+      <DependentUpon>VectorSampleListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\VectorSubTypeDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\VectorSubTypeDetail.Designer.cs">
+      <DependentUpon>VectorSubTypeDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\VectorSubTypeMasterDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\VectorSubTypeMasterDetail.Designer.cs">
+      <DependentUpon>VectorSubTypeMasterDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VectorSurveillance\VectorSurveillanceHelper.cs" />
+    <Compile Include="Administration\VectorTypeReferenceDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\VectorTypeReferenceDetail.Designer.cs">
+      <DependentUpon>VectorTypeReferenceDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Administration\VectorTypeReferenceMasterDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Administration\VectorTypeReferenceMasterDetail.Designer.cs">
+      <DependentUpon>VectorTypeReferenceMasterDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VectorSurveillance\VsSessionDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="VectorSurveillance\VsSessionDetail.Designer.cs">
+      <DependentUpon>VsSessionDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VectorSurveillance\VsSessionListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="VectorSurveillance\VsSessionListPanel.Designer.cs">
+      <DependentUpon>VsSessionListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Vet\FarmListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Vet\FarmListPanel.Designer.cs">
+      <DependentUpon>FarmListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Vet\FarmRootDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Vet\FarmRootDetail.Designer.cs">
+      <DependentUpon>FarmRootDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Vet\VetCaseListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Vet\VetCaseListPanel.Designer.cs">
+      <DependentUpon>VetCaseListPanel.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\bltoolkit.3.2.dev\BLToolkit.4.csproj">
+      <Project>{0C325F5D-E50E-4340-8724-D29896CCC583}</Project>
+      <Name>BLToolkit.4</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\bv.common\bv.common.csproj">
+      <Project>{BEE76B17-720D-4B65-996A-5712912B3ACF}</Project>
+      <Name>bv.common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\bv.model\bv.model.csproj">
+      <Project>{9067327E-1960-4326-ACB9-D982DDBEAA76}</Project>
+      <Name>bv.model</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\bv.winclient\bv.winclient.csproj">
+      <Project>{B0163672-F328-4D02-9B71-FB698EDAF815}</Project>
+      <Name>bv.winclient</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.core\eidss.core.csproj">
+      <Project>{BF545ECD-F673-4C71-9362-57C01DF13062}</Project>
+      <Name>eidss.core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.gis.common\eidss.gis.common.csproj">
+      <Project>{A9B1EE20-AC3C-404E-B9AD-110AD63BBEA6}</Project>
+      <Name>eidss.gis.common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.gis\eidss.gis.csproj">
+      <Project>{20D52400-EAEF-4ECA-A006-242683176310}</Project>
+      <Name>eidss.gis</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.model\eidss.model.csproj">
+      <Project>{E4B87B63-D5F2-4F9F-B39C-A7714896D1DE}</Project>
+      <Name>eidss.model</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\EIDSS\EIDSS_Common_Forms\EIDSS_Common_Forms.vbproj">
+      <Project>{389B8F77-0B61-46DB-B752-1ECDC502267D}</Project>
+      <Name>EIDSS_Common_Forms</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Human-Case-%28large%29.png" />
+    <None Include="Resources\Search-Human-Case-%28large%29.png" />
+    <None Include="Resources\Human-Aggregate-Entry-%28large%29.png" />
+    <None Include="Resources\Browse5.png" />
+    <None Include="Resources\Organizations List %28large%29%2860%29.png" />
+    <None Include="Resources\Statictical Data List %28large%29%2864%29.png" />
+    <None Include="Resources\Search-Vet-Case-%28large%29.png" />
+    <None Include="Resources\Vector Surveillance Sessions List %28large%29%2803%29.png" />
+    <None Include="Resources\Vector Surveillance Session %28large%29%2801%29.png" />
+    <None Include="Resources\Vector Surveillance Session %28large%29%2801%291.png" />
+    <None Include="Resources\Vector Surveillance Sessions List %28large%29%2803%291.png" />
+    <None Include="Resources\Vector%2805%29.png" />
+    <None Include="Resources\Active-Surviellance-Campaign-Journal-%28large%29.png" />
+    <None Include="Resources\Batch-%28large%29.png" />
+    <None Include="Resources\Batch-Journal-%28large%29.png" />
+    <None Include="Resources\Test Journal %28large%29.png" />
+    <None Include="Resources\Outbreak-Journal-%28large%29.png" />
+    <None Include="Resources\Freezer-Journal-%28large%29.png" />
+    <None Include="Resources\Farm-Journal-%28large%29.png" />
+    <None Include="Resources\Event Log %28large%29%2836%29.png" />
+    <None Include="Resources\Data Audit Transactions List %28large%29%2838%29.png" />
+    <None Include="Resources\Sample-Disposition-Journal-%28large%29.png" />
+    <None Include="Resources\Sample-Transfer-Journal-%28large%29.png" />
+    <None Include="Resources\Sample-Journal-%28large%29.png" />
+    <None Include="Resources\Vet Aggregate Actions Summary %28large%29%2806%29.png" />
+    <None Include="Resources\Vet Aggregate Cases Summary %28large%29%2808%29.png" />
+    <None Include="Resources\Unique Numbering Schema List %28large%29%2852,2%29.png" />
+    <None Include="Resources\Unique Numbering Schema List %28large%29%2852%29.png" />
+    <None Include="Resources\Employees List %28large%29%2858%29.png" />
+    <None Include="Resources\Persons-List-%28large%29.png" />
+    <None Include="Resources\Security Event Log %28large%29%2834%29.png" />
+    <None Include="Resources\Settlements List %28large%29%2862,3%29.png" />
+    <None Include="Resources\Activate%2869,3%29.png" />
+    <None Include="Resources\Site Alerts Subscriptions %28large%29%2820,1%29.png" />
+    <None Include="Resources\StatDataDetai%28132%29.png" />
+    <None Include="Resources\User Group List %28large%29%2826%29.png" />
+    <None Include="Resources\EIDSS Sites List %28large%29%2832%29.png" />
+    <None Include="Resources\View-Vet-Aggregate-Case-Summary-%28large%29.png" />
+    <None Include="Resources\View-Vet-Aggregate-Case-Summary-%28large%291.png" />
+    <None Include="Resources\Users and Group Permissions%28134%29.png" />
+    <None Include="Resources\Lab Sample Log Book %28large%29%2812%29.png" />
+    <None Include="Resources\Reference Book %28large%29%2841%29.png" />
+    <None Include="Resources\Reference Matrix %28large%29%2846%29.png" />
+    <None Include="Resources\Delete_Remove.png" />
+    <None Include="Resources\Human-Case-De-duplication-%28small%29.png" />
+    <None Include="Resources\Search-Human-Cases-for-de-duplication-%28lagre%29.png" />
+    <None Include="Resources\Employee%28128%29.png" />
+    <None Include="Resources\User Group%28133%29.png" />
+    <None Include="Resources\DataArchiveSettings_Large1.png" />
+    <None Include="Resources\Farm-%28large%29.png" />
+    <None Include="Resources\User Login%28129,1%29.png" />
+    <None Include="Resources\View-Vet-Aggregate-Action-Summary-%28large%29.png" />
+    <None Include="Resources\Select-Tests-%28large%29.png" />
+    <None Include="Resources\Aliquots_Derivatives-%28large%29.png" />
+    <None Include="Resources\Sample-%28large%29.png" />
+    <None Include="Resources\Sample-Accession-%28large%29.png" />
+    <None Include="Resources\Sample-Transfer-Journal-%28large%291.png" />
+    <None Include="Resources\Test_amend_32x32.png" />
+    <None Include="Resources\human_aggregate_deduplication_32x32.png" />
+    <None Include="Resources\vet_aggregate_deduplication_32x32.png" />
+    <None Include="Resources\vet_aggregate_action_deduplication_32x32.png" />
+    <None Include="Resources\bss_aggregate_list_32x32.png" />
+    <None Include="Resources\bss_aggregate_32x32.png" />
+    <None Include="Resources\bss_list_32x32.png" />
+    <None Include="Resources\bss_32x32.png" />
+    <None Include="Resources\bss_list_32x321.png" />
+    <None Include="Resources\bss_32x321.png" />
+    <None Include="Resources\AsSessionList_32x32.png" />
+    <Content Include="Schema\WinClients.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>WinClients.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ActiveSurveillance\AsCampaignListPanel.ar-IQ.resx">
+      <DependentUpon>AsCampaignListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsCampaignListPanel.az-Latn-AZ.resx">
+      <DependentUpon>AsCampaignListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsCampaignListPanel.hy-am.resx">
+      <DependentUpon>AsCampaignListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsCampaignListPanel.ka-GE.resx">
+      <DependentUpon>AsCampaignListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsCampaignListPanel.kk-KZ.resx">
+      <DependentUpon>AsCampaignListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsCampaignListPanel.resx">
+      <DependentUpon>AsCampaignListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsCampaignListPanel.ru-RU.resx">
+      <DependentUpon>AsCampaignListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsCampaignListPanel.uk-UA.resx">
+      <DependentUpon>AsCampaignListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionListPanel.ar-IQ.resx">
+      <DependentUpon>AsSessionListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionListPanel.az-Latn-AZ.resx">
+      <DependentUpon>AsSessionListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionListPanel.hy-am.resx">
+      <DependentUpon>AsSessionListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionListPanel.ka-GE.resx">
+      <DependentUpon>AsSessionListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionListPanel.kk-KZ.resx">
+      <DependentUpon>AsSessionListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionListPanel.resx">
+      <DependentUpon>AsSessionListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionListPanel.ru-RU.resx">
+      <DependentUpon>AsSessionListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ActiveSurveillance\AsSessionListPanel.uk-UA.resx">
+      <DependentUpon>AsSessionListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\CaseClassificationDetail.resx">
+      <DependentUpon>CaseClassificationDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\CaseClassificationMasterDetail.ar-IQ.resx">
+      <DependentUpon>CaseClassificationMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\CaseClassificationMasterDetail.az-latn-az.resx">
+      <DependentUpon>CaseClassificationMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\CaseClassificationMasterDetail.hy-am.resx">
+      <DependentUpon>CaseClassificationMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\CaseClassificationMasterDetail.ka-ge.resx">
+      <DependentUpon>CaseClassificationMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\CaseClassificationMasterDetail.kk-kz.resx">
+      <DependentUpon>CaseClassificationMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\CaseClassificationMasterDetail.resx">
+      <DependentUpon>CaseClassificationMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\CaseClassificationMasterDetail.ru-RU.resx">
+      <DependentUpon>CaseClassificationMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\CaseClassificationMasterDetail.uk-ua.resx">
+      <DependentUpon>CaseClassificationMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\CustomReportRowsDetail.resx">
+      <DependentUpon>CustomReportRowsDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\CustomReportRowsMasterDetail.ar-IQ.resx">
+      <DependentUpon>CustomReportRowsMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\CustomReportRowsMasterDetail.az-latn-az.resx">
+      <DependentUpon>CustomReportRowsMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\CustomReportRowsMasterDetail.hy-am.resx">
+      <DependentUpon>CustomReportRowsMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\CustomReportRowsMasterDetail.ka-ge.resx">
+      <DependentUpon>CustomReportRowsMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\CustomReportRowsMasterDetail.kk-kz.resx">
+      <DependentUpon>CustomReportRowsMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\CustomReportRowsMasterDetail.resx">
+      <DependentUpon>CustomReportRowsMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\CustomReportRowsMasterDetail.ru-RU.resx">
+      <DependentUpon>CustomReportRowsMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\CustomReportRowsMasterDetail.uk-ua.resx">
+      <DependentUpon>CustomReportRowsMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\DAG2SAGMasterDetail.ar-IQ.resx">
+      <DependentUpon>DAG2SAGMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\Diagnosis2DiagnosisAgeGroupMasterDetail.ar-IQ.resx">
+      <DependentUpon>Diagnosis2DiagnosisAgeGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\Diagnosis2DiagnosisGroupMasterDetail.ar-IQ.resx">
+      <DependentUpon>Diagnosis2DiagnosisGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\DiagnosisAgeGroupMasterDetail.ar-IQ.resx">
+      <DependentUpon>DiagnosisAgeGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\LoginInfoDetail.ar-IQ.resx">
+      <DependentUpon>LoginInfoDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\PersonDetailPanel.ar-IQ.resx">
+      <DependentUpon>PersonDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\ReportDiagnosesGroup2DiagnosisDetail.resx">
+      <DependentUpon>ReportDiagnosesGroup2DiagnosisDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\ReportDiagnosesGroup2DiagnosisMasterDetail.ar-IQ.resx">
+      <DependentUpon>ReportDiagnosesGroup2DiagnosisMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\ReportDiagnosesGroup2DiagnosisMasterDetail.az-latn-az.resx">
+      <DependentUpon>ReportDiagnosesGroup2DiagnosisMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\ReportDiagnosesGroup2DiagnosisMasterDetail.hy-am.resx">
+      <DependentUpon>ReportDiagnosesGroup2DiagnosisMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\ReportDiagnosesGroup2DiagnosisMasterDetail.ka-ge.resx">
+      <DependentUpon>ReportDiagnosesGroup2DiagnosisMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\ReportDiagnosesGroup2DiagnosisMasterDetail.kk-kz.resx">
+      <DependentUpon>ReportDiagnosesGroup2DiagnosisMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\ReportDiagnosesGroup2DiagnosisMasterDetail.resx">
+      <DependentUpon>ReportDiagnosesGroup2DiagnosisMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\ReportDiagnosesGroup2DiagnosisMasterDetail.ru-RU.resx">
+      <DependentUpon>ReportDiagnosesGroup2DiagnosisMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\ReportDiagnosesGroup2DiagnosisMasterDetail.uk-ua.resx">
+      <DependentUpon>ReportDiagnosesGroup2DiagnosisMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\ReportDiagnosesGroupDetail.resx">
+      <DependentUpon>ReportDiagnosesGroupDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\ReportDiagnosesGroupMasterDetail.ar-IQ.resx">
+      <DependentUpon>ReportDiagnosesGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\ReportDiagnosesGroupMasterDetail.az-latn-az.resx">
+      <DependentUpon>ReportDiagnosesGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\ReportDiagnosesGroupMasterDetail.hy-am.resx">
+      <DependentUpon>ReportDiagnosesGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\ReportDiagnosesGroupMasterDetail.ka-ge.resx">
+      <DependentUpon>ReportDiagnosesGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\ReportDiagnosesGroupMasterDetail.kk-kz.resx">
+      <DependentUpon>ReportDiagnosesGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\ReportDiagnosesGroupMasterDetail.resx">
+      <DependentUpon>ReportDiagnosesGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\ReportDiagnosesGroupMasterDetail.ru-RU.resx">
+      <DependentUpon>ReportDiagnosesGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\ReportDiagnosesGroupMasterDetail.uk-ua.resx">
+      <DependentUpon>ReportDiagnosesGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\Diagnosis2DiagnosisGroupDetail.resx">
+      <DependentUpon>Diagnosis2DiagnosisGroupDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\Diagnosis2DiagnosisGroupMasterDetail.az-Latn-AZ.resx">
+      <DependentUpon>Diagnosis2DiagnosisGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\Diagnosis2DiagnosisGroupMasterDetail.hy-AM.resx">
+      <DependentUpon>Diagnosis2DiagnosisGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\Diagnosis2DiagnosisGroupMasterDetail.ka-GE.resx">
+      <DependentUpon>Diagnosis2DiagnosisGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\Diagnosis2DiagnosisGroupMasterDetail.kk-KZ.resx">
+      <DependentUpon>Diagnosis2DiagnosisGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\Diagnosis2DiagnosisGroupMasterDetail.resx">
+      <DependentUpon>Diagnosis2DiagnosisGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\Diagnosis2DiagnosisGroupMasterDetail.ru-RU.resx">
+      <DependentUpon>Diagnosis2DiagnosisGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\Diagnosis2DiagnosisGroupMasterDetail.uk-UA.resx">
+      <DependentUpon>Diagnosis2DiagnosisGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\DAG2SAGDetail.resx">
+      <DependentUpon>DAG2SAGDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\DAG2SAGMasterDetail.az-Latn-AZ.resx">
+      <DependentUpon>DAG2SAGMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\DAG2SAGMasterDetail.hy-AM.resx">
+      <DependentUpon>DAG2SAGMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\DAG2SAGMasterDetail.ka-GE.resx">
+      <DependentUpon>DAG2SAGMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\DAG2SAGMasterDetail.kk-KZ.resx">
+      <DependentUpon>DAG2SAGMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\DAG2SAGMasterDetail.resx">
+      <DependentUpon>DAG2SAGMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\DAG2SAGMasterDetail.ru-RU.resx">
+      <DependentUpon>DAG2SAGMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\DAG2SAGMasterDetail.uk-UA.resx">
+      <DependentUpon>DAG2SAGMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\Diagnosis2DiagnosisAgeGroupMasterDetail.az-Latn-AZ.resx">
+      <DependentUpon>Diagnosis2DiagnosisAgeGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\Diagnosis2DiagnosisAgeGroupMasterDetail.hy-AM.resx">
+      <DependentUpon>Diagnosis2DiagnosisAgeGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\Diagnosis2DiagnosisAgeGroupMasterDetail.ka-GE.resx">
+      <DependentUpon>Diagnosis2DiagnosisAgeGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\Diagnosis2DiagnosisAgeGroupMasterDetail.kk-KZ.resx">
+      <DependentUpon>Diagnosis2DiagnosisAgeGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\Diagnosis2DiagnosisAgeGroupMasterDetail.resx">
+      <DependentUpon>Diagnosis2DiagnosisAgeGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\Diagnosis2DiagnosisAgeGroupMasterDetail.ru-RU.resx">
+      <DependentUpon>Diagnosis2DiagnosisAgeGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\Diagnosis2DiagnosisAgeGroupMasterDetail.uk-UA.resx">
+      <DependentUpon>Diagnosis2DiagnosisAgeGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\DiagnosisAgeGroupToDiagnosisDetail.resx">
+      <DependentUpon>DiagnosisAgeGroupToDiagnosisDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\DiagnosisAgeGroupDetail.resx">
+      <DependentUpon>DiagnosisAgeGroupDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\DiagnosisAgeGroupMasterDetail.az-latn-az.resx">
+      <DependentUpon>DiagnosisAgeGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\DiagnosisAgeGroupMasterDetail.hy-am.resx">
+      <DependentUpon>DiagnosisAgeGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\DiagnosisAgeGroupMasterDetail.ka-ge.resx">
+      <DependentUpon>DiagnosisAgeGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\DiagnosisAgeGroupMasterDetail.kk-kz.resx">
+      <DependentUpon>DiagnosisAgeGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\DiagnosisAgeGroupMasterDetail.resx">
+      <DependentUpon>DiagnosisAgeGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\DiagnosisAgeGroupMasterDetail.ru-RU.resx">
+      <DependentUpon>DiagnosisAgeGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\DiagnosisAgeGroupMasterDetail.uk-ua.resx">
+      <DependentUpon>DiagnosisAgeGroupMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\DataArchiveSettings.ar-IQ.resx">
+      <DependentUpon>DataArchiveSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\DataArchiveSettings.az-latn-az.resx">
+      <DependentUpon>DataArchiveSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\DataArchiveSettings.hy-am.resx">
+      <DependentUpon>DataArchiveSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\DataArchiveSettings.ka-ge.resx">
+      <DependentUpon>DataArchiveSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\DataArchiveSettings.kk-kz.resx">
+      <DependentUpon>DataArchiveSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\DataArchiveSettings.ru-RU.resx">
+      <DependentUpon>DataArchiveSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\DataArchiveSettings.uk-ua.resx">
+      <DependentUpon>DataArchiveSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\Diagnosis2PensideTestMasterDetail.ar-IQ.resx">
+      <DependentUpon>Diagnosis2PensideTestMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\Diagnosis2PensideTestMasterDetail.az-latn-az.resx">
+      <DependentUpon>Diagnosis2PensideTestMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\Diagnosis2PensideTestMasterDetail.hy-am.resx">
+      <DependentUpon>Diagnosis2PensideTestMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\Diagnosis2PensideTestMasterDetail.ka-ge.resx">
+      <DependentUpon>Diagnosis2PensideTestMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\Diagnosis2PensideTestMasterDetail.kk-kz.resx">
+      <DependentUpon>Diagnosis2PensideTestMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\Diagnosis2PensideTestMasterDetail.ru-RU.resx">
+      <DependentUpon>Diagnosis2PensideTestMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\Diagnosis2PensideTestMasterDetail.uk-ua.resx">
+      <DependentUpon>Diagnosis2PensideTestMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\LoginInfoDetail.az-Latn-AZ.resx">
+      <DependentUpon>LoginInfoDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\LoginInfoDetail.hy-AM.resx">
+      <DependentUpon>LoginInfoDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\LoginInfoDetail.ka-GE.resx">
+      <DependentUpon>LoginInfoDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\LoginInfoDetail.kk-KZ.resx">
+      <DependentUpon>LoginInfoDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\LoginInfoDetail.resx">
+      <DependentUpon>LoginInfoDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\LoginInfoDetail.ru-RU.resx">
+      <DependentUpon>LoginInfoDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\LoginInfoDetail.uk-UA.resx">
+      <DependentUpon>LoginInfoDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\LoginInfoGroupPanel.resx">
+      <DependentUpon>LoginInfoGroupPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\OrganizationListPanel.ar-IQ.resx">
+      <DependentUpon>OrganizationListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\OrganizationListPanel.az-Latn-AZ.resx">
+      <DependentUpon>OrganizationListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\OrganizationListPanel.hy-am.resx">
+      <DependentUpon>OrganizationListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\OrganizationListPanel.ka-GE.resx">
+      <DependentUpon>OrganizationListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\OrganizationListPanel.kk-KZ.resx">
+      <DependentUpon>OrganizationListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\OrganizationListPanel.resx">
+      <DependentUpon>OrganizationListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\OrganizationListPanel.ru-RU.resx">
+      <DependentUpon>OrganizationListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\OrganizationListPanel.uk-UA.resx">
+      <DependentUpon>OrganizationListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\PersonDetailPanel.az-Latn-AZ.resx">
+      <DependentUpon>PersonDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\PersonDetailPanel.hy-AM.resx">
+      <DependentUpon>PersonDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\PersonDetailPanel.ka-GE.resx">
+      <DependentUpon>PersonDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\PersonDetailPanel.kk-KZ.resx">
+      <DependentUpon>PersonDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\PersonDetailPanel.resx">
+      <DependentUpon>PersonDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\PersonDetailPanel.ru-RU.resx">
+      <DependentUpon>PersonDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\PersonDetailPanel.uk-UA.resx">
+      <DependentUpon>PersonDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\PersonDetailPanel.uz-Cyrl-UZ.resx">
+      <DependentUpon>PersonDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\PersonDetailPanel.uz-Latn-UZ.resx">
+      <DependentUpon>PersonDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\PersonGroupInfoPanel.resx">
+      <DependentUpon>PersonGroupInfoPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\PersonListPanel.ar-IQ.resx">
+      <DependentUpon>PersonListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\PersonListPanel.az-Latn-AZ.resx">
+      <DependentUpon>PersonListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\PersonListPanel.hy-am.resx">
+      <DependentUpon>PersonListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\PersonListPanel.ka-GE.resx">
+      <DependentUpon>PersonListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\PersonListPanel.kk-KZ.resx">
+      <DependentUpon>PersonListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\PersonListPanel.resx">
+      <DependentUpon>PersonListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\PersonListPanel.ru-RU.resx">
+      <DependentUpon>PersonListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\PersonListPanel.uk-UA.resx">
+      <DependentUpon>PersonListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\SettlementListPanel.ar-IQ.resx">
+      <DependentUpon>SettlementListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\SettlementListPanel.az-Latn-AZ.resx">
+      <DependentUpon>SettlementListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\SettlementListPanel.hy-am.resx">
+      <DependentUpon>SettlementListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\SettlementListPanel.ka-GE.resx">
+      <DependentUpon>SettlementListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\SettlementListPanel.kk-KZ.resx">
+      <DependentUpon>SettlementListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\SettlementListPanel.resx">
+      <DependentUpon>SettlementListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\SettlementListPanel.ru-RU.resx">
+      <DependentUpon>SettlementListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\SettlementListPanel.uk-UA.resx">
+      <DependentUpon>SettlementListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\StatisticAbort.ar-IQ.resx">
+      <DependentUpon>StatisticAbort.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\StatisticAbort.az-latn-az.resx">
+      <DependentUpon>StatisticAbort.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\StatisticAbort.hy-am.resx">
+      <DependentUpon>StatisticAbort.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\StatisticAbort.ka-ge.resx">
+      <DependentUpon>StatisticAbort.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\StatisticAbort.kk-kz.resx">
+      <DependentUpon>StatisticAbort.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\StatisticAbort.resx">
+      <DependentUpon>StatisticAbort.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\Diagnosis2PensideTestDetail.resx">
+      <DependentUpon>Diagnosis2PensideTestDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\Diagnosis2PensideTestMasterDetail.resx">
+      <DependentUpon>Diagnosis2PensideTestMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\StatisticAbort.ru-RU.resx">
+      <DependentUpon>StatisticAbort.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\StatisticAbort.uk-ua.resx">
+      <DependentUpon>StatisticAbort.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\StatisticListPanel.ar-IQ.resx">
+      <DependentUpon>StatisticListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\StatisticListPanel.hy-am.resx">
+      <DependentUpon>StatisticListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorSubTypeMasterDetail.ar-IQ.resx">
+      <DependentUpon>VectorSubTypeMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorSubTypeMasterDetail.az-latn-az.resx">
+      <DependentUpon>VectorSubTypeMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorSubTypeMasterDetail.hy-am.resx">
+      <DependentUpon>VectorSubTypeMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorSubTypeMasterDetail.ka-ge.resx">
+      <DependentUpon>VectorSubTypeMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorSubTypeMasterDetail.kk-kz.resx">
+      <DependentUpon>VectorSubTypeMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorSubTypeMasterDetail.ru-RU.resx">
+      <DependentUpon>VectorSubTypeMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorSubTypeMasterDetail.uk-ua.resx">
+      <DependentUpon>VectorSubTypeMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorType2CollectionMethodMasterDetail.ar-IQ.resx">
+      <DependentUpon>VectorType2CollectionMethodMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorType2CollectionMethodMasterDetail.az-latn-az.resx">
+      <DependentUpon>VectorType2CollectionMethodMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorType2CollectionMethodMasterDetail.hy-am.resx">
+      <DependentUpon>VectorType2CollectionMethodMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorType2CollectionMethodMasterDetail.ka-ge.resx">
+      <DependentUpon>VectorType2CollectionMethodMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorType2CollectionMethodMasterDetail.kk-kz.resx">
+      <DependentUpon>VectorType2CollectionMethodMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorType2CollectionMethodMasterDetail.ru-RU.resx">
+      <DependentUpon>VectorType2CollectionMethodMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorType2CollectionMethodMasterDetail.uk-ua.resx">
+      <DependentUpon>VectorType2CollectionMethodMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorType2PensideTestMasterDetail.ar-IQ.resx">
+      <DependentUpon>VectorType2PensideTestMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorType2PensideTestMasterDetail.az-latn-az.resx">
+      <DependentUpon>VectorType2PensideTestMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorType2PensideTestMasterDetail.hy-am.resx">
+      <DependentUpon>VectorType2PensideTestMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorType2PensideTestMasterDetail.ka-ge.resx">
+      <DependentUpon>VectorType2PensideTestMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorType2PensideTestMasterDetail.kk-kz.resx">
+      <DependentUpon>VectorType2PensideTestMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorType2PensideTestMasterDetail.ru-RU.resx">
+      <DependentUpon>VectorType2PensideTestMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorType2PensideTestMasterDetail.uk-ua.resx">
+      <DependentUpon>VectorType2PensideTestMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorType2SampleTypeMasterDetail.ar-IQ.resx">
+      <DependentUpon>VectorType2SampleTypeMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorType2SampleTypeMasterDetail.az-latn-az.resx">
+      <DependentUpon>VectorType2SampleTypeMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorType2SampleTypeMasterDetail.hy-am.resx">
+      <DependentUpon>VectorType2SampleTypeMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorType2SampleTypeMasterDetail.ka-ge.resx">
+      <DependentUpon>VectorType2SampleTypeMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorType2SampleTypeMasterDetail.kk-kz.resx">
+      <DependentUpon>VectorType2SampleTypeMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorType2SampleTypeMasterDetail.ru-RU.resx">
+      <DependentUpon>VectorType2SampleTypeMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorType2SampleTypeMasterDetail.uk-ua.resx">
+      <DependentUpon>VectorType2SampleTypeMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorTypeReferenceMasterDetail.ar-IQ.resx">
+      <DependentUpon>VectorTypeReferenceMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorTypeReferenceMasterDetail.az-latn-az.resx">
+      <DependentUpon>VectorTypeReferenceMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorTypeReferenceMasterDetail.hy-am.resx">
+      <DependentUpon>VectorTypeReferenceMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorTypeReferenceMasterDetail.ka-ge.resx">
+      <DependentUpon>VectorTypeReferenceMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorTypeReferenceMasterDetail.kk-kz.resx">
+      <DependentUpon>VectorTypeReferenceMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorTypeReferenceMasterDetail.ru-RU.resx">
+      <DependentUpon>VectorTypeReferenceMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorTypeReferenceMasterDetail.uk-ua.resx">
+      <DependentUpon>VectorTypeReferenceMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\AggregateSummaryHeader.ar-IQ.resx">
+      <DependentUpon>AggregateSummaryHeader.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\AggregateSummaryHeader.az-latn-az.resx">
+      <DependentUpon>AggregateSummaryHeader.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\AggregateSummaryHeader.hy-am.resx">
+      <DependentUpon>AggregateSummaryHeader.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\AggregateSummaryHeader.ka-ge.resx">
+      <DependentUpon>AggregateSummaryHeader.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\AggregateSummaryHeader.kk-kz.resx">
+      <DependentUpon>AggregateSummaryHeader.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\AggregateSummaryHeader.resx">
+      <DependentUpon>AggregateSummaryHeader.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\AggregateSummaryHeader.ru-RU.resx">
+      <DependentUpon>AggregateSummaryHeader.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\AggregateSummaryHeader.uk-ua.resx">
+      <DependentUpon>AggregateSummaryHeader.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\HumanAggregateCaseDeduplicationList.ar-IQ.resx">
+      <DependentUpon>HumanAggregateCaseDeduplicationList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\HumanAggregateCaseDeduplicationList.az-Latn-AZ.resx">
+      <DependentUpon>HumanAggregateCaseDeduplicationList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\HumanAggregateCaseDeduplicationList.kk-KZ.resx">
+      <DependentUpon>HumanAggregateCaseDeduplicationList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\HumanAggregateCaseDeduplicationList.resx">
+      <DependentUpon>HumanAggregateCaseDeduplicationList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\HumanAggregateCaseDeduplicationList.ru-RU.resx">
+      <DependentUpon>HumanAggregateCaseDeduplicationList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\HumanAggregateCaseList.ar-IQ.resx">
+      <DependentUpon>HumanAggregateCaseList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\HumanAggregateCaseList.az-latn-az.resx">
+      <DependentUpon>HumanAggregateCaseList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\HumanAggregateCaseList.hy-am.resx">
+      <DependentUpon>HumanAggregateCaseList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\HumanAggregateCaseList.ka-ge.resx">
+      <DependentUpon>HumanAggregateCaseList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\HumanAggregateCaseList.kk-kz.resx">
+      <DependentUpon>HumanAggregateCaseList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\HumanAggregateCaseList.ru-RU.resx">
+      <DependentUpon>HumanAggregateCaseList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\HumanAggregateCaseList.uk-ua.resx">
+      <DependentUpon>HumanAggregateCaseList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateActionDeduplicationList.ar-IQ.resx">
+      <DependentUpon>VetAggregateActionDeduplicationList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateActionDeduplicationList.az-Latn-AZ.resx">
+      <DependentUpon>VetAggregateActionDeduplicationList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateActionDeduplicationList.hy-AM.resx">
+      <DependentUpon>VetAggregateActionDeduplicationList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateActionDeduplicationList.ka-GE.resx">
+      <DependentUpon>VetAggregateActionDeduplicationList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateActionDeduplicationList.kk-KZ.resx">
+      <DependentUpon>VetAggregateActionDeduplicationList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateActionDeduplicationList.resx">
+      <DependentUpon>VetAggregateActionDeduplicationList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateActionDeduplicationList.ru-RU.resx">
+      <DependentUpon>VetAggregateActionDeduplicationList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateActionList.ar-IQ.resx">
+      <DependentUpon>VetAggregateActionList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateActionList.az-Latn-AZ.resx">
+      <DependentUpon>VetAggregateActionList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateActionList.hy-am.resx">
+      <DependentUpon>VetAggregateActionList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateActionList.ka-GE.resx">
+      <DependentUpon>VetAggregateActionList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateActionList.kk-KZ.resx">
+      <DependentUpon>VetAggregateActionList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateActionList.ru-RU.resx">
+      <DependentUpon>VetAggregateActionList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateActionList.uk-UA.resx">
+      <DependentUpon>VetAggregateActionList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateCaseDeduplicationList.ar-IQ.resx">
+      <DependentUpon>VetAggregateCaseDeduplicationList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateCaseDeduplicationList.az-Latn-AZ.resx">
+      <DependentUpon>VetAggregateCaseDeduplicationList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateCaseDeduplicationList.hy-AM.resx">
+      <DependentUpon>VetAggregateCaseDeduplicationList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateCaseDeduplicationList.ka-GE.resx">
+      <DependentUpon>VetAggregateCaseDeduplicationList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateCaseDeduplicationList.kk-KZ.resx">
+      <DependentUpon>VetAggregateCaseDeduplicationList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateCaseDeduplicationList.resx">
+      <DependentUpon>VetAggregateCaseDeduplicationList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateCaseDeduplicationList.ru-RU.resx">
+      <DependentUpon>VetAggregateCaseDeduplicationList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateCaseList.ar-IQ.resx">
+      <DependentUpon>VetAggregateCaseList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateCaseList.az-latn-az.resx">
+      <DependentUpon>VetAggregateCaseList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateCaseList.hy-am.resx">
+      <DependentUpon>VetAggregateCaseList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateCaseList.ka-ge.resx">
+      <DependentUpon>VetAggregateCaseList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateCaseList.kk-kz.resx">
+      <DependentUpon>VetAggregateCaseList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateCaseList.ru-RU.resx">
+      <DependentUpon>VetAggregateCaseList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateCaseList.uk-ua.resx">
+      <DependentUpon>VetAggregateCaseList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Audit\DataAuditListPanel.ar-IQ.resx">
+      <DependentUpon>DataAuditListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Audit\DataAuditListPanel.az-Latn-AZ.resx">
+      <DependentUpon>DataAuditListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Audit\DataAuditListPanel.hy-am.resx">
+      <DependentUpon>DataAuditListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Audit\DataAuditListPanel.ka-GE.resx">
+      <DependentUpon>DataAuditListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Audit\DataAuditListPanel.kk-KZ.resx">
+      <DependentUpon>DataAuditListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Audit\DataAuditListPanel.resx">
+      <DependentUpon>DataAuditListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\HumanAggregateCaseList.resx">
+      <DependentUpon>HumanAggregateCaseList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateActionList.resx">
+      <DependentUpon>VetAggregateActionList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AggregateCase\VetAggregateCaseList.resx">
+      <DependentUpon>VetAggregateCaseList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Audit\DataAuditListPanel.ru-RU.resx">
+      <DependentUpon>DataAuditListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Audit\DataAuditListPanel.uk-UA.resx">
+      <DependentUpon>DataAuditListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceAggregateDetailListPanel.resx">
+      <DependentUpon>BasicSyndromicSurveillanceAggregateDetailListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceAggregateListPanel.ar-IQ.resx">
+      <DependentUpon>BasicSyndromicSurveillanceAggregateListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceItemDetail.gl.resx">
+      <DependentUpon>BasicSyndromicSurveillanceItemDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceListPanel.ar-IQ.resx">
+      <DependentUpon>BasicSyndromicSurveillanceListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceListPanel.az-latn-az.resx">
+      <DependentUpon>BasicSyndromicSurveillanceListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceListPanel.hy-am.resx">
+      <DependentUpon>BasicSyndromicSurveillanceListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceListPanel.ka-ge.resx">
+      <DependentUpon>BasicSyndromicSurveillanceListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceListPanel.kk-kz.resx">
+      <DependentUpon>BasicSyndromicSurveillanceListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceListPanel.resx">
+      <DependentUpon>BasicSyndromicSurveillanceListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceListPanel.ru-RU.resx">
+      <DependentUpon>BasicSyndromicSurveillanceListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceListPanel.uk-ua.resx">
+      <DependentUpon>BasicSyndromicSurveillanceListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceItemDetail.ar-IQ.resx">
+      <DependentUpon>BasicSyndromicSurveillanceItemDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceItemDetail.az-latn-az.resx">
+      <DependentUpon>BasicSyndromicSurveillanceItemDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceItemDetail.hy-am.resx">
+      <DependentUpon>BasicSyndromicSurveillanceItemDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceItemDetail.ka-ge.resx">
+      <DependentUpon>BasicSyndromicSurveillanceItemDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceItemDetail.kk-kz.resx">
+      <DependentUpon>BasicSyndromicSurveillanceItemDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceItemDetail.resx">
+      <DependentUpon>BasicSyndromicSurveillanceItemDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceItemDetail.ru-RU.resx">
+      <DependentUpon>BasicSyndromicSurveillanceItemDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceItemDetail.uk-ua.resx">
+      <DependentUpon>BasicSyndromicSurveillanceItemDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceAggregateListPanel.az-latn-az.resx">
+      <DependentUpon>BasicSyndromicSurveillanceAggregateListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceAggregateListPanel.hy-am.resx">
+      <DependentUpon>BasicSyndromicSurveillanceAggregateListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceAggregateListPanel.ka-ge.resx">
+      <DependentUpon>BasicSyndromicSurveillanceAggregateListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceAggregateListPanel.kk-kz.resx">
+      <DependentUpon>BasicSyndromicSurveillanceAggregateListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceAggregateListPanel.resx">
+      <DependentUpon>BasicSyndromicSurveillanceAggregateListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceAggregateListPanel.ru-RU.resx">
+      <DependentUpon>BasicSyndromicSurveillanceAggregateListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceAggregateListPanel.uk-ua.resx">
+      <DependentUpon>BasicSyndromicSurveillanceAggregateListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceAggregateHeaderDetail.ar-IQ.resx">
+      <DependentUpon>BasicSyndromicSurveillanceAggregateHeaderDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceAggregateHeaderDetail.az-latn-az.resx">
+      <DependentUpon>BasicSyndromicSurveillanceAggregateHeaderDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceAggregateHeaderDetail.hy-am.resx">
+      <DependentUpon>BasicSyndromicSurveillanceAggregateHeaderDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceAggregateHeaderDetail.ka-ge.resx">
+      <DependentUpon>BasicSyndromicSurveillanceAggregateHeaderDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceAggregateHeaderDetail.kk-kz.resx">
+      <DependentUpon>BasicSyndromicSurveillanceAggregateHeaderDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceAggregateHeaderDetail.resx">
+      <DependentUpon>BasicSyndromicSurveillanceAggregateHeaderDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceAggregateHeaderDetail.ru-RU.resx">
+      <DependentUpon>BasicSyndromicSurveillanceAggregateHeaderDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicSyndromicSurveillance\BasicSyndromicSurveillanceAggregateHeaderDetail.uk-ua.resx">
+      <DependentUpon>BasicSyndromicSurveillanceAggregateHeaderDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FlexForms\Controls\Label.resx">
+      <DependentUpon>Label.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FlexForms\Controls\Parameter.resx">
+      <DependentUpon>Parameter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\DeduplicationLayout.ar-IQ.resx">
+      <DependentUpon>DeduplicationLayout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\DeduplicationLayout.az-Latn-AZ.resx">
+      <DependentUpon>DeduplicationLayout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\DeduplicationLayout.hy-AM.resx">
+      <DependentUpon>DeduplicationLayout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\DeduplicationLayout.ka-GE.resx">
+      <DependentUpon>DeduplicationLayout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\DeduplicationLayout.kk-KZ.resx">
+      <DependentUpon>DeduplicationLayout.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\DeduplicationLayout.resx">
+      <DependentUpon>DeduplicationLayout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\DeduplicationLayout.ru-RU.resx">
+      <DependentUpon>DeduplicationLayout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\DeduplicationLayout.uk-UA.resx">
+      <DependentUpon>DeduplicationLayout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\HumanCaseDeduplicationList.ar-IQ.resx">
+      <DependentUpon>HumanCaseDeduplicationList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\HumanCaseDeduplicationList.az-Latn-AZ.resx">
+      <DependentUpon>HumanCaseDeduplicationList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\HumanCaseDeduplicationList.hy-AM.resx">
+      <DependentUpon>HumanCaseDeduplicationList.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\HumanCaseDeduplicationList.ka-GE.resx">
+      <DependentUpon>HumanCaseDeduplicationList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\HumanCaseDeduplicationList.kk-KZ.resx">
+      <DependentUpon>HumanCaseDeduplicationList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\HumanCaseDeduplicationList.resx">
+      <DependentUpon>HumanCaseDeduplicationList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\HumanCaseDeduplicationList.ru-RU.resx">
+      <DependentUpon>HumanCaseDeduplicationList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\HumanCaseDeduplicationList.uk-UA.resx">
+      <DependentUpon>HumanCaseDeduplicationList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\HumanCaseListPanel.ar-IQ.resx">
+      <DependentUpon>HumanCaseListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\HumanCaseListPanel.az-Latn-AZ.resx">
+      <DependentUpon>HumanCaseListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\HumanCaseListPanel.hy-am.resx">
+      <DependentUpon>HumanCaseListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\HumanCaseListPanel.ka-GE.resx">
+      <DependentUpon>HumanCaseListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\HumanCaseListPanel.kk-KZ.resx">
+      <DependentUpon>HumanCaseListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\HumanCaseListPanel.resx">
+      <DependentUpon>HumanCaseListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\HumanCaseListPanel.ru-RU.resx">
+      <DependentUpon>HumanCaseListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\HumanCaseListPanel.uk-UA.resx">
+      <DependentUpon>HumanCaseListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\PatientListPanel.ar-IQ.resx">
+      <DependentUpon>PatientListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\PatientListPanel.az-Latn-AZ.resx">
+      <DependentUpon>PatientListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\PatientListPanel.hy-am.resx">
+      <DependentUpon>PatientListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\PatientListPanel.ka-GE.resx">
+      <DependentUpon>PatientListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\PatientListPanel.kk-KZ.resx">
+      <DependentUpon>PatientListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\PatientListPanel.resx">
+      <DependentUpon>PatientListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\PatientListPanel.ru-RU.resx">
+      <DependentUpon>PatientListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Human\PatientListPanel.uk-UA.resx">
+      <DependentUpon>PatientListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\BatchListPanel.ar-IQ.resx">
+      <DependentUpon>BatchListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\BatchListPanel.az-Latn-AZ.resx">
+      <DependentUpon>BatchListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\BatchListPanel.hy-am.resx">
+      <DependentUpon>BatchListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\BatchListPanel.ka-GE.resx">
+      <DependentUpon>BatchListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\BatchListPanel.kk-KZ.resx">
+      <DependentUpon>BatchListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\BatchListPanel.resx">
+      <DependentUpon>BatchListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\BatchListPanel.ru-RU.resx">
+      <DependentUpon>BatchListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\BatchListPanel.uk-UA.resx">
+      <DependentUpon>BatchListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAcceptedInPoorCondition.ar-IQ.resx">
+      <DependentUpon>LaboratorySectionAcceptedInPoorCondition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAcceptedReject.ar-IQ.resx">
+      <DependentUpon>LaboratorySectionAcceptedReject.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAmendTestResult.ar-IQ.resx">
+      <DependentUpon>LaboratorySectionAmendTestResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAssignTest.ar-IQ.resx">
+      <DependentUpon>LaboratorySectionAssignTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAssignTest.az-Latn-AZ.resx">
+      <DependentUpon>LaboratorySectionAssignTest.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAssignTest.hy-AM.resx">
+      <DependentUpon>LaboratorySectionAssignTest.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAssignTest.ka-GE.resx">
+      <DependentUpon>LaboratorySectionAssignTest.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAssignTest.kk-KZ.resx">
+      <DependentUpon>LaboratorySectionAssignTest.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAssignTest.resx">
+      <DependentUpon>LaboratorySectionAssignTest.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAssignTest.ru-RU.resx">
+      <DependentUpon>LaboratorySectionAssignTest.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAssignTest.uk-UA.resx">
+      <DependentUpon>LaboratorySectionAssignTest.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAmendTestResult.az-Latn-AZ.resx">
+      <DependentUpon>LaboratorySectionAmendTestResult.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAmendTestResult.hy-AM.resx">
+      <DependentUpon>LaboratorySectionAmendTestResult.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAmendTestResult.ka-GE.resx">
+      <DependentUpon>LaboratorySectionAmendTestResult.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAmendTestResult.kk-KZ.resx">
+      <DependentUpon>LaboratorySectionAmendTestResult.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAmendTestResult.resx">
+      <DependentUpon>LaboratorySectionAmendTestResult.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAmendTestResult.ru-RU.resx">
+      <DependentUpon>LaboratorySectionAmendTestResult.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAmendTestResult.uk-UA.resx">
+      <DependentUpon>LaboratorySectionAmendTestResult.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionCreateAliquot.ar-IQ.resx">
+      <DependentUpon>LaboratorySectionCreateAliquot.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionCreateDerivative.ar-IQ.resx">
+      <DependentUpon>LaboratorySectionCreateDerivative.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionCreateNew.ar-IQ.resx">
+      <DependentUpon>LaboratorySectionCreateNew.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionGroupAccessionIn.ar-IQ.resx">
+      <DependentUpon>LaboratorySectionGroupAccessionIn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionMasterDetail.ar-IQ.resx">
+      <DependentUpon>LaboratorySectionMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionTransferOut.ar-IQ.resx">
+      <DependentUpon>LaboratorySectionTransferOut.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionTransferOut.az-Latn-AZ.resx">
+      <DependentUpon>LaboratorySectionTransferOut.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionTransferOut.hy-AM.resx">
+      <DependentUpon>LaboratorySectionTransferOut.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionTransferOut.ka-GE.resx">
+      <DependentUpon>LaboratorySectionTransferOut.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionTransferOut.kk-KZ.resx">
+      <DependentUpon>LaboratorySectionTransferOut.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionTransferOut.resx">
+      <DependentUpon>LaboratorySectionTransferOut.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionTransferOut.ru-RU.resx">
+      <DependentUpon>LaboratorySectionTransferOut.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionTransferOut.uk-UA.resx">
+      <DependentUpon>LaboratorySectionTransferOut.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionGroupAccessionIn.az-Latn-AZ.resx">
+      <DependentUpon>LaboratorySectionGroupAccessionIn.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionGroupAccessionIn.hy-AM.resx">
+      <DependentUpon>LaboratorySectionGroupAccessionIn.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionGroupAccessionIn.ka-GE.resx">
+      <DependentUpon>LaboratorySectionGroupAccessionIn.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionGroupAccessionIn.kk-KZ.resx">
+      <DependentUpon>LaboratorySectionGroupAccessionIn.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionGroupAccessionIn.resx">
+      <DependentUpon>LaboratorySectionGroupAccessionIn.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionGroupAccessionIn.ru-RU.resx">
+      <DependentUpon>LaboratorySectionGroupAccessionIn.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionGroupAccessionIn.uk-UA.resx">
+      <DependentUpon>LaboratorySectionGroupAccessionIn.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAcceptedReject.az-Latn-AZ.resx">
+      <DependentUpon>LaboratorySectionAcceptedReject.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAcceptedReject.hy-AM.resx">
+      <DependentUpon>LaboratorySectionAcceptedReject.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAcceptedReject.ka-GE.resx">
+      <DependentUpon>LaboratorySectionAcceptedReject.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAcceptedReject.kk-KZ.resx">
+      <DependentUpon>LaboratorySectionAcceptedReject.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAcceptedReject.resx">
+      <DependentUpon>LaboratorySectionAcceptedReject.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAcceptedReject.ru-RU.resx">
+      <DependentUpon>LaboratorySectionAcceptedReject.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAcceptedReject.uk-UA.resx">
+      <DependentUpon>LaboratorySectionAcceptedReject.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAcceptedInPoorCondition.az-Latn-AZ.resx">
+      <DependentUpon>LaboratorySectionAcceptedInPoorCondition.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAcceptedInPoorCondition.hy-AM.resx">
+      <DependentUpon>LaboratorySectionAcceptedInPoorCondition.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAcceptedInPoorCondition.ka-GE.resx">
+      <DependentUpon>LaboratorySectionAcceptedInPoorCondition.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAcceptedInPoorCondition.kk-KZ.resx">
+      <DependentUpon>LaboratorySectionAcceptedInPoorCondition.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAcceptedInPoorCondition.resx">
+      <DependentUpon>LaboratorySectionAcceptedInPoorCondition.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAcceptedInPoorCondition.ru-RU.resx">
+      <DependentUpon>LaboratorySectionAcceptedInPoorCondition.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionAcceptedInPoorCondition.uk-UA.resx">
+      <DependentUpon>LaboratorySectionAcceptedInPoorCondition.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionCreateNew.az-Latn-AZ.resx">
+      <DependentUpon>LaboratorySectionCreateNew.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionCreateNew.hy-AM.resx">
+      <DependentUpon>LaboratorySectionCreateNew.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionCreateNew.ka-GE.resx">
+      <DependentUpon>LaboratorySectionCreateNew.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionCreateNew.kk-KZ.resx">
+      <DependentUpon>LaboratorySectionCreateNew.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionCreateNew.resx">
+      <DependentUpon>LaboratorySectionCreateNew.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionCreateNew.ru-RU.resx">
+      <DependentUpon>LaboratorySectionCreateNew.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionCreateNew.uk-UA.resx">
+      <DependentUpon>LaboratorySectionCreateNew.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionCreateDerivative.az-Latn-AZ.resx">
+      <DependentUpon>LaboratorySectionCreateDerivative.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionCreateDerivative.hy-AM.resx">
+      <DependentUpon>LaboratorySectionCreateDerivative.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionCreateDerivative.ka-GE.resx">
+      <DependentUpon>LaboratorySectionCreateDerivative.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionCreateDerivative.kk-KZ.resx">
+      <DependentUpon>LaboratorySectionCreateDerivative.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionCreateDerivative.resx">
+      <DependentUpon>LaboratorySectionCreateDerivative.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionCreateDerivative.ru-RU.resx">
+      <DependentUpon>LaboratorySectionCreateDerivative.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionCreateDerivative.uk-UA.resx">
+      <DependentUpon>LaboratorySectionCreateDerivative.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionMyPrefItemListPanel.ar-IQ.resx">
+      <DependentUpon>LaboratorySectionMyPrefItemListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionMyPrefItemListPanel.az-Latn-AZ.resx">
+      <DependentUpon>LaboratorySectionMyPrefItemListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionMyPrefItemListPanel.hy-am.resx">
+      <DependentUpon>LaboratorySectionMyPrefItemListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionMyPrefItemListPanel.ka-GE.resx">
+      <DependentUpon>LaboratorySectionMyPrefItemListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionMyPrefItemListPanel.kk-KZ.resx">
+      <DependentUpon>LaboratorySectionMyPrefItemListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionMyPrefItemListPanel.resx">
+      <DependentUpon>LaboratorySectionMyPrefItemListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionMyPrefItemListPanel.ru-RU.resx">
+      <DependentUpon>LaboratorySectionMyPrefItemListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionMyPrefItemListPanel.uk-UA.resx">
+      <DependentUpon>LaboratorySectionMyPrefItemListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionItemListPanel.ar-IQ.resx">
+      <DependentUpon>LaboratorySectionItemListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionItemListPanel.az-Latn-AZ.resx">
+      <DependentUpon>LaboratorySectionItemListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionItemListPanel.hy-am.resx">
+      <DependentUpon>LaboratorySectionItemListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionItemListPanel.ka-GE.resx">
+      <DependentUpon>LaboratorySectionItemListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionItemListPanel.kk-KZ.resx">
+      <DependentUpon>LaboratorySectionItemListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionItemListPanel.resx">
+      <DependentUpon>LaboratorySectionItemListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionItemListPanel.ru-RU.resx">
+      <DependentUpon>LaboratorySectionItemListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionItemListPanel.uk-UA.resx">
+      <DependentUpon>LaboratorySectionItemListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionMasterDetail.az-latn-az.resx">
+      <DependentUpon>LaboratorySectionMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionMasterDetail.hy-am.resx">
+      <DependentUpon>LaboratorySectionMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionMasterDetail.ka-ge.resx">
+      <DependentUpon>LaboratorySectionMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionMasterDetail.kk-kz.resx">
+      <DependentUpon>LaboratorySectionMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionMasterDetail.resx">
+      <DependentUpon>LaboratorySectionMasterDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionMasterDetail.ru-RU.resx">
+      <DependentUpon>LaboratorySectionMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionMasterDetail.uk-ua.resx">
+      <DependentUpon>LaboratorySectionMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LabTestAmendmentHistoryPanel.ar-IQ.resx">
+      <DependentUpon>LabTestAmendmentHistoryPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LabTestAmendmentHistoryPanel.az-latn-az.resx">
+      <DependentUpon>LabTestAmendmentHistoryPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LabTestAmendmentHistoryPanel.hy-am.resx">
+      <DependentUpon>LabTestAmendmentHistoryPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LabTestAmendmentHistoryPanel.ka-ge.resx">
+      <DependentUpon>LabTestAmendmentHistoryPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LabTestAmendmentHistoryPanel.kk-kz.resx">
+      <DependentUpon>LabTestAmendmentHistoryPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LabTestAmendmentHistoryPanel.ru-RU.resx">
+      <DependentUpon>LabTestAmendmentHistoryPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LabTestAmendmentHistoryPanel.uk-ua.resx">
+      <DependentUpon>LabTestAmendmentHistoryPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionCreateAliquot.az-Latn-AZ.resx">
+      <DependentUpon>LaboratorySectionCreateAliquot.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionCreateAliquot.hy-AM.resx">
+      <DependentUpon>LaboratorySectionCreateAliquot.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionCreateAliquot.ka-GE.resx">
+      <DependentUpon>LaboratorySectionCreateAliquot.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionCreateAliquot.kk-KZ.resx">
+      <DependentUpon>LaboratorySectionCreateAliquot.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionCreateAliquot.resx">
+      <DependentUpon>LaboratorySectionCreateAliquot.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionCreateAliquot.ru-RU.resx">
+      <DependentUpon>LaboratorySectionCreateAliquot.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LaboratorySectionCreateAliquot.uk-UA.resx">
+      <DependentUpon>LaboratorySectionCreateAliquot.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\SampleDispositionListPanel.ar-IQ.resx">
+      <DependentUpon>SampleDispositionListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\SampleDispositionListPanel.hy-am.resx">
+      <DependentUpon>SampleDispositionListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\SampleListPanel.ar-IQ.resx">
+      <DependentUpon>SampleListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\SampleListPanel.hy-am.resx">
+      <DependentUpon>SampleListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\LabTestAmendmentHistoryPanel.resx">
+      <DependentUpon>LabTestAmendmentHistoryPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\SampleDispositionListPanel.az-Latn-AZ.resx">
+      <DependentUpon>SampleDispositionListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\SampleDispositionListPanel.ka-GE.resx">
+      <DependentUpon>SampleDispositionListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\SampleDispositionListPanel.kk-KZ.resx">
+      <DependentUpon>SampleDispositionListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\SampleDispositionListPanel.resx">
+      <DependentUpon>SampleDispositionListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\SampleDispositionListPanel.ru-RU.resx">
+      <DependentUpon>SampleDispositionListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\SampleDispositionListPanel.uk-UA.resx">
+      <DependentUpon>SampleDispositionListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\SampleListPanel.az-Latn-AZ.resx">
+      <DependentUpon>SampleListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\SampleListPanel.ka-GE.resx">
+      <DependentUpon>SampleListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\SampleListPanel.kk-KZ.resx">
+      <DependentUpon>SampleListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\SampleListPanel.resx">
+      <DependentUpon>SampleListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\SampleListPanel.ru-RU.resx">
+      <DependentUpon>SampleListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\SampleListPanel.uk-UA.resx">
+      <DependentUpon>SampleListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\SampleTransferListPanel.ar-IQ.resx">
+      <DependentUpon>SampleTransferListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\SampleTransferListPanel.az-Latn-AZ.resx">
+      <DependentUpon>SampleTransferListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\SampleTransferListPanel.hy-am.resx">
+      <DependentUpon>SampleTransferListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\SampleTransferListPanel.ka-GE.resx">
+      <DependentUpon>SampleTransferListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\SampleTransferListPanel.kk-KZ.resx">
+      <DependentUpon>SampleTransferListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\SampleTransferListPanel.resx">
+      <DependentUpon>SampleTransferListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\SampleTransferListPanel.ru-RU.resx">
+      <DependentUpon>SampleTransferListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\SampleTransferListPanel.uk-UA.resx">
+      <DependentUpon>SampleTransferListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\TestListPanel.ar-IQ.resx">
+      <DependentUpon>TestListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\TestListPanel.az-Latn-AZ.resx">
+      <DependentUpon>TestListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\TestListPanel.hy-am.resx">
+      <DependentUpon>TestListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\TestListPanel.ka-GE.resx">
+      <DependentUpon>TestListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\TestListPanel.kk-KZ.resx">
+      <DependentUpon>TestListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\TestListPanel.resx">
+      <DependentUpon>TestListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\TestListPanel.ru-RU.resx">
+      <DependentUpon>TestListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lab\TestListPanel.uk-UA.resx">
+      <DependentUpon>TestListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Location\AddressDetail.ar-IQ.resx">
+      <DependentUpon>AddressDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Location\AddressDetail.az-Latn-AZ.resx">
+      <DependentUpon>AddressDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Location\AddressDetail.hy-am.resx">
+      <DependentUpon>AddressDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Location\AddressDetail.ka-GE.resx">
+      <DependentUpon>AddressDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Location\AddressDetail.kk-KZ.resx">
+      <DependentUpon>AddressDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Location\AddressDetail.resx">
+      <DependentUpon>AddressDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Location\AddressDetail.ru-KZ-Eidss.resx">
+      <DependentUpon>AddressDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Location\AddressDetail.ru-RU.resx">
+      <DependentUpon>AddressDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Location\AddressDetail.uk-UA.resx">
+      <DependentUpon>AddressDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Location\Location.ar-IQ.resx">
+      <DependentUpon>Location.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Location\Location.az-Latn-AZ.resx">
+      <DependentUpon>Location.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Location\Location.hy-am.resx">
+      <DependentUpon>Location.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Location\Location.ka-GE.resx">
+      <DependentUpon>Location.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Location\Location.kk-KZ.resx">
+      <DependentUpon>Location.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Location\Location.resx">
+      <DependentUpon>Location.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Location\Location.ru-RU.resx">
+      <DependentUpon>Location.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Location\Location.uk-UA.resx">
+      <DependentUpon>Location.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Location\LocationDetail.ar-IQ.resx">
+      <DependentUpon>LocationDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Location\LocationDetail.az-Latn-AZ.resx">
+      <DependentUpon>LocationDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Location\LocationDetail.hy-am.resx">
+      <DependentUpon>LocationDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Location\LocationDetail.ka-GE.resx">
+      <DependentUpon>LocationDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Location\LocationDetail.kk-KZ.resx">
+      <DependentUpon>LocationDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Location\LocationDetail.resx">
+      <DependentUpon>LocationDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Location\LocationDetail.ru-KZ-Eidss.resx">
+      <DependentUpon>LocationDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Location\LocationDetail.ru-RU.resx">
+      <DependentUpon>LocationDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Location\LocationDetail.uk-UA.resx">
+      <DependentUpon>LocationDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Outbreaks\OutbreakListPanel.ar-IQ.resx">
+      <DependentUpon>OutbreakListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Outbreaks\OutbreakListPanel.az-Latn-AZ.resx">
+      <DependentUpon>OutbreakListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Outbreaks\OutbreakListPanel.hy-am.resx">
+      <DependentUpon>OutbreakListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Outbreaks\OutbreakListPanel.ka-GE.resx">
+      <DependentUpon>OutbreakListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Outbreaks\OutbreakListPanel.kk-KZ.resx">
+      <DependentUpon>OutbreakListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Outbreaks\OutbreakListPanel.resx">
+      <DependentUpon>OutbreakListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Outbreaks\OutbreakListPanel.ru-RU.resx">
+      <DependentUpon>OutbreakListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Outbreaks\OutbreakListPanel.uk-UA.resx">
+      <DependentUpon>OutbreakListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RepositorySchemes\RepositorySchemeListPanel.ar-IQ.resx">
+      <DependentUpon>RepositorySchemeListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RepositorySchemes\RepositorySchemeListPanel.az-Latn-AZ.resx">
+      <DependentUpon>RepositorySchemeListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RepositorySchemes\RepositorySchemeListPanel.hy-am.resx">
+      <DependentUpon>RepositorySchemeListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RepositorySchemes\RepositorySchemeListPanel.ka-GE.resx">
+      <DependentUpon>RepositorySchemeListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RepositorySchemes\RepositorySchemeListPanel.kk-KZ.resx">
+      <DependentUpon>RepositorySchemeListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RepositorySchemes\RepositorySchemeListPanel.resx">
+      <DependentUpon>RepositorySchemeListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RepositorySchemes\RepositorySchemeListPanel.ru-RU.resx">
+      <DependentUpon>RepositorySchemeListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RepositorySchemes\RepositorySchemeListPanel.uk-UA.resx">
+      <DependentUpon>RepositorySchemeListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\DataArchiveSettings.resx">
+      <DependentUpon>DataArchiveSettings.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\EventLogListPanel.ar-IQ.resx">
+      <DependentUpon>EventLogListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\EventLogListPanel.az-Latn-AZ.resx">
+      <DependentUpon>EventLogListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\EventLogListPanel.hy-am.resx">
+      <DependentUpon>EventLogListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\EventLogListPanel.ka-GE.resx">
+      <DependentUpon>EventLogListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\EventLogListPanel.kk-KZ.resx">
+      <DependentUpon>EventLogListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\EventLogListPanel.resx">
+      <DependentUpon>EventLogListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\EventLogListPanel.ru-RU.resx">
+      <DependentUpon>EventLogListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\EventLogListPanel.uk-UA.resx">
+      <DependentUpon>EventLogListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\NextNumbersListPanel.ar-IQ.resx">
+      <DependentUpon>NextNumbersListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\NextNumbersListPanel.az-Latn-AZ.resx">
+      <DependentUpon>NextNumbersListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\NextNumbersListPanel.hy-am.resx">
+      <DependentUpon>NextNumbersListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\NextNumbersListPanel.ka-GE.resx">
+      <DependentUpon>NextNumbersListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\NextNumbersListPanel.kk-KZ.resx">
+      <DependentUpon>NextNumbersListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\NextNumbersListPanel.resx">
+      <DependentUpon>NextNumbersListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\NextNumbersListPanel.ru-RU.resx">
+      <DependentUpon>NextNumbersListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\NextNumbersListPanel.uk-UA.resx">
+      <DependentUpon>NextNumbersListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\ObjectAccessListPanel.resx">
+      <DependentUpon>ObjectAccessListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\SecurityEventLogListPanel.ar-IQ.resx">
+      <DependentUpon>SecurityEventLogListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\SecurityEventLogListPanel.az-Latn-AZ.resx">
+      <DependentUpon>SecurityEventLogListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\SecurityEventLogListPanel.hy-am.resx">
+      <DependentUpon>SecurityEventLogListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\SecurityEventLogListPanel.ka-GE.resx">
+      <DependentUpon>SecurityEventLogListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\SecurityEventLogListPanel.kk-KZ.resx">
+      <DependentUpon>SecurityEventLogListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\SecurityEventLogListPanel.resx">
+      <DependentUpon>SecurityEventLogListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\SecurityEventLogListPanel.ru-RU.resx">
+      <DependentUpon>SecurityEventLogListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\SecurityEventLogListPanel.uk-UA.resx">
+      <DependentUpon>SecurityEventLogListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\SiteListPanel.ar-IQ.resx">
+      <DependentUpon>SiteListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\SiteListPanel.az-Latn-AZ.resx">
+      <DependentUpon>SiteListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\SiteListPanel.hy-am.resx">
+      <DependentUpon>SiteListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\SiteListPanel.ka-GE.resx">
+      <DependentUpon>SiteListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\SiteListPanel.kk-KZ.resx">
+      <DependentUpon>SiteListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\SiteListPanel.resx">
+      <DependentUpon>SiteListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\SiteListPanel.ru-RU.resx">
+      <DependentUpon>SiteListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\SiteListPanel.uk-UA.resx">
+      <DependentUpon>SiteListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UserGroupDetailPanel.ar-IQ.resx">
+      <DependentUpon>UserGroupDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UserGroupDetailPanel.az-Latn-AZ.resx">
+      <DependentUpon>UserGroupDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UserGroupDetailPanel.hy-AM.resx">
+      <DependentUpon>UserGroupDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UserGroupDetailPanel.ka-GE.resx">
+      <DependentUpon>UserGroupDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UserGroupDetailPanel.kk-KZ.resx">
+      <DependentUpon>UserGroupDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UserGroupDetailPanel.resx">
+      <DependentUpon>UserGroupDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UserGroupDetailPanel.ru-RU.resx">
+      <DependentUpon>UserGroupDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UserGroupDetailPanel.uk-UA.resx">
+      <DependentUpon>UserGroupDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UserGroupListPanel.ar-IQ.resx">
+      <DependentUpon>UserGroupListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UserGroupListPanel.az-Latn-AZ.resx">
+      <DependentUpon>UserGroupListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UserGroupListPanel.hy-am.resx">
+      <DependentUpon>UserGroupListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UserGroupListPanel.ka-GE.resx">
+      <DependentUpon>UserGroupListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UserGroupListPanel.kk-KZ.resx">
+      <DependentUpon>UserGroupListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UserGroupListPanel.resx">
+      <DependentUpon>UserGroupListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UserGroupListPanel.ru-RU.resx">
+      <DependentUpon>UserGroupListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UserGroupListPanel.uk-UA.resx">
+      <DependentUpon>UserGroupListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\StatisticListPanel.az-Latn-AZ.resx">
+      <DependentUpon>StatisticListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\StatisticListPanel.ka-GE.resx">
+      <DependentUpon>StatisticListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\StatisticListPanel.kk-KZ.resx">
+      <DependentUpon>StatisticListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\StatisticListPanel.resx">
+      <DependentUpon>StatisticListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\StatisticListPanel.ru-RU.resx">
+      <DependentUpon>StatisticListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\StatisticListPanel.uk-UA.resx">
+      <DependentUpon>StatisticListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UserGroupMemberListPanel.ar-IQ.resx">
+      <DependentUpon>UserGroupMemberListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UserGroupMemberListPanel.az-Latn-AZ.resx">
+      <DependentUpon>UserGroupMemberListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UserGroupMemberListPanel.hy-am.resx">
+      <DependentUpon>UserGroupMemberListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UserGroupMemberListPanel.ka-GE.resx">
+      <DependentUpon>UserGroupMemberListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UserGroupMemberListPanel.kk-KZ.resx">
+      <DependentUpon>UserGroupMemberListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UserGroupMemberListPanel.resx">
+      <DependentUpon>UserGroupMemberListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorType2PensideTestMasterDetail.resx">
+      <DependentUpon>VectorType2PensideTestMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorType2PensideTestDetail.resx">
+      <DependentUpon>VectorType2PensideTestDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorType2SampleTypeMasterDetail.resx">
+      <DependentUpon>VectorType2SampleTypeMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorType2SampleTypeDetail.resx">
+      <DependentUpon>VectorType2SampleTypeDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorType2CollectionMethodDetail.resx">
+      <DependentUpon>VectorType2CollectionMethodDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorType2CollectionMethodMasterDetail.resx">
+      <DependentUpon>VectorType2CollectionMethodMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UserGroupMemberListPanel.ru-RU.resx">
+      <DependentUpon>UserGroupMemberListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UserGroupMemberListPanel.uk-UA.resx">
+      <DependentUpon>UserGroupMemberListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UsersAndGroupsListPanel.ar-IQ.resx">
+      <DependentUpon>UsersAndGroupsListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UsersAndGroupsListPanel.az-Latn-AZ.resx">
+      <DependentUpon>UsersAndGroupsListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UsersAndGroupsListPanel.hy-am.resx">
+      <DependentUpon>UsersAndGroupsListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UsersAndGroupsListPanel.ka-GE.resx">
+      <DependentUpon>UsersAndGroupsListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UsersAndGroupsListPanel.kk-KZ.resx">
+      <DependentUpon>UsersAndGroupsListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UsersAndGroupsListPanel.resx">
+      <DependentUpon>UsersAndGroupsListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UsersAndGroupsListPanel.ru-RU.resx">
+      <DependentUpon>UsersAndGroupsListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UsersAndGroupsListPanel.uk-UA.resx">
+      <DependentUpon>UsersAndGroupsListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\CopyDialogWindow.ar-IQ.resx">
+      <DependentUpon>CopyDialogWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\CopyDialogWindow.az-Latn-AZ.resx">
+      <DependentUpon>CopyDialogWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\CopyDialogWindow.hy-AM.resx">
+      <DependentUpon>CopyDialogWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\CopyDialogWindow.ka-GE.resx">
+      <DependentUpon>CopyDialogWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\CopyDialogWindow.kk-KZ.resx">
+      <DependentUpon>CopyDialogWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\CopyDialogWindow.ru-RU.resx">
+      <DependentUpon>CopyDialogWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VsSessionListPanel.ar-IQ.resx">
+      <DependentUpon>VsSessionListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VsSessionSummaryDiagnosisPanel.resx">
+      <DependentUpon>VsSessionSummaryDiagnosisPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\CopyDialogWindow.resx">
+      <DependentUpon>CopyDialogWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VectorDetail.ar-IQ.resx">
+      <DependentUpon>VectorDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VectorDetail.az-latn-az.resx">
+      <DependentUpon>VectorDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VectorDetail.hy-am.resx">
+      <DependentUpon>VectorDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VectorDetail.ka-ge.resx">
+      <DependentUpon>VectorDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VectorDetail.kk-kz.resx">
+      <DependentUpon>VectorDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VectorDetail.ru-RU.resx">
+      <DependentUpon>VectorDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VectorDetail.uk-ua.resx">
+      <DependentUpon>VectorDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VectorLabTestListPanel.resx">
+      <DependentUpon>VectorLabTestListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VectorDetail.resx">
+      <DependentUpon>VectorDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VectorFieldTestListPanel.resx">
+      <DependentUpon>VectorFieldTestListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorSubTypeDetail.resx">
+      <DependentUpon>VectorSubTypeDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorSubTypeMasterDetail.resx">
+      <DependentUpon>VectorSubTypeMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorTypeReferenceDetail.resx">
+      <DependentUpon>VectorTypeReferenceDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Administration\VectorTypeReferenceMasterDetail.resx">
+      <DependentUpon>VectorTypeReferenceMasterDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VectorSampleListPanel.ar-IQ.resx">
+      <DependentUpon>VectorSampleListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VectorSampleListPanel.az-Latn-AZ.resx">
+      <DependentUpon>VectorSampleListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VectorSampleListPanel.hy-AM.resx">
+      <DependentUpon>VectorSampleListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VectorSampleListPanel.ka-GE.resx">
+      <DependentUpon>VectorSampleListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VectorSampleListPanel.kk-KZ.resx">
+      <DependentUpon>VectorSampleListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VectorSampleListPanel.resx">
+      <DependentUpon>VectorSampleListPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VectorSampleListPanel.ru-RU.resx">
+      <DependentUpon>VectorSampleListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VectorSampleListPanel.uk-UA.resx">
+      <DependentUpon>VectorSampleListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VsSessionDetail.ar-IQ.resx">
+      <DependentUpon>VsSessionDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VsSessionDetail.az-latn-az.resx">
+      <DependentUpon>VsSessionDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VsSessionDetail.hy-am.resx">
+      <DependentUpon>VsSessionDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VsSessionDetail.ka-ge.resx">
+      <DependentUpon>VsSessionDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VsSessionDetail.kk-kz.resx">
+      <DependentUpon>VsSessionDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VsSessionDetail.resx">
+      <DependentUpon>VsSessionDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VsSessionDetail.ru-RU.resx">
+      <DependentUpon>VsSessionDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VsSessionDetail.uk-ua.resx">
+      <DependentUpon>VsSessionDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VsSessionListPanel.az-latn-az.resx">
+      <DependentUpon>VsSessionListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VsSessionListPanel.hy-am.resx">
+      <DependentUpon>VsSessionListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VsSessionListPanel.ka-ge.resx">
+      <DependentUpon>VsSessionListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VsSessionListPanel.kk-kz.resx">
+      <DependentUpon>VsSessionListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VsSessionListPanel.resx">
+      <DependentUpon>VsSessionListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VsSessionListPanel.ru-RU.resx">
+      <DependentUpon>VsSessionListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VsSessionListPanel.uk-ua.resx">
+      <DependentUpon>VsSessionListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VectorSurveillance\VsSessionSummaryPanel.resx">
+      <DependentUpon>VsSessionSummaryPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet\FarmListPanel.ar-IQ.resx">
+      <DependentUpon>FarmListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet\FarmListPanel.az-Latn-AZ.resx">
+      <DependentUpon>FarmListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet\FarmListPanel.hy-am.resx">
+      <DependentUpon>FarmListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet\FarmListPanel.ka-GE.resx">
+      <DependentUpon>FarmListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet\FarmListPanel.kk-KZ.resx">
+      <DependentUpon>FarmListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet\FarmListPanel.resx">
+      <DependentUpon>FarmListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet\FarmListPanel.ru-RU.resx">
+      <DependentUpon>FarmListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet\FarmListPanel.uk-UA.resx">
+      <DependentUpon>FarmListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet\FarmRootDetail.ar-IQ.resx">
+      <DependentUpon>FarmRootDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet\FarmRootDetail.az-Latn-AZ.resx">
+      <DependentUpon>FarmRootDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet\FarmRootDetail.hy-AM.resx">
+      <DependentUpon>FarmRootDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet\FarmRootDetail.ka-GE.resx">
+      <DependentUpon>FarmRootDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet\FarmRootDetail.kk-KZ.resx">
+      <DependentUpon>FarmRootDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet\FarmRootDetail.resx">
+      <DependentUpon>FarmRootDetail.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet\FarmRootDetail.ru-RU.resx">
+      <DependentUpon>FarmRootDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet\FarmRootDetail.uk-UA.resx">
+      <DependentUpon>FarmRootDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet\VetCaseListPanel.ar-IQ.resx">
+      <DependentUpon>VetCaseListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet\VetCaseListPanel.az-Latn-AZ.resx">
+      <DependentUpon>VetCaseListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet\VetCaseListPanel.hy-am.resx">
+      <DependentUpon>VetCaseListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet\VetCaseListPanel.ka-GE.resx">
+      <DependentUpon>VetCaseListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet\VetCaseListPanel.kk-KZ.resx">
+      <DependentUpon>VetCaseListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet\VetCaseListPanel.resx">
+      <DependentUpon>VetCaseListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet\VetCaseListPanel.ru-RU.resx">
+      <DependentUpon>VetCaseListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vet\VetCaseListPanel.uk-UA.resx">
+      <DependentUpon>VetCaseListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

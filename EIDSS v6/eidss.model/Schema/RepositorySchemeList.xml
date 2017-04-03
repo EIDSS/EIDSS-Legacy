@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<object name="RepositorySchemeListItem" connection="EidssConnectionString" generator="ObjectGenerator.xslt" xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="fn_RepositoryScheme_SelectList" type="fnlist" />
+		<count name="spRepositoryScheme_SelectCount"/>
+	</storage>
+
+	<tables>
+		<table name="RepositorySchemeListItem">
+      <properties auditObject="daoRepositoryScheme" auditTable="tlbFreezer"  permissionObject="RepositoryScheme"/>
+      <help win="lab_l11"/>
+
+      <searchpanel>
+				<item name="strFreezerName" editor="Text" labelId="strFreezerName" />
+				<item name="strNote" editor="Text" labelId="RepositoryScheme.strNote" />
+
+				<item name="idfsStorageType" editor="Lookup" labelId="StorageType"
+										lookupName="StorageLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+ 
+
+			</searchpanel>
+
+			<grid>
+				<item name="idfFreezer" visible="false" key="true"  />
+				<item name="strFreezerName" />
+				<item name="strNote"  />
+				<item name="StorageType"  />
+				
+ 
+			</grid>
+			<labels>
+				<item name="strNote" labelId="RepositoryScheme.strNote"/>
+			</labels>
+
+			<lookups>
+				<lookup name="Storage" table="BaseReference" section="rftStorageType" source="idfsStorageType" target="idfsBaseReference" />
+
+			</lookups>
+
+			<storage>
+				<delete name="spRepositoryScheme_Delete"/>
+				<candelete name="spRepositoryScheme_CanDelete"/>
+			</storage>
+
+			<actions child="RepositoryScheme">
+				<action name="Copy" type="Action">
+          <visual alignment="Right" panel="Top" enablePredicate="(c, p, b) => c != null &amp;&amp; (c.Environment != null ? !c.Environment.ReadOnly : !c.ReadOnly) &amp;&amp; !c.Key.Equals(PredefinedObjectId.FakeListObject) ">
+            <regular caption="strCopy_Id" tooltip="strCopy_Id"  icon=""/>
+          </visual>
+          <run>
+					  <params>
+						  <param name="key" type="object" />
+						  <param name="item" type="IObject" />
+						  <param name="listPanel" type="object" />
+					  </params>
+          </run>
+        </action>
+				<action name="CopyFreezer" type="Action">
+          <run>
+					  <params>
+						  <param name="key" type="long" />
+						  <param name="freezerName" type="string" />
+					  </params>
+					  <preText>
+              manager.SetSpCommand("dbo.spRepositoryScheme_CopyFreezer"
+                , manager.Parameter("idfFreezer", key)
+                , manager.Parameter("strFreezerName", freezerName)
+                ).ExecuteNonQuery();
+              return true;
+            </preText>
+          </run>
+        </action>
+			</actions>
+		</table>
+	</tables>
+
+</object>

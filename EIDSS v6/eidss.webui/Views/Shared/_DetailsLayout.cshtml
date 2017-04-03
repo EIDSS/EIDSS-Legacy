@@ -1,0 +1,53 @@
+﻿@using eidss.webui.Areas.ActionPanel;
+@using bv.common.Enums;
+@using bv.model.Model.Core;
+@functions
+{
+    IObjectAccessor GetAccessor()
+    {
+        var result = Model as IObjectAccessor;
+        if (result == null)
+        {
+            if (Model is IObject)
+            {
+                result = ((IObject)Model).GetAccessor();
+            }
+        }
+        return result;
+    }
+
+    string RenderMainPanel()
+    {
+        IObjectAccessor accessor = GetAccessor();
+        if (accessor != null) Extenders.RenderActionPanel(Html, accessor, ActionsPanelType.Main);
+        return String.Empty;
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery-1.4.4.min.js")" type="text/javascript"></script>    
+    <script src="@Url.Content(String.Format("~/Scripts/Messages/EIDSS.BvMessages.{0}.js", ModelUserContext.CurrentLanguage))" type="text/javascript" ></script>
+    @(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.webblue.css").Combined(true).Compress(true)))</head>
+<body class="detailsviewcontainer">
+   @(Html.Telerik().Window()
+        .Name("Message")
+        .Modal(true)
+        .Visible(false)
+        .Draggable(true)
+        .Height(370)
+        .Buttons(buttons => buttons.Refresh().Maximize().Close())
+
+    )
+    <div id="main">
+        @RenderBody()
+
+        <!-- bottom action panel -->
+        <div class="borderless">
+            @RenderMainPanel()
+        </div>
+    </div>
+    @(Html.Telerik().ScriptRegistrar().DefaultGroup(group => group.Combined(true).Compress(true)))</body>
+</html>

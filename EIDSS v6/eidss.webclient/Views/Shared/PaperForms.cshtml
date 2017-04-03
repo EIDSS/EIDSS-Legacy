@@ -1,0 +1,25 @@
+﻿@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+@using eidss.model.Schema
+@{
+    ViewBag.Title = Translator.GetMessageString("titlePaperForms");
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (bv.common.Configuration.BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+@Html.Heartbeat()
+
+<table>
+    <tr>
+        <td>   
+            <input type="button" value='@Translator.GetMessageString("btAvianDiseaseOutbreaksForm")' onclick="ShowAvianDiseaseOutbreaksForm();" />         
+        </td>
+        <td>            
+            <input type="button" value='@Translator.GetMessageString("btLivestockDiseaseOutbreaksForm")' onclick="ShowLivestockDiseaseOutbreaksForm();" />
+        </td>
+        <td>       
+            <input type="button" value='@Translator.GetMessageString("btGeneralCaseInvestigationForm")' onclick="ShowGeneralCaseInvestigationForm();" />                                               
+        </td>
+    </tr>
+</table>

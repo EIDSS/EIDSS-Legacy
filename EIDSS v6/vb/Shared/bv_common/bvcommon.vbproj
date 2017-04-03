@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BA2844A8-F629-4B02-ACD6-B60063E4D27F}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>bv_common</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyMode>None</AssemblyOriginatorKeyMode>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionStrict>On</OptionStrict>
+    <RootNamespace>bv.common</RootNamespace>
+    <StartupObject>bv.common.%28None%29</StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <MyType>Windows</MyType>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <PublishUrl>http://localhost/bv_common/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>..\..\..\eidss.main\bin\Debug\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>PROTOTYPE_MODE=False, USE_TRACE=True</DefineConstants>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>..\..\..\eidss.main\bin\Release\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032,42353,42354,42355</NoWarn>
+    <DebugType>Full</DebugType>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\BV_AssemblyInfo.vb">
+      <Link>BV_AssemblyInfo.vb</Link>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\BarcodeHelper.vb" />
+    <Compile Include="Core\ClassNotFoundException.vb" />
+    <Compile Include="Core\ClientAccessor.vb" />
+    <Compile Include="Core\IPostable.vb" />
+    <Compile Include="Core\PasswordChecker.vb" />
+    <Compile Include="Core\AvrException.vb" />
+    <Compile Include="Core\Cryptor.vb" />
+    <Compile Include="Core\EventInfo.vb" />
+    <Compile Include="Core\IIdleManager.vb" />
+    <Compile Include="Core\IIdleManagerFactory.vb" />
+    <Compile Include="Core\IRelated.vb" />
+    <Compile Include="Core\CustomAccessRights.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\DebugTimer.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\Delegates.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\Enums.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ErrorMessage.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\Interfaces.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\ListSearchMethod.vb" />
+    <Compile Include="Core\Trace.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\UserErrorException.vb" />
+    <Compile Include="ErrorHandling\IServerException.vb" />
+    <Compile Include="ErrorHandling\ServerExceptionAttribute.vb" />
+    <Compile Include="Meta\TableType.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Objects\Audit\AuditEventType.vb" />
+    <Compile Include="Objects\Audit\AuditObject.vb" />
+    <Compile Include="Objects\DBService\StoredProcException.vb" />
+    <Compile Include="Objects\Permisions\AccessPermissionsAttribute.vb" />
+    <Compile Include="Objects\Permisions\ActionPermission.vb" />
+    <Compile Include="Objects\Permisions\BasePermissionObject.vb" />
+    <Compile Include="Objects\Permisions\DefaultAccessPermissions.vb" />
+    <Compile Include="Objects\Permisions\DefaultActionPermissions.vb" />
+    <Compile Include="Objects\Permisions\DefaultButtonType.vb" />
+    <Compile Include="Objects\Permisions\DefaultPermissionObjectType.vb" />
+    <Compile Include="Objects\Permisions\GlobalPermissions.vb" />
+    <Compile Include="Objects\Permisions\IAccessPermissions.vb" />
+    <Compile Include="Objects\Permisions\IPermissionObject.vb" />
+    <Compile Include="Objects\Permisions\PermissionType.vb" />
+    <Compile Include="Objects\Permisions\StandardAccessPermissions.vb" />
+    <Compile Include="Objects\Tables\LookupTableInfo.vb" />
+    <Compile Include="Objects\Tables\ParameterInfo.vb" />
+    <Compile Include="Objects\Tables\RelationInfo.vb" />
+    <Compile Include="Objects\Tables\TableAttribute.vb" />
+    <Compile Include="Objects\Tables\TableInfo.vb" />
+    <Compile Include="XmlObjects\IXmlObjectAttribute.vb" />
+    <Compile Include="XmlObjects\LibAttribute.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{967B4E0D-AD0C-4609-AB67-0FA40C0206D8}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="My Project\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Migrated rules for bv_common.ruleset" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\bv.common\bv.common.csproj">
+      <Project>{BEE76B17-720D-4B65-996A-5712912B3ACF}</Project>
+      <Name>bv.common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\bv.model\bv.model.csproj">
+      <Project>{9067327E-1960-4326-ACB9-D982DDBEAA76}</Project>
+      <Name>bv.model</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\eidss.core\eidss.core.csproj">
+      <Project>{BF545ECD-F673-4C71-9362-57C01DF13062}</Project>
+      <Name>eidss.core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

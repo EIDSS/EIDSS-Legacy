@@ -1,0 +1,60 @@
+﻿@{    
+    Layout = null;
+}
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+
+<div>
+    <table class="about">
+        <tr>
+            <td class="aboutTextTd">
+                <div class="abbreviation">@Translator.GetMessageString("EIDSS_Short_Caption")</div>
+                <div class="fullName">@Translator.GetMessageString("EIDSS_Caption")</div>
+                <div class="version">@Translator.GetMessageString("Version"): @typeof(eidss.webclient.MvcApplication).Assembly.GetName().Version</div><br/>
+                <div class="hr"></div>
+            </td>
+            <td>
+                <img src="../../Content/Images/EIDSS_logo.png"/>
+            </td>
+        </tr>
+    </table>
+    <div class="userInfo">
+        <div>
+            <span class="userInfoLabel">@Translator.GetString("PersonName"): </span>@UserContextHelper.UserFullName()
+        </div>
+        <div>
+            <span class="userInfoLabel">@Translator.GetString("idfInstitution"): </span>@UserContextHelper.UserOrganization()
+        </div>
+        <div>
+            <span class="userInfoLabel">@Translator.GetString("strSiteID"): </span>@UserContextHelper.ContextSiteCode()
+        </div>
+        <div>
+            <span class="userInfoLabel">@Translator.GetString("idfsCountry"): </span>@UserContextHelper.ContextCountry()
+        </div>
+    </div>
+    <div class='windowButtonsPn'>
+        <input type="button" class="windowButton" value="@Translator.GetMessageString("Ok")" onclick="listForm.closeWindow()"/>
+    </div>
+</div>
+
+@*<body style="background-color:White">
+@if (bv.common.Configuration.BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+            
+        @using (Html.BeginForm())
+        {                
+            <img src="/Content/Images/Web_Login_Title_About.png" class="headerImg" border="0" alt='@Translator.GetMessageString("WelcomeTitle")' title='@Translator.GetMessageString("WelcomeTitle")'/>
+            <div class="versionLabel">
+                Version: @typeof(eidss.webclient.MvcApplication).Assembly.GetName().Version
+            </div>        
+            <div class="copyrightLabel">                       
+                @string.Format(Translator.GetMessageString("CopyrightText"), DateTime.Now.Date.Year)
+            </div>                                 
+            <div class="aboutButtonPanel" >      
+                <input type="button" value='@Translator.GetString("Ok")' onclick="window.close();" />                       
+            </div>  
+        }
+    </body>
+</html>
+*@

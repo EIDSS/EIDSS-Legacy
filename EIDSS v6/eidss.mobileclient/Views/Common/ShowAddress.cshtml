@@ -1,0 +1,95 @@
+﻿@model eidss.model.Schema.Address
+           
+@using eidss.mobileclient.Utils
+
+<script language="javascript" type="text/javascript">
+    
+</script>
+
+<table>
+    @if((bool)ViewBag.IsCountryFieldVisible)
+    {
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.idfsCountry)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.BvDropDownList(Model, "Country", string.Format("new function(e) {{ onCountryChanged('{0}', '{1}', 'Address'); }}", Model.ObjectIdent, Model.idfGeoLocation))
+            </td>            
+        </tr>
+    } 
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.idfsRegion)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvDropDownList(Model, "Region", string.Format("new function(e) {{ onRegionChanged('{0}', '{1}', 'Address'); }}", Model.ObjectIdent, Model.idfGeoLocation))
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.idfsRayon)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvDropDownList(Model, "Rayon", string.Format("new function(e) {{ onRayonChanged('{0}', '{1}', 'Address'); }}", Model.ObjectIdent, Model.idfGeoLocation))
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.idfsSettlement)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvDropDownList(Model, "Settlement")
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.strStreetName)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvEditBox(Model, "Street")
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.strPostCode)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvEditBox(Model, "PostCode")
+        </td>
+    </tr>
+    <tr>                                                               
+        <td>
+            @Html.LabelFor(m => m.strBuilding)/@Html.LabelFor(m => m.strHouse)/@Html.LabelFor(m => m.strApartment)
+        </td>
+    </tr>
+    <tr>
+        <td class="noIndent">
+            <table>
+                <tr>
+                    <td>
+                        @Html.BvEditBox(Model, "strBuilding")
+                    </td>
+                    <td>
+                        @Html.BvEditBox(Model, "strHouse")
+                    </td>
+                    <td>
+                        @Html.BvEditBox(Model, "strApartment")
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>

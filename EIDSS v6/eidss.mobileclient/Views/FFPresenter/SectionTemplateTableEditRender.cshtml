@@ -1,0 +1,40 @@
+﻿@using eidss.mobileclient.Utils
+@model eidss.model.Model.FlexibleForms.FlexNodes.FlexNode
+
+@{
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+}
+
+<script src="@Url.Content("~/Scripts/EIDSS.FFGrid.js")" type="text/javascript"></script>
+
+<table>
+    <tr>
+        <td>
+            <input type="submit" value="@Translator.GetMessageString("Ok")" onclick="ShowEidssDialogOKPromptWithActionSaveExecutionAndCloseWindow(onSaveAndCloseFFGridDetails, '@ViewBag.UrlForReturn');" />         
+        </td>
+        <td>
+            <input type="button" value="@Translator.GetMessageString("Cancel")" onclick="ShowEidssDialogCancelPromptWithActionCancelExecution(onCancelFFGridDetailsEdit, '@ViewBag.UrlForReturn');" />                                  
+        </td>
+    </tr>
+</table>
+<input type="hidden" id="hdnIsNew" value="@ViewBag.IsNew"/>
+<input type="hidden" id="hdnIdfsSection" value="@ViewBag.IdfsSection"/>
+<input type="hidden" id="hdnIdfRow" value="@ViewBag.IdfRow"/>
+<input type="hidden" id="hdnFFKey" value="@ViewBag.FFKey"/>
+<input type="hidden" id="hdnFFpresenterId" value="@ViewBag.FFpresenterId"/>
+@using (Html.BeginForm())
+{
+    <h2>@Model.GetSectionTemplate().NationalName</h2>
+    {
+        var parameterList = Model.GetParameterTemplateNodesForDataTable();
+
+        foreach (var childNode in parameterList)
+        {
+            //выводим полный заголовок
+            childNode.UseFullPath = true;
+            childNode.idfRow = Model.idfRow;
+            @Html.Action("FlexNodeRender", "FFPresenter", new {node = childNode})  
+            <br/>
+        }
+    }
+}

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="AsSessionSummarySample"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spASSessionSummarySamples_SelectDetail" type="detaillist" />
+  </storage>
+
+  <tables>
+    <table name="AsSessionSummarySample">
+      <keys>
+        <key name="idfsSampleType"/>
+      </keys>
+      <storage>
+        <post name="spASSessionSummarySample_Post"/>
+      </storage>      
+    </table>
+  </tables>
+
+</object>

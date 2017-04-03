@@ -1,0 +1,34 @@
+﻿@using Kendo.Mvc.UI
+@using bv.model.Model.Core
+@model eidss.model.Reports.Common.MultipleDiagnosisModel
+
+@{
+    var originalName = ViewData["FilterName"].ToString();
+    var kendoName = originalName.Replace(".", "_");
+    var class1 = ViewData["class1"] ?? "level1";
+    var class2 = ViewData["class2"] ?? "mediumreport";
+    var maxCheckedCount = ViewData["maxCheckedCount"] ?? 0;
+}
+
+<table class='@class1'>
+    <tr>
+        <td class='@class2'>
+            @ViewData["Caption"]
+        </td>
+        <td class='large'>
+            
+            @(
+ @Html.Kendo().DropDownList()
+         .Name(kendoName)
+         .DataTextField("Text")
+         .DataValueField("Value")
+         .HtmlAttributes(new { @class = Model.IsRequired ? "requiredField" : "", @maxcheckedcount = maxCheckedCount.ToString() })
+         .Template("<input type=\"checkbox\"checkedname=\"${ data.Text }\" value=\"${ data.Value }\" class=\"check-item\" id=\"chb${ data.Value }\"/><span>${ data.Text }</span>")
+         .Events(e => e .Select("bvCheckedComboBox.onCheckedComboBoxChanged")
+                        .DataBound("function(e) { bvCheckedComboBox.bindCheckedComboBoxClickEvent('" + kendoName + "', '');}")
+                        .Open("function(e) { bvCheckedComboBox.onComboBoxOpen(e, " + (int)EditorControlWidth.Large + ", true); }"))
+                        .BindTo(new SelectList(Model.ItemsList, "Value", "Text", null))
+                  )
+        </td>
+    </tr>
+</table>

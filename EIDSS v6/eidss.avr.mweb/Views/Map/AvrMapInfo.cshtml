@@ -1,0 +1,14 @@
+﻿@using System.Globalization;
+@model eidss.avr.mweb.Models.AvrMapInfo
+           
+@{
+    Layout = null;
+}
+
+InfoMapResult
+ <table cellpadding='3' cellspacing='0' border='1'>
+ <tr bgcolor='#a9caef'><td colspan='2'>&nbsp;</td><td>Area</td><td>Population</td><td>Density</td></tr>
+ <tr><td>Region:</td><td>@Model.m_InfoRegion[0] &nbsp;</td><td>@Model.m_InfoRegion[1]</td><td>@Model.m_InfoRegion[2]</td><td>@Model.m_InfoRegion[3]</td></tr>
+ <tr><td>Rayon:</td><td>@Model.m_InfoRayon[0] &nbsp;</td><td>@Model.m_InfoRayon[1]</td><td>@Model.m_InfoRayon[2]</td><td>@Model.m_InfoRayon[3]</td></tr>
+ <tr><td>Settlement:</td><td>@Model.m_InfoSettlement &nbsp;</td><td colspan='3'>&nbsp;</td></tr>
+ </table>

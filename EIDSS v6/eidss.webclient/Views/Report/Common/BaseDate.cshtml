@@ -1,0 +1,18 @@
+﻿@model eidss.model.Reports.Common.BaseDateModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/ExportButtons", Model)
+    
+    <div class="bluelayout">
+        <div class="tabPanelContent">
+            @Html.Partial("Common/BaseFilter", Model)
+            @Html.Partial("Common/BaseDateFilter", Model)
+        </div>
+    </div>
+}
+        

@@ -1,0 +1,159 @@
+﻿@model eidss.model.Schema.AsSessionAnimalSample
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using bv.common.Configuration
+@using eidss.model.Enums
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        //ChangeMessageWindowHeigth();
+    });
+</script>
+
+@if (BaseSettings.TranslationMode)
+{
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        <div class="windowButtonsPn">                  
+            <input type="button" class="windowButton" onclick=" asSession.saveAndCloseAnimalSampleGridEditWindow('@(Model.idfMonitoringSession)'); " value="@Translator.GetMessageString("Ok")"/>     
+            <input type="button" class="windowButton" onclick=" bvPopup.closeDefaultPopup(); " value="@Translator.GetMessageString("Cancel")"/>  
+        </div>
+        @Html.HiddenFor(x => x.id)
+        @Html.Hidden("IdfMonitoringSession", (long)ViewBag.IdfMonitoringSession)
+    <div class="sectionTitle">
+        @Translator.GetMessageString("titleAnimalInfo")  
+    </div>
+        <table class="level1">    
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Html.LabelFor(model => model.Farms)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.Farms, true, "asSession.onFarmChanged")
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.LabelFor(model => model.Species)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.Species, false, "asSession.onSpeciesChanged")
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.LabelFor(model => model.strAnimalCode)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.Animals, false, "asSession.onAnimalsChanged", keyName: "strAnimalCode")
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.LabelFor(model => model.idfsAnimalAge)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.AnimalAge, false)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.LabelFor(model => model.strColor)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strColor)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.LabelFor(model => model.idfsAnimalGender)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.AnimalGender)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.LabelFor(model => model.strName)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strName)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.LabelFor(model => model.strDescription)
+                </td>
+                <td>
+                    @Html.BvTextArea(Model, m => m.strDescription)
+                </td>
+            </tr>
+        </table>
+    <div class="sectionTitle">
+        @Translator.GetMessageString("titleSampleInfo")  
+    </div>
+        <table class="level1">    
+            <tr>
+                <td class="firstLabel" colspan="2">
+                    @Html.BvCheckBox(Model, m => m.FilterByDiagnosis, false, "sample.onFilterByDiagnosisClick")
+                    @Html.Hidden("fieldForFilterByDiagnosis", "SampleType")
+                </td>                            
+            </tr>
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Html.LabelFor(model => model.SampleType)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.SampleType, false, keyName:"idfsReference")
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.LabelFor(model => model.strFieldBarcode)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strFieldBarcode)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.LabelFor(model => model.datFieldCollectionDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datFieldCollectionDate)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Translator.GetString("VetCaseSample.idfSendToOffice")
+                </td>
+                <td>                     
+                    @Html.Action("InlineOrganizationPicker", "Organization", new
+                        {
+                            obj = Model,
+                            objectId = Model.id,
+                            idfsOrganizationPropertyName = "idfSendToOffice",
+                            strOrganizationPropertyName = "strSendToOffice",
+                            idfsEmployeePropertyName = "",
+                            strEmployeePropertyName = "",
+                            showInInternalWindow = true,
+                            HACode = HACode.Livestock
+                        })     
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="collapseEditWindowPanel" id="idfSendToOffice_InternalPicker">
+                    </div>
+                </td>
+            </tr>
+        </table>
+    }
+</div>

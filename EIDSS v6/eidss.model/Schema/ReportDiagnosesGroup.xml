@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="ReportDiagnosesGroup"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spReportDiagnosesGroup_SelectDetail" type= "detaillist" />
+  </storage>
+
+  <tables>
+    <table name="ReportDiagnosesGroup">
+      <grid>
+        <item name="idfsReportDiagnosesGroup" visible ="false"  key="true"/>
+        <item name="strName" />
+        <item name="strTranslatedName" />
+        <item name="Code" />
+      </grid>
+      <labels>
+        <item name="strName" labelId="RDGE.strName"/>
+        <item name="strTranslatedName" labelId="RDGE.strTranslatedName"/>
+        <item name="Code" labelId="RDGE.Code"/>
+      </labels>
+      <fields>
+      </fields>
+      <fieldtags>
+      </fieldtags>
+      <lookups>
+      </lookups>
+      <storage>
+        <post name="spReportDiagnosesGroup_Post" />        
+      </storage>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfsReportDiagnosesGroup" class="GetNewIDExtender" />
+          <lambda_extender target="strName" type="string" lambda="c => String.Empty" />
+          <lambda_extender target="strTranslatedName" type="string" lambda="c => String.Empty" />
+          <lambda_extender target="Code" type="string" lambda="c => String.Empty" />
+        </creating>
+        <loading>
+        </loading>
+        <posting>
+        </posting>
+        <posted>
+        </posted>
+      </extenders>
+      <validators>
+        <change>
+        </change>
+        <post>          
+          <required_validator target="strName" label="RDGE.strName"/>
+          <required_validator target="strTranslatedName" label="RDGE.strTranslatedName" predicate ="c => ModelUserContext.CurrentLanguage != Localizer.lngEn"/>
+        </post>
+      </validators>
+    </table>
+  </tables>
+</object>

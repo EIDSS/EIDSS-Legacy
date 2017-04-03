@@ -1,0 +1,124 @@
+﻿@model eidss.model.Schema.HumanCase
+           
+@using eidss.mobileclient.Utils
+
+<script src="@Url.Content("~/Scripts/EIDSS.Organization.js")" type="text/javascript"></script>
+
+<table> 
+    <tr>                                                               
+        <td>
+            @Html.LabelFor(m => m.strCaseID)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvEditBox(Model, "strCaseID")
+        </td>
+    </tr>
+    <tr>                
+        <td>
+            @Html.LabelFor(m => m.datCompletionPaperFormDate)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvDateBox(Model, "datCompletionPaperFormDate")
+        </td>
+    </tr>
+    <tr>                
+        <td>
+            @Html.LabelFor(m => m.strLocalIdentifier)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvEditBox(Model, "strLocalIdentifier")
+        </td>
+    </tr>
+    <tr>                
+        <td>
+            @Translator.GetString("HumanCase.idfsTentativeDiagnosis")
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvDropDownList(Model, "TentativeDiagnosis")
+        </td>
+    </tr>
+    <tr>                                                               
+        <td>
+            @Html.LabelFor(m => m.datTentativeDiagnosisDate)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvDateBox(Model, "datTentativeDiagnosisDate")
+        </td>
+    </tr>
+    <tr>                                                               
+        <td>
+            @Html.LabelFor(m => m.datNotificationDate)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvDateBox(Model, "datNotificationDate")
+        </td>
+    </tr>
+    <tr>                                                               
+        <td>
+            <label>@Translator.GetMessageString("titleNotificationSendBy"):</label>
+        </td>
+    </tr>
+    <tr>                                                               
+        <td>
+            @Html.LabelFor(m => m.idfSentByOffice)
+        </td>
+    </tr>
+    <tr>
+        <td>                        
+            @Html.Action("InlineOrganizationPicker", "Organization", new { obj = Model, objectId = Model.idfCase, 
+                idfsOrganizationPropertyName = "idfSentByOffice", strOrganizationPropertyName = "strSentByOffice",
+                returnUrl = "/HumanCase/Notification?id=" + Session["IdfCase"] + "&getFromSession=true", 
+                currentControllerName = "HumanCase" })
+        </td>
+    </tr>
+    <tr>                                                               
+        <td>
+            @Html.LabelFor(m => m.strSentByPerson)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvDropDownList(Model, "SentByPerson")
+        </td>
+    </tr>
+    <tr>                                                               
+        <td>
+            <label>@Translator.GetMessageString("titleNotificationReceivedBy"):</label>
+        </td>
+    </tr>
+    <tr>                                                               
+        <td>
+            @Html.LabelFor(m => m.idfReceivedByOffice)
+        </td>
+    </tr>
+    <tr>
+        <td>                        
+            @Html.Action("InlineOrganizationPicker", "Organization", new { obj = Model, objectId = Model.idfCase, 
+                idfsOrganizationPropertyName = "idfReceivedByOffice", strOrganizationPropertyName = "strReceivedByOffice",
+                returnUrl = "/HumanCase/Notification?id=" + Session["IdfCase"] + "&getFromSession=true",
+                currentControllerName = "HumanCase" })
+        </td>
+    </tr>
+    <tr>                                                               
+        <td>
+            @Html.LabelFor(m => m.strReceivedByPerson)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvDropDownList(Model, "ReceivedByPerson")
+        </td>
+    </tr>
+</table>

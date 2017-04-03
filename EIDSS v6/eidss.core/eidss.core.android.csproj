@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{ED4C805C-42E1-4072-A112-0705444762DD}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>eidss.model</RootNamespace>
+    <AssemblyName>eidss.core</AssemblyName>
+    <TargetFrameworkVersion>v2.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\android\EIDSS\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;MONO</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\android\EIDSS\bin\Release\</OutputPath>
+    <DefineConstants>TRACE;MONO</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\EidssSecurityManager.cs" />
+    <Compile Include="Core\EidssSiteContext.cs" />
+    <Compile Include="Core\EidssUser.cs" />
+    <Compile Include="Core\EidssUserContext.cs" />
+    <Compile Include="Core\FiltrationManager.cs" />
+    <Compile Include="Core\LocalizedDisplayNameAttribute.cs" />
+    <Compile Include="Core\SecurityLog.cs" />
+    <Compile Include="Core\SecurityMessages.cs" />
+    <Compile Include="Enums\AccessionCondition.cs" />
+    <Compile Include="Enums\AggregateCaseType.cs" />
+    <Compile Include="Enums\AsCampaignStatus.cs" />
+    <Compile Include="Enums\AsSessionStatus.cs" />
+    <Compile Include="Enums\AuditEventType.cs" />
+    <Compile Include="Enums\AuditTable.cs" />
+    <Compile Include="Enums\BaseReferenceType.cs" />
+    <Compile Include="Enums\BatchStatus.cs" />
+    <Compile Include="Enums\CaseReportType.cs" />
+    <Compile Include="Enums\CaseStatus.cs" />
+    <Compile Include="Enums\CaseType.cs" />
+    <Compile Include="Enums\ContainerStatus.cs" />
+    <Compile Include="Enums\DiagnosisUsingType.cs" />
+    <Compile Include="Enums\EIDSSAuditObject.cs" />
+    <Compile Include="Enums\EIDSSPermissionObject.cs" />
+    <Compile Include="Enums\EventType.cs" />
+    <Compile Include="Enums\FFEnums.cs" />
+    <Compile Include="Enums\FFType.cs" />
+    <Compile Include="Enums\GeoLocationType.cs" />
+    <Compile Include="Enums\HACode.cs" />
+    <Compile Include="Enums\HumanAgeType.cs" />
+    <Compile Include="Enums\MenuIcons.cs" />
+    <Compile Include="Enums\MenuIconsSmall.cs" />
+    <Compile Include="Enums\NumberingObject.cs" />
+    <Compile Include="Enums\OutcomeType.cs" />
+    <Compile Include="Enums\PartyType.cs" />
+    <Compile Include="Enums\PatientLocationType.cs" />
+    <Compile Include="Enums\PersonContactType.cs" />
+    <Compile Include="Enums\SecurityAuditEvent.cs" />
+    <Compile Include="Enums\SecurityAuditProcessType.cs" />
+    <Compile Include="Enums\SessionType.cs" />
+    <Compile Include="Enums\SiteType.cs" />
+    <Compile Include="Enums\StatisticAreaType.cs" />
+    <Compile Include="Enums\StatisticPeriodType.cs" />
+    <Compile Include="Enums\TestForDiseaseType.cs" />
+    <Compile Include="Enums\TestStatus.cs" />
+    <Compile Include="Enums\YesNoUnknownValues.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\EidssFields.cs">
+      <SubType>
+      </SubType>
+    </Compile>
+    <Compile Include="Resources\EidssMenu.cs" />
+    <Compile Include="Resources\EidssMessages.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\EidssFields.az-Latn-AZ.resx">
+      <DependentUpon>EidssFields.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssFields.hy-am.resx">
+      <DependentUpon>EidssFields.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssFields.ka-GE.resx">
+      <DependentUpon>EidssFields.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssFields.kk-KZ.resx">
+      <DependentUpon>EidssFields.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssFields.resx">
+      <DependentUpon>EidssFields.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssFields.ru-RU.resx">
+      <DependentUpon>EidssFields.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssFields.uk-UA.resx">
+      <DependentUpon>EidssFields.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMenu.az-Latn-AZ.resx">
+      <DependentUpon>EidssMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMenu.hy-am.resx">
+      <DependentUpon>EidssMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMenu.ka-GE.resx">
+      <DependentUpon>EidssMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMenu.kk-KZ.resx">
+      <DependentUpon>EidssMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMenu.resx">
+      <DependentUpon>EidssMenu.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMenu.ru-RU.resx">
+      <DependentUpon>EidssMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMenu.uk-UA.resx">
+      <DependentUpon>EidssMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMenu.uz-Cyrl-UZ.resx">
+      <DependentUpon>EidssMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMenu.uz-Latn-UZ.resx">
+      <DependentUpon>EidssMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMessages.az-Latn-AZ.resx">
+      <DependentUpon>EidssMessages.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMessages.hy-am.resx">
+      <DependentUpon>EidssMessages.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMessages.ka-GE.resx">
+      <DependentUpon>EidssMessages.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMessages.kk-KZ.resx">
+      <DependentUpon>EidssMessages.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMessages.resx">
+      <DependentUpon>EidssMessages.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMessages.ru-RU.resx">
+      <DependentUpon>EidssMessages.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMessages.uk-UA.resx">
+      <DependentUpon>EidssMessages.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\bltoolkit.3.2.dev\BLToolkit.4.android.csproj">
+      <Project>{0C325F5D-E50E-4340-8724-D29896CCC583}</Project>
+      <Name>BLToolkit.4.android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\bv.common\bv.common.android.csproj">
+      <Project>{BEE76B17-720D-4B65-996A-5712912B3ACF}</Project>
+      <Name>bv.common.android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\bv.model\bv.model.android.csproj">
+      <Project>{9067327E-1960-4326-ACB9-D982DDBEAA76}</Project>
+      <Name>bv.model.android</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+</Project>
