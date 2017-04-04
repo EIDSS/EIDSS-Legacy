@@ -1,0 +1,69 @@
+﻿@model Patient
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using Kendo.Mvc.UI
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {                                        
+        <div class="windowButtonsPn">                  
+            <input id="idButtonClose" type="button" class="windowButton" onclick="patient.onFindInPersonIdentityServiceSearchClick();" value="@Translator.GetBvMessageString("strAccept_Id")" />
+            <input id="idButtonClose" type="button" class="windowButton" onclick="bvPopup.closeById('PopupWindow2');" value="@Translator.GetMessageString("Cancel")" />
+         </div>   
+        <div class="windowSeparator"></div>
+        <input type="hidden" id="idfHuman" name="idfHuman" value="@Model.idfHuman" />
+        @Html.Hidden("idfCase", Model.idfCase)
+        @Html.Hidden("idfContactedCasePerson", Model.idfContactedCasePerson)
+        <table class="level1">    
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Translator.GetString("strPIN")
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strPersonID)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strLastName)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strLastName)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strFirstName)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strFirstName)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.datDateofBirth)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datDateofBirth)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Translator.GetString("idfsSex")
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.Gender)
+                </td>
+            </tr>
+        </table> 
+    }
+</div>

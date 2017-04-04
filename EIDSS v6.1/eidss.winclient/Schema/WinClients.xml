@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<client 
+    generator="WinClientGenerator.xslt"
+    xmlns="urn:schemas-bv:clientmodel">
+
+    <panels>
+      <panel object="VetCaseListItem" type="BaseListPanel" formid="V01" />
+      <panel object="VetCase" type="BaseDetailPanel" formid="V02" />
+      <panel object="HumanCaseListItem" type="BaseListPanel" formid="H01"/>
+      <panel object="HumanCase" type="BaseDetailPanel" formid="H02"/>
+		  <panel object="OutbreakListItem" type="BaseListPanel" formid="C10"/>
+		  <panel object="Outbreak" type="BaseDetailPanel" formid="C11"/>
+		  <panel object="Address" type="BaseDetailPanel" formid=""/>
+      <panel object="PatientListItem" type="BaseListPanel" formid="H03"/>
+		  <panel object="Patient" type="BaseDetailPanel" formid="H04"/>
+      <panel object="VsSessionListItem" type="BaseListPanel" formid="W01"/>
+      <panel object="VsSession" type="BaseDetailPanel" formid="W02"/>
+      <panel object="Vector" type="BaseDetailPanel" formid="W03"/>
+		  <panel object="LabBatchListItem" type="BaseListPanel" formid="L21"/>
+		  <panel object="LabBatch" type="BaseDetailPanel" formid="L22" relatedlists="LabTestListItem,LabBatchListItem"/>
+		  <panel object="LabTestListItem" type="BaseListPanel" formid="L03"/>
+		  <panel object="LabTest" type="BaseDetailPanel" formid="L04"/>
+		  <panel object="LabSampleListItem" type="BaseListPanel" formid="L01"/>
+		  <panel object="LabSample" type="BaseDetailPanel" formid="L02"/>
+		  <panel object="AsSessionListItem" type="BaseListPanel" formid="V17"/>
+		  <panel object="AsSession" type="BaseDetailPanel" formid="V18" /> 
+		  <panel object="AsCampaignListItem" type="BaseListPanel" formid="V15"/>
+		  <panel object="AsCampaign" type="BaseDetailPanel" formid="V16"/>
+      <panel object="Vector" type="BaseGroupPanel" formid=""/>
+      <panel object="VectorSample" type="BaseGroupPanel" formid=""/>
+		  <panel object="LabSampleTransferListItem" type="BaseListPanel" formid="L09"/>
+		  <panel object="LabSampleTransfer" type="BaseDetailPanel" formid="L08"/>
+		  <panel object="LabSampleDispositionListItem" type="BaseListPanel" formid="L07"/>
+      <panel object="LabSampleDisposition" type="BaseDetailPanel" formid="L10"/>  
+      <panel object="GeoLocation" type="BaseDetailPanel" formid=""/>
+      <panel object="VectorTypeReferenceMaster" type="BaseDetailPanel" formid="A33" is_singletone="true"/>
+      <panel object="VectorTypeReference" type="BaseGroupPanel" formid=""/>
+		  <panel object="RepositorySchemeListItem" type="BaseListPanel" formid="L11"/> 
+		  <panel object="RepositoryScheme" type="BaseDetailPanel" formid="L12"/>
+		  <panel object="OrganizationListItem" type="BaseListPanel" formid="A06"/>
+		  <panel object="Personnel" type="BaseDetailPanel" formid="A07"/>
+		  <panel object="PersonListItem" type="BaseListPanel" formid="A08"/>
+		  <panel object="Person" type="BaseDetailPanel" formid="A09"/>
+		  <panel object="UserGroupListItem" type="BaseListPanel" formid="A39"/>
+		  <panel object="UserGroupDetail" type="BaseDetailPanel" formid="A40" relatedlists="UserGroupListItem"/>
+		  <panel object="UsersAndGroupsListItem" type="BaseListPanel" formid="A17"/>      
+      <panel object="UserGroupMember" type="BaseGroupPanel" formid="" />
+		  <!--<panel object="UserGroup" type="BaseDetailPanel" formid="A40"/>-->
+		  <panel object="SiteActivationServerListItem" type="BaseListPanel" formid="A13"/>
+		  <panel object="SiteActivationServer" type="BaseDetailPanel" formid="A14"/>
+		  <panel object="SecurityEventLogListItem" type="BaseListPanel" formid="S06"/>
+		  <panel object="SecurityEventLog" type="BaseDetailPanel" formid="S07"/>
+		  <panel object="EventLogListItem" type="BaseListPanel" formid="S01"/>
+		  <panel object="EventLog" type="BaseDetailPanel" formid="S01"/>
+		  <panel object="NextNumbersListItem" type="BaseListPanel" formid="C07"/>
+		  <panel object="NextNumbers" type="BaseDetailPanel" formid="C08"/>
+		  <panel object="StatisticListItem" type="BaseListPanel" formid="C12"/>
+		  <panel object="Statistic" type="BaseDetailPanel" formid="C13"/>
+		  <panel object="SettlementListItem" type="BaseListPanel" formid="C15"/>
+		  <panel object="Settlement" type="BaseDetailPanel" formid="C16"/>
+		  <panel object="DataAuditListItem" type="BaseListPanel" formid="A24"/>
+		  <panel object="DataAudit" type="BaseDetailPanel" formid="A25"/>
+		  <panel object="HumanAggregateCaseListItem" type="BaseListPanel" formid="H15"/>
+		  <panel object="FarmListItem" type="BaseListPanel" formid="V04"/>
+      <panel object="FarmRoot" type="BaseDetailPanel" formid="V05" relatedlists="FarmListItem"/>
+      <panel object="FarmPanel" type="BaseDetailPanel" formid="V06" relatedlists="FarmListItem"/>
+      <panel object="VetAggregateCaseListItem" type="BaseListPanel" formid="V09"/>
+		  <panel object="VetAggregateActionListItem" type="BaseListPanel" formid="V13"/>
+      <panel object="VectorFieldTest" type="BaseGroupPanel" formid=""/>
+      <panel object="VectorLabTest" type="BaseGroupPanel" formid=""/>      
+      <panel object="FFPresenterModel" type="BaseDetailPanel" formid=""/>
+      <panel object="LabTestAmendment" type="BaseGroupPanel" formid="L24"/>
+      <panel object="VectorSubTypeMaster" type="BaseDetailPanel" formid="A34" is_singletone="true"/>
+      <panel object="VectorSubType" type="BaseGroupPanel" formid=""/>
+      <panel object="VectorType2CollectionMethodMaster" type="BaseDetailPanel" formid="A35" is_singletone="true"/>
+      <panel object="VectorType2CollectionMethod" type="BaseGroupPanel" formid=""/>
+      <panel object="VectorType2SampleTypeMaster" type="BaseDetailPanel" formid="A36" is_singletone="true"/>
+      <panel object="VectorType2SampleType" type="BaseGroupPanel" formid=""/>
+      <panel object="VectorType2PensideTestMaster" type="BaseDetailPanel" formid="A37" is_singletone="true"/>
+      <panel object="VectorType2PensideTest" type="BaseGroupPanel" formid=""/>
+      <panel object="Diagnosis2PensideTestMaster" type="BaseDetailPanel" formid="A38" is_singletone="true"/>
+      <panel object="Diagnosis2PensideTest" type="BaseGroupPanel" formid=""/>
+      <panel object="DataArchiveSettings" type="BaseDetailPanel" formid="D01" is_singletone="true"/>
+      <panel object="ObjectAccess" type="BaseGroupPanel" formid=""/>
+      <panel object="LoginInfo" type="BaseGroupPanel" formid=""/>
+      <panel object="PersonGroupInfo" type="BaseGroupPanel" formid=""/>
+      <panel object="LoginInfo" type="BaseDetailPanel" formid="A31"/>
+      <panel object="DiagnosisAgeGroupMaster" type="BaseDetailPanel" formid="A41" is_singletone="true"/>
+      <panel object="DiagnosisAgeGroup" type="BaseGroupPanel" formid=""/>
+      <panel object="Diagnosis2DiagnosisAgeGroupMaster" type="BaseDetailPanel" formid="A42" is_singletone="true"/>
+      <panel object="DiagnosisAgeGroupToDiagnosis" type="BaseGroupPanel" formid=""/>
+      <panel object="DiagnosisAgeGroup2StatisticalAgeGroupMaster" type="BaseDetailPanel" formid="A43" is_singletone="true"/>
+      <panel object="DiagnosisAgeGroup2StatisticalAgeGroup" type="BaseGroupPanel" formid=""/>
+      <panel object="CopyDialogWindowItem" type="BaseDetailPanel" formid="W05"/>
+      <panel object="VsSessionSummary" type="BaseGroupPanel" formid=""/>
+      <panel object="VsSessionSummaryDiagnosis" type="BaseGroupPanel" formid=""/>
+      <panel object="Diagnosis2DiagnosisGroupMaster" type="BaseDetailPanel" formid="A49" is_singletone="true"/>
+      <panel object="Diagnosis2DiagnosisGroup" type="BaseGroupPanel" formid=""/>
+      <panel object="CaseClassificationMaster" type="BaseDetailPanel" formid="A45" is_singletone="true"/>
+      <panel object="CaseClassification" type="BaseGroupPanel" formid=""/>
+      <panel object="BasicSyndromicSurveillanceItem" type="BaseDetailPanel" formid="B02" relatedlists='BasicSyndromicSurveillanceListItem'/>
+      <panel object="BasicSyndromicSurveillanceListItem" type="BaseListPanel" formid="B01"/>
+      <panel object="LaboratorySectionMaster" type="BaseDetailPanel" formid="L25" is_singletone="true" relatedlists="LabTestListItem,LabSampleListItem,LabSampleTransferListItem,LabSampleDispositionListItem"/>
+      <panel object="BasicSyndromicSurveillanceAggregateList" type="BaseListPanel" formid="B03"/>
+      <panel object="LaboratorySectionItem" type="BaseListPanel" formid=""/>
+      <panel object="LaboratorySectionItem" type="BaseListPanel" classname="BaseListPanel_LaboratorySectionMyPrefItem" formid=""/>
+      <panel object="LaboratorySectionItem" type="BaseDetailPanel" classname="BaseDetailPanel_LaboratorySectionItem" formid=""/>
+      <panel object="LaboratorySectionGetByFieldBarcodeListItem" type="BaseListPanel" formid="L27"/>
+      <panel object="BasicSyndromicSurveillanceAggregateDetail" type="BaseGroupPanel" formid=""/>
+      <panel object="BasicSyndromicSurveillanceAggregateHeader" type="BaseDetailPanel" formid="B04" relatedlists="BasicSyndromicSurveillanceAggregateList"/>
+      <panel object="WhoExportMaster" type="BaseDetailPanel" formid="E01" is_singletone="true"/>
+      <panel object="WhoExport" type="BaseGroupPanel" formid=""/>
+      <panel object="HumanAggregateCaseDeduplicationListItem" type="BaseListPanel" formid="H16" relatedlists="HumanAggregateCaseListItem"/>
+      <panel object="VetAggregateCaseDeduplicationListItem" type="BaseListPanel" formid="V19" relatedlists="VetAggregateCaseListItem"/>
+      <panel object="VetAggregateActionDeduplicationListItem" type="BaseListPanel" formid="V20" relatedlists="VetAggregateActionListItem"/>
+      <panel object="ReportDiagnosesGroupMaster" type="BaseDetailPanel" formid="A47" is_singletone="true"/>
+      <panel object="ReportDiagnosesGroup" type="BaseGroupPanel" formid=""/>
+      <panel object="ReportDiagnosesGroup2DiagnosisMaster" type="BaseDetailPanel" formid="A48" is_singletone="true"/>
+      <panel object="ReportDiagnosesGroup2Diagnosis" type="BaseGroupPanel" formid=""/>
+      <panel object="CustomReportRowsMaster" type="BaseDetailPanel" formid="A46" is_singletone="true"/>
+      <panel object="CustomReportRow" type="BaseGroupPanel" formid=""/>
+    </panels>
+    
+</client>

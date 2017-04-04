@@ -1,0 +1,1436 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D068D455-22BB-4C94-AA32-593AE9077304}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>eidss.avr</RootNamespace>
+    <AssemblyName>eidss.avr</AssemblyName>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <StartupObject>
+    </StartupObject>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>http://localhost/EIDSS.RAM/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\eidss.main\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\eidss.main\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Printing.v15.1.Core, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Data.v15.1, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Sparkline.v15.1.Core, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Utils.v15.1, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraBars.v15.1, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Charts.v15.1.Core, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraCharts.v15.1.Wizard, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraCharts.v15.1, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraCharts.v15.1.UI, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v15.1, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraGrid.v15.1, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraNavBar.v15.1, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPivotGrid.v15.1, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.PivotGrid.v15.1.Core, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v15.1, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Utils.v15.1.UI, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraTreeList.v15.1, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="GIS_V6, Version=5.0.12.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\dlls\gis\GIS_V6.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap, Version=4.2.0.402, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\dlls\StructureMap.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap.Net4, Version=4.2.0.402, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\dlls\StructureMap.Net4.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\EIDSSAssemblyInfo.cs">
+      <Link>EIDSSAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="BaseComponents\ExportDialogStrategy.cs" />
+    <Compile Include="BaseComponents\SharedPresenterTransaction.cs" />
+    <Compile Include="BaseComponents\Views\IChartView.cs" />
+    <Compile Include="BaseComponents\Views\ILayoutDetailView.cs" />
+    <Compile Include="BaseComponents\Views\IMapView.cs" />
+    <Compile Include="BaseComponents\Views\IPivotDetailView.cs" />
+    <Compile Include="BaseComponents\Views\IPivotInfoDetailView.cs" />
+    <Compile Include="BaseComponents\Views\IQueryLayoutTreeView.cs" />
+    <Compile Include="ChartForm\AxisSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChartForm\AxisSettings.Designer.cs">
+      <DependentUpon>AxisSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChartForm\BarChartSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChartForm\BarChartSettings.Designer.cs">
+      <DependentUpon>BarChartSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChartForm\BaseChartSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChartForm\BaseChartSettings.Designer.cs">
+      <DependentUpon>BaseChartSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChartForm\ChartDetailForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChartForm\ChartDetailForm.Designer.cs">
+      <DependentUpon>ChartDetailForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChartForm\ChartPlaceHolder.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChartForm\ChartPlaceHolder.Designer.cs">
+      <DependentUpon>ChartPlaceHolder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChartForm\ChartSettingsHelper.cs" />
+    <Compile Include="ChartForm\ChartTitle.cs" />
+    <Compile Include="ChartForm\AreaChartSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChartForm\AreaChartSettings.Designer.cs">
+      <DependentUpon>AreaChartSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChartForm\BaseSeriesSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChartForm\BaseSeriesSettings.Designer.cs">
+      <DependentUpon>BaseSeriesSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChartForm\PieChartSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChartForm\PieChartSettings.Designer.cs">
+      <DependentUpon>PieChartSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChartForm\LineChartSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChartForm\LineChartSettings.Designer.cs">
+      <DependentUpon>LineChartSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChartForm\PointChartSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChartForm\PointChartSettings.Designer.cs">
+      <DependentUpon>PointChartSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChartForm\ISettingsPanel.cs" />
+    <Compile Include="ChartForm\LegendSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChartForm\LegendSettings.Designer.cs">
+      <DependentUpon>LegendSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChartForm\SeriesValueLabelsSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChartForm\SeriesValueLabelsSettings.Designer.cs">
+      <DependentUpon>SeriesValueLabelsSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChartForm\YAxisSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChartForm\YAxisSettings.Designer.cs">
+      <DependentUpon>YAxisSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChartForm\TitleSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChartForm\TitleSettings.Designer.cs">
+      <DependentUpon>TitleSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChartForm\XAxisSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChartForm\XAxisSettings.Designer.cs">
+      <DependentUpon>XAxisSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FilterForm\FilterControlBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="FilterForm\FilterDataColumn.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="FilterForm\FilterFieldInfo.cs" />
+    <Compile Include="FilterForm\PivotFilterControlModel.cs" />
+    <Compile Include="FilterForm\PivotFilterControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Handlers\DevExpressEventArgsWrappers\WinGridCellDisplayTextEventArgs.cs" />
+    <Compile Include="MainForm\AvrSettingsForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MainForm\AvrSettingsForm.Designer.cs">
+      <DependentUpon>AvrSettingsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MapForm\MapDetailForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MapForm\MapDetailForm.Designer.cs">
+      <DependentUpon>MapDetailForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PivotComponents\PivotFieldCommand.cs" />
+    <Compile Include="PivotComponents\PivotFieldGroupIntervalCommand.cs" />
+    <Compile Include="Handlers\AvrEventArgs\PivotDataEventArgs.cs" />
+    <Compile Include="Handlers\AvrEventArgs\PivotFieldPopupMenuEventArgs.cs" />
+    <Compile Include="Handlers\AvrEventArgs\TabSelectionEventArgs.cs" />
+    <Compile Include="PivotComponents\WinPivotGridField.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PivotForm\BindingLocalizationSource.cs" />
+    <Compile Include="QueryLayoutTree\RenameFolderDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="QueryLayoutTree\RenameFolderDialog.Designer.cs">
+      <DependentUpon>RenameFolderDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PivotForm\DateDiapasonDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PivotForm\DateDiapasonDialog.Designer.cs">
+      <DependentUpon>DateDiapasonDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PivotForm\PivotInfoPresenter.cs" />
+    <Compile Include="PivotForm\PivotInfoDetailPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PivotForm\PivotInfoDetailPanel.designer.cs">
+      <DependentUpon>PivotInfoDetailPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FilterForm\QueryFilterControlModel.cs" />
+    <Compile Include="QueryBuilder\QueryDetailPresenter.cs" />
+    <Compile Include="QueryLayoutTree\TreeListNodeExtender.cs" />
+    <Compile Include="Tools\LayoutDesktopValidator.cs" />
+    <Compile Include="Tools\EmptyFieldProcessor.cs" />
+    <Compile Include="QueryLayoutTree\QueryLayoutTreePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="QueryLayoutTree\QueryLayoutTreePanel.designer.cs">
+      <DependentUpon>QueryLayoutTreePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PivotForm\RenameFieldDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PivotForm\RenameFieldDialog.Designer.cs">
+      <DependentUpon>RenameFieldDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="QueryLayoutTree\QueryLayoutTreePresenter.cs" />
+    <Compile Include="Handlers\DevExpressEventArgsWrappers\WinPivotGridCellBaseEventArgs.cs" />
+    <Compile Include="FilterForm\QueryFilterControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\FieldAreaChangedDublicateFinder.cs" />
+    <Compile Include="PivotComponents\AvrFieldIcons.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PivotComponents\AvrFieldIcons.Designer.cs">
+      <DependentUpon>AvrFieldIcons.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainForm\WebReportLink.cs" />
+    <Compile Include="Tools\DataTransactions\DataTransaction.cs" />
+    <Compile Include="Tools\DataTransactions\DataTransactionStrategy.cs" />
+    <Compile Include="Tools\DataTransactions\IDataTransactionStrategy.cs" />
+    <Compile Include="Handlers\DevExpressEventArgsWrappers\WinPivotCellDisplayTextEventArgs.cs" />
+    <Compile Include="PivotComponents\AvrPivotGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PivotComponents\AvrPivotGrid.Designer.cs">
+      <DependentUpon>AvrPivotGrid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PivotComponents\AvrPrintingLink.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PivotComponents\AvrPrintingLink.Designer.cs">
+      <DependentUpon>AvrPrintingLink.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BaseComponents\BaseAvrDetailPresenterPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BaseComponents\BaseAvrDetailPresenterPanel.Designer.cs">
+      <DependentUpon>BaseAvrDetailPresenterPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BaseComponents\BaseAvrPresenter.cs" />
+    <Compile Include="ChartForm\ChartDetailPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChartForm\ChartDetailPanel.designer.cs">
+      <DependentUpon>ChartDetailPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FilterForm\FilterDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FilterForm\FilterDialog.Designer.cs">
+      <DependentUpon>FilterDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LayoutForm\LayoutDetailPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LayoutForm\LayoutDetailPanel.Designer.cs">
+      <DependentUpon>LayoutDetailPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MapForm\MapDetailPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MapForm\MapDetailPanel.designer.cs">
+      <DependentUpon>MapDetailPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\BindingHelper.cs" />
+    <Compile Include="BaseComponents\LayoutMediator.cs" />
+    <Compile Include="ChartForm\ChartPresenter.cs" />
+    <Compile Include="LayoutForm\LayoutDetailPresenter.cs" />
+    <Compile Include="Handlers\DevExpressEventArgsWrappers\WinPivotFieldDisplayTextEventArgs.cs" />
+    <Compile Include="Handlers\DevExpressEventArgsWrappers\WinPivotGridCustomSummaryEventArgs.cs" />
+    <Compile Include="BaseComponents\SharedPresenter.cs" />
+    <Compile Include="MapForm\MapPresenter.cs" />
+    <Compile Include="PivotForm\PivotDetailPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PivotForm\PivotDetailPanel.designer.cs">
+      <DependentUpon>PivotDetailPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PivotForm\PivotDetailPresenter.cs" />
+    <Compile Include="PresenterFactory.cs" />
+    <Compile Include="PivotComponents\AvrPivotGridPresenter.cs" />
+    <Compile Include="MainForm\AvrMainFormPresenter.cs" />
+    <Compile Include="BaseComponents\RelatedObjectPresenter.cs" />
+    <Compile Include="QueryBuilder\ChildQueryObjectList.cs" />
+    <Compile Include="QueryBuilder\FilterValueHash.cs" />
+    <Compile Include="QueryBuilder\PivotFilterControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="QueryBuilder\QueryFilterColumn.cs" />
+    <Compile Include="QueryBuilder\QueryFilterColumnCollection.cs" />
+    <Compile Include="QueryBuilder\SearchOperator.cs" />
+    <Compile Include="QueryBuilder\UnboundPivotGridColumn.cs" />
+    <Compile Include="QueryBuilder\UnboundQueryFilterColumn.cs" />
+    <Compile Include="MainForm\AvrMainForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MainForm\AvrMainForm.designer.cs">
+      <DependentUpon>AvrMainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\LayoutDesktopValidatorWaiter.cs" />
+    <Compile Include="ViewForm\AggregateCashe.cs" />
+    <Compile Include="ViewForm\AvrViewExt.cs" />
+    <Compile Include="ViewForm\RenameColumnForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewForm\RenameColumnForm.Designer.cs">
+      <DependentUpon>RenameColumnForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewForm\ViewDetailPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ViewForm\ViewDetailPanel.designer.cs">
+      <DependentUpon>ViewDetailPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewForm\ViewDetailPresenter.cs" />
+    <Compile Include="LayoutForm\VirtualLayoutCopier.cs" />
+    <EmbeddedResource Include="ChartForm\AreaChartSettings.ar-IQ.resx">
+      <DependentUpon>AreaChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\AreaChartSettings.az-Latn-AZ.resx">
+      <DependentUpon>AreaChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\AreaChartSettings.hy-AM.resx">
+      <DependentUpon>AreaChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\AreaChartSettings.ka-GE.resx">
+      <DependentUpon>AreaChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\AreaChartSettings.kk-KZ.resx">
+      <DependentUpon>AreaChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\AreaChartSettings.ru-RU.resx">
+      <DependentUpon>AreaChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\AreaChartSettings.th-TH.resx">
+      <DependentUpon>AreaChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\AreaChartSettings.uk-UA.resx">
+      <DependentUpon>AreaChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\AxisSettings.ar-IQ.resx">
+      <DependentUpon>AxisSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\AxisSettings.az-Latn-AZ.resx">
+      <DependentUpon>AxisSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\AxisSettings.hy-AM.resx">
+      <DependentUpon>AxisSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\AxisSettings.ka-GE.resx">
+      <DependentUpon>AxisSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\AxisSettings.kk-KZ.resx">
+      <DependentUpon>AxisSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\AxisSettings.resx">
+      <DependentUpon>AxisSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\AxisSettings.ru-RU.resx">
+      <DependentUpon>AxisSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\AxisSettings.th-TH.resx">
+      <DependentUpon>AxisSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\AxisSettings.uk-UA.resx">
+      <DependentUpon>AxisSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\BarChartSettings.ar-IQ.resx">
+      <DependentUpon>BarChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\BarChartSettings.az-Latn-AZ.resx">
+      <DependentUpon>BarChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\BarChartSettings.hy-AM.resx">
+      <DependentUpon>BarChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\BarChartSettings.ka-GE.resx">
+      <DependentUpon>BarChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\BarChartSettings.kk-KZ.resx">
+      <DependentUpon>BarChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\BarChartSettings.resx">
+      <DependentUpon>BarChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\BarChartSettings.ru-RU.resx">
+      <DependentUpon>BarChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\BarChartSettings.th-TH.resx">
+      <DependentUpon>BarChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\BarChartSettings.uk-UA.resx">
+      <DependentUpon>BarChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\BaseSeriesSettings.ar-IQ.resx">
+      <DependentUpon>BaseSeriesSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\BaseSeriesSettings.az-Latn-AZ.resx">
+      <DependentUpon>BaseSeriesSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\BaseSeriesSettings.hy-AM.resx">
+      <DependentUpon>BaseSeriesSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\BaseSeriesSettings.ka-GE.resx">
+      <DependentUpon>BaseSeriesSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\BaseSeriesSettings.kk-KZ.resx">
+      <DependentUpon>BaseSeriesSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\BaseSeriesSettings.resx">
+      <DependentUpon>BaseSeriesSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\BaseSeriesSettings.ru-RU.resx">
+      <DependentUpon>BaseSeriesSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\BaseSeriesSettings.th-TH.resx">
+      <DependentUpon>BaseSeriesSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\BaseSeriesSettings.uk-UA.resx">
+      <DependentUpon>BaseSeriesSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\ChartDetailForm.ar-IQ.resx">
+      <DependentUpon>ChartDetailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\ChartDetailForm.az-Latn-AZ.resx">
+      <DependentUpon>ChartDetailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\ChartDetailForm.hy-AM.resx">
+      <DependentUpon>ChartDetailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\ChartDetailForm.ka-GE.resx">
+      <DependentUpon>ChartDetailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\ChartDetailForm.kk-KZ.resx">
+      <DependentUpon>ChartDetailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\ChartDetailForm.resx">
+      <DependentUpon>ChartDetailForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\ChartDetailForm.ru-RU.resx">
+      <DependentUpon>ChartDetailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\ChartDetailForm.th-TH.resx">
+      <DependentUpon>ChartDetailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\ChartDetailForm.uk-UA.resx">
+      <DependentUpon>ChartDetailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\ChartDetailPanel.ar-IQ.resx">
+      <DependentUpon>ChartDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\ChartDetailPanel.th-TH.resx">
+      <DependentUpon>ChartDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\ChartPlaceHolder.resx">
+      <DependentUpon>ChartPlaceHolder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\AreaChartSettings.resx">
+      <DependentUpon>AreaChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\LegendSettings.ar-IQ.resx">
+      <DependentUpon>LegendSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\LegendSettings.az-Latn-AZ.resx">
+      <DependentUpon>LegendSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\LegendSettings.hy-AM.resx">
+      <DependentUpon>LegendSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\LegendSettings.ka-GE.resx">
+      <DependentUpon>LegendSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\LegendSettings.kk-KZ.resx">
+      <DependentUpon>LegendSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\LegendSettings.ru-RU.resx">
+      <DependentUpon>LegendSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\LegendSettings.th-TH.resx">
+      <DependentUpon>LegendSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\LegendSettings.uk-UA.resx">
+      <DependentUpon>LegendSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\LineChartSettings.ar-IQ.resx">
+      <DependentUpon>LineChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\LineChartSettings.az-Latn-AZ.resx">
+      <DependentUpon>LineChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\LineChartSettings.hy-AM.resx">
+      <DependentUpon>LineChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\LineChartSettings.ka-GE.resx">
+      <DependentUpon>LineChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\LineChartSettings.kk-KZ.resx">
+      <DependentUpon>LineChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\LineChartSettings.ru-RU.resx">
+      <DependentUpon>LineChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\LineChartSettings.th-TH.resx">
+      <DependentUpon>LineChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\LineChartSettings.uk-UA.resx">
+      <DependentUpon>LineChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\PieChartSettings.ar-IQ.resx">
+      <DependentUpon>PieChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\PieChartSettings.az-Latn-AZ.resx">
+      <DependentUpon>PieChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\PieChartSettings.hy-AM.resx">
+      <DependentUpon>PieChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\PieChartSettings.ka-GE.resx">
+      <DependentUpon>PieChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\PieChartSettings.kk-KZ.resx">
+      <DependentUpon>PieChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\PieChartSettings.resx">
+      <DependentUpon>PieChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\LineChartSettings.resx">
+      <DependentUpon>LineChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\PieChartSettings.ru-RU.resx">
+      <DependentUpon>PieChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\PieChartSettings.th-TH.resx">
+      <DependentUpon>PieChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\PieChartSettings.uk-UA.resx">
+      <DependentUpon>PieChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\PointChartSettings.ar-IQ.resx">
+      <DependentUpon>PointChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\PointChartSettings.az-Latn-AZ.resx">
+      <DependentUpon>PointChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\PointChartSettings.hy-AM.resx">
+      <DependentUpon>PointChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\PointChartSettings.ka-GE.resx">
+      <DependentUpon>PointChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\PointChartSettings.kk-KZ.resx">
+      <DependentUpon>PointChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\PointChartSettings.resx">
+      <DependentUpon>PointChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\LegendSettings.resx">
+      <DependentUpon>LegendSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\PointChartSettings.ru-RU.resx">
+      <DependentUpon>PointChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\PointChartSettings.th-TH.resx">
+      <DependentUpon>PointChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\PointChartSettings.uk-UA.resx">
+      <DependentUpon>PointChartSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\SeriesValueLabelsSettings.ar-IQ.resx">
+      <DependentUpon>SeriesValueLabelsSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\SeriesValueLabelsSettings.az-Latn-AZ.resx">
+      <DependentUpon>SeriesValueLabelsSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\SeriesValueLabelsSettings.hy-AM.resx">
+      <DependentUpon>SeriesValueLabelsSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\SeriesValueLabelsSettings.ka-GE.resx">
+      <DependentUpon>SeriesValueLabelsSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\SeriesValueLabelsSettings.kk-KZ.resx">
+      <DependentUpon>SeriesValueLabelsSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\SeriesValueLabelsSettings.resx">
+      <DependentUpon>SeriesValueLabelsSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\SeriesValueLabelsSettings.ru-RU.resx">
+      <DependentUpon>SeriesValueLabelsSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\SeriesValueLabelsSettings.th-TH.resx">
+      <DependentUpon>SeriesValueLabelsSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\SeriesValueLabelsSettings.uk-UA.resx">
+      <DependentUpon>SeriesValueLabelsSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\TitleSettings.ar-IQ.resx">
+      <DependentUpon>TitleSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\TitleSettings.az-Latn-AZ.resx">
+      <DependentUpon>TitleSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\TitleSettings.hy-AM.resx">
+      <DependentUpon>TitleSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\TitleSettings.ka-GE.resx">
+      <DependentUpon>TitleSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\TitleSettings.kk-KZ.resx">
+      <DependentUpon>TitleSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\TitleSettings.ru-RU.resx">
+      <DependentUpon>TitleSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\TitleSettings.th-TH.resx">
+      <DependentUpon>TitleSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\TitleSettings.uk-UA.resx">
+      <DependentUpon>TitleSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\XAxisSettings.ar-IQ.resx">
+      <DependentUpon>XAxisSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\XAxisSettings.az-Latn-AZ.resx">
+      <DependentUpon>XAxisSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\XAxisSettings.hy-AM.resx">
+      <DependentUpon>XAxisSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\XAxisSettings.ka-GE.resx">
+      <DependentUpon>XAxisSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\XAxisSettings.kk-KZ.resx">
+      <DependentUpon>XAxisSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\XAxisSettings.ru-RU.resx">
+      <DependentUpon>XAxisSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\XAxisSettings.th-TH.resx">
+      <DependentUpon>XAxisSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\XAxisSettings.uk-UA.resx">
+      <DependentUpon>XAxisSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\YAxisSettings.ar-IQ.resx">
+      <DependentUpon>YAxisSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\YAxisSettings.az-Latn-AZ.resx">
+      <DependentUpon>YAxisSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\YAxisSettings.hy-AM.resx">
+      <DependentUpon>YAxisSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\YAxisSettings.ka-GE.resx">
+      <DependentUpon>YAxisSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\YAxisSettings.kk-KZ.resx">
+      <DependentUpon>YAxisSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\YAxisSettings.resx">
+      <DependentUpon>YAxisSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\TitleSettings.resx">
+      <DependentUpon>TitleSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\XAxisSettings.resx">
+      <DependentUpon>XAxisSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\YAxisSettings.ru-RU.resx">
+      <DependentUpon>YAxisSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\YAxisSettings.th-TH.resx">
+      <DependentUpon>YAxisSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\YAxisSettings.uk-UA.resx">
+      <DependentUpon>YAxisSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FilterForm\FilterDialog.ar-IQ.resx">
+      <DependentUpon>FilterDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FilterForm\FilterDialog.th-TH.resx">
+      <DependentUpon>FilterDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FilterForm\PivotFilterControl.resx">
+      <DependentUpon>PivotFilterControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FilterForm\QueryFilterControl.resx">
+      <DependentUpon>QueryFilterControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayoutForm\LayoutDetailPanel.ar-IQ.resx">
+      <DependentUpon>LayoutDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayoutForm\LayoutDetailPanel.th-TH.resx">
+      <DependentUpon>LayoutDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm\AvrMainForm.ar-IQ.resx">
+      <DependentUpon>AvrMainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm\AvrMainForm.th-TH.resx">
+      <DependentUpon>AvrMainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm\AvrSettingsForm.ar-IQ.resx">
+      <DependentUpon>AvrSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm\AvrSettingsForm.az-Latn-AZ.resx">
+      <DependentUpon>AvrSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm\AvrSettingsForm.hy-AM.resx">
+      <DependentUpon>AvrSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm\AvrSettingsForm.ka-GE.resx">
+      <DependentUpon>AvrSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm\AvrSettingsForm.kk-KZ.resx">
+      <DependentUpon>AvrSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm\AvrSettingsForm.resx">
+      <DependentUpon>AvrSettingsForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm\AvrSettingsForm.ru-RU.resx">
+      <DependentUpon>AvrSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm\AvrSettingsForm.th-TH.resx">
+      <DependentUpon>AvrSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm\AvrSettingsForm.uk-UA.resx">
+      <DependentUpon>AvrSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MapForm\MapDetailForm.ar-IQ.resx">
+      <DependentUpon>MapDetailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MapForm\MapDetailForm.az-Latn-AZ.resx">
+      <DependentUpon>MapDetailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MapForm\MapDetailForm.hy-AM.resx">
+      <DependentUpon>MapDetailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MapForm\MapDetailForm.ka-GE.resx">
+      <DependentUpon>MapDetailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MapForm\MapDetailForm.kk-KZ.resx">
+      <DependentUpon>MapDetailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MapForm\MapDetailForm.resx">
+      <DependentUpon>MapDetailForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MapForm\MapDetailForm.ru-RU.resx">
+      <DependentUpon>MapDetailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MapForm\MapDetailForm.th-TH.resx">
+      <DependentUpon>MapDetailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MapForm\MapDetailForm.uk-UA.resx">
+      <DependentUpon>MapDetailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MapForm\MapDetailPanel.ar-IQ.resx">
+      <DependentUpon>MapDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MapForm\MapDetailPanel.th-TH.resx">
+      <DependentUpon>MapDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotComponents\AvrFieldIcons.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AvrFieldIcons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotComponents\AvrPivotGrid.resx">
+      <DependentUpon>AvrPivotGrid.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotComponents\AvrPrintingLink.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AvrPrintingLink.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseComponents\BaseAvrDetailPresenterPanel.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>BaseAvrDetailPresenterPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\ChartDetailPanel.az-Latn-AZ.resx">
+      <DependentUpon>ChartDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\ChartDetailPanel.hy-am.resx">
+      <DependentUpon>ChartDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\ChartDetailPanel.ka-GE.resx">
+      <DependentUpon>ChartDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\ChartDetailPanel.kk-KZ.resx">
+      <DependentUpon>ChartDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\ChartDetailPanel.resx">
+      <DependentUpon>ChartDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\ChartDetailPanel.ru-RU.resx">
+      <DependentUpon>ChartDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartForm\ChartDetailPanel.uk-UA.resx">
+      <DependentUpon>ChartDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotComponents\WinPivotGridField.resx">
+      <DependentUpon>WinPivotGridField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\DateDiapasonDialog.th-TH.resx">
+      <DependentUpon>DateDiapasonDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\PivotDetailPanel.th-TH.resx">
+      <DependentUpon>PivotDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\PivotInfoDetailPanel.th-TH.resx">
+      <DependentUpon>PivotInfoDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\RenameFieldDialog.th-TH.resx">
+      <DependentUpon>RenameFieldDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QueryDetailPanel.th-TH.resx">
+      <DependentUpon>QueryDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QuerySearchObjectInfo.th-TH.resx">
+      <DependentUpon>QuerySearchObjectInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryLayoutTree\QueryLayoutTreePanel.th-TH.resx">
+      <DependentUpon>QueryLayoutTreePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryLayoutTree\RenameFolderDialog.ar-IQ.resx">
+      <DependentUpon>RenameFolderDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryLayoutTree\RenameFolderDialog.az-Latn-AZ.resx">
+      <DependentUpon>RenameFolderDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryLayoutTree\RenameFolderDialog.hy-AM.resx">
+      <DependentUpon>RenameFolderDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryLayoutTree\RenameFolderDialog.ka-GE.resx">
+      <DependentUpon>RenameFolderDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryLayoutTree\RenameFolderDialog.kk-KZ.resx">
+      <DependentUpon>RenameFolderDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryLayoutTree\RenameFolderDialog.resx">
+      <DependentUpon>RenameFolderDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\DateDiapasonDialog.ar-IQ.resx">
+      <DependentUpon>DateDiapasonDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\DateDiapasonDialog.az-Latn-AZ.resx">
+      <DependentUpon>DateDiapasonDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\DateDiapasonDialog.hy-AM.resx">
+      <DependentUpon>DateDiapasonDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\DateDiapasonDialog.ka-GE.resx">
+      <DependentUpon>DateDiapasonDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\DateDiapasonDialog.kk-KZ.resx">
+      <DependentUpon>DateDiapasonDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\DateDiapasonDialog.resx">
+      <DependentUpon>DateDiapasonDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\DateDiapasonDialog.ru-RU.resx">
+      <DependentUpon>DateDiapasonDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\RenameFieldDialog.ar-IQ.resx">
+      <DependentUpon>RenameFieldDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\PivotDetailPanel.ar-IQ.resx">
+      <DependentUpon>PivotDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\PivotInfoDetailPanel.ar-IQ.resx">
+      <DependentUpon>PivotInfoDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\PivotInfoDetailPanel.az-Latn-AZ.resx">
+      <DependentUpon>PivotInfoDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\PivotInfoDetailPanel.hy-am.resx">
+      <DependentUpon>PivotInfoDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\PivotInfoDetailPanel.ka-GE.resx">
+      <DependentUpon>PivotInfoDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\PivotInfoDetailPanel.kk-KZ.resx">
+      <DependentUpon>PivotInfoDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\PivotInfoDetailPanel.resx">
+      <DependentUpon>PivotInfoDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\PivotInfoDetailPanel.ru-RU.resx">
+      <DependentUpon>PivotInfoDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\PivotInfoDetailPanel.uk-UA.resx">
+      <DependentUpon>PivotInfoDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QueryDetailPanel.ar-IQ.resx">
+      <DependentUpon>QueryDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QuerySearchObjectInfo.ar-IQ.resx">
+      <DependentUpon>QuerySearchObjectInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryLayoutTree\QueryLayoutTreePanel.ar-IQ.resx">
+      <DependentUpon>QueryLayoutTreePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryLayoutTree\QueryLayoutTreePanel.az-Latn-AZ.resx">
+      <DependentUpon>QueryLayoutTreePanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryLayoutTree\QueryLayoutTreePanel.hy-am.resx">
+      <DependentUpon>QueryLayoutTreePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryLayoutTree\QueryLayoutTreePanel.ka-GE.resx">
+      <DependentUpon>QueryLayoutTreePanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryLayoutTree\QueryLayoutTreePanel.kk-KZ.resx">
+      <DependentUpon>QueryLayoutTreePanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryLayoutTree\QueryLayoutTreePanel.resx">
+      <DependentUpon>QueryLayoutTreePanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryLayoutTree\QueryLayoutTreePanel.ru-RU.resx">
+      <DependentUpon>QueryLayoutTreePanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryLayoutTree\QueryLayoutTreePanel.uk-UA.resx">
+      <DependentUpon>QueryLayoutTreePanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\RenameFieldDialog.az-Latn-AZ.resx">
+      <DependentUpon>RenameFieldDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\RenameFieldDialog.hy-AM.resx">
+      <DependentUpon>RenameFieldDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\RenameFieldDialog.ka-GE.resx">
+      <DependentUpon>RenameFieldDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\RenameFieldDialog.kk-KZ.resx">
+      <DependentUpon>RenameFieldDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\RenameFieldDialog.resx">
+      <DependentUpon>RenameFieldDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\RenameFieldDialog.ru-RU.resx">
+      <DependentUpon>RenameFieldDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\RenameFieldDialog.uk-UA.resx">
+      <DependentUpon>RenameFieldDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FilterForm\FilterDialog.hy-am.resx">
+      <DependentUpon>FilterDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FilterForm\FilterDialog.kk-KZ.resx">
+      <DependentUpon>FilterDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FilterForm\FilterDialog.uk-UA.resx">
+      <DependentUpon>FilterDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayoutForm\LayoutDetailPanel.hy-am.resx">
+      <DependentUpon>LayoutDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayoutForm\LayoutDetailPanel.kk-KZ.resx">
+      <DependentUpon>LayoutDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayoutForm\LayoutDetailPanel.uk-UA.resx">
+      <DependentUpon>LayoutDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FilterForm\FilterDialog.az-Latn-AZ.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FilterDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FilterForm\FilterDialog.ka-GE.resx">
+      <DependentUpon>FilterDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FilterForm\FilterDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FilterDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FilterForm\FilterDialog.ru-RU.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FilterDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayoutForm\LayoutDetailPanel.az-Latn-AZ.resx">
+      <DependentUpon>LayoutDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayoutForm\LayoutDetailPanel.ka-GE.resx">
+      <DependentUpon>LayoutDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayoutForm\LayoutDetailPanel.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LayoutDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayoutForm\LayoutDetailPanel.ru-RU.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LayoutDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MapForm\MapDetailPanel.az-Latn-AZ.resx">
+      <DependentUpon>MapDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MapForm\MapDetailPanel.hy-am.resx">
+      <DependentUpon>MapDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MapForm\MapDetailPanel.ka-GE.resx">
+      <DependentUpon>MapDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MapForm\MapDetailPanel.kk-KZ.resx">
+      <DependentUpon>MapDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MapForm\MapDetailPanel.resx">
+      <DependentUpon>MapDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MapForm\MapDetailPanel.ru-RU.resx">
+      <DependentUpon>MapDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MapForm\MapDetailPanel.uk-UA.resx">
+      <DependentUpon>MapDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\PivotDetailPanel.az-Latn-AZ.resx">
+      <DependentUpon>PivotDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\PivotDetailPanel.hy-am.resx">
+      <DependentUpon>PivotDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\PivotDetailPanel.ka-GE.resx">
+      <DependentUpon>PivotDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\PivotDetailPanel.kk-KZ.resx">
+      <DependentUpon>PivotDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\PivotDetailPanel.resx">
+      <DependentUpon>PivotDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\PivotDetailPanel.ru-RU.resx">
+      <DependentUpon>PivotDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PivotForm\PivotDetailPanel.uk-UA.resx">
+      <DependentUpon>PivotDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QueryDetailPanel.az-Latn-AZ.resx">
+      <DependentUpon>QueryDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QueryDetailPanel.hy-am.resx">
+      <DependentUpon>QueryDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QueryDetailPanel.ka-GE.resx">
+      <DependentUpon>QueryDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QueryDetailPanel.kk-KZ.resx">
+      <DependentUpon>QueryDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QueryDetailPanel.ru-RU.resx">
+      <DependentUpon>QueryDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QueryDetailPanel.uk-UA.resx">
+      <DependentUpon>QueryDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QuerySearchObjectInfo.az-Latn-AZ.resx">
+      <DependentUpon>QuerySearchObjectInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QuerySearchObjectInfo.hy-am.resx">
+      <DependentUpon>QuerySearchObjectInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QuerySearchObjectInfo.ka-GE.resx">
+      <DependentUpon>QuerySearchObjectInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QuerySearchObjectInfo.kk-KZ.resx">
+      <DependentUpon>QuerySearchObjectInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QuerySearchObjectInfo.ru-RU.resx">
+      <DependentUpon>QuerySearchObjectInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QuerySearchObjectInfo.uk-UA.resx">
+      <DependentUpon>QuerySearchObjectInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm\AvrMainForm.az-Latn-AZ.resx">
+      <DependentUpon>AvrMainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm\AvrMainForm.hy-am.resx">
+      <DependentUpon>AvrMainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm\AvrMainForm.ka-GE.resx">
+      <DependentUpon>AvrMainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm\AvrMainForm.kk-KZ.resx">
+      <DependentUpon>AvrMainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm\AvrMainForm.resx">
+      <DependentUpon>AvrMainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm\AvrMainForm.ru-RU.resx">
+      <DependentUpon>AvrMainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QueryDetailPanel.resx">
+      <DependentUpon>QueryDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryBuilder\QuerySearchObjectInfo.resx">
+      <DependentUpon>QuerySearchObjectInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm\AvrMainForm.uk-UA.resx">
+      <DependentUpon>AvrMainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="QueryLayoutTree\RenameFolderDialog.ru-RU.resx">
+      <DependentUpon>RenameFolderDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryLayoutTree\RenameFolderDialog.th-TH.resx">
+      <DependentUpon>RenameFolderDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryLayoutTree\RenameFolderDialog.uk-UA.resx">
+      <DependentUpon>RenameFolderDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewForm\RenameColumnForm.resx">
+      <DependentUpon>RenameColumnForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewForm\ViewDetailPanel.ar-IQ.resx">
+      <DependentUpon>ViewDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewForm\ViewDetailPanel.az-Latn-AZ.resx">
+      <DependentUpon>ViewDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewForm\ViewDetailPanel.hy-AM.resx">
+      <DependentUpon>ViewDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewForm\ViewDetailPanel.ka-GE.resx">
+      <DependentUpon>ViewDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewForm\ViewDetailPanel.kk-KZ.resx">
+      <DependentUpon>ViewDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewForm\ViewDetailPanel.resx">
+      <DependentUpon>ViewDetailPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewForm\ViewDetailPanel.ru-RU.resx">
+      <DependentUpon>ViewDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewForm\ViewDetailPanel.th-TH.resx">
+      <DependentUpon>ViewDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewForm\ViewDetailPanel.uk-UA.resx">
+      <DependentUpon>ViewDetailPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Migrated rules for EIDSS.RAM.ruleset" />
+    <None Include="Properties\DataSources\eidss.model.AVR.ServiceData.TableHeaderDTO.datasource" />
+    <None Include="Properties\DataSources\eidss.model.AVR.ServiceData.TablePacketDTO.datasource" />
+    <None Include="Properties\DataSources\eidss.model.WindowsService.Serialization.TableHeaderDTO.datasource" />
+    <None Include="Properties\DataSources\eidss.model.WindowsService.Serialization.TablePacketDTO.datasource" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="QueryBuilder\QueryDetailPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="QueryBuilder\QueryDetailPanel.designer.cs">
+      <DependentUpon>QueryDetailPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="QueryBuilder\QuerySearchObjectInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="QueryBuilder\QuerySearchObjectInfo.designer.cs">
+      <DependentUpon>QuerySearchObjectInfo.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\bltoolkit.3.2.dev\BLToolkit.4.csproj">
+      <Project>{0C325F5D-E50E-4340-8724-D29896CCC583}</Project>
+      <Name>BLToolkit.4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\bv.common\bv.common.csproj">
+      <Project>{BEE76B17-720D-4B65-996A-5712912B3ACF}</Project>
+      <Name>bv.common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\bv.model\bv.model.csproj">
+      <Project>{9067327E-1960-4326-ACB9-D982DDBEAA76}</Project>
+      <Name>bv.model</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\bv.winclient\bv.winclient.csproj">
+      <Project>{B0163672-F328-4D02-9B71-FB698EDAF815}</Project>
+      <Name>bv.winclient</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\eidss.core\eidss.core.csproj">
+      <Project>{BF545ECD-F673-4C71-9362-57C01DF13062}</Project>
+      <Name>eidss.core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\eidss.gis\eidss.gis.csproj">
+      <Project>{20D52400-EAEF-4ECA-A006-242683176310}</Project>
+      <Name>eidss.gis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\eidss.model\eidss.model.csproj">
+      <Project>{E4B87B63-D5F2-4F9F-B39C-A7714896D1DE}</Project>
+      <Name>eidss.model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\eidss.winclient\eidss.winclient.csproj">
+      <Project>{428C1EFE-F1A1-441A-9C59-50AE279F887F}</Project>
+      <Name>eidss.winclient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\bvwin_common\bvwin_common.vbproj">
+      <Project>{B3E5BA6B-FAA3-4A7D-8236-3F8842D61CD4}</Project>
+      <Name>bvwin_common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\bv_common\bvcommon.vbproj">
+      <Project>{BA2844A8-F629-4B02-ACD6-B60063E4D27F}</Project>
+      <Name>bvcommon</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\bv_dbcommon\bvdb_common.vbproj">
+      <Project>{6C48BB93-277D-4804-B280-F6130E29EB81}</Project>
+      <Name>bvdb_common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EIDSS.RAM_DB\eidss.avr_db.csproj">
+      <Project>{75A1FF29-BB1F-4376-A548-B98258961633}</Project>
+      <Name>eidss.avr_db</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EIDSS_Common\EIDSS_Common.vbproj">
+      <Project>{119CC05A-2F6C-4FC8-AC74-79BB76E3C1C0}</Project>
+      <Name>EIDSS_Common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EIDSS_Common_Forms\EIDSS_Common_Forms.vbproj">
+      <Project>{389B8F77-0B61-46DB-B752-1ECDC502267D}</Project>
+      <Name>EIDSS_Common_Forms</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\validate2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\layoutFilter.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\refresh_data_16x16.png" />
+    <None Include="Resources\query_deleted.ico" />
+    <None Include="Resources\query_new.ico" />
+    <None Include="Resources\plus.gif" />
+    <None Include="Resources\layout_new.bmp" />
+    <None Include="Resources\layout_deleted.bmp" />
+    <None Include="Resources\copy.png" />
+    <None Include="Resources\Clear_Cancel-Changes1.png" />
+    <None Include="Resources\Close.png" />
+    <None Include="Resources\deleted.gif" />
+    <None Include="Resources\deleted_small.bmp" />
+    <None Include="Resources\date_bordered.png" />
+    <None Include="Resources\layout_cancel_16x16.png" />
+    <None Include="Resources\layout_create_16x16.png" />
+    <None Include="Resources\layout_delete16x16.png" />
+    <None Include="Resources\lauout_save_16x16.png" />
+    <None Include="Resources\filter_16x16.png" />
+    <Content Include="Resources\layout_save.ico" />
+    <None Include="Resources\layout_save_1.bmp" />
+    <Content Include="Resources\layout_undo3.ico" />
+    <None Include="Resources\query_big.png" />
+    <None Include="Resources\query_copy.ico" />
+    <None Include="Resources\layout_undo31.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

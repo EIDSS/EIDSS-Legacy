@@ -1,0 +1,538 @@
+﻿body
+{	
+    height: 100%;
+    padding: 0;
+	margin: 0;    
+	border: none;
+	font-family:  Verdana, Arial, "Helvetica Neue", Helvetica, Sans-Serif;	
+	font-size: 16px;  
+    box-sizing: border-box;
+}
+textarea {
+    font-family:  Verdana, Arial, "Helvetica Neue", Helvetica, Sans-Serif;
+    resize: none;
+}
+.fntAm,
+.fntAm textarea {
+    font-family: Sylfaen, Verdana, Arial, "Helvetica Neue", Helvetica, Sans-Serif;	
+}
+.fntGe,
+.fntGe textarea {
+    font-family: Sylfaen, Verdana, Arial, "Helvetica Neue", Helvetica, Sans-Serif;	
+}
+.fntTh,
+.fntTh textarea {
+    font-family: "Tahoma", Verdana, Arial, "Helvetica Neue", Helvetica, Sans-Serif;	
+}
+input[type="submit"]::-moz-focus-inner, /*for FireFox*/
+input[type="button"]::-moz-focus-inner, /*for FireFox*/
+button::-moz-focus-inner /*for FireFox*/
+{   
+    border : 0px; /* remove dotted outline on buttons */
+} 
+input[type="submit"]:focus, 
+input[type="button"]:focus, 
+input[type="submit"]:active,
+input[type="button"]:active, 
+input[type="radio"],
+input[type="radio"]:checked,
+input[type="radio"]:focus,
+input[type="radio"]:active,
+button:focus, 
+button:active, 
+a
+{     
+    outline : none; /* remove dotted outline on buttons */
+}
+
+html.busy, html.busy * {  
+  cursor: wait !important;  
+}
+table
+{
+    padding: 0;
+    margin: 0;    
+	border: none;
+}
+body {
+    height: 100%;
+}
+.page {
+    min-width: 1024px;
+    min-height: 768px;
+    margin: 0 auto;
+}
+@media screen and (min-width: 901px) and (max-width: 1300px) {
+.page {
+    min-width: 800px;
+}
+}
+@media screen and (min-width: 501px) and (max-width: 900px) {
+.page {
+    min-width: 512px;
+}
+}
+@media screen and (min-width: 401px) and (max-width: 500px) {
+.page {
+    min-width: 460px;
+}
+}
+@media screen and (max-width: 400px) {
+.page {
+    min-width: 380px;
+}
+}
+
+.button,
+.button.k-grid-add,
+.button.k-grid-add:hover {
+    min-width: 70px;
+    background: #85a2c7;
+    background: url(/Content/Images/button.png) repeat-x;
+    line-height: 20px;
+    vertical-align: middle;
+    text-align: center;
+    color: #102541;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 0 10px;
+}
+.k-ie .button,
+.k-ie .button.k-grid-add,
+.k-ie .button.k-grid-add:hover {
+    border: #85a2c7 1px solid;
+}
+.buttonTranslation
+{
+    float: left;
+    min-width: 70px;
+    background: #85a2c7;
+    background: url(/Content/Images/button.png) repeat-x;
+    border: #85a2c7 1px solid;
+    line-height: 20px;
+    vertical-align: middle;
+    text-align: center;
+    color: #102541;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 0 10px;
+}
+
+
+/*******Common with ListForm*********/
+.k-widget.k-window {
+    height: auto!important;
+}
+.k-widget.k-window,
+.k-widget.k-window.k-state-focused {
+    border-radius: 8px;
+    border-top-left-radius: 9px;
+    border-top-right-radius: 9px;
+    border-width: 1px;
+    border-color: #a0a0a0;
+    border-top-color: #202020;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    min-width: 450px!important;
+    min-height: 130px!important;
+    height: auto!important;
+}
+.k-window .k-window-title {
+    left: 15px;
+}
+.k-window .k-window-titlebar.k-header {
+    font-size: 16px;
+    color: #fff;
+    background: url(/Content/Images/heading_for_modal_window.png);
+    border-color: #202020;
+    border-top-color: #202020!important;
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+    font-weight: bold;
+}
+.k-window .k-window-titlebar {
+    min-height: 28px;
+    height: 28px;
+    line-height: 26px;
+    border-radius: 8px;
+    border-radius: 8px;
+    padding: 0;
+    padding-bottom: 3px;
+}
+.k-window .k-window-actions {
+    display: none;
+}
+.k-window .k-content {
+    border-width: 1px;
+    border-color: #202020;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    padding: 15px;
+}
+.windowButton {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    min-width: 70px;
+    /*width: 70px;*/
+    background: url(/Content/Images/button.png);
+    min-height: 22px;
+    max-height: 22px;
+    line-height: 20px;
+    vertical-align: middle;
+    text-align: center;
+    color: #102541;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 5px;
+    /*margin-left: 4px;*/
+}
+.k-ie .windowButton {
+    border: #85a2c7 1px solid;
+}
+
+.confirmationText,
+.warningText {
+    min-height: 50px;
+    padding: 10px 0 15px 60px;
+    font-size: 12px;
+    color: #262626;
+}
+.confirmationText {
+    background: url(/Content/Images/confirmation_icon.png) no-repeat;
+}
+.warningText {
+    background: url(/Content/Images/exclamation_icon.png) no-repeat;
+}
+.windowButtonsPn{
+    text-align: right;
+    padding: 0;
+}
+.k-rtl .windowButtonsPn{
+    text-align: left;
+}
+/**************************/
+.k-combobox .k-input{        
+    min-height: 17px;
+    height: 17px;
+    line-height: 17px;
+    color: #262626;
+}
+.k-combobox .k-select{
+    /*min-height: 16px;
+    height: 16px;
+    line-height: 16px;*/
+}
+.k-dropdown-wrap,
+.k-dropdown-wrap .k-select,
+.k-dropdown-wrap.k-state-border-down,
+.k-list-container.k-state-border-up,
+.k-list-container .k-item,
+.k-numerictextbox,
+.k-numeric-wrap,
+.k-numeric-wrap .k-input
+{    
+    border-radius: 0;
+}
+/*hides ie clear button in kendo numeric text boxes*/
+.k-numeric-wrap .k-input::-ms-clear
+{    
+       display: none;
+}
+.k-dropdown-wrap .k-input, .k-picker-wrap .k-input, .k-numeric-wrap .k-input 
+{
+    border-radius: 0;
+}
+.k-dropdown-wrap {
+    background-image: none;
+}
+.k-list-container .k-item
+{
+    min-height: 21px;
+}
+.k-datepicker,
+.k-datepicker .k-picker-wrap,
+.k-datepicker .k-select,
+.k-textbox {
+    border-radius: 0;
+}
+.k-textbox {
+    min-width: 170px;
+    max-width: 170px;
+}
+.k-textbox input {
+    margin-left: -3px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.requiredField,
+.tdContainer input[type="text"].requiredField,
+.k-datepicker.requiredField .k-picker-wrap,
+.k-combobox.requiredField .k-dropdown-wrap,
+.k-dropdown.requiredField .k-dropdown-wrap,
+.k-numerictextbox.requiredField .k-numeric-wrap,
+.inlinePatientPicker.requiredField{
+    border: #e3676f solid 1px;
+    background-color: #ffffe3;
+}
+.pickerWrap.requiredField {
+    border-color: #e3676f;
+}
+.k-datepicker.requiredField  .k-picker-wrap .k-input {
+    background-color: #ffffe3;
+}
+.requiredField.readonlyField,
+.tdContainer input[type="text"].requiredField.readonlyField,
+.k-datepicker.requiredField.readonlyField .k-picker-wrap,
+.k-combobox.requiredField.readonlyField .k-dropdown-wrap,
+.k-datepicker.requiredField.readonlyField  .k-picker-wrap .k-input
+{
+    background-color: #f2f2f2;
+}
+.k-widget.requiredField {
+    border: none;
+}
+.deleteButton,
+.editButton{
+    width: 18px;
+    height: 18px;
+    text-decoration: none;
+    font-size: 0;
+    display: block;
+    float: left;
+}
+.k-rtl .deleteButton,
+.k-rtl .editButton{
+    float: right;
+}
+.deleteButton {
+    background: url(/Content/Images/trash.png) no-repeat;
+}
+.editButton {
+    background: url(/Content/Kendo/Silver/sprite.png)!important;
+    background-position: -48px 0!important;
+}
+
+.clsGroup {
+    font-weight: bold;
+}
+.clsDiagInGroup {
+    margin-left: 20px;
+}
+.clsDiag {
+}
+
+.clsReadOnlyItem {
+    color: lightgray
+}
+.clsItem {
+}
+.clsItemControl {
+}
+.invisible 
+{ 
+    display:none;
+}
+.k-numeric-wrap,
+.k-numeric-wrap.k-state-focused
+{
+    border-color:#CCCCCC;
+}
+.customSearchPanel .k-numeric-wrap .k-input,
+.customSearchPanel .k-numeric-wrap.k-state-focused .k-input
+{
+    border-width: 0;
+}
+
+.loader
+{
+    display: none; 
+    z-index: 20002;
+    opacity: 0.5;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    filter: alpha(opacity=50);
+    vertical-align: middle;
+    text-align: center;   
+    zoom: 1; 
+}
+.loader .loaderImg 
+{ 
+    width: 54px;
+    height: 55px;
+}
+
+.grid-changed-item 
+{
+    font-weight: bold;
+}
+
+.ffGridBanded
+{
+    width: 100%; 
+    margin-top: 3px;
+}
+
+.ffGridBanded,
+.ffGridBanded tr
+{
+    font-size: 12px;
+    color: #262626;
+    background-color: #eef2f7;
+}
+
+.ffGridBanded th
+{
+    font-size: 12px;
+    color: #262626;
+    background-color: #afc2da;
+}
+.ffGridBanded,
+.ffGridBanded tr,
+.ffGridBanded th,
+.ffGridBanded td
+{
+    border: #85a2c7 1px solid;
+    border-collapse:collapse;
+    padding: 2px;
+}
+
+.ffGridBanded tr.state-selected
+{
+    background-color:#f7f9df;
+}
+
+.centered
+{
+    text-align: center;
+}
+
+.ffGridBanded-content {
+    overflow-x: scroll;
+}
+
+.ffGridBanded-Humn-1
+{
+    min-width: 140px;
+}
+
+.ffGridBanded-Humn-2
+{
+    min-width: 60px;
+}
+
+.ffGridBanded-VetA-1
+{
+    min-width: 60px;
+}
+
+.ffGridBanded-VetA-2
+{
+    min-width: 100px;
+}
+
+.ffGridBanded-VetA-3
+{
+    min-width: 60px;
+}
+
+.ffGridBanded-Dian-1
+{
+    min-width: 60px;
+}
+
+.ffGridBanded-Dian-2
+{
+    min-width: 70px;
+}
+
+.ffGridBanded-Dian-3
+{
+    min-width: 100px;
+}
+
+.ffGridBanded-Dian-4
+{
+    min-width: 60px;
+}
+
+.ffGridBanded-Tret-1
+{
+    min-width: 60px;
+}
+
+.ffGridBanded-Tret-2
+{
+    min-width: 100px;
+}
+
+.ffGridBanded-Tret-3
+{
+    min-width: 60px;
+}
+
+.ffGridBanded-Tret-4
+{
+    min-width: 60px;
+}
+
+.ffGridBanded-Tret-5
+{
+    min-width: 60px;
+}
+
+.ffGridBanded-Vetr-1
+{
+    min-width: 200px;
+}
+
+.ffGridBanded-Vetr-2
+{
+    min-width: 200px;
+}
+.rightAlign {
+    text-align: right;
+}
+
+:root * > .k-icon, :root * > .k-sprite, :root * > .k-button-group .k-tool-icon {
+    vertical-align: text-bottom;
+}
+
+.k-state-default.k-autocomplete, .k-state-default.k-picker-wrap, .k-state-default.k-numeric-wrap, .k-state-default.k-dropdown-wrap {
+    background-color: #fff;
+}
+
+.k-tooltip {
+    text-align: left;
+}
+.k-rtl .k-tooltip {
+    text-align: right;
+}
+
+.k-rtl .k-expand-padding.k-numeric-wrap {
+    padding-left: 0;
+    padding-right: inherit;
+}
+
+.validation-summary-errors ul {
+    margin: 10;
+    padding: 0;
+    padding-left: 30;
+}
+
+.validation-summary-errors li {
+    display: inline;
+    list-style: none;
+    margin: 0;
+    font-size: 12px;
+    font-style: italic;
+    color: #d91720;
+}

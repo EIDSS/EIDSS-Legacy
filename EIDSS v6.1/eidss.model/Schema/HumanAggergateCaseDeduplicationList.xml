@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<object name="HumanAggregateCaseDeduplicationListItem" 
+        connection="EidssConnectionString" 
+        generator="ObjectGenerator.xslt" 
+        inherited="AggergateDeduplicationBaseList.xml"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="fn_AggregateCaseDeduplication_SelectList" type="fnlist" filter-object="AggrCase" />
+    <count name="spHumanAggregateCase_SelectCount"/>
+  </storage>
+
+  <tables>
+    <table name="HumanAggregateCaseDeduplicationListItem">
+      <properties auditObject="daoAgregateHumanCase" auditTable="tlbAggrCase" permissionObject="AccessToHumanAggregateCase"/>
+      <help web="HAC_deduplication" win ="HAC_deduplication"/>
+
+    </table>
+  </tables>
+
+</object>
+
+

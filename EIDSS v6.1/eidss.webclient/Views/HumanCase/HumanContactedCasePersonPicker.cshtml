@@ -1,0 +1,29 @@
+﻿@model eidss.model.Schema.ContactedCasePerson
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        //ChangeMessageWindowHeigth();
+    });  
+</script>
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+<div class="popupContent">
+    <div class="windowButtonsPn">
+        <input id="idButtonOk" type="button" class="windowButton" onclick="patient.saveAndCloseContactedPersonGridEditWindow('@(Model.CaseObjectIdent)');" value="@Translator.GetMessageString("Ok")"/>                        
+        <input id="idButtonCancel" type="button" class="windowButton" onclick="bvPopup.closeDefaultPopup()" value="@Translator.GetMessageString("Cancel")"/>        
+    </div>   
+    @using (Html.BeginForm())
+    {
+        <div>
+            @Html.Partial("../HumanCase/ContactedCasePerson", Model) 
+        </div>
+    }         
+</div>

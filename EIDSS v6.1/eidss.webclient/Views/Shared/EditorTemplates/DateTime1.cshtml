@@ -1,0 +1,6 @@
+﻿@using Kendo.Mvc.UI
+@model ViewUserControl<DateTime?>
+
+@Html.Kendo().DateTimePicker()
+    .Name(ViewData.TemplateInfo.GetFullHtmlFieldName(string.Empty))
+    .Value(Model !=null && Model > DateTime.MinValue? Model : DateTime.Today)

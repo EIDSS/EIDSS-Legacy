@@ -1,0 +1,43 @@
+﻿@model eidss.model.Schema.PersonLite
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+    var bShowInInternalWindow = (bool)ViewBag.ShowInInternalWindow;
+}
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+
+<div class="popupContent">
+    <div class="windowButtonsPn">                  
+    @if (bShowInInternalWindow)
+    {
+        <input id="idButtonOkInternal" type="button" class="windowButton"onclick="employee.onEditorOkClick('@ViewBag.EmployeeId', '@ViewBag.ObjectId', '@ViewBag.idfsEmployeePropertyName', 
+            '@ViewBag.strEmployeePropertyName', '@ViewBag.IdfsOrganizationPropertyName', 'true');" value="@Translator.GetMessageString("Ok")"/>     
+        <input id="idButtonCancelInternal" type="button" class="windowButton" onclick="employee.closeEditor('true', '@ViewBag.idfsEmployeePropertyName');" value="@Translator.GetMessageString("Cancel")"/>  
+    }
+    else
+    {
+        <input id="idButtonOk" type="button" class="windowButton"onclick="employee.onEditorOkClick('@ViewBag.EmployeeId', '@ViewBag.ObjectId', '@ViewBag.idfsEmployeePropertyName', 
+            '@ViewBag.strEmployeePropertyName', '@ViewBag.IdfsOrganizationPropertyName', 'false');" value="@Translator.GetMessageString("Ok")"/>     
+        <input id="idButtonCancel" type="button" class="windowButton" onclick="employee.closeEditor('false', '@ViewBag.idfsEmployeePropertyName');" value="@Translator.GetMessageString("Cancel")"/>  
+    }
+    </div>   
+    @if (!bShowInInternalWindow)
+    {
+        <div class="windowSeparator"></div>  
+    }
+    @using (Html.BeginForm())
+    {
+        @Html.Hidden("idfPerson")
+        
+        @Html.Partial("../Employee/PersonDetails", Model)
+    }           
+</div>

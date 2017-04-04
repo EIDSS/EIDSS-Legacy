@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="AvrFolderLookup"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="spAsFolderSelectLookup" type="lookuplist" cache="true"/>
+    </storage>
+
+    <tables>
+        <table name="AvrFolderLookup" tostring="c => c.strDefaultFolderName" lookupcachename="LayoutFolder">
+            <keys>
+                <key name="idflFolder" /> 
+            </keys>
+        </table>
+    </tables>
+
+</object>
+

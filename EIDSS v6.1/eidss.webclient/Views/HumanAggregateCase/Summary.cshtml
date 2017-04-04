@@ -1,0 +1,119 @@
+﻿@model eidss.model.Schema.HumanAggregateCaseSummary
+@{
+    ViewBag.Title = @Translator.GetMessageString("titleHumanAggregateSummaryTitle"); 
+    ViewBag.FormCode = "H08";
+    ViewBag.HelpIndex = HumanAggregateCaseSummary.Accessor.Instance(null).HelpIdWeb;
+    Layout = "~/Views/Shared/_AggregateSummaryLayout.cshtml";    
+}
+@using BLToolkit.EditableObjects
+@using bv.common.Configuration
+@using bv.common.Enums
+@using bv.model.Model.Core
+@using eidss.model.Schema
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+
+@functions
+{
+    IObjectAccessor GetAccessor()
+    {
+        var result = Model as IObjectAccessor;
+        if (result == null)
+        {
+            if (Model is IObject)
+            {
+                result = ((IObject)Model).GetAccessor();
+            }
+        }
+        return result;
+    }
+
+    string RenderMainPanel()
+    {
+        var accessor = GetAccessor();
+        if (accessor != null) Html.RenderActionPanel(accessor, Model, ActionsPanelType.Main);
+        return String.Empty;
+    }
+
+    string RenderTopPanel()
+    {
+        var accessor = GetAccessor();
+        if (accessor != null) Html.RenderActionPanel(accessor, Model, ActionsPanelType.Top);
+        return String.Empty;
+    }
+}
+
+<script language="javascript" type="text/javascript">
+    $(window).load(function () {           
+        //aggregateCase.onCaseSummaryLoad();
+        aggregateSummary.onStatisticChangedSuccess();
+        aggregateSummary.showSummaryInfoAggrCase();
+    });
+    
+    $(document).ready(function () {
+        aggregateSummary.resizeTable();
+        $(window).on('resize', function () {
+            aggregateSummary.resizeTable();
+        });
+    });
+</script>
+
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@Html.PopupMenu(eidss.model.Schema.HumanAggregateCaseSummary.Accessor.Instance(null), "SelectReport")
+
+@using (Html.BeginForm())
+{
+    @Html.IdentificationAndHeartbeat("idfAggrCase", Model.idfAggrCase)   
+    @Html.Hidden("ObjectIdent", Model.ObjectIdent)
+    
+    <table class="level1">
+        <tr>
+            <td class="xlarge firstLabel">
+                @Html.BvLabel(Model, m => m.idfsAreaType)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, m => m.StatisticAreaType, clientOnChange: "aggregateSummary.onStatisticChanged")
+            </td>
+            <td class="label">
+                @Html.BvLabel(Model, m => m.idfsPeriodType)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, m => m.StatisticPeriodType, clientOnChange: "aggregateSummary.onStatisticChanged")
+            </td>
+            <td class="label">
+                @RenderTopPanel()
+            </td>
+        </tr>
+    </table>
+    
+    <div class="sectionTitle">
+        @Translator.GetMessageString("strSelectedAggregateCases")
+    </div>
+        
+        @(Html.BvDetailsFormGrid<HumanAggregateCaseListItem.HumanAggregateCaseListItemGridModel, HumanAggregateCaseListItem.HumanAggregateCaseListItemGridModelList>(
+            Model.ObjectIdent + "AggregateCaseListItems", new HumanAggregateCaseListItem.HumanAggregateCaseListItemGridModelList(Model.idfAggrCase, Model.AggregateCaseListItems), 
+            "detailsGrid", bCustomToolbar: true, bEditable: true, bDeletedOnly : true, deleteItemFuncName: "bvGrid.doDeleteRow", tooltipDelete: Translator.GetMessageString("strRemoveTooltip"))
+            )
+
+    <div class="sectionTitle">
+        @Translator.GetMessageString("titleAggregateSummaryInfo")
+    </div>
+
+    <table class="level1">
+        <tr>
+            <td class="label">
+                @RenderMainPanel()
+            </td>
+        </tr>
+    </table>
+    
+    <div class="ffSummaryInfo" id="divFfSummary">
+                    
+    </div>        
+}
+

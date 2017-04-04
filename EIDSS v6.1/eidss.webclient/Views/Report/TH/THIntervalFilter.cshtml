@@ -1,0 +1,37 @@
+﻿@using Kendo.Mvc.UI
+@using eidss.web.common.Utils
+@model eidss.model.Reports.Common.BaseIntervalModel
+           
+<table id="BaseIntervalFilterTable" >
+    <tr>
+        <td class="mediumreport">
+            @Translator.GetString("strFrom")
+        </td>
+        <td class="largereport">
+            @{
+                @(Html.Kendo().DatePicker()
+                .Name("StartDate")
+                .Value(Model.StartDate)
+                .HtmlAttributes(new {@class = "requiredField", lang = @Model.Language})
+                .Events(c => c.Change("paperForm.OnStartDateChanged"))
+                      )
+                }
+        </td>
+        <td class="mediumreport">
+            @Translator.GetString("strTo")
+        </td>
+        <td class="largereport">
+            @{
+                @(
+                    Html.Kendo().DatePicker()
+                        .Name("EndDate")
+                        .Value(Model.EndDate)
+                        .HtmlAttributes(new {@class = "requiredField", lang = @Model.Language})
+                        .Events(c => c.Change("paperForm.OnEndDateChanged"))
+                      )
+            }
+        </td>
+        
+    </tr>
+   
+</table>

@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="PatientListItem"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="fn_Patient_SelectList" type="fnlist" />
+		<count name="spPatient_SelectCount"/>
+	</storage>
+
+	<tables>
+		<table name="PatientListItem">
+      <properties auditObject="daoPatient" auditTable="tlbHuman" permissionObject="Patient"/>
+      <help web="HC_H03" win="HC_H03"/>
+      <extfilters>
+				<filter>
+					<join>
+						LEFT JOIN	tlbGeoLocationShared geo
+						ON			geo.idfGeoLocationShared = fn_Patient_SelectList.idfCurrentResidenceAddress
+					</join>
+					<where>
+						<expr param="idfsRegion" value="geo.idfsRegion {0} @idfsRegion"/>
+						<expr param="idfsRayon" value="geo.idfsRayon {0} @idfsRayon"/>
+					</where>
+				</filter>
+			</extfilters>
+			<searchpanel>
+        <item name="strLastName" editor="Text" labelId="strLastName" predicate="() => Customization.Instance.VisibilityFeatures.IsLastNameBeforeFirstName" />
+        <item name="strFirstName" editor="Text" labelId="strFirstName" predicate="() => !EidssSiteContext.Instance.IsIraqCustomization"/>
+        <item name="strLastName" editor="Text" labelId="strLastName" predicate="() => !Customization.Instance.VisibilityFeatures.IsLastNameBeforeFirstName" />
+        <item name="strSecondName" editor="Text" labelId="strSecondName" predicate="() => !EidssSiteContext.Instance.IsIraqCustomization"/>
+        <item name="datDateofBirth" editor="Date" labelId="datDateofBirth" range="true" />
+
+				<item name="idfsRegion" editor="Lookup" labelId="idfsRegion" isParam="true" dependent="idfsRayon"
+					  lookupName="RegionLookup" lookupType="RegionLookup" lookupText="c.strRegionName" lookupValue="c.idfsRegion"
+					  defaultoper="=" />
+        <!-- default="eidss.model.Core.EidssSiteContext.Instance.RegionID" -->
+				<item name="idfsRayon" editor="Lookup" labelId="idfsRayon" isParam="true"
+					  lookupName="RayonLookup" lookupType="RayonLookup" lookupText="c.strRayonName" lookupValue="c.idfsRayon"/>
+        <item name="idfsPersonIDType" editor="Lookup" labelId="idfsPersonIDType"
+					lookupName="PersonIDTypeLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+				<item name="strPersonID" editor="Text" labelId="strPersonID" />
+      </searchpanel>
+			<grid>
+				<item name="idfHumanActual" visible="false" key="true" />
+				<item name="strLastName" action="ActionEditPerson" required="true" />
+				<item name="strFirstName" predicate="() => !EidssSiteContext.Instance.IsIraqCustomization"/>
+				<item name="strSecondName"  predicate="() => !EidssSiteContext.Instance.IsIraqCustomization"/>
+				<item name="datDateofBirth" />
+				<item name="AddressName" />
+        <item name="strPersonIDType" />
+        <item name="strPersonID" />
+        <item name="datEnteredDate" />
+        <item name="datModificationDate" />
+			</grid>
+      <labels>
+        <item name="strPersonIDType" labelId="idfsPersonIDType"/>
+        <item name="datEnteredDate" labelId="Patient.datEnteredDate"/>
+        <item name="datModificationDate" labelId="Patient.datModificationDate"/>
+      </labels>
+			<fields>
+				<storage name="idfsCountry" type="long?" />
+				<storage name="idfsRegion" type="long?" />
+				<storage name="idfsRayon" type="long?" />
+			</fields>
+			<readonly>
+				<fields name="Region,idfsRegion" predicate="c => c.idfsCountry == null" />
+				<fields name="Rayon,idfsRayon" predicate="c => c.idfsRegion == null" />
+			</readonly>
+			<lookups>
+				<lookup name="Country" table="CountryLookup" source="idfsCountry" target="idfsCountry" />
+				<lookup name="Region" table="RegionLookup" source="idfsRegion" target="idfsRegion">
+					<params>
+						<param name="CountryID" lambda="c => c.idfsCountry ?? 0" type="long" />
+						<param name="ID" const="null" />
+					</params>
+				</lookup>
+				<lookup name="Rayon" table="RayonLookup" source="idfsRayon" target="idfsRayon">
+					<params>
+						<param name="RegionID" lambda="c => c.idfsRegion ?? 0" type="long" />
+						<param name="ID" const="null" />
+					</params>
+				</lookup>
+        <lookup name="PersonIDType" table="BaseReference" section="rftPersonIDType" source="idfsPersonIDType" target="idfsBaseReference" />
+      </lookups>
+			<storage>
+				<delete name="spPatientActual_Delete"/>
+				<candelete name="spPatientActual_CanDelete"/>
+			</storage>
+
+			<extenders>
+				<created>
+					<!-- set default country as current country of database -->
+					<lambda_extender target="Country" type="CountryLookup" lambda='c => 
+                                     c.CountryLookup.Where(a => a.idfsCountry == eidss.model.Core.EidssSiteContext.Instance.CountryID)
+                                     .SingleOrDefault()'/>
+          <lambda_extender target="Region" type="RegionLookup" lambda='c => 
+                                     EidssUserContext.User.Options.Prefs.DefaultRegion == true?
+                                     c.RegionLookup.Where(a => a.idfsRegion == eidss.model.Core.EidssSiteContext.Instance.RegionID)
+                                     .SingleOrDefault(): null'/>
+        </created>
+			</extenders>
+
+			<handlers>
+				<fieldhandler>
+					<lambda_handler field="idfsCountry" target="Region" type="RegionLookup" lambda="c => null"/>
+					<lambda_handler field="idfsRegion" target="Rayon" type="RayonLookup" lambda="c => null"/>
+					<lookup_handler lookup="Region" field="idfsCountry" />
+					<lookup_handler lookup="Rayon" field="idfsRegion" />
+				</fieldhandler>
+			</handlers>
+
+			<actions child="Patient">
+        <standard>
+          <remove type="Report"/>
+        </standard>
+        <action name="ActionEditPerson" type="Action">                
+          <run>
+            <preUI webType="JScript"/>                  
+          </run>
+        </action>
+			</actions>
+		</table>
+	</tables>
+
+</object>

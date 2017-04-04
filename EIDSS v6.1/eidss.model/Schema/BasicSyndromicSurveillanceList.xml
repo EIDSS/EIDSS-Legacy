@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="BasicSyndromicSurveillanceListItem"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="fn_BasicSyndromicSurveillance_SelectList" type="fnlist" filter-object="BasicSyndromicSurveillance" />
+  </storage>
+
+  <tables>
+    <table name="BasicSyndromicSurveillanceListItem">
+      <properties auditObject="daoBssForm" auditTable="tlbBasicSyndromicSurveillance" permissionObject="AccessToBssModule"/>
+      <help win="SS_list"/>
+      <searchpanel>
+        <item name="strFormID" editor="Text" labelId="strFormID" />
+        
+        <item name="idfsBasicSyndromicSurveillanceType" editor="Lookup" labelId="idfsBasicSyndromicSurveillanceType"
+          lookupName="BSSTypeLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        
+        <item name="idfHospital" editor="Lookup" labelId="strHospital"
+                  lookupName="HospitalLookup" lookupType="OrganizationLookup" lookupText="c.name" lookupValue="c.idfInstitution"/>
+        
+        <item name="datReportDate" editor="Date" labelId="datReportDate" range="true" mandatory="true"   
+                    default="c => DateTime.Today.AddDays(-EidssUserContext.User.Options.Prefs.DefaultDays)"/>
+
+        <item name="datDateOfSymptomsOnset" editor="Date" labelId="datDateOfSymptomsOnset" range="true"  />
+
+        <item name="strLastName" editor="Text" labelId="HumanCase.strLastName" predicate="() => Customization.Instance.VisibilityFeatures.IsLastNameBeforeFirstName"/>
+        <item name="strFirstName" editor="Text" labelId="strFirstName" predicate="() => !EidssSiteContext.Instance.IsIraqCustomization" />
+        <item name="strLastName" editor="Text" labelId="HumanCase.strLastName" predicate="() => !Customization.Instance.VisibilityFeatures.IsLastNameBeforeFirstName"/>
+
+        <item name="idfsHumanGender" editor="Lookup" labelId="idfsHumanGender"
+                 lookupName="GenderLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+
+        <item name="intAgeFullYear" editor="Numeric" labelId="AgeYears" range="true"/>
+        
+        <item name="idfsRegion" editor="Lookup" labelId="idfsRegion" dependent="idfsRayon"
+						lookupName="RegionLookup" lookupType="RegionLookup" lookupText="c.strRegionName" lookupValue="c.idfsRegion"/>
+
+        <item name="idfsRayon" editor="Lookup" labelId="idfsRayon" dependent="idfsSettlement"
+					  lookupName="RayonLookup" lookupType="RayonLookup" lookupText="c.strRayonName" lookupValue="c.idfsRayon"/>
+
+        <item name="idfsSettlement" editor="Lookup" labelId="idfsSettlement"
+						lookupName="SettlementLookup" lookupType="SettlementLookup" lookupText="c.strSettlementName" lookupValue="c.idfsSettlement"/>
+
+        <item name="idfsTestResult" editor="Lookup" labelId="TestResult"
+                 lookupName="TestResultLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+
+        <item name="idfsSite" editor="Lookup" labelId="lbDataEntrySiteID" default="c=>(c as BasicSyndromicSurveillanceListItem).SiteLookup.SingleOrDefault(s=>s.idfsSite == EidssSiteContext.Instance.SiteID)"
+						lookupName="SiteLookup" lookupType="SiteLookup" lookupText="c.strSiteName" lookupValue="c.idfsSite">
+            <columns>
+              <column name="strSiteName" />
+              <column name="strSiteID"  />
+            </columns>  
+        </item>
+      </searchpanel>
+      <grid>
+        <item name="idfBasicSyndromicSurveillance" visible="false" key="true"/>
+        <item name="strFormID" action="ActionEditBSS"/>
+        <item name="idfsBasicSyndromicSurveillanceType" visible="false" />
+        <item name="strBasicSyndromicSurveillanceType" />
+        <item name="strHospital" />
+        <item name="datReportDate" />
+        <item name="datDateOfSymptomsOnset" />
+        <item name="PatientName" />
+        <item name="strGender" />
+        <item name="strAge" type="string"/>
+        <item name="strAddress" />
+        <item name="strTestResult" />
+      </grid>
+      <labels>
+        <item labelId="idfsBasicSyndromicSurveillanceType" name="strBasicSyndromicSurveillanceType"/>
+        <item labelId="Age" name="strAge"/>
+        <item labelId="AddressName" name="strAddress"/>
+        <item labelId="TestResult" name="strTestResult"/>
+      </labels>
+      <fields>
+        <!--содержит переводную строку с описанием возраста-->
+        <calculated depends="intAgeYear,intAgeMonth" name="strAge" type="string" 
+           lambda="c=> c.FormatAge()" />
+      </fields>
+      <readonly>
+        <fields name="Region,idfsRegion" predicate="c => c.idfsCountry == null" />
+        <fields name="Rayon,idfsRayon" predicate="c => c.idfsRegion == null" />
+        <fields name="Settlement,idfsSettlement" predicate="c => c.idfsRayon == null" />
+        <fields name="*" predicate="c => false" />
+      </readonly>
+			<lookups>
+				<lookup name="BSSType" table="BaseReference" section="rftBssType" source="idfsBasicSyndromicSurveillanceType" target="idfsBaseReference" />
+        <lookup name="Hospital" table="OrganizationLookup" source="idfHospital" target="idfInstitution">
+          <params>
+            <param name="ID" const="null" />
+            <param name="intHACode"  type="int" lambda="c => (int)HACode.Syndromic" />
+          </params>
+        </lookup>
+
+        <lookup name="Gender" table="BaseReference" section="rftHumanGender" source="idfsHumanGender" target="idfsBaseReference" />
+
+        <lookup name="Country" table="CountryLookup" source="idfsCountry" target="idfsCountry" />
+				<lookup name="Region" table="RegionLookup" source="idfsRegion" target="idfsRegion">
+					<params>
+						<param name="CountryID" lambda="c => c.idfsCountry ?? 0" type="long" />
+						<param name="ID" const="null" />
+					</params>
+				</lookup>
+				<lookup name="Rayon" table="RayonLookup" source="idfsRayon" target="idfsRayon">
+					<params>
+						<param name="RegionID" lambda="c => c.idfsRegion ?? 0" type="long" />
+						<param name="ID" const="null" />
+					</params>
+				</lookup>
+				<lookup name="Settlement" table="SettlementLookup" source="idfsSettlement" target="idfsSettlement">
+					<params>
+						<param name="RayonID" lambda="c => c.idfsRayon ?? 0" type="long" />
+						<param name="ID" const="null" />
+					</params>
+				</lookup>
+        
+        <lookup name="TestResult" table="BaseReference" section="rftBssTestResult" source="idfsTestResult" target="idfsBaseReference" />
+
+        <lookup name="Site" table="SiteLookup" source="idfsSite" target="idfsSite">
+          <filters>
+            <filter predicate="c => (c.intHACode.GetValueOrDefault() &amp; (int)HACode.Syndromic) != 0"/>
+          </filters>
+        </lookup>
+      </lookups>
+      <storage>
+        <delete name="spBasicSyndromicSurveillance_Delete"/>
+        <candelete name="spBasicSyndromicSurveillance_CanDelete"/>
+      </storage>
+      <extenders>
+        <creating>
+          <!--<custom_extender>
+            <text>
+              if (obj.intAgeFullYear == 0)
+              {
+                obj.strAge = String.Format(eidss.model.Resources.EidssMessages.Get("bssMaskMonthsOnly"), obj.intAgeFullMonth);
+              }
+              else if (obj.intAgeFullMonth == 0)
+              {
+                obj.strAge = String.Format(eidss.model.Resources.EidssMessages.Get("bssMaskYearsOnly"),
+                obj.intAgeFullYear);
+              }
+              else
+              {
+                obj.strAge = String.Format(eidss.model.Resources.EidssMessages.Get("bssMaskYearsAndMonths"),
+                obj.intAgeFullYear, _str_intAgeFullMonth);
+              }
+            </text>
+          </custom_extender>-->
+        </creating>
+        <created>
+          <!-- set default country as current country of database -->
+          <lambda_extender target="Country" type="CountryLookup" lambda='c => 
+                                       c.CountryLookup.Where(a => a.idfsCountry == eidss.model.Core.EidssSiteContext.Instance.CountryID)
+                                       .SingleOrDefault()'/>
+        </created>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <lambda_handler field="idfsCountry" target="Region" type="RegionLookup" lambda="c => null"/>
+          <lambda_handler field="idfsRegion" target="Rayon" type="RayonLookup" lambda="c => null"/>
+          <lambda_handler field="idfsRayon" target="Settlement" type="SettlementLookup" lambda="c => null"/>
+          <lookup_handler lookup="Region" field="idfsCountry" />
+          <lookup_handler lookup="Rayon" field="idfsRegion" />
+          <lookup_handler lookup="Settlement" field="idfsRayon" />
+        </fieldhandler>
+      </handlers>
+      <actions child="BasicSyndromicSurveillanceItem">
+        <standard>
+          <remove type="Report"/>
+        </standard>
+        <action name="ActionEditBSS" type="Action">
+          <run>
+            <preUI webType="JScript"/>
+          </run>
+        </action>
+      </actions>
+    </table>
+  </tables>
+
+</object>

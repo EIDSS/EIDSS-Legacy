@@ -1,0 +1,95 @@
+﻿@model VetCase
+@{
+    ViewBag.Number = Model._HACode == (int) eidss.model.Enums.HACode.Livestock ? "V02" : "V03";
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+}
+@using Kendo.Mvc.UI
+@using eidss.web.common.Utils
+@using bv.common.Configuration
+@using eidss.webclient.Utils
+@using eidss.model.Schema
+
+<input type="hidden" id="DiagnosisId" value="@ViewBag.DiagnosisId" />
+<input type="hidden" id="grid_selecteditem" value="@Model.idfCase" />
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@Html.PopupMenu(eidss.model.Schema.VetCase.Accessor.Instance(null), "SelectReport")
+
+@using (Html.BeginForm())
+{
+    @Html.IdentificationAndHeartbeat("idfCase", Model.idfCase)
+    @Html.BvHidden(Model, "strIdfsDiagnosis")
+
+    @(Html.Partial("../VetCase/CaseSummary", Model))
+    
+    @(Html.Kendo().TabStrip()
+          .Name("FullInvestigation")
+          .HtmlAttributes(new { @class = "threeLinesHeightTab" })
+          .Animation(animation => animation.Enable(false))
+          .Items(items =>
+              {
+                  items.Add()
+                       .Text(Translator.GetMessageString("titleFarmDetails"))
+                       .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object) new {bvid = "titleFarmDetails"} : new {})
+                       .Content(
+                           @<text>
+                                <div class="tabPanelContent">   
+                                    @Html.Partial("../Farm/Panel", Model.Farm)
+                                    @Html.Partial("../VetCase/ReportingInfo", Model)
+                                </div>
+                            </text>);
+                  items.Add()
+                       .Text(Translator.GetMessageString((Model._HACode == (int) eidss.model.Enums.HACode.Livestock) ? "titleHerdEpiClinicalSigns" : "tabTitleFlockSpeciesSigns"))
+                       .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object) new {bvid = (Model._HACode == (int) eidss.model.Enums.HACode.Livestock) ? "titleHerdEpiClinicalSigns" : "tabTitleFlockSpeciesSigns"} : new {})
+                       .Content(
+                           @<text>
+                                <div class="tabPanelContent subTab">
+                                    @(Model._HACode == (int) eidss.model.Enums.HACode.Livestock ? Html.Partial("HerdEpi", Model) : Html.Partial("FlockEpi", Model))
+                                </div>
+                            </text>);
+
+                 items.Add()
+                       .Text(Translator.GetMessageString("tabTitleClinicalDiagnosis"))
+                       .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object) new {bvid = "tabTitleClinicalDiagnosis"} : new {})
+                       .Content(Html.Partial(@"../VetCase/ClinicalDiagnosis", Model).ToHtmlString());
+                  if (Model._HACode == (int) eidss.model.Enums.HACode.Livestock)
+                  {
+                      items.Add()
+                           .Text(Translator.GetMessageString("tabTitleVetCaseAnimals"))
+                           .Content(
+                               @<text>
+                                    <div class="tabPanelContent">
+                                        @Html.Action("AnimalsGrid", "Grids",
+                                                     new
+                                                         {
+                                                             root = Model.idfCase,
+                                                             name = Model.ObjectIdent + "AnimalList",
+                                                             items = Model.AnimalList,
+                                                             readOnly = Model.IsClosed || Model.IsReadOnly("AnimalList") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit)
+                                                         })
+
+                                    </div>
+                                </text>);
+                  }
+                  items.Add()
+                       .Text(Translator.GetMessageString("tabTitleVetCaseSamples"))
+                       .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object) new {bvid = "tabTitleVetCaseSamples"} : new {})
+                       .Content(Html.Partial(@"../VetCase/SamplesCollection", Model).ToHtmlString());
+                  items.Add()
+                       .Text(Translator.GetMessageString("tabTitleVetCasePensideTests"))
+                       .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object) new {bvid = "tabTitleVetCasePensideTests"} : new {})
+                       .Content(Html.Partial(@"../VetCase/PensideTests", Model).ToHtmlString());
+                  items.Add()
+                       .Text(Translator.GetMessageString("tabTitleVetCaseLabTests"))
+                       .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object) new {bvid = "tabTitleVetCaseLabTests"} : new {})
+                       .Content(Html.Partial(@"../VetCase/Tests", Model).ToHtmlString());
+                  items.Add()
+                       .Text(Translator.GetMessageString("tabTitleVetCaseLog"))
+                       .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleVetCaseLog" } : new { })
+                       .Content(Html.Partial(@"../VetCase/VetCaseLog", Model).ToHtmlString());
+              })
+          .SelectedIndex(0)
+          )
+}

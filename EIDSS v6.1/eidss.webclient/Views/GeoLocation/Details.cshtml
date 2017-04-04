@@ -1,0 +1,57 @@
+﻿@model eidss.model.Schema.GeoLocation
+
+@using eidss.webclient.Utils
+
+<input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+
+@{
+    var panelExactPointClass = Model.IsInvisible("panelExactPoint") ? "level1 invisible" : "level1";
+}
+
+<table class="@panelExactPointClass" id="panelExactPoint">
+    <tr>
+        <td class="xlarge firstLabel">
+            @Html.BvLabel(Model, m => m.idfsRegion)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, m => m.Region, false, null /*"address.onRegionChanged"*/)
+        </td>
+    </tr>
+    <tr>
+        <td class="firstLabel">
+            @Html.BvLabel(Model, m => m.idfsRayon)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, m => m.Rayon, false, null /*"address.onRayonChanged"*/)
+        </td>
+    </tr>
+    <tr>
+        <td class="firstLabel">
+            @Html.BvLabel(Model, m => m.idfsSettlement)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, m => m.Settlement, false, null /*"address.onSettlementChanged"*/)
+        </td>
+    </tr>    
+</table>
+@{
+    var panelForeignAddressClass = Model.IsInvisible("panelForeignAddress") ? "level1 invisible" : "level1";
+}
+<table class="@panelForeignAddressClass" id="panelForeignAddress">
+    <tr>
+        <td class="xlarge firstLabel">
+            @Html.BvLabel(Model, m => m.idfsCountry)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, m => m.Country)
+        </td>
+    </tr>
+    <tr>
+        <td class="firstLabel">
+            @Html.BvLabel(Model, m => m.strForeignAddress)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strForeignAddress)
+        </td>
+    </tr>
+</table>

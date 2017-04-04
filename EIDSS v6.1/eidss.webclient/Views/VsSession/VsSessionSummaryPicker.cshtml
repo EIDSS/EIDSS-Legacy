@@ -1,0 +1,92 @@
+﻿@model eidss.model.Schema.VsSessionSummary
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+<script type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+<input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        <div class="windowButtonsPn">
+            <input id="idButtonOk" type="button" class="windowButton" onclick="vssessionsummary.saveAndCloseVsSessionSummaryGridEditWindow('@(Model.CaseObjectIdent)    ');" value="@Translator.GetMessageString("Ok")"/>                        
+            <input id="idButtonCancel" type="button" class="windowButton" onclick="bvPopup.closeDefaultPopup()" value="@Translator.GetMessageString("Cancel")"/>        
+        </div>   
+        <div class="windowSeparator"></div>  
+        
+        @Html.Hidden("idfsVSSessionSummary", Model.idfsVSSessionSummary)  
+                                                     
+        <table class="level1"> 
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strVSSessionSummaryID) 
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strVSSessionSummaryID)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.Location)
+                </td>
+                <td>
+                    @Html.Action("InlineGeoLocationPicker", "GeoLocation", new { root = Model.idfVectorSurveillanceSession, location = Model.Location })
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.datCollectionDateTime)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datCollectionDateTime)
+                </td> 
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.idfsVectorType)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.VectorType, true, "vector.onVectorTypeChanged")
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.idfsVectorSubType)
+                </td>
+                <td class="medium">
+                    @Html.BvCombobox(Model, m => m.VectorSubType, false/*, keyName: "idfsBaseReference"*/) 
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.idfsSex)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.AnimalGender) 
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.intQuantity)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.intQuantity)
+                </td>
+            </tr>
+            <!--TODO блоки Detected disease-->
+            
+        </table>            
+    }           
+</div>

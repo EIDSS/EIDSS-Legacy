@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Property Id="WEB.$(var.web_instance)" Secure="yes">
+    <ProductSearch
+      UpgradeCode="$(var.web_upgrade_code)"
+      Minimum="$(var.MajorVersion).$(var.MinorVersion).$(var.Build).0" />
+  </Property>
+  <Property Id="WEB.$(var.web_instance).COUNTRY" Secure="yes">
+    <RegistrySearch
+      Id="WEB.$(var.web_instance).COUNTRTY.Rs"
+      Root="HKLM"
+      Key="$(var.ProductFamilyRegistryKey)\$(var.web_upgrade_code)"
+      Name="Country"
+      Type="raw" />
+  </Property>
+  <Property Id="WEB.$(var.web_instance).INSTALLPATH" Secure="yes">
+    <RegistrySearch
+      Id="WEB.$(var.web_instance).INSTALLPATH.Rs"
+      Root="HKLM"
+      Key="$(var.ProductFamilyRegistryKey)\$(var.web_upgrade_code)"
+      Name="InstallPath"
+      Type="raw" />
+  </Property>
+
+  <Property Id="WEB.$(var.web_instance)_FOUND" Secure="yes" />
+  <SetProperty
+    Id="WEB.$(var.web_instance)_FOUND"
+    Value="1"
+    Sequence="first"
+    Before="LaunchConditions">
+      <![CDATA[Not Installed And WEB.$(var.web_instance) And WEB.$(var.web_instance).COUNTRY = "!(loc.Georgia)"]]>
+  </SetProperty>
+  
+  <?undef web_instance?>
+  <?undef web_upgrade_code?>
+</Include>

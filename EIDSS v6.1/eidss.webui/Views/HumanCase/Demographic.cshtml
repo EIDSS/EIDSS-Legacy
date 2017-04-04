@@ -1,0 +1,35 @@
+﻿@model eidss.model.Schema.HumanCase
+@using eidss.webui.Utils;
+@using eidss.webui.Areas.Patient;
+<input type="button" onclick="GetDuplicates();" value="duplicates search" />
+<table width="100%">
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.datCompletionPaperFormDate)
+        </td>
+        <td>
+            @Html.BvDatebox(Model, "datCompletionPaperFormDate")
+        </td>
+        <td>
+            @Html.LabelFor(m => m.strLocalIdentifier)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, "strLocalIdentifier")
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.idfsTentativeDiagnosis)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, "TentativeDiagnosis")
+        </td>
+        <td>
+            @Html.LabelFor(m => m.datTentativeDiagnosisDate)
+        </td>
+        <td>
+            @Html.BvDatebox(Model, "datTentativeDiagnosisDate")
+        </td>
+    </tr>
+</table>
+@Html.Patient(Model.idfCase, Model.Patient)

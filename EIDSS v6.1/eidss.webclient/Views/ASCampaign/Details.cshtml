@@ -1,0 +1,57 @@
+﻿@model AsCampaign
+@{
+    ViewBag.Title = Translator.GetMessageString("Active Surveillance Campaign");
+    ViewBag.Number = "V16";
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+}
+@using Kendo.Mvc.UI
+@using eidss.web.common.Utils
+@using bv.common.Configuration
+@using eidss.webclient.Utils
+@using eidss.model.Schema
+
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@using (Html.BeginForm())
+{
+    @Html.IdentificationAndHeartbeat("idfCampaign", Model.idfCampaign)	  
+    
+    <div class="">
+    <div class="summary">
+        
+        @(Html.Partial("../ASCampaign/Summary", Model))
+    </div>    
+
+        @(Html.Kendo().TabStrip()
+            .Name("FullDetails")
+            .HtmlAttributes(new { @class = "twoLinesHeightTab" })
+            .Animation(animation => animation.Enable(false))
+            .Items(items =>
+            {
+                items.Add()
+                    .Text(Translator.GetMessageString("DiseasesAndSpecies"))
+                    .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleCampaign" } : new { })
+                    .Content(Html.Partial(@"../ASCampaign/DiseasesAndSpecies", Model).ToHtmlString());
+                items.Add()
+                    .Text(Translator.GetMessageString("tabTitleSessions"))
+                    .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleSessions" } : new { })
+                    .Content(Html.Partial(@"../ASCampaign/Sessions", Model).ToHtmlString());
+                items.Add()
+                     .Text(Translator.GetMessageString("tabTitleConclusion"))
+                     .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleConclusion" } : new { })
+                     .Content(
+                         @<text>
+                            <div class="tabPanelContent fullPageHeight">
+                            <div class="fullPageWidth">
+                                @Html.BvTextArea(Model, m => m.strConclusion)
+                            </div>
+                            </div>
+                        </text>);
+            })
+            .SelectedIndex(0)
+       )
+    </div>    
+}

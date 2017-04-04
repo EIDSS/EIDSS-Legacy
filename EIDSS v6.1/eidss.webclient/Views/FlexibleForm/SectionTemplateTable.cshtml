@@ -1,0 +1,38 @@
+﻿@model eidss.model.Model.FlexibleForms.FlexNodes.FlexNode
+@using eidss.web.common.Utils;
+
+<div class="ffGridBanded-content">
+    @{
+        var sectionTemplate = Model.GetSectionTemplate();
+
+        if (!Model.FFModel.IsSummary && !Model.HasStubChildren) 
+        {
+ 
+            <div class="sectionTitle">
+                @sectionTemplate.NationalName
+            </div>
+        }
+
+        var gridName = String.Format("idfsSection_{0}", sectionTemplate.idfsSection);
+        var placeholderName = String.Format("placeholder_{0}", gridName);
+        var btAddName = String.Format("btAdd{0}", gridName); 
+        var btCopyName = String.Format("btCopy{0}", gridName);
+        var idObservation = Model.FFModel.CurrentObservation.HasValue ? Model.FFModel.CurrentObservation.Value : 0;
+
+        if (!Model.HasStubChildren && !Model.FFModel.ReadOnly)
+        {
+            <div class="rightAlign">
+                <button class="button" id="@btAddName" type="button" onclick='ffGrid.showEditDialog("@gridName", true, "@sectionTemplate.NationalName", "@idObservation"); '>
+                    @Translator.GetMessageString("Add")
+                </button>
+                <button disabled="disabled" class="button k-state-disabled" id="@btCopyName" type="button" data-role='grid-on-row-button' onclick='ffGrid.copyRow("@gridName", "@idObservation"); '>
+                    @Translator.GetBvMessageString("strCopy_Id")
+                </button>
+            </div>
+        }
+    }
+
+    <div id="@placeholderName">
+        @Html.Partial("SectionTemplateOnlyTable", Model)
+    </div>
+</div>

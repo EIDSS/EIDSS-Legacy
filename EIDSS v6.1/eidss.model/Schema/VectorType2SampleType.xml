@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="Vector"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spSampleTypeForVectorType_SelectDetail" type= "detaillist" />
+  </storage>
+
+  <tables>
+    <table name="VectorType2SampleType">
+      <grid>
+        <item name="idfSampleTypeForVectorType" visible ="false" type="long"/>
+        <item name="idfsSampleType" type="long" required="true"/>
+      </grid>
+      <labels>
+        <item labelId="SampleType" name="idfsSampleType"/>
+      </labels>
+
+      <fields>
+
+      </fields>
+      <lookups>
+        <lookup name="SampleType" table="BaseReference" section="rftSampleType" source="idfsSampleType" target="idfsBaseReference">
+          <filters>
+            <filter predicate="c => c.idfsBaseReference != (long)SampleTypeEnum.Unknown"/>
+          </filters>
+        </lookup>
+      </lookups>
+      <storage>
+        <post name="spSampleTypeForVectorType_Post" />
+        <!--<candelete name="spVectorTypeReference_CanDelete" />-->
+      </storage>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfSampleTypeForVectorType" class="AutoIncrementExtender" />
+        </creating>
+        <loading>
+        </loading>
+        <posting>
+        </posting>
+        <posted>
+        </posted>
+      </extenders>
+      <validators>
+        <change>
+        </change>
+        <post>
+          <required_validator target="idfsSampleType" label ="SampleType" />
+        </post>
+      </validators>
+    </table>
+
+  </tables>
+</object>

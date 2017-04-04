@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>@Translator.GetMessageString("ErrErrorFormCaption")</title>
+    @Html.IncludeVersionedCss("~/Content/Styles/Common.css")
+</head>
+@{
+    Layout = null;    
+}
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+@if ((bool)ViewData["SessionExpired"])
+{
+    <script language="javascript" type="text/javascript">
+        $(document).ready(function () {
+//            if (opener) {
+//                setTimeout(function () {
+//                    window.opener.location = '/' + GetSiteLanguage() + '/Account/Logout';
+//                    window.close();
+//                }, 5000);
+//            }
+//            else {
+//                setTimeout(function () {
+//                    window.location = '/' + GetSiteLanguage() + '/Account/Logout';
+//                }, 5000);
+
+//            }
+        });
+    </script>
+}
+<body class='@(Cultures.IsRtl ? "k-rtl" : "")'>
+    <div class='page defaultWidth'>
+        <div class="header">
+            <img src="/Content/Images/Web_Login_Title.png" class="headerImg" border="0" alt='@Translator.GetMessageString("WelcomeTitle")' title='@Translator.GetMessageString("WelcomeTitle")'/>
+        </div>        
+        <div class="content">          
+            <table class="listForm" style="border: none; padding: 0px;">  
+                <tr>
+                    <td>
+                        <h2>@Translator.GetMessageString("ErrErrorFormCaption")</h2>
+                    </td>
+                </tr>              
+                <tr>
+                    <td>@ViewData["Description"]
+                    </td>
+                </tr>
+            </table>
+        </div>
+        </div>
+</body>
+</html>

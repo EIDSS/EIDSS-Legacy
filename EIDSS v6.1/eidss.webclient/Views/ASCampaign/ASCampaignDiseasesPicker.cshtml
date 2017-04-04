@@ -1,0 +1,65 @@
+﻿@model eidss.model.Schema.AsDisease
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using bv.common.Configuration
+@using bv.model.Model.Core
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        //ChangeMessageWindowHeigth();
+    });  
+</script>
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+
+<input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+         <div class="windowButtonsPn">                  
+             <input id="idButtonOk" type="button" class="windowButton" onclick="asCampaign.saveAndCloseDiseasesGridEditWindow('@(Model.Parent.ObjectIdent)');" value="@Translator.GetMessageString("Ok")"/>     
+             <input id="idButtonCancel" type="button" class="windowButton" onclick="bvPopup.closeDefaultPopup();" value="@Translator.GetMessageString("Cancel")"/>  
+         </div>   
+        <div class="windowSeparator"></div>
+        @Html.Hidden("idfCampaignToDiagnosis", Model.idfCampaignToDiagnosis)                                               
+        <table class="level1">    
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Html.BvLabel(Model, m => m.strDiagnosis)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.Diagnosis, width: EditorControlWidth.Large/*, clientOnChange: "asCampaign.onDiagnosisChanged"*/)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strSpecies)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.SpeciesType)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strSampleName)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.SampleType, false, keyName:"idfsReference")
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.intPlannedNumber)
+                </td>
+                <td>
+                    @Html.BvNumeric(Model, m => m.intPlannedNumber, 0, 0, 5000000)
+                </td>                            
+            </tr>            
+        </table> 
+    }           
+</div>

@@ -1,0 +1,42 @@
+﻿@model eidss.model.Schema.Patient
+@{
+    ViewBag.Title = @Translator.GetMessageString("titlePersonDetails");
+    ViewBag.Number = "H04";
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+}
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+@using (Html.BeginForm())
+{
+    @Html.IdentificationAndHeartbeat("idfHuman", Model.idfHuman)	
+    <div class="summary">
+        <table class="level1"> 
+            <tr>                                                               
+                <td class="xlarge firstLabel">
+                    @Html.BvLabel(Model, m => m.datEnteredDate)
+                </td>
+                <td class="large">
+                    @Html.BvEditbox(Model, m => m.strEnteredDate)
+                </td>
+                <td class="xlarge label">
+                    @Html.BvLabel(Model, m => m.datModificationDate)
+                </td>
+                <td class="large">
+                    @Html.BvEditbox(Model, m => m.strModificationDate)
+                </td>
+            </tr>
+        </table> 
+    </div>
+    <div class="tabPanelContent bordered">
+        <div class="sectionTitle">
+            @Translator.GetMessageString("titlePersonInformation")  
+        </div>
+
+        @Html.Action("Patient", "Person", new { root = Model.idfHuman, patient = Model, isAgeVisible = false, isCoordinatesFieldsVisible = true })
+    </div>        
+}

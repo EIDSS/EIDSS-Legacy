@@ -1,0 +1,437 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BF545ECD-F673-4C71-9362-57C01DF13062}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>eidss.model</RootNamespace>
+    <AssemblyName>eidss.core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\eidss.main\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v15.1, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dlls\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dlls\ApplicationBlocks\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dlls\ApplicationBlocks\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dlls\ApplicationBlocks\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dlls\ApplicationBlocks\Microsoft.Practices.EnterpriseLibrary.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dlls\ApplicationBlocks\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dlls\ApplicationBlocks\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dlls\ApplicationBlocks\Microsoft.Practices.Unity.Interception.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap">
+      <HintPath>..\dlls\StructureMap.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap.Net4">
+      <HintPath>..\dlls\StructureMap.Net4.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\EIDSSAssemblyInfo.cs">
+      <Link>EIDSSAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="AVR\DataBase\AVRDataException.cs" />
+    <Compile Include="AVR\DataBase\DatabaseNames.cs" />
+    <Compile Include="AVR\DataBase\DBChartType.cs" />
+    <Compile Include="AVR\ServiceData\BaseColumnModel.cs" />
+    <Compile Include="AVR\ServiceData\BaseTablePacketDTO.cs" />
+    <Compile Include="AVR\ServiceData\BaseTableDTO.cs" />
+    <Compile Include="AVR\ServiceData\ChartExportDTO.cs" />
+    <Compile Include="AVR\ServiceData\ChartTableDTO.cs" />
+    <Compile Include="AVR\ServiceData\ChartTableModel.cs" />
+    <Compile Include="AVR\ServiceData\StreamTablePacketDTO.cs" />
+    <Compile Include="AVR\SourceData\AvrDataColumn.cs" />
+    <Compile Include="AVR\SourceData\AvrDataColumnCollection.cs" />
+    <Compile Include="AVR\SourceData\AvrDataRow.cs" />
+    <Compile Include="AVR\SourceData\AvrDataRowCounter.cs" />
+    <Compile Include="AVR\SourceData\AvrDataTable.cs" />
+    <Compile Include="AVR\SourceData\AvrMethodDescriptor.cs" />
+    <Compile Include="AVR\SourceData\AvrDataRowEx.cs" />
+    <Compile Include="AVR\SourceData\AvrDataRowDTO.cs" />
+    <Compile Include="AVR\SourceData\AvrDataRowBase.cs" />
+    <Compile Include="AVR\SourceData\AvrPivotGridFieldHelper.cs" />
+    <Compile Include="AVR\SourceData\AvrRowEvaluatorContextDescriptor.cs" />
+    <Compile Include="AVR\SourceData\ChunkArray.cs" />
+    <Compile Include="AVR\SourceData\ChunkByteArray.cs" />
+    <Compile Include="Core\AddressHelper.cs" />
+    <Compile Include="Core\Constants.cs" />
+    <Compile Include="Core\EidssEventLog.cs" />
+    <Compile Include="Core\EidssUserOptions.cs" />
+    <Compile Include="Core\ForcedReplicationClient.cs" />
+    <Compile Include="Core\GlobalSiteOption.cs" />
+    <Compile Include="Core\LanguageDbLoader.cs" />
+    <Compile Include="Core\PasswordValidatorHelper.cs" />
+    <Compile Include="Core\QueueHelper.cs" />
+    <Compile Include="Core\ThaiCalendarHelper.cs" />
+    <Compile Include="Enums\CustomizationPackage.cs" />
+    <Compile Include="Enums\PersonalIDType.cs" />
+    <Compile Include="Enums\ReplicationType.cs" />
+    <Compile Include="MethodOfMeasurement.cs" />
+    <Compile Include="Reports\CanWorkWithArchiveAttribute.cs" />
+    <Compile Include="Reports\InfectiousDiseasesProcessor.cs" />
+    <Compile Include="Reports\NullableAdaptersAttribute.cs" />
+    <Compile Include="Reports\ReportVersion.cs" />
+    <Compile Include="Trace\EidssTraceStrategy.cs" />
+    <Compile Include="Trace\EmptyTraceStrategy.cs" />
+    <Compile Include="Trace\ITraceStrategy.cs" />
+    <Compile Include="Trace\TraceStrategyKind.cs" />
+    <Compile Include="WcfService\EidssServiceInitializer.cs" />
+    <Compile Include="WindowsService\ISchedulerConfigurationStrategy.cs" />
+    <Compile Include="AVR\ServiceData\ViewDTO.cs" />
+    <Compile Include="Core\AvrPermissions.cs" />
+    <Compile Include="Core\CultureInfo\BaseLanguageProcessor.cs" />
+    <Compile Include="Core\DatePeriodHelper.cs" />
+    <Compile Include="Core\SourceOfCaseSessionDateMapper.cs" />
+    <Compile Include="AVR\DataBase\QueryHelper.cs" />
+    <Compile Include="AVR\DataBase\AvrDbException.cs" />
+    <Compile Include="Core\LookupCacheListener.cs" />
+    <Compile Include="Core\EidssSecurityManager.cs" />
+    <Compile Include="Core\EidssSecurityManagerStaticFields.cs" />
+    <Compile Include="Core\EidssSiteContext.cs" />
+    <Compile Include="Core\EidssSiteOptions.cs" />
+    <Compile Include="Core\EidssUser.cs" />
+    <Compile Include="Core\EidssUserContext.cs" />
+    <Compile Include="Core\FiltrationManager.cs" />
+    <Compile Include="Core\LocalizedDisplayNameAttribute.cs" />
+    <Compile Include="Core\SecurityHelper.cs" />
+    <Compile Include="Core\SecurityLog.cs" />
+    <Compile Include="Core\SecurityMessages.cs" />
+    <Compile Include="Core\CultureInfo\CultureInfoEx.cs" />
+    <Compile Include="Core\CultureInfo\CultureInfoTransaction.cs" />
+    <Compile Include="Enums\AccessionCondition.cs" />
+    <Compile Include="Enums\AggregateCaseType.cs" />
+    <Compile Include="Enums\AsCampaignStatus.cs" />
+    <Compile Include="Enums\AsSessionActionStatus.cs" />
+    <Compile Include="Enums\AsSessionStatus.cs" />
+    <Compile Include="Enums\AuditEventType.cs" />
+    <Compile Include="Enums\AuditTable.cs" />
+    <Compile Include="Enums\BaseReferenceType.cs" />
+    <Compile Include="Enums\BatchStatus.cs" />
+    <Compile Include="Enums\CaseClassification.cs" />
+    <Compile Include="Enums\CaseReportType.cs" />
+    <Compile Include="Enums\CaseStatus.cs" />
+    <Compile Include="Enums\CaseType.cs" />
+    <Compile Include="Enums\GenderType.cs" />
+    <Compile Include="Enums\GisReferenceType.cs" />
+    <Compile Include="Enums\HospitalizationStatus.cs" />
+    <Compile Include="Enums\MenuGroup.cs" />
+    <Compile Include="Enums\BssOutcome.cs" />
+    <Compile Include="Enums\SampleStatus.cs" />
+    <Compile Include="Enums\ReportFilterType.cs" />
+    <Compile Include="Enums\Country.cs" />
+    <Compile Include="Enums\CustomMandatoryField.cs" />
+    <Compile Include="Enums\PersonalDataGroup.cs" />
+    <Compile Include="Enums\ReportExportType.cs" />
+    <Compile Include="Enums\SampleKind.cs" />
+    <Compile Include="Enums\SampleType.cs" />
+    <Compile Include="Enums\DiagnosisUsingType.cs" />
+    <Compile Include="Enums\EIDSSAuditObject.cs" />
+    <Compile Include="Enums\EIDSSPermissionObject.cs" />
+    <Compile Include="Enums\EventType.cs" />
+    <Compile Include="Enums\FFEnums.cs" />
+    <Compile Include="Enums\FFType.cs" />
+    <Compile Include="Enums\GeoLocationType.cs" />
+    <Compile Include="Enums\HACode.cs" />
+    <Compile Include="Enums\HumanAgeType.cs" />
+    <Compile Include="Enums\MenuIcons.cs" />
+    <Compile Include="Enums\MenuIconsSmall.cs" />
+    <Compile Include="Enums\NumberingObject.cs" />
+    <Compile Include="Enums\OutcomeType.cs" />
+    <Compile Include="Enums\PartyType.cs" />
+    <Compile Include="Enums\PatientLocationType.cs" />
+    <Compile Include="Enums\PersonContactType.cs" />
+    <Compile Include="Enums\SecurityAuditEvent.cs" />
+    <Compile Include="Enums\SecurityAuditProcessType.cs" />
+    <Compile Include="Enums\SessionType.cs" />
+    <Compile Include="Enums\SiteType.cs" />
+    <Compile Include="Enums\SourceOfCaseSessionDate.cs" />
+    <Compile Include="Enums\StatisticAreaType.cs" />
+    <Compile Include="Enums\StatisticPeriodType.cs" />
+    <Compile Include="Enums\TestCategory.cs" />
+    <Compile Include="Enums\TestResult.cs" />
+    <Compile Include="Enums\TestStatus.cs" />
+    <Compile Include="Enums\YesNoUnknownValues.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\AggregateActionsParameters.cs" />
+    <Compile Include="Reports\AggregateActionsSummaryParameters.cs" />
+    <Compile Include="Reports\AggregateReportParameters.cs" />
+    <Compile Include="Reports\AggregateSummaryReportParameters.cs" />
+    <Compile Include="Reports\ForbiddenDataGroupAttribute.cs" />
+    <Compile Include="Reports\MenuReportCustomizationAttribute.cs" />
+    <Compile Include="Reports\MenuReportDescriptionAttribute.cs" />
+    <Compile Include="Reports\ReportResultParameters.cs" />
+    <Compile Include="Reports\IReportFactory.cs" />
+    <Compile Include="Reports\ReportSubMenu.cs" />
+    <Compile Include="Resources\EidssFields.cs">
+      <SubType>
+      </SubType>
+    </Compile>
+    <Compile Include="Resources\EidssMenu.cs" />
+    <Compile Include="Resources\EidssMessages.cs" />
+    <Compile Include="Trace\StopwathTransaction.cs" />
+    <Compile Include="Trace\TraceHelper.cs" />
+    <Compile Include="Trace\TraceTraceListener.cs" />
+    <Compile Include="WcfService\DataBaseChecker.cs" />
+    <Compile Include="WindowsService\IAVRFacade.cs" />
+    <Compile Include="WindowsService\SchedulerConfigurationSection.cs" />
+    <Compile Include="WindowsService\Serialization\BinarySerializer.cs" />
+    <Compile Include="WindowsService\EidssService.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WindowsService\EidssServiceInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WcfService\ServiceHostKeeper.cs" />
+    <Compile Include="WindowsService\Serialization\BinaryCompressor.cs" />
+    <Compile Include="WindowsService\Serialization\CustomSerializationException.cs" />
+    <Compile Include="AVR\ServiceData\QueryTableModel.cs" />
+    <Compile Include="AVR\ServiceData\QueryTableHeaderDTO.cs" />
+    <Compile Include="AVR\ServiceData\QueryTableHeaderModel.cs" />
+    <Compile Include="AVR\ServiceData\QueryTablePacketDTO.cs" />
+    <Compile Include="WindowsService\Serialization\MyMemoryStream.cs" />
+    <Compile Include="WindowsService\Serialization\StreamExtender.cs" />
+    <Compile Include="WindowsService\ServiceConfig.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\bltoolkit.3.2.dev\BLToolkit.4.csproj">
+      <Project>{0C325F5D-E50E-4340-8724-D29896CCC583}</Project>
+      <Name>BLToolkit.4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\bv.common\bv.common.csproj">
+      <Project>{BEE76B17-720D-4B65-996A-5712912B3ACF}</Project>
+      <Name>bv.common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\bv.model\bv.model.csproj">
+      <Project>{9067327E-1960-4326-ACB9-D982DDBEAA76}</Project>
+      <Name>bv.model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\EidssFields.ar-IQ.resx">
+      <DependentUpon>EidssFields.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssFields.az-Latn-AZ.resx">
+      <DependentUpon>EidssFields.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssFields.en-IQ-Eidss.resx">
+      <DependentUpon>EidssFields.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssFields.en-TH-Eidss.resx">
+      <DependentUpon>EidssFields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssFields.hy-am.resx">
+      <DependentUpon>EidssFields.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssFields.ka-GE.resx">
+      <DependentUpon>EidssFields.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssFields.kk-KZ.resx">
+      <DependentUpon>EidssFields.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssFields.resx">
+      <DependentUpon>EidssFields.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssFields.ru-KZ-Eidss.resx">
+      <DependentUpon>EidssFields.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssFields.ru-RU.resx">
+      <DependentUpon>EidssFields.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssFields.th-TH.resx">
+      <DependentUpon>EidssFields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssFields.uk-UA.resx">
+      <DependentUpon>EidssFields.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMenu.ar-IQ.resx">
+      <DependentUpon>EidssMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMenu.az-Latn-AZ.resx">
+      <DependentUpon>EidssMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMenu.hy-am.resx">
+      <DependentUpon>EidssMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMenu.ka-GE.resx">
+      <DependentUpon>EidssMenu.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMenu.kk-KZ.resx">
+      <DependentUpon>EidssMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMenu.resx">
+      <DependentUpon>EidssMenu.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMenu.ru-RU.resx">
+      <DependentUpon>EidssMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMenu.th-TH.resx">
+      <DependentUpon>EidssMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMenu.uk-UA.resx">
+      <DependentUpon>EidssMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMessages.ar-IQ.resx">
+      <DependentUpon>EidssMessages.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMessages.az-Latn-AZ.resx">
+      <DependentUpon>EidssMessages.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMessages.en-IQ-Eidss.resx">
+      <DependentUpon>EidssMessages.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMessages.en-TH-Eidss.resx">
+      <DependentUpon>EidssMessages.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMessages.hy-am.resx">
+      <DependentUpon>EidssMessages.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMessages.ka-GE.resx">
+      <DependentUpon>EidssMessages.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMessages.kk-KZ.resx">
+      <DependentUpon>EidssMessages.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMessages.resx">
+      <DependentUpon>EidssMessages.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMessages.ru-KZ-Eidss.resx">
+      <DependentUpon>EidssMessages.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMessages.ru-RU.resx">
+      <DependentUpon>EidssMessages.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMessages.th-TH.resx">
+      <DependentUpon>EidssMessages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\EidssMessages.uk-UA.resx">
+      <DependentUpon>EidssMessages.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <AfterBuildDependsOn>
+      $(AfterBuildDependsOn);
+      CopyGISData
+    </AfterBuildDependsOn>
+  </PropertyGroup>
+  <Target Name="AfterBuild" DependsOnTargets="$(AfterBuildDependsOn)" />
+  <Target Name="CopyGISData">
+    <ItemGroup>
+      <_gisDlls Include="$(SolutionDir)dlls\gis\*.*" />
+      <_gdalData Include="$(SolutionDir)dlls\gis\Data\**\*" />
+      <_esri Include="$(SolutionDir)dlls\gis\ESRI\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_gisDlls)" DestinationFolder="$(TargetDir)">
+      <Output TaskParameter="CopiedFiles" ItemName="FileWrites" />
+    </Copy>
+
+    <PropertyGroup>
+      <_targetGdalData>$(TargetDir)gdal_data\</_targetGdalData>
+    </PropertyGroup>
+    <RemoveDir Directories="$(_targetGdalData)" />
+    <MakeDir Directories="$(_targetGdalData)" />
+    <Copy SourceFiles="@(_gdalData)" DestinationFolder="$(_targetGdalData)">
+      <Output TaskParameter="CopiedFiles" ItemName="FileWrites" />
+    </Copy>
+
+    <PropertyGroup>
+      <_targetESRI>$(TargetDir)ESRI\</_targetESRI>
+    </PropertyGroup>
+    <RemoveDir Directories="$(_targetESRI)" />
+    <MakeDir Directories="$(_targetESRI)" />
+    <Copy
+      SourceFiles="@(_esri)"
+      DestinationFiles="@(_esri->'$(_targetESRI)%(RecursiveDir)%(Filename)%(Extension)')">
+      <Output TaskParameter="CopiedFiles" ItemName="FileWrites" />
+    </Copy>
+  </Target>
+</Project>

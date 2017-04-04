@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="PensideTest"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spPensideTests_SelectDetail" type="detaillist" />        
+  </storage>
+  
+  <tables>
+    <table name="PensideTest" hacodable="true">
+      <grid>
+        <item name="idfPensideTest" key="true" visible="false"/>
+        <item name="strPensideTestName" required="true" />
+        <item name="strFieldBarcode" required="true" />
+        <item name="strSampleName" />
+        <item name="Species" type="string" />
+        <item name="AnimalID" type="string"/>
+        <item name="strPensideTestResultName" required="true" />
+      </grid>
+      <labels>
+        <item name="strFieldBarcode" labelId="strFieldBarcodeField"/>
+        <item name="strSampleName" labelId="SampleName"/>
+        <item name="strAnimal" labelId="AnimalID"/>
+        <item name="AnimalID" labelId="strAnimalCode"/>
+        <item name="strPensideTestName" labelId="strPensideTypeName"/>
+      </labels>
+        <fields>
+          <!--storage name="NewObject" type="bool"/-->
+          <calculated name="SamplesFromCase" type="EditableList&lt;VetCaseSample&gt;" depends="Parent" lambda="c => (c.Parent as VetCase).Samples"/>
+          
+          <calculated name="CaseObjectIdent" type="string" depends="idfVetCase" lambda='c => "VetCase_" + c.idfVetCase + "_"' />
+          <calculated name="SampleType" type="string" depends="idfMaterial,SamplesFromCase"
+                      lambda='c => c.SamplesFromCase == null || c.SamplesFromCase.Count == 0 || c.idfMaterial == 0 ? "" : c.SamplesFromCase.SingleOrDefault(a => a.idfMaterial == c.idfMaterial, a => a.strSampleName)' />
+          <calculated name="FieldID" type="string" depends="idfMaterial,SamplesFromCase"
+                      lambda='c => c.SamplesFromCase == null || c.SamplesFromCase.Count == 0 || c.idfMaterial == 0 ? "" : c.SamplesFromCase.SingleOrDefault(a => a.idfMaterial == c.idfMaterial, a => a.strFieldBarcode)' />
+          <calculated name="AnimalID" type="string" depends="idfMaterial,SamplesFromCase"
+                      lambda='c => c.SamplesFromCase == null || c.SamplesFromCase.Count == 0 || c.idfMaterial == 0 ? "" : c.SamplesFromCase.SingleOrDefault(a => a.idfMaterial == c.idfMaterial, a => a.AnimalID)' />
+          <calculated name="SpeciesID" type="string" depends="idfMaterial,SamplesFromCase"
+                      lambda='c => c.SamplesFromCase == null || c.SamplesFromCase.Count == 0 || c.idfMaterial == 0 ? "" : c.SamplesFromCase.SingleOrDefault(a => a.idfMaterial == c.idfMaterial, a => a.Species)' />
+        </fields>
+        <readonly>
+            <fields name="SampleType,AnimalID,Species" predicate="c => true" />
+            <fields name="*" predicate="c => false" />
+        </readonly>
+      <lookups>       
+        <lookup name="PensideTestResult" table="BaseReference" section="rftPensideTestResult" source="idfsPensideTestResult" target="idfsBaseReference" />
+        <lookup name="PensideTestType" table="BaseReference" section="rftPensideTestType" source="idfsPensideTestName" target="idfsBaseReference">
+          <filters>
+            <filter predicate="c => (c.intHACode &amp; obj._HACode) != 0"/>
+          </filters>
+        </lookup>
+        <lookup name="Samples" table="VetCaseSample" existinglookup="SamplesFromCase" source="idfMaterial" target="idfMaterial">
+          <filters>
+            <filter predicate="c => !c.IsMarkedToDelete"/>
+          </filters>
+        </lookup>
+      </lookups>
+      <storage>
+        <post />
+        <delete />
+        <candelete />
+      </storage>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfPensideTest" class="GetNewIDExtender" />
+          <lambda_extender target="idfVetCase" type="long" lambda='c => (Parent as VetCase).idfCase' />
+          <lambda_extender target="_HACode" type="int?" lambda='c => (Parent as VetCase)._HACode' />
+        </creating>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+            <lambda_handler field="strDummy" target="Samples" type="VetCaseSample" 
+                            lambda="c => c.SamplesLookup.Where(i => i.idfMaterial == c.idfMaterial).SingleOrDefault()"/>
+            <lambda_handler field="idfMaterial" target="strFieldBarcode" type="string" lambda='c => c.FieldID'/>
+            <lambda_handler field="idfMaterial" target="strSampleName" type="string" lambda='c => c.SampleType'/>
+            <lambda_handler field="idfMaterial" target="strAnimal" type="string" lambda='c => c.AnimalID'/>
+            <lambda_handler field="idfMaterial" target="Species" type="string" lambda='c => c.SpeciesID'/>
+            <lambda_handler field="idfsPensideTestName" target="strPensideTestName" type="string" lambda='c => c.idfsPensideTestName == null ? "" : c.PensideTestTypeLookup.Where(a => a.idfsBaseReference == c.idfsPensideTestName).Single().name'/>
+            <lambda_handler field="idfsPensideTestResult" target="strPensideTestResultName" type="string" lambda='c => c.idfsPensideTestResult == null ? "" : c.PensideTestResultLookup.Where(a => a.idfsBaseReference == c.idfsPensideTestResult).Single().name'/>
+        </fieldhandler>
+      </handlers>
+        <validators>
+            <post>
+                <required_validator target="PensideTestType" />
+                <required_validator target="Samples" label="strFieldBarcodeField" />
+            </post>
+        </validators>
+        <actions>
+        </actions>
+    </table>
+  </tables>
+
+</object>

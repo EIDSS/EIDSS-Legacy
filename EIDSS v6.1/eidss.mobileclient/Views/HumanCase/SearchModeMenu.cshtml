@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = Translator.GetMessageString("titleSearchMode");
+    Layout = "~/Views/Shared/_SimpleLayout.cshtml";
+}
+
+@using eidss.mobileclient.Utils
+
+<br />
+<input type="submit" class="fillAll" value="@Translator.GetMessageString("titleExtendedSearch")" onclick="document.location.href='@Url.Action("ExtendedSearch", "HumanCase")';" />
+<br /><br /> 
+<input type="submit" class="fillAll" value="@Translator.GetMessageString("titleThisWeekCases")" onclick="document.location.href='@Url.Action("ThisWeekSearch", "HumanCase")';" />
+<br /><br /> 
+<input type="submit" class="fillAll" value="@Translator.GetMessageString("titleTodayCases")" onclick="document.location.href='@Url.Action("TodaySearch", "HumanCase")';" />
+<br /><br /> 
+<input type="submit" class="fillAll" value="@Translator.GetMessageString("titleMyCases")" onclick="document.location.href='@Url.Action("MyCasesSearch", "HumanCase")';" />

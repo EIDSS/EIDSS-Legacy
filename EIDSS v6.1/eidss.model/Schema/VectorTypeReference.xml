@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="VectorTypeReference"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spVectorTypeReference_SelectDetail" type="detaillist" />
+  </storage>
+  <tables>
+    <table name="VectorTypeReference">
+      <grid>
+        <item name="idfsBaseReference" visible="false" key="true"/>
+        <item name="strDefaultName" type="string" required="true"/>
+        <item name="strTranslatedName" type="string" required="true"/>
+        <item name="strCode" />
+        <item name="bitCollectionByPool" />
+        <item name="intOrder" />
+      </grid>
+      <fields>
+      </fields>
+      <fieldtags>
+        <field name="strDefaultName">
+          <tag name="en" />
+        </field>
+        <field name="strTranslatedName">
+          <tag name="def" />
+        </field>
+      </fieldtags>
+      <storage>
+        <post name="spVectorTypeReference_Post" />
+        <candelete name="spVectorTypeReference_CanDelete" type="Question" />
+      </storage>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfsBaseReference" class="GetNewIDExtender" />
+        </creating>
+        <loading>
+        </loading>
+        <posting>
+        </posting>
+        <posted>
+        </posted>
+      </extenders>
+      <validators>
+        <change>
+        </change>
+        <post>
+          <required_validator target="strDefaultName" property="strDefaultName" />
+          <required_validator target="strTranslatedName" predicate ="c => ModelUserContext.CurrentLanguage != Localizer.lngEn"/>
+        </post>
+      </validators>      
+    </table>
+   </tables>
+</object>

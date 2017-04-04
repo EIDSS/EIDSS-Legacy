@@ -1,0 +1,35 @@
+﻿@model eidss.model.Schema.CaseTest.CaseTestGridModelList
+@using eidss.model.Schema
+@using eidss.webclient.Configurations
+@using eidss.webclient.Utils;
+@using eidss.web.common.Utils;
+
+<script type="text/javascript">
+    $(window).load(function () {
+        //sample.onCaseTestGridLoad('@ViewBag.ShowSearch', '@ViewBag.CaseTestsName');
+    });
+</script>
+
+@*NOTE: When you use this table, you have to add in root object's model calculated fields buttonAddTestResult, buttonTestDetails (and logic for this fields)
+Also see logic for YNTestsConducted, TestsConducted fields. See HumanCase.xml*@
+
+<input type="hidden" id="hdnCaseTestsGridName" value="@ViewBag.CaseTestsName"/>    
+      
+@(Html.BvDetailsFormGrid<CaseTest.CaseTestGridModel, CaseTest.CaseTestGridModelList>((string)ViewBag.CaseTestsName, Model,
+        "detailsGrid", "sample.showCaseTestGridEditWindow", "sample.onCaseTestGridRowSelect",
+        (bool)ViewBag.IsReadOnly, true, false, 
+        strExcludeColumns: (string)ViewBag.ExcludeColumns, 
+        onDataBound: "sample.updateNewCaseTestValidationButton", /* "bvGrid.deleteAndApplyChanges",*/
+        selectionType: GridRowSelectionType.Single)
+        .ToolBar(toolBar =>
+                 toolBar.Template(
+                     @<text>
+                          <input type='button' class='button' id="buttonAddTestResult" data-role='grid-add-button' value='@Translator.GetMessageString("btAddResult")' 
+                                 onclick='bvGrid.addRow("@Model.ListKey", "@ViewBag.CaseTestsName", sample.showCaseTestGridEditWindow)'/>
+
+                          <input type='button' class='button' id="buttonTestDetails" data-role='grid-on-row-button' data-grid-name="@ViewBag.CaseTestsName" value='@Translator.GetMessageString("btTestDetails")' 
+                                 onclick="@string.Format("sample.showCaseTestGridRowTestDetails('{0}','{1}');", ViewBag.CaseTestsName, ViewData["root"])"/>
+                      </text>) 
+            ))
+
+        

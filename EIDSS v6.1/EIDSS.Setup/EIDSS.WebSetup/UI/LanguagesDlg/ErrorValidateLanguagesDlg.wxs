@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+		<UI>
+			<Dialog Id="ErrorValidateLanguagesDlg" Width="230" Height="80" Title="!(loc.ErrorDlg_Title)">
+				<Control Id="ErrorText" Type="Text" X="25" Y="15" Width="180" Height="40" TabSkip="no" Text="[ErrorLanguagesText]" />
+				<Control Id="O" Type="PushButton" X="100" Y="60" Width="56" Height="17" TabSkip="yes" Text="!(loc.WixUIOK)">
+					<Publish Event="EndDialog" Value="Return">1</Publish>
+				</Control>
+			</Dialog>
+		</UI>
+	</Fragment>
+</Wix>

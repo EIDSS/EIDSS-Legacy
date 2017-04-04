@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <PropertyRef Id="SHOW_LOG" />
+    <Property Id="ShowLogOnError" Value="1" />
+    <UI>
+      <Dialog Id="CustomFatalError" Width="370" Height="270" Title="!(loc.FatalError_Title)">
+        <Control Id="Finish" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Cancel="yes" Text="!(loc.WixUIFinish)">
+          <Publish Property="SHOW_LOG" Value="[ShowLogOnError]" Order="1">1</Publish>
+          <Publish Event="EndDialog" Value="Exit" Order="1000">1</Publish>
+          <Publish Property="WixShellExecTarget" Value="[MsiLogFileLocation]" Order="1001">1</Publish>
+          <Publish Event="DoAction" Value="ShowLog" Order="1002"><![CDATA[SHOW_LOG = 1 And MsiLogFileLocation And "" <> MsiLogFileLocation]]></Publish>
+        </Control>
+        <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Disabled="yes" Text="!(loc.WixUICancel)" />
+        <Control Id="Bitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="234" TabSkip="no" Text="!(loc.FatalErrorBitmap)" />
+        <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" Text="!(loc.WixUIBack)" />
+        <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+        <Control Id="Title" Type="Text" X="135" Y="20" Width="220" Height="60" Transparent="yes" NoPrefix="yes" Text="!(loc.FatalErrorTitle)" />
+        <Control Id="Description" Type="Text" X="135" Y="70" Width="220" Height="80" Transparent="yes" NoPrefix="yes" Text="!(loc.FatalErrorDescription1) !(loc.FatalErrorDescription2)" />
+
+        <Control Id="LogFileCheckBox" Type="CheckBox" X="135" Y="210" Width="10" Height="10" Property="ShowLogOnError" CheckBoxValue="1" />
+        <Control Id="LogFileText" Type="Text" X="150" Y="210" Width="205" Height="17" Transparent="yes" NoPrefix="no" Text="!(loc.LogFileText)" />
+      </Dialog>
+
+      <InstallUISequence>
+        <Show Dialog="CustomFatalError" OnExit="error" Overridable="yes" />
+      </InstallUISequence>
+
+      <AdminUISequence>
+        <Show Dialog="CustomFatalError" OnExit="error" Overridable="yes" />
+      </AdminUISequence>
+    </UI>
+  </Fragment>
+</Wix>

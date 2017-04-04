@@ -1,0 +1,59 @@
+﻿@model eidss.model.Schema.CopyDialogWindowItem
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using bv.common.Configuration
+@using eidss.model.Resources
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+<script type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        <div class="windowButtonsPn">
+            <input id="idButtonSelect" type="button" class="windowButton" onclick="vector.saveAndCloseCopyVectorEditWindow('@(Model.CaseObjectIdent)');" value="@Translator.GetMessageString("Select")"/>                        
+            <input id="idButtonCancel" type="button" class="windowButton" onclick="bvPopup.closeDefaultPopup()" value="@Translator.GetMessageString("Cancel")"/>        
+        </div>   
+        <div class="windowSeparator"></div>  
+                 
+        @Html.HiddenFor(m => m.idfVectorSurveillanceSession)
+        @Html.HiddenFor(m => m.idfVector)
+                                            
+        <table class="level1"> 
+            <tr>
+                @Html.Label(EidssMessages.Get("CopyWindowPrompt"))
+            </tr>
+            <tr>
+                <td>
+                    @Html.BvCheckBox(Model, m => m.blnNeedCopyGeneralData, false)
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.BvCheckBox(Model, m => m.blnNeedCopyFF, false)
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                    @Html.BvCheckBox(Model, m => m.blnNeedCopySamples, false)
+                </td> 
+            </tr>
+            <tr>
+                <td>
+                    @Html.BvCheckBox(Model, m => m.blnNeedCopyFT, false)
+                </td> 
+            </tr>
+        </table>            
+    }           
+</div>

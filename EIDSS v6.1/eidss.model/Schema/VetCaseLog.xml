@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="VetCaseLog"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="spVetCaseLog_SelectDetail" type="detaillist" />
+    </storage>
+
+    <tables>
+        <table name="VetCaseLog">
+          <grid>
+            <item name="idfVetCaseLog" visible="false" key="true"/>
+            <item name="strActionRequired" required="true" />
+            <item name="datCaseLogDate" required="true" />
+            <item name="strPerson" type="string" required="true" />
+            <item name="strNote" />
+            <item name="strCaseLogStatus" type="string" />
+          </grid>
+          <labels>
+            <item name="strPerson" labelId="strPersonEnteredBy"/>
+            <item name="strNote" labelId="strComment"/>
+          </labels>
+            <fields>
+              <calculated name="CaseObjectIdent" type="string" depends="idfVetCase" lambda='c => "VetCase_" + c.idfVetCase + "_"' />
+              <calculated name='strCaseLogStatus' type='string' depends='idfsCaseLogStatus' lambda='c => c.CaseLogStatus == null ? "" : c.CaseLogStatus.name'/>
+              <calculated name='strPerson' type='string' depends='idfPerson' lambda='c => c.Person == null ? "" : c.Person.FullName'/>
+            </fields>
+            <readonly>
+            </readonly>
+            <lookups>
+              <lookup name="CaseLogStatus" table="BaseReference" section="rftVetCaseLogStatus" source="idfsCaseLogStatus" target="idfsBaseReference" />
+              <lookup name="Person" table="PersonLookup" source="idfPerson" target="idfPerson">
+                <params>
+                  <param name="OfficeID" const="null" />
+                  <param name="ID" const="null" />
+                  <param name="ShowUsersOnly" const="false"/>
+                  <param name="intHACode" const="(int)HACode.LivestockAvian"/>
+                </params>
+                <filters>
+                  <filter name="blnVet" predicate="c => c.blnVet == true"/>
+                </filters>
+              </lookup>
+            </lookups>
+            <storage>
+              <post name="spVetCaseLog_Post"/>
+            </storage>
+            <extenders>
+              <creating>
+                <scalar_extender target="idfVetCaseLog" class="GetNewIDExtender" />
+                <lambda_extender target="idfVetCase" type="long" lambda="c => (c.Parent as VetCase).idfCase"/>
+                <lambda_extender target="datCaseLogDate" type="DateTime?" lambda="c => DateTime.Today"/>
+              </creating>
+              <created>
+                <lambda_extender target="Person" type="PersonLookup" lambda="c => c.PersonLookup.FirstOrDefault(i => i.idfPerson == (long)ModelUserContext.Instance.CurrentUser.EmployeeID)"/>
+              </created>
+            </extenders>
+            <validators>
+              <chains>
+                <item field="datCaseLogDate" type="DateTime">
+                  <item field="CurrentDate" value="DateTime.Now" />
+                </item>
+              </chains>
+              <post>
+                <required_validator target="idfPerson" property="Person" label="strPersonEnteredBy"/>
+                <required_validator target="datCaseLogDate" />
+              </post>
+            </validators>
+        </table>
+    </tables>
+
+</object>

@@ -1,0 +1,134 @@
+﻿
+@using Kendo.Mvc.UI
+@using bv.common.Configuration
+@using eidss.webclient.Utils
+@model eidss.webclient.Models.Reports.ComparativeIQModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/ExportButtons", Model)
+    <div class="bluelayout">
+        <div class="tabPanelContent">
+        
+            @Html.Partial("Common/BaseFilter", Model)
+
+            @Html.Partial("IQ/FromYearToYearFilter", Model.YearModel)
+
+            <table id="ComparativeFilterTable" >
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.StartMonth)
+                    </td>
+                    <td class="largereport">
+                
+                        @{
+                            @(Html.Kendo().DropDownList()
+                                  .Name("StartMonth")
+                                  .BindTo(Model.SelectedJanuaryMonthList.ConvertToSelectListItem())
+                                  .Events(c => c.Change("paperForm.OnIQMonthChanged"))
+                                  )
+                        }
+                    </td>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.EndMonth)
+                    </td>
+                    <td class="largereport">
+                
+                        @{
+                            @(Html.Kendo().DropDownList()
+                                  .Name("EndMonth")
+                                  .BindTo(Model.SelectedCurrentMonthList.ConvertToSelectListItem())
+                                  .Events(c => c.Change("paperForm.OnIQMonthChanged"))
+                                  .Events(c => c.Select("paperForm.OnIQMonthSelect"))
+
+                                  )
+                        }
+                
+                    </td>
+                    <td></td>
+                </tr>
+                @*         // TODO: [ivan] uncomment when Iraq statistics will be filled in the DataBase*@
+                @*        *@
+                @*        <tr>*@
+                @*            <td class="medium">*@
+                @*                @Html.LabelFor(m => m.Counter)*@
+                @*            </td>*@
+                @*            <td class="large">*@
+                @*                *@
+                @*                @{*@
+                @*                    @(Html.Telerik().ComboBox()*@
+                @*                          .Name("Counter")*@
+                @*                          .BindTo(Model.CounterList.ConvertToSelectListItem())*@
+                @*                          .HtmlAttributes(new {@class = "requiredField"})*@
+                @*                          )*@
+                @*                }*@
+                @*                *@
+                @*            </td>*@
+                @*            <td colspan="3"></td>*@
+                @*        </tr>*@
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.ProvinceCaption1) 
+                    </td>
+                    <td class="largereport">
+                        @{
+                            @(Html.Kendo().ComboBox()
+                                  .Name("Address1.RegionId")
+                                  .BindTo(Model.Address1.GetSelectedRegions().ConvertToSelectListItem())
+                                  .Events(c => c.Change("paperForm.OnRegion1Changed"))
+                                  )
+                        }
+                    </td>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.DistrictCaption1)
+                    </td>
+                    <td class="largereport">
+                        @{
+                            @(Html.Kendo().ComboBox()
+                                  .Name("Address1.RayonId")
+                                  .BindTo(Model.Address1.GetRayons().ConvertToSelectListItem())
+                                  .Events(c => c.Change("paperForm.OnRayon1Changed"))
+                                  )
+                        }
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.ProvinceCaption2)
+                    </td>
+                    <td class="largereport">
+                        @{
+                            @(Html.Kendo().ComboBox()
+                                  .Name("Address2.RegionId")
+                                  .BindTo(Model.Address2.GetUnselectedRegions().ConvertToSelectListItem())
+                                  .Events(c => c.Change("paperForm.OnRegion2Changed"))
+                                  )
+                        }
+                    </td>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.DistrictCaption2)
+                    </td>
+                    <td class="largereport">
+                        @{
+                            @(Html.Kendo().ComboBox()
+                                  .Name("Address2.RayonId")
+                                  .BindTo(Model.Address2.GetRayons().ConvertToSelectListItem())
+                                  .Events(c => c.Change("paperForm.OnRayon2Changed"))
+                                  .Enable(false)
+                                  )
+                        }
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+}

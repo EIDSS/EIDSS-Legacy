@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="FormType"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+    <storage>
+        <get name="spFFGetFormTypes" type="detailone" /> 
+    </storage>
+    <tables>
+        <table name="FormType">
+            <relations>
+              <!--
+                <relation name="Sections" table="Section" internal="false" lazy="false" type="child" source="idfsFormType" target="idfsFormType" paramsonly="true">
+                    <params>
+                        <param name="idfsFormType" type="Int64?" lambda="c => c.idfsFormType" />
+                        <param name="idfsSection" type="Int64?" lambda="c => null" />
+                        <param name="idfsParentSection" type="Int64?" lambda="c => null" />
+                    </params>
+                </relation>
+                <relation name="Parameters" table="Parameter" internal="false" type="child" source="idfsFormType" target="idfsFormType" paramsonly="true">
+                    <params>
+                        <param name="idfsSection" type="Int64?" lambda="c => null" />
+                        <param name="idfsFormType" type="Int64?" lambda="c => c.idfsFormType" />
+                    </params>
+                </relation>
+               -->
+            </relations>
+        </table>
+    </tables>
+</object>

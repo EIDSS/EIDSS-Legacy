@@ -1,0 +1,42 @@
+﻿@using eidss.avr.mweb.Utils
+@using eidss.web.common.Utils
+
+    @Html.DevExpress().PopupControl(
+    settings =>
+    {
+        settings.Name = "pcWarning";
+        settings.CallbackRouteValues = new { Controller = "System", Action = "LoadOnDemandInformation" };
+        settings.ClientSideEvents.BeginCallback = "warnForm.OnPopupBeginCallback";
+        settings.LoadContentViaCallback = LoadContentViaCallback.OnFirstShow;
+        settings.Width = 350;
+        settings.CloseAction = CloseAction.CloseButton;
+        settings.PopupAnimationType = AnimationType.None;
+        settings.HeaderText = Translator.GetBvMessageString("Warning");
+        settings.Modal = true;
+        settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+        settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+        settings.ControlStyle.CssClass = "k-window";
+        settings.Styles.Header.CssClass = "k-window-titlebar";
+        settings.ShowCloseButton = false;
+        settings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+        
+        settings.SetContent(() =>
+        {
+            using (Html.BeginForm("ModalMode", "PopupControl", FormMethod.Post, new { id = "popupForm", @style = "width: 350px" }))
+            {
+                ViewContext.Writer.Write("<div style='padding: 10px;'><div class='warningText' >");
+                Html.DevExpress().Label(
+                    labelSettings =>
+                    {
+                        labelSettings.ControlStyle.CssClass = "firstLabel";
+                        labelSettings.Text = ViewBag.MessageText;
+                        labelSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                    }
+                )
+                .Render();
+                ViewContext.Writer.Write("</div><div style='text-align:right'> ");
+                ViewContext.Writer.Write("<input id='btnOk' class='button' type='button' value='" + Translator.GetMessageString("Ok") + "' onclick=\"pcWarning.Hide();\"/>");
+                ViewContext.Writer.Write("</div></div>");
+            }
+        });
+    }).GetHtml()

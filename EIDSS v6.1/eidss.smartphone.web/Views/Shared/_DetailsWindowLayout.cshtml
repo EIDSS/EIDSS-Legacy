@@ -1,0 +1,17 @@
+﻿@using eidss.smartphone.web.Utils
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>@ViewBag.Title</title>
+        <script type="text/javascript">
+                $(document).ready(function () {
+                    $('div[class="t-status"]').hide();
+                });
+        </script>
+    </head>
+    <body class='@(Cultures.IsRtl ? "k-rtl" : "")'>
+        <div id="WindowBody">
+            @RenderBody()
+        </div> 
+     </body>
+</html>

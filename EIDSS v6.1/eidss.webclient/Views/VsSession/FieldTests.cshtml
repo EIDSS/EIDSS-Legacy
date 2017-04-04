@@ -1,0 +1,25 @@
+﻿@using eidss.model.Schema
+@model bv.model.Model.Core.IObject
+           
+@{
+    var session = Model as VsSession;
+    var vector = Model as Vector;
+    if (session == null && vector == null) {return;} //чисто гипотетическая ситуация
+    var isSession = session != null;
+    
+    var id = isSession ? session.idfVectorSurveillanceSession : vector.idfVector;
+    var objName = (isSession ? session.CaseObjectIdent : vector.CaseObjectIdent) + "FieldTests";
+    var objFieldTests = isSession ? session.FieldTests : vector.FieldTests;
+    var readOnly = isSession || (vector.IsReadOnly("FieldTests") || (vector.GetPermissions() != null && vector.GetPermissions().IsReadOnlyForEdit));
+}
+<div class="tabPanelContent">
+    @Html.Action("VectorFieldTestGrid", "Grids",
+             new
+                 {
+                     root = id,
+                     name = objName,
+                     fieldtests = objFieldTests,
+                     isReadOnly = readOnly,
+                     isVectorDetail = !isSession
+                 })
+</div>

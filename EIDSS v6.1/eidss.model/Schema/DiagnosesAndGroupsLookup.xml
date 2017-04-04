@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="DiagnosesAndGroupsLookup"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="spDiagnosesAndGroups_SelectLookup" type="lookuplist" cache="true"/>
+    </storage>
+
+    <tables>
+        <table name="DiagnosesAndGroupsLookup" tostring="c => c.name" lookupcachename="DiagnosesAndGroups">
+            <keys>
+                <key name="idfsDiagnosisOrDiagnosisGroup" />
+            </keys>          
+        </table>      
+    </tables>
+
+</object>
+

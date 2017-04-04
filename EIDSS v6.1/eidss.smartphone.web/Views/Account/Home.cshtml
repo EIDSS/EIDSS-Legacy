@@ -1,0 +1,100 @@
+﻿@model eidss.smartphone.web.Models.UploadModel
+
+@{
+    ViewBag.Title = "Main";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Main</h2>
+@using (Html.BeginForm("", "home", FormMethod.Post, new {enctype="multipart/form-data"})){ 
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <input type="file" name="FileUpload1" /><br />
+    <input type="submit" name="Submit" id="Submit" value="Upload" />
+    
+    if (Model.HumanCases != null && Model.HumanCases.Count > 0)
+    {
+        <table>
+            <tr>
+                <td colspan="2">Human Cases</td>
+            </tr>
+            <tr>
+                <td>Added:</td>
+                <td>@Model.HumanCases.Count(c => c.isCreated)</td>
+            </tr>
+            <tr>
+                <td>Updated:</td>
+                <td>@Model.HumanCases.Count(c => c.isUpdated)</td>
+            </tr>
+            <tr>
+                <td>Failed:</td>
+                <td>@Model.HumanCases.Count(c => c.isFailed)</td>
+            </tr>
+        </table>
+        if (Model.HumanCases.Count(c => c.isFailed) > 0)
+        {
+            <table>
+                <tr>
+                    <td>Case ID</td>
+                    <td>Offline Case ID</td>
+                    <td>Error Description</td>
+                </tr>
+                @foreach (eidss.smartphone.web.Models.HumanCaseInfoOut m in Model.HumanCases.Where(c => c.isFailed))
+                {
+                <tr>
+                    <td>@m.idfCase</td>
+                    <td>@m.uidOfflineCaseID</td>
+                    <td>@m.lastErrorDescription</td>
+                </tr>
+                }
+            </table>
+        }
+    }
+
+
+    if (Model.VetCases != null && Model.VetCases.Count > 0)
+    {
+        <table>
+            <tr>
+                <td colspan="2">Vet Cases</td>
+            </tr>
+            <tr>
+                <td>Added:</td>
+                <td>@Model.VetCases.Count(c => c.isCreated)</td>
+            </tr>
+            <tr>
+                <td>Updated:</td>
+                <td>@Model.VetCases.Count(c => c.isUpdated)</td>
+            </tr>
+            <tr>
+                <td>Failed:</td>
+                <td>@Model.VetCases.Count(c => c.isFailed)</td>
+            </tr>
+        </table>
+        if (Model.VetCases.Count(c => c.isFailed) > 0)
+        {
+            <table>
+                <tr>
+                    <td>Case ID</td>
+                    <td>Offline Case ID</td>
+                    <td>Error Description</td>
+                </tr>
+                @foreach (eidss.smartphone.web.Models.VetCaseInfoOut m in Model.VetCases.Where(c => c.isFailed))
+                {
+                <tr>
+                    <td>@m.idfCase</td>
+                    <td>@m.uidOfflineCaseID</td>
+                    <td>@m.lastErrorDescription</td>
+                </tr>
+                }
+            </table>
+        }
+    }
+    
+    <ul>
+        <li>@Html.ActionLink("Download references from the server", "Referencies", "Home")</li>
+        <li>@Html.ActionLink("Download latest version of application", "AndroidApp", "Home")</li>
+    </ul>
+}
+

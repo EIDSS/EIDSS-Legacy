@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "$(var.ProjectDir)ProductInfo.wxi" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="UI bitmaps">
+    <Binary Id="FailureImg" SourceFile="$(var.SetupSources)Bitmaps\Failure.ico" />
+    <Binary Id="SuccessImg" SourceFile="$(var.SetupSources)Bitmaps\Success.ico" />
+  </Fragment>
+
+  <Fragment Id="UI Custom Actions">
+    <CustomAction Id="ValidatePath" DllEntry="ValidatePath" BinaryKey="CustomActions" />
+    <CustomAction Id="TestReportsServicePort" DllEntry="TestReportsServicePort" BinaryKey="CustomActions" />
+    <CustomAction Id="TestWebSitePort" DllEntry="TestWebSitePort" BinaryKey="CustomActions" />
+    <CustomAction Id="TestAvrPort" DllEntry="TestAvrPort" BinaryKey="CustomActions" />
+    <CustomAction Id="TestMobilePort" DllEntry="TestMobilePort" BinaryKey="CustomActions" />
+    <CustomAction Id="TestOpenAPIPort" DllEntry="TestOpenAPIPort" BinaryKey="CustomActions" />
+    <CustomAction Id="TestSmartphonePort" DllEntry="TestSmartphonePort" BinaryKey="CustomActions" />
+    <CustomAction Id="ValidateUser" DllEntry="ValidateUser" BinaryKey="CustomActions" />
+    <CustomAction Id="PingAVRService" DllEntry="PingAVRService" BinaryKey="CustomActions" />
+    <CustomAction Id="MustBeNumber" DllEntry="MustBeNumber" BinaryKey="CustomActions" />
+    <CustomAction Id="MustBeNumbers" DllEntry="MustBeNumbers" BinaryKey="CustomActions" />
+    <CustomAction Id="FindInstallerPorts" DllEntry="FindInstallerPorts" BinaryKey="CustomActions" />
+  </Fragment>
+</Wix>

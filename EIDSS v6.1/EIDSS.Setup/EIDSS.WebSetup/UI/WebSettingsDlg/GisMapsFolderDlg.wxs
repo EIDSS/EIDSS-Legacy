@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <UI>
+      <Dialog Id="GisMapsFolderDlg" Width="370" Height="270" Title="!(loc.GisMapsFolderDlg_Title)">
+        <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)">
+          <Publish Event="SetTargetPath" Value="GISMAPS" Order="1">1</Publish>
+          <Publish Property="PathToValidate" Value="GISMAPS" Order="2">1</Publish>
+          <Publish Event="DoAction" Value="ValidatePath" Order="3">1</Publish>
+          <Publish Event="SpawnDialog" Value="CustomInvalidDirDlg" Order="4"><![CDATA[DIR_VALID<>"1"]]></Publish>
+        </Control>
+        <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" />
+        <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+          <Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+        </Control>
+
+        <Control Id="Description" Type="Text" X="25" Y="23" Width="280" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.GisMapsFolderDlgDescription)" />
+        <Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.GisMapsFolderDlgTitle)" />
+        <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="!(loc.GisMapsFolderDlgBannerBitmap)" />
+        <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+        <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+
+        <Control Id="FolderLabel" Type="Text" Width="220" Height="14" X="40" Y="122" NoPrefix="yes" Text="!(loc.GisMapsFolderDlgFolderLabel)" />
+        <Control Id="Folder" Type="PathEdit" Width="220" Height="18" X="40" Y="134" Property="GISMAPS" />
+        <Control Id="ChangeFolder" Type="PushButton" Width="56" Height="18" X="265" Y="134" Text="!(loc.GisMapsFolderDlgChange)">
+          <Publish Property="_BrowseProperty" Value="GISMAPS" Order="1">1</Publish>
+          <Publish Event="SpawnDialog" Value="BrowseDlg" Order="2">1</Publish>
+        </Control>
+      </Dialog>
+    </UI>
+  </Fragment>
+</Wix>

@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="Vector"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spVectorTypeMaster_SelectDetail" type= "detailone" />
+  </storage>
+
+  <tables>
+    <table name="VectorType2PensideTestMaster">
+      <properties auditObject="daoReference" auditTable="trtBaseReference" permissionObject="Reference">
+        <events>
+          <create name="MatrixChanged" predicate="c => c.HasChanges" addinfo="VectorType2PensideTestMasterDetail"/>
+          <change name="MatrixChanged" predicate="c => c.HasChanges" addinfo="VectorType2PensideTestMasterDetail"/>
+        </events>
+      </properties>
+      <help win="Vector_Type-Field_test_matrix"/>
+      <readonly>
+        <fields name="VectorType" predicate="c => false" ignoreReadOnly="true"/>
+      </readonly>
+      <relations>
+        <relation name="VectorType2PensideTest" table="VectorType2PensideTest" internal="false" type="child" lazy="false" source="idfsVectorType" target="idfsVectorType" />
+      </relations>
+      <lookups>
+        <lookup name="VectorType" table="BaseReference" section="rftVectorType" source="idfsVectorType" target="idfsBaseReference" />
+      </lookups>
+      <storage>
+        <post  name="spDummy_Post"/>
+        <delete />
+        <candelete  name=''/>
+      </storage>
+      <postorder>
+        <item name="VectorType2PensideTest" />
+      </postorder>
+      <deleteorder>
+        <item name="VectorType2PensideTest" />
+      </deleteorder>
+      <extenders>
+        <creating>
+        </creating>
+        <created>
+        </created>
+        <loading>
+        </loading>
+        <posting>
+        </posting>
+        <posted>
+        </posted>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+        </fieldhandler>
+      </handlers>
+
+      <validators>
+        <childchange>
+          <!--container name="VectorType2PensideTest" field="idfsPensideTest"  filter="c => true">
+            <duplicate_reference_validator field="idfsPensideTest" container="VectorType2PensideTest" predicate="(master,i) => master.VectorType2PensideTest.Where(c => 
+                                                            (long)c.Key != (long)i.Key 
+                                                            &amp;&amp; c.idfsPensideTestName == i.idfsPensideTestName
+                                                            &amp;&amp; c.idfsVectorType == i.idfsVectorType
+                                                            &amp;&amp; !c.IsMarkedToDelete
+                                                            &amp;&amp; !i.IsMarkedToDelete
+                                                            ).Count() == 0"/>
+          </container-->
+          <container name="VectorType2PensideTest" field="idfsPensideTestName"  filter="c => true">
+            <!--required_child_validator container="VectorType2PensideTest" field="idfsPensideTestName" predicate ="(c,i) => (i.idfsPensideTestName != null)"/-->
+            <required_validator target="idfsPensideTestName" child="true"/>
+          </container>
+        </childchange>
+        <post>
+          <duplicate_list_validator collection="VectorType2PensideTest" type="VectorType2PensideTest" filter="c => !c.IsMarkedToDelete">
+            <item field="idfsPensideTestName" lookup="PensideTest" inMsg="true" />
+            <item field="idfsVectorType" />
+          </duplicate_list_validator>
+        </post>
+
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <remove type="Delete"/>
+        </standard>
+        <action name="DeletePensideTest" type="Action">
+          <visual panel="Main" alignment ="Right" visiblePredicate = "ActionMetaItem.DefaultDeleteGroupItemVisiblePredicate">
+            <regular caption ="strDelete_Id" tooltip ="tooltipDelete_Id" icon ="Delete_Remove"/>
+          </visual>
+        </action>
+      </actions>
+    </table>
+
+  </tables>
+</object>

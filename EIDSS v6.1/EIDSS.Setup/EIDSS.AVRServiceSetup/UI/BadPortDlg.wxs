@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <UI>
+      <Dialog Id="BadPortDlg" Width="230" Height="80" Title="!(loc.ErrorDlg_Title)">
+        <Control Id="TestResult_Failure" Type="Icon" IconSize="48" X="5" Y="5" Width="50" Height="50" Text="FailureImg" FixedSize="yes" />
+        <Control Id="ErrorText" Type="Text" X="60" Y="15" Width="160" Height="36" TabSkip="no" Text="[BadPortText]" />
+        <Control Id="O" Type="PushButton" X="100" Y="60" Width="56" Height="17" TabSkip="yes" Text="!(loc.WixUIOK)">
+          <Publish Event="EndDialog" Value="Return">1</Publish>
+        </Control>
+      </Dialog>
+    </UI>
+
+    <Property Id="BadPortText_PortIsOccupied" Value="!(loc.BadPortText_PortIsOccupied)" />
+    <Property Id="BadPortText_UnsupportedPortValue" Value="!(loc.BadPortText_UnsupportedPortValue)" />
+    <Property Id="BadPortText_PortIsOutOfBoundary" Value="!(loc.BadPortText_PortIsOutOfBoundary)" />
+    <Property Id="PORTLOWERBOUND" Value="8071" />
+    <Property Id="PORTUPPERBOUND" Value="8900" />
+  </Fragment>
+</Wix>

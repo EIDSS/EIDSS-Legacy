@@ -1,0 +1,47 @@
+﻿@using eidss.avr.mweb.Utils
+@using eidss.web.common.Utils
+
+    @Html.DevExpress().PopupControl(
+    settings =>
+    {
+        settings.Name = "pcSaveData";
+        settings.CallbackRouteValues = new { Controller = "System", Action = "LoadOnDemandConfirmation" };
+        settings.ClientSideEvents.BeginCallback = "confForm.OnPopupBeginCallback";
+        settings.LoadContentViaCallback = LoadContentViaCallback.OnFirstShow;
+        settings.Width = 350;
+        settings.CloseAction = CloseAction.CloseButton;
+        settings.PopupAnimationType = AnimationType.None;
+        settings.HeaderText = Translator.GetBvMessageString("Confirmation");
+        settings.Modal = true;
+        settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+        settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+        settings.ControlStyle.CssClass = "k-window";
+        settings.Styles.Header.CssClass = "k-window-titlebar";
+        settings.ShowCloseButton = false;
+        settings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+        
+        settings.SetContent(() =>
+        {
+            using (Html.BeginForm("ModalMode", "PopupControl", FormMethod.Post, new { id = "popupForm", @style = "width: 350px" }))
+            {
+                ViewContext.Writer.Write("<div style='padding: 10px;'><div class='confirmationText'>");
+                Html.DevExpress().Label(
+                    labelSettings =>
+                    {
+                        labelSettings.ControlStyle.CssClass = "firstLabel";
+                        labelSettings.Text = ViewBag.MessageText;
+                        labelSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                    }
+                )
+                .Render();
+                ViewContext.Writer.Write("</div><table class='level1 right'><tr><td>");
+                ViewContext.Writer.Write("<input id='btnConfYes' class='button buttonMarginLeft' type='button' value='" + Translator.GetMessageString("strYes_Id") + "' onclick=\"pcSaveData.Hide();" + ViewBag.YesFunction + "\"/>");
+                ViewContext.Writer.Write("<input id='btnConfNo' class='button buttonMarginLeft' type='button' value='" + Translator.GetMessageString("strNo_Id") + "' onclick=\"pcSaveData.Hide();" + ViewBag.NoFunction + "\"/>");
+                if (ViewBag.ShowCancel)
+                {
+                    ViewContext.Writer.Write("<input id='btnConfCancel' class='button buttonMarginLeft' type='button' value='" + Translator.GetBvMessageString("strCancel_Id") + "' onclick='pcSaveData.Hide();'/>");
+                }
+                ViewContext.Writer.Write("</td></tr></table></div>");
+            }
+        });
+    }).GetHtml()

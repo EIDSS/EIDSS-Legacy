@@ -1,0 +1,567 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "ProductInfo.wxi" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Fragment Id="eidss.components">
+    <ComponentGroup Id="eidss.components">
+      <ComponentGroupRef Id="Harvested" />
+      <ComponentGroupRef Id="eidss" />
+      <ComponentGroupRef Id="eidss.core.EnterpriseLibrary.DependsOn" />
+      <ComponentGroupRef Id="eidss.fonts" />
+      <ComponentGroupRef Id="Resources" />
+      <ComponentGroupRef Id="DevExpress" />
+      <ComponentGroupRef Id="ThirdParty.GIS" />
+      <ComponentGroupRef Id="ThirdParty" />
+      <ComponentGroupRef Id="MapProjects" />
+      <ComponentGroupRef Id="desktop.StructureMap" />
+      <ComponentRef Id="LogFolder" />
+      <ComponentRef Id="TranslationsFolder" />
+      
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="eidss" Directory="APPLICATIONFOLDER" Source="$(var.BinariesPaths)">
+      <Component Id="SubRegistration">
+        <RegistryKey Root="HKLM" Key="SOFTWARE\$(var.ProductNameAbbreviation) $(var.MajorVersion).$(var.MinorVersion)" ForceCreateOnInstall="yes">
+          <util:PermissionEx User="Users" GenericAll="yes" />
+          <RegistryValue Name="epath" Value="[APPLICATIONFOLDER]" Type="string" KeyPath="yes">
+            <util:PermissionEx User="Users" GenericAll="yes" />
+          </RegistryValue>
+          <RegistryValue Name="SQLUser" Value="" Type="string">
+            <util:PermissionEx User="Users" GenericAll="yes" />
+          </RegistryValue>
+          <RegistryValue Name="SQLPassword" Value="" Type="string">
+            <util:PermissionEx User="Users" GenericAll="yes" />
+          </RegistryValue>
+        </RegistryKey>
+      </Component>
+
+      <Component Id="eidss.main.exe">
+        <File Id="eidss.main.exe" Name="eidss.main.exe" Vital="yes" Checksum="yes" KeyPath="yes">
+          <Shortcut
+            Id="StartMenuShortcut"
+            Name="$(var.ProductFullName)"
+            Description="$(var.ProductFullName)"
+            Directory="EIDSSShortcutFolder"
+            Icon="eidss.main.exe"
+            WorkingDirectory="APPLICATIONFOLDER"
+            Advertise="yes">
+
+            <Icon Id="eidss.main.exe" SourceFile="$(var.BinariesPaths)eidss.main.exe" />
+          </Shortcut>
+
+          <Shortcut
+            Id="DesktopShortcut"
+            Name="$(var.ProductNameAbbreviation) $(var.MajorVersion).$(var.MinorVersion)"
+            Description="$(var.ProductFullName)"
+            Directory="DesktopFolder"
+            Icon="eidss.main.exe"
+            WorkingDirectory="APPLICATIONFOLDER"
+            Advertise="yes" />
+        </File>
+        <File Id="eidss.main.exe.config" Name="eidss.main.exe.config" Source="$(var.SetupSources)eidss.main.exe.config" />
+
+        <RemoveFolder Id="EIDSSShortcutFolder" Directory="EIDSSShortcutFolder" On="uninstall" />
+        <RemoveFolder Id="BVShortcutFolder" Directory="BVShortcutFolder" On="uninstall" />
+      </Component>
+      <Component Id="EIDSS_ClientAgent.exe">
+        <File Id="EIDSS_ClientAgent.exe" Name="EIDSS_ClientAgent.exe" Vital="yes" Checksum="yes" KeyPath="yes" />
+        <File Name="EIDSS_ClientAgent.exe.config" Source="$(var.SetupSources)EIDSS_ClientAgent.exe.config" />
+        <RegistryKey Root="HKLM" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Run">
+          <RegistryValue Name="eidss_client_v$(var.MajorVersion).$(var.MinorVersion)" Value="[#EIDSS_ClientAgent.exe]" Type="string" />
+        </RegistryKey>
+      </Component>
+
+      <Component Id="AutoMapper.dll">
+        <File Name="AutoMapper.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="BLToolkit.4.dll">
+        <File Name="BLToolkit.4.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="BruTile.dll">
+        <File Name="BruTile.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="bv.common.dll">
+        <File Name="bv.common.dll" Checksum="yes" KeyPath="yes" Source="$(var.bv.common.TargetPath)" />
+      </Component>
+      <Component Id="bv.model.dll">
+        <File Name="bv.model.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="bv.winclient.dll">
+        <File Name="bv.winclient.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="bvdb_common.dll">
+        <File Name="bvdb_common.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="bvwin_common.dll">
+        <File Name="bvwin_common.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="bv_common.dll">
+        <File Name="bv_common.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DotSpatial.Data.dll">
+        <File Name="DotSpatial.Data.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DotSpatial.Mono.dll">
+        <File Name="DotSpatial.Mono.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DotSpatial.Projections.dll">
+        <File Name="DotSpatial.Projections.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DotSpatial.Serialization.dll">
+        <File Name="DotSpatial.Serialization.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DotSpatial.Topology.dll">
+        <File Name="DotSpatial.Topology.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="eidss.core.dll">
+        <File Name="eidss.core.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="EIDSS.FlexibleForms.dll">
+        <File Name="EIDSS.FlexibleForms.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="eidss.gis.common.dll">
+        <File Name="eidss.gis.common.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="eidss.gis.dll">
+        <File Name="eidss.gis.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="eidss.model.dll">
+        <File Name="eidss.model.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="eidss.model.customization.dll">
+        <File Name="eidss.model.customization.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="eidss.remoting.dll">
+        <File Name="eidss.remoting.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="EIDSS.Reports.dll">
+        <File Name="EIDSS.Reports.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="eidss.skin.dll">
+        <File Name="eidss.skin.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="eidss.winclient.dll">
+        <File Name="eidss.winclient.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="eidss_admin.dll">
+        <File Name="eidss_admin.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="eidss_admin_db.dll">
+        <File Name="eidss_admin_db.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="eidss_common.dll">
+        <File Name="eidss_common.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="eidss_db.dll">
+        <File Name="eidss_db.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="eidss_forms.dll">
+        <File Name="eidss_forms.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="eidss_human.dll">
+        <File Name="eidss_human.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="eidss_human_db.dll">
+        <File Name="eidss_human_db.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="eidss_lims.dll">
+        <File Name="eidss_lims.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="eidss_lims_db.dll">
+        <File Name="eidss_lims_db.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="EIDSS_ObjectAccess.dll">
+        <File Name="EIDSS_ObjectAccess.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="eidss_vet.dll">
+        <File Name="eidss_vet.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="eidss_vet_db.dll">
+        <File Name="eidss_vet_db.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="gdal19.dll">
+        <File Name="gdal19.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="gdalconst_csharp.dll">
+        <File Name="gdalconst_csharp.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="gdalconst_wrap.dll">
+        <File Name="gdalconst_wrap.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="gdal_csharp.dll">
+        <File Name="gdal_csharp.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="gdal_wrap.dll">
+        <File Name="gdal_wrap.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="GeoAPI.dll">
+        <File Name="GeoAPI.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="GeospatialServices.dll">
+        <File Name="GeospatialServices.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="geos_c.dll">
+        <File Name="geos_c.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="GIS_V6.dll">
+        <File Name="GIS_V6.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="iconv.dll">
+        <File Name="iconv.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="ICSharpCode.SharpZipLib.dll">
+        <File Name="ICSharpCode.SharpZipLib.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+
+      <Component Id="Microsoft.SqlServer.ConnectionInfo.dll">
+        <File Name="Microsoft.SqlServer.ConnectionInfo.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="Microsoft.SqlServer.Management.Sdk.Sfc.dll">
+        <File Name="Microsoft.SqlServer.Management.Sdk.Sfc.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="Microsoft.SqlServer.Smo.dll">
+        <File Name="Microsoft.SqlServer.Smo.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="Microsoft.SqlServer.SqlEnum.dll">
+        <File Name="Microsoft.SqlServer.SqlEnum.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="Microsoft.SqlServer.Types.dll">
+        <File
+          Source="$(var.ThirdParty.GIS)SqlServerTypes\x86\Microsoft.SqlServer.Types.dll"
+          Checksum="yes"
+          KeyPath="yes" />
+      </Component>
+      <Component Id="Microsoft.SqlServer.SqlClrProvider.dll">
+        <File Name="Microsoft.SqlServer.SqlClrProvider.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+
+      <Component Id="NPOI.OOXML.dll">
+        <File Name="NPOI.OOXML.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="NPOI.OpenXmlFormats.dll">
+        <File Name="NPOI.OpenXmlFormats.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="NPOI.dll">
+        <File Name="NPOI.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="NPOI.OpenXml4Net.dll">
+        <File Name="NPOI.OpenXml4Net.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+
+    <ComponentGroup Id="ThirdParty" Directory="APPLICATIONFOLDER" Source="$(var.ThirdParty)">
+      <Component Id="AxInterop.OWC11.dll">
+        <File Name="AxInterop.OWC11.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="Ionic.Zlib.dll">
+        <File Name="Ionic.Zlib.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="Ionic.Zip.dll">
+        <File Name="Ionic.Zip.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+
+    <ComponentGroup Id="ThirdParty.GIS" Directory="APPLICATIONFOLDER" Source="$(var.ThirdParty.GIS)">
+      <Component Id="expat_ogdi_fw.dll">
+        <File Name="expat_ogdi_fw.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="gdal18.dll">
+        <File Name="gdal18.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="geos_c_fw.dll">
+        <File Name="geos_c_fw.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="geotiff_fw.dll">
+        <File Name="geotiff_fw.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="GISControl.dll">
+        <File Name="GISControl.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="hdf5dll.dll">
+        <File Name="hdf5dll.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="hdf_fw.dll">
+        <File Name="hdf_fw.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="jpeg_fw.dll">
+        <File Name="jpeg_fw.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="libcurl.dll">
+        <File Name="libcurl.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="libtiff_fw.dll">
+        <File Name="libtiff_fw.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="lti_dsdk_dll.dll">
+        <File Name="lti_dsdk_dll.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="mfhdf_fw.dll">
+        <File Name="mfhdf_fw.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="Mono.Security.dll">
+        <File Name="Mono.Security.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+
+      <!--http://social.msdn.microsoft.com/Forums/windowsdesktop/en-US/7f5a39ee-e089-4330-a67c-e8e24090939c/msvcp71dll-missing?forum=windowsgeneraldevelopmentissues
+      http://support.microsoft.com/kb/326922-->
+      <Component Id="msvcp71.dll">
+        <File Name="msvcp71.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="msvcr71.dll">
+        <File Name="msvcr71.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="NCScnet_fw.dll">
+        <File Name="NCScnet_fw.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="NCSEcw_fw.dll">
+        <File Name="NCSEcw_fw.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="NCSUtil_fw.dll">
+        <File Name="NCSUtil_fw.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="netcdf.dll">
+        <File Name="netcdf.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="NetTopologySuite.dll">
+        <File Name="NetTopologySuite.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="Npgsql.dll">
+        <File Name="Npgsql.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="ogdi_fw.dll">
+        <File Name="ogdi_fw.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="ogr_csharp.dll">
+        <File Name="ogr_csharp.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="ogr_wrap.dll">
+        <File Name="ogr_wrap.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="osr_csharp.dll">
+        <File Name="osr_csharp.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="osr_wrap.dll">
+        <File Name="osr_wrap.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="policy.2.0.Npgsql.dll">
+        <File Name="policy.2.0.Npgsql.dll" Checksum="yes" KeyPath="yes" />
+        <File Name="policy.2.0.Npgsql.config" />
+      </Component>
+      <Component Id="PostgreSql.Data.PostgreSqlClient.dll">
+        <File Name="PostgreSql.Data.PostgreSqlClient.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="proj.dll">
+        <File Name="proj.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="proj_fw.dll">
+        <File Name="proj_fw.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="ProjNet.dll">
+        <File Name="ProjNet.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="SharpMap.dll">
+        <File Name="SharpMap.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="SharpMap.Extensions.dll">
+        <File Name="SharpMap.Extensions.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="SharpMap.UI.dll">
+        <File Name="SharpMap.UI.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="spatialite.dll">
+        <File Name="spatialite.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="System.Data.SQLite.dll">
+        <File Name="System.Data.SQLite.dll" KeyPath="yes" />
+      </Component>
+      <Component Id="zlib1.dll">
+        <File Name="zlib1.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="zlib_fw.dll">
+        <File Name="zlib_fw.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+
+      <ComponentGroupRef Id="ThirdParty.GIS.GDBAPI.x86" />
+      <ComponentGroupRef Id="ThirdParty.GIS.GDBAPI.x64" />
+    </ComponentGroup>
+    
+    <?foreach Bitness in x64;x86?>
+    <ComponentGroup
+      Id="ThirdParty.GIS.GDBAPI.$(var.Bitness)"
+      Directory="ESRI$(var.Bitness)"
+      Source="$(var.ThirdParty.GIS)ESRI\$(var.Bitness)">
+      
+      <Component Id="Esri.FileGDBAPI.dll_$(var.Bitness)">
+        <File Id="Esri.FileGDBAPI.dll_$(var.Bitness)" Name="Esri.FileGDBAPI.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+    
+      <Component Id="FileGDBAPI.dll_$(var.Bitness)">
+        <File Id="FileGDBAPI.dll_$(var.Bitness)" Name="FileGDBAPI.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </ComponentGroup>
+    <?endforeach?>
+
+    <ComponentGroup Id="DevExpress" Directory="APPLICATIONFOLDER" Source="$(var.BinariesPaths)">
+      <Component Id="DevExpress.Charts.v15.1.Core.dll">
+        <File Name="DevExpress.Charts.v15.1.Core.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DevExpress.CodeParser.v15.1.dll">
+        <File Name="DevExpress.CodeParser.v15.1.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DevExpress.Data.v15.1.dll">
+        <File Name="DevExpress.Data.v15.1.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DevExpress.Office.v15.1.Core.dll">
+        <File Name="DevExpress.Office.v15.1.Core.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DevExpress.PivotGrid.v15.1.Core.dll">
+        <File Name="DevExpress.PivotGrid.v15.1.Core.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DevExpress.Printing.v15.1.Core.dll">
+        <File Name="DevExpress.Printing.v15.1.Core.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DevExpress.RichEdit.v15.1.Core.dll">
+        <File Name="DevExpress.RichEdit.v15.1.Core.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DevExpress.Sparkline.v15.1.Core.dll">
+        <File Name="DevExpress.Sparkline.v15.1.Core.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DevExpress.Utils.v15.1.dll">
+        <File Name="DevExpress.Utils.v15.1.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DevExpress.Utils.v15.1.UI.dll">
+        <File Name="DevExpress.Utils.v15.1.UI.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DevExpress.Web.ASPxPivotGrid.v15.1.dll">
+        <File Name="DevExpress.Web.ASPxPivotGrid.v15.1.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DevExpress.Web.v15.1.dll">
+        <File Name="DevExpress.Web.v15.1.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraBars.v15.1.dll">
+        <File Name="DevExpress.XtraBars.v15.1.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraCharts.v15.1.dll">
+        <File Name="DevExpress.XtraCharts.v15.1.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <!--<Component Id="DevExpress.XtraCharts.v15.1.Extensions.dll">
+        <File Name="DevExpress.XtraCharts.v15.1.Extensions.dll" Checksum="yes" KeyPath="yes" />
+      </Component>-->
+      <Component Id="DevExpress.XtraCharts.v15.1.UI.dll">
+        <File Name="DevExpress.XtraCharts.v15.1.UI.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraCharts.v15.1.Web.dll">
+        <File Name="DevExpress.XtraCharts.v15.1.Web.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraCharts.v15.1.Wizard.dll">
+        <File Name="DevExpress.XtraCharts.v15.1.Wizard.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraEditors.v15.1.dll">
+        <File Name="DevExpress.XtraEditors.v15.1.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraGrid.v15.1.dll">
+        <File Name="DevExpress.XtraGrid.v15.1.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraLayout.v15.1.dll">
+        <File Name="DevExpress.XtraLayout.v15.1.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraNavBar.v15.1.dll">
+        <File Name="DevExpress.XtraNavBar.v15.1.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraPivotGrid.v15.1.dll">
+        <File Name="DevExpress.XtraPivotGrid.v15.1.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraPrinting.v15.1.dll">
+        <File Name="DevExpress.XtraPrinting.v15.1.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraReports.v15.1.dll">
+        <File Name="DevExpress.XtraReports.v15.1.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraReports.v15.1.Extensions.dll">
+        <File Name="DevExpress.XtraReports.v15.1.Extensions.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraRichEdit.v15.1.dll">
+        <File Name="DevExpress.XtraRichEdit.v15.1.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraTreeList.v15.1.dll">
+        <File Name="DevExpress.XtraTreeList.v15.1.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraVerticalGrid.v15.1.dll">
+        <File Name="DevExpress.XtraVerticalGrid.v15.1.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+
+    <ComponentGroup Id="Harvested">
+      <ComponentGroupRef Id="gdal_data.Harvested" />
+      <ComponentGroupRef Id="PaperForms.Harvested" />
+    </ComponentGroup>
+
+    <ComponentGroup Id="MapProjects" Directory="MapProjects" Source="$(var.BinariesPaths)MapProjects\">
+      <Component Id="Default.map">
+        <File Name="Default.map" Vital="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="Default.KZ.map">
+        <File Name="Default.KZ.map" Vital="yes" KeyPath="yes" />
+      </Component>
+    <Component Id="Default.TH.map">
+        <File Name="Default.TH.map" Vital="yes" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+
+    <ComponentGroup Id="eidss.core.EnterpriseLibrary.DependsOn" Directory="APPLICATIONFOLDER" Source="$(var.BinariesPaths)">
+      <Component Id="Microsoft.Practices.EnterpriseLibrary.Common.dll">
+        <File Name="Microsoft.Practices.EnterpriseLibrary.Common.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Microsoft.Practices.EnterpriseLibrary.Data.dll">
+        <File Name="Microsoft.Practices.EnterpriseLibrary.Data.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll">
+        <File Name="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Microsoft.Practices.EnterpriseLibrary.Logging.dll">
+        <File Name="Microsoft.Practices.EnterpriseLibrary.Logging.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Microsoft.Practices.ServiceLocation.dll">
+        <File Name="Microsoft.Practices.ServiceLocation.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Microsoft.Practices.Unity.dll">
+        <File Name="Microsoft.Practices.Unity.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Microsoft.Practices.Unity.Interception.dll">
+        <File Name="Microsoft.Practices.Unity.Interception.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </ComponentGroup>
+    
+    <?define directory = APPLICATIONFOLDER?>
+    <?define prefix = desktop?>
+    <?include $(var.SolutionDir)StructureMap.wxi?>
+
+    <DirectoryRef Id="CommonAppData.Product">
+      <Component Id="LogFolder" Guid="{20EF0FEE-5133-44DA-937C-D5019A53BFB6}" KeyPath="yes">
+        <CreateFolder>
+          <util:PermissionEx User="Users" GenericRead="yes" GenericWrite="yes" />
+        </CreateFolder>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="CommonAppData.Translations">
+      <Component Id="TranslationsFolder" Guid="{CA4BA0D0-57CB-41B6-B911-4E8032622FA4}" KeyPath="yes">
+        <CreateFolder>
+          <util:PermissionEx
+            User="Users"
+            CreateChild="yes"
+            CreateFile="yes"
+            GenericExecute="yes"
+            GenericRead="yes"
+            GenericWrite="yes"
+            Traverse="yes"
+            Read="yes" />
+        </CreateFolder>
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+ 
+</Wix>

@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7342D1E3-25F4-4E2B-A50A-C5095D2252BE}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>eidss.openapi.test</RootNamespace>
+    <AssemblyName>eidss.openapi.test</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.30506.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\OpenApiService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\DataSources\eidss.openapi.bll.Contracts.HumanCase.datasource" />
+    <None Include="Properties\DataSources\eidss.openapi.bll.Contracts.HumanCaseListItem.datasource" />
+    <None Include="Properties\DataSources\eidss.openapi.contract.Diagnosis.datasource" />
+    <None Include="Properties\DataSources\eidss.openapi.contract.Farm.datasource" />
+    <None Include="Properties\DataSources\eidss.openapi.contract.FarmListItem.datasource" />
+    <None Include="Properties\DataSources\eidss.openapi.contract.GisReference.datasource" />
+    <None Include="Properties\DataSources\eidss.openapi.contract.HumanCase.datasource" />
+    <None Include="Properties\DataSources\eidss.openapi.contract.HumanCaseListItem.datasource" />
+    <None Include="Properties\DataSources\eidss.openapi.contract.Organization.datasource" />
+    <None Include="Properties\DataSources\eidss.openapi.contract.OrganizationListItem.datasource" />
+    <None Include="Properties\DataSources\eidss.openapi.contract.Patient.datasource" />
+    <None Include="Properties\DataSources\eidss.openapi.contract.PatientListItem.datasource" />
+    <None Include="Properties\DataSources\eidss.openapi.contract.PensideTest.datasource" />
+    <None Include="Properties\DataSources\eidss.openapi.contract.Person.datasource" />
+    <None Include="Properties\DataSources\eidss.openapi.contract.Reference.datasource" />
+    <None Include="Properties\DataSources\eidss.openapi.contract.Sample.datasource" />
+    <None Include="Properties\DataSources\eidss.openapi.contract.Test.datasource" />
+    <None Include="Properties\DataSources\eidss.openapi.contract.TestInterpretation.datasource" />
+    <None Include="Properties\DataSources\eidss.openapi.contract.VetCase.datasource" />
+    <None Include="Properties\DataSources\eidss.openapi.contract.VetCaseListItem.datasource" />
+    <None Include="Service References\OpenApiService\eidss.openapi.test.OpenApiService.Diagnosis.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OpenApiService\eidss.openapi.test.OpenApiService.Farm.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OpenApiService\eidss.openapi.test.OpenApiService.FarmListItem.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OpenApiService\eidss.openapi.test.OpenApiService.GisReference.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OpenApiService\eidss.openapi.test.OpenApiService.HumanCase.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OpenApiService\eidss.openapi.test.OpenApiService.HumanCaseListItem.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OpenApiService\eidss.openapi.test.OpenApiService.Organization.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OpenApiService\eidss.openapi.test.OpenApiService.OrganizationListItem.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OpenApiService\eidss.openapi.test.OpenApiService.Patient.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OpenApiService\eidss.openapi.test.OpenApiService.PatientListItem.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OpenApiService\eidss.openapi.test.OpenApiService.PensideTest.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OpenApiService\eidss.openapi.test.OpenApiService.Person.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OpenApiService\eidss.openapi.test.OpenApiService.Reference.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OpenApiService\eidss.openapi.test.OpenApiService.Sample.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OpenApiService\eidss.openapi.test.OpenApiService.Test.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OpenApiService\eidss.openapi.test.OpenApiService.TestInterpretation.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OpenApiService\eidss.openapi.test.OpenApiService.VetCase.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OpenApiService\eidss.openapi.test.OpenApiService.VetCaseListItem.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OpenApiService\SoapService1.wsdl" />
+    <None Include="Service References\OpenApiService\SoapService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\OpenApiService\SoapService31.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\OpenApiService\SoapService32.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\eidss.openapi.bll\eidss.openapi.bll.csproj">
+      <Project>{f06b5b8c-ff70-4b2d-a88c-55a2fe8c8884}</Project>
+      <Name>eidss.openapi.bll</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.openapi.contract\eidss.openapi.contract.csproj">
+      <Project>{90a555d5-db79-4074-b9a9-a3fb6624f1bc}</Project>
+      <Name>eidss.openapi.contract</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\OpenApiService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\OpenApiService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\OpenApiService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\OpenApiService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\OpenApiService\SoapService1.disco" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

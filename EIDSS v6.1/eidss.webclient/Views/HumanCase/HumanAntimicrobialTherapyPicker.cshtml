@@ -1,0 +1,56 @@
+﻿@model eidss.model.Schema.AntimicrobialTherapy
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        //ChangeMessageWindowHeigth();
+    });  
+</script>
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+
+<input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+         <div class="windowButtonsPn">                  
+             <input id="idButtonOk" type="button" class="windowButton" onclick="humanAntimicrobialTherapy.saveAndCloseGridEditWindow('@(Model.CaseObjectIdent)');" value="@Translator.GetMessageString("Ok")"/>     
+             <input id="idButtonCancel" type="button" class="windowButton" onclick="bvPopup.closeDefaultPopup();" value="@Translator.GetMessageString("Cancel")"/>  
+         </div>   
+        <div class="windowSeparator"></div>
+        @Html.Hidden("idfAntimicrobialTherapy", Model.idfAntimicrobialTherapy)                                               
+        <table class="level1">    
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Html.BvLabel(Model, m => m.strAntimicrobialTherapyName)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strAntimicrobialTherapyName, true)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strDosage)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strDosage, true)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.datFirstAdministeredDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datFirstAdministeredDate)
+                </td>                            
+            </tr>            
+        </table> 
+    }           
+</div>

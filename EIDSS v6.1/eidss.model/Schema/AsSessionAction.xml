@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="AsSessionAction"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spAsSessionAction_SelectDetail" type="detaillist" />
+  </storage>
+
+  <tables>
+    <table name="AsSessionAction">
+      <grid>
+        <item name="idfMonitoringSessionAction" key="true" visible="false"/>
+        <item name="strMonitoringSessionActionType" type="string" required="true"/>
+        <item name="datActionDate" />
+        <item name="strPersonEnteredBy" type="string"/>
+        <item name="strComments" type="string"/>
+        <item name="strMonitoringSessionActionStatus" type="string"/>
+      </grid>
+      <labels>
+        <item name="datActionDate" labelId="AsSessionAction.datActionDate"/>
+        <item name="strMonitoringSessionActionStatus" labelId="idfsMonitoringSessionActionStatus"/>
+        <item name="strMonitoringSessionActionType" labelId="idfsMonitoringSessionActionType"/>
+        <item name="strComments" labelId="strComment"/>
+        <item name="datStartDate" labelId="AsSession.DetailsStartDate" />
+      </labels>
+      <fields>
+        <calculated name="strMonitoringSessionActionType" type="string" depends="idfsMonitoringSessionActionType" lambda='c=>c.MonitoringSessionActionType == null ? "" : c.MonitoringSessionActionType.name'/>
+        <calculated name="strMonitoringSessionActionStatus" type="string" depends="idfsMonitoringSessionActionStatus" lambda='c=>c.MonitoringSessionActionStatus == null ? "" : c.MonitoringSessionActionStatus.name'/>
+        <calculated name="datStartDate" type="DateTime?" depends="Parent" lambda="c => (c.Parent as AsSession).datStartDate"/>
+        <storage name='Action' type='int'/>
+      </fields>
+      <readonly>
+        <fields name='strPersonEnteredBy,Action' predicate='c=>true'/>
+      </readonly>
+      <lookups>
+        <lookup name="MonitoringSessionActionStatus" table="BaseReference" section="rftMonitoringSessionActionStatus" source="idfsMonitoringSessionActionStatus" target="idfsBaseReference" />
+        <lookup name="MonitoringSessionActionType" table="BaseReference" section="rftMonitoringSessionActionType" source="idfsMonitoringSessionActionType" target="idfsBaseReference" />
+      </lookups>
+      <storage>
+        <post name="spAsSessionAction_Post"/>
+      </storage>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfMonitoringSessionAction" class="GetNewIDExtender"/>
+          <value_extender target="Action" value="4"/>
+        </creating>
+        <created>
+          <lambda_extender target="idfMonitoringSession" type="long" lambda='c => c.Parent != null ? ((AsSession)c.Parent).idfMonitoringSession : c.idfMonitoringSession' />
+          <lambda_extender target="strPersonEnteredBy" type="string" lambda="c => EidssUserContext.User.FullName"/>
+          <lambda_extender target="datActionDate" type="DateTime?" lambda="c => DateTime.Today"/>
+          <lambda_extender target="MonitoringSessionActionStatus" type="BaseReference" lambda="c => c.MonitoringSessionActionStatusLookup.FirstOrDefault(i => i.idfsBaseReference == (long)AsSessionActionStatus.Open)"/>
+          <custom_extender>
+            <text>
+              if (EidssUserContext.Instance != null)
+                if (EidssUserContext.User != null)
+                {
+                  if (EidssUserContext.User.EmployeeID != null)
+                  {
+                    long em;
+                    if (long.TryParse(EidssUserContext.User.EmployeeID.ToString(), out em))
+                      obj.idfPersonEnteredBy = em;
+                  }
+                }
+            </text>
+          </custom_extender>
+        </created>
+      </extenders>
+      <validators>
+        <chains>
+          <item field="datStartDate" type="DateTime">
+            <item field="datActionDate" />
+          </item>
+        </chains>
+
+        <post>
+          <required_validator field="idfsMonitoringSessionActionType" target="MonitoringSessionActionType"/>
+          <!--required_validator target="datActionDate" /-->
+          <required_validator field="idfsMonitoringSessionActionStatus" target="MonitoringSessionActionStatus"/>
+        </post>
+      </validators>
+      <actions>
+        <action name="CreateAction" type="Create">
+          <run>
+            <params>
+              <param name="sessionId" type="long" />
+            </params>
+            <creating>
+              <value_extender target="idfMonitoringSession" value='sessionId' />
+              <!--<value_extender target="Session" value="session"/>-->
+            </creating>
+          </run>
+        </action>
+      </actions>
+    </table>
+  </tables>
+
+</object>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="https://eservice.e-health.gov.az/EHealthWcf/IdentityService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/EHealthSurrogateLibrary.Catalogs" />
+  <xs:import schemaLocation="https://eservice.e-health.gov.az/EHealthWcf/IdentityService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/EHealthModelWcf" />
+  <xs:element name="GetPersonByPin">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="pin" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetPersonByPinResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/EHealthSurrogateLibrary.Catalogs" minOccurs="0" name="GetPersonByPinResult" nillable="true" type="q1:Person" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetPersonByDocumentNumber">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="documentnumber" nillable="true" type="xs:string" />
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/EHealthModelWcf" minOccurs="0" name="documenttype" nillable="true" type="q2:IdentityService.DocumentType" />
+        <xs:element minOccurs="0" name="dateOfBirth" nillable="true" type="xs:dateTime" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetPersonByDocumentNumberResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/EHealthSurrogateLibrary.Catalogs" minOccurs="0" name="GetPersonByDocumentNumberResult" nillable="true" type="q3:Person" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetPersonByParams">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="surname" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="fathername" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="dateofbirth" nillable="true" type="xs:dateTime" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetPersonByParamsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/EHealthSurrogateLibrary.Catalogs" minOccurs="0" name="GetPersonByParamsResult" nillable="true" type="q4:ArrayOfPerson" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InsertPersonGetUniqueCode">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/EHealthSurrogateLibrary.Catalogs" minOccurs="0" name="person" nillable="true" type="q5:Person" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InsertPersonGetUniqueCodeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/EHealthSurrogateLibrary.Catalogs" minOccurs="0" name="InsertPersonGetUniqueCodeResult" nillable="true" type="q6:Person" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

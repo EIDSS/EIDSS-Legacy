@@ -1,0 +1,46 @@
+﻿@model eidss.model.Schema.AsSessionFarm
+@{
+    ViewBag.Title = Translator.GetMessageString("tabTitleFarmsHerdsSpecies");
+    ViewBag.Number = "V33"; 
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+}
+@using Kendo.Mvc.UI;
+@using eidss.web.common.Utils;
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+@using bv.common.Configuration;
+
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@using (Html.BeginForm())
+{
+    @Html.IdentificationAndHeartbeat("idfMonitoringSession", Model.idfMonitoringSession.Value)
+@*    @Html.HiddenFor(m => m.id)
+    @Html.HiddenFor(m => m.idfFarmActual)*@
+    @Html.HiddenFor(m => m.idfFarm)
+
+    @Html.Hidden("ASFKey", Request["key"])
+    @Html.Hidden("ASFName", Request["name"])
+    @Html.Hidden("ASFItem", Request["item"])
+    @Html.Hidden("ASFdetails", Request["details"])
+    @Html.Hidden("ASFsummary", Request["summary"])
+    @Html.Hidden("ASFarms", (Model.Parent as AsSession).ASFarmsAll.Aggregate("", (s, farm) => s + (s.Length > 0 ? "," : "") + farm.Farm.idfRootFarm + "=" + farm.idfFarm))
+
+    <div class="tabPanelContent bordered">
+        <div class="tabPanelContent">
+            @Html.Partial("../Farm/Panel", Model.Farm)
+        </div>
+        
+        <div class="tabPanelContent">
+            @Html.Action("HerdOrFlockList", "ASSessionFarm", new {
+                        root = ViewBag.IdfRoot,
+                        listName = Model.Farm.ObjectIdent + "FarmTree",
+                        items = Model.Farm.FarmTree,
+                        readOnly = Model.Farm.IsReadOnly("FarmTree") || (Model.Farm.GetPermissions() == null ? false : Model.Farm.GetPermissions().IsReadOnlyForEdit)
+                    })
+        </div>
+    </div>   
+}

@@ -1,0 +1,639 @@
+<resources>
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Black">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+
+    <!-- Common layout styles. -->
+
+    <style name="CommonLayout"  >
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="UnderScrollLayout"  >
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingLeft">@dimen/Padding.M</item>
+        <item name="android:paddingRight">@dimen/Padding.M</item>
+    </style>
+
+
+    <style name="CommonButton" parent="@android:style/TextAppearance.Widget.Button" >
+        <item name="android:textSize">@dimen/CommonButton.TextSize</item>
+        <item name="android:textColor">@color/CommonButton.TextColor</item>
+        <item name="android:minHeight">@dimen/CommonButton.MinHeight</item>
+    </style>
+
+    <style name="CommonButton.Port"  >
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="CommonButton.Land" >
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="SpaceItem" parent="@android:style/TextAppearance">
+        <item name="android:layout_width">@dimen/SpaceItemSize</item>
+        <item name="android:layout_height">@dimen/SpaceItemSize</item>
+    </style>
+
+    <style name="ButtonSpaceItem" parent="@android:style/TextAppearance">
+        <item name="android:layout_width">@dimen/SmallSpaceItemSize</item>
+        <item name="android:layout_height">@dimen/SmallSpaceItemSize</item>
+    </style>
+
+    <style name="Separator" parent="@android:style/TextAppearance">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/Separator.Background</item>
+    </style>
+
+    <style name="DropDownList" parent="@android:style/Widget.ListView.DropDown">
+        <item name="android:divider">@color/Menu.Separator.Background</item>
+    </style>
+    <!-- End of Common layout styles. -->
+
+    <!-- Login styles. -->
+    <!-- Login layout styles. -->
+    <style name="CommonLayout.Login" >
+        <item name="android:background">@color/CommonBackground</item>
+    </style>
+
+    <style name="LoginLayout"  >
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="LoginLayout.Port"  >
+        <item name="android:layout_marginLeft">@dimen/LoginLayout.Margin</item>
+        <item name="android:layout_marginRight">@dimen/LoginLayout.Margin</item>
+    </style>
+
+    <style name="LoginButtonLayout"  >
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@color/CommonBackground</item>
+    </style>
+    <!-- END Login layout styles. -->
+
+    <!-- Login control styles. -->
+    <style name="LoginHeader" parent="@android:style/TextAppearance.Widget.TextView">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@color/LoginHeader.TextColor</item>
+        <item name="android:textSize">@dimen/LoginHeader.TextSize</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:text">@string/ApplicationName</item>
+    </style>
+
+    <style name="LoginDensity" parent="@android:style/TextAppearance.Widget.TextView">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/RedTextColor</item>
+        <item name="android:textSize">@dimen/InfoItem.TextSize</item>
+        <item name="android:text">@string/ScreenDensity</item>
+    </style>
+
+    <style name="LoginFooter" parent="@android:style/TextAppearance.Widget.TextView">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:text">@string/Space</item>
+    </style>
+
+    <style name="LoginButton" parent="@android:style/TextAppearance.Widget.Button">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/LoginButton.Height</item>
+        <item name="android:layout_marginRight">@dimen/LoginButton.Margin</item>
+        <item name="android:layout_marginLeft">@dimen/LoginButton.Margin</item>
+        <item name="android:layout_marginTop">@dimen/LoginButton.Margin</item>
+        <item name="android:layout_marginBottom">@dimen/LoginButton.Margin</item>
+        <item name="android:textSize">@dimen/LoginButton.TextSize</item>
+        <item name="android:textColor">@color/LoginButton.TextColor</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="LoginPassword" parent="@android:style/TextAppearance.Widget.EditText">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/LoginInput.Height</item>
+        <item name="android:paddingLeft">@dimen/LoginInput.Padding</item>
+        <item name="android:inputType">textPassword</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:background">@color/LoginInput.Background</item>
+        <item name="android:textSize">@dimen/LoginInput.TextSize</item>
+        <item name="android:textColor">@color/LoginInput.TextColor</item>
+        <item name="android:textColorHint">@color/LoginInput.TextColorHint</item>
+    </style>
+
+    <style name="LoginMessage" parent="@android:style/TextAppearance.Widget.TextView">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/LoginMessage.TextColor</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textScaleX">1.2</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:text">@string/PasswordNotSet</item>
+    </style>
+    <!-- END Login control styles. -->
+    <!-- END Login styles. -->
+
+
+    <!-- Detail styles. -->
+    <!-- Detail layout styles. -->
+    <style name="DetailLayout" >
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/DetailItem.Height</item>
+    </style>
+
+    <style name="DetailLayout.Port" >
+        <item name="android:tag">controlContainer</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="FFBaseLayout" >
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingBottom">@dimen/Padding.M</item>
+        <item name="android:paddingTop">@dimen/Padding.M</item>
+    </style>
+
+    <style name="DetailLayout.Land" >
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="DetailLayout.Date" >
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:minHeight">@dimen/DetailItem.InnerHeight</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="DetailLayout.Species" >
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+    <!-- END Detail layout styles. -->
+
+    <!-- Detail control styles. -->
+    <style name="DetailItem" parent="@android:style/TextAppearance.Widget.TextView">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:textSize">@dimen/DetailItem.TextSize</item>
+        <item name="android:textColor">@color/DetailItem.TextColor</item>
+        <item name="android:textColorHint">@color/DetailItem.TextColorHint</item>
+
+    </style>
+
+    <style name="DetailItem.Header" >
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/DetailItem.Header.Padding</item>
+        <item name="android:textSize">@dimen/DetailItem.Header.TextSize</item>
+        <item name="android:textColor">@color/DetailItem.Header.TextColor</item>
+        <item name="android:tag">controlHeader</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!--style name="DetailItem.Header.Bold" >
+        <item name="android:textStyle">bold</item>
+    </style-->
+
+    <style name="DetailItem.Header.Italic" >
+        <item name="android:textStyle">italic</item>
+    </style>
+
+    <style name="DetailItem.Header.FFLabel" >
+        <item name="android:textColor">@color/DetailItem.TextColor</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingBottom">@dimen/Padding.M</item>
+        <item name="android:paddingTop">@dimen/Padding.M</item>
+    </style>
+
+    <style name="DetailItem.GroupHeader" >
+        <item name="android:layout_height">wrap_content</item>
+        <!--item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item-->
+        <item name="android:paddingLeft">@dimen/DetailItem.GroupHeader.PaddingLeft</item>
+        <item name="android:textSize">@dimen/DetailItem.GroupHeader.TextSize</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/LoginButton.TextColor</item>
+    </style>
+
+    <!--style name="DetailItem.GroupHeader.FFSection" >
+        <item name="android:textColor">@color/LoginButton.TextColor</item>
+    </style-->
+
+    <style name="Separator.GroupHeader">
+        <item name="android:background">@color/GroupHeader.Separator.Background</item>
+    </style>
+
+    <style name="DetailItem.Header.Mandatory">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/DetailItem.Header.Mandatory.TextColor</item>
+    </style>
+
+    <style name="DetailItem.Header.Readonly" parent="DetailItem.Header">
+        <item name="android:textColor">@color/DetailItem.TextColorHint</item>
+        <item name="android:textStyle">italic|normal</item>
+    </style>
+
+    <style name="DetailItem.Text" >
+        <item name="android:layout_weight">1</item>
+        <item name="android:inputType">textMultiLine</item>
+        <item name="android:paddingLeft">@dimen/DetailItem.Padding</item>
+        <item name="android:paddingRight">@dimen/DetailItem.Padding</item>
+        <item name="android:background">@color/TransparentColor</item>
+        <item name="android:tag">text</item>
+    </style>
+
+    <style name="DetailItem.Text.Root" >
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingBottom">@dimen/Padding.M</item>
+        <item name="android:paddingTop">@dimen/Padding.M</item>
+    </style>
+
+    <style name="DetailItem.CheckBox" >
+        <!--item name="android:layout_weight">1</item-->
+        <item name="android:layout_height">@dimen/SpinnerItem.Height</item>
+        <item name="android:inputType">text</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:paddingLeft">@dimen/DetailItem.Padding</item>
+        <item name="android:paddingRight">@dimen/DetailItem.Padding</item>
+        <item name="android:background">@color/TransparentColor</item>
+        <item name="android:tag">text</item>
+    </style>
+
+    <style name="DetailItem.Spinner" >
+        <!--item name="android:layout_weight">1</item-->
+        <item name="android:layout_height">@dimen/SpinnerItem.Height</item>
+        <item name="android:tag">spinner</item>
+    </style>
+    <style name="DetailItem.AutoComplete" >
+        <!--item name="android:layout_weight">1</item-->
+        <item name="android:layout_height">@dimen/SpinnerItem.Height</item>
+        <item name="android:paddingLeft">@dimen/DetailItem.Padding</item>
+        <item name="android:paddingRight">@dimen/DetailItem.Padding</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:background">@drawable/apptheme_autocomplete_background_holo_dark</item>
+        <item name="android:dropDownHeight">wrap_content</item>
+        <item name="android:completionThreshold">1</item>
+        <item name="android:minHeight">@dimen/DetailItem.InnerHeight</item>
+        <item name="android:tag">text</item>
+    </style>
+
+    <style name="DetailItem.Date">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:inputType">date</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:enabled">false</item>
+        <item name="android:paddingLeft">@dimen/DetailItem.Padding</item>
+        <item name="android:paddingRight">@dimen/DetailItem.Padding</item>
+        <item name="android:background">@color/TransparentColor</item>
+    </style>
+
+    <style name="DetailItem.Date.Readonly" parent="DetailItem.Date">
+        <item name="android:textColor">@color/DetailItem.TextColorHint</item>
+    </style>
+
+    <style name="DetailItem.Date.Button"  parent="@android:style/TextAppearance.Widget.Button" >
+        <item name="android:layout_width">@dimen/DetailDate.Button.Width</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="DetailItem.Date.Button.Open"  >
+        <item name="android:background">@drawable/apptheme_spinner_background_holo_dark</item>
+    </style>
+
+    <style name="DetailItem.Date.Button.Clear"  >
+        <item name="android:background">@color/TransparentColor</item>
+        <item name="android:text">@string/ClearDate</item>
+    </style>
+
+    <!-- END Detail control styles. -->
+    <!-- END Detail styles. -->
+
+    <!-- List styles. -->
+    <style name="ListItemLayout" >
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/ListLayout.MinHeight</item>
+        <item name="android:paddingLeft">@dimen/ListLayout.PaddingLeft</item>
+        <item name="android:paddingRight">@dimen/ListLayout.PaddingRight</item>
+        <item name="android:paddingTop">@dimen/ListLayout.PaddingVertical</item>
+        <item name="android:paddingBottom">@dimen/ListLayout.PaddingVertical</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="ListItemImage" >
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">@dimen/ListLayout.ImagePaddingHorizontal</item>
+        <item name="android:paddingTop">@dimen/ListLayout.ImagePaddingVertical</item>
+        <item name="android:paddingBottom">0dp</item>
+    </style>
+
+    <!-- List control styles. -->
+    <style name="ListItem" parent="@android:style/TextAppearance.Widget.TextView" >
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/ListItem.TextSize</item>
+        <item name="android:textColor">@color/ListItem.TextColor</item>
+        <item name="android:inputType">text</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingLeft">0dp</item>
+    </style>
+
+    <style name="ListItem.Header" >
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ListItem.L" >
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="ListItem.R" >
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="ListItem.Date" >
+        <item name="android:textColor">@color/ListItem.Date.TextColor</item>
+        <item name="android:textSize">@dimen/ListItem.Date.TextSize</item>
+    </style>
+
+    <style name="ListItem.Error" >
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/ListItem.Error.TextSize</item>
+        <item name="android:textColor">@color/RedTextColor</item>
+        <item name="android:background">@color/TransparentColor</item>
+        <item name="android:inputType">textMultiLine</item>
+    </style>
+
+    <style name="ListItem.Status" >
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">@dimen/ListItem.Status.TextSize</item>
+        <item name="android:textColor">@color/ListItem.Status.TextColor</item>
+    </style>
+
+    <!-- END List control styles. -->
+    <!-- END List styles. -->
+
+    <!-- Info styles. -->
+    <style name="InfoLayout" parent="@style/DetailLayout.Port"  >
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="InfoItem" parent="@android:style/TextAppearance.Widget.TextView" >
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/InfoItem.Padding</item>
+        <item name="android:paddingRight">@dimen/InfoItem.Padding</item>
+        <item name="android:layout_marginTop">@dimen/InfoItem.Margin</item>
+        <item name="android:layout_marginBottom">@dimen/InfoItem.Margin</item>
+
+        <item name="android:textSize">@dimen/InfoItem.TextSize</item>
+        <item name="android:textColor">@color/InfoItem.TextColor</item>
+    </style>
+
+    <style name="InfoItem.Header" >
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/InfoHeader.TextSize</item>
+    </style>
+
+    <style name="InfoItem.SubHeader" >
+        <item name="android:textColor">@color/InfoHeader.TextColor</item>
+        <item name="android:textSize">@dimen/InfoSubHeader.TextSize</item>
+    </style>
+    <style name="InfoItem.Footer" >
+        <item name="android:textSize">@dimen/InfoFooter.TextSize</item>
+        <item name="android:textColor">@color/InfoHeader.TextColor</item>
+    </style>
+    <!-- END Info styles. -->
+
+
+    <!-- File browser styles. -->
+    <style name="SelectedDirectoryItem" parent="@android:style/TextAppearance.Widget.TextView" >
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">@dimen/Directory.TextSize</item>
+        <item name="android:textColor">@color/Directory.TextColor</item>
+    </style>
+
+    <style name="SelectedFileItem" parent="@style/DetailItem.Text" >
+        <item name="android:textSize">@dimen/SelectedFile.TextSize</item>
+        <item name="android:textColor">@color/SelectedFile.TextColor</item>
+    </style>
+
+
+    <style name="FileListItem"  parent="@android:style/TextAppearance.Widget.TextView"  >
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/FileName.TextSize</item>
+        <item name="android:textColor">@color/FileName.TextColor</item>
+    </style>
+
+    <style name="FileListIcon" >
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_marginLeft">@dimen/FileIcon.MarginLeft</item>
+        <item name="android:layout_marginRight">@dimen/FileIcon.MarginRight</item>
+        <item name="android:textColor">@color/SelectedFile.TextColor</item>
+    </style>
+
+    <!-- END Info styles. -->
+
+    <!-- Navigation Menu styles. -->
+    <!-- Navigation Menu layout styles. -->
+    <style name="MenuLayout">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:minHeight">@dimen/MenuLayout.MinHeight</item>
+        <item name="android:paddingTop">@dimen/Padding.XS</item>
+        <item name="android:paddingBottom">@dimen/Padding.XS</item>
+        <item name="android:paddingLeft">@dimen/Padding.M</item>
+        <item name="android:paddingRight">@dimen/Padding.M</item>
+    </style>
+
+    <!-- END Navigation Menu layout styles. -->
+
+    <!-- Navigation Menu Separator styles. -->
+    <style name="Separator.Menu">
+        <!--<item name="android:layout_marginBottom">@dimen/Menu.Separator.MarginBottom</item>-->
+        <!--<item name="android:layout_marginRight">@dimen/Menu.Separator.MarginRight</item>-->
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginLeft">0dp</item>
+
+        <item name="android:background">@color/Menu.Separator.Background</item>
+    </style>
+
+    <style name="Separator.Menu.Title">
+    </style>
+
+    <style name="Separator.Menu.Item">
+        <item name="android:layout_marginLeft">@dimen/MenuItem.Separator.MarginLeft</item>
+    </style>
+    <!-- END Navigation Menu Separator styles. -->
+
+    <!-- Navigation Menu Text styles. -->
+    <style name="MenuText">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+
+        <item name="android:textColor">@color/MenuItem.TextColor</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:drawablePadding">@dimen/Padding.M</item>
+    </style>
+
+    <style name="MenuText.Title">
+        <item name="android:minHeight">@dimen/MenuLayout.MinHeight</item>
+        <item name="android:paddingTop">@dimen/Padding.XS</item>
+        <item name="android:paddingBottom">@dimen/Padding.XS</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/MenuTitle.TextSize</item>
+    </style>
+
+    <style name="MenuText.Subtitle">
+        <item name="android:layout_marginLeft">@dimen/Padding.M</item>
+        <item name="android:minHeight">@dimen/MenuLayout.MinHeight</item>
+        <item name="android:paddingTop">@dimen/Padding.XS</item>
+        <item name="android:paddingBottom">@dimen/Padding.XS</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/MenuSubtitle.TextSize</item>
+    </style>
+
+    <style name="MenuText.Item">
+        <item name="android:layout_marginLeft">@dimen/Padding.L</item>
+        <item name="android:textSize">@dimen/MenuItem.TextSize</item>
+    </style>
+    <!-- END Navigation Menu Text styles. -->
+
+    <!-- Navigation Menu image styles. -->
+    <style name="MenuImage">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/MenuImage.PaddingLeft</item>
+        <item name="android:paddingRight">@dimen/MenuImage.PaddingRight</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="MenuImage.Title">
+    </style>
+
+    <style name="MenuImage.Item">
+    </style>
+
+    <!-- END Navigation Menu image styles. -->
+    <!-- END Navigation Menu  styles. -->
+
+    <style name="SpinnerAppTheme" parent="android:Widget.Spinner">
+        <item name="android:background">@drawable/apptheme_spinner_background_holo_dark</item>
+        <item name="android:dropDownSelector">@drawable/apptheme_list_selector_holo_dark</item>
+    </style>
+
+    <style name="SpinnerDropDownItemAppTheme" parent="android:Widget.DropDownItem.Spinner">
+        <item name="android:checkMark">@drawable/apptheme_btn_radio_holo_dark</item>
+    </style>
+
+    <style name="CustomSpinnerItem" >
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:background">@color/CommonBackground</item>
+    </style>
+
+    <style name="Widget.Holo.CompoundButton.CheckBox" parent="android:Widget.CompoundButton.CheckBox" />
+
+    <style name="PopupMenu" parent="android:Widget.PopupWindow">
+        <item name="android:popupBackground">@color/CommonBackground</item>
+    </style>
+    <style name="PopupMenuTextAppearanceSmall" parent="@style/TextAppearance.AppCompat.Widget.PopupMenu.Small">
+        <item name="android:textColor">@color/LightTextColor</item>
+        <item name="android:textSize">@dimen/MenuItem.TextSize</item>
+        <item name="android:minHeight">@dimen/MenuLayout.MinHeight</item>
+    </style>
+
+    <style name="PopupMenuTextAppearanceLarge" parent="@style/TextAppearance.AppCompat.Widget.PopupMenu.Large">
+        <item name="android:textColor">@color/LightTextColor</item>
+        <item name="android:textSize">@dimen/MenuItem.TextSize</item>
+        <item name="android:minHeight">@dimen/MenuLayout.MinHeight</item>
+    </style>
+
+    <style name="GettingStartedListCheckbox">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/CommonBackground</item>
+        <item name="android:textSize">@dimen/TextSize.S</item>
+        <item name="android:paddingTop">@dimen/Padding.M</item>
+        <item name="android:paddingBottom">@dimen/Padding.M</item>
+        <item name="android:layout_marginLeft">@dimen/Padding.XS</item>
+    </style>
+
+
+    <style name="AppOverlayTheme" parent="@style/Theme.AppCompat.Light">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+
+        <item name="colorPrimary">@color/primary</item>
+        <!-- darker variant for the status bar and contextual app bars -->
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <!--   theme UI controls like checkboxes and text fields e.g. FloatActionButton -->
+        <item name="colorAccent">@color/accent</item>
+        <!-- Title Text Color -->
+        <item name="android:textColorPrimary">@color/primary_text</item>
+        <!-- color of the menu overflow icon (three vertical dots) -->
+        <item name="android:textColorSecondary">@color/secondary_text</item>
+    </style>
+
+    <style name="TransparentToolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:windowActionBarOverlay">true</item>
+        <!-- Support Library compability -->
+        <item name="windowActionBarOverlay">true</item>
+    </style>
+</resources>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <Property Id="IRAQ_DEFAULTLANGUAGE" Value="ar" Secure="yes" />
+    <Property Id="Arabic" Value="ar" />
+    <Property Id="arEnglish" Value="en" />
+
+    <UI>
+      <Dialog Id="IraqLanguagesDlg" Width="370" Height="270" Title="!(loc.LanguageDlg_Title)">
+        <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)">
+          <Publish Property="DEFAULTLANGUAGE" Value="[IRAQ_DEFAULTLANGUAGE]" Order="1">1</Publish>
+          <Publish Property="SUPPORTEDLANGUAGES" Value="{[Arabic]}{,[arEnglish]}" Order="1">1</Publish>
+
+          <Publish Property="ErrorLanguagesText" Value="{}" Order="2">
+            <![CDATA[SUPPORTEDLANGUAGES And "" <> SUPPORTEDLANGUAGES And SUPPORTEDLANGUAGES >< DEFAULTLANGUAGE]]>
+          </Publish>
+          <Publish Property="ErrorLanguagesText" Value="!(loc.ErrorLanguagesText_DeadDefaultLanguage)" Order="3">
+            <![CDATA[Not (SUPPORTEDLANGUAGES >< DEFAULTLANGUAGE)]]>
+          </Publish>
+          <Publish Property="ErrorLanguagesText" Value="!(loc.ErrorLanguagesText_EmptySupportedLanguages)" Order="4">
+            <![CDATA[Not SUPPORTEDLANGUAGES Or "" = SUPPORTEDLANGUAGES]]>
+          </Publish>
+
+          <Publish Property="LanguagesValidationError" Value="0" Order="5">
+            <![CDATA[SUPPORTEDLANGUAGES And "" <> SUPPORTEDLANGUAGES And SUPPORTEDLANGUAGES >< DEFAULTLANGUAGE]]>
+          </Publish>
+          <Publish Property="LanguagesValidationError" Value="1" Order="5">
+            <![CDATA[Not SUPPORTEDLANGUAGES Or "" = SUPPORTEDLANGUAGES Or Not (SUPPORTEDLANGUAGES >< DEFAULTLANGUAGE)]]>
+          </Publish>
+
+          <Publish Event="SpawnDialog" Value="ErrorValidateLanguagesDlg" Order="10"><![CDATA[1 = LanguagesValidationError]]></Publish>          
+        </Control>
+        <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" />
+        <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+          <Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+        </Control>
+        <Control Id="Description" Type="Text" X="25" Y="23" Width="280" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.LanguageDlgDescription)" />
+        <Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.LanguageDlgTitle)" />
+        <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="!(loc.LanguageDlgBannerBitmap)" />
+        <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+        <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+        <Control Id="Text" Type="Text" X="20" Y="60" Width="290" Height="30" NoPrefix="yes" Text="!(loc.LanguageDlgText)" />
+        <Control Id="SupportedLanguages" Type="Text" Width="90" Height="17" X="15" Y="90" Text="!(loc.LanguageDlgSupportedLanguages)" />
+        <Control Id="Default" Type="Text" Width="90" Height="17" X="115" Y="90" Text="!(loc.LanguageDlgDefault)" />
+
+        <Control Type="CheckBox" Id="Arabic" Width="70" Height="17" X="30" Y="120" Text="!(loc.Arabic)" Property="Arabic" CheckBoxValue="ar" />
+        <Control Type="CheckBox" Id="arEnglish" Width="50" Height="17" X="30" Y="150" Text="!(loc.English)" Property="arEnglish" CheckBoxValue="en" />
+        <Control Id="IraqLanguageGroup" Type="RadioButtonGroup" Property="IRAQ_DEFAULTLANGUAGE" Width="230" Height="100" X="130" Y="120">
+          <RadioButtonGroup Property="IRAQ_DEFAULTLANGUAGE">
+            <RadioButton Text="Arabic (Iraq)" Height="17" Value="ar" Width="10" X="0" Y="0" />
+            <RadioButton Text="English" Height="17" Value="en" Width="10" X="0" Y="30" />
+          </RadioButtonGroup>
+        </Control>
+      </Dialog>
+    </UI>
+  </Fragment>
+</Wix>

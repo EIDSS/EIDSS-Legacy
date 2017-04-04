@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup Label="Common Paths">
+    <IntermediateOutputPath Condition=" 'true' != '$([System.IO.Path]::IsPathRooted($(IntermediateOutputPath)))' ">$(ProjectDir)$(IntermediateOutputPath)</IntermediateOutputPath>
+
+    <!-- On build machine this folder is initialized to something like that "C:\B\15\31\" -->
+    <BuildDir Condition=" '' == '$(BuildDir)' ">$([System.IO.Path]::GetFullPath('$(SolutionDir)..\..\'))</BuildDir>
+
+    <!-- On build machine this folder is initialized to something like that "C:\B\15\31\Sources\" -->
+    <SourceDir Condition=" '' == '$(SourceDir)' ">$([System.IO.Path]::GetFullPath('$(SolutionDir)..\..\'))</SourceDir>
+
+    <!-- On build machine this folder is initialized to something like that "C:\B\15\31\Binaries\" -->
+    <BinariesRoot Condition=" '' == '$(BinariesRoot)' ">$(BuildDir)Binaries\</BinariesRoot>
+
+    <BinariesPaths>$([System.IO.Path]::GetFullPath('$(BinariesRoot)\'))</BinariesPaths>
+
+    <IntermediateDistribDir Condition=" '' == '$(IntermediateDistribDir)' ">$(BinariesRoot)IntermediateDistribDir\</IntermediateDistribDir>
+
+    <BaseSetupFolder>$(IntermediateDistribDir)Setup\</BaseSetupFolder>
+
+    <BindInputPaths>$(BindInputPaths);$(BinariesPaths)</BindInputPaths>
+
+    <VersionWixFile Condition=" '' == '$(VersionWixFile)' ">$(IntermediateOutputPath)ProductVersion.wxi</VersionWixFile>
+    <VersionFile Condition=" '' == '$(VersionFile)' ">$(SourceDir)EIDSS\EIDSS.Setup.AssemblyInfo.cs</VersionFile>
+
+    <PrivatePrefix Condition=" 'true' == '$(Private)' ">PRIVATE.</PrivatePrefix>
+  </PropertyGroup>
+
+
+  <PropertyGroup>
+    <ParseVersionFileDependsOn>
+      ReadRawVersionInfo;
+      ExtractVersionInfo;
+      CreateWixVersionInfo
+    </ParseVersionFileDependsOn>
+  </PropertyGroup>
+  <Target
+    Name="ParseVersionFile"
+    DependsOnTargets="$(ParseVersionFileDependsOn)"
+    Condition=" Exists( '$(VersionFile)' ) "
+    Returns="$(MajorVersion);$(MinorVersion);$(Build);$(Revision);$(VersionInfo);$(VersionWixFile)" />
+
+  <Target Name="ReadRawVersionInfo" Returns="@(RawVersionInfo)">
+    <ReadLinesFromFile File="$(VersionFile)">
+      <Output TaskParameter="Lines" ItemName="RawVersionInfo" />
+    </ReadLinesFromFile>
+  </Target>
+
+  <Target
+    Name="ExtractVersionInfo"
+    Outputs="%(RawVersionInfo.Identity)"
+    Returns="$(MajorVersion);$(MinorVersion);$(Build);$(Revision);$(VersionInfo)">
+
+    <PropertyGroup>
+      <_possibleVersionLine>%(RawVersionInfo.Identity)</_possibleVersionLine>
+      <_versionLine
+        Condition=" 'True' == '$(_possibleVersionLine.Contains(&quot;[assembly:&quot;))' And
+                    'True' == '$(_possibleVersionLine.Contains(&quot;AssemblyVersion(&quot;))' ">$([System.Text.RegularExpressions.Regex]::Match(`$(_possibleVersionLine)`, `\d+\.\d+\.\d+(\.\d+){0,1}`))</_versionLine>
+
+      <MajorVersion Condition=" '' != '$(_versionLine)' ">$(_versionLine.Split('.')[0])</MajorVersion>
+      <MinorVersion Condition=" '' != '$(_versionLine)' " >$(_versionLine.Split('.')[1])</MinorVersion>
+      <Build Condition=" '' != '$(_versionLine)' ">$(_versionLine.Split('.')[2])</Build>
+      <Revision Condition=" '' != '$(_versionLine)' ">$(_versionLine.Split('.')[3])</Revision>
+      <VersionInfo Condition=" '' != '$(_versionLine)' ">$(MajorVersion).$(MinorVersion).$(Build).$(Revision)</VersionInfo>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="CreateWixVersionInfo">
+    <ItemGroup>
+      <_wxiVersionLine Include='&lt;?xml version="1.0" encoding="utf-8"?&gt;' />
+      <_wxiVersionLine Include='%0d%0a' />
+      <_wxiVersionLine Include='&lt;!-- IMPORTANT! Quotes are mandatory! --&gt;' />
+      <_wxiVersionLine Include='%0d%0a' />
+      <_wxiVersionLine Include='&lt;?define MajorVersion = "$(MajorVersion)"?&gt;' />
+      <_wxiVersionLine Include='&lt;?define MinorVersion = "$(MinorVersion)"?&gt;' />
+      <_wxiVersionLine Include='&lt;?define Build = "$(Build)"?&gt;' />
+      <_wxiVersionLine Include='&lt;?define Revision = "$(Revision)"?&gt;' />
+      <_wxiVersionLine Include='%0d%0a' />
+      <_wxiVersionLine Include='&lt;Include /&gt;' />
+      
+      <FileWrites Include="$(VersionWixFile)" />
+    </ItemGroup>
+
+    <WriteLinesToFile File="$(VersionWixFile)" Encoding="utf-8" Lines="@(_wxiVersionLine)" Overwrite="true" />
+  </Target>
+
+  <PropertyGroup>
+    <PopulateInstallerDirectoryDependsOn>
+      $(PopulateInstallerDirectoryDependsOn);
+      PrepareInstallerDirectories;
+      PopulateSetupArtefacts
+    </PopulateInstallerDirectoryDependsOn>
+  </PropertyGroup>
+  <Target
+    Name="PopulateInstallerDirectory"
+    DependsOnTargets="$(PopulateInstallerDirectoryDependsOn)"
+    Condition=" 'true' == '$(PopulateInstallerDirectory)' " />
+
+  <Target Name="PrepareInstallerDirectories">
+    <Error Text="Property SetupFolder is not defined!" Condition=" '' == '$(SetupFolder)' " />
+    <MakeDir Directories="$(SetupFolder)" Condition=" !Exists( '$(SetupFolder)' ) " />
+  </Target>
+
+  <!-- Override this target in your project -->
+  <Target Name="PopulateSetupArtefacts">
+    <PropertyGroup>
+      <SetupName>$(PrivatePrefix)$(OutputName) ($(VersionInfo))</SetupName>
+    </PropertyGroup>
+
+    <Copy
+      SourceFiles="$(TargetPath)"
+      DestinationFiles="$(SetupFolder)$(SetupName)$(TargetExt)"
+      OverwriteReadOnlyFiles="true"
+      SkipUnchangedFiles="true"
+      UseHardlinksIfPossible="true">
+
+      <Output TaskParameter="CopiedFiles" ItemName="FileWrites" />
+    </Copy>
+  </Target>
+</Project>

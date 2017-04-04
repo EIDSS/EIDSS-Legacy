@@ -1,0 +1,120 @@
+﻿@model eidss.model.Schema.AsSessionSummary
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using bv.common.Configuration
+@using bv.model.Model.Core
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        //ChangeMessageWindowHeigth();
+    });
+</script>
+
+@if (BaseSettings.TranslationMode)
+{
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        <div class="windowButtonsPn">                  
+            <input id="idButtonOk" type="button" class="windowButton" onclick=" asSession.saveAndCloseSummaryGridEditWindow('@(Model.idfMonitoringSession)'); " value="@Translator.GetMessageString("Ok")"/>
+            <input id="idButtonCancel" type="button" class="windowButton" onclick=" bvPopup.closeDefaultPopup(); " value="@Translator.GetMessageString("Cancel")"/>  
+        </div>
+        @Html.HiddenFor(x => x.idfMonitoringSessionSummary)
+        @Html.Hidden("IdfMonitoringSession", (long)ViewBag.IdfMonitoringSession)
+    <div class="sectionTitle">
+        @Translator.GetMessageString("titleAnimalsInfo")  
+    </div>
+        <table class="level1">    
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Html.BvLabel(Model, model => model.Farms)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.Farms, true, "asSession.onFarmChanged")
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, model => model.Species)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.Species, false, "asSession.onSpeciesChanged")
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.idfsAnimalSex)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.AnimalSex)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.intSampledAnimalsQty)
+                </td>
+                <td>
+                    @Html.BvNumeric(Model, m => m.intSampledAnimalsQty, 0, refreshOnLostFocus: true)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.intPositiveAnimalsQty)
+                </td>
+                <td>
+                    @Html.BvNumeric(Model, m => m.intPositiveAnimalsQty, 0, refreshOnLostFocus: true, clientOnChange: "asSession.onPositiveAnimalsQtyChanged")
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strDiagnosisCalc)
+                </td>
+                <td>
+                    @Html.BvComboboxWithCheckboxes(Model, m => m.DiagnosisList, "idfsDiagnosis", "name",
+                        Model.Diagnosis.ToList().Aggregate("", (r, c) => c.blnChecked.HasValue && c.blnChecked.Value ? (r == "" ? c.idfsDiagnosis.ToString() : r + "," + c.idfsDiagnosis.ToString()) : r),
+                        controller: "ASSessionSummary", action: "SelectDiagnosisList"
+                        )
+                </td>
+            </tr>
+        </table>
+        <div class="sectionTitle">
+            @Translator.GetMessageString("titleSamplesInfo")  
+        </div>
+        <table class="level1">    
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Html.BvLabel(Model, m => m.strSamples)
+                </td>
+                <td>
+                    @Html.BvComboboxWithCheckboxes(Model, m => m.SamplesFiltered, "idfsSampleType", "name", 
+                        Model.Samples.ToList().Aggregate("", (r, c) => c.blnChecked.HasValue && c.blnChecked.Value ? (r == "" ? c.idfsSampleType.ToString() : r + "," + c.idfsSampleType.ToString()) : r),
+                        controller: "ASSessionSummary", action: "SelectSamplesList"
+                        )
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.intSamplesQty)
+                </td>
+                <td>
+                    @Html.BvNumeric(Model, m => m.intSamplesQty, 0, refreshOnLostFocus: true)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.datCollectionDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datCollectionDate)
+                </td>
+            </tr>
+        </table>
+        
+    }
+</div>

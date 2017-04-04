@@ -1,0 +1,107 @@
+﻿@model eidss.model.Schema.AsSession
+@{
+    ViewBag.Title = @Translator.GetMessageString("Active Surveillance Session");
+    ViewBag.Number = "V18";
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+}
+
+@using Kendo.Mvc.UI
+@using eidss.web.common.Utils
+@using bv.common.Configuration
+@using eidss.webclient.Utils
+@using eidss.model.Schema
+
+<input type="hidden" id="fromCampaign" value="@ViewBag.FromCampaign" />
+<input type="hidden" id="idfCampaign" value="@ViewBag.IdfCampaign" />
+
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        var isFromCampaign = $("#fromCampaign").val().toLowerCase() == "true";
+        if (isFromCampaign) {
+            var buttonOk = $("[id$='_Ok']");
+            buttonOk.attr("onclick", "javascript:asCampaign.formSessionDetailOk('');");
+            var buttonCancel = $("[id$='_Cancel']");
+            buttonCancel.attr("onclick", "javascript:asCampaign.formDetailCancel('');");
+        }
+    });
+</script>
+
+
+<input type="hidden" id="grid_selecteditem" value="@Model.idfMonitoringSession" />
+@if (BaseSettings.TranslationMode)
+{
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@Html.PopupMenu(eidss.model.Schema.AsSession.Accessor.Instance(null), "SelectReport")
+
+@using (Html.BeginForm())
+{
+    @Html.IdentificationAndHeartbeat("idfMonitoringSession", Model.idfMonitoringSession)	 
+    @Html.HiddenFor(m => m.ObjectIdent)
+    
+    <input type="hidden" id="CasesCreated" name='CasesCreated' value="@ViewBag.OpenVetCase" />
+    <input type="hidden" id="NotToCloneInCheckChanges" name='NotToCloneInCheckChanges' value="true" />
+    @Html.BvHidden(Model, m => m._idfFarmForCaseCreation)
+    <input id='CreateCaseForFarm' type="hidden" value='0' />
+    
+    <div class="">
+        <div class="summary">
+            @Html.Partial("Summary", Model)     
+        </div>   
+        @(Html.Kendo().TabStrip()
+            .Name("FullDetails")
+            .HtmlAttributes(new { @class = "twoLinesHeightTab" })
+            .Animation(animation => animation.Enable(false))
+        //.Events(events=>events.Select("enableCaseCreation"))
+            .Items(items =>
+            {
+                items.Add()
+                    .Text(Translator.GetMessageString("titleAsSessionGeneralInfo"))
+                    .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "titleGeneralInfo" } : new { })
+                    .Content(Html.Partial(@"../ASSession/GeneralInfo", Model).ToHtmlString());
+                items.Add()
+                    .Text(Translator.GetMessageString("tabTitleDetailedInfo"))
+                    .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleDetailedInfo" } : new { id = "tabTitleDetailedInfo" })
+                    .Content((Html.Partial(@"../ASSession/DetailedInfo", Model).ToHtmlString()));
+                items.Add()
+                    .Text(Translator.GetMessageString("titleAsSessionSummaryInfo"))
+                    .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleSummaryInfo" } : new { id = "tabTitleSummaryInfo" })
+                    .Content((Html.Partial(@"../ASSession/SummaryInfo", Model).ToHtmlString()));
+                items.Add()
+                    .Text(Translator.GetMessageString("tabTitleActions"))
+                    .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleActions" } : new { id = "tabTitleActions" })
+                    .Content(
+                    @<text>
+                        <div class="tabPanelContent">
+                            @Html.Action("AsSessionActionsGrid", "Grids",
+                                new
+                                {
+                                    root = Model.idfMonitoringSession,
+                                    name = Model.ObjectIdent + "Actions",
+                                    actionslist = Model.Actions,
+                                    isReadOnly = Model.IsReadOnly("Actions") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit)
+                                })
+                        </div>
+                     </text>);
+                items.Add()
+                     .Text(Translator.GetMessageString("tabTitleCases"))
+                     .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleCases" } : new { id = "tabTitleCases" })
+                     .Content(
+                     @<text>
+                        <div class="tabPanelContent">
+                            @Html.Action("AsSessionCasesGrid", "Grids",
+                                new
+                                {
+                                    root = Model.idfMonitoringSession,
+                                    name = Model.ObjectIdent + "Cases",
+                                    caseslist = Model.Cases,
+                                    isReadOnly = Model.IsReadOnly("Cases") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit)
+                                })
+                        </div>
+                    </text>);
+            })
+        .SelectedIndex((int)ViewBag.AsDetailsSelectedTab)
+    )
+    </div>    
+}

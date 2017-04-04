@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<?include "$(var.ProjectDir)ProductInfo.wxi" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <PropertyRef Id="COUNTRY" />
+    <UI>
+      <Dialog Id="CountryDlg" Width="370" Height="270" Title="!(loc.CountryDlg_Title)">
+        <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)">
+          <Publish Property="Arabic" Value="ar" Order="1"><![CDATA[COUNTRY = "!(loc.Iraq)"]]></Publish>
+          <Publish Property="Arabic" Value="{}" Order="1"><![CDATA[COUNTRY <> "!(loc.Iraq)"]]></Publish>
+          <Publish Property="Armenian" Value="hy" Order="2"><![CDATA[COUNTRY = "!(loc.Armenia)"]]></Publish>
+          <Publish Property="Armenian" Value="{}" Order="2"><![CDATA[COUNTRY <> "!(loc.Armenia)"]]></Publish>
+          <Publish Property="Azeri" Value="az-L" Order="3"><![CDATA[COUNTRY = "!(loc.Azerbaijan)"]]></Publish>
+          <Publish Property="Azeri" Value="{}" Order="3"><![CDATA[COUNTRY <> "!(loc.Azerbaijan)"]]></Publish>
+          <Publish Property="English" Value="en" Order="4">1</Publish>
+          <Publish Property="Georgian" Value="ka" Order="5"><![CDATA[COUNTRY = "!(loc.Georgia)"]]></Publish>
+          <Publish Property="Georgian" Value="{}" Order="5"><![CDATA[COUNTRY <> "!(loc.Georgia)"]]></Publish>
+          <Publish Property="Kazakh" Value="kk" Order="6"><![CDATA[COUNTRY = "!(loc.Kazakhstan)"]]></Publish>
+          <Publish Property="Kazakh" Value="{}" Order="6"><![CDATA[COUNTRY <> "!(loc.Kazakhstan)"]]></Publish>
+          <Publish Property="Russian" Value="ru" Order="7">
+            <![CDATA[COUNTRY <> "!(loc.Iraq)" And COUNTRY <> "!(loc.Tanzania)"]]>
+          </Publish>
+          <Publish Property="Russian" Value="{}" Order="7">
+            <![CDATA[COUNTRY = "!(loc.Iraq)" Or COUNTRY = "!(loc.Tanzania)"]]>
+          </Publish>
+          <Publish Property="DEFAULTLANGUAGE" Value="en" Order="8"><![CDATA[COUNTRY = "!(loc.Tanzania)"]]></Publish>
+          <Publish Property="SUPPORTEDLANGUAGES" Value="en" Order="8"><![CDATA[COUNTRY = "!(loc.Tanzania)"]]></Publish>
+          <Publish Property="SkipLanguageDlg" Value="1" Order="8"><![CDATA[COUNTRY = "!(loc.Tanzania)"]]></Publish>
+          <Publish Property="SkipLanguageDlg" Value="{}" Order="8"><![CDATA[COUNTRY <> "!(loc.Tanzania)"]]></Publish>
+          <Publish Property="Ukrainian" Value="uk" Order="9"><![CDATA[COUNTRY = "!(loc.Ukraine)"]]></Publish>
+          <Publish Property="Ukrainian" Value="{}" Order="9"><![CDATA[COUNTRY <> "!(loc.Ukraine)"]]></Publish>
+
+          <Publish Property="Lao" Value="lo" Order="10"><![CDATA[COUNTRY = "!(loc.Laos)"]]></Publish>
+          <Publish Property="Lao" Value="{}" Order="10"><![CDATA[COUNTRY <> "!(loc.Laos)"]]></Publish>
+
+          <Publish Property="Vietnamese" Value="vi" Order="11"><![CDATA[COUNTRY = "!(loc.Vietnam)"]]></Publish>
+          <Publish Property="Vietnamese" Value="{}" Order="11"><![CDATA[COUNTRY <> "!(loc.Vietnam)"]]></Publish>
+
+          <Publish Property="Thai" Value="th" Order="12"><![CDATA[COUNTRY = "!(loc.Thailand)"]]></Publish>
+          <Publish Property="Thai" Value="{}" Order="12"><![CDATA[COUNTRY <> "!(loc.Thailand)"]]></Publish>
+
+          <Publish Property="REPORTS_SERVICEBackUp" Value="!(loc.ReportsServiceName)" Order="22">Not REPORTS_SERVICEBackUp</Publish>
+          <Publish Property="REPORTS_SERVICE" Value="[REPORTS_SERVICEBackUp]_[COUNTRY]([INSTANCEID])" Order="23">1</Publish>
+
+          <Publish Property="REPORTS_SERVICE_DISPLAY_NAMEBackUp" Value="!(loc.ReportsServiceDisplayName)" Order="24">
+            Not REPORTS_SERVICE_DISPLAY_NAMEBackUp
+          </Publish>
+          <Publish Property="REPORTS_SERVICE_DISPLAY_NAME" Value="[REPORTS_SERVICE_DISPLAY_NAMEBackUp]. [COUNTRY]([INSTANCEID])" Order="25">1</Publish>
+        </Control>
+        
+        <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" />
+        <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+          <Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+        </Control>
+        <Control Id="Description" Type="Text" X="25" Y="23" Width="280" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.CountryDlgDescription)" />
+        <Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.CountryDlgTitle)" />
+        <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" Text="!(loc.CountryDlgBannerBitmap)" />
+        <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+        <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+        <Control Id="Text" Type="Text" X="20" Y="60" Width="290" Height="30" NoPrefix="yes" Text="!(loc.CountryDlgText)" />
+        <Control Id="CountryList" Type="ComboBox" X="50" Y="90" Width="270" Height="13" Property="COUNTRY" ComboList="yes" >
+          <ComboBox Property="COUNTRY">
+            <ListItem Text="Armenia" Value="!(loc.Armenia)" />
+            <ListItem Text="Azerbaijan" Value="!(loc.Azerbaijan)" />
+            <ListItem Text="Georgia" Value="!(loc.Georgia)" />
+            <ListItem Text="Iraq" Value="!(loc.Iraq)" />
+            <ListItem Text="Kazakhstan" Value="!(loc.Kazakhstan)" />
+            <ListItem Text="Laos" Value="!(loc.Laos)" />
+            <ListItem Text="Tanzania" Value="!(loc.Tanzania)" />
+            <ListItem Text="Thailand" Value="!(loc.Thailand)" />
+            <ListItem Text="Ukraine" Value="!(loc.Ukraine)" />
+            <ListItem Text="Vietnam" Value="!(loc.Vietnam)" />
+          </ComboBox>
+        </Control>
+      </Dialog>
+    </UI>
+  </Fragment>
+</Wix>

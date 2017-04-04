@@ -1,0 +1,9 @@
+﻿@model VectorSample.VectorSampleGridModelList
+@using eidss.model.Schema
+@using eidss.webclient.Utils;
+
+@{var ro = (bool)ViewBag.IsReadOnly;}
+
+@(Html.BvDetailsFormGrid<VectorSample.VectorSampleGridModel, VectorSample.VectorSampleGridModelList>(
+        (string) ViewBag.SamplesName
+        , Model, "detailsGrid", "vectorsample.showVectorSampleGridEditWindow", null, /*ro*/false, false, false, !ro, strExcludeColumns: (string)ViewBag.ExcludeColumns))

@@ -1,0 +1,40 @@
+﻿@using eidss.web.common.Utils
+@model eidss.model.Schema.FFPresenterModel
+    
+      
+@if ((Model != null) && (Model.TemplateFlexNode != null))
+{
+    <div class="popupContent">
+        @using (Html.BeginForm())
+        {
+            if (ViewBag.IsClearCopyPasteButtonsVisible != null && ViewBag.IsClearCopyPasteButtonsVisible)
+            {
+                <div class="windowButtonsPn windowButtonsLeftPn">
+                    <input id="idButtonClear" type="button" class="windowButton" onclick="flexForms.onClearClick('@ViewBag.RootItemId', '@Model.CurrentObservation')" value="@Translator.GetMessageString("Clear")"/>                        
+                    <input id="idButtonCopy" type="button" class="windowButton" onclick="flexForms.onCopyClick('@ViewBag.RootItemId', '@Model.CurrentObservation')" value="@Translator.GetBvMessageString("strCopy_Id")"/>        
+                    <input id="idButtonPaste" type="button" class="windowButton" onclick="flexForms.onPasteClick('@ViewBag.RootItemId', '@Model.CurrentObservation')" value="@Translator.GetMessageString("Paste")"/>        
+                </div>
+            }
+            <div class="windowButtonsPn">
+                <input id="idButtonOk" type="button" class="windowButton" onclick="flexForms.saveAndClosePopUp('@ViewBag.GridName')" value="@Translator.GetMessageString("Ok")"/>                        
+                <input id="idButtonCancel" type="button" class="windowButton" onclick="bvPopup.closeDefaultPopup()" value="@Translator.GetMessageString("Cancel")"/>        
+            </div>
+            if (ViewBag.IsClearCopyPasteButtonsVisible == null || !ViewBag.IsClearCopyPasteButtonsVisible)
+            {
+                <div class="windowSeparator"></div>
+            }
+
+            <div id="FFContainer">
+                @if (!Model.TemplateFlexNode.ChildList.Any())
+                {
+                    @Html.Partial("Empty")
+                }
+                @foreach (var node in Model.TemplateFlexNode.ChildList)
+                {
+                    @Html.Partial("FlexNode", node)
+                }
+                @{ Model.ActivityParameters.AcceptChanges(); }
+            </div>
+        }
+    </div>
+}

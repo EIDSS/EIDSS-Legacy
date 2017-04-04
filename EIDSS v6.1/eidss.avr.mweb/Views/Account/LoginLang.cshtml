@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.Title = Translator.GetMessageString("EIDSSLogin");
+    Layout = "~/Views/Shared/_DefaultLayout.cshtml";
+}
+
+@model eidss.avr.mweb.Models.Login
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+
+<script language="javascript" type="text/javascript">
+    $(document).ready(function() {
+        defaultPage.loginPageOnLoad();
+    });
+</script>
+
+@{
+    var selectedLang = Model.SupportedLanguages.FirstOrDefault(x => x.Value == ViewBag.SelectedLanguage) ?? Model.SupportedLanguages.First();
+}
+
+@if (BaseSettings.TranslationMode)
+{
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+<table class="login">
+    <tr>
+        <td>
+            <div class="errorMessage" id='errorMessageSpan'>@Html.Encode(Model.ErrorMessage)</div> 
+        </td>
+    </tr>
+    <tr>
+        <td class="loginField twinkleInput">
+            <span class="k-textbox">
+                @Html.LabelFor(m => m.Organization)
+                @Html.EditorFor(m => m.Organization, new { @class = "k-textbox" })
+                <a href="#" class="k-icon k-i-close" tabindex="-1">&nbsp;</a>
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td class="loginField twinkleInput">
+            <span class="k-textbox">
+                @Html.LabelFor(m => m.UserName)
+                <input type="text" id="prevent_autofill_usr" style="display:none"/>
+                @Html.EditorFor(m => m.UserName, new { @class = "k-textbox" })
+                <a href="#" class="k-icon k-i-close" tabindex="-1">&nbsp;</a>
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td class="loginField twinkleInput">
+            <span class="k-textbox">
+                @Html.LabelFor(m => m.Password)
+                <input type="password" id="prevent_autofill_pwd" style="display:none"/>
+                @Html.PasswordFor(m => m.Password, new { @class = "k-textbox" })
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td class="loginButtons">
+    @if (BaseSettings.TranslationMode)
+    {
+            <input id="btnTranslationTool" class="button" type="button" value="@Translator.GetMessageString("btTranslationTool")" onclick="avrTranslation.OpenTranslationWindow();" />
+    }
+            <input type="submit" class="button" value="@Translator.GetMessageString("btActionLogIn")" onclick="return defaultPage.validateLoginPage();" />
+        </td>   
+    </tr>
+</table>
+
+<hr class="line" />
+
+<div class="langSelectNew">
+    <input type="hidden" name="LanguagePreference" id="LanguagePreference" value="@selectedLang.Value"/>
+    @foreach (var li in Model.SupportedLanguages)
+    {
+        <span class="langItemNew">
+            <a href="#" onclick="defaultPage.onLanguageSelectNew('@li.Value');">@li.Text</a>
+        </span>
+    }
+</div>

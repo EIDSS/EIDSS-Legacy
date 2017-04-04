@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="HumanCaseListItem"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="fn_HumanCase_SelectList" type="fnlist" filter-object="Case" />
+        <count name="spHumanCase_SelectCount"/>
+    </storage>
+
+    <tables>
+        <table name="SmallHumanCaseListItem">
+            <properties auditObject="daoHumanCase" auditTable="tlbHumanCase" permissionObject="HumanCase" />
+            <extfilters>
+                <filter>
+                  <join>
+                      left join
+                      (   tlbHuman as h_gl_home
+                      inner join tlbGeoLocation as gl_home on gl_home.idfGeoLocation = h_gl_home.idfCurrentResidenceAddress
+                      and gl_home.idfsGeoLocationType = 10036001 /*'lctAddress'*/
+                      and gl_home.intRowStatus = 0
+                      ) on h_gl_home.idfHuman = fn_HumanCase_SelectList.idfHuman
+                  </join>
+                  <where>
+                      <expr param="idfsRegion" value="gl_home.idfsRegion {0} @idfsRegion"/>
+                      <expr param="idfsRayon" value="gl_home.idfsRayon {0} @idfsRayon"/>
+                      <expr param="idfsSettlement" value="gl_home.idfsSettlement {0} @idfsSettlement"/>
+                  </where>
+                </filter>
+                <filter>
+                    <join>
+                        left join  tlbHumanCase as hc
+                        on hc.idfHumanCase = fn_HumanCase_SelectList.idfCase
+                    </join>
+                    <where>
+                        <expr param="datModificationDate" value="CONVERT(NVARCHAR(8), hc.datModificationDate, 112) {0} CONVERT(NVARCHAR(8), @datModificationDate_{1}, 112)" range="true"/>                        
+                        <expr param="datCompletionPaperFormDate" value="CONVERT(NVARCHAR(8), hc.datCompletionPaperFormDate, 112) {0} CONVERT(NVARCHAR(8), @datCompletionPaperFormDate_{1}, 112)" range="true"/>
+                        <expr param="idfsTentativeDiagnosis" value="hc.idfsTentativeDiagnosis {0} @idfsTentativeDiagnosis"/>
+                        <expr param="datTentativeDiagnosisDate" value="CONVERT(NVARCHAR(8), hc.datTentativeDiagnosisDate, 112) {0} CONVERT(NVARCHAR(8), @datTentativeDiagnosisDate_{1}, 112)" range="true"/>
+                        <expr param="idfsFinalDiagnosis" value="hc.idfsFinalDiagnosis {0} @idfsFinalDiagnosis"/>
+                        <expr param="datFinalDiagnosisDate" value="CONVERT(NVARCHAR(8), hc.datFinalDiagnosisDate, 112) {0} CONVERT(NVARCHAR(8), @datFinalDiagnosisDate_{1}, 112)" range="true"/>
+                    </where>
+                </filter>
+                <filter>
+                    <join>
+                        left join tlbHuman as h
+                        on p_h.idfHuman = fn_HumanCase_SelectList.idfHuman
+                    </join>
+                    <where>
+                        <expr param="idfsHumanGender" value="h.idfsHumanGender {0} @idfsHumanGender"/>
+                        <expr param="strHomePhone" value="h.strHomePhone {0} @strHomePhone"/>
+                    </where>
+                </filter>
+                <filter>
+                    <join>
+                        left join tlbPerson as person
+                        on person.idfPerson = fn_HumanCase_SelectList.idfPersonEnteredBy
+                    </join>
+                    <where>
+                        <expr param="idfPerson" lambda='() => "(@idfPerson = 0 OR person.idfPerson = " + EidssUserContext.User.EmployeeID.ToString() + ")"' />
+                    </where>
+                </filter>
+            </extfilters>
+            <searchpanel>    
+                <item name="idfPerson" editor="Flag" isParam="true" labelId="lblMyCases" />
+                <item name="strCaseID" editor="Text" labelId="strCaseID" />                
+                <item name="idfsDiagnosis" editor="Lookup" editorWidth="Large" labelId="FinalDiagnosisName"
+                      lookupName="DiagnosisLookup" lookupType="DiagnosisLookup" lookupText="c.name" lookupValue="c.idfsDiagnosis"/>                
+                <item name="strLastName" editor="Text" labelId="strLastName" predicate="() => Customization.Instance.VisibilityFeatures.IsLastNameBeforeFirstName"/>
+                <item name="strFirstName" editor="Text" labelId="strFirstName" predicate="() => !EidssSiteContext.Instance.IsIraqCustomization"/>
+                <item name="strLastName" editor="Text" labelId="strLastName" predicate="() => !Customization.Instance.VisibilityFeatures.IsLastNameBeforeFirstName"/>
+                <item name="datDateofBirth" editor="Date" labelId="datDateofBirth" range="true" />
+                <item name="datCompletionPaperFormDate" editor="Date" labelId="datCompletionPaperFormDate" range="true" />
+				        <item name="datEnteredDate" editor="Date" labelId="datEnteredDate" range="true" rangeDefDates="true" />
+                <item name="idfsRegion" editor="Lookup" labelId="idfsRegion" isParam="true" dependent="idfsRayon"
+                      lookupName="RegionLookup" lookupType="RegionLookup" lookupText="c.strRegionName" lookupValue="c.idfsRegion"
+                      defaultoper="=" />
+                <item name="idfsRayon" editor="Lookup" labelId="idfsRayon" isParam="true" dependent="idfsSettlement"
+                      lookupName="RayonLookup" lookupType="RayonLookup" lookupText="c.strRayonName" lookupValue="c.idfsRayon"/>
+                <item name="idfsSettlement" editor="Lookup" labelId="strTownOrVillage" isParam="true"
+                      lookupName="SettlementLookup" lookupType="SettlementLookup" lookupText="c.strSettlementName" lookupValue="c.idfsSettlement"/>  
+            </searchpanel>
+            <grid>
+                <item name="idfCase" visible="false" key="true" />
+                <item name="strCaseID" />
+                <item name="datEnteredDate" defaultSort="Descending" />
+                <item name="DiagnosisName" />                
+                <item name="GeoLocationName" />
+                <item name="PatientName" />                
+            </grid>
+            <labels>
+              <item name="DiagnosisName"  labelId="FinalDiagnosisName"/>
+            </labels>            
+            <readonly>
+                <fields name="Region,idfsRegion" predicate="c => c.idfsCountry == null" />
+                <fields name="Rayon,idfsRayon" predicate="c => c.idfsRegion == null" />
+                <fields name="Settlement,idfsSettlement" predicate="c => c.idfsRayon == null" />
+                <fields name="*" predicate="c => false" />
+            </readonly>
+          <personaldata>
+            <group name="Human_PersonName">
+              <item name="PatientName"/>
+              <item name="strLastName"/>
+              <item name="strFirstName"/>
+              <item name="strMiddleName"/>
+              <item name="strSecondName"/>
+              <item name="strName"/>
+            </group>
+            <group name="Human_PersonSex">
+              <item name="idfsHumanGender"/>
+            </group>
+            <group name="Human_PersonAge">
+              <item name="datDateofBirth"/>
+              <item name="Age"/>
+              <item name="datDateofBirth"/>
+              <item name="intPatientAgeFromCase"/>
+              <item name="idfsHumanAgeTypeFromCase"/>
+              <item name="HumanAgeType"/>
+              <item name="intPatientAge"/>
+              <item name="idfsHumanAgeType"/>
+            </group>
+            <group name="Human_CurrentResidence_Details">
+              <item name="GeoLocationName"/>
+              <item name="PostCode"/>
+              <item name="Street"/>
+              <item name="strPostCode"/>
+              <item name="strStreetName"/>
+              <item name="strApartment"/>
+              <item name="strHouse"/>
+              <item name="strBuilding"/>
+              <item name="strHomePhone"/>
+            </group>
+            <group name="Human_CurrentResidence_Settlement">
+              <item name="idfsSettlement"/>
+              <item name="Settlement"/>
+              <item name="GeoLocationName"/>
+              <item name="PostCode"/>
+              <item name="Street"/>
+              <item name="strPostCode"/>
+              <item name="strStreetName"/>
+              <item name="strApartment"/>
+              <item name="strHouse"/>
+              <item name="strBuilding"/>
+              <item name="strHomePhone"/>
+            </group>
+            <group name="Human_Employer_Details">
+              <item name="strEmployerName"/>
+            </group>
+            <group name="Human_Employer_Settlement">
+              <item name="strEmployerName"/>
+            </group>
+          </personaldata>
+            <relations>
+                <!-- idfsSite -->
+                <!-- idfHuman -->
+                <!-- idfAddress -->
+                <!-- idfGeoLocation -->
+                <!-- idfEpiObservation -->
+                <!-- idfCSObservation -->
+            </relations>
+            <lookups>
+                <lookup name="Diagnosis" table="DiagnosisLookup" source="idfsDiagnosis" target="idfsDiagnosis">
+                  <filters>
+                    <filter predicate="c => ((c.intHACode &amp; (int)HACode.Human) != 0) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+                    <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+                  </filters>
+                </lookup>               
+                <lookup name="Country" table="CountryLookup" source="idfsCountry" target="idfsCountry" />
+                <lookup name="Region" table="RegionLookup" source="idfsRegion" target="idfsRegion">
+                    <params>
+                        <param name="CountryID" lambda="c => c.idfsCountry ?? 0" type="long" />
+                        <param name="ID" const="null" />
+                    </params>
+                </lookup>
+                <lookup name="Rayon" table="RayonLookup" source="idfsRayon" target="idfsRayon">
+                    <params>
+                        <param name="RegionID" lambda="c => c.idfsRegion ?? 0" type="long" />
+                        <param name="ID" const="null" />
+                    </params>
+                </lookup>
+                <lookup name="Settlement" table="SettlementLookup" source="idfsSettlement" target="idfsSettlement">
+                    <params>
+                        <param name="RayonID" lambda="c => c.idfsRayon ?? 0" type="long" />
+                        <param name="ID" const="null" />
+                    </params>
+                </lookup>                
+            </lookups>
+            <storage>
+                <delete name="spHumanCase_Delete"/>
+                <candelete name="spHumanCase_CanDelete"/>
+            </storage>
+            <extenders>
+                <created>
+                    <!-- set default country as current country of database -->
+                    <lambda_extender target="Country" type="CountryLookup" lambda='c => 
+                                     c.CountryLookup.Where(a => a.idfsCountry == eidss.model.Core.EidssSiteContext.Instance.CountryID)
+                                     .SingleOrDefault()'/>
+                  <lambda_extender target="Region" type="RegionLookup" lambda='c => 
+                                     EidssUserContext.User.Options.Prefs.DefaultRegion == true?
+                                     c.RegionLookup.Where(a => a.idfsRegion == eidss.model.Core.EidssSiteContext.Instance.RegionID)
+                                     .SingleOrDefault(): null'/>
+                  <lambda_extender target="datEnteredDate" type="DateTime" lambda="c => DateTime.Now"/>
+                </created>
+            </extenders>
+            <handlers>
+                <fieldhandler>
+                    <lambda_handler field="idfsCountry" target="Region" type="RegionLookup" lambda="c => null"/>
+                    <lambda_handler field="idfsRegion" target="Rayon" type="RayonLookup" lambda="c => null"/>
+                    <lambda_handler field="idfsRayon" target="Settlement" type="SettlementLookup" lambda="c => null"/>
+                    <lookup_handler lookup="Region" field="idfsCountry" />
+                    <lookup_handler lookup="Rayon" field="idfsRegion" />
+                    <lookup_handler lookup="Settlement" field="idfsRayon" />
+                </fieldhandler>
+            </handlers>
+            <actions child="HumanCase">
+            </actions>
+        </table>
+    </tables>
+
+</object>

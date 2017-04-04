@@ -1,0 +1,333 @@
+﻿/* Required fields. Border and background-color is the same for all controls */
+
+/* Styles for search panel */
+.lfSearchPanelTable {
+    width: 100%;
+    min-width: 100%;
+}
+.lfSearchPanelTd   
+{
+    max-width: 23px;
+    width: 23px;
+    vertical-align:central;
+    padding: 0px;
+    margin: 0;    
+    border: solid 1px #507baf;
+    border-collapse: collapse;   
+    color:#102541; 
+    background-color: #7395bf;
+    cursor: pointer;
+
+}
+.lfSearchPanelTd div
+{       
+    font-size: 12px;
+    transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg) translate(-21px, 0); /* IE9+ */
+    -webkit-transform: rotate(-90deg); /* Chrome */
+    transform-origin: 100% 100%;
+    -ms-transform-origin: 100% 100%;
+	white-space:nowrap;
+    font-weight:bold;
+    width: 23px;
+    line-height: 23px;
+    text-align: center;
+    vertical-align:central;
+}
+.k-ie8 .lfSearchPanelTd div {
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+    overflow: visible;
+    width: 100%;
+}
+.k-ie8 .lfGrid {
+    margin-left: -90px;
+}
+.customSearchPanel
+{
+    display: none;
+    position:absolute; 
+    width: auto;  
+    top:2px;
+    bottom: 2px;
+    left:25px;
+    padding: 2px 2px 6px;
+    background-color: #7395bf;  
+    font-size:12px;
+    color:#262626;
+    z-index: 20000;
+    border: solid 1px #507baf;
+    border-left: none;
+    border-collapse: collapse;
+}
+.k-rtl .customSearchPanel
+{
+    right:25px;
+    left:auto;
+    border-right: none;
+    border-left: inherit;
+}
+
+
+.customSearchPanel input.spTextBox /*[type="text"]*/
+{
+    width:246px;
+    border-collapse: collapse;
+    border: 1px #CCCCCC solid;
+    min-height: 20px;
+    max-height: 20px;
+    line-height: 20px;
+}
+.spComboBox, .spDateSingle
+{
+    width: 205px; 
+}
+.k-numerictextbox.spNumeric,
+.spDateSingle.k-datepicker{
+    width:250px; 
+    max-width:250px; 
+    min-width:250px; 
+}
+.k-numerictextbox.spNumeric .k-input 
+{
+    width:248px; 
+}
+
+.spRange .k-numerictextbox,
+.spDate.k-datepicker{
+    min-width: 116px;
+    max-width: 116px;
+}
+.spRange .k-numerictextbox .k-input {
+    width: 114px;
+}
+.spButton
+{
+    float:right;
+    margin-left:15px;
+}
+
+div.spPinButtonContainer
+{
+    float:right;
+    text-align: right;
+    margin-right: 0px;
+    padding-bottom: 4px;
+}
+.k-rtl div.spPinButtonContainer
+{
+    float:left;
+    text-align: left;
+    margin-left: 0px;
+    margin-right: inherit;
+}
+
+div.spSearchButtonContainer
+{
+    float:right;
+    margin-top:10px;
+    margin-right: 3px;
+    text-align: right;
+}
+.k-rtl div.spSearchButtonContainer
+{
+    float:left;
+    margin-top:10px;
+    margin-left: 3px;
+    margin-right: inherit;
+    text-align: left;
+}
+
+.fntAm div.spSearchButtonContainer{
+    margin-top:15px;
+}
+.fntGe div.spSearchButtonContainer{
+    margin-top:15px;
+}
+.customSearchPanel .k-readonly, .placeholder
+{
+    color: #c8c8c8;
+    font-style:italic;
+}
+
+.spTableContainer
+{
+    height: 100%;
+    margin: 2px;
+    border-left: 1px solid #f2f2f2;
+    padding: 0 20px;
+}
+.k-rtl .spTableContainer
+{
+    border-right: 1px solid #f2f2f2;
+    border-left: inherit;
+}
+.spFilterItems {
+    overflow-y: auto;
+    max-height: 540px;
+    width: 273px;
+    margin-right: -20px;
+}
+.k-rtl .spFilterItems {
+    margin-left: -20px;
+    margin-right: auto;
+}
+.spTable td
+{
+    border: none;
+    padding: 3px 0 5px 0;
+}
+.customSearchPanel .k-combobox,
+.customSearchPanel .k-dropdown{
+    min-width: 250px;
+    max-width: 250px;
+}
+/* Twinkle tex-boxes */
+.twinkleInput {
+    position: relative;
+}
+
+.twinkleInput label {
+    color: #7395bf;
+    font-size: 12px;
+    font-style: italic;
+    cursor: text;
+    left: 6px;
+    pointer-events: none;
+    position: absolute;
+    top: 4px;
+    transition: color .2s linear 0;
+    z-index: 22000;
+    overflow: hidden;
+    display: table-cell;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.k-rtl .twinkleInput label {
+    right: 6px;
+    left: inherit;
+}
+.twinkleInput.text label
+{
+    max-width: 244px;
+}
+.twinkleInput.range label
+{
+    max-width:83px;
+}
+.twinkleInput.numeric label
+{
+    max-width:220px;
+}
+.twinkleInput.combobox label
+{
+    max-width:220px;
+}
+.focused.twinkleInput label {
+    display: none;
+}
+
+.populated.twinkleInput label {
+    display: none;
+}
+.waterMarkClass
+{
+    color: #c8c8c8;
+}
+.spRange {
+    width: 100%;
+}
+.spRange td {
+    width: 100%;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+.spRange td.rangeLabel {
+    padding-bottom: 3px;
+}
+.customSearchPanel .dateTo{
+    text-align: right;
+}
+.numberRange .twinkleInput label{
+    top: 7px;
+}
+.dateTo .twinkleInput label{
+    left: 5px;
+}
+.fntAm .dateTo .twinkleInput label{
+    left: 5px;
+}
+.fntGe .dateTo .twinkleInput label{
+    left: 5px;
+}
+.closeArrow {
+    display: none;
+}
+.customSearchPanel .rangeDefDates {
+    max-width: 245px;
+    padding-top: 5px;
+}
+.customSearchPanel .rangeDefDates a,
+.customSearchPanel .rangeDefDates a:visited {
+    color: #0000EE;
+}
+
+
+.k-dropdown .k-input, .k-dropdown .k-state-focused .k-input, .k-dropdown .k-state-hover .k-input, .k-menu .k-popup {
+    color: #000;
+}
+
+.k-input, input.k-textbox, textarea.k-textbox, input.k-textbox:hover, textarea.k-textbox:hover, .k-textbox > input, .k-multiselect-wrap {
+    color: #000;
+}
+
+.k-list-container {
+    color: #000;
+}
+
+.k-state-hover, .k-state-hover:hover, .k-splitbar-horizontal-hover:hover, .k-splitbar-vertical-hover:hover, .k-list > .k-state-hover, .k-scheduler .k-scheduler-toolbar ul li.k-state-hover, .k-pager-wrap .k-link:hover, .k-dropdown .k-state-focused, .k-imagebrowser-dropzone, .k-mobile-list .k-item > .k-link:active, .k-mobile-list .k-item > .k-label:active, .k-mobile-list .k-check.k-edit-label:active, .k-mobile-list .k-scheduler-timezones :nth-child(2).k-edit-field:active, .k-mobile-list .k-recur-view .k-check:active {
+    color: #000;
+}
+
+
+/*
+.k-state-default.k-autocomplete, .k-state-default.k-picker-wrap, .k-state-default.k-numeric-wrap, .k-state-default.k-dropdown-wrap {
+    background-color: #fff;
+}*/
+
+.checkbox_wrapper_not_hide {
+    position: relative;
+	height: 20px;
+    width: 20px;
+    /*margin-right:  20px;*/
+}
+
+input[type="checkbox"].checkbox_not_hide{
+    opacity:0;
+    height: 20px;
+    width: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
+input[type="checkbox"].checkbox_not_hide + label{
+    background-image: url(/Content/Images/pin_black.png);
+    height: 20px;
+    width: 20px;
+    display:inline-block;
+    padding: 0 0 0 0px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+input[type="checkbox"]:checked.checkbox_not_hide + label{
+    background-image: url(/Content/Images/pin_red.png);
+    height: 20px;
+    width: 20px;
+    display:inline-block;
+    padding: 0 0 0 0px;
+}
+

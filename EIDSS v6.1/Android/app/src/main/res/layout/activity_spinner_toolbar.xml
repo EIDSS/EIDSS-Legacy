@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar"
+    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+    android:minHeight="@dimen/ToolBar.MinHeight"
+    android:background="@color/CommonBackground"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="start|center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/Padding.S"
+        android:paddingLeft="@dimen/Padding.S">
+
+        <ImageButton
+            android:id="@+id/unSelect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:src="@drawable/ic_action_accept"
+            android:contentDescription="@string/CheckImage"
+            android:background="@drawable/apptheme_item_background_holo_dark"/>
+        <TextView
+            android:id="@+id/toolbarSeparator"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/Padding.M"
+            android:layout_marginRight="@dimen/Padding.M"
+            android:background="@color/LightTextColor"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/numberOfSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/LightTextColor"
+            android:textSize="@dimen/MenuItem.TextSize"
+            android:singleLine="true"
+            android:gravity="start"
+            android:visibility="gone"/>
+        <Spinner
+            android:id="@+id/spinner_list_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end" />
+
+    </LinearLayout>
+</android.support.v7.widget.Toolbar>

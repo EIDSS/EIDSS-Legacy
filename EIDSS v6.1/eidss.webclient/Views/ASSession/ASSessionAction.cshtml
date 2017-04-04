@@ -1,0 +1,67 @@
+﻿@model eidss.model.Schema.AsSessionAction
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+
+<input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+         <div class="windowButtonsPn">                  
+             <input id="idButtonOk" type="button" class="windowButton" onclick="asSession.saveAndCloseActionGridEditWindow('@(Model.Parent.ObjectIdent)');" value="@Translator.GetMessageString("Ok")"/>     
+             <input id="idButtonCancel" type="button" class="windowButton" onclick="bvPopup.closeDefaultPopup();" value="@Translator.GetMessageString("Cancel")"/>  
+         </div>   
+        <div class="windowSeparator"></div>
+        @Html.Hidden("idfMonitoringSessionAction", Model.idfMonitoringSessionAction)                                               
+        <table class="level1">    
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Html.BvLabel(Model, m => m.strMonitoringSessionActionType)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.MonitoringSessionActionType)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.datActionDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datActionDate)
+                </td>   
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.idfPersonEnteredBy)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strPersonEnteredBy, false)
+                </td>   
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strComments)
+                </td>
+                <td>
+                    @Html.BvTextArea(Model, m => m.strComments)
+                </td>   
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strMonitoringSessionActionStatus)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.MonitoringSessionActionStatus)
+                </td>                            
+            </tr>
+        </table> 
+    }           
+</div>

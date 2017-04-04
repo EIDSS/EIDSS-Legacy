@@ -1,0 +1,186 @@
+﻿@model eidss.model.Schema.CaseTest
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml"; 
+}
+@using bv.common.Configuration
+@using bv.model.Model.Core
+@using eidss.model.Schema
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+<input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        <div class="windowButtonsPn">
+            <input id="idButtonOk" type="button" class="windowButton" onclick="sample.saveAndCloseCaseTestGridEditWindow('@(Model.CaseObjectIdent)')" value="@Translator.GetMessageString("Ok")"/>                        
+            <input id="idButtonCancel" type="button" class="windowButton" onclick="bvPopup.closeDefaultPopup()" value="@Translator.GetMessageString("Cancel")"/>        
+        </div>  
+        <div class="windowSeparator"></div>  
+        @Html.Hidden("idfTesting", Model.idfTesting)
+        <table class="level1"> 
+            <tr>
+                <td class="xlarge firstLabel">
+                    @if (Model.HumanCaseSamples != null)
+                    {
+                        @Html.BvLabel(Model, m => m.strFieldBarcode2)
+                    }
+                    else
+                    {
+                        @Html.BvLabel(Model, m => m.strFieldBarcode)
+                    }
+                </td>
+                <td>
+                    @if (Model.HumanCaseSamples != null)
+                    {
+                        @Html.BvCombobox(Model, m => m.HumanCaseSample);
+                    }
+                    else if (Model.VetCaseSamples != null)
+                    {
+                        @Html.BvCombobox(Model, m => m.VetCaseSample);
+                    }
+                    else if (Model.AsSessionSamples != null)
+                    {
+                        @Html.BvCombobox(Model, m => m.AsSessionSample, false, keyName: "idfMaterial", textName: "strSampleNameAndFieldBarcode");
+                    }
+                </td>                            
+            </tr>
+            @if (Model.AsSessionSamples != null)
+            {
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strFarmCode)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strFarmCode)
+                </td>                            
+            </tr>
+            }
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strSampleName)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strSampleName)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.idfsTestName)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.TestNameRef/*, false, "sample.onTestTypeChanged"*/)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.DiagnosisName)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.Diagnosis, false, width: EditorControlWidth.Large)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.datConcludedDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datConcludedDate)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.TestCategory)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.TestCategory)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.TestStatus)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.TestStatus)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.TestResult)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.TestResultRef, false)
+                </td>                            
+            </tr>
+        </table>
+        if (Model.HumanCaseSamples != null)
+        {
+            <div class="sectionTitle">
+                @Translator.GetMessageString("titleExternal")  
+            </div>
+            <table class="level1">
+                <tr>
+                    <td class="xlarge firstLabel">
+                        @Html.BvLabel(Model, m => m.idfPerformedByOffice)
+                    </td>
+                    <td>                     
+                        @Html.Action("InlineOrganizationPicker", "Organization", new
+                            {
+                                obj = Model,
+                                objectId = Model.idfTesting,
+                                idfsOrganizationPropertyName = "idfPerformedByOffice",
+                                strOrganizationPropertyName = "strPerformedByOffice",
+                                idfsEmployeePropertyName = "",
+                                strEmployeePropertyName = "",
+                                showInInternalWindow = true, 
+                                HACode = Model.CaseHACode
+                            })     
+                    </td>                            
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="collapseEditWindowPanel" id="idfPerformedByOffice_InternalPicker">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="firstLabel">
+                        @Html.BvLabel(Model, m => m.strContactPerson)
+                    </td>
+                    <td>
+                        @Html.BvEditbox(Model, m => m.strContactPerson)
+                    </td>                            
+                </tr>
+                <tr>
+                    <td class="firstLabel">
+                        @Html.BvLabel(Model, m => m.datReceivedDate)
+                    </td>
+                    <td>
+                        @Html.BvDatebox(Model, m => m.datReceivedDate)
+                    </td>                            
+                </tr>
+            </table>
+        }
+
+        <div class="sectionTitle">
+            @Translator.GetMessageString("tabTitleAmendmentHistory")  
+        </div>
+        
+        @(Html.BvDetailsFormGrid<LabTestAmendment.LabTestAmendmentGridModel, LabTestAmendment.LabTestAmendmentGridModelList>(
+            Model.ObjectIdent + "AmendmentHistory", new LabTestAmendment.LabTestAmendmentGridModelList(Model.idfTesting, Model.AmendmentHistory),
+            "detailsGrid", null, null, false, false, false, false)
+            )
+        
+    }           
+</div>

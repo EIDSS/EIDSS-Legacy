@@ -1,0 +1,94 @@
+﻿@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+
+@model eidss.model.Schema.VsSessionSummary
+
+@{
+    ViewBag.Title = @Translator.GetMessageString("titleSummaryInfo");
+    ViewBag.Number = "W10";
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+}
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@using (Html.BeginForm())
+{
+    @Html.IdentificationAndHeartbeat("idfVectorSurveillanceSession", Model.idfVectorSurveillanceSession)
+    @Html.HiddenFor(m => m.idfVectorSurveillanceSession)
+    @Html.HiddenFor(m => m.idfsVSSessionSummary)
+
+    <div class="tabPanelContent bordered">
+        <div class="sectionTitle">
+            @Translator.GetMessageString("titleGeneralInfo")  
+        </div>
+        <table class="level1"> 
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strVSSessionSummaryID) 
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strVSSessionSummaryID)
+                </td>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Html.BvLabel(Model, m => m.Location)
+                </td>
+                <td class="large">
+                    @Html.Action("InlineGeoLocationPicker", "GeoLocation", new { root = Model.idfsVSSessionSummary, location = Model.Location })
+                </td>
+                <td class="xlarge firstLabel">
+                    @Html.BvLabel(Model, m => m.datCollectionDateTime)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datCollectionDateTime)
+                </td> 
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.idfsVectorType)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.VectorType, true/*, "vssessionsummary.onVectorTypeChanged"*/)
+                </td>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.idfsVectorSubType)
+                </td>
+                <td class="medium">
+                    @Html.BvCombobox(Model, m => m.VectorSubType, false, keyName: "idfsBaseReference") 
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.idfsSex)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.AnimalGender) 
+                </td>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.intQuantity)
+                </td>
+                <td>
+                    @Html.BvNumeric(Model, m => m.intQuantity, 0, refreshOnLostFocus:true)
+                </td>
+            </tr>
+        </table>
+        <div class="sectionTitle">
+            @Translator.GetMessageString("titleListDetectedDiseases")  
+        </div>
+        
+        @Html.Action("VsSessionSummaryDiagnosisListGrid", "Grids",
+             new
+                 {
+                     root = Model.idfsVSSessionSummary,
+                     name = Model.CaseObjectIdent + "DiagnosisList",
+                     diagnosislist = Model.DiagnosisList,
+                     isReadOnly = Model.IsReadOnly("DiagnosisList") || (Model.GetPermissions() != null && Model.GetPermissions().IsReadOnlyForEdit)
+                 })
+        
+    </div>
+}

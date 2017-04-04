@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "ProductInfo.wxi" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="Resources">
+    <?define FolderId=ar_IQ?>
+    <?define Folder=ar-IQ?>
+    <?include Resources.wxi?>
+    
+    <?define FolderId=az_Latn_AZ?>
+    <?define Folder=az-Latn-AZ?>
+    <?include Resources.wxi?>
+
+    <?define FolderId=hy_AM?>
+    <?define Folder=hy-AM?>
+    <?include Resources.wxi?>
+
+    <?define FolderId=ka_GE?>
+    <?define Folder=ka-GE?>
+    <?include Resources.wxi?>
+
+    <?define FolderId=kk_KZ?>
+    <?define Folder=kk-KZ?>
+    <?include Resources.wxi?>
+
+    <?define FolderId=ru_RU?>
+    <?define Folder=ru-RU?>
+    <?include Resources.wxi?>
+
+    <?define FolderId=uk_UA?>
+    <?define Folder=uk-UA?>
+    <?include Resources.wxi?>
+
+    <?define FolderId=en_IQ_Eidss?>
+    <?define Folder=en-IQ-Eidss?>
+    <?define no_bv.winclient.resources.dll?>
+    <?define no_bvwin_common.resources.dll?>
+    <?define no_eidss.avr.resources.dll?>
+    <?define no_EIDSS.FlexibleForms.resources.dll?>
+    <?include Resources.wxi?>
+
+    <?define FolderId=ru_KZ_Eidss?>
+    <?define Folder=ru-KZ-Eidss?>
+    <?define no_bv.winclient.resources.dll?>
+    <?define no_bvwin_common.resources.dll?>
+    <?define no_eidss.avr.resources.dll?>
+    <?define no_EIDSS.FlexibleForms.resources.dll?>
+    <?include Resources.wxi?>
+
+    <?define FolderId=th_TH?>
+    <?define Folder=th-TH?>
+    <?include Resources.wxi?>
+
+    <?define FolderId=en_TH_Eidss?>
+    <?define Folder=en-TH-Eidss?>
+    <?define no_bv.winclient.resources.dll ?>
+    <?define no_bvwin_common.resources.dll ?>
+    <?define no_eidss.avr.resources.dll ?>
+    <?define no_EIDSS.FlexibleForms.resources.dll ?>
+    <?include Resources.wxi?>
+
+    <ComponentGroup Id="Resources">
+      <?define FolderIds=ar_IQ;az_Latn_AZ;en_IQ_Eidss;hy_AM;ka_GE;kk_KZ;ru_KZ_Eidss;ru_RU;uk_UA;th_TH;en_TH_Eidss?>
+      <?foreach FolderId in $(var.FolderIds)?>
+      <ComponentGroupRef Id="Resources_$(var.FolderId)" />
+      <?endforeach?>
+    </ComponentGroup>
+  </Fragment>
+</Wix>

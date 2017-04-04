@@ -1,0 +1,27 @@
+﻿@using bv.model.Model.Core
+@using eidss.webclient.Utils
+@using Kendo.Mvc.UI
+@model eidss.model.Reports.Common.DiagnosisOrGroupModel
+
+<table class="level1">
+    <tr>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.idfsDiagnosisOrDiagnosisGroup)
+        </td>
+        <td class="largereport">
+                @(Html.Kendo().ComboBox()
+                      .Name(Model.BindingField)
+                                .DataSource(source =>
+                                        source.Read(read =>
+                                            read.Action("SelectZoonoticDiagnosisOrDiagnosisGroup", "Report")
+                                            )
+                                        )
+                      .DataValueField("Value")
+                      .DataTextField("Text")
+                      .Events(events => events.Open("function(e) { bvComboBox.onOpen(e, " + (int)EditorControlWidth.Large + "); }"))
+                      .Template("<div class='${data.ClassName}'>${ data.Text }<div>")
+                    )
+        </td>
+        <td ></td>
+    </tr>
+</table>

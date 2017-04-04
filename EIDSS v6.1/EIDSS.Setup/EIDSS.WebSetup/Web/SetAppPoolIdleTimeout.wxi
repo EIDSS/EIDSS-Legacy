@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+
+  <ComponentGroup Id="$(var.website).web.config_idleTimeout" Directory="$(var.websiteDirectory)">
+    <Component Id="$(var.website).web.config_idleTimeout" MultiInstance="yes">
+
+      <RegistryKey Root="HKLM" Key="$(var.WebRegistryKey)">
+        <RegistryValue Key="$(var.website).web.config_idleTimeout" Value="1" Type="string" KeyPath="yes" />
+      </RegistryKey>
+      
+      <util:XmlFile
+        Id="$(var.website).web.config.LifetimeSeconds"
+        File="[#$(var.website).web.config]"
+        Action="setValue"
+        ElementPath="//configuration/appSettings/add[\[]@key='LifetimeSeconds'[\]]"
+        SelectionLanguage="XPath"
+        Name="value"
+        Sequence="1"
+        Value="[AppPoolIdleTimeoutInSeconds]" />
+
+      <util:XmlFile
+        Id="$(var.website).web.config.Forms.timeout"
+        File="[#$(var.website).web.config]"
+        Action="setValue"
+        ElementPath="//configuration/system.web/authentication[\[]@mode='Forms'[\]]/forms"
+        SelectionLanguage="XPath"
+        Name="timeout"
+        Sequence="2"
+        Value="[APP_POOL_IDLE_TIMEOUT_IN_MINUTES]" />
+
+      <?ifndef no_sessionState?>
+      <util:XmlFile
+        Id="$(var.website).web.config.SessionState.timeout"
+        File="[#$(var.website).web.config]"
+        Action="setValue"
+        ElementPath="//configuration/system.web/sessionState"
+        SelectionLanguage="XPath"
+        Name="timeout"
+        Sequence="3"
+        Value="[APP_POOL_IDLE_TIMEOUT_IN_MINUTES]" />
+      <?else?>
+      <?undef no_sessionState?>
+      <?endif?>
+    </Component>
+    <ComponentRef Id="IdleTimeoutSetting" />
+  </ComponentGroup>
+
+  <CustomAction Id="Set$(var.website)AppPoolIdleTimeout" DllEntry="SetAppPoolIdleTimeout" BinaryKey="CustomActions" />
+  <SetProperty
+    Id="AppPool"
+    Action="Set$(var.website)AppPoolProperty"
+    Value="$(var.website).AppPool"
+    Sequence="execute"
+    Before="Set$(var.website)AppPoolIdleTimeout">
+    NOT SKIPCONFIGUREIIS
+  </SetProperty>
+  <SetProperty
+    Id="AppPoolIdleTimeout"
+    Action="Set$(var.website)AppPoolIdleTimeoutProperty"
+    Value="[APP_POOL_IDLE_TIMEOUT_IN_MINUTES]"
+    Sequence="execute"
+    Before="Set$(var.website)AppPoolIdleTimeout">
+    NOT SKIPCONFIGUREIIS
+  </SetProperty>
+  <InstallExecuteSequence>
+    <Custom Action="Set$(var.website)AppPoolIdleTimeout" Before="ConfigureIIs">NOT SKIPCONFIGUREIIS</Custom>
+  </InstallExecuteSequence>
+
+  <?undef website?>
+  <?undef websiteDirectory?>
+</Include>

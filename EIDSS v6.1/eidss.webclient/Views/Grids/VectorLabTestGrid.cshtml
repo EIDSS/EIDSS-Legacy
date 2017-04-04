@@ -1,0 +1,31 @@
+﻿@model VectorLabTest.VectorLabTestGridModelList
+@using eidss.model.Schema
+@using eidss.webclient.Utils;
+
+@{var ro = (bool)ViewBag.IsReadOnly;}
+
+@(Html.BvDetailsFormGrid<VectorLabTest.VectorLabTestGridModel, VectorLabTest.VectorLabTestGridModelList>(
+        (string) ViewBag.LabTestsName
+        , Model
+        , "detailsGrid"
+        , "vectorlabtest.showAmendmentHistoryWindow"
+        , null
+        , false
+        , false
+        , false
+        , true
+        //, selectionType: GridRowSelectionType.Single
+        , strExcludeColumns: (string)ViewBag.ExcludeColumns)
+        /*
+        .ToolBar(toolBar =>
+                 toolBar.Template(
+                     @<text>
+                          <input type="button" class="button" data-role="grid-on-row-button"  data-grid-name="@ViewBag.LabTestsName"
+                                 onclick="vectorlabtest.showAmendmentHistoryWindow(bvGrid.getSelectedItemId('@ViewBag.LabTestsName'), '@Model.ListKey', '@ViewBag.LabTestsName')" value="@(Translator.GetMessageString("Edit"))"/>
+                              
+                          
+                      </text>)
+            )
+            */
+        )
+

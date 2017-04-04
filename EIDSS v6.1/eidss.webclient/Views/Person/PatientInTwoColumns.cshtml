@@ -1,0 +1,240 @@
+﻿@model eidss.model.Schema.Patient
+
+@using eidss.model.Core
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+     
+<table class="level1 twoColumns">
+    @if (Customization.Instance.VisibilityFeatures.IsPersonIDBeforeName)
+    {
+    <tr>
+        <td class="firstLabel">
+            @Html.BvLabel(Model, m => m.idfsPersonIDType)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, m => m.PersonIDType)
+        </td>
+        <td class="label">
+            @Html.BvLabel(Model, m => m.strPersonID)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strPersonID, true)
+        </td>
+    </tr>
+        if (Customization.Instance.PersonIdentityServiceFeatures.IsAvailable && Customization.Instance.PersonIdentityServiceFeatures.IsOnContactedPerson)
+        {
+            <tr>
+                <td class="firstLabel"></td>
+                <td></td>
+                <td colspan="2">
+                    <button class="button findPerson2" id="buttonFindInPersonIdentityService" type="button" onclick="patient.onFindInPersonIdentityServiceClick();">
+                        @Translator.GetMessageString(Customization.Instance.PersonIdentityServiceFeatures.ButtonResId)
+                    </button>
+                </td>
+            </tr>
+        }
+    }    
+    <tr>
+        <td class="small firstLabel">
+            <span class="subSectionTitle">@Translator.GetString("strPatientNameShort")</span>&nbsp;&nbsp;
+            @if (!eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+            {
+                if (Customization.Instance.VisibilityFeatures.IsLastNameBeforeFirstName)
+                {
+                    @Translator.GetString("Patient.strLastName")
+                }
+                else
+                {
+                    @Translator.GetString("Patient.strFirstName")
+                }
+            }
+        </td>
+        <td class="xlarge">
+            @if (Customization.Instance.VisibilityFeatures.IsLastNameBeforeFirstName)
+            {
+                @Html.BvEditbox(Model, m => m.strLastName, true)
+            }
+            else
+            {
+                @Html.BvEditbox(Model, m => m.strFirstName, true)
+            }
+        </td>
+        <td class="small label">
+            @if (!eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+            {
+                if (Customization.Instance.VisibilityFeatures.IsLastNameBeforeFirstName)
+                {
+                    @Translator.GetString("Patient.strFirstName")
+                }
+                else
+                {
+                    @Translator.GetString("Patient.strLastName")
+                }
+            }
+            else
+            {
+                @Html.BvLabel(Model, m => m.idfsHumanGender)
+            }
+        </td>
+        <td>
+            @if (!eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+            {
+                if (Customization.Instance.VisibilityFeatures.IsLastNameBeforeFirstName)
+                {
+                    @Html.BvEditbox(Model, m => m.strFirstName, true)
+                }
+                else
+                {
+                    @Html.BvEditbox(Model, m => m.strLastName, true)
+                }
+            }
+            else
+            {
+                if (((bv.model.Model.Core.IObject)Model).IsHiddenPersonalData("Gender"))
+                {
+                    @Html.BvHiddenPersonalData(Model, m => m.Gender)
+                }
+                else
+                {
+                    @Html.BvCombobox(Model, m => m.Gender)
+                }
+            }
+        </td>
+    </tr>
+    <tr>
+        <td class="firstLabel">
+            @if (!eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+            {
+                @Translator.GetString("Patient.strSecondName")
+            }
+        </td>
+        <td>
+            @if (!eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+            {
+                @Html.BvEditbox(Model, m => m.strSecondName, true)
+            }
+        </td>
+        <td class="label">
+            @if (!eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+            {
+                @Html.BvLabel(Model, m => m.idfsHumanGender)
+            }
+        </td>
+        <td>
+            @if (!eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+            {
+                if (((bv.model.Model.Core.IObject) Model).IsHiddenPersonalData("Gender"))
+                {
+                    @Html.BvHiddenPersonalData(Model, m => m.Gender)
+                }
+                else
+                {
+                    @Html.BvCombobox(Model, m => m.Gender)
+                }
+            }
+        </td>
+    </tr>
+    @if (!Customization.Instance.VisibilityFeatures.IsPersonIDBeforeName)
+    {
+    <tr>
+        <td class="firstLabel">
+            @Html.BvLabel(Model, m => m.idfsPersonIDType)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, m => m.PersonIDType)
+        </td>
+        <td class="label">
+            @Html.BvLabel(Model, m => m.strPersonID)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strPersonID, true)
+        </td>
+    </tr>
+        if (Customization.Instance.PersonIdentityServiceFeatures.IsAvailable && Customization.Instance.PersonIdentityServiceFeatures.IsOnContactedPerson)
+        {
+            <tr>
+                <td class="firstLabel"></td>
+                <td></td>
+                <td colspan="2">
+                    <button class="button findPerson2" id="buttonFindInPersonIdentityService" type="button" onclick="patient.onFindInPersonIdentityServiceClick();">
+                        @Translator.GetMessageString(Customization.Instance.PersonIdentityServiceFeatures.ButtonResId)
+                    </button>
+                </td>
+            </tr>
+        }
+    }
+    <tr>
+        <td class="firstLabel">
+            @Html.BvLabel(Model, m => m.datDateofBirth)
+        </td>
+        <td>
+            @if (((bv.model.Model.Core.IObject)Model).IsHiddenPersonalData("datDateofBirth"))
+            {
+                @Html.BvHiddenPersonalData(Model, m => m.datDateofBirth, "**.**.****")
+            }
+            else {
+                @Html.BvDatebox(Model, m => m.datDateofBirth)
+            }
+        </td>
+        @if((bool)ViewBag.IsAgeVisible)
+        {
+            <td class="label">
+                @Translator.GetMessageString("Age")
+            </td>
+            <td class="age">
+                @Html.BvNumeric(Model, m => m.intPatientAgeFromCase, 0, 0, 1000, refreshOnLostFocus: true)
+                @if (((bv.model.Model.Core.IObject)Model).IsHiddenPersonalData("HumanAgeType"))
+                {
+                    @Html.BvHiddenPersonalData(Model, m => m.HumanAgeType)
+                }
+                else {
+                    @Html.BvCombobox(Model, m => m.HumanAgeType)
+                }
+            </td>
+        }
+        else
+        {
+            <td colspan="2"></td>
+        }
+    </tr>
+    <tr>
+    </tr>
+    <tr>
+        <td colspan="4" class="firstLabel subSectionTitle">      
+            @Translator.GetMessageString("titleCurrentResidence")    
+        </td>        
+    </tr>
+</table>
+@Html.AddressInTwoColumns(Model.idfCase.HasValue ? Model.idfCase.Value : Model.idfHuman, Model.CurrentResidenceAddress, false, false, false, (bool)ViewBag.IsCoordinatesFieldsVisible)
+<table class="level1 twoColumns">  
+    <tr>
+        <td class="small firstLabel">
+            @Translator.GetString("Patient.strHomePhone")
+        </td>
+        <td class="xlarge">
+            @Html.BvEditbox(Model, m => m.strHomePhone)
+        </td>
+        <td class="small label">
+            @Html.BvLabel(Model, m => m.idfsNationality)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, m => m.Nationality)
+        </td>
+    </tr>
+    <tr>
+        <td class="firstLabel">
+            @Html.BvLabel(Model, m => m.strEmployerName)
+        </td>
+        <td colspan="3">
+            @Html.BvEditbox(Model, m => m.strEmployerName, true)
+        </td>
+        <td></td>
+    </tr> 
+    <tr>
+        <td colspan="4" class="firstLabel subSectionTitle">  
+            @Html.BvLabel(Model, m => m.idfEmployerAddress):
+        </td>
+    </tr>
+</table> 
+@Html.AddressInTwoColumns(Model.idfCase.HasValue ? Model.idfCase.Value : Model.idfHuman, Model.EmployerAddress, true, false, true, false)   

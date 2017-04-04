@@ -1,0 +1,98 @@
+﻿@using Kendo.Mvc.UI
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+
+@model eidss.model.Schema.Vector
+
+@{
+    ViewBag.Title = @Translator.GetMessageString("tabTitleVectorDetailForm");
+    ViewBag.Number = "W03";
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+    object deleteWhenCancel = ViewBag.deleteWhenCancel ?? 0;
+    object id = ViewBag.id;
+    object listKey = ViewBag.listKey;
+    object name = ViewBag.name;
+}
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@using (Html.BeginForm())
+{
+    @Html.IdentificationAndHeartbeat("idfVectorSurveillanceSession", Model.idfVectorSurveillanceSession)
+    @Html.HiddenFor(m => Model.idfVector)
+    @Html.Hidden("deleteWhenCancel", deleteWhenCancel)
+    @Html.Hidden("id", id)
+    @Html.Hidden("listkey", listKey)
+    @Html.Hidden("name", name)
+    @Html.Hidden("lastShowed", 0)
+
+    <div class="summary">
+        <table class="level1">
+            <tr>                                                               
+                <td class="xlarge label">
+                    @Html.BvLabel(Model, m => m.strVectorID)
+                </td>
+                <td class="xlarge">
+                    @Html.BvEditbox(Model, m => m.strVectorID)
+                </td>
+                 
+                <td class="xlarge label">
+                    @Html.BvLabel(Model, m => m.strSessionID)
+                </td>
+                <td class="xlarge">
+                    @Html.BvEditbox(Model, m => m.strSessionID)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="label">
+                    @Html.BvLabel(Model, m => m.strFieldVectorID)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strFieldVectorID)
+                </td>
+                <td class="label">
+                    @Html.BvLabel(Model, m => m.idfsVectorType)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.VectorType, true, "vector.onVectorTypeChanged")
+                </td>
+            </tr>
+        </table>
+    </div>
+@(Html.Kendo().TabStrip()
+    .Name("MainTabStrip")
+    .HtmlAttributes(new { @class = "twoLinesHeightTab" })
+    .Events(events => events.Select("function(e){ vector.onTabSelect(e, '" + Model.idfVector + "', 'MainTabStrip'); }"))
+    .Animation(animation => animation.Enable(false))
+    .Items(items =>
+        {
+            items.Add()
+                .Text(Translator.GetMessageString("titleTabGeneralData"))
+                .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "titleTabGeneralData" } : new { })
+                .Content(Html.Partial(@"../Vector/GeneralData", Model).ToHtmlString());
+            items.Add()
+                .Text(Translator.GetMessageString("titleTabVectorSpecificData"))
+                .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "titleTabVectorSpecificData", @class = "ffTab" } : new { @class = "ffTab" })
+                .Content(
+                @<text>
+                    <div class="tabPanelContent" id="FlexForm"></div>                
+                </text>
+            );
+            items.Add()
+                .Text(Translator.GetMessageString("tabTitleSamples"))
+                .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleSamples" } : new { })
+                .Content(Html.Partial(@"../VsSession/Samples", Model).ToHtmlString());
+            items.Add()
+                .Text(Translator.GetMessageString("tabTitleFieldTests"))
+                .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleFieldTests" } : new { })
+                .Content(Html.Partial(@"../VsSession/FieldTests", Model).ToHtmlString());
+            items.Add()
+                .Text(Translator.GetMessageString("tabTitleLabTests"))
+                .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleLabTests" } : new { })
+                .Content(Html.Partial(@"../VsSession/LabTests", Model).ToHtmlString());
+        }).SelectedIndex(0))
+}

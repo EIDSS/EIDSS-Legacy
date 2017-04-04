@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- the theme applied to the application or activity -->
+    <style name="CustomActionBarTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:actionBarStyle" tools:targetApi="11">@style/MyActionBar</item>
+        <item name="android:windowActionBarOverlay" tools:targetApi="11">true</item>
+
+        <item name="android:dividerHeight">1px</item>
+        <!--item name="android:divider">#F00</item-->
+
+        <!-- Support library compatibility -->
+        <item name="actionBarStyle">@style/MyActionBar</item>
+        <item name="windowActionBarOverlay">true</item>
+
+        <item name="android:spinnerStyle">@style/SpinnerAppTheme</item>
+        <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItemAppTheme</item>
+
+        <!-- Popup menu -->
+        <item name="android:popupMenuStyle" tools:targetApi="11">@style/PopupMenu</item>
+        <item name="popupMenuStyle">@style/PopupMenu</item>
+
+        <item name="android:dropDownListViewStyle">@style/DropDownList</item>
+
+        <item name="textAppearanceLargePopupMenu">@style/PopupMenuTextAppearanceLarge</item>
+        <item name="android:textAppearanceLargePopupMenu" tools:targetApi="11">@style/PopupMenuTextAppearanceLarge</item>
+
+        <item name="textAppearanceSmallPopupMenu">@style/PopupMenuTextAppearanceSmall</item>
+        <item name="android:textAppearanceSmallPopupMenu" tools:targetApi="11">@style/PopupMenuTextAppearanceSmall</item>
+        <!-- /Popup menu -->
+
+        <!-- colorPrimary is used for the default action bar background -->
+        <item name="colorPrimary">@color/CommonBackground</item>
+
+        <!-- colorPrimaryDark is used for the status bar -->
+        <item name="colorPrimaryDark">@color/CommonBackground</item>
+
+        <!-- colorAccent is used as the default value for colorControlActivated,
+             which is used to tint widgets -->
+        <item name="colorAccent">@color/AccentBackground</item>
+
+        <!-- You can also set colorControlNormal, colorControlActivated
+             colorControlHighlight, and colorSwitchThumbNormal. -->
+        <item name="android:listChoiceIndicatorMultiple">@drawable/apptheme_btn_check_holo_light</item>
+    </style>
+
+    <!-- ActionBar styles -->
+    <style name="MyActionBar"
+        parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:background">@color/CommonBackground</item>
+        <item name="android:paddingLeft">@dimen/ActionBar.Padding</item>
+        <item name="android:paddingRight">@dimen/ActionBar.Padding</item>
+
+        <!-- Support library compatibility -->
+        <item name="background">@color/CommonBackground</item>
+
+        <item name="android:minHeight">?attr/actionBarSize</item>
+    </style>
+
+
+</resources>

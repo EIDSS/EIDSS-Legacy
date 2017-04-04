@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/Scroll"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <LinearLayout
+        style="@style/UnderScrollLayout">
+
+        <!--section to paste begin-->
+        
+      <!--Page 0-->
+
+<!--CaseID-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+          style="@style/DetailItem.Header"
+          android:text="@string/VetCase_strCaseID" />
+    <EditText
+          android:id="@+id/strCaseID"
+          style="@style/DetailItem.Text"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--LocalIdentifier-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+          style="@style/DetailItem.Header"
+          android:text="@string/VetCase_strLocalIdentifier" />
+    <EditText
+          android:id="@+id/strLocalIdentifier"
+          style="@style/DetailItem.Text"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--CaseReportType-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+          android:text="@string/VetCase_idfsCaseReportType" />
+    <Spinner
+          android:id="@+id/idfsCaseReportType"
+        style="@style/DetailItem.Spinner"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--TentativeDiagnosis-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+          android:text="@string/VetCase_idfsTentativeDiagnosis" />
+    <Spinner
+          android:id="@+id/idfsTentativeDiagnosis"
+        style="@style/DetailItem.Spinner"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--TentativeDiagnosisDate-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+          android:text="@string/VetCase_datTentativeDiagnosisDate" />
+    <LinearLayout
+        style="@style/DetailLayout.Date">
+    <TextView
+        android:id="@+id/datTentativeDiagnosisDate"
+        style="@style/DetailItem.Date"
+        android:enabled="true"
+        />
+    <Button
+        android:id="@+id/datTentativeDiagnosisDateClearButton"
+        style="@style/DetailItem.Date.Button.Clear"/>
+    </LinearLayout>
+    <TextView
+        style="@style/Separator"/>
+</LinearLayout>
+
+<!--ReportDate-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+          android:text="@string/VetCase_datReportDate" />
+    <LinearLayout
+        style="@style/DetailLayout.Date">
+    <TextView
+        android:id="@+id/datReportDate"
+        style="@style/DetailItem.Date"
+        android:enabled="true"
+        />
+    <Button
+        android:id="@+id/datReportDateClearButton"
+        style="@style/DetailItem.Date.Button.Clear"/>
+    </LinearLayout>
+    <TextView
+        style="@style/Separator"/>
+</LinearLayout>
+
+<!--SentByOffice-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+          style="@style/DetailItem.Header"
+          android:text="@string/VetCase_strSentByOffice" />
+    <EditText
+          android:id="@+id/strSentByOffice"
+          style="@style/DetailItem.Text"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--SentByPerson-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+          style="@style/DetailItem.Header"
+          android:text="@string/VetCase_strSentByPerson" />
+    <EditText
+          android:id="@+id/strSentByPerson"
+          style="@style/DetailItem.Text"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--InvestigatedByPerson-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+          android:text="@string/VetCase_idfInvestigatedByPerson" />
+    <TextView
+          android:id="@+id/idfInvestigatedByPerson"
+        style="@style/DetailItem.Text"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--AssignedDate-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+          android:text="@string/VetCase_datAssignedDate" />
+    <LinearLayout
+        style="@style/DetailLayout.Date">
+    <TextView
+        android:id="@+id/datAssignedDate"
+        style="@style/DetailItem.Date"
+        />
+    </LinearLayout>
+    <TextView
+        style="@style/Separator"/>
+</LinearLayout>
+
+<!--InvestigationDate-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+          android:text="@string/VetCase_datInvestigationDate" />
+    <LinearLayout
+        style="@style/DetailLayout.Date">
+    <TextView
+        android:id="@+id/datInvestigationDate"
+        style="@style/DetailItem.Date"
+        />
+    </LinearLayout>
+    <TextView
+        style="@style/Separator"/>
+</LinearLayout>
+
+<!--FinalCaseStatus-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+          android:text="@string/VetCase_idfsFinalCaseStatus" />
+    <TextView
+          android:id="@+id/idfsFinalCaseStatus"
+        style="@style/DetailItem.Text"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--FinalDiagnosis-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+          style="@style/DetailItem.Header"
+          android:text="@string/VetCase_strFinalDiagnosis" />
+    <EditText
+          android:id="@+id/strFinalDiagnosis"
+          style="@style/DetailItem.Text"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--FinalDiagnosisDate-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+          android:text="@string/VetCase_datFinalDiagnosisDate" />
+    <LinearLayout
+        style="@style/DetailLayout.Date">
+    <TextView
+        android:id="@+id/datFinalDiagnosisDate"
+        style="@style/DetailItem.Date"
+        />
+    </LinearLayout>
+    <TextView
+        style="@style/Separator"/>
+</LinearLayout>
+
+<!--Comment-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+          style="@style/DetailItem.Header"
+          android:text="@string/VetCase_strComment" />
+    <EditText
+          android:id="@+id/strComment"
+          style="@style/DetailItem.Text"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--YNTestsConducted-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+          android:text="@string/VetCase_idfsYNTestsConducted" />
+    <TextView
+          android:id="@+id/idfsYNTestsConducted"
+        style="@style/DetailItem.Text"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+
+        
+            <!--section to paste end-->
+            <!--CreatedDate-->
+            <LinearLayout
+                style="@style/DetailLayout.Port">
+                <TextView
+                    style="@style/DetailItem.Header.Readonly"
+                    android:text="@string/Created" />
+                <LinearLayout
+                    style="@style/DetailLayout.Date">
+                    <TextView
+                        android:id="@+id/datCreateDate"
+                        style="@style/DetailItem.Date.Readonly"
+                        />
+                </LinearLayout>
+                <TextView
+                    style="@style/Separator"/>
+            </LinearLayout>
+    </LinearLayout>
+</ScrollView>

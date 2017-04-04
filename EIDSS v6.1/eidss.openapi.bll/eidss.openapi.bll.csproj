@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F06B5B8C-FF70-4B2D-A88C-55A2FE8C8884}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>eidss.openapi.bll</RootNamespace>
+    <AssemblyName>eidss.openapi.bll</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\eidss.openapi.bll.XML</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.2.2.1\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\EIDSSAssemblyInfo.cs">
+      <Link>EIDSSAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Bll\FarmBll.cs" />
+    <Compile Include="Bll\VetCasePensideTestBll.cs" />
+    <Compile Include="Bll\VetCaseTestValidationBll.cs" />
+    <Compile Include="Bll\HumanCaseTestValidationBll.cs" />
+    <Compile Include="Bll\VetCaseTestBll.cs" />
+    <Compile Include="Bll\HumanCaseTestBll.cs" />
+    <Compile Include="Bll\OrganizationPersonBll.cs" />
+    <Compile Include="Bll\OrganizationBll.cs" />
+    <Compile Include="Bll\PatientBll.cs" />
+    <Compile Include="Bll\VetCaseSampleBll.cs" />
+    <Compile Include="Bll\VetCaseBll.cs" />
+    <Compile Include="Bll\HumanCaseSampleBll.cs" />
+    <Compile Include="Bll\LoginBll.cs" />
+    <Compile Include="Bll\ReferenceBll.cs" />
+    <Compile Include="Bll\HumanCaseBll.cs" />
+    <Compile Include="Converters\AddressConverter.cs" />
+    <Compile Include="Converters\AbstractFieldConverter.cs" />
+    <Compile Include="Converters\AutoConverter.cs" />
+    <Compile Include="Converters\BaseReferenceConverter.cs" />
+    <Compile Include="Converters\BaseConverter.cs" />
+    <Compile Include="Converters\CaseTestValidationConverter.cs" />
+    <Compile Include="Converters\AnimalConverter.cs" />
+    <Compile Include="Converters\AnimalAgeConverter.cs" />
+    <Compile Include="Converters\SpeciesConverter.cs" />
+    <Compile Include="Converters\HerdConverter.cs" />
+    <Compile Include="Converters\FarmListItemConverter.cs" />
+    <Compile Include="Converters\FarmListFilterConverter.cs" />
+    <Compile Include="Converters\FarmRootConverter.cs" />
+    <Compile Include="Converters\PensideTestConverter.cs" />
+    <Compile Include="Converters\PersonConverter.cs" />
+    <Compile Include="Converters\OrganizationPersonConverter.cs" />
+    <Compile Include="Converters\OrganizationConverter.cs" />
+    <Compile Include="Converters\OrganizationListFilterConverter.cs" />
+    <Compile Include="Converters\OrganizationListItemConverter.cs" />
+    <Compile Include="Converters\PatientListItemConverter.cs" />
+    <Compile Include="Converters\PatientListFilterConverter.cs" />
+    <Compile Include="Converters\GeoLocationConverter.cs" />
+    <Compile Include="Converters\VetCaseSampleConverter.cs" />
+    <Compile Include="Converters\FarmPanelConverter.cs" />
+    <Compile Include="Converters\VetCaseConverter.cs" />
+    <Compile Include="Converters\VetCaseListItemConverter.cs" />
+    <Compile Include="Converters\VetCaseListFilterConverter.cs" />
+    <Compile Include="Converters\TestResultConverter.cs" />
+    <Compile Include="Converters\CaseTestConverter.cs" />
+    <Compile Include="Converters\FinalCaseClassificationConverter.cs" />
+    <Compile Include="Converters\SampleTypeForDiagnosisConverter.cs" />
+    <Compile Include="Converters\WiderPersonConverter.cs" />
+    <Compile Include="Converters\OrganizationReferenceConverter.cs" />
+    <Compile Include="Converters\InitialCaseClassificationConverter.cs" />
+    <Compile Include="Converters\DiagnosisConverter.cs" />
+    <Compile Include="Converters\SettlementConverter.cs" />
+    <Compile Include="Converters\RayonConverter.cs" />
+    <Compile Include="Converters\RegionConverter.cs" />
+    <Compile Include="Converters\CountryConverter.cs" />
+    <Compile Include="Converters\OperationType.cs" />
+    <Compile Include="Converters\HumanCaseListFilterConverter.cs" />
+    <Compile Include="Converters\IFieldConverter.cs" />
+    <Compile Include="Converters\FilterAutoBuilder.cs" />
+    <Compile Include="Converters\HumanCaseListItemConverter.cs" />
+    <Compile Include="Converters\IListConverter.cs" />
+    <Compile Include="Converters\HumanCaseSampleConverter.cs" />
+    <Compile Include="Converters\GuidConverter.cs" />
+    <Compile Include="Converters\PatientConverter.cs" />
+    <Compile Include="Converters\HumanCaseConverter.cs" />
+    <Compile Include="Converters\IConverter.cs" />
+    <Compile Include="Exceptions\AuthEmptyException.cs" />
+    <Compile Include="Exceptions\AuthFailedException.cs" />
+    <Compile Include="Exceptions\AuthVersionException.cs" />
+    <Compile Include="Exceptions\AuthLockedException.cs" />
+    <Compile Include="Exceptions\AuthExpiredException.cs" />
+    <Compile Include="Exceptions\AuthNotFoundException.cs" />
+    <Compile Include="Exceptions\AuthLanguageException.cs" />
+    <Compile Include="Exceptions\AuthExternalException.cs" />
+    <Compile Include="Exceptions\AuthRequiredException.cs" />
+    <Compile Include="Exceptions\AuthAccessException.cs" />
+    <Compile Include="Exceptions\GeneralException.cs" />
+    <Compile Include="Exceptions\ReadOnlyFieldException.cs" />
+    <Compile Include="Exceptions\ObjectNotFoundException.cs" />
+    <Compile Include="Exceptions\ModelValidationException.cs" />
+    <Compile Include="Exceptions\OpenApiErrorCode.cs" />
+    <Compile Include="Exceptions\WrongFormatException.cs" />
+    <Compile Include="Exceptions\OpenApiException.cs" />
+    <Compile Include="Exceptions\ReferenceNotFoundException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\bltoolkit.3.2.dev\BLToolkit.4.csproj">
+      <Project>{0c325f5d-e50e-4340-8724-d29896ccc583}</Project>
+      <Name>BLToolkit.4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\bv.common\bv.common.csproj">
+      <Project>{bee76b17-720d-4b65-996a-5712912b3acf}</Project>
+      <Name>bv.common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\bv.model\bv.model.csproj">
+      <Project>{9067327e-1960-4326-acb9-d982ddbeaa76}</Project>
+      <Name>bv.model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.core\eidss.core.csproj">
+      <Project>{bf545ecd-f673-4c71-9362-57c01df13062}</Project>
+      <Name>eidss.core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.model\eidss.model.csproj">
+      <Project>{e4b87b63-d5f2-4f9f-b39c-a7714896d1de}</Project>
+      <Name>eidss.model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.openapi.contract\eidss.openapi.contract.csproj">
+      <Project>{90a555d5-db79-4074-b9a9-a3fb6624f1bc}</Project>
+      <Name>eidss.openapi.contract</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

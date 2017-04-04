@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include $(var.ProjectDir)MultiInstance\MultiInstance.wxi?>
+<?include $(var.ProjectDir)ProductInfo.wxi?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <Fragment Id="MultiInstance registration">
+    <Property Id="INSTANCEID" Value="$(var.DefaultInstance)" Secure="yes" />
+    <Property Id="DEFAULT_INSTANCE" Value="$(var.DefaultInstance)" Secure="yes" />
+    <Property Id="INSTANCE_POOL" Value="$(var.InstancePool)" Secure="yes" />
+    <Property Id="INSTANCE_REGISTRY" Value="$(var.ProductFamilyRegistryKey)\Instances" Secure="yes" />
+    <Property Id="InnerVersion" Value="$(var.InnerVersion)" />
+
+    <Feature Id="Instance" Absent="disallow" AllowAdvertise="no" Display="hidden" Level="1">
+      <ComponentRef Id="InstanceRegistration" />
+    </Feature>
+
+    <DirectoryRef Id="APPLICATIONFOLDER">
+      <Component Id="InstanceRegistration" MultiInstance="yes">
+        <!--
+          Do not use property in Key attribute! Specify key explicitly!
+          Otherwise installer won't remove keys from previous versions.
+          (e.g. do not use <RegistryKey Root="HKLM" Key="[INSTANCE_REGISTRY]"> )
+        -->
+        <RegistryKey Root="HKLM" Key="$(var.ProductFamilyRegistryKey)\Instances">
+          <RegistryValue Name="[INSTANCEID]" Value="[ProductCode]" Type="string" KeyPath="yes" />
+        </RegistryKey>
+      </Component>
+    </DirectoryRef>
+
+
+    <CustomActionRef Id="SetUpgradeCode.I01" />
+  </Fragment>
+
+
+  <Fragment Id="MuiltiInstance Custom Action Binary">
+    <Binary
+      Id="MultiInstanceCA"
+      SourceFile="$(var.CustomActions.MultiInstanceSupport.TargetDir)$(var.CustomActions.MultiInstanceSupport.TargetName).CA.dll" />
+  </Fragment>
+
+
+  <Fragment Id="Fill upgrade Table">
+    <!--
+      The Upgrade table is left empty intentionally.
+      It must be filled with proper upgrade codes during installation (otherwise there is no way to modify preexisting rows during installation)
+      As Upgrade table is empty the FindRelatedProducts action must be sequences manually.
+    -->
+    
+    <EnsureTable Id="Upgrade" />
+
+    <Property Id="WIX_UPGRADE_DETECTED" Secure="yes" />
+    <Property Id="WIX_DOWNGRADE_DETECTED" Secure="yes" />
+    
+    <CustomAction Id="FillUpgradeTable" BinaryKey="MultiInstanceCA" DllEntry="FillUpgradeTable" />
+    
+    <InstallUISequence>
+      <Custom Action="FillUpgradeTable" Before="FindRelatedProducts" />
+      <FindRelatedProducts Before="AppSearch" />
+    </InstallUISequence>
+    <InstallExecuteSequence>
+      <Custom Action="FillUpgradeTable" Before="FindRelatedProducts" />
+      <FindRelatedProducts Before="AppSearch" />
+    </InstallExecuteSequence>
+  </Fragment>
+
+
+  <Fragment Id="Set Upgrade Codes">
+    <SetProperty Action="SetUpgradeCode.I01" Id="UpgradeCode" Before="FillUpgradeTable" Value="$(var.UpgradeCode.I01)">
+      INSTANCEID = "$(var.Instance01)"
+    </SetProperty>
+    <SetProperty Action="SetUpgradeCode.I02" Id="UpgradeCode" Before="FillUpgradeTable" Value="$(var.UpgradeCode.I02)">
+      INSTANCEID = "$(var.Instance02)"
+    </SetProperty>
+    <SetProperty Action="SetUpgradeCode.I03" Id="UpgradeCode" Before="FillUpgradeTable" Value="$(var.UpgradeCode.I03)">
+      INSTANCEID = "$(var.Instance03)"
+    </SetProperty>
+    <SetProperty Action="SetUpgradeCode.I04" Id="UpgradeCode" Before="FillUpgradeTable" Value="$(var.UpgradeCode.I04)">
+      INSTANCEID = "$(var.Instance04)"
+    </SetProperty>
+    <SetProperty Action="SetUpgradeCode.I05" Id="UpgradeCode" Before="FillUpgradeTable" Value="$(var.UpgradeCode.I05)">
+      INSTANCEID = "$(var.Instance05)"
+    </SetProperty>
+    <SetProperty Action="SetUpgradeCode.I06" Id="UpgradeCode" Before="FillUpgradeTable" Value="$(var.UpgradeCode.I06)">
+      INSTANCEID = "$(var.Instance06)"
+    </SetProperty>
+    <SetProperty Action="SetUpgradeCode.I07" Id="UpgradeCode" Before="FillUpgradeTable" Value="$(var.UpgradeCode.I07)">
+      INSTANCEID = "$(var.Instance07)"
+    </SetProperty>
+    <SetProperty Action="SetUpgradeCode.I08" Id="UpgradeCode" Before="FillUpgradeTable" Value="$(var.UpgradeCode.I08)">
+      INSTANCEID = "$(var.Instance08)"
+    </SetProperty>
+    <SetProperty Action="SetUpgradeCode.I09" Id="UpgradeCode" Before="FillUpgradeTable" Value="$(var.UpgradeCode.I09)">
+      INSTANCEID = "$(var.Instance09)"
+    </SetProperty>
+    <SetProperty Action="SetUpgradeCode.I10" Id="UpgradeCode" Before="FillUpgradeTable" Value="$(var.UpgradeCode.I10)">
+      INSTANCEID = "$(var.Instance10)"
+    </SetProperty>
+    <SetProperty Action="SetUpgradeCode.I11" Id="UpgradeCode" Before="FillUpgradeTable" Value="$(var.UpgradeCode.I11)">
+      INSTANCEID = "$(var.Instance11)"
+    </SetProperty>
+    <SetProperty Action="SetUpgradeCode.I12" Id="UpgradeCode" Before="FillUpgradeTable" Value="$(var.UpgradeCode.I12)">
+      INSTANCEID = "$(var.Instance12)"
+    </SetProperty>
+    <SetProperty Action="SetUpgradeCode.I13" Id="UpgradeCode" Before="FillUpgradeTable" Value="$(var.UpgradeCode.I13)">
+      INSTANCEID = "$(var.Instance13)"
+    </SetProperty>
+    <SetProperty Action="SetUpgradeCode.I14" Id="UpgradeCode" Before="FillUpgradeTable" Value="$(var.UpgradeCode.I14)">
+      INSTANCEID = "$(var.Instance14)"
+    </SetProperty>
+    <SetProperty Action="SetUpgradeCode.I15" Id="UpgradeCode" Before="FillUpgradeTable" Value="$(var.UpgradeCode.I15)">
+      INSTANCEID = "$(var.Instance15)"
+    </SetProperty>
+    <SetProperty Action="SetUpgradeCode.I16" Id="UpgradeCode" Before="FillUpgradeTable" Value="$(var.UpgradeCode.I16)">
+      INSTANCEID = "$(var.Instance16)"
+    </SetProperty>
+    <SetProperty Action="SetUpgradeCode.I17" Id="UpgradeCode" Before="FillUpgradeTable" Value="$(var.UpgradeCode.I17)">
+      INSTANCEID = "$(var.Instance17)"
+    </SetProperty>
+    <SetProperty Action="SetUpgradeCode.I18" Id="UpgradeCode" Before="FillUpgradeTable" Value="$(var.UpgradeCode.I18)">
+      INSTANCEID = "$(var.Instance18)"
+    </SetProperty>
+    <SetProperty Action="SetUpgradeCode.I19" Id="UpgradeCode" Before="FillUpgradeTable" Value="$(var.UpgradeCode.I19)">
+      INSTANCEID = "$(var.Instance19)"
+    </SetProperty>
+    <SetProperty Action="SetUpgradeCode.I20" Id="UpgradeCode" Before="FillUpgradeTable" Value="$(var.UpgradeCode.I20)">
+      INSTANCEID = "$(var.Instance20)"
+    </SetProperty>
+  </Fragment>
+</Wix>

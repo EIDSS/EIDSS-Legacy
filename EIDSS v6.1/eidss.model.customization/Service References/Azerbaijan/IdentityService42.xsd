@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/EHealthModelWcf" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/EHealthModelWcf" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="IdentityService.DocumentType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="TemporaryResidencePermit" />
+      <xs:enumeration value="PermanentResidencePermit" />
+      <xs:enumeration value="Passport" />
+      <xs:enumeration value="IDCardForAdult" />
+      <xs:enumeration value="IDcardForChild" />
+      <xs:enumeration value="BirthCertificate" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="IdentityService.DocumentType" nillable="true" type="tns:IdentityService.DocumentType" />
+</xs:schema>

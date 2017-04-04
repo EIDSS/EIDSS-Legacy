@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup Label="Directory harvest settings">
+    <HarvestNoLogo>true</HarvestNoLogo>
+    <HarvestDirectoryVerboseOutput Condition=" '$(Configuration)' == 'Debug' ">true</HarvestDirectoryVerboseOutput>
+    <HarvestDirectoryAutogenerateGuids>true</HarvestDirectoryAutogenerateGuids>
+    <HarvestDirectoryGenerateGuidsNow>true</HarvestDirectoryGenerateGuidsNow>
+    <HarvestDirectorySuppressFragments>true</HarvestDirectorySuppressFragments>
+    <HarvestDirectorySuppressUniqueIds>true</HarvestDirectorySuppressUniqueIds>
+    <HarvestDirectoryKeepEmptyDirectories>false</HarvestDirectoryKeepEmptyDirectories>
+    <HarvestDirectorySuppressCom>true</HarvestDirectorySuppressCom>
+    <HarvestDirectorySuppressRootDirectory>true</HarvestDirectorySuppressRootDirectory>
+    <HarvestDirectorySuppressRegistry>true</HarvestDirectorySuppressRegistry>
+    <Transforms>$(MSBuildThisFileDirectory)Directories.harvest.xslt</Transforms>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <HarvestDependsOn>
+      PrepareDirectoryHarvest;
+      $(HarvestDependsOn)
+    </HarvestDependsOn>
+
+    <PrepareDirectoryHarvestDependsOn>
+      PrepareDirectory_GdalData;
+      PrepareDirectory_PaperForms;
+      PrepareDirectory_Help;
+    </PrepareDirectoryHarvestDependsOn>
+  </PropertyGroup>
+  <Target Name="PrepareDirectoryHarvest" DependsOnTargets="$(PrepareDirectoryHarvestDependsOn)">
+    <Message Importance="low" Text="HarvestDirectory:%0d%0a%09@(HarvestDirectory, '%0d%0a%09')" />
+  </Target>
+
+  <Target Name="PrepareDirectory_GdalData">
+    <PropertyGroup>
+      <GdalPath>$(BinariesRoot)gdal_data\</GdalPath>
+      <DefineConstants>GdalPath=$(GdalPath);$(DefineConstants)</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <HarvestDirectory Include="$(GdalPath)">
+        <Transforms>$(Transforms)</Transforms>
+        <ComponentGroupName>gdal_data.Harvested</ComponentGroupName>
+        <DirectoryRefId>gdal_data</DirectoryRefId>
+        <PreprocessorVariable>var.GdalPath</PreprocessorVariable>
+      </HarvestDirectory>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="PrepareDirectory_PaperForms">
+    <PropertyGroup>
+      <PaperForms>$(BinariesRoot)Paper Forms\</PaperForms>
+      <DefineConstants>PaperForms=$(PaperForms);$(DefineConstants)</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <HarvestDirectory Include="$(PaperForms)">
+        <Transforms>$(Transforms)</Transforms>
+        <ComponentGroupName>PaperForms.Harvested</ComponentGroupName>
+        <DirectoryRefId>Paper_Forms</DirectoryRefId>
+        <PreprocessorVariable>var.PaperForms</PreprocessorVariable>
+      </HarvestDirectory>
+    </ItemGroup>
+  </Target>
+
+
+  <PropertyGroup>
+    <HelpSource>$(SourceDir)\Help\</HelpSource>
+    <Skin>$(HelpSource)EIDSS_Desktop_WebHelp.hmskin</Skin>
+    <IncludeOptions>WebHelp</IncludeOptions>
+  </PropertyGroup>
+  <ItemGroup>
+    <HelpProject Include="$(HelpSource)AZ\EIDSS_Desktop_Main\EIDSS_AZ.hmxz">
+      <Culture>az</Culture>
+    </HelpProject>
+    <HelpProject Include="$(HelpSource)EN\EIDSS_Desktop_Main\EIDSS.hmxz">
+      <Culture>en</Culture>
+    </HelpProject>
+    <HelpProject Include="$(HelpSource)GG\EIDSS_Desktop_Main\EIDSS_GG.hmxz">
+      <Culture>gg</Culture>
+    </HelpProject>
+    <HelpProject Include="$(HelpSource)RU\EIDSS_Desktop_Main\EIDSS_RU.hmxz">
+      <Culture>ru</Culture>
+    </HelpProject>
+  </ItemGroup>
+  <Import Project="$(SolutionDir)HelpBuilder.Common.targets" />
+
+  <Target Name="PrepareDirectory_Help" DependsOnTargets="BuildHelp">
+    <PropertyGroup>
+      <DefineConstants>Help=$(BuiltHelpDirectory);$(DefineConstants)</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <HarvestDirectory Include="$(BuiltHelpDirectory)">
+        <Transforms>$(Transforms)</Transforms>
+        <ComponentGroupName>Help.Harvested</ComponentGroupName>
+        <DirectoryRefId>Help</DirectoryRefId>
+        <PreprocessorVariable>var.Help</PreprocessorVariable>
+      </HarvestDirectory>
+    </ItemGroup>
+  </Target>
+</Project>

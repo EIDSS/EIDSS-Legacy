@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8097/?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/eidss.model.Enums" />
+  <xs:import schemaLocation="http://localhost:8097/?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://localhost:8097/?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/eidss.model.Reports" />
+  <xs:import schemaLocation="http://localhost:8097/?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/EIDSS.Reports.Parameterized.Human.GG.Report" />
+  <xs:complexType name="AggregateModel">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseIdModel">
+        <xs:sequence>
+          <xs:element name="_x003C_FormTemplateId_x003E_k__BackingField" type="xs:long" />
+          <xs:element name="_x003C_ObservationId_x003E_k__BackingField" type="xs:long" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AggregateModel" nillable="true" type="tns:AggregateModel" />
+  <xs:complexType name="BaseIdModel">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseModel">
+        <xs:sequence>
+          <xs:element name="_x003C_Id_x003E_k__BackingField" type="xs:long" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="BaseIdModel" nillable="true" type="tns:BaseIdModel" />
+  <xs:complexType name="BaseModel">
+    <xs:sequence>
+      <xs:element name="_x003C_CanWorkWithArchive_x003E_k__BackingField" type="xs:boolean" />
+      <xs:element name="_x003C_ExportFormat_x003E_k__BackingField" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/eidss.model.Enums" name="_x003C_ForbiddenGroups_x003E_k__BackingField" nillable="true" type="q1:ArrayOfPersonalDataGroup" />
+      <xs:element name="_x003C_IsArchiveMode_x003E_k__BackingField" type="xs:boolean" />
+      <xs:element name="_x003C_IsOpenInNewWindow_x003E_k__BackingField" type="xs:boolean" />
+      <xs:element name="_x003C_OrganizationId_x003E_k__BackingField" nillable="true" type="xs:long" />
+      <xs:element name="_x003C_SiteId_x003E_k__BackingField" nillable="true" type="xs:long" />
+      <xs:element name="_x003C_UseArchive_x003E_k__BackingField" type="xs:boolean" />
+      <xs:element name="_x003C_UserId_x003E_k__BackingField" nillable="true" type="xs:long" />
+      <xs:element name="m_Language" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BaseModel" nillable="true" type="tns:BaseModel" />
+  <xs:complexType name="AggregateSummaryModel">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseModel">
+        <xs:sequence>
+          <xs:element name="_x003C_AggrXml_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" name="_x003C_ObservationList_x003E_k__BackingField" nillable="true" type="q2:ArrayOflong" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AggregateSummaryModel" nillable="true" type="tns:AggregateSummaryModel" />
+  <xs:complexType name="HumIdModel">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseIdModel">
+        <xs:sequence>
+          <xs:element name="_x003C_CsId_x003E_k__BackingField" type="xs:long" />
+          <xs:element name="_x003C_DiagnosisId_x003E_k__BackingField" type="xs:long" />
+          <xs:element name="_x003C_EpiId_x003E_k__BackingField" type="xs:long" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="HumIdModel" nillable="true" type="tns:HumIdModel" />
+  <xs:complexType name="DToChangedDSurrogateModel">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseDateModel">
+        <xs:sequence>
+          <xs:element name="_x003C_Concordance_x003E_k__BackingField" type="xs:int" />
+          <xs:element name="_x003C_FinalDiagnoses_x003E_k__BackingField" nillable="true" type="tns:MultipleDiagnosisModel" />
+          <xs:element name="_x003C_InitialDiagnoses_x003E_k__BackingField" nillable="true" type="tns:MultipleDiagnosisModel" />
+          <xs:element name="_x003C_Location_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_RayonId_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_RegionId_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_SettlementId_x003E_k__BackingField" nillable="true" type="xs:long" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DToChangedDSurrogateModel" nillable="true" type="tns:DToChangedDSurrogateModel" />
+  <xs:complexType name="BaseDateModel">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseModel">
+        <xs:sequence>
+          <xs:element name="_x003C_IsCurrentMonthSelected_x003E_k__BackingField" type="xs:boolean" />
+          <xs:element name="_x003C_IsMonthMandatory_x003E_k__BackingField" type="xs:boolean" />
+          <xs:element name="_x003C_MonthEnd_x003E_k__BackingField" nillable="true" type="xs:int" />
+          <xs:element name="_x003C_MonthPropertyName_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_Month_x003E_k__BackingField" nillable="true" type="xs:int" />
+          <xs:element name="_x003C_YearPropertyName_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_Year_x003E_k__BackingField" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="BaseDateModel" nillable="true" type="tns:BaseDateModel" />
+  <xs:complexType name="MultipleDiagnosisModel">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseMultipleModel">
+        <xs:sequence>
+          <xs:element name="_x003C_AddSelectAllItem_x003E_k__BackingField" type="xs:boolean" />
+          <xs:element name="_x003C_HascCode_x003E_k__BackingField" type="xs:int" />
+          <xs:element name="_x003C_IsRequired_x003E_k__BackingField" type="xs:boolean" />
+          <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/eidss.model.Enums" name="_x003C_UsingType_x003E_k__BackingField" nillable="true" type="q3:DiagnosisUsingTypeEnum" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="MultipleDiagnosisModel" nillable="true" type="tns:MultipleDiagnosisModel" />
+  <xs:complexType name="BaseMultipleModel">
+    <xs:sequence>
+      <xs:element xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays" name="_x003C_CheckedItems_x003E_k__BackingField" nillable="true" type="q4:ArrayOfstring" />
+      <xs:element name="m_ItemsList" nillable="true" type="tns:ArrayOfSelectListItemSurrogate" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BaseMultipleModel" nillable="true" type="tns:BaseMultipleModel" />
+  <xs:complexType name="ArrayOfSelectListItemSurrogate">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SelectListItemSurrogate" nillable="true" type="tns:SelectListItemSurrogate" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSelectListItemSurrogate" nillable="true" type="tns:ArrayOfSelectListItemSurrogate" />
+  <xs:complexType name="SelectListItemSurrogate">
+    <xs:sequence>
+      <xs:element name="_x003C_ClassName_x003E_k__BackingField" nillable="true" type="xs:string" />
+      <xs:element name="_x003C_Selected_x003E_k__BackingField" type="xs:boolean" />
+      <xs:element name="_x003C_Text_x003E_k__BackingField" nillable="true" type="xs:string" />
+      <xs:element name="_x003C_Value_x003E_k__BackingField" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SelectListItemSurrogate" nillable="true" type="tns:SelectListItemSurrogate" />
+  <xs:complexType name="BaseIntervalModel">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseModel">
+        <xs:sequence>
+          <xs:element name="_x003C_EndDate_x003E_k__BackingField" type="xs:dateTime" />
+          <xs:element name="_x003C_MaxEndDate_x003E_k__BackingField" nillable="true" type="xs:dateTime" />
+          <xs:element name="_x003C_MaxStartDate_x003E_k__BackingField" nillable="true" type="xs:dateTime" />
+          <xs:element name="_x003C_MinEndDate_x003E_k__BackingField" nillable="true" type="xs:dateTime" />
+          <xs:element name="_x003C_MinStartDate_x003E_k__BackingField" nillable="true" type="xs:dateTime" />
+          <xs:element name="_x003C_StartDate_x003E_k__BackingField" type="xs:dateTime" />
+          <xs:element name="_x003C_UseEmptyInititalEndDate_x003E_k__BackingField" type="xs:boolean" />
+          <xs:element name="_x003C_UseEmptyInititalStartDate_x003E_k__BackingField" type="xs:boolean" />
+          <xs:element name="_x003C_ValidationMessage_x003E_k__BackingField" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="BaseIntervalModel" nillable="true" type="tns:BaseIntervalModel" />
+  <xs:complexType name="VersionedDateModel">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseDateModel">
+        <xs:sequence>
+          <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/eidss.model.Reports" name="m_Processor" nillable="true" type="q5:InfectiousDiseasesProcessor" />
+          <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/EIDSS.Reports.Parameterized.Human.GG.Report" name="m_Version" type="q6:ReportVersion" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="VersionedDateModel" nillable="true" type="tns:VersionedDateModel" />
+  <xs:complexType name="BaseYearModel">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseModel">
+        <xs:sequence>
+          <xs:element name="_x003C_Year_x003E_k__BackingField" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="BaseYearModel" nillable="true" type="tns:BaseYearModel" />
+  <xs:complexType name="VetLabSampleModel">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseModel">
+        <xs:sequence>
+          <xs:element name="_x003C_SampleId_x003E_k__BackingField" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="VetLabSampleModel" nillable="true" type="tns:VetLabSampleModel" />
+  <xs:complexType name="BaseYearQuarterModel">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseYearModel">
+        <xs:sequence>
+          <xs:element name="m_Quarters" nillable="true" type="tns:QuartersModel" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="BaseYearQuarterModel" nillable="true" type="tns:BaseYearQuarterModel" />
+  <xs:complexType name="QuartersModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="MaxQuarter1" type="xs:int" />
+      <xs:element minOccurs="0" name="MaxQuarter2" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="MinQuarter1" type="xs:int" />
+      <xs:element minOccurs="0" name="MinQuarter2" nillable="true" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="QuartersModel" nillable="true" type="tns:QuartersModel" />
+  <xs:complexType name="DiagnosisModel">
+    <xs:sequence>
+      <xs:element name="_x003C_DiagnosisId_x003E_k__BackingField" nillable="true" type="xs:long" />
+      <xs:element name="_x003C_ItemsList_x003E_k__BackingField" nillable="true" type="tns:ArrayOfSelectListItemSurrogate" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DiagnosisModel" nillable="true" type="tns:DiagnosisModel" />
+  <xs:complexType name="AggregateActionsModel">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseIdModel">
+        <xs:sequence>
+          <xs:element name="_x003C_DiagnosticFormTemplate_x003E_k__BackingField" type="xs:long" />
+          <xs:element name="_x003C_DiagnosticObservation_x003E_k__BackingField" type="xs:long" />
+          <xs:element xmlns:q7="http://schemas.microsoft.com/2003/10/Serialization/Arrays" name="_x003C_Labels_x003E_k__BackingField" nillable="true" type="q7:ArrayOfKeyValueOfstringstring" />
+          <xs:element name="_x003C_ProphylacticFormTemplate_x003E_k__BackingField" type="xs:long" />
+          <xs:element name="_x003C_ProphylacticObservation_x003E_k__BackingField" type="xs:long" />
+          <xs:element name="_x003C_SanitaryFormTemplate_x003E_k__BackingField" type="xs:long" />
+          <xs:element name="_x003C_SanitaryObservation_x003E_k__BackingField" type="xs:long" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AggregateActionsModel" nillable="true" type="tns:AggregateActionsModel" />
+  <xs:complexType name="AggregateActionsSummaryModel">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseModel">
+        <xs:sequence>
+          <xs:element name="_x003C_AggrXml_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element xmlns:q8="http://schemas.microsoft.com/2003/10/Serialization/Arrays" name="_x003C_DiagnosticObservation_x003E_k__BackingField" nillable="true" type="q8:ArrayOflong" />
+          <xs:element xmlns:q9="http://schemas.microsoft.com/2003/10/Serialization/Arrays" name="_x003C_Labels_x003E_k__BackingField" nillable="true" type="q9:ArrayOfKeyValueOfstringstring" />
+          <xs:element xmlns:q10="http://schemas.microsoft.com/2003/10/Serialization/Arrays" name="_x003C_ProphylacticObservation_x003E_k__BackingField" nillable="true" type="q10:ArrayOflong" />
+          <xs:element xmlns:q11="http://schemas.microsoft.com/2003/10/Serialization/Arrays" name="_x003C_SanitaryObservation_x003E_k__BackingField" nillable="true" type="q11:ArrayOflong" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AggregateActionsSummaryModel" nillable="true" type="tns:AggregateActionsSummaryModel" />
+  <xs:complexType name="VetIdModel">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseIdModel">
+        <xs:sequence>
+          <xs:element name="_x003C_DiagnosisId_x003E_k__BackingField" type="xs:long" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="VetIdModel" nillable="true" type="tns:VetIdModel" />
+  <xs:complexType name="LimTestResultModel">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseIdModel">
+        <xs:sequence>
+          <xs:element name="_x003C_CsId_x003E_k__BackingField" type="xs:long" />
+          <xs:element name="_x003C_TypeId_x003E_k__BackingField" type="xs:long" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="LimTestResultModel" nillable="true" type="tns:LimTestResultModel" />
+  <xs:complexType name="LimTestModel">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseIdModel">
+        <xs:sequence>
+          <xs:element name="_x003C_IsHuman_x003E_k__BackingField" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="LimTestModel" nillable="true" type="tns:LimTestModel" />
+  <xs:complexType name="LimBatchTestModel">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseIdModel">
+        <xs:sequence>
+          <xs:element name="_x003C_TypeId_x003E_k__BackingField" type="xs:long" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="LimBatchTestModel" nillable="true" type="tns:LimBatchTestModel" />
+  <xs:complexType name="LimContainerContentModel">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseModel">
+        <xs:sequence>
+          <xs:element name="_x003C_ContainerId_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_FreezerId_x003E_k__BackingField" nillable="true" type="xs:long" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="LimContainerContentModel" nillable="true" type="tns:LimContainerContentModel" />
+  <xs:complexType name="IdListModel">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseModel">
+        <xs:sequence>
+          <xs:element xmlns:q12="http://schemas.microsoft.com/2003/10/Serialization/Arrays" name="_x003C_IdList_x003E_k__BackingField" nillable="true" type="q12:ArrayOflong" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="IdListModel" nillable="true" type="tns:IdListModel" />
+</xs:schema>

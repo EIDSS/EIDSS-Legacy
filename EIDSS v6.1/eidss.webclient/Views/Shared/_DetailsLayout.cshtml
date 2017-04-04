@@ -1,0 +1,125 @@
+﻿@using System;
+@using System.Web.UI.WebControls
+@using Kendo.Mvc.UI
+@using bv.common.Configuration
+@using bv.common.Enums;
+@using bv.model.Model.Core;
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+@using System.Web;
+@using eidss.webclient.Utils
+@using System.Web.Optimization
+
+@functions
+{
+    IObjectAccessor GetAccessor()
+    {
+        var result = Model as IObjectAccessor;
+        if (result == null)
+        {
+            if (Model is IObject)
+            {
+                result = ((IObject)Model).GetAccessor();
+            }
+        }
+        return result;
+    }
+    
+    string ModelName()
+    {
+        if (Model is IObject)
+        {
+            return (Model as IObject).ObjectName;
+        }
+        return "";
+    }
+
+    string RenderMainPanel()
+    {
+        IObjectAccessor accessor = GetAccessor();
+        if (accessor != null) Html.RenderActionPanel(accessor, Model as IObject, ActionsPanelType.Main);
+        return String.Empty;
+    }
+}
+
+<!DOCTYPE html>
+<html>    
+    <head>
+        <title>@(Config.GetBoolSetting("AutoTestingVersion") ? "bvid=" + ModelName() + "; " + ViewBag.Title : ViewBag.Title)</title>
+               
+        <link href="@Url.Content("~/Content/Kendo/kendo.common.min.css")" rel="stylesheet" />
+        @if (Cultures.IsRtl)
+        {
+            <link href="@Url.Content("~/Content/Kendo/kendo.rtl.min.css")" rel="stylesheet" />
+        }
+        <link href="@Url.Content("~/Content/Kendo/kendo.uniform.min.css")" rel="stylesheet" />
+
+        @Html.IncludeVersionedCss("~/Content/Styles/Common.css")
+        @Html.IncludeVersionedCss("~/Content/Styles/DetailsPageRestrictions.css")
+        @Html.IncludeVersionedCss("~/Content/Styles/Details.css")
+
+
+        <!-- Translations -->
+        @*<script src="@Url.Content(String.Format("~/Scripts/Kendo/min/cultures/kendo.culture.{0}.min.js", Cultures.GetCultureStandard(ModelUserContext.CurrentLanguage)))" type="text/javascript" ></script>*@
+        @*Html.IncludeVersionedJs(String.Format("~/Scripts/Messages/EIDSS.BvMessages.{0}.js", Cultures.GetCulture(ModelUserContext.CurrentLanguage)))*@
+        <script src="@Url.Content(String.Format("~/Scripts/Kendo/min/cultures/kendo.culture.{0}.min.js", Cultures.GetCulture(ModelUserContext.CurrentLanguage)))" type="text/javascript"></script>
+        <script src="@Url.Action("MessagesScript", "Account", new { version = Extenders.VersionCode() })"></script>
+        <!-- Common -->        
+        @Scripts.Render("~/bundles/system")
+        @Extenders.RenderEidss("~/bundles/EIDSS")
+
+
+        <script type="text/javascript">
+            var heartbeatUrl = bvUrls.getByPath('/System/Heartbeat');
+            $(document).ready(function () {
+                kendo.culture('@Cultures.GetCulture(ModelUserContext.CurrentLanguage)');
+                detailPage.onLoad(@TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now).Hours);
+                detailPage.setInvalidObject(@((Model is IObject) && !(Model as IObject).IsValidObject ? "true": "false"));
+            });
+        </script>
+    </head>
+    <body class='detailsViewContainer @(Cultures.IsRtl ? "k-rtl" : "")'>
+        <div class='page'>
+            <div class="detailPageContent">
+                <div class="detailHeader">
+                    <span class="formTitle">
+                        @ViewBag.Title
+                    </span>
+                    <span class="formNumber">
+                        @ViewBag.Number
+                    </span>
+                    @if (BaseSettings.TranslationMode)
+                    {
+                        <span class="formNumberTranslation">
+                            | 
+                        </span>
+                        <span class="formNumberTranslation">
+                            <a class="formNumberTranslation" href='javascript:bvTranslation.OpenTranslationWindow();'>@Translator.GetMessageString("btTranslationTool")</a>
+                        </span>
+                    }
+                </div>
+                <div id="invalidObject" class="invalidObject invisible">
+                    <img src="/Content/Images/clear-icon.png" onclick="detailPage.setInvalidObject(false);"/>
+                    <div class="invalidObjectText">
+                        @Translator.GetBvMessageString("msgInvalidObject")
+                    </div>
+                </div>
+                @RenderMainPanel()
+                <input type="hidden" id="IsNewCase" value="@ViewBag.IsNewCase" />
+                @RenderBody()   
+            </div>
+        </div> 
+        <div id="DialogWindow"></div>         
+        <div id="PopupWindow"></div>
+        <div id="PopupWindow2"></div>
+        <div id="MapWindow"></div>       
+    @if (BaseSettings.TranslationMode)
+    {
+        <div id="TranslationWindow"></div>       
+        <div id="SplitWindow"></div>       
+    }
+        <div id="loading" class="loader">
+            <img id="loadingImg" class="loaderImg" src='@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/ajax-loader.gif"))' alt="" />
+        </div>   
+    </body>    
+</html>

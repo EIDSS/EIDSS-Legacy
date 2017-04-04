@@ -1,0 +1,307 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="VetFarmTree"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="spFarmTree_SelectDetail" type="detaillist" />
+    </storage>
+
+    <tables>
+        <table name="VetFarmTree" hacodable="true" tostring='c => c.idfsPartyType == (long)PartyTypeEnum.Species ? (string.IsNullOrEmpty(c.strFlockName) ? c.strHerdName : c.strFlockName) + " / " + c.strSpeciesName : (string.IsNullOrEmpty(c.strFlockName) ? c.strHerdName : c.strFlockName)'>
+          <grid>
+            <item key="true" name="idfParty" visible="false"/>
+            <item name="strHerdName" type="string"/>
+            <item name="strFlockName" type="string"/>
+            <item name="strSpeciesName" type="string" required="true"/>            
+            <item name="intTotalAnimalQty" type="int?"/>
+            <item name="intSickAnimalQty" type="int?"/>
+            <item name="intDeadAnimalQty" type="int?"/>
+            <item name="strNote" type="string"/>
+            <item name="strAverageAge" />
+            <item name="datStartOfSignsDate" />
+            <item name="idfsPartyType" type="long?" visible="false"/>
+            <item name="idfParentParty" type="long?" visible="false"/>            
+          </grid>
+          <labels>
+            <item name="strNote" labelId="VetFarmTree.strNote"/>
+            <item name="strFlockName" labelId="Flock"/>
+          </labels>
+          <keys>
+            <key name="idfParty"/>
+          </keys>
+          <fields>   
+              <storage name="Case" type="WeakReference"/>
+              <calculated name="VetFarmPanel" type="FarmPanel" depends="Parent" lambda="c => c.Parent as FarmPanel" />
+              <calculated name="ASSession" type="AsSession" depends="Parent" lambda="c => c.Parent == null ? null : (c.Parent is AsSession ? c.Parent as AsSession : (c.Parent.Parent == null ? null : (c.Parent.Parent is AsSession ? c.Parent.Parent as AsSession : c.Parent.Parent.Parent as AsSession)))" />
+              <calculated name="idfsCaseType" type="long?" depends="VetFarmPanel" lambda="c => c.VetFarmPanel == null || c.VetFarmPanel.VCase == null ? 0 : c.VetFarmPanel.VCase.idfsCaseType" />
+              <storage name="VetFarmTreeList" type="WeakReference"/>
+              <storage name="idfsDiagnosisForCs" type="long?"/>
+              <calculated name="idfsSpeciesTypeReference" type="long?" depends="strName"
+                            lambda="c => ExprUtils.LongFromString(c.strName)" 
+                            setter="strName = ExprUtils.StringFromObject(value)" />
+              <calculated name="lOrderingSequence" type="long?" depends="idfParentParty"
+                          lambda="c=>c.idfsPartyType == (long)PartyTypeEnum.Species ? c.idfParentParty : c.idfParty"/>
+              <calculated name="strSpeciesName" depends="idfsPartyType" lambda='c => c.idfsPartyType == (long)PartyTypeEnum.Species &amp;&amp; c.idfsSpeciesTypeReference.HasValue &amp;&amp; c.SpeciesType != null ? c.SpeciesType.name : ""' type="string"/>
+              <storage name="strHerdName" type="string"/>            
+              <calculated name="strFlockName" type="string" lambda="c=>c.strHerdName" depends="strHerdName" />
+              <calculated name="bInMonitoringSession" type="bool" lambda="c => c.idfMonitoringSession.HasValue &amp;&amp; c.idfMonitoringSession.Value != 0" depends="idfMonitoringSession" />
+          </fields>
+          <readonly>
+              <fields name="strHerdName,strFlockName,strSpeciesName" predicate="c => true"/>
+              <fields name="*" predicate="c => false"/>
+          </readonly>
+          <relations>
+            <relation name="FFPresenterCs" table="FFPresenterModel" internal="false" type="link" source="idfObservation" target="CurrentObservation" lazy="false" predicate="c => !c.bInMonitoringSession" />
+          </relations>
+          <lookups>
+            <lookup name="SpeciesType" table="BaseReference" section="rftSpeciesList" source="idfsSpeciesTypeReference" target="idfsBaseReference">
+              <filters>
+                <filter predicate="c => obj.ASSession == null ? true : ((obj.ASSession.Diseases.Count(i => !i.IsMarkedToDelete) == 0 || obj.ASSession.Diseases.Count(i => !i.IsMarkedToDelete &amp;&amp; (!i.idfsSpeciesType.HasValue || i.idfsSpeciesType.Value == 0)) > 0) ? true : (obj.ASSession.Diseases.Any(i => !i.IsMarkedToDelete &amp;&amp; i.idfsSpeciesType == c.idfsBaseReference)))"/>
+                <filter predicate="c => (c.intHACode.GetValueOrDefault() &amp; obj._HACode.GetValueOrDefault()) != 0 || c.idfsBaseReference == obj.idfsSpeciesTypeReference" />
+                <filter predicate="c => obj.idfsPartyType == (long)PartyTypeEnum.Species" />
+              </filters>
+            </lookup>
+              <!--lookup name="SpeciesType" table="SpeciesTypeLookup" source="idfsSpeciesTypeReference" target="idfsBaseReference" notaddempty="true">
+                    <filters>
+                        <filter predicate="c => (c.intHACode.GetValueOrDefault() &amp; obj._HACode.GetValueOrDefault()) != 0 || c.idfsBaseReference == obj.idfsSpeciesTypeReference" />
+                        <filter predicate="c => obj.idfsPartyType == (long)PartyTypeEnum.Species" />
+                    </filters>
+                </lookup-->
+            </lookups>
+          <storage>
+                <post />
+            </storage>
+          <postorder>
+            <item name="this"/>
+            <!--<item name="CsActivityParameters"/>-->
+            <item name="FFPresenterCs"/>
+          </postorder>
+          <deleteorder>
+            <item name="FFPresenterCs"/>
+            <item name="this"/>
+          </deleteorder>
+          <extenders>
+            <creating>
+              <!--<db_lambda_extender target="strName" type="string" lambda='(c,m) => 
+                      c.strName != "(new)" 
+                      ? c.strName 
+                      : m.SetSpCommand("dbo.spGetNextNumber", (long)NumberingObjectEnum.AnimalGroup, DBNull.Value, DBNull.Value)
+                      .ExecuteScalar&lt;string&gt;(ScalarSourceType.OutputParameter, "NextNumberValue")' />-->
+              <lambda_extender target='strHerdName' type='string' lambda='c => c.GetHerdName()'/>
+              <scalar_extender target="idfObservation" class="GetNewIDExtender" />                      
+              <!--
+                
+              <custom_extender>
+                <text>
+                  if (obj.idfsPartyType == (long)PartyTypeEnum.Species)
+                  {
+                    _LoadCsFormTemplate(obj);
+                    _LoadCsActivityParameters(obj);
+                  }
+                </text>
+              </custom_extender>
+              -->
+            </creating>
+            <created>
+              <custom_extender>
+                <text>
+                  if (!obj.bInMonitoringSession)
+                  {
+                    obj.FFPresenterCs = FFPresenterModel.Accessor.Instance(null).SelectByKey(manager, obj.idfObservation);
+                    obj.FFPresenterCs.SetProperties(EidssSiteContext.Instance.CountryID, obj.idfsDiagnosisForCs, (obj._HACode.HasValue ? obj._HACode.Value : 0) == (int)eidss.model.Enums.HACode.Livestock ? FFTypeEnum.LivestockSpeciesCS : FFTypeEnum.AvianSpeciesCS, obj.idfObservation.Value, 
+                        obj.idfCase.HasValue ? obj.idfCase.Value : 0); //obj.idfParty  
+                    if (obj.FFPresenterCs.CurrentTemplate != null) obj.idfsFormTemplate = obj.FFPresenterCs.CurrentTemplate.idfsFormTemplate;
+                  }
+                </text>
+              </custom_extender>
+            </created>
+            <loaded>
+                <lambda_extender target='strHerdName' type='string' lambda='c => c.GetHerdName()'/>
+                <!--<custom_extender>
+                  <text>
+                    if (obj.idfsPartyType == (long)PartyTypeEnum.Species)
+                    {
+                    _LoadCsFormTemplate(obj);
+                    _LoadCsActivityParameters(obj);
+                    }
+                  </text>
+                </custom_extender>-->
+                <custom_extender>
+                  <text>
+                    if (!bCloning &amp;&amp; !obj.bInMonitoringSession)
+                    {
+                      if (obj.idfsFormTemplate.HasValue)
+                      {
+                        obj.FFPresenterCs.SetProperties(obj.idfsFormTemplate.Value, obj.idfCase.HasValue ? obj.idfCase.Value : 0); //obj.idfParty
+                      }
+                      else
+                      {
+                        if (obj.idfObservation == null)
+                        obj.idfObservation = (new GetNewIDExtender&lt;VetFarmTree&gt;()).GetScalar(manager, obj);
+
+                        obj.FFPresenterCs = FFPresenterModel.Accessor.Instance(null).SelectByKey(manager, obj.idfObservation);
+                        obj.FFPresenterCs.SetProperties(EidssSiteContext.Instance.CountryID, obj.idfsDiagnosisForCs, obj._HACode == (int)eidss.model.Enums.HACode.Livestock ? FFTypeEnum.LivestockSpeciesCS : FFTypeEnum.AvianSpeciesCS, obj.idfObservation.Value, obj.idfCase.HasValue ? obj.idfCase.Value : 0); //obj.idfParty
+                        if (obj.FFPresenterCs.CurrentTemplate != null) obj.idfsFormTemplate = obj.FFPresenterCs.CurrentTemplate.idfsFormTemplate;
+                      }
+                    }
+                  </text>
+                </custom_extender>
+              </loaded>
+            <posting>
+                    <!--<db_lambda_extender target="idfObservation" type="long?" lambda='(c,m) => 
+                        c.idfObservation ??
+                        m.SetSpCommand("dbo.spsysGetNewID", DBNull.Value)
+                        .ExecuteScalar&lt;long&gt;(ScalarSourceType.OutputParameter)' />-->
+                    <!--<db_lambda_extender target="strName" type="string" lambda='(c,m) => 
+                        c.strName != "(new herd)" 
+                        ? c.strName 
+                        : m.SetSpCommand("dbo.spGetNextNumber", (long)NumberingObjectEnum.AnimalGroup, DBNull.Value, DBNull.Value)
+                        .ExecuteScalar&lt;string&gt;(ScalarSourceType.OutputParameter, "NextNumberValue")' />-->
+                </posting>              
+          </extenders>
+          <handlers>
+              <fieldhandler>
+                <lambda_handler field='strName' target='strHerdName' type='string' lambda='c => c.GetHerdName()'/>
+                <lambda_handler field='strName' target='SpeciesType' type='BaseReference' lambda='c => string.IsNullOrEmpty(c.strName) ? c.SpeciesType : c.SpeciesTypeLookup.FirstOrDefault(i => i.idfsBaseReference == c.idfsSpeciesTypeReference)'/>
+                <custom_handler field='idfsDiagnosisForCs'>
+                  <text>
+                    UpdateTemplate(obj);
+                  </text>
+                </custom_handler>
+              </fieldhandler>
+            </handlers>
+          <validators>
+            <chains>
+              <item field="datStartOfSignsDate" type="DateTime">
+                <item field="CurrentDate" value="DateTime.Now" />
+              </item>
+            </chains>
+              <change>
+              <!--intSickAnimalQty intTotalAnimalQty-->
+                <custom_validator
+                  field="intDeadAnimalQty" method="TotalQuantityRule"/>
+                <custom_validator
+                  field="intSickAnimalQty"
+                  method="TotalQuantityRule"/>
+                <custom_validator
+                  field="intTotalAnimalQty"
+                  method="TotalQuantityRule"/>
+                <predicate_validator message="msgCantChangeASLivestockSpecies" field="strName" notIfPost="true"
+                                  predicate="c => c.idfsPartyType != (long)PartyTypeEnum.Species || (c.Parent as FarmPanel).ASSession == null || (c.strName != null &amp;&amp; c.strName.CompareTo(c.strName_Original) == 0) ||
+                                    (c.idfsPartyType == (long)PartyTypeEnum.Species &amp;&amp; (c.Parent as FarmPanel).ASSession != null &amp;&amp; !(c.Parent as FarmPanel).ASSession.ASAnimalsSamples.Any(i => !i.IsMarkedToDelete &amp;&amp; i.idfSpecies == c.idfParty))"/>
+              </change>
+            <post>
+              <required_validator target="SpeciesType" label="strSpeciesName" predicate="c => c.idfsPartyType == (long)PartyTypeEnum.Species" />
+              <custom_validator method="CustomValidations" />
+            </post>
+            <delete>
+                <predicate_validator message="msgCantDeleteASHerd"
+                                       predicate="c => c.idfsPartyType != (long)PartyTypeEnum.Herd || ((c.Parent is FarmPanel ? (c.Parent as FarmPanel).ASSession : c.Parent as AsSession) == null) || 
+                                        (c.idfsPartyType == (long)PartyTypeEnum.Herd &amp;&amp; (c.Parent is FarmPanel ? (c.Parent as FarmPanel).ASSession : c.Parent as AsSession) != null &amp;&amp;
+                                        (c.VetFarmTreeList.Target as EditableList&lt;VetFarmTree&gt;).Where(i => !i.IsMarkedToDelete &amp;&amp; i.idfParentParty == c.idfParty).Count() == 0)"/>
+                  <predicate_validator message="msgCantDeleteRecord"
+                                       predicate="c => c.idfsPartyType != (long)PartyTypeEnum.Farm &amp;&amp;
+                                        (c.VetFarmTreeList.Target as EditableList&lt;VetFarmTree&gt;)
+                                        .Where(i => !i.IsMarkedToDelete &amp;&amp; i.idfParentParty == c.idfParty).Count() == 0"/>
+                  <predicate_validator message="msgCantDeleteRecord"
+                                       predicate="c => c.idfsPartyType != (long)PartyTypeEnum.Species 
+                                        || (c.idfsPartyType == (long)PartyTypeEnum.Species &amp;&amp; ((c.Case != null &amp;&amp; 
+                                        (c.Case.Target as VetCase).AnimalList.Where(i => !i.IsMarkedToDelete &amp;&amp; i.idfSpecies == c.idfParty).Count() == 0)
+                                            || c.Case == null))"/>
+                  <predicate_validator message="msgCantDeleteRecord"
+                                       predicate="c => c.idfsPartyType != (long)PartyTypeEnum.Species 
+                                        || (c.idfsPartyType == (long)PartyTypeEnum.Species &amp;&amp; ((c.Case != null &amp;&amp; 
+                                        (c.Case.Target as VetCase).Samples.Where(i => !i.IsMarkedToDelete &amp;&amp; i.idfParty == c.idfParty).Count() == 0)
+                                            || c.Case == null))"/>
+                <predicate_validator message="msgCantDeleteASLivestockSpecies"
+                                     predicate="c => c.idfsPartyType != (long)PartyTypeEnum.Species || (c.Parent as FarmPanel).ASSession == null ||
+                                        (c.idfsPartyType == (long)PartyTypeEnum.Species &amp;&amp; (c.Parent as FarmPanel).ASSession != null &amp;&amp; !(c.Parent as FarmPanel).ASSession.ASAnimalsSamples.Any(i => !i.IsMarkedToDelete &amp;&amp; i.idfSpecies == c.idfParty))"/>
+              </delete>
+          </validators>
+          <actions>
+            <action name="CreateFarm" type="Create">
+              <run>
+                <params>
+                  <param name="farm" type="FarmPanel"/>
+                </params>
+                <creating>
+                  <lambda_extender target="VetFarmTreeList" type="WeakReference" lambda="c => new WeakReference(farm.FarmTree)"/>
+                  <lambda_extender target="Case" type="WeakReference" lambda="c => farm.Case"/>
+                  <lambda_extender target="_HACode" type="int?" lambda='c => farm._HACode' />
+                  <lambda_extender target="idfCase" type="long?" lambda='c => farm.idfCase ?? 0' />
+                  <lambda_extender target="idfMonitoringSession" type="long?" lambda='c => farm.idfMonitoringSession ?? 0' />
+                  <lambda_extender target="idfParty" type="long" lambda='c => farm.idfFarm' />
+                  <lambda_extender target="strName" type="string" lambda='c => farm.strFarmCode' />
+                  <lambda_extender target="strHerdName" type="string" lambda='c => farm.strFarmCode' />
+                  <lambda_extender target="idfsPartyType" type="long" lambda='c => (long)PartyTypeEnum.Farm' />
+                  <scalar_extender_external target="idfObservation" class="GetNewIDExtender" />
+                </creating>
+              </run>
+            </action>
+            <action name="CreateHerd" type="Create">
+              <run>
+                <params>
+                  <param name="parent" type="VetFarmTree" />
+                </params>
+                <creating>
+                  <lambda_extender target="VetFarmTreeList" type="WeakReference" lambda="c => parent.VetFarmTreeList"/>
+                  <lambda_extender target="Case" type="WeakReference" lambda="c => parent.Case"/>
+                  <lambda_extender target="_HACode" type="int?" lambda='c => parent._HACode' />
+                  <lambda_extender target="idfCase" type="long?" lambda='c => parent.idfCase' />
+                  <lambda_extender target="idfMonitoringSession" type="long?" lambda='c => parent.idfMonitoringSession ?? 0' />
+                  <scalar_extender_external target="idfParty" class="GetNewIDExtender" />
+                  <lambda_extender target="idfParentParty" type="long?" lambda='c => parent.idfParty' />
+                  <lambda_extender target="idfsPartyType" type="long" lambda='c => (long)PartyTypeEnum.Herd' />
+                  <lambda_extender target="strName" type="string" lambda='c => String.Format("(new {0})", 1 + parent.VetFarmPanel.FarmTree.Count(x => x.idfsPartyType == (long)PartyTypeEnum.Herd &amp;&amp; x.IsNew))' />
+                  <value_extender target='strHerdName' value='obj.strName'/>
+                </creating>
+              </run>
+            </action>
+            <action name="CreateSpeciesWithDiagnosis" type="Create">
+              <run>
+                <params>
+                  <param name="parent" type="VetFarmTree" />
+                  <param name="diagnosis" type="long?"/>
+                </params>
+                <creating>
+                  <lambda_extender target="VetFarmTreeList" type="WeakReference" lambda="c => parent.VetFarmTreeList"/>
+                  <lambda_extender target="Case" type="WeakReference" lambda="c => parent.Case"/>
+                  <lambda_extender target="_HACode" type="int?" lambda='c => parent._HACode' />
+                  <lambda_extender target="idfCase" type="long?" lambda='c => parent.idfCase' />
+                  <lambda_extender target="idfMonitoringSession" type="long?" lambda='c => parent.idfMonitoringSession ?? 0' />
+                  <scalar_extender_external target="idfParty" class="GetNewIDExtender" />
+                  <lambda_extender target="idfParentParty" type="long?" lambda='c => parent.idfParty' />
+                  <lambda_extender target="idfsPartyType" type="long" lambda='c => (long)PartyTypeEnum.Species' />
+                  <!--<lambda_extender target="strName" type="string" lambda='c => ""' />-->
+                  <scalar_extender_external target="idfObservation" class="GetNewIDExtender" />
+                  <lambda_extender target="idfsDiagnosisForCs" lambda="c => diagnosis" type="long?"/>
+                </creating>
+              </run>
+            </action>
+            <action name="CreateSpecies" type="Create">
+              <run>
+                <params>
+                  <param name="parent" type="VetFarmTree" />
+                </params>
+                <creating>
+                  <lambda_extender target="VetFarmTreeList" type="WeakReference" lambda="c => parent.VetFarmTreeList"/>
+                  <lambda_extender target="Case" type="WeakReference" lambda="c => parent.Case"/>
+                  <lambda_extender target="_HACode" type="int?" lambda='c => parent._HACode' />
+                  <lambda_extender target="idfCase" type="long?" lambda='c => parent.idfCase' />
+                  <lambda_extender target="idfMonitoringSession" type="long?" lambda='c => parent.idfMonitoringSession ?? 0' />
+                  <scalar_extender_external target="idfParty" class="GetNewIDExtender" />
+                  <lambda_extender target="idfParentParty" type="long?" lambda='c => parent.idfParty' />
+                  <lambda_extender target="idfsPartyType" type="long" lambda='c => (long)PartyTypeEnum.Species' />
+                  <!--lambda_extender target="strName" type="string" lambda='c => ""' /-->
+                  <scalar_extender_external target="idfObservation" class="GetNewIDExtender" />
+                </creating>
+              </run>
+            </action>
+          </actions>
+        </table>
+    </tables>
+
+</object>
+

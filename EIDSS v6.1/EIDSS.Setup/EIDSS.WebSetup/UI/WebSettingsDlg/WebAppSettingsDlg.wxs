@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <PropertyRef Id="DEFAULT_REGION_IN_SEARCH" />
+    <PropertyRef Id="DEFAULT_DATE_FILTER" />
+    <PropertyRef Id="LIST_GRID_PAGE_SIZE" />
+    <PropertyRef Id="POPUP_GRID_PAGE_SIZE" />
+    <PropertyRef Id="DETAIL_GRID_PAGE_SIZE" />
+    <PropertyRef Id="LAB_SECTION_PAGE_SIZE" />
+    <PropertyRef Id="LabSectionPageSizeLowerBound" />
+    <PropertyRef Id="LabSectionPageSizeUpperBound" />
+
+    <Property Id="DefaultRegionInSearchBox" Value="1" />
+    <UI>
+      <Dialog Id="WebAppSettingsDlg" Width="370" Height="270" Title="!(loc.WebAppSettingsDlg_Title)">
+        <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)">
+          <Publish Property="DEFAULT_REGION_IN_SEARCH" Value="false" Order="1"><![CDATA[DefaultRegionInSearchBox <> "1"]]></Publish>
+          <Publish Property="DEFAULT_REGION_IN_SEARCH" Value="true" Order="2"><![CDATA[DefaultRegionInSearchBox = "1"]]></Publish>
+          <Publish Property="TestNumberSets" Value="[DEFAULT_DATE_FILTER],!(loc.DefaultDateFilterName);[LIST_GRID_PAGE_SIZE],!(loc.NumberOfRowsName);[DETAIL_GRID_PAGE_SIZE],!(loc.NumberOfRowsName);[POPUP_GRID_PAGE_SIZE],!(loc.NumberOfRowsName);[LAB_SECTION_PAGE_SIZE],!(loc.LabSectionPageSize),[LabSectionPageSizeLowerBound],[LabSectionPageSizeUpperBound]" Order="3">1</Publish>
+          <Publish Event="DoAction" Value="MustBeNumbers" Order="4">1</Publish>
+          <Publish Event="SpawnDialog" Value="MustBeNumberDlg" Order="10"><![CDATA[BadNumber]]></Publish>
+        </Control>
+        <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" />
+        <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+          <Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+        </Control>
+        <Control Id="Description" Type="Text" X="25" Y="23" Width="280" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.WebAppSettingsDlgDescription)" />
+        <Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.WebAppSettingsDlgTitle)" />
+        <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="!(loc.WebAppSettingsDlgBannerBitmap)" />
+        <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+        <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+
+        <Control Id="DefaultRegionInSearch" Type="CheckBox" Width="274" Height="17" X="25" Y="60" Text="!(loc.WebAppSettingsDlgCheckBox)" Property="DefaultRegionInSearchBox" CheckBoxValue="1" />
+        <Control Id="DefaultDateFilterTitle" Type="Text" Width="200" Height="17" X="25" Y="82" Text="!(loc.WebAppSettingsDlgDefaultDateFilterTitle)" />
+        <Control Id="DefaultDateFilter" Type="Edit" Width="50" Height="17" X="260" Y="79" Property="DEFAULT_DATE_FILTER" />
+
+        <Control Id="ListFormRowsTitle" Type="Text" Width="200" Height="17" X="25" Y="112" Text="!(loc.WebAppSettingsDlgListFormRowsTitle)" />
+        
+        <Control Id="ListGridPageSizeTitle" Type="Text" Width="200" Height="17" X="45" Y="132" Text="!(loc.WebAppSettingsDlgListGridPageSizeTitle)" />
+        <Control Id="ListGridPageSize" Type="Edit" Width="50" Height="17" X="260" Y="129" Property="LIST_GRID_PAGE_SIZE" />
+
+        <Control Id="PopupGridPageSizeTitle" Type="Text" Width="200" Height="17" X="45" Y="152" Text="!(loc.WebAppSettingsDlgPopupGridPageSizeTitle)" />
+        <Control Id="PopupGridPageSize" Type="Edit" Width="50" Height="17" X="260" Y="149" Property="POPUP_GRID_PAGE_SIZE" />
+
+        <Control Id="DetailGridPageSizeTitle" Type="Text" Width="200" Height="17" X="25" Y="182" Text="!(loc.WebAppSettingsDlgDetailGridPageSizeTitle)" />
+        <Control Id="DetailGridPageSize" Type="Edit" Width="50" Height="17" X="260" Y="179" Property="DETAIL_GRID_PAGE_SIZE" />
+
+        <Control Id="LabSectionPageSizeTitle" Type="Text" Width="200" Height="17" X="25" Y="212" Text="!(loc.WebAppSettingsDlgLabSectionPageSizeTitle)" />
+        <Control Id="LabSectionPageSize" Type="Edit" Width="50" Height="17" X="260" Y="209" Property="LAB_SECTION_PAGE_SIZE" />
+      </Dialog>
+    </UI>
+  </Fragment>
+</Wix>

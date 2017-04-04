@@ -1,0 +1,19 @@
+﻿@model eidss.model.Schema.GeoLocation
+           
+@using eidss.mobileclient.Utils
+
+<table> 
+    <tr>                                                               
+        <td>
+            @Translator.GetMessageString("titleLocationOfExposure")
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvEditBox(Model, "strReadOnlyAdaptiveFullName")  
+        </td>
+        <td>
+            <input type="button" value=".." onclick="document.location.href='@Url.Action("LocationDetails", "HumanCase", new { rootKey = ViewBag.IdfCase })';" />
+        </td>
+    </tr>
+</table>

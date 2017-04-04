@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>3.8</ProductVersion>
+    <ProjectGuid>{5672b1ac-310b-48c1-8eb8-416609af27a5}</ProjectGuid>
+    <SchemaVersion>2.0</SchemaVersion>
+    <Name>Setup.EIDSS.AVRService</Name>
+    <OutputName>EIDSS.AVRService</OutputName>
+    <OutputType>Package</OutputType>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <CustomAfterWixTargets>$(MSBuildProjectDirectory)\..\Common.AfterWix.targets</CustomAfterWixTargets>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <DefineConstants>Debug</DefineConstants>
+    <SuppressAllWarnings>False</SuppressAllWarnings>
+    <Pedantic>True</Pedantic>
+    <SuppressPdbOutput>True</SuppressPdbOutput>
+    <VerboseOutput>True</VerboseOutput>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <VerboseOutput>True</VerboseOutput>
+    <SuppressAllWarnings>False</SuppressAllWarnings>
+    <Pedantic>True</Pedantic>
+    <SuppressPdbOutput>True</SuppressPdbOutput>
+    <SuppressIces>ICE61</SuppressIces>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="..\Source_Files\Bitmaps\unknown.ico">
+      <Link>Resources\Bitmaps\unknown.ico</Link>
+    </Content>
+    <Content Include="..\StructureMap.wxi">
+      <Link>StructureMap.wxi</Link>
+    </Content>
+    <Content Include="AddConfigKey.wxi" />
+    <Content Include="AddSchedulerSetting.wxi" />
+    <Content Include="AddServiceConfigKey.wxi" />
+    <Content Include="ProductInfo.wxi" />
+    <Content Include="Resources.wxi" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\OnExitCustomDialogs\ExitDialog.wxs">
+      <Link>UI\OnExitCustomDialogs\ExitDialog.wxs</Link>
+    </Compile>
+    <Compile Include="..\OnExitCustomDialogs\FatalError.wxs">
+      <Link>UI\OnExitCustomDialogs\FatalError.wxs</Link>
+    </Compile>
+    <Compile Include="..\OnExitCustomDialogs\ShowLog.wxs">
+      <Link>UI\OnExitCustomDialogs\ShowLog.wxs</Link>
+    </Compile>
+    <Compile Include="..\OnExitCustomDialogs\UserExit.wxs">
+      <Link>UI\OnExitCustomDialogs\UserExit.wxs</Link>
+    </Compile>
+    <Compile Include="Autotester.wxs" />
+    <Compile Include="AvrDatabase.wxs" />
+    <Compile Include="Binaries.wxs" />
+    <Compile Include="Db.Manager.wxs" />
+    <Compile Include="DbSettings.wxs" />
+    <Compile Include="DirectoryTree.wxs" />
+    <Compile Include="Product.wxs" />
+    <Compile Include="Resources.wxs" />
+    <Compile Include="SchedulerSettings.wxs" />
+    <Compile Include="Service.wxs" />
+    <Compile Include="ServiceDependsOn.wxs" />
+    <Folder Include="UI" />
+    <Compile Include="UI\BadAccountDlg.wxs" />
+    <Compile Include="UI\BadPortDlg.wxs" />
+    <Compile Include="UI\AvrSvcSettingsDlg.wxs" />
+    <Compile Include="UI\AvrSvcSettingsDlg2.wxs" />
+    <Compile Include="UI\DbSettingsDlg\DbAdminSettingsDlg.wxs" />
+    <Compile Include="UI\DbSettingsDlg\DbAdminSettingsDlg2.wxs" />
+    <Compile Include="UI\DbSettingsDlg\InstallAvrDbSettingsDlg.wxs" />
+    <Compile Include="UI\DbSettingsDlg\SelectAvrDbDeploymentTypeDlg.wxs" />
+    <Compile Include="UI\SchedulerSettings1Dlg.wxs" />
+    <Compile Include="UI\SchedulerSettings2Dlg.wxs" />
+    <Compile Include="UI\UI.wxs" />
+    <Compile Include="UI\UIBinaries.wxs" />
+    <Folder Include="UI\DbSettingsDlg\" />
+    <Compile Include="UI\DbSettingsDlg\ArchiveDbSettingsDlg.wxs" />
+    <Compile Include="UI\DbSettingsDlg\ArchiveDbSettingsDlg2.wxs" />
+    <Compile Include="UI\DbSettingsDlg\AvrDbSettingsDlg.wxs" />
+    <Compile Include="UI\DbSettingsDlg\AvrDbSettingsDlg2.wxs" />
+    <Compile Include="UI\DbSettingsDlg\DbSettingsDlg.wxs" />
+    <Compile Include="UI\DbSettingsDlg\DbSettingsDlg2.wxs" />
+    <Compile Include="UI\DbSettingsDlg\ErrorConnectionDlg.wxs" />
+    <Compile Include="UI\DbSettingsDlg\InnerSettings.wxs" />
+    <Folder Include="UI\OnExitCustomDialogs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="eidss.avr.service.exe.config.xslt" />
+    <None Include="eidss.avr.autotester.exe.config.xslt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources" />
+    <Folder Include="Resources\Bitmaps" />
+    <EmbeddedResource Include="Resources\en-US.wxl" />
+    <Content Include="..\Source_Files\Bitmaps\failure.ico">
+      <Link>Resources\Bitmaps\failure.ico</Link>
+    </Content>
+    <Content Include="..\Source_Files\Bitmaps\success.ico">
+      <Link>Resources\Bitmaps\success.ico</Link>
+    </Content>
+    <Content Include="..\Source_Files\Bitmaps\eidss.ico">
+      <Link>Resources\Bitmaps\eidss.ico</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="MultiInstance" />
+    <Content Include="..\MultiInstance\MultiInstanceActivator.wxi">
+      <Link>MultiInstance\MultiInstanceActivator.wxi</Link>
+    </Content>
+    <Content Include="MultiInstance\MultiInstance.wxi" />
+    <None Include="..\MultiInstance\MultiInstance.targets">
+      <Link>MultiInstance\MultiInstance.targets</Link>
+    </None>
+    <Compile Include="..\MultiInstance\MultiInstanceEngine.wxs">
+      <Link>MultiInstance\MultiInstanceEngine.wxs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <WixExtension Include="WixSqlExtension">
+      <HintPath>$(WixExtDir)\WixSqlExtension.dll</HintPath>
+      <Name>WixSqlExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixUtilExtension">
+      <HintPath>$(WixExtDir)\WixUtilExtension.dll</HintPath>
+      <Name>WixUtilExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixNetFxExtension">
+      <HintPath>$(WixExtDir)\WixNetFxExtension.dll</HintPath>
+      <Name>WixNetFxExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixUIExtension">
+      <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
+      <Name>WixUIExtension</Name>
+    </WixExtension>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\bv.common\bv.common.csproj">
+      <Name>bv.common</Name>
+      <Project>{bee76b17-720d-4b65-996a-5712912b3acf}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\CustomActions.AVRService\CustomActions.AVRService.csproj">
+      <Name>CustomActions.AVRService</Name>
+      <Project>{4ca9a07c-4e6b-4a68-8e8e-0c9bce8c8901}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\CustomActions.MultiInstanceSupport\CustomActions.MultiInstanceSupport.csproj">
+      <Name>CustomActions.MultiInstanceSupport</Name>
+      <Project>{cf669b33-6903-471d-836c-01446a14aa3d}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(WixTargetsPath)" />
+  <Import Project="$(SolutionDir)MultiInstance\MultiInstance.targets" />
+  <!--
+  To modify your build process, add your task inside one of the targets below and uncomment it.
+  Other similar extension points exist, see Wix.targets.
+  -->
+  <PropertyGroup>
+    <BeforeBuildDependsOn>
+      GenerateInnerVersion;
+      GenerateInstanceProductCodes;
+      PrepareServiceConfig;
+      PrepareAutotesterConfig
+    </BeforeBuildDependsOn>
+  </PropertyGroup>
+  <Target Name="BeforeBuild" DependsOnTargets="$(BeforeBuildDependsOn)" />
+  <Target Name="PrepareServiceConfig">
+    <PropertyGroup>
+      <_xslt>eidss.avr.service.exe.config.xslt</_xslt>
+      <_config>$(BinariesPaths)eidss.avr.service.exe.config</_config>
+      <_cleanConfig>$(IntermediateOutputPath)eidss.avr.service.exe.config</_cleanConfig>
+    </PropertyGroup>
+    <XslTransformation XmlInputPaths="$(_config)" XslInputPath="$(_xslt)" OutputPaths="$(_cleanConfig)" />
+    <PropertyGroup>
+      <DefineConstants>eidss.avr.service.exe.config=$(_cleanConfig);$(DefineConstants)</DefineConstants>
+    </PropertyGroup>
+  </Target>
+  <Target Name="PrepareAutotesterConfig">
+    <PropertyGroup>
+      <_xslt>eidss.avr.autotester.exe.config.xslt</_xslt>
+      <_config>$(BinariesPaths)ThirdPartyComponents\Eidss.Avr.Autotester.exe.config</_config>
+      <_cleanConfig>$(IntermediateOutputPath)Eidss.Avr.Autotester.exe.config</_cleanConfig>
+    </PropertyGroup>
+    <XslTransformation XmlInputPaths="$(_config)" XslInputPath="$(_xslt)" OutputPaths="$(_cleanConfig)" />
+    <PropertyGroup>
+      <DefineConstants>Eidss.Avr.Autotester.exe.config=$(_cleanConfig);$(DefineConstants)</DefineConstants>
+    </PropertyGroup>
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  <PropertyGroup>
+    <GetProjectOutputsDependsOn>
+      GetTargetPath;
+      GetInstanceProductCodesFile
+    </GetProjectOutputsDependsOn>
+  </PropertyGroup>
+  <Target Name="GetProjectOutputs" Outputs="@(ProjectOutputs)" DependsOnTargets="$(GetProjectOutputsDependsOn)">
+    <ItemGroup>
+      <ProjectOutputs Include="$(TargetPath);$(ProductCodesFile)" />
+    </ItemGroup>
+  </Target>
+</Project>

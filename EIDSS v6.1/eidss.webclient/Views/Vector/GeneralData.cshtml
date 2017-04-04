@@ -1,0 +1,173 @@
+﻿@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+@model eidss.model.Schema.Vector
+           
+<div class="tabPanelContent">
+    <div class="sectionTitle">
+        @Translator.GetMessageString("titleCollectionData")  
+    </div>
+    <table class="level1">
+        <tr>
+            <td class="xlarge firstLabel">
+                @Html.BvLabel(Model, m => m.Location)
+            </td>
+            <td class="large">
+                @Html.Action("InlineGeoLocationPicker", "GeoLocation", new { root = Model.idfVector, location = Model.Location })
+            </td>
+            <td class="xlarge label">
+                @Html.BvLabel(Model, m => m.strCollectedByOffice, m => m.idfCollectedByOffice)
+            </td>
+            <td>
+                @Html.Action("InlineOrganizationPicker", "Organization", new { obj = Model, objectId = Model.idfVector, idfsOrganizationPropertyName = "idfCollectedByOffice",
+                    strOrganizationPropertyName = "strCollectedByOffice", idfsEmployeePropertyName = "idfCollectedByPerson",
+                    strEmployeePropertyName = "strCollectedByPerson", HACode = (int)eidss.model.Enums.HACode.Vector })
+            </td>    
+        </tr>
+        <tr>                                                               
+            <td class="firstLabel">
+                @Html.BvLabel(Model, m => m.intElevation)
+            </td>
+            <td>
+                @Html.BvNumeric(Model, m => m.intElevation, 0) 
+            </td>
+            <td class="label">
+                @Html.BvLabel(Model, m => m.strCollectedByPerson, m => m.idfCollectedByPerson)
+            </td>
+            <td>
+                @Html.Action("InlineEmployeePicker", "Employee", new { obj = Model, objectId = Model.idfVector, idfsEmployeePropertyName = "idfCollectedByPerson", 
+                    strEmployeePropertyName = "strCollectedByPerson", idfsOrganizationPropertyName = "idfCollectedByOffice",
+                    strOrganizationPropertyName = "strCollectedByOffice", showEditButton = false })
+            </td>
+        </tr>
+        <tr>                                                               
+            <td class="firstLabel">
+                @Html.BvLabel(Model, m => m.strSurrounding)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, m => m.Surrounding) 
+            </td>
+            <td class="label">
+                @Html.BvLabel(Model, m => m.datCollectionDateTime)
+            </td>
+            <td>
+                @Html.BvDatebox(Model, m => m.datCollectionDateTime)
+            </td>
+        </tr>
+        <tr>                                                               
+            <td class="firstLabel">
+                @Html.BvLabel(Model, m => m.strGEOReferenceSources)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, m => m.strGEOReferenceSources) 
+            </td>
+            <td class="label">
+                @Html.BvLabel(Model, m => m.strDayPeriod)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, m => m.DayPeriod)
+            </td>
+        </tr>
+        <tr>                                                               
+            <td class="firstLabel">
+                @Html.BvLabel(Model, m => m.strBasisOfRecord)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, m => m.BasisOfRecord) 
+            </td>
+            <td class="label">
+                @Html.BvLabel(Model, m => m.strCollectionMethod)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, m => m.CollectionMethod, false)
+            </td>
+        </tr>
+        <tr>
+            <td class="firstLabel">
+                @Html.BvLabel(Model, m => m.HostVector)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, m => m.HostVector)
+            </td>
+            
+            <td class="label">
+                @Html.BvLabel(Model, m => m.strEctoparasitesCollected)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, m => m.EctoparasitesCollected)
+            </td>
+        </tr>
+    </table>
+        
+    <div class="sectionTitle">
+        @Translator.GetMessageString("titleVectorData")  
+    </div>
+    <table class="level1">
+        <tr>                                                               
+            <td class="xlarge firstLabel">
+                @Html.BvLabel(Model, m => m.intQuantity)
+            </td>
+            <td class="large">
+                @Html.BvEditbox(Model, m => m.intQuantity, true) 
+            </td>
+            <td class="xlarge label">
+                @Html.BvLabel(Model, m => m.idfsVectorSubType)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, m => m.VectorSubType, false, keyName: "idfsBaseReference") 
+            </td>
+        </tr>
+        <tr>                                                               
+            <td class="firstLabel">
+                @Html.BvLabel(Model, m => m.strSex)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, m => m.AnimalGender) 
+            </td>
+            <td class="label">
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>                                                               
+            <td class="firstLabel">
+                @Html.BvLabel(Model, m => m.strIdentifiedByOffice, m => m.idfIdentifiedByOffice)
+            </td>
+            <td>
+                @Html.Action("InlineOrganizationPicker", "Organization", new { obj = Model, objectId = Model.idfVector, idfsOrganizationPropertyName = "idfIdentifiedByOffice",
+                    strOrganizationPropertyName = "strIdentifiedByOffice", idfsEmployeePropertyName = "idfIdentifiedByPerson",
+                    strEmployeePropertyName = "strIdentifiedByPerson", HACode = (int)eidss.model.Enums.HACode.Vector })
+            </td>
+            <td class="label">
+                @Html.BvLabel(Model, m => m.strIdentifiedByPerson, m => m.idfIdentifiedByPerson)
+            </td>
+            <td>
+                @Html.Action("InlineEmployeePicker", "Employee", new { obj = Model, objectId = Model.idfVector, idfsEmployeePropertyName = "idfIdentifiedByPerson", 
+                    strEmployeePropertyName = "strIdentifiedByPerson", idfsOrganizationPropertyName = "idfIdentifiedByOffice",
+                    strOrganizationPropertyName = "strIdentifiedByOffice", showEditButton = false })
+            </td>
+        </tr>
+        <tr>                                                               
+            <td class="firstLabel">
+                @Html.BvLabel(Model, m => m.strIdentificationMethod)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, m => m.IdentificationMethod) 
+            </td>
+            <td class="label">
+                @Html.BvLabel(Model, m => m.datIdentifiedDateTime)
+            </td>
+            <td>
+                @Html.BvDatebox(Model, m => m.datIdentifiedDateTime)
+            </td>
+        </tr>
+    </table>
+        
+    <div class="sectionTitle">
+        @Translator.GetMessageString("titleComment")  
+    </div>
+    <div class="fullPageWidth">
+        @Html.BvTextArea(Model, m => m.strComment)
+    </div>
+</div>
+ 
+           

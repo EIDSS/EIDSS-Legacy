@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = Translator.GetMessageString("EIDSSTimeout");
+    Layout = "~/Views/Shared/_DefaultLayout.cshtml";
+}
+
+@using eidss.web.common.Utils
+
+<script language="javascript" type="text/javascript">
+    $(document).ready(function() {
+        defaultPage.timeoutPageOnLoad();
+    });
+</script>
+
+<table class="timeout">
+    <tr>
+        <td colspan="2">
+            <div class="timeoutMessage">
+                @Translator.GetMessageString("msgSessionTimeout1")
+                <br/>
+                @Translator.GetMessageString("msgSessionTimeout2")
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 50%"></td>
+        <td class="loginButtons">
+            <input type="submit" class="button" value="@Translator.GetMessageString("btnSessionTimeout")"/>
+        </td>   
+    </tr>
+</table>

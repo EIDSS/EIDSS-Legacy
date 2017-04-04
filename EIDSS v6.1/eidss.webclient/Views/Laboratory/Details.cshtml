@@ -1,0 +1,102 @@
+﻿@model eidss.model.Schema.LaboratorySectionMaster
+@{
+    ViewBag.Title = @Translator.GetMessageString("tabLaboratorySection");
+    ViewBag.Number = "L25";
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+}
+@using Kendo.Mvc.UI
+@using bv.common.Configuration
+@using bv.common.Enums
+@using bv.model.Model.Core
+@using eidss.model.Schema
+@using eidss.web.common.Utils
+@using eidss.webclient.Configurations
+@using eidss.webclient.Utils;
+
+
+@Html.IncludeVersionedCss("~/Content/Styles/ListFormDetails.css")
+@Html.IncludeVersionedCss("~/Content/Styles/SearchPanel.css")
+@Html.IncludeVersionedCss("~/Content/Styles/LaboratorySection.css")
+
+
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        $.ajaxSetup({
+            cache: true
+        });
+
+        $("#bFirstSearchClick").val("0");
+        listForm.pageOnLoad(@TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now).Hours);
+        popupMenu.pageOnLoad('ContentLabSection', @Model.idfsLaboratorySection);
+        laboratory.resizeTable();
+        $(window).on('resize', function () {
+            laboratory.resizeTable();
+        });
+        $(".k-header.checkColumn span").remove();
+        $(".k-header.checkColumn").append("<div class='k-link' style='padding-bottom: 0.3em; padding-top: 0.4em; '><input onclick='bvGrid.selectUnselectAllRowsInDefaultGrid()' id='idSelectUnselectAll' type='checkbox' class='bvCheckbox' /><label for='idSelectUnselectAll' /></div>");
+    });
+</script>
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@using (Html.BeginForm())
+{
+    @Html.IdentificationAndHeartbeat("idfsLaboratorySection", Model.idfsLaboratorySection)
+    @Html.Hidden("ID", Model.idfsLaboratorySection)
+}
+
+@Html.PopupMenu(LaboratorySectionItem.Accessor.Instance(null), "SelectLab")
+
+<div class="content">
+    
+
+    <table>
+        <tr>
+            <td>
+                @Html.SearchPanelSimple(LaboratorySectionItem.Accessor.Instance(null), c => (c as LaboratorySectionItem).bIsMyPref = false)
+            </td>
+            <td>
+                <div class="topButtonPanel">
+                    <!--top action panel-->
+                    @{ Html.RenderActionPanel(LaboratorySectionItem.Accessor.Instance(null), null, ActionsPanelType.Top); }
+                </div>
+            </td>
+        </tr>
+    </table>
+<div class="listForm">
+    <div id="searchpanel" class="customSearchPanel">
+        @Html.SearchPanel(LaboratorySectionItem.Accessor.Instance(null), (bv.model.Model.Core.FilterParams)ViewBag.Filter, (bv.model.Model.Core.IObject)ViewBag.InitObject, null, Model.idfsLaboratorySection, true, c => (c as LaboratorySectionItem).bIsMyPref = false)
+    </div>
+    <table class="lfSearchPanelTable">
+        <tr>
+            <td class="lfSearchPanelTd">
+                @Html.SearchPanelOperator()
+            </td>
+            <td class="lfGridTd">
+                @using (var manager = bv.model.BLToolkit.DbManagerFactory.Factory.Create(eidss.model.Core.EidssUserContext.Instance))
+                {
+                    Html.ListFormGrid<LaboratorySectionItem.LaboratorySectionItemGridModel, LaboratorySectionItem.LaboratorySectionItemGridModelList>(
+                        new LaboratorySectionItem.LaboratorySectionItemGridModelList((long)AutoGridRoots.LabSampleBook),
+                        LaboratorySectionItem.Accessor.Instance(null), "Laboratory", "IndexAjaxNotMy", selectionType: GridRowSelectionType.Multi,
+                        editScript: "laboratory.Details", deleteScript: "laboratory.Delete", bServerOperation: false,
+                        pageSize: eidss.model.Core.EidssUserContext.User.Options.Prefs.LabSectionPageSize,
+                        editableColumns: new List<GridModelEditableItem>()
+                        {
+                           new GridModelEditableItem() { Name = "strBarcode", Type = typeof(string)},
+                           new GridModelEditableItem() { Name = "datAccession", Type = typeof(DateTime) },
+                           new GridModelEditableItem() { Name = "datStartedDate", Type = typeof(DateTime) },
+                           new GridModelEditableItem() { Name = "datConcludedDate", Type = typeof(DateTime) },
+                        },
+                        editController: "Laboratory", editAction: "GridUpdateNotMy", editIdKey: Model.idfsLaboratorySection
+                        )
+                        //.Selectable(selectable => selectable.Mode(GridSelectionMode.Single).Type(GridSelectionType.Cell))
+                        .Events(e => e.DataBound("laboratory.onGridDataBound"))
+                        .Render();
+                }
+            </td>
+        </tr>
+    </table>
+</div>
+</div>

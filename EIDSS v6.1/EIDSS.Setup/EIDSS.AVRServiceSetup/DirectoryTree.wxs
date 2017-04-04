@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "ProductInfo.wxi" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="Directory tree">
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <?if $(var.Platform) = x64?>
+      <Directory Id="ProgramFiles64Folder">
+        <Directory Id="ManufacturerFolder" Name="$(var.Manufacturer)" />
+      </Directory>
+      <?else?>
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="ManufacturerFolder" Name="$(var.Manufacturer)" />
+      </Directory>
+      <?endif?>
+    </Directory>
+  </Fragment>
+
+  <Fragment Id="APPLICATIONFOLDER">
+    <DirectoryRef Id="ManufacturerFolder">
+      <Directory Id="ProductFolder" Name="$(var.ProductName)">
+        <Directory Id="APPLICATIONFOLDER" />
+      </Directory>
+    </DirectoryRef>
+
+    <Property Id="APPLICATIONFOLDER" Secure="yes">
+      <RegistrySearch Id="APPLICATIONFOLDER.RS" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="InstallPath" Type="raw" />
+    </Property>
+    <Property Id="APPLICATIONFOLDER_ISSET" Secure="yes">
+      <RegistrySearchRef Id="APPLICATIONFOLDER.RS" />
+    </Property>
+    <CustomAction Id="SetAPPLICATIONFOLDER" Directory="APPLICATIONFOLDER" Value="[ProductFolder][INSTANCEID]" />
+    <InstallExecuteSequence>
+      <Custom Action="SetAPPLICATIONFOLDER" After="CostFinalize">Not APPLICATIONFOLDER_ISSET</Custom>
+    </InstallExecuteSequence>
+  </Fragment>
+</Wix>

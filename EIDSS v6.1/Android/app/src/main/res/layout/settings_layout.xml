@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/CommonLayout">
+    <ScrollView android:id="@+id/Scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            style="@style/UnderScrollLayout">
+
+            <!--ApplicationMode-->
+            <LinearLayout
+                android:id="@+id/ApplicationModeList"
+                style="@style/DetailLayout.Port">
+                <TextView
+                    style="@style/DetailItem.Header"
+                    android:text="@string/ApplicationMode" />
+                    <TextView
+                        android:id="@+id/ApplicationMode"
+                        style="@style/DetailItem.Text"
+                        />
+                 <TextView
+                    style="@style/Separator"/>
+            </LinearLayout>
+
+            <!--Language-->
+            <LinearLayout
+                    style="@style/DetailLayout.Port">
+                <TextView
+                        style="@style/DetailItem.Header"
+                        android:text="@string/Language" />
+                <Spinner
+                        android:id="@+id/Language"
+                        style="@style/DetailItem.Spinner"/>
+                <TextView
+                        style="@style/Separator"/>
+            </LinearLayout>
+
+            <!--Default Region-->
+            <LinearLayout
+                    style="@style/DetailLayout.Port">
+                <TextView
+                    android:id="@+id/idfsRegionHeader"
+                    style="@style/DetailItem.Header"
+                    android:text="@string/DefaultRegion" />
+                <Spinner
+                    android:id="@+id/idfsRegion"
+                    style="@style/DetailItem.Spinner"/>
+                <TextView
+                    style="@style/Separator"/>
+            </LinearLayout>
+
+            <!--Default Rayon-->
+            <LinearLayout
+                    style="@style/DetailLayout.Port">
+                <TextView
+                        style="@style/DetailItem.Header"
+                        android:text="@string/DefaultRayon" />
+                <Spinner
+                        android:id="@+id/idfsRayon"
+                        style="@style/DetailItem.Spinner"/>
+                <TextView
+                        style="@style/Separator"/>
+            </LinearLayout>
+
+            <!--Filter Samples by Diagnosis -->
+            <LinearLayout
+                style="@style/DetailLayout.Port">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                         <TextView
+                            style="@style/DetailItem.Text"
+                            android:text="@string/FilterSamplesByDiagnosis"
+                            android:layout_marginTop="@dimen/SpaceItemSize"
+                            android:layout_marginBottom="@dimen/SpaceItemSize"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_width="0dp"
+                             />
+                    <android.support.v7.widget.SwitchCompat
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/blnFilterByDgn"
+                        android:layout_gravity="center_vertical"/>
+                        <!--android:textOff="@string/No"
+                        android:textOn="@string/Yes"
+                        android:showText="true"
+                        /-->
+                </LinearLayout>
+                <TextView
+                    style="@style/Separator"/>
+            </LinearLayout>
+
+
+            <!--NumberRecordsList-->
+            <LinearLayout
+                style="@style/DetailLayout.Port">
+                <TextView
+                    style="@style/DetailItem.Header"
+                    android:text="@string/NumberRecordsList" />
+                <EditText
+                    android:id="@+id/NumberRecordsList"
+                    style="@style/DetailItem.Text"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:hint="@string/OneToHundred"/>
+                <TextView
+                    style="@style/Separator"/>
+            </LinearLayout>
+
+            <!--ServerUrl-->
+            <LinearLayout
+                style="@style/DetailLayout.Port">
+                <TextView
+                    style="@style/DetailItem.Header"
+                    android:text="@string/ServerUrl" />
+                <EditText
+                    android:id="@+id/ServerUrl"
+                    style="@style/DetailItem.Text"
+                    android:inputType="textUri"/>
+                <TextView
+                    style="@style/Separator"/>
+            </LinearLayout>
+
+            <!--CheckConnection-->
+            <LinearLayout
+                style="@style/DetailLayout.Port">
+                <Button
+                    android:id="@+id/CheckConnection"
+                    style="@style/CommonButton.Port"
+                    android:text="@string/CheckConnection"
+                    />
+                <TextView
+                    style="@style/Separator"/>
+            </LinearLayout>
+
+            <!--ApplicationLockingTimeout-->
+            <LinearLayout
+                style="@style/DetailLayout.Port">
+                <TextView
+                    style="@style/DetailItem.Header"
+                    android:text="@string/ApplicationLockingTimeout" />
+                <EditText
+                    android:id="@+id/ApplicationLockingTimeout"
+                    style="@style/DetailItem.Text"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:hint="@string/OneToHundred"/>
+                <TextView
+                    style="@style/Separator"/>
+            </LinearLayout>
+
+            <!--ServerResponseTimeout-->
+            <LinearLayout
+                style="@style/DetailLayout.Port">
+                <TextView
+                    style="@style/DetailItem.Header"
+                    android:text="@string/ServerResponseTimeout" />
+                <EditText
+                    android:id="@+id/ServerResponseTimeout"
+                    style="@style/DetailItem.Text"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:hint="@string/OneToHundred"/>
+                <TextView
+                    style="@style/Separator"/>
+            </LinearLayout>
+
+            <!--Change Password-->
+            <LinearLayout
+                style="@style/DetailLayout.Port">
+                <Button
+                    android:id="@+id/SetPasswordButton"
+                    style="@style/CommonButton.Port"
+                    android:text="@string/TitleChangeLocalPassword" />
+                <TextView
+                    style="@style/Separator"/>
+            </LinearLayout>
+
+            <!--RestoreDefaults-->
+            <LinearLayout
+                style="@style/DetailLayout.Port">
+                <Button
+                    android:id="@+id/RestoreDefaults"
+                    style="@style/CommonButton.Port"
+                    android:text="@string/RestoreDefaults" />
+                <TextView
+                    style="@style/Separator"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,58 @@
+﻿@model eidss.model.Schema.PersonListItem.Accessor
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+    string strShowInInternalWindow = ((bool)ViewBag.ShowInInternalWindow).ToString().ToLower();
+}
+
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Configurations
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+
+<div class="popupContent searchPopupContent">
+    <div class="windowButtonsPn">                  
+        <input id="idButtonSelect" type="button" class="windowButton" onclick="employee.onSearchPickerSelect('@ViewBag.ObjectId', '@ViewBag.idfsEmployeePropertyName', 
+    '@ViewBag.strEmployeePropertyName', '@ViewBag.IdfsOrganizationPropertyName', '@strShowInInternalWindow', 'EmpGrid')" value="@Translator.GetMessageString("Select")"/>     
+        <input id="idButtonCloase" type="button" class="windowButton" onclick="searchPicker.closePicker('@strShowInInternalWindow', '@ViewBag.idfsEmployeePropertyName');" value="@Translator.GetMessageString("Close")"/>  
+    </div>
+    @if (!(bool) ViewBag.ShowInInternalWindow)
+    {
+        <div class="windowSeparator"></div>  
+    }
+    <div class="listForm">
+        <div id="searchpanel" class="customSearchPanel">
+            <table class="spTable" id="organizationAbbreaviation">
+                <tr>
+                    <td>
+                        <input type="text" class="spTextBox readonlyField" readonly="readonly" value="@ViewBag.OrganizationAbbreaviation"/>
+                        <input type="hidden" id="Lookup_idfInstitution" name="Lookup_idfInstitution" value="@ViewBag.IdfsOrganization"/>
+                    </td>
+                </tr>
+            </table>
+            @Html.SearchPanel(Model, (bv.model.Model.Core.FilterParams)ViewBag.Filter, (bv.model.Model.Core.IObject)ViewBag.InitObject)
+            <script type="text/javascript">
+                employee.moveOrganizationAbbreaviation();
+            </script>
+        </div>
+        <table class="lfSearchPanelTable">
+            <tr>
+                <td class="lfSearchPanelTd">
+                    @Html.SearchPanelOperator()
+                </td>
+                <td class="lfGridTd">
+                    @(Html.DetailsPopupSearchGrid<PersonListItem.PersonListItemGridModel, PersonListItem.PersonListItemGridModelList>(
+                          new PersonListItem.PersonListItemGridModelList((long)AutoGridRoots.PersonSelectList), "Employee",
+                          gridName: "EmpGrid", selectionType: GridRowSelectionType.Single)
+                          .DataSource(dataSource => dataSource.Ajax().Sort(sort => sort.Add("strFamilyName").Ascending()))
+                          )   
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

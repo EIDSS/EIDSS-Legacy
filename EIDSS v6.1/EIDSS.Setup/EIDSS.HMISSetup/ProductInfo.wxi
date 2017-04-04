@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Include>
+  <?ifdef GlobalProductInfo.wxi?>
+  <?include $(var.GlobalProductInfo.wxi)?>
+  <?endif?>
+
+  <?define UpgradeCode = {0E8E7D0E-D169-4068-B9CF-E57E93395C0A}?>
+
+  <?ifdef ProductName?>
+  <?define ProductNameAbbreviation = HMIS?>
+  <?undef ProductName?>
+  <?endif?>
+  <?define ProductName = "Human Module I Service"?>
+  <?define ProductFullName = $(var.ProductName) ($(var.ProductVersion))?>
+
+  <?define ProductRegistryKey = $(var.ProductFamilyRegistryKey)\[UpgradeCode]?>
+</Include>

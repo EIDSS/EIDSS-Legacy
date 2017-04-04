@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <UI>
+      <Dialog Id="BadServicePingDlg" Width="230" Height="80" Title="!(loc.ErrorDlg_Title)">
+        <Control Id="TestResult_Success" Type="Icon" IconSize="48" X="5" Y="5" Width="50" Height="50" Text="SuccessImg" FixedSize="yes">
+          <Condition Action="hide"><![CDATA[PORT_VALID <> "1"]]></Condition>
+          <Condition Action="show"><![CDATA[PORT_VALID = "1"]]></Condition>
+        </Control>
+        <Control Id="TestResult_Failure" Type="Icon" IconSize="48" X="5" Y="5" Width="50" Height="50" Text="FailureImg" FixedSize="yes">
+          <Condition Action="hide"><![CDATA[PORT_VALID = "1"]]></Condition>
+          <Condition Action="show"><![CDATA[PORT_VALID <> "1"]]></Condition>
+        </Control>
+        <Control Id="ErrorText" Type="Text" X="60" Y="15" Width="160" Height="36" TabSkip="no" Text="[BadServicePingText]" />
+        <Control Id="O" Type="PushButton" X="100" Y="60" Width="56" Height="17" TabSkip="yes" Text="!(loc.WixUIOK)">
+          <Publish Event="EndDialog" Value="Return">1</Publish>
+        </Control>
+      </Dialog>
+    </UI>
+    <Property Id="BadServicePingText_ServiceHostUrlIsEmpty" Value="!(loc.BadServicePingText_ServiceHostUrlIsEmpty)" />
+    <Property Id="BadServicePingText_VersionMismatch" Value="!(loc.BadServicePingText_VersionMismatch)" />
+    <Property Id="BadServicePingText_ServicePingFailed" Value="!(loc.BadServicePingText_ServicePingFailed)" />
+    <Property Id="BadServicePingText_BadUrl" Value="!(loc.BadServicePingText_BadUrl)" />
+  </Fragment>
+</Wix>

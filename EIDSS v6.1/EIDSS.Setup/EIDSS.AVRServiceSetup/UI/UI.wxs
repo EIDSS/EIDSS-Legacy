@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+First-time install dialog sequence:
+ - WixUI_WelcomeDlg
+ - WixUI_LicenseAgreementDlg
+ - WixUI_InstallDirDlg
+ - WixUI_VerifyReadyDlg
+ - WixUI_DiskCostDlg
+
+Maintenance dialog sequence:
+ - WixUI_MaintenanceWelcomeDlg
+ - WixUI_MaintenanceTypeDlg
+ - WixUI_InstallDirDlg
+ - WixUI_VerifyReadyDlg
+
+Patch dialog sequence:
+ - WixUI_WelcomeDlg
+ - WixUI_VerifyReadyDlg
+
+-->
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <UI Id="WixUI_AVRService">
+      <TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
+      <TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="12" />
+      <TextStyle Id="WixUI_Font_Title" FaceName="Tahoma" Size="9" Bold="yes" />
+
+      <Property Id="DefaultUIFont" Value="WixUI_Font_Normal" />
+      <Property Id="WixUI_Mode" Value="InstallDir" />
+
+      <PropertyRef Id="DB_MANAGER_ARCHIVE" />
+      <PropertyRef Id="DeployType" />
+
+      <DialogRef Id="BrowseDlg" />
+      <DialogRef Id="DiskCostDlg" />
+      <DialogRef Id="ErrorDlg" />
+      <DialogRef Id="CustomFatalError" />
+      <DialogRef Id="FilesInUse" />
+      <DialogRef Id="MsiRMFilesInUse" />
+      <DialogRef Id="PrepareDlg" />
+      <DialogRef Id="ProgressDlg" />
+      <DialogRef Id="ResumeDlg" />
+      <DialogRef Id="CustomUserExit" />
+
+      <Publish Dialog="BrowseDlg" Control="OK" Event="DoAction" Value="WixUIValidatePath" Order="3">1</Publish>
+      <Publish Dialog="BrowseDlg" Control="OK" Event="SpawnDialog" Value="InvalidDirDlg" Order="4"><![CDATA[WIXUI_INSTALLDIR_VALID<>"1"]]></Publish>
+
+      <Publish Dialog="CustomExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999">1</Publish>
+
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="LicenseAgreementDlg">NOT Installed</Publish>
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg">Installed AND PATCH</Publish>
+
+      <Publish Dialog="LicenseAgreementDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg">1</Publish>
+      <Publish Dialog="LicenseAgreementDlg" Control="Next" Property="APPLICATIONFOLDER" Value="[ProductFolder][INSTANCEID]" Order="1">LicenseAccepted = "1" And Not WIX_UPGRADE_DETECTED And Not APPLICATIONFOLDER_ISSET</Publish>
+      <Publish Dialog="LicenseAgreementDlg" Control="Next" Event="NewDialog" Value="InstallDirDlg" Order="2">LicenseAccepted = "1" And Not WIX_UPGRADE_DETECTED</Publish>
+      <Publish Dialog="LicenseAgreementDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg">LicenseAccepted = "1"And WIX_UPGRADE_DETECTED</Publish>
+
+      <Publish Dialog="InstallDirDlg" Control="Back" Property="APPLICATIONFOLDER_ISSET" Value="1">1</Publish>
+      <Publish Dialog="InstallDirDlg" Control="Back" Event="NewDialog" Value="LicenseAgreementDlg">1</Publish>
+      <Publish Dialog="InstallDirDlg" Control="Next" Event="SetTargetPath" Value="[WIXUI_INSTALLDIR]" Order="1">1</Publish>
+      <Publish Dialog="InstallDirDlg" Control="Next" Event="DoAction" Value="WixUIValidatePath" Order="2">NOT WIXUI_DONTVALIDATEPATH</Publish>
+      <Publish Dialog="InstallDirDlg" Control="Next" Event="SpawnDialog" Value="InvalidDirDlg" Order="3"><![CDATA[NOT WIXUI_DONTVALIDATEPATH AND WIXUI_INSTALLDIR_VALID<>"1"]]></Publish>
+      <Publish Dialog="InstallDirDlg" Control="Next" Property="APPLICATIONFOLDER_ISSET" Value="1" Order="4">WIXUI_DONTVALIDATEPATH OR WIXUI_INSTALLDIR_VALID="1"</Publish>
+      <Publish Dialog="InstallDirDlg" Control="Next" Event="NewDialog" Value="SchedulerSettings1Dlg" Order="5">WIXUI_DONTVALIDATEPATH OR WIXUI_INSTALLDIR_VALID="1"</Publish>
+      <Publish Dialog="InstallDirDlg" Control="ChangeFolder" Property="_BrowseProperty" Value="[WIXUI_INSTALLDIR]" Order="1">1</Publish>
+      <Publish Dialog="InstallDirDlg" Control="ChangeFolder" Event="SpawnDialog" Value="BrowseDlg" Order="2">1</Publish>
+
+      <Publish Dialog="SchedulerSettings1Dlg" Control="Back" Event="NewDialog" Value="InstallDirDlg">1</Publish>
+      <Publish Dialog="SchedulerSettings1Dlg" Control="Next" Event="NewDialog" Value="DbSettingsDlg" Order="100">
+        <![CDATA[SCHEDULER_ENABLED <> "true"]]>
+      </Publish>
+      <Publish Dialog="SchedulerSettings1Dlg" Control="Next" Event="NewDialog" Value="SchedulerSettings2Dlg" Order="101">
+        <![CDATA[SCHEDULER_ENABLED = "true"]]>
+      </Publish>
+
+      <Publish Dialog="SchedulerSettings2Dlg" Control="Back" Event="NewDialog" Value="SchedulerSettings1Dlg">1</Publish>
+      <Publish Dialog="SchedulerSettings2Dlg" Control="Next" Event="NewDialog" Value="DbSettingsDlg" Order="100">1</Publish>
+
+      <?foreach num in ;2?>
+      <Publish Dialog="DbSettingsDlg$(var.num)" Control="Back" Event="NewDialog" Value="SchedulerSettings1Dlg">
+        <![CDATA[SCHEDULER_ENABLED <> "true"]]>
+      </Publish>
+      <Publish Dialog="DbSettingsDlg$(var.num)" Control="Back" Event="NewDialog" Value="SchedulerSettings2Dlg">
+        <![CDATA[SCHEDULER_ENABLED = "true"]]>
+      </Publish>
+      <Publish Dialog="DbSettingsDlg$(var.num)" Control="Next" Event="NewDialog" Value="ArchiveDbSettingsDlg" Order="100">
+        <![CDATA[SKIP_VALIDATE_CONNECTION Or DbConnection_Valid = "1"]]>
+      </Publish>
+
+      <Publish Dialog="ArchiveDbSettingsDlg$(var.num)" Control="Back" Event="NewDialog" Value="DbSettingsDlg">1</Publish>
+      <Publish Dialog="ArchiveDbSettingsDlg$(var.num)" Control="Next" Event="NewDialog" Value="SelectAvrDbDeploymentTypeDlg" Order="100">
+        <![CDATA[DB_MANAGER_ARCHIVE And (SKIP_VALIDATE_CONNECTION Or ArchDbConnection_Valid = "1" Or ALLOWCONNECTION$(var.num) <> "1")]]>
+      </Publish>
+      <Publish Dialog="ArchiveDbSettingsDlg$(var.num)" Control="Next" Event="NewDialog" Value="AvrDbSettingsDlg" Order="101">
+        <![CDATA[Not DB_MANAGER_ARCHIVE And (SKIP_VALIDATE_CONNECTION Or ArchDbConnection_Valid = "1" Or ALLOWCONNECTION$(var.num) <> "1")]]>
+      </Publish>
+
+      <Publish Dialog="AvrDbSettingsDlg$(var.num)" Control="Back" Event="NewDialog" Value="SelectAvrDbDeploymentTypeDlg">DB_MANAGER_ARCHIVE</Publish>
+      <Publish Dialog="AvrDbSettingsDlg$(var.num)" Control="Back" Event="NewDialog" Value="ArchiveDbSettingsDlg">Not DB_MANAGER_ARCHIVE</Publish>
+      <Publish Dialog="AvrDbSettingsDlg$(var.num)" Control="Next" Event="NewDialog" Value="AvrSvcSettingsDlg" Order="100">
+        <![CDATA[SKIP_VALIDATE_CONNECTION Or AVRDBCONNECTION_VALID = "1"]]>
+      </Publish>
+
+      <Publish Dialog="AvrSvcSettingsDlg$(var.num)" Control="Back" Event="NewDialog" Value="AvrDbSettingsDlg" Order="1">
+        <![CDATA[DeployType = "FindAvrDb"]]>
+      </Publish>
+      <Publish Dialog="AvrSvcSettingsDlg$(var.num)" Control="Back" Event="NewDialog" Value="InstallAvrDbSettingsDlg" Order="2">
+        <![CDATA[DB_MANAGER_ARCHIVE And DeployType = "InstallAvrDb"]]>
+      </Publish>
+      <Publish Dialog="AvrSvcSettingsDlg$(var.num)" Control="Next" Event="NewDialog" Value="VerifyReadyDlg" Order="100">AVR_SERVICE_PORT_VALID = "1"</Publish>
+
+      <Publish Dialog="DbAdminSettingsDlg$(var.num)" Control="Back" Event="NewDialog" Value="SelectAvrDbDeploymentTypeDlg">1</Publish>
+      <Publish Dialog="DbAdminSettingsDlg$(var.num)" Control="Next" Event="NewDialog" Value="InstallAvrDbSettingsDlg" Order="100">
+        <![CDATA[SKIP_VALIDATE_CONNECTION Or DbAdminConnection_Valid = "1"]]>
+      </Publish>
+      <?endforeach?>
+
+      <Publish Dialog="SelectAvrDbDeploymentTypeDlg" Control="Back" Event="NewDialog" Value="ArchiveDbSettingsDlg">1</Publish>
+      <Publish Dialog="SelectAvrDbDeploymentTypeDlg" Control="Next" Event="NewDialog" Value="DbAdminSettingsDlg" Order="100">
+        <![CDATA[DB_MANAGER_ARCHIVE And DeployType = "InstallAvrDb"]]>
+      </Publish>
+      <Publish Dialog="SelectAvrDbDeploymentTypeDlg" Control="Next" Event="NewDialog" Value="AvrDbSettingsDlg" Order="101">
+        <![CDATA[DeployType = "FindAvrDb"]]>
+      </Publish>
+
+      <Publish Dialog="InstallAvrDbSettingsDlg" Control="Back" Event="NewDialog" Value="DbAdminSettingsDlg">1</Publish>
+      <Publish Dialog="InstallAvrDbSettingsDlg" Control="Next" Event="NewDialog" Value="AvrSvcSettingsDlg" Order="100">
+        <![CDATA[SKIP_VALIDATE_CONNECTION Or AvrWideDbConnection_Valid = "1"]]>
+      </Publish>
+
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="AvrSvcSettingsDlg" Order="1">NOT Installed And Not WIX_UPGRADE_DETECTED</Publish>
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="LicenseAgreementDlg" Order="2">NOT Installed And WIX_UPGRADE_DETECTED</Publish>
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg" Order="3">Installed AND NOT PATCH</Publish>
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="3">Installed AND PATCH</Publish>
+
+      <Publish Dialog="MaintenanceWelcomeDlg" Control="Next" Event="NewDialog" Value="MaintenanceTypeDlg">1</Publish>
+
+      <Publish Dialog="MaintenanceTypeDlg" Control="RepairButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="RemoveButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="Back" Event="NewDialog" Value="MaintenanceWelcomeDlg">1</Publish>
+
+      <Property Id="ARPNOMODIFY" Value="1" />
+    </UI>
+
+    <UIRef Id="WixUI_Common" />
+  </Fragment>
+</Wix>

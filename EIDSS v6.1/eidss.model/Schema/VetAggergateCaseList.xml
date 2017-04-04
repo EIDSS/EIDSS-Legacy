@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<object name="VetAggregateCaseListItem" connection="EidssConnectionString" generator="ObjectGenerator.xslt" xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="fn_VetAggregateCase_SelectList" type="fnlist" filter-object="AggrCase" />
+    <count name="spVetAggregateCase_SelectCount"/>
+  </storage>
+
+  <tables>
+    <table name="VetAggregateCaseListItem">
+      <properties auditObject="daoAggregateVetCase" auditTable="tlbAggrCase" permissionObject="AccessToVetAggregateCase"/>
+      <help web="VAC_search" win="VAC_search"/>
+      <searchpanel>
+        <item name="strCaseID" editor="Text" labelId="strCaseID" />
+        <item name="PeriodSeparator" editor="Separator" labelId="" />
+        <item name="idfsPeriodType" editor="Lookup" labelId="strTimeIntervalUnit" lookupName="StatisticPeriodTypeLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference" mandatory="true" />
+        <item name="datStartDate" editor="Date" labelId="datStartDate" defaultoper="&gt;="/>
+        <item name="datFinishDate" editor="Date" labelId="datFinishDate" defaultoper="&lt;=" />
+        <item name="AreaSeparator" editor="Separator" labelId="" />
+        <item name="idfsAreaType" editor="Lookup" labelId="idfsAreaType" lookupName="StatisticAreaTypeLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference" mandatory="true" />
+        <item name="idfsRegion" editor="Lookup" labelId="idfsRegion" dependent="idfsRayon"
+					  lookupName="RegionLookup" lookupType="RegionAggrLookup" lookupText="c.strRegionName" lookupValue="c.idfsRegion" />
+        <item name="idfsRayon" editor="Lookup" labelId="idfsRayon" dependent="idfsSettlement"
+					  lookupName="RayonLookup" lookupType="RayonAggrLookup" lookupText="c.strRayonName" lookupValue="c.idfsRayon" />
+        <item name="idfsSettlement" editor="Lookup" labelId="strSettlement" 
+					  lookupName="SettlementLookup" lookupType="SettlementAggrLookup" lookupText="c.strSettlementName" lookupValue="c.idfsSettlement" />
+      </searchpanel>
+      <grid>
+        <item name="idfAggrCase" key="true" visible="false" />
+        <item name="strCaseID" action="ActionEditVetAggregateCase" required="true" />
+        <item name="datStartDate" />
+        <item name="strPeriodName" required="true" />
+        <item name="strRegion" />
+        <item name="strRayon" />
+        <item name="strSettlement" />
+      </grid>
+      <labels>
+        <item name="strRegion" labelId="idfsRegion" />
+        <item name="strRayon" labelId="idfsRayon" />
+        <item name="strSettlement" labelId="strSettlement" />
+        <item name="strPeriodName" labelId="idfsPeriodType" />
+      </labels>
+        <readonly>
+            <fields name="Region,idfsRegion"
+                    predicate="c => c.idfsCountry == null || c.StatisticAreaType == null 
+                        || (c.StatisticAreaType != null &amp;&amp; c.StatisticAreaType.idfsBaseReference == (long)eidss.model.Enums.StatisticAreaType.Country)
+                        " />
+            <fields name="Rayon,idfsRayon"
+                    predicate="c => c.idfsRegion == null || c.StatisticAreaType == null 
+                        || (c.StatisticAreaType != null &amp;&amp; c.StatisticAreaType.idfsBaseReference == (long)eidss.model.Enums.StatisticAreaType.Country)
+                        || (c.StatisticAreaType != null &amp;&amp; c.StatisticAreaType.idfsBaseReference == (long)eidss.model.Enums.StatisticAreaType.Region)
+                        " />
+            <fields name="Settlement,idfsSettlement"
+                    predicate="c => c.idfsRayon == null || c.StatisticAreaType == null 
+                        || (c.StatisticAreaType != null &amp;&amp; c.StatisticAreaType.idfsBaseReference == (long)eidss.model.Enums.StatisticAreaType.Country)
+                        || (c.StatisticAreaType != null &amp;&amp; c.StatisticAreaType.idfsBaseReference == (long)eidss.model.Enums.StatisticAreaType.Region)
+                        || (c.StatisticAreaType != null &amp;&amp; c.StatisticAreaType.idfsBaseReference == (long)eidss.model.Enums.StatisticAreaType.Rayon)
+                        " />
+            <fields name="*" predicate="c => false" />
+        </readonly>
+        <relations>
+            <relation name="Settings" table="AggregateSettings" internal="false" lazy="true" type="link" source="idfsAggrCaseType" target="idfsAggrCaseType" />
+        </relations>
+      <lookups>
+        <lookup name="StatisticPeriodType" table="BaseReference" section="rftStatisticPeriodType" source="idfsPeriodType" target="idfsBaseReference" />
+        <lookup name="StatisticAreaType" table="BaseReference" section="rftStatisticAreaType" source="idfsAreaType" target="idfsBaseReference" />
+        <lookup name="Country" table="CountryLookup" source="idfsCountry" target="idfsCountry" />
+        <lookup name="Region" table="RegionAggrLookup" source="idfsRegion" target="idfsRegion">
+          <params>
+            <param name="CountryID" lambda="c => c.idfsCountry ?? 0" type="long" />
+            <param name="ID" const="null" />
+            <param name="idfsAggrCaseType" const="(long)AggregateCaseType.VetAggregateCase" />
+          </params>
+        </lookup>
+        <lookup name="Rayon" table="RayonAggrLookup" source="idfsRayon" target="idfsRayon">
+          <params>
+            <param name="RegionID" lambda="c => c.idfsRegion ?? 0" type="long" />
+            <param name="ID" const="null" />
+            <param name="idfsAggrCaseType" const="(long)AggregateCaseType.VetAggregateCase" />
+          </params>
+        </lookup>
+        <lookup name="Settlement" table="SettlementAggrLookup" source="idfsSettlement" target="idfsSettlement">
+          <params>
+            <param name="RayonID" lambda="c => c.idfsRayon ?? 0" type="long" />
+            <param name="ID" const="null" />
+            <param name="idfsAggrCaseType" const="(long)AggregateCaseType.VetAggregateCase" />
+          </params>
+        </lookup>
+      </lookups>
+      <storage>
+        <delete name="spVetAggregateCase_Delete"/>
+        <candelete name="spVetAggregateCase_CanDelete"/>
+      </storage>
+      <extenders>
+          <creating>
+              <lambda_extender target="idfsAggrCaseType" type="long" lambda="c => (long)AggregateCaseType.VetAggregateCase"/>
+          </creating>
+        <created>
+          <!-- set default country as current country of database -->
+          <lambda_extender target="Country" type="CountryLookup" lambda='c => 
+                                     c.CountryLookup.Where(a => a.idfsCountry == eidss.model.Core.EidssSiteContext.Instance.CountryID)
+                                     .SingleOrDefault()' />
+          <lambda_extender target="Region" type="RegionAggrLookup" lambda='c => 
+                                     EidssUserContext.User.Options.Prefs.DefaultRegion == true?
+                                     c.RegionLookup.Where(a => a.idfsRegion == eidss.model.Core.EidssSiteContext.Instance.RegionID)
+                                     .SingleOrDefault(): null'/>
+          <lambda_extender target="StatisticPeriodType" type="BaseReference" lambda='c => 
+                                     c.StatisticPeriodTypeLookup.Where(a => a.idfsBaseReference == c.Settings.idfsStatisticPeriodType)
+                                     .SingleOrDefault()' />
+          <lambda_extender target="StatisticAreaType" type="BaseReference" lambda='c => 
+                                     c.StatisticAreaTypeLookup.Where(a => a.idfsBaseReference == c.Settings.idfsStatisticAreaType)
+                                     .SingleOrDefault()' />
+        </created>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <lambda_handler field="idfsCountry" target="Region" type="RegionAggrLookup" lambda="c => null" />
+          <lambda_handler field="idfsRegion" target="Rayon" type="RayonAggrLookup" lambda="c => null" />
+          <lambda_handler field="idfsRayon" target="Settlement" type="SettlementAggrLookup" lambda="c => null" />
+          <lookup_handler lookup="Region" field="idfsCountry" />
+          <lookup_handler lookup="Rayon" field="idfsRegion" />
+          <lookup_handler lookup="Settlement" field="idfsRayon" />
+        </fieldhandler>
+      </handlers>
+      <actions child="VetAggregateCase">
+         <action name="ActionEditVetAggregateCase" type="Action">                
+          <run>
+            <preUI webType="JScript"/>                  
+          </run>
+        </action>
+      </actions>
+
+    </table>
+  </tables>
+
+</object>
+

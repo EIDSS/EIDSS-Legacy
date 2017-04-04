@@ -1,0 +1,22 @@
+﻿@model ContactedCasePerson.ContactedCasePersonGridModelList
+@using eidss.model.Schema
+@using eidss.webclient.Utils;
+@using eidss.web.common.Utils;
+
+@(Html.BvDetailsFormGrid<ContactedCasePerson.ContactedCasePersonGridModel, ContactedCasePerson.ContactedCasePersonGridModelList>
+    ((string)ViewBag.ContactedCasePersonGridName, Model, "detailsGrid",
+        "patient.showContactedPersonGridEditWindow", null, (bool)ViewBag.IsReadOnly, true, false, 
+        strExcludeColumns: (string)ViewBag.ExcludeColumns)
+        .ToolBar(toolBar =>
+                 toolBar.Template(
+                     @<text>
+                          <input type='button' class='button' data-role='grid-common-button' value='@Translator.GetMessageString("btSelectContact")' 
+                              onclick="@string.Format("patient.showSearchPicker('patient.onPickerSelect', '{0}', '{1}');", ViewBag.ContactedCasePersonGridName, Model.ListKey)"/>
+                          <input type='button' class='button'  data-role='grid-add-button' value='@Translator.GetMessageString("btAddContact")' 
+                              onclick='bvGrid.addRow("@Model.ListKey", "@ViewBag.ContactedCasePersonGridName", patient.showContactedPersonGridEditWindow)'/>
+                      </text>)
+            ))
+        
+        
+
+       

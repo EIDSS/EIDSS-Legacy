@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?include "ProductInfo.wxi" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Fragment Id="AVR.Service">
+    <Property Id="AVR_SERVICE" Secure="yes">
+      <RegistrySearch Id="AVR_SERVICE.RS" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="AVR Service" Type="raw" />
+    </Property>
+    <SetProperty Id="AVR_SERVICE" After="AppSearch" Value="!(loc.AVRServiceName)([INSTANCEID])" Sequence="first">
+      Not AVR_SERVICE
+    </SetProperty>
+
+    <Property Id="AVR_SERVICE_DISPLAY_NAME" Secure="yes">
+      <RegistrySearch Id="AVR_SERVICE_DISPLAY_NAME.RS" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="AVR Service Display Name" Type="raw" />
+    </Property>
+    <SetProperty Id="AVR_SERVICE_DISPLAY_NAME" After="AppSearch" Value="!(loc.AVRServiceDisplayName) ([INSTANCEID])" Sequence="first">
+      Not AVR_SERVICE_DISPLAY_NAME
+    </SetProperty>
+
+    <Property Id="AVR_SERVICE_DESCRIPTION" Secure="yes" />
+    <SetProperty Id="AVR_SERVICE_DESCRIPTION" After="AppSearch" Value="!(loc.AVRServiceDescription)" Sequence="execute">
+      Not AVR_SERVICE_DESCRIPTION
+    </SetProperty>
+
+    <Property Id="AVR_SERVICE_PORT" Secure="yes" Value="8071">
+      <RegistrySearch Id="AVR_SERVICE_PORT.RS" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="AVR Service Port" Type="raw" />
+    </Property>
+
+    <ComponentGroup Id="AVR.Service" Directory="APPLICATIONFOLDER">
+      <Component Id="eidss.avr.service.exe" MultiInstance="yes">
+        <File Name="eidss.avr.service.exe" KeyPath="yes" Checksum="yes" />
+
+        <ServiceInstall
+          Name="[AVR_SERVICE]"
+          DisplayName="[AVR_SERVICE_DISPLAY_NAME]"
+          Description="[AVR_SERVICE_DESCRIPTION]"
+          Type="ownProcess"
+          Start="auto"
+          ErrorControl="normal" />
+        <ServiceControl
+          Id="AVRService"
+          Name="[AVR_SERVICE]"
+          Start="install"
+          Stop="both"
+          Remove="uninstall"
+          Wait="yes" />
+      </Component>
+
+      <Component Id="ServiceRegistryInstallInformation" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.ProductRegistryKey)">
+          <RegistryValue Name="AVR Service" Value="[AVR_SERVICE]" Type="string" KeyPath="yes" />
+          <RegistryValue Name="AVR Service Display Name" Value="[AVR_SERVICE_DISPLAY_NAME]" Type="string" />
+          <RegistryValue Name="AVR Service Port" Value="[AVR_SERVICE_PORT]" Type="string" />
+        </RegistryKey>
+
+        <?define key = AVRServiceSystemName ?>
+        <?define value = [AVR_SERVICE] ?>
+        <?define order = 101 ?>
+        <?include $(var.ProjectDir)AddServiceConfigKey.wxi?>
+
+        <?define key = AVRServiceDisplayName ?>
+        <?define value = [AVR_SERVICE_DISPLAY_NAME] ?>
+        <?define order = 102 ?>
+        <?include $(var.ProjectDir)AddServiceConfigKey.wxi?>
+
+        <?define key = AVRServiceHostURL ?>
+        <?define value = "http://localhost:[AVR_SERVICE_PORT]" ?>
+        <?define order = 103 ?>
+        <?include $(var.ProjectDir)AddServiceConfigKey.wxi?>
+      </Component>
+    </ComponentGroup>
+
+    <CustomActionRef Id="TestAvrServicePort" />
+    <InstallExecuteSequence>
+      <InstallServices>(?eidss.avr.service.exe = 2) And ($eidss.avr.service.exe >= 3) Or (?eidss.avr.service.exe = $eidss.avr.service.exe)</InstallServices>
+    </InstallExecuteSequence>
+  </Fragment>
+
+  <Fragment Id="AVR.Service.Config">
+    <ComponentGroup Id="AVR.Service.Config" Directory="APPLICATIONFOLDER">
+      <Component Id="eidss.avr.service.exe.config" MultiInstance="yes">
+        <File
+          Id="ServiceConfig"
+          Name="eidss.avr.service.exe.config"
+          KeyPath="yes"
+          Source="$(var.eidss.avr.service.exe.config)" />
+
+        <util:XmlConfig
+          Id="Config.appSettings"
+          File="[#ServiceConfig]"
+          Action="create"
+          ElementPath="/configuration"
+          VerifyPath="/configuration/appSettings"
+          Name="appSettings"
+          Node="element"
+          On="install"
+          Sequence="1" />
+      </Component>
+
+      <ComponentGroupRef Id="DbSettings" />
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment Id="AVR.Service UI Fool Protection">
+    <CustomAction Id="TestAvrServicePort" DllEntry="TestAvrServicePort" BinaryKey="CustomActions" />
+    <SetProperty
+      Action="ResetAvrServiecPort"
+      Id="AVR_SERVICE_PORT"
+      Value="{}"
+      After="TestAvrServicePort"
+      Sequence="ui">
+
+      <![CDATA[AVR_SERVICE_PORT_VALID <> "1" And Not (REMOVE~="ALL" Or WIX_UPGRADE_DETECTED)]]>
+    </SetProperty>
+    <SetProperty
+      Id="AVR_SERVICE_PORT_VALID"
+      Value="{}"
+      After="ResetAvrServiecPort"
+      Sequence="ui">
+
+      <![CDATA[AVR_SERVICE_PORT_VALID <> "1" And Not (REMOVE~="ALL" Or WIX_UPGRADE_DETECTED)]]>
+    </SetProperty>
+    <CustomAction Id="FindInstallerPorts" DllEntry="FindInstallerPorts" BinaryKey="CustomActions" />
+    <InstallUISequence>
+      <Custom Action="TestAvrServicePort" After="AppSearch">Not (REMOVE~="ALL" Or WIX_UPGRADE_DETECTED)</Custom>
+      <Custom Action="FindInstallerPorts" After="CostFinalize">Not (REMOVE~="ALL" Or WIX_UPGRADE_DETECTED)</Custom>
+    </InstallUISequence>
+  </Fragment>
+
+  <Fragment Id="AVR.Service logging">
+    <Component Id="ServiceLogging" Directory="APPLICATIONFOLDER" MultiInstance="yes">
+      <RegistryKey Root="HKLM" Key="$(var.ProductRegistryKey)">
+        <RegistryValue Name="AVR Service logging" Value="1" Type="string" KeyPath="yes" />
+      </RegistryKey>
+
+      <?define key = DebugOutput ?>
+      <?define value = true ?>
+      <?define order = 111 ?>
+      <?include $(var.ProjectDir)AddServiceConfigKey.wxi?>
+
+      <?define key = DebugLogFile ?>
+      <?define value = [AVR_SERVICE] ?>
+      <?define order = 112 ?>
+      <?include $(var.ProjectDir)AddServiceConfigKey.wxi?>
+    </Component>
+  </Fragment>
+</Wix>

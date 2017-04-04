@@ -1,0 +1,236 @@
+﻿@model bv.model.Model.Core.SearchPanelMetaItem           
+
+@using eidss.mobileclient.Utils;
+@using bv.model.Model.Core;
+
+@functions
+{
+
+    HtmlString InsertAdjavantHiddens()
+    {
+        return new HtmlString(String.Format(
+            "<input type='hidden' id='Lookup.{0}SlaveName' value='Lookup_{1}'/><input type='hidden' id='Lookup.{0}ParameterString' value='valueFieldName={1}&parameterName={0}&parameterValue=*value*'/>",
+            Model.Name,
+            Model.Dependent
+            ));
+    }
+
+    enum CBoxEditorType
+    {
+        Master,
+        Dependant,
+        Normal
+    }
+
+    CBoxEditorType GetCurrentType()
+    {
+        if (!String.IsNullOrWhiteSpace(Model.Dependent))
+        {
+            return CBoxEditorType.Master;
+        }
+        if (ViewData["IsDependant"] != null)
+        {
+            if ((bool)ViewData["IsDependant"])
+            {
+                return CBoxEditorType.Dependant;
+            }
+        }
+        return CBoxEditorType.Normal;
+    }
+
+    IEnumerable<SelectListItem> GetOperators(bv.model.Model.Core.EditorType type)
+    {
+        switch (type)
+        {
+            case bv.model.Model.Core.EditorType.Text:
+                return new List<SelectListItem> {
+                    new SelectListItem { Value = "=", Text = "="},
+                    new SelectListItem { Value = "LIKE", Text = "LIKE" },
+                    new SelectListItem { Value = "<>", Text = "<>" } 
+                    };
+            case bv.model.Model.Core.EditorType.Lookup:
+                return new List<SelectListItem>
+                {
+                    new SelectListItem{ Value = "=", Text = "=" },
+                    new SelectListItem{ Value = "<>", Text = "<>" }
+                };
+            default:
+                return new List<SelectListItem> 
+                {
+                    new SelectListItem{ Value = "=", Text = "=" },
+                    new SelectListItem{ Value = "<>", Text = "<>" },
+                    new SelectListItem{ Value = ">", Text = ">" },
+                    new SelectListItem{ Value = "<", Text = "<" },
+                    new SelectListItem{ Value = ">=", Text = ">=" },
+                    new SelectListItem{ Value = "<=", Text = "<=" }
+                };
+        }
+    }
+
+    String GetControlName(string baseName, string intervalPart = "")
+    {
+        if (Model.Location == bv.model.Model.Core.SearchPanelLocation.Combobox)
+        {
+            if (!baseName.StartsWith("CBox"))
+            {
+                baseName = String.Format("CBox.Value");
+            }
+
+            return String.Format("{0}.{1}", baseName, ViewData["ObjNameIndex"]);
+        }
+        else
+        {
+            if (intervalPart.Length > 0)
+            {
+                intervalPart += ".";
+            }
+            return String.Format("{0}.{1}{2}", baseName, intervalPart, Model.Name.Replace(" ", ""));
+        }
+    }
+
+    IEnumerable<SelectListItem> GetSource()
+    {
+        if (ViewData["LookupList"] == null)
+        {
+            return new List<SelectListItem>();
+        }
+
+        var result = (IEnumerable<SelectListItem>)ViewData["LookupList"];
+
+        if (ViewData["Value"] == null)
+        {
+            return result;
+        }
+
+        result.Where(x => x.Value.Equals(ViewData["Value"].ToString(), StringComparison.InvariantCultureIgnoreCase)).First().Selected = true;
+        return result;
+    }
+
+    const string MODEL_STORAGE = "ModelSessionStorage";
+
+    IEnumerable<SelectListItem> GetCurrentLookupSource(string valueFieldName, string sessionKey = null, string parameterName = null, long? parameterValue = null)
+    {
+        if (valueFieldName == null)
+        {
+            return new List<SelectListItem> { new SelectListItem { Text = "", Value = "0" } };
+        }
+        
+        var item = GetCurrentItem(valueFieldName, sessionKey);
+
+        if (item != null)
+        {
+            if (item.EditorType == EditorType.Lookup)
+            {
+                return SearchPanelHelper.GetLookup((IObjectCreator)Session[sessionKey ?? MODEL_STORAGE], item, null, parameterName, parameterValue);
+            }
+        }
+
+        return null;
+    }
+
+    SearchPanelMetaItem GetCurrentItem(string fieldName, string sessionKey = null, bool comboPanelOnly = false)
+    {
+        if (Session[sessionKey ?? MODEL_STORAGE] == null)
+            return null;
+
+        IObjectMeta obj = (IObjectMeta)Session[sessionKey ?? MODEL_STORAGE];
+
+        return obj.SearchPanelMeta.Where(x => x.Name == fieldName && (!comboPanelOnly || x.Location == SearchPanelLocation.Combobox)).FirstOrDefault();
+
+    }
+}
+
+@if (Model.Location == bv.model.Model.Core.SearchPanelLocation.Combobox)
+{
+    var items = new SelectList(GetOperators(Model.EditorType));
+    @(Html.DropDownList("CBox.Operand", items))   
+    <text>&nbsp;</text>
+}
+else if (Model.EditorType != bv.model.Model.Core.EditorType.Flag)
+{
+    <label class="spLabel">@Translator.GetString(Model.LabelId)</label> 
+    <br />
+}
+
+@{ var isReadOnly = ((IObject) ViewBag.InitObject).IsHiddenPersonalData(Model.Name); }
+
+@switch (Model.EditorType)
+{
+    case bv.model.Model.Core.EditorType.Flag:
+            @*@(Html.CheckBox(GetControlName("Flag"), (ViewData["Value"] == null) ? false : Convert.ToBoolean(ViewData["Value"])))*@
+        break;
+    case bv.model.Model.Core.EditorType.Date:
+    case bv.model.Model.Core.EditorType.Datetime:
+        if (Model.IsRange)
+        {            
+            <div class="searchEditor">
+                &nbsp;@Translator.GetString("strFrom")&nbsp;                        
+                @(Html.BvSimpleDateBox(GetControlName("Date", "From"), ViewData["ValueFrom"] as DateTime?, Model.Mandatory(null), isReadOnly))
+                <br />               
+                &nbsp;@Translator.GetString("strTo")&nbsp;                
+                @(Html.BvSimpleDateBox(GetControlName("Date", "To"), ViewData["ValueTo"] as DateTime?, Model.Mandatory(null), isReadOnly))                
+            </div>
+        }
+        else
+        {
+            @(Html.BvSimpleDateBox(GetControlName("Date"), null, Model.Mandatory(null), isReadOnly))            
+        }
+        break;
+    case bv.model.Model.Core.EditorType.Numeric:
+        if (Model.IsRange)
+        {            
+            <div class="searchEditor">
+                &nbsp;@Translator.GetString("strFrom")&nbsp;
+                @(Html.BvSimpleNumeric(GetControlName("Int", "From"), ViewData["Value"] as int?, Model.Mandatory(null), isReadOnly))                
+                
+                &nbsp;@Translator.GetString("strTo")&nbsp;&nbsp;
+                @(Html.BvSimpleNumeric(GetControlName("Int", "To"), ViewData["Value"] as int?, Model.Mandatory(null), isReadOnly))                         
+            </div>
+        }
+        else
+        {            
+            @(Html.BvSimpleNumeric(GetControlName("Int"), ViewData["Value"] as int?, Model.Mandatory(null), isReadOnly))           
+        }
+        break;
+    case bv.model.Model.Core.EditorType.Lookup:
+        //if cbox is a master of other value, insert additional hiddens and client event
+        //if cbox is a dependant of other value, add load event handler
+        var specificType = GetCurrentType();
+        if (specificType == CBoxEditorType.Normal)
+        {            
+            @(Html.BvSimpleDropDownList(GetControlName("Lookup"), GetSource(), Model.Mandatory(null), null, isReadOnly))                       
+        }
+        else
+        {
+            if (specificType == CBoxEditorType.Master)
+            {
+                var onChange = string.Format("OnComboboxMasterChange('{0}', '{1}')", GetControlName("Lookup"), ViewData["SessionKey"]);
+                @(Html.BvSimpleDropDownList(GetControlName("Lookup"), GetCurrentLookupSource(Model.Name, (string)ViewData["SessionKey"], null, null), Model.Mandatory(null), onChange, isReadOnly))                                       
+                @InsertAdjavantHiddens()
+            }
+            else
+            {                
+                @(Html.BvSimpleDropDownList(GetControlName("Lookup"), GetCurrentLookupSource(Model.Name, (string)ViewData["SessionKey"], null, null), Model.Mandatory(null), null, isReadOnly))                   
+            }
+        }
+
+        break;
+    case bv.model.Model.Core.EditorType.Text:
+        {
+            var htmlAttributes = new Dictionary<string, object>();
+            var className = Model.Mandatory(null) ? "requiredField" : isReadOnly ? "readonlyField" : "spTextBox";
+            
+            htmlAttributes.Add("class", className);
+            if(isReadOnly)
+            {
+                htmlAttributes.Add("readonly", "readonly");
+                htmlAttributes.Add("disabled", "disabled");
+            }
+
+            <div class='spTextBoxContainer'>
+                @(Html.TextBox(GetControlName("String"), ViewData["Value"], htmlAttributes))                    
+            </div>
+    
+            break;
+        }
+}

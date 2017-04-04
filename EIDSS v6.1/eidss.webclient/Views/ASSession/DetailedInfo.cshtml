@@ -1,0 +1,68 @@
+﻿@model eidss.model.Schema.AsSession
+@using Kendo.Mvc.UI
+@using eidss.web.common.Utils
+@using bv.common.Configuration
+@using eidss.webclient.Utils
+@using eidss.model.Schema
+
+@(Html.Kendo().TabStrip()
+    .Name("DetailedInfo")
+    .Animation(animation => animation.Enable(false))
+    .HtmlAttributes(new { @class = "innerTabs oneLineHeightInnerTab" })
+    .Items(items =>
+    {
+        items.Add()
+            .Text(Translator.GetMessageString("tabTitleFarmsHerdsSpecies"))
+            .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleFarmsHerdsSpecies" } : new { })
+            .Content(
+                    @<text>
+                        <div class="tabPanelContent">
+                            @Html.Action("AsSessionFarmsGrid", "Grids",
+                                new
+                                {
+                                    root = Model.idfMonitoringSession,
+                                    name = Model.ObjectIdent + "ASFarmsDetails",
+                                    itemslist = Model.ASFarmsDetails,
+                                    isReadOnly = Model.IsReadOnly("ASFarmsDetails") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit),
+                                    blnIsDetailsFarm = true,
+                                    blnIsSummaryFarm = false
+                                })
+                        </div>
+                    </text>);
+        items.Add()
+            .Text(Translator.GetMessageString("tabTitleAnimalsSamples"))
+            .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleAnimalsSamples" } : new { })
+            .Content(
+                    @<text>
+                        <div class="tabPanelContent">
+                            @Html.Action("AsSessionAnimalsSamplesGrid", "Grids",
+                                new
+                                {
+                                    root = Model.idfMonitoringSession,
+                                    name = Model.ObjectIdent + "ASAnimalsSamples",
+                                    itemslist = Model.ASAnimalsSamples,
+                                    isReadOnly = Model.IsReadOnly("ASAnimalsSamples") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit)
+                                })
+                            <table class="level1">
+                                <tr>
+                                    <td class="medium firstLabel">@Html.BvLabel(Model, m => m.intTotalSamples)
+                                    </td>
+                                    <td class="number">@Html.BvReadOnlyEditbox(Model, m => m.intTotalSamples)
+                                    </td>
+                                    <td class="xlarge label">@Html.BvLabel(Model, m => m.intTotalSampledAnimals)
+                                    </td>
+                                    <td class="number">@Html.BvReadOnlyEditbox(Model, m => m.intTotalSampledAnimals)
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </text>);
+        items.Add()
+            .Text(Translator.GetMessageString("tabTitleTests"))
+            .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleTests" } : new { })
+            .Content(Html.Partial(@"../ASSession/Tests", Model).ToHtmlString());
+
+    })
+    .SelectedIndex((int)ViewBag.AsDetailsInfoSelectedTab))
+
+

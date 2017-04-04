@@ -1,0 +1,87 @@
+﻿@using eidss.web.common.Utils
+@using eidss.avr.mweb.Utils
+@model System.Data.DataSet
+
+<script>
+    //TH test stand
+    var map;
+    var Action;
+    var MeasureLine;
+    var MeasurePoints = new Array();
+    var base_url = '';
+    var BaseLayer = 1;
+    var left2right = '@ViewBag.left2right';
+    var avrinfo_url = '@Request.Url.AbsoluteUri';
+    avrinfo_url = avrinfo_url.replace(/Map.+/, "Map/AvrMapInfo");
+
+    var ExportUrl = '@Request.Url.AbsoluteUri';
+    ExportUrl = ExportUrl.replace(/Index/, "GetGeoDb");
+
+    // Data 2 display on map
+    var min_grad_color = [255, 0, 0];
+    var max_grad_color = [0, 0, 255];
+    var grad_step_count = 150;
+    var MarkerSrc = 'DB';
+    var MarkerIds = { "human": 1, "vet": 2, "vector": 3, "avian": 4, "livestock": 5 };
+
+    var map_type = 'avr_poly';
+    var avr_json = '@ViewBag.avr_json';
+    var json_text = '@ViewBag.map_json';
+    var map_ColumnName = '@ViewBag.ColumnDescription';
+    var map_ColumnDescription = '@ViewBag.ColumnDescription';
+    var map_blnIsGradient = '@ViewBag.blnIsGradient';
+    var map_blnIsChart = '@ViewBag.blnIsChart';
+
+    var map_grad_style_json = '@ViewBag.grad_style';
+    var map_chart_style_json = '@ViewBag.chart_style';
+    var map_gradLayerName = '@ViewBag.gradLayerName'; if (!map_gradLayerName) { map_gradLayerName = '@Translator.GetMessageString("gradLayerDefault")'; }
+    var map_chartLayerName = '@ViewBag.chartLayerName'; if (!map_chartLayerName) { map_chartLayerName = '@Translator.GetMessageString("chartLayerDefault")'; }
+
+    // Country specified settings
+    var initial_latlng = ['@ViewBag.county_lat', '@ViewBag.county_lon'];
+    var localUrl = '@ViewBag.map_localurl' + 'base';
+    var localUrlLabel = '@ViewBag.map_localurl' + 'en';
+</script>
+
+
+<script class="include" type="text/javascript" src="/Scripts/jquery-1.6.2.js"> </script>
+<script src="/Scripts/jquery.custom_radio_checkbox.js" type="text/javascript"> </script>
+@Html.IncludeVersionedJs("~/Scripts/EIDSS/Common.js")       
+
+<link rel="stylesheet" href="/Content/leaflet.css" />
+<link rel="stylesheet" href="/Scripts/zoom/L.Control.Zoomslider.css" />
+<link rel="stylesheet" href="Scripts/label/leaflet.label.css" />
+<script src="/Scripts/leaflet-src.js"> </script>
+<script src="/Scripts/zoom/L.Control.Zoomslider.js"> </script>
+<script src="/Scripts/label/leaflet.label.js"> </script>
+
+<script language="javascript" type="text/javascript" src="/Scripts/MapPlot/jquery.jqplot.min.js"> </script>  
+<link rel="stylesheet" type="text/css" href="/Scripts/MapPlot/jquery.jqplot.min.css" />
+<script type="text/javascript" src="/Scripts/MapPlot/plugins/jqplot.pieRenderer.min.js"> </script>
+<script class="include" language="javascript" type="text/javascript" src="/Scripts/MapPlot/plugins/jqplot.barRenderer.min.js"> </script>
+<script class="include" language="javascript" type="text/javascript" src="/Scripts/MapPlot/plugins/jqplot.categoryAxisRenderer.min.js"> </script>
+<script class="include" language="javascript" type="text/javascript" src="/Scripts/MapPlot/plugins/jqplot.pointLabels.min.js"> </script>
+
+<link rel="stylesheet" type="text/css" href="/Content/avr_map.css" />
+<script src="/Scripts/avr_web.js" type="text/javascript"> </script>
+<link rel="stylesheet" href="/Content/mapprint.css" />
+<title>@Translator.GetMessageString("webMapTitle")</title>
+
+<table id='map_toolbar' cellspacing='0' cellpadding='0' height='40'>
+    <tr>
+        <td class='toolbar_item' title='@Translator.GetMessageString("webMapChangeLayer")'><div><div id='checkbox_layer' style='display: none;' class="checkbox_layer checkbox" onClick=' ChangeAction("ChangeLayer"); '><input type="checkbox" checked id="map_base_layer"></div></div></td> 
+        <td class='toolbar_item' title='@Translator.GetMessageString("webMapInfo")'><div><div id='checkbox_info' style='display: none;' class="checkbox_info checkbox" onClick=' ChangeAction("Info"); '><input type="checkbox" checked id="map_chk_info"></div></div></td> 
+        <td class='toolbar_item' title='@Translator.GetMessageString("webMapMeasure")'><div><div id='checkbox_meas' style='display: none;' class="checkbox_meas checkbox" onClick=' ChangeAction("Measure"); '><input type="checkbox" checked id="map_chk_meas"></div></div></td>
+        <td class='toolbar_item' title='@Translator.GetMessageString("Print")'><div id='print_toolbar'><img style='cursor: pointer;' src='../../Content/Toolbar/print.png' align='right' onClick=' PrintPageMode(true); '></div></td>
+        <td class='toolbar_item' title='@Translator.GetMessageString("webMapExportGeo")'><div id='export_toolbar'><img style='cursor: pointer;border:0;' src='../../Content/Toolbar/export.png' align='right' onClick="window.open(ExportUrl)"></div></td>
+    </tr>
+</table>
+
+<table  border='1'>
+    <tr>
+        <td valign='top' width="100%"><div id="map" style="width: 100%; height: 600px;"></div><div id='map_info_line'></div></td>
+        <td valign='top' align="left" nowrap><div id='legend_grad' style='padding-left: 5px;'></div><div id='legend' style='padding-left: 5px;'></div></td>
+    </tr>
+</table>
+    
+<script> LoadMap(); </script>

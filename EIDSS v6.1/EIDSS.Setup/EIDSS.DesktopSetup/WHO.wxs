@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "ProductInfo.wxi" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Fragment Id="WHO">
+    <ComponentGroup Id="who.components">
+      <Component Id="EIDSS_WebServiceExport.dll" Directory="APPLICATIONFOLDER">
+        <File Source="$(var.BinariesPaths)EIDSS_WebServiceExport.dll" Checksum="yes" KeyPath="yes" />
+      </Component>
+
+      <?define CultureID = AR_IQ?>
+      <?define CultureSourceFolder = ar-IQ?>
+      <?include "$(var.ProjectDir)WHO resources.wxi"?>
+
+      <?define CultureID = AZ_LATN_AZ?>
+      <?define CultureSourceFolder = az-Latn-AZ?>
+      <?include "$(var.ProjectDir)WHO resources.wxi"?>
+
+      <?define CultureID = HY_AM?>
+      <?define CultureSourceFolder = hy-AM?>
+      <?include "$(var.ProjectDir)WHO resources.wxi"?>
+
+      <?define CultureID = KA_GE?>
+      <?define CultureSourceFolder = ka-GE?>
+      <?include "$(var.ProjectDir)WHO resources.wxi"?>
+
+      <?define CultureID = KK_KZ?>
+      <?define CultureSourceFolder = kk-KZ?>
+      <?include "$(var.ProjectDir)WHO resources.wxi"?>
+
+      <?define CultureID = RU_RU?>
+      <?define CultureSourceFolder = ru-RU?>
+      <?include "$(var.ProjectDir)WHO resources.wxi"?>
+
+      <?define CultureID = UK_UA?>
+      <?define CultureSourceFolder = uk-UA?>
+      <?include "$(var.ProjectDir)WHO resources.wxi"?>
+
+      <?define CultureID = TH_TH?>
+      <?define CultureSourceFolder = th-TH?>
+      <?include "$(var.ProjectDir)WHO resources.wxi"?>
+
+      <Component Id="WHO.Enabled" Guid="{3158FD69-A021-4B56-B649-8DB10F907AC6}" Directory="APPLICATIONFOLDER">
+        <RegistryKey Root="HKLM" Key="$(var.ProductRegistryKey)">
+          <RegistryValue Name="WWO Enabled" Value="1" Type="string" KeyPath="yes" />
+        </RegistryKey>
+
+        <?define key = UseWhoModule ?>
+        <util:XmlConfig
+          Id="eidss.main.exe.config.WHO"
+          File="[#eidss.main.exe.config]"
+          Action="create"
+          ElementPath="/configuration/appSettings"
+          VerifyPath="/configuration/appSettings/add[\[]@key='$(var.key)'[\]]"
+          Name="add"
+          Node="element"
+          On="install">
+
+          <util:XmlConfig
+            Id="eidss.main.exe.config.WHO.Key"
+            File="[#eidss.main.exe.config]"
+            ElementId="eidss.main.exe.config.WHO"
+            Name="key"
+            Value="$(var.key)" />
+          <util:XmlConfig
+            Id="eidss.main.exe.config.WHO.Value"
+            File="[#eidss.main.exe.config]"
+            ElementId="eidss.main.exe.config.WHO"
+            Name="value"
+            Value="true" />
+        </util:XmlConfig>
+        <?undef key?>
+      </Component>
+
+    </ComponentGroup>
+  </Fragment>
+</Wix>

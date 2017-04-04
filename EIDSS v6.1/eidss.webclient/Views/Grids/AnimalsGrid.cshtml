@@ -1,0 +1,23 @@
+﻿@model eidss.model.Schema.AnimalListItem.AnimalListItemGridModelList
+@using eidss.model.Schema
+@using eidss.webclient.Configurations
+@using eidss.webclient.Utils;
+@using eidss.web.common.Utils;
+
+@(Html.BvDetailsFormGrid<AnimalListItem.AnimalListItemGridModel, AnimalListItem.AnimalListItemGridModelList>
+    ((string)ViewBag.GridName, Model, "detailsGrid", "vetCase.showAnimalsGridEditWindow", null, (bool)ViewBag.IsReadOnly, true, false, 
+    selectionType: GridRowSelectionType.Single)
+        .ToolBar(toolBar =>
+                 toolBar.Template(
+                     @<text>
+                          <input type='button' class='button' data-role='grid-add-button' value='@Translator.GetMessageString("btAddAnimal")' 
+                                 onclick='bvGrid.addRow("@Model.ListKey", "@ViewBag.GridName", vetCase.showAnimalsGridEditWindow)'/>
+
+                          <input type='button' class='button' data-role='grid-on-row-button' data-grid-name="@ViewBag.GridName" value='@Translator.GetMessageString("btClinicalSigns")' 
+                                 onclick="@string.Format("vetCase.showAnimalsGridRowTestDetails('{0}');", (string)ViewBag.GridName)"/>
+                      </text>)
+            ))
+        
+        
+
+       

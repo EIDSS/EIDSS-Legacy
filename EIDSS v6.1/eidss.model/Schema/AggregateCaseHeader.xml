@@ -1,0 +1,484 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="AggregateCaseHeader"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="spAggregateCaseHeader_SelectDetail" />
+	</storage>
+
+	<tables>
+		<table name="AggregateCaseHeader">
+      <properties auditObject="daoAgregateHumanCase" auditTable="tlbAggrCase">
+        <events>
+          <create name="HumanAggregateCaseCreatedLocal" predicate="c => c.idfsAggrCaseType == (long)AggregateCaseType.HumanAggregateCase"/>
+          <create name="VetAggregateCaseCreatedLocal" predicate="c => c.idfsAggrCaseType == (long)AggregateCaseType.VetAggregateCase"/>
+          <create name="VetAggregateActionCreatedLocal" predicate="c => c.idfsAggrCaseType == (long)AggregateCaseType.VetAggregateAction"/>
+          <change name="HumanAggregateCaseChangedLocal" predicate="c => c.idfsAggrCaseType == (long)AggregateCaseType.HumanAggregateCase &amp;&amp; (c.Parent as HumanAggregateCase).HasChanges"/>
+          <change name="VetAggregateCaseChangedLocal" predicate="c => c.idfsAggrCaseType == (long)AggregateCaseType.VetAggregateCase &amp;&amp; (c.Parent as VetAggregateCase).HasChanges"/>
+          <change name="VetAggregateActionChangedLocal" predicate="c => c.idfsAggrCaseType == (long)AggregateCaseType.VetAggregateAction &amp;&amp; (c.Parent as VetAggregateAction).HasChanges"/>
+        </events>
+      </properties>
+      <labels>
+        <item name="datSentByDate" labelId="lbNotificationSentByDate"/>
+        <item name="datReceivedByDate" labelId="lbNotificationReceivedByDate"/>
+        <item name="datEnteredByDate" labelId="lbNotificationEnteredByDate"/>
+        <item name="AggregateMatrixVersionCase" labelId="AggregateMatrixVersion"/>
+        <item name="AggregateMatrixVersionDiagnostic" labelId="AggregateMatrixVersion"/>
+        <item name="AggregateMatrixVersionProphylactic" labelId="AggregateMatrixVersion"/>
+        <item name="AggregateMatrixVersionSanitary" labelId="AggregateMatrixVersion"/>
+        <item name="FFTemplateCase" labelId="FFTemplate"/>
+        <item name="FFTemplateDiagnostic" labelId="FFTemplate"/>
+        <item name="FFTemplateProphylactic" labelId="FFTemplate"/>
+        <item name="FFTemplateSanitary" labelId="FFTemplate"/>
+      </labels>
+            <fields>
+              <calculated name="NumberingObject" type="long" depends="idfsAggrCaseType" 
+                            lambda="c => c.idfsAggrCaseType == (long)AggregateCaseType.HumanAggregateCase ? (long)NumberingObjectEnum.HumanAggregateCase :
+                            (c.idfsAggrCaseType == (long)AggregateCaseType.VetAggregateCase ? (long)NumberingObjectEnum.VetAggregateCase :
+                            (c.idfsAggrCaseType == (long)AggregateCaseType.VetAggregateAction ? (long)NumberingObjectEnum.VetAggregateAction :
+                            0))"/>
+              <calculated name="idfsAdministrativeUnitCalc" type="long" depends=""
+                          lambda="c => c.idfsSettlement != null ? c.idfsSettlement.Value : 
+                                (c.idfsRayon != null ? c.idfsRayon.Value : 
+                                (c.idfsRegion != null ? c.idfsRegion.Value : c.idfsCountry.Value))"/>
+              <calculated name="datStartDateCalc" type="DateTime?" depends=""
+                          lambda="c => c.DayForAggr != null ? c.DayForAggr : 
+                                (c.WeekForAggr != null ? (c.YearForAggr != null ? new DateTime((int)c.YearForAggr.Value, 1, 1).AddDays(-(int)(new DateTime((int)c.YearForAggr.Value, 1, 1).DayOfWeek) + 1).AddDays(7 * (c.WeekForAggr.Value - 1)) : default(DateTime?)) :
+                                (c.MonthForAggr != null ? (c.YearForAggr != null ? new DateTime((int)c.YearForAggr.Value, (int)c.MonthForAggr.Value, 1) : default(DateTime?)) : 
+                                (c.QuarterForAggr != null ? (c.YearForAggr != null ? new DateTime((int)c.YearForAggr.Value, (int)(c.QuarterForAggr.Value - 1) * 3 + 1, 1) : default(DateTime?)) : 
+                                (c.YearForAggr != null ? new DateTime((int)c.YearForAggr.Value, 1, 1) : default(DateTime?)
+                                ))))" />
+              <calculated name="datFinishDateCalc" type="DateTime?" depends=""
+                          lambda="c => c.DayForAggr != null ? c.DayForAggr : 
+                                (c.WeekForAggr != null ? (c.YearForAggr != null ? new DateTime((int)c.YearForAggr.Value, 1, 1).AddDays(-(int)(new DateTime((int)c.YearForAggr.Value, 1, 1).DayOfWeek) + 1).AddDays(7 * c.WeekForAggr.Value).AddDays(-1) : default(DateTime?)) : 
+                                (c.MonthForAggr != null ? (c.YearForAggr != null ? (c.MonthForAggr.Value == 12 ? new DateTime((int)c.YearForAggr.Value + 1, 1, 1).AddDays(-1) : new DateTime((int)c.YearForAggr.Value, (int)c.MonthForAggr.Value + 1, 1)).AddDays(-1) : default(DateTime?)) : 
+                                (c.QuarterForAggr != null ? (c.YearForAggr != null ? (c.QuarterForAggr.Value == 4 ? new DateTime((int)c.YearForAggr.Value + 1, 1, 1).AddDays(-1) : new DateTime((int)c.YearForAggr.Value, (int)c.QuarterForAggr.Value * 3 + 1, 1)).AddDays(-1) : default(DateTime?)) : 
+                                (c.YearForAggr != null ? new DateTime((int)c.YearForAggr.Value + 1, 1, 1).AddDays(-1) : default(DateTime?)
+                                ))))" />
+              <calculated name="strReadOnlyEnteredByDate" type="string" depends="datSentByDate" lambda='c => c.datEnteredByDate == null ? (string)null : c.datEnteredByDate.Value.ToString("d")'/>
+            </fields>
+            <readonly>
+                <fields name="strReadOnlyEnteredByDate" predicate="c => true" />
+                <fields name="strSentByOffice,strReceivedByOffice,strEnteredByOffice,strSentByPerson,strReceivedByPerson,strEnteredByPerson" predicate="c => true" />
+                <fields name="datEnteredByDate,strCaseID" predicate="c => true" />
+                <fields name="Country,idfsCountry" predicate="c => true" />
+                <fields name="*" predicate="c => false" />
+            </readonly>
+            <relations>
+              <relation name="Settings" table="AggregateSettings" internal="false" lazy="true" type="link" source="idfsAggrCaseType" target="idfsAggrCaseType" />
+              <relation name="FFPresenterCase" table="FFPresenterModel" internal="false" type="link" source="idfCaseObservation" target="CurrentObservation" lazy="false" />
+              <relation name="FFPresenterDiagnostic" table="FFPresenterModel" internal="false" type="link" source="idfDiagnosticObservation" target="CurrentObservation" lazy="false" />
+              <relation name="FFPresenterProphylactic" table="FFPresenterModel" internal="false" type="link" source="idfProphylacticObservation" target="CurrentObservation" lazy="false" />
+              <relation name="FFPresenterSanitary" table="FFPresenterModel" internal="false" type="link" source="idfSanitaryObservation" target="CurrentObservation" lazy="false" />              
+            </relations>
+            <lookups>
+                <lookup name="Country" table="CountryLookup" source="idfsCountry" target="idfsCountry" />
+                <lookup name="Region" table="RegionAggrLookup" source="idfsRegion" target="idfsRegion">
+                    <params>
+                      <param name="CountryID" lambda="c => c.idfsCountry ?? 0" type="long" />
+                      <param name="ID" const="null" />
+                      <param name="idfsAggrCaseType" lambda="c => c.idfsAggrCaseType" type="long?" />
+                    </params>
+                </lookup>
+                <lookup name="Rayon" table="RayonAggrLookup" source="idfsRayon" target="idfsRayon">
+                    <params>
+                      <param name="RegionID" lambda="c => c.idfsRegion ?? 0" type="long" />
+                      <param name="ID" const="null" />
+                      <param name="idfsAggrCaseType" lambda="c => c.idfsAggrCaseType" type="long?" />
+                    </params>
+                </lookup>
+                <lookup name="Settlement" table="SettlementAggrLookup" source="idfsSettlement" target="idfsSettlement">
+                    <params>
+                      <param name="RayonID" lambda="c => c.idfsRayon ?? 0" type="long" />
+                      <param name="ID" const="null" />
+                      <param name="idfsAggrCaseType" lambda="c => c.idfsAggrCaseType" type="long?" />
+                    </params>
+                </lookup>
+                <lookup name="SentByOffice" table="OrganizationLookup" source="idfSentByOffice" target="idfInstitution">
+                  <params>
+                    <param name="ID" const="null" />
+                    <param name="intHACode" const="null" />
+                  </params>
+                  <filters>
+                    <filter predicate="c => (((c.intHACode??0) &amp; obj.intHACode) != 0) || c.idfInstitution == obj.idfSentByOffice" />
+                  </filters>
+                </lookup>
+                <lookup name="ReceivedByOffice" table="OrganizationLookup" source="idfReceivedByOffice" target="idfInstitution">
+                  <params>
+                    <param name="ID" const="null" />
+                    <param name="intHACode" const="null" />
+                  </params>
+                  <filters>
+                    <filter predicate="c => (((c.intHACode??0) &amp; obj.intHACode) != 0) || c.idfInstitution == obj.idfReceivedByOffice" />
+                  </filters>
+                </lookup>
+                <lookup name="SentByPerson" table="WiderPersonLookup" source="idfSentByPerson" target="idfPerson">
+                  <params>
+                    <param name="OfficeID" lambda="c => c.idfSentByOffice == null ? -1 : c.idfSentByOffice" type="long" />
+                    <param name="ID" const="null" />
+                    <param name="ShowUsersOnly" const="false"/>
+                    <param name="intHACode" const="null"/>
+                  </params>
+                </lookup>
+                <lookup name="ReceivedByPerson" table="WiderPersonLookup" source="idfReceivedByPerson" target="idfPerson">
+                  <params>
+                    <param name="OfficeID" lambda="c => c.idfReceivedByOffice ?? -1L" type="long" />
+                    <param name="ID" const="null" />
+                    <param name="ShowUsersOnly" const="false"/>
+                    <param name="intHACode" const="null"/>
+                  </params>
+                </lookup>
+                <lookup name="YearAggr" table="BaseReference" section="rftSampleStatus" source="YearForAggr" target="idfsBaseReference" >
+                  <filters>
+                    <filter predicate="c=>c.idfsBaseReference == 0"/>
+                  </filters>
+                </lookup>
+              <lookup name="QuarterAggr" table="BaseReference" section="rftSampleStatus" source="QuarterForAggr" target="idfsBaseReference" >
+                <filters>
+                  <filter predicate="c=>c.idfsBaseReference == 0"/>
+                </filters>
+              </lookup>
+              <lookup name="MonthAggr" table="BaseReference" section="rftSampleStatus" source="MonthForAggr" target="idfsBaseReference" >
+                <filters>
+                  <filter predicate="c=>c.idfsBaseReference == 0"/>
+                </filters>
+              </lookup>
+              <lookup name="WeekAggr" table="BaseReference" section="rftSampleStatus" source="WeekForAggr" target="idfsBaseReference" >
+                <filters>
+                  <filter predicate="c=>c.idfsBaseReference == 0"/>
+                </filters>
+              </lookup>
+              <lookup name="AggregateMatrixVersionCase" table="AggregateMatrixVersionLookup" source="idfVersion" target="idfVersion" notaddempty="true">
+                <params>
+                  <param name="idfMatrix" type="long?" 
+                         lambda="c => c.idfsAggrCaseType == (long)AggregateCaseType.HumanAggregateCase ? (long)AggregateCaseSectionEnum.HumanCase :
+                            (c.idfsAggrCaseType == (long)AggregateCaseType.VetAggregateCase ? (long)AggregateCaseSectionEnum.VetCase : 0)"/>
+                </params>
+              </lookup>
+              <lookup name="AggregateMatrixVersionDiagnostic" table="AggregateMatrixVersionLookup" source="idfDiagnosticVersion" target="idfVersion" notaddempty="true">
+                <params>
+                  <param name="idfMatrix" type="long?"
+                         lambda="c => c.idfsAggrCaseType == (long)AggregateCaseType.VetAggregateAction ? (long)AggregateCaseSectionEnum.DiagnosticAction : 0"/>
+                </params>
+              </lookup>
+              <lookup name="AggregateMatrixVersionProphylactic" table="AggregateMatrixVersionLookup" source="idfProphylacticVersion" target="idfVersion" notaddempty="true">
+                <params>
+                  <param name="idfMatrix" type="long?"
+                         lambda="c => c.idfsAggrCaseType == (long)AggregateCaseType.VetAggregateAction ? (long)AggregateCaseSectionEnum.ProphylacticAction : 0"/>
+                </params>
+              </lookup>
+              <lookup name="AggregateMatrixVersionSanitary" table="AggregateMatrixVersionLookup" source="idfSanitaryVersion" target="idfVersion" notaddempty="true">
+                <params>
+                  <param name="idfMatrix" type="long?"
+                         lambda="c => c.idfsAggrCaseType == (long)AggregateCaseType.VetAggregateAction ? (long)AggregateCaseSectionEnum.SanitaryAction : 0"/>
+                </params>
+              </lookup>
+              <lookup name="FFTemplateCase" table="FFTemplateLookup" source="idfsCaseObservationFormTemplate" target="idfsFormTemplate" notaddempty="true">
+                <params>
+                  <param name="idfsFormTemplate" type="long?" const="null"/>
+                  <param name="idfsFormType" type="long?"
+                         lambda="c => c.idfsAggrCaseType == (long)AggregateCaseType.HumanAggregateCase ? (long)FFTypeEnum.HumanAggregateCase :
+                            (c.idfsAggrCaseType == (long)AggregateCaseType.VetAggregateCase ? (long)FFTypeEnum.VetAggregateCase : 0)"/>
+                </params>
+              </lookup>
+              <lookup name="FFTemplateDiagnostic" table="FFTemplateLookup" source="idfsDiagnosticObservationFormTemplate" target="idfsFormTemplate" notaddempty="true">
+                <params>
+                  <param name="idfsFormTemplate" type="long?" const="null"/>
+                  <param name="idfsFormType" type="long?"
+                         lambda="c => c.idfsAggrCaseType == (long)AggregateCaseType.VetAggregateAction ? (long)FFTypeEnum.VetEpizooticActionDiagnosisInv : 0"/>
+                </params>
+              </lookup>
+              <lookup name="FFTemplateProphylactic" table="FFTemplateLookup" source="idfsProphylacticObservationFormTemplate" target="idfsFormTemplate" notaddempty="true">
+                <params>
+                  <param name="idfsFormTemplate" type="long?" const="null"/>
+                  <param name="idfsFormType" type="long?"
+                         lambda="c => c.idfsAggrCaseType == (long)AggregateCaseType.VetAggregateAction ? (long)FFTypeEnum.VetEpizooticActionTreatment : 0"/>
+                </params>
+              </lookup>
+              <lookup name="FFTemplateSanitary" table="FFTemplateLookup" source="idfsSanitaryObservationFormTemplate" target="idfsFormTemplate" notaddempty="true">
+                <params>
+                  <param name="idfsFormTemplate" type="long?" const="null"/>
+                  <param name="idfsFormType" type="long?"
+                         lambda="c => c.idfsAggrCaseType == (long)AggregateCaseType.VetAggregateAction ? (long)FFTypeEnum.VetEpizooticAction : 0"/>
+                </params>
+              </lookup>
+            </lookups>
+            <storage>
+              <post name="spAggregateCaseHeader_Post"/>
+              <delete name="spAggregateCase_Delete"/>
+              <candelete name="spAggregateCase_CanDelete"/>
+            </storage>
+            <postorder>
+              <item name="this"/>
+              <item name="FFPresenterCase"/>
+              <item name="FFPresenterDiagnostic"/>
+              <item name="FFPresenterProphylactic"/>
+              <item name="FFPresenterSanitary"/>
+            </postorder>
+            <deleteorder>
+              <item name="FFPresenterCase"/>
+              <item name="FFPresenterDiagnostic"/>
+              <item name="FFPresenterProphylactic"/>
+              <item name="FFPresenterSanitary"/>
+              <item name="this"/>
+            </deleteorder>
+            <extenders>
+              <creating>
+                  <scalar_extender target="idfAggrCase" class="GetNewIDExtender" />
+                  <custom_extender>
+                    <text>
+                      if(obj.Parent is HumanAggregateCase || obj.Parent is VetAggregateCase)
+                        obj.idfCaseObservation = (new GetNewIDExtender&lt;AggregateCaseHeader&gt;()).GetScalar(manager, obj, isFake);
+                      else
+                      {
+                        obj.idfDiagnosticObservation = (new GetNewIDExtender&lt;AggregateCaseHeader&gt;()).GetScalar(manager, obj, isFake);
+                        obj.idfProphylacticObservation = (new GetNewIDExtender&lt;AggregateCaseHeader&gt;()).GetScalar(manager, obj, isFake);
+                        obj.idfSanitaryObservation = (new GetNewIDExtender&lt;AggregateCaseHeader&gt;()).GetScalar(manager, obj, isFake);
+                      }
+                    </text>
+                  </custom_extender>
+                <!--
+                  <scalar_extender target="idfCaseObservation" class="GetNewIDExtender" />
+                  <scalar_extender target="idfDiagnosticObservation" class="GetNewIDExtender" />
+                  <scalar_extender target="idfProphylacticObservation" class="GetNewIDExtender" />
+                  <scalar_extender target="idfSanitaryObservation" class="GetNewIDExtender" />
+                  -->
+                  <lambda_extender target="strCaseID" type="string" lambda='c => "(new)"' />
+                  <custom_extender>
+                    <text>
+                      obj.CreateFF(manager, obj);
+                    </text>
+                  </custom_extender>
+                </creating>
+              <created>
+                    <!-- set default country as current country of database -->
+                    <lambda_extender target="Country" type="CountryLookup" lambda='c => 
+                                     c.CountryLookup.Where(a => a.idfsCountry == eidss.model.Core.EidssSiteContext.Instance.CountryID)
+                                     .SingleOrDefault()'/>
+ 
+                    <lambda_extender target="datEnteredByDate" type="DateTime?" lambda="c => DateTime.Now" />
+                    <lambda_extender target="idfEnteredByOffice" type="long" lambda='c => eidss.model.Core.EidssSiteContext.Instance.OrganizationID' />
+                    <lambda_extender target="idfEnteredByPerson" type="long" lambda='c => (long)ModelUserContext.Instance.CurrentUser.EmployeeID' />
+                    <lambda_extender target="strEnteredByOffice" type="string" lambda='c => eidss.model.Core.EidssSiteContext.Instance.OrganizationName' />
+                    <lambda_extender target="strEnteredByPerson" type="string" lambda='c => ModelUserContext.Instance.CurrentUser.FullName' />
+                    <lambda_extender target="YearAggr" type="BaseReference" lambda="c => BaseReference.Accessor.Instance(null).CreateDummy(manager, null, (long)DateTime.Now.Year, DateTime.Now.Year.ToString())" />
+
+
+                <!--lambda_extender target="idfSentByOffice" type="long" lambda='c => eidss.model.Core.EidssSiteContext.Instance.OrganizationID' />
+                    <lambda_extender target="idfSentByPerson" type="long" lambda='c => (long)ModelUserContext.Instance.CurrentUser.EmployeeID' />
+                    <lambda_extender target="idfReceivedByOffice" type="long" lambda='c => eidss.model.Core.EidssSiteContext.Instance.OrganizationID' />
+                    <lambda_extender target="idfReceivedByPerson" type="long" lambda='c => (long)ModelUserContext.Instance.CurrentUser.EmployeeID' /-->
+                <custom_extender>
+                  <text>
+                    obj.YearAggrLookup.AddRange(YearLookupTemplate);
+                    if(obj.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Region ||
+                       obj.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Rayon ||
+                       obj.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Settlement)
+                         obj.Region = new Func&lt;AggregateCaseHeader, RegionAggrLookup&gt;(c =>
+                                         c.RegionLookup.Where(a => a.idfsRegion == eidss.model.Core.EidssSiteContext.Instance.RegionID)
+                                         .SingleOrDefault())(obj);
+                    if(obj.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Rayon ||
+                       obj.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Settlement)
+                         obj.Rayon = new Func&lt;AggregateCaseHeader, RayonAggrLookup&gt;(c =>
+                                    c.RayonLookup.Where(a => a.idfsRayon == eidss.model.Core.EidssSiteContext.Instance.RayonID)
+                                    .SingleOrDefault())(obj);
+                  </text>
+                </custom_extender>
+              </created>
+              <loaded>
+                <custom_extender>
+                  <text>
+                    obj.CreateFF(manager, obj);
+                  </text>
+                </custom_extender>
+                <custom_extender>
+                  <text>
+                    obj.YearAggrLookup.AddRange(YearLookupTemplate);
+                    obj.YearAggr = obj.YearAggrLookup
+                    .Where(c => c.idfsBaseReference == obj.YearForAggr)
+                    .SingleOrDefault();
+                    if(obj.Settings.idfsStatisticPeriodType == (long)StatisticPeriodType.Quarter)
+                      QuarterLookupTemplate(ref obj);
+                    else if(obj.Settings.idfsStatisticPeriodType == (long)StatisticPeriodType.Month || obj.Settings.idfsStatisticPeriodType == (long)StatisticPeriodType.Day)
+                      MonthLookupTemplate(ref obj);
+                    else if(obj.Settings.idfsStatisticPeriodType == (long)StatisticPeriodType.Week)
+                      WeekLookupTemplate(ref obj);
+                  </text>
+                </custom_extender>
+              </loaded>
+              <posting>
+                <lambda_extender target="datModificationForArchiveDate" type="DateTime?" lambda="c => c.HasChanges ? DateTime.Now : c.datModificationForArchiveDate"/>
+                <lambda_extender target="idfsAdministrativeUnit" type="long" lambda="c => c.idfsAdministrativeUnitCalc"/>
+                <lambda_extender target="datStartDate" type="DateTime?" lambda="c => c.datStartDateCalc" />
+                <lambda_extender target="datFinishDate" type="DateTime?" lambda="c => c.datFinishDateCalc" />
+                <db_lambda_extender target="strCaseID" type="string" lambda='(c,m) => 
+                    c.strCaseID != "(new)" 
+                    ? c.strCaseID 
+                    : m.SetSpCommand("dbo.spGetNextNumber", c.NumberingObject, DBNull.Value, DBNull.Value)
+                    .ExecuteScalar&lt;string&gt;(ScalarSourceType.OutputParameter, "NextNumberValue")' />
+                </posting>
+            </extenders>
+            <handlers>
+                <fieldhandler>
+                  <scalar_handler class="SetScalarHandler" target="Region" field="idfsCountry" lambda="(o, fld, prev_fld) => null" />
+                  <scalar_handler class="SetScalarHandler" target="Rayon" field="idfsRegion" lambda="(o, fld, prev_fld) => null" />
+                  <scalar_handler class="SetScalarHandler" target="Settlement" field="idfsRayon" lambda="(o, fld, prev_fld) => null" />
+                  <lookup_handler lookup="Region" field="idfsCountry" />
+                  <lookup_handler lookup="Rayon" field="idfsRegion" />
+                  <lookup_handler lookup="Settlement" field="idfsRayon" />
+                  <lookup_handler lookup="SentByPerson" field="idfSentByOffice" />
+                  <lookup_handler lookup="ReceivedByPerson" field="idfReceivedByOffice" />
+                  <scalar_handler class="SetScalarHandler" target="SentByPerson" field="idfSentByOffice" lambda="(o, fld, prev_fld) => null" />
+                  <scalar_handler class="SetScalarHandler" target="ReceivedByPerson" field="idfReceivedByOffice" lambda="(o, fld, prev_fld) => null" />
+                  <custom_handler field="YearForAggr">
+                    <text>
+                      if(obj.Settings.idfsStatisticPeriodType == (long)StatisticPeriodType.Quarter)
+                        QuarterLookupTemplate(ref obj);
+                      else if(obj.Settings.idfsStatisticPeriodType == (long)StatisticPeriodType.Month || obj.Settings.idfsStatisticPeriodType == (long)StatisticPeriodType.Day)
+                        MonthLookupTemplate(ref obj);
+                      else if(obj.Settings.idfsStatisticPeriodType == (long)StatisticPeriodType.Week)
+                        WeekLookupTemplate(ref obj);
+                    </text>
+                  </custom_handler>
+                  <custom_handler field="idfVersion">
+                    <text>
+                          obj.FFPresenterCase.SetProperties(obj.idfsCaseObservationFormTemplate.Value, obj.idfAggrCase);
+                          obj.FFPresenterCase.PrepareAggregateCase(obj.idfsAggrCaseType == (long)AggregateCaseType.HumanAggregateCase ? AggregateCaseSectionEnum.HumanCase : AggregateCaseSectionEnum.VetCase, obj.idfVersion.Value);
+                    </text>
+                  </custom_handler>
+                  <custom_handler field="idfsCaseObservationFormTemplate">
+                    <text>
+                          obj.FFPresenterCase.SetProperties(obj.idfsCaseObservationFormTemplate.Value, obj.idfAggrCase);
+                          obj.FFPresenterCase.PrepareAggregateCase(obj.idfsAggrCaseType == (long)AggregateCaseType.HumanAggregateCase ? AggregateCaseSectionEnum.HumanCase : AggregateCaseSectionEnum.VetCase, obj.idfVersion.Value);
+                    </text>
+                  </custom_handler>
+
+                  <custom_handler field="idfDiagnosticVersion">
+                    <text>
+                          obj.FFPresenterDiagnostic.SetProperties(obj.idfsDiagnosticObservationFormTemplate.Value, obj.idfAggrCase);
+                          obj.FFPresenterDiagnostic.PrepareAggregateCase(AggregateCaseSectionEnum.DiagnosticAction, obj.idfDiagnosticVersion.Value);
+                    </text>
+                  </custom_handler>
+                  <custom_handler field="idfsDiagnosticObservationFormTemplate">
+                    <text>
+                          obj.FFPresenterDiagnostic.SetProperties(obj.idfsDiagnosticObservationFormTemplate.Value, obj.idfAggrCase);
+                          obj.FFPresenterDiagnostic.PrepareAggregateCase(AggregateCaseSectionEnum.DiagnosticAction, obj.idfDiagnosticVersion.Value);
+                    </text>
+                  </custom_handler>
+
+                  <custom_handler field="idfProphylacticVersion">
+                    <text>
+                          obj.FFPresenterProphylactic.SetProperties(obj.idfsProphylacticObservationFormTemplate.Value, obj.idfAggrCase);
+                          obj.FFPresenterProphylactic.PrepareAggregateCase(AggregateCaseSectionEnum.ProphylacticAction, obj.idfProphylacticVersion.Value);
+                    </text>
+                  </custom_handler>
+                  <custom_handler field="idfsProphylacticObservationFormTemplate">
+                    <text>
+                          obj.FFPresenterProphylactic.SetProperties(obj.idfsProphylacticObservationFormTemplate.Value, obj.idfAggrCase);
+                          obj.FFPresenterProphylactic.PrepareAggregateCase(AggregateCaseSectionEnum.ProphylacticAction, obj.idfProphylacticVersion.Value);
+                    </text>
+                  </custom_handler>
+
+                  <custom_handler field="idfSanitaryVersion">
+                    <text>
+                          obj.FFPresenterSanitary.SetProperties(obj.idfsSanitaryObservationFormTemplate.Value, obj.idfAggrCase);
+                          obj.FFPresenterSanitary.PrepareAggregateCase(AggregateCaseSectionEnum.SanitaryAction, obj.idfSanitaryVersion.Value);
+                    </text>
+                  </custom_handler>
+                  <custom_handler field="idfsSanitaryObservationFormTemplate">
+                    <text>
+                          obj.FFPresenterSanitary.SetProperties(obj.idfsSanitaryObservationFormTemplate.Value, obj.idfAggrCase);
+                          obj.FFPresenterSanitary.PrepareAggregateCase(AggregateCaseSectionEnum.SanitaryAction, obj.idfSanitaryVersion.Value);
+                    </text>
+                  </custom_handler>
+
+                </fieldhandler>
+            </handlers>
+            <validators>
+              <chains>
+                <item field="datSentByDate" type="DateTime">
+                  <item field="datReceivedByDate">
+                    <item field="datEnteredByDate">
+                      <item field="CurrentDate" value="DateTime.Now" />
+                    </item>
+                  </item>
+                </item>
+              </chains>
+              <post>
+                  <required_validator target="idfSentByOffice" label="idfCollectedByOffice" />
+                  <required_validator target="idfSentByPerson" />
+                  <required_validator target="strSentByOffice" />
+                  <required_validator target="strSentByPerson" />
+                  <required_validator target="datSentByDate" />
+                  <required_validator target="YearAggr" label="YearForAggr" />
+                  <required_validator target="QuarterAggr" label="QuarterForAggr" predicate="c => c.Settings.idfsStatisticPeriodType == (long)StatisticPeriodType.Quarter" />
+                  <required_validator target="MonthAggr" label="MonthForAggr" predicate="c => c.Settings.idfsStatisticPeriodType == (long)StatisticPeriodType.Month || c.Settings.idfsStatisticPeriodType == (long)StatisticPeriodType.Day" />
+                  <required_validator target="WeekAggr" label="WeekForAggr" predicate="c => c.Settings.idfsStatisticPeriodType == (long)StatisticPeriodType.Week" />
+                  <required_validator target="DayForAggr" predicate="c => c.Settings.idfsStatisticPeriodType == (long)StatisticPeriodType.Day" />
+                  <required_validator target="idfsCountry" property="Country" />
+                  <required_validator target="idfsRegion" property="Region" 
+                                      predicate="c => c.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Region || c.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Rayon || c.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Settlement"/>
+                  <required_validator target="idfsRayon" property="Rayon"
+                                      predicate="c => c.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Rayon || c.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Settlement"/>
+                  <required_validator target="idfsSettlement" property="Settlement" label="Settlement"
+                                      predicate="c => c.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Settlement"/>
+                  
+                  <custom_mandatory_validator name="idfReceivedByPerson" fieldId="HumanAggrCase_NotificationReceivedByOfficer" predicate="c => c.Parent is HumanAggregateCase"/>
+                  <custom_mandatory_validator name="strReceivedByPerson" fieldId="HumanAggrCase_NotificationReceivedByOfficer" predicate="c => c.Parent is HumanAggregateCase"/>
+                  <custom_mandatory_validator name="idfReceivedByOffice" fieldId="HumanAggrCase_NotificationReceivedByOffice" predicate="c => c.Parent is HumanAggregateCase"/>
+                  <custom_mandatory_validator name="strReceivedByOffice" fieldId="HumanAggrCase_NotificationReceivedByOffice" predicate="c => c.Parent is HumanAggregateCase"/>
+                  <custom_mandatory_validator name="datReceivedByDate" fieldId="HumanAggrCase_NotificationReceivedByDate" predicate="c => c.Parent is HumanAggregateCase"/>
+                  
+                  <custom_mandatory_validator name="idfReceivedByPerson" fieldId="VetAggrCase_NotificationReceivedByOfficer" predicate="c => c.Parent is VetAggregateCase"/>
+                  <custom_mandatory_validator name="strReceivedByPerson" fieldId="VetAggrCase_NotificationReceivedByOfficer" predicate="c => c.Parent is VetAggregateCase"/>
+                  <custom_mandatory_validator name="idfReceivedByOffice" fieldId="VetAggrCase_NotificationReceivedByOffice" predicate="c => c.Parent is VetAggregateCase"/>
+                  <custom_mandatory_validator name="strReceivedByOffice" fieldId="VetAggrCase_NotificationReceivedByOffice" predicate="c => c.Parent is VetAggregateCase"/>
+                  <custom_mandatory_validator name="datReceivedByDate" fieldId="VetAggrCase_NotificationReceivedByDate" predicate="c => c.Parent is VetAggregateCase"/>
+                  
+                  <custom_mandatory_validator name="idfReceivedByPerson" fieldId="VetAggrAction_NotificationReceivedByOfficer" predicate="c => c.Parent is VetAggregateAction"/>
+                  <custom_mandatory_validator name="strReceivedByPerson" fieldId="VetAggrAction_NotificationReceivedByOfficer" predicate="c => c.Parent is VetAggregateAction"/>
+                  <custom_mandatory_validator name="idfReceivedByOffice" fieldId="VetAggrAction_NotificationReceivedByOffice" predicate="c => c.Parent is VetAggregateAction"/>
+                  <custom_mandatory_validator name="strReceivedByOffice" fieldId="VetAggrAction_NotificationReceivedByOffice" predicate="c => c.Parent is VetAggregateAction"/>
+                  <custom_mandatory_validator name="datReceivedByDate" fieldId="VetAggrAction_NotificationReceivedByDate" predicate="c => c.Parent is VetAggregateAction"/>
+                  
+                  <custom_validator_manager method="CheckDuplicates" />
+
+                  <custom_validator method="CustomValidations" />
+                </post>
+            </validators>
+      <actions>
+        <action name="Create" type="Create">
+          <run>
+            <params>
+              <param name="idfsAggrCaseType" type="long"/>
+              <param name="idfVersion" type="long?"/>
+            </params>
+            <creating>
+              <lambda_extender target="idfsAggrCaseType" type="long" lambda='c => idfsAggrCaseType' />
+              <lambda_extender target="idfVersion" type="long?" lambda='c => idfVersion' />
+            </creating>
+          </run>
+        </action>
+        <action name="CreateWithParamsManyVersions" type="Create">
+          <run>
+            <params>
+              <param name="idfsAggrCaseType" type="long"/>
+              <param name="idfDiagnosticVersion" type="long?"/>
+              <param name="idfProphylacticVersion" type="long?"/>
+              <param name="idfSanitaryVersion" type="long?"/>
+            </params>
+            <creating>
+              <lambda_extender target="idfsAggrCaseType" type="long" lambda='c => idfsAggrCaseType' />
+              <lambda_extender target="idfDiagnosticVersion" type="long?" lambda='c => idfDiagnosticVersion' />
+              <lambda_extender target="idfProphylacticVersion" type="long?" lambda='c => idfProphylacticVersion' />
+              <lambda_extender target="idfSanitaryVersion" type="long?" lambda='c => idfSanitaryVersion' />
+            </creating>
+          </run>
+        </action>
+      </actions>
+		</table>
+	</tables>
+
+</object>

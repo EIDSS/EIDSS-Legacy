@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/CommonLayout">
+
+    <ScrollView android:id="@+id/Scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            style="@style/UnderScrollLayout">
+
+            <!--Statistics-->
+            <LinearLayout
+                style="@style/InfoLayout">
+                <TextView
+                    style="@style/InfoItem.Header"
+                    android:text="@string/ApplicationName" />
+
+                <TextView
+                    style="@style/InfoItem"
+                    android:text="@string/ApplicationLongName" />
+
+                <TextView
+                    android:id="@+id/labelEidssVersion"
+                    style="@style/InfoItem.SubHeader"/>
+
+                <TextView
+                    style="@style/Separator"/>
+            </LinearLayout>
+
+            <!--<TextView-->
+                <!--style="@style/SpaceItem"/>-->
+
+
+            <!--DateOnlineSynchronization-->
+            <LinearLayout
+                style="@style/InfoLayout">
+                <TextView
+                    style="@style/InfoItem.SubHeader"
+                    android:text="@string/DateOnlineSynchronization" />
+                <TextView
+                    android:id="@+id/DateOnlineSynchronization"
+                    style="@style/InfoItem"/>
+                <TextView
+                    style="@style/Separator"/>
+            </LinearLayout>
+
+            <!--<TextView-->
+                <!--style="@style/SpaceItem"/>-->
+
+            <!--DateOnlineSynchronization-->
+            <LinearLayout
+                style="@style/InfoLayout">
+                <TextView
+                    style="@style/InfoItem.SubHeader"
+                    android:text="@string/DateReferencesUpdate" />
+                <TextView
+                    android:id="@+id/DateReferencesUpdate"
+                    style="@style/InfoItem"/>
+                <TextView
+                    style="@style/Separator"/>
+            </LinearLayout>
+
+            <TextView
+                style="@style/SpaceItem"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

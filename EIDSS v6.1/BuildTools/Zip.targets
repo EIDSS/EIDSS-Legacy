@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- EXTERNAL_PROPERTY: FolderToZip -->
+<!-- EXTERNAL_PROPERTY: ZipPath -->
+<!-- EXTERNAL_PROPERTY: Flatten -->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Import
+    Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"
+    Condition=" Exists( '$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets' )" />
+
+  <PropertyGroup>
+    <Flatten Condition=" '$(Flatten)' == '' ">true</Flatten>
+    <ZipLevel Condition=" '$(ZipLevel)' == '' ">0</ZipLevel>
+  </PropertyGroup>
+
+  <Target Name="ZipFolder" Condition=" '' != '$(ZipPath)' " Inputs="$(FolderToZip)" Outputs="$(ZipPath)">
+    <ItemGroup>
+      <_filesToPack Include="$(FolderToZip)\**\*" />
+    </ItemGroup>
+
+    <Message Importance="low" Text="%0d%0a%09FolderToZip = $(FolderToZip)%0d%0a%09ZipPath=$(ZipPath)%0d%0a%09_filesToPack:%0d%0a%09@(_filesToPack, '%0d%0a%09')" />
+
+    <PropertyGroup>
+      <_zipWorkingDirectory Condition="Exists( '$(FolderToZip)..\' )">$([System.IO.Path]::GetFullPath( '$(FolderToZip)..\' ))</_zipWorkingDirectory>
+      <_zipWorkingDirectory Condition="!Exists( '$(FolderToZip)..\' )">$(FolderToZip)</_zipWorkingDirectory>
+    </PropertyGroup>
+    
+    <Message Importance="low" Text="_zipWorkingDirectory = $(_zipWorkingDirectory)" />
+
+    <Delete Files="$(ZipPath)" Condition="Exists( '$(ZipPath)' )" />
+    <MSBuild.Community.Tasks.Zip
+      Files="@(_filesToPack)"
+      ZipFileName="$(ZipPath)"
+      WorkingDirectory="$(_zipWorkingDirectory)"
+      Flatten="$(Flatten)"
+      ZipLevel ="$(ZipLevel)"
+      ParallelCompression="true" />
+
+    <ItemGroup>
+      <FileWrites Include="$(ZipPath)" />
+    </ItemGroup>
+  </Target>
+
+</Project>

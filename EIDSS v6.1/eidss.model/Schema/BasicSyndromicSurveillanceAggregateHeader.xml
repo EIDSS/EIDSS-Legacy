@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="BasicSyndromicSurveillanceAggregateHeader"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spBasicSyndromicSurveillanceAggregateHeader_SelectDetail" />
+    <!--validate name="spHumanCase_Validate" /-->
+  </storage>
+
+  <tables>
+    <table name="BasicSyndromicSurveillanceAggregateHeader">
+      <properties auditObject="daoBssAggregateForm" auditTable="tlbBasicSyndromicSurveillanceAggregateDetail" permissionObject="AccessToBssModule">
+        <events>
+          <create name="BssAggregateFormLocal" />
+        </events>
+      </properties>
+      <!--help-->
+      <help win="SS_aggr_form"/>
+      <fields>
+        <storage name="strSite" type="string"/>
+        <storage name="strEnteredBy" type="string"/>
+      </fields>
+      <readonly>
+        <fields name="strFormID,datDateEntered,datDateLastSaved,idfEnteredBy,idfsSite,strSite,strEnteredBy" predicate="c => true" />
+        <fields name="*" predicate="c => c.ReadOnly" />
+      </readonly>
+      <relations>
+        <relation name="BSSAggregateDetail" table="BasicSyndromicSurveillanceAggregateDetail" internal="false" type="child" lazy="false" source="idfAggregateHeader" target="idfAggregateHeader" />
+      </relations>
+      <lookups>
+        
+      </lookups>
+      <storage>
+        <post name="spBasicSyndromicSurveillanceAggregateHeader_Post"/>
+        <delete name="spBasicSyndromicSurveillanceAggregateHeader_Delete"/>
+      </storage>
+      <postorder>
+        <item name="this"/>
+        <item name="BSSAggregateDetail"/>
+      </postorder>
+      <deleteorder>
+        <item name="BSSAggregateDetail"/>
+        <item name="this"/>
+      </deleteorder>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfAggregateHeader" class="GetNewIDExtender" />
+          <lambda_extender target="strFormID" type="string" lambda='c => "(new)"' />
+          <lambda_extender target="datDateEntered" type="DateTime" lambda="c => DateTime.Now" />
+          <lambda_extender target="datDateLastSaved" type="DateTime?" lambda="c => null" />
+          <lambda_extender target="idfEnteredBy" type="long" lambda="c => (long)EidssUserContext.User.EmployeeID" />
+          <lambda_extender target="strEnteredBy" type="string" lambda="c => EidssUserContext.User.FullName" />
+          <lambda_extender target="idfsSite" type="long" lambda="c => EidssSiteContext.Instance.SiteID" />
+          <lambda_extender target="strSite" type="string" lambda="c => EidssSiteContext.Instance.OrganizationName" />
+          <lambda_extender target="intYear" type="int" lambda="c => DateTime.Now.Year" />
+          <lambda_extender target="intWeek" type="int" lambda="c => 1" />
+          <lambda_extender target="datStartDate" type="DateTime" lambda="c => eidss.model.Helpers.AggregateListHelper.GetStartDate(c.intYear, c.intWeek)"/>
+          <lambda_extender target="datFinishDate" type="DateTime" lambda="c => eidss.model.Helpers.AggregateListHelper.GetFinishDate(c.intYear, c.intWeek)"/>
+        </creating>
+        <created>
+        </created>
+        <loading>
+          <lambda_extender target="strSite" type="string" lambda="c => EidssSiteContext.Instance.SiteABR"/>
+          <lambda_extender target="strEnteredBy" type="string" lambda="c => EidssUserContext.User.FullName" />
+        </loading>
+        <loaded>
+        </loaded>
+        <posting>
+          <lambda_extender target="datModificationForArchiveDate" type="DateTime?" lambda="c => c.HasChanges ? DateTime.Now : c.datModificationForArchiveDate"/>
+        </posting>
+        <posted>
+          <lambda_extender target="datDateLastSaved" type="DateTime" lambda="c => DateTime.Now"/>
+        </posted>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <lambda_handler target="datStartDate" field="intWeek" type="DateTime" lambda="c => eidss.model.Helpers.AggregateListHelper.GetStartDate(c.intYear, c.intWeek)"/>
+          <lambda_handler target="datFinishDate" field="intWeek" type="DateTime" lambda="c => eidss.model.Helpers.AggregateListHelper.GetFinishDate(c.intYear, c.intWeek)"/>
+        </fieldhandler>
+        <childhandler>
+        </childhandler>
+      </handlers>
+      <validators>
+        <post>
+          <!--<required_validator target="strFormID"/>
+          <required_validator target="datDateEntered"/>
+          <required_validator target="idfEnteredBy"/>
+          <required_validator target="idfsSite"/>-->
+          <required_validator target="intYear"/>
+          <required_validator target="intWeek"/>
+          <custom_validator method="CustomValidations" />
+        </post>
+        <delete>
+        </delete>
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+        </standard>
+      </actions>
+    </table>
+  </tables>
+
+</object>

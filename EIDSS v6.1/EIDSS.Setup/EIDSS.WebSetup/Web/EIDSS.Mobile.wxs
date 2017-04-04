@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "$(var.ProjectDir)ProductInfo.wxi" ?>
+<?define MobileRegistryKey = $(var.WebRegistryKey)\Mobile?>
+
+<Wix
+  xmlns="http://schemas.microsoft.com/wix/2006/wi"
+  xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension"
+  xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+
+  <Fragment Id="EIDSS Mobile">
+    <ComponentGroup Id="eidss.mobile">
+      <ComponentGroupRef Id="MOBILE.WebSite" />
+      <ComponentRef Id="MobileRedirect" />
+      <ComponentGroupRef Id="MOBILE.AppPoolSettings" />
+      <ComponentGroupRef Id="eidss.mobile.Harvested" />
+      <ComponentGroupRef Id="mobile.ThirdParty.GIS.GDBAPI" />
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment Id="EIDSS.Mobile APP Pool">
+    <Property Id="MOBILE_APPPOOL" Secure="yes">
+      <RegistrySearch Id="MOBILE_APPPOOL.RS" Root="HKLM" Key="$(var.MobileRegistryKey)" Name="AppPool" Type="raw" />
+    </Property>
+    <SetProperty Id="MOBILE_APPPOOL" After="SetMOBILE_WEBSITE_NAME" Value="[MOBILE_WEBSITE_NAME]" Sequence="execute">Not MOBILE_APPPOOL</SetProperty>
+
+    <PropertyRef Id="APP_POOL_IDLE_TIMEOUT_IN_MINUTES" />
+
+    <?define website = MOBILE?>
+    <?define webconfigSource = $(var.MobilePath)web.config?>
+    <?define websiteDirectory = eidss.mobile?>
+    <ComponentGroup Id="$(var.website).AppPoolSettings" Directory="$(var.websiteDirectory)">
+      <Component Id="$(var.website).AppPool" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.MobileRegistryKey)">
+          <RegistryValue Name="AppPool" Value="[MOBILE_APPPOOL]" Type="string" KeyPath="yes" />
+        </RegistryKey>
+        <iis:WebAppPool
+          Id="$(var.website).AppPool"
+          Name="[MOBILE_APPPOOL]"
+          ManagedRuntimeVersion="v4.0"
+          ManagedPipelineMode="Integrated"
+          Identity="other"
+          User="ServiceAccount" />
+        <!--IdleTimeout="[APP_POOL_IDLE_TIMEOUT_IN_MINUTES]" /> see custom action - IIsAppPool table doesn't allow formatted values -->
+      </Component>
+
+      <ComponentGroupRef Id="$(var.website).web.config_idleTimeout" />
+    </ComponentGroup>
+
+    <?include SetAppPoolIdleTimeout.wxi?>
+  </Fragment>
+
+  <Fragment Id="MobileWebSite">
+    <Property Id="MOBILE_WEBSITE_NAME" Secure="yes">
+      <RegistrySearch Id="MOBILE_WEBSITE_NAME.RS" Root="HKLM" Key="$(var.MobileRegistryKey)" Name="WebSite" Type="raw" />
+    </Property>
+    <SetProperty
+      Action="SetMOBILE_WEBSITE_NAME"
+      Id="MOBILE_WEBSITE_NAME"
+      After="AppSearch"
+      Value="$(var.ProductFamilyAbbreviation).MOBILE_v$(var.MajorVersion)_[COUNTRY]([INSTANCEID])"
+      Sequence="execute">
+      Not MOBILE_WEBSITE_NAME
+    </SetProperty>
+
+    <Property Id="MOBILE_WEBSITE_IP" Value="*" Secure="yes">
+      <RegistrySearch Id="MOBILE_WEBSITE_IP.RS" Root="HKLM" Key="$(var.MobileRegistryKey)" Name="IP" Type="raw" />
+    </Property>
+    <Property Id="MOBILE_WEBSITE_HEADER" Value="webmobile.DOMAIN.com" Secure="yes">
+      <RegistrySearch Id="MOBILE_WEBSITE_HEADER.RS" Root="HKLM" Key="$(var.MobileRegistryKey)" Name="Header" Type="raw" />
+    </Property>
+    <Property Id="MOBILE_WEBSITE_PORT" Secure="yes">
+      <RegistrySearch Id="MOBILE_WEBSITE_PORT.RS" Root="HKLM" Key="$(var.MobileRegistryKey)" Name="Port" Type="raw" />
+    </Property>
+
+    <ComponentGroup Id="MOBILE.WebSite" Directory="eidss.mobile">
+      <Component Id="MOBILE.WebSite" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.MobileRegistryKey)">
+          <RegistryValue Name="WebSite" Value="[MOBILE_WEBSITE_NAME]" Type="string" KeyPath="yes" />
+          <RegistryValue Name="IP" Value="[MOBILE_WEBSITE_IP]" Type="string" />
+          <RegistryValue Name="Header" Value="[MOBILE_WEBSITE_HEADER]" Type="string" />
+          <RegistryValue Name="Port" Value="[MOBILE_WEBSITE_PORT]" Type="string" />
+        </RegistryKey>
+        <iis:WebSite
+          Id="MOBILE.WebSite"
+          Description="[MOBILE_WEBSITE_NAME]"
+          StartOnInstall="yes"
+          Directory="eidss.mobile"
+          AutoStart="yes"
+          ConfigureIfExists="yes">
+
+          <iis:WebAddress Id="MOBILE.WebAddress" Port="[MOBILE_WEBSITE_PORT]" Header="[MOBILE_WEBSITE_HEADER]" IP="[MOBILE_WEBSITE_IP]" />
+          <iis:WebApplication Id="Mobile.WebApplication" Name="Mobile" WebAppPool="MOBILE.AppPool" />
+          <iis:WebDirProperties
+            Id="Mobile.WebDirProperties"
+            AnonymousAccess="yes"
+            AnonymousUser="ServiceAccount" />
+        </iis:WebSite>
+      </Component>
+
+      <?define website = MOBILE?>
+      <Component Id="$(var.website).web.config" Guid="{7E6C6C1C-1042-47B4-828A-891BC39A0554}" KeyPath="yes" MultiInstance="yes">
+        <File Id="$(var.website).web.config" Name="web.config" Checksum="yes" Source="$(var.MobilePath)web.config" CompanionFile="eidss.mobileclient.dll" />
+      </Component>
+      <?include TurnOffDebug.wxi?>
+      <ComponentRef Id="eidss.mobileclient.dll" />
+    </ComponentGroup>
+    <DirectoryRef Id="eidss.mobile.bin">
+      <Component Id="eidss.mobileclient.dll" MultiInstance="yes">
+        <File Id="eidss.mobileclient.dll" KeyPath="yes" Checksum="yes" Source="$(var.MobilePath)bin\eidss.mobileclient.dll" />
+      </Component>
+      </DirectoryRef>
+  </Fragment>
+
+  <Fragment Id="Mobile redirect">
+    <PropertyRef Id="MOBILE_WEBSITE_HEADER" />
+    <PropertyRef Id="MOBILE_WEBSITE_IP" />
+    <PropertyRef Id="MOBILE_WEBSITE_PORT" />
+
+    <Property Id="MOBILE_WEB_EIDSS_PATH" Secure="yes">
+      <RegistrySearch Id="MOBILE_WEB_EIDSS_PATH.rs" Root="HKLM" Key="$(var.WebRegistryKey)" Name="MobileWebEidssPath" Type="raw" />
+    </Property>
+    <SetProperty
+      Action="SetMobileRedirectToHost"
+      Id="MOBILE_WEB_EIDSS_PATH"
+      Value="{[MOBILE_WEBSITE_HEADER]:[MOBILE_WEBSITE_PORT]}"
+      Before="SetMobileRedirectPrefix"
+      Sequence="execute">
+      <![CDATA[Not MOBILE_WEB_EIDSS_PATH And MOBILE_WEBSITE_HEADER And MOBILE_WEBSITE_HEADER <> ""]]>
+    </SetProperty>
+    <SetProperty
+      Action="SetMobileRedirectToIP"
+      Id="MOBILE_WEB_EIDSS_PATH"
+      Value="{[MOBILE_WEBSITE_IP]:[MOBILE_WEBSITE_PORT]}"
+      Before="SetMobileRedirectPrefix"
+      Sequence="execute">
+      <![CDATA[Not MOBILE_WEB_EIDSS_PATH And (Not MOBILE_WEBSITE_HEADER Or MOBILE_WEBSITE_HEADER = "")]]>
+    </SetProperty>
+    <SetProperty
+      Action="SetMobileRedirectPrefix"
+      Id="MOBILE_WEB_EIDSS_PATH"
+      Value="{http://[MOBILE_WEB_EIDSS_PATH]}"
+      After="AppSearch"
+      Sequence="execute">
+      <![CDATA[MOBILE_WEB_EIDSS_PATH And MOBILE_WEB_EIDSS_PATH <> "" And Not MOBILE_WEB_EIDSS_PATH << "http://" And Not MOBILE_WEB_EIDSS_PATH << "https://"]]>
+    </SetProperty>
+
+    <DirectoryRef Id="eidss.mobile">
+      <Component Id="MobileRedirect" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.WebRegistryKey)">
+          <RegistryValue Name="MobileWebEidssPath" Value="[MOBILE_WEB_EIDSS_PATH]" Type="string" KeyPath="yes" />
+        </RegistryKey>
+
+        <?define key = MobileWebEidssPath ?>
+        <?define value = [MOBILE_WEB_EIDSS_PATH] ?>
+        <?define order = 31 ?>
+        <?include $(var.ProjectDir)AddConfigKey.wxi?>
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+
+  <?define website=mobile?>
+  <Fragment Id="$(var.website).ThirdParty.GIS.GDBAPI">
+    <ComponentGroup Id="$(var.website).ThirdParty.GIS.GDBAPI" Directory="eidss.$(var.website).bin">
+      <ComponentGroupRef Id="$(var.website).ThirdParty.GIS.GDBAPI.x86" />
+      <ComponentGroupRef Id="$(var.website).ThirdParty.GIS.GDBAPI.x64" />
+    </ComponentGroup>
+
+    <?include GDBAPI.wxi?>
+  </Fragment>
+</Wix>

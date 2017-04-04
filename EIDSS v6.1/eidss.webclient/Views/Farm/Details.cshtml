@@ -1,0 +1,144 @@
+﻿@model eidss.model.Schema.FarmRoot
+@{
+    ViewBag.Title = @Translator.GetMessageString("frmFarm");
+    ViewBag.Number = "V05";
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+}
+@using Kendo.Mvc.UI
+@using bv.common.Configuration
+@using bv.model.Model.Core
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+@using (Html.BeginForm())
+{
+    @Html.IdentificationAndHeartbeat("idfFarm", Model.idfFarm)	  
+    
+    <div class="summary">
+        <table class="level1"> 
+            <tr>                                                               
+                <td class="xmedium firstLabel2">
+                    @Html.BvLabel(Model, m => m.datModificationDate)
+                </td>
+                <td class="medium">
+                    @Html.BvEditbox(Model, m => m.datModificationDate)
+                </td>
+                <td class="label">
+                </td>
+                <td class="medium">
+                </td>
+                <td class="label">
+                </td>
+                <td class="medium">
+                </td>
+            </tr>
+        </table> 
+    </div>
+    
+
+    <div class="tabPanelContent bordered">
+        <div class="sectionTitle">
+            @Translator.GetMessageString("titleFarmContactInformation")  
+        </div>
+        <table class="level1">
+            <tr>
+                <td class="xmedium firstLabel">
+                    @Html.BvLabel(Model, m => m.intHACode)
+                </td>
+                <td class="medium">
+                    @Html.BvComboboxWithCheckboxes(Model, m => m.HACode, "intHACode", "CodeName", 
+                        Model.HACodeLookup.ToList().Aggregate("", (r, c) => Model.intHACode.HasValue && c.intHACode != -1 && (c.intHACode & Model.intHACode.Value) != 0 ? (r == "" ? c.intHACode.ToString() : r + "," + c.intHACode.ToString()) : r))
+                </td>
+                <td class="xmedium label">
+                    @Html.BvLabel(Model, m => m.strFarmCode)
+                </td>
+                <td class="medium">
+                    @Html.BvEditbox(Model, m => m.strFarmCode)
+                </td>
+                <td class="xmedium label">
+                    @Html.BvLabel(Model, m => m.strNationalName)
+                </td>
+                <td class="medium">
+                    @Html.BvEditbox(Model, m => m.strNationalName)
+                </td>
+            </tr>
+            @if (!eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+            {
+                <tr>
+                    <td class="firstLabel subSectionTitle">
+                        @Translator.GetString("strOwnerName"):
+                    </td>       
+                </tr>
+            }
+            <tr>
+                <td class="firstLabel">
+                    @if (!eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+                    {
+                        @Translator.GetString("Patient.strLastName")
+                    }
+                    else
+                    {
+                        @Translator.GetString("strOwnerName")
+                    }
+                </td>
+                <td>
+                    @Html.Action("InlinePersonPicker", "Person", new { obj = Model, objectId = Model.idfFarm, idfsPatientPropertyName = "idfOwner", strPatientPropertyName = "strOwnerLastName"})
+                </td>
+                <td class="label">
+                    @if (!eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+                    {
+                        @Translator.GetString("Patient.strFirstName")
+                    }
+                </td>
+                <td>
+                    @if (!eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+                    {
+                        @Html.BvEditbox(Model, m => m.strOwnerFirstName)
+                    }
+                </td>
+                <td class="label">
+                    @if (!eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+                    {
+                        @Translator.GetString("Patient.strSecondName")
+                    }
+                </td>
+                <td>
+                    @if (!eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+                    {
+                        @Html.BvEditbox(Model, m => m.strOwnerMiddleName)
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strContactPhone)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strContactPhone)
+                </td>
+@if (!eidss.model.Core.EidssSiteContext.Instance.IsDTRACustomization)
+{ 
+                <td class="label">
+                    @Html.BvLabel(Model, m => m.strFax)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strFax)
+                </td>
+}
+                <td class="label">
+                    @Html.BvLabel(Model, m => m.strEmail)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strEmail)
+                </td>
+            </tr>
+        </table>
+        
+@Html.Address(Model.idfFarm, Model.Address, true, false, true, true)
+
+    </div>
+    
+}

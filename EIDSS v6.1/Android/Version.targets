@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <PropertyGroup Label="Common Paths">
+    <VersionGradleFile>$(MSBuildProjectDirectory)\app\build.gradle</VersionGradleFile>
+    <VersionFile Condition=" '' == '$(VersionFile)' ">$(MSBuildProjectDirectory)\..\..\EIDSS\EIDSS.Setup.AssemblyInfo.cs</VersionFile>
+  </PropertyGroup>
+
+
+  <Target Name="UpdateVersion" DependsOnTargets="$(UpdateVersionDependsOn)" />
+  
+  <PropertyGroup>
+    <UpdateVersionDependsOn>
+      ParseVersionFile;
+      UpdateGradleVersionInfo
+    </UpdateVersionDependsOn>
+  </PropertyGroup>
+
+
+  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" />
+
+
+  <PropertyGroup>
+    <ParseVersionFileDependsOn>
+      ReadRawVersionInfo;
+      ExtractVersionInfo
+    </ParseVersionFileDependsOn>
+  </PropertyGroup>
+  <Target
+    Name="ParseVersionFile"
+    DependsOnTargets="$(ParseVersionFileDependsOn)"
+    Condition=" Exists( '$(VersionFile)' ) "
+    Returns="$(MajorVersion);$(MinorVersion);$(Build);$(Revision);$(VersionInfo)" />
+
+  <Target Name="ReadRawVersionInfo" Returns="@(RawVersionInfo)">
+    <ReadLinesFromFile File="$(VersionFile)">
+      <Output TaskParameter="Lines" ItemName="RawVersionInfo" />
+    </ReadLinesFromFile>
+  </Target>
+
+  <Target
+    Name="ExtractVersionInfo"
+    Outputs="%(RawVersionInfo.Identity)"
+    Returns="$(MajorVersion);$(MinorVersion);$(Build);$(Revision);$(VersionInfo)">
+
+    <PropertyGroup>
+      <_possibleVersionLine>%(RawVersionInfo.Identity)</_possibleVersionLine>
+      <_versionLine
+        Condition=" 'True' == '$(_possibleVersionLine.Contains(&quot;[assembly:&quot;))' And
+                    'True' == '$(_possibleVersionLine.Contains(&quot;AssemblyVersion(&quot;))' ">$([System.Text.RegularExpressions.Regex]::Match(`$(_possibleVersionLine)`, `\d+\.\d+\.\d+(\.\d+){0,1}`))</_versionLine>
+
+      <MajorVersion Condition=" '' != '$(_versionLine)' ">$(_versionLine.Split('.')[0])</MajorVersion>
+      <MinorVersion Condition=" '' != '$(_versionLine)' " >$(_versionLine.Split('.')[1])</MinorVersion>
+      <Build Condition=" '' != '$(_versionLine)' ">$(_versionLine.Split('.')[2])</Build>
+      <Revision Condition=" '' != '$(_versionLine)' ">$(_versionLine.Split('.')[3])</Revision>
+      <VersionInfo Condition=" '' != '$(_versionLine)' ">$(MajorVersion).$(MinorVersion).$(Build).$(Revision)</VersionInfo>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="UpdateGradleVersionInfo" DependsOnTargets="ParseVersionFile">
+    <PropertyGroup>
+      <_versionCode>$([System.String]::Format("{0}{1}{2}{3}", $(MajorVersion), $(MinorVersion.PadLeft(2, '0')), $(Build.PadLeft(3, '0')), $(Revision.PadLeft(3, '0'))))</_versionCode>
+    </PropertyGroup>
+    <Message Text="VersionCode is $(_versionCode)" />
+
+    <MSBuild.Community.Tasks.Attrib Files="$(VersionGradleFile)" ReadOnly="false" />
+
+    <MSBuild.Community.Tasks.FileUpdate
+      Files="$(VersionGradleFile)"
+      Regex="versionCode \d{9}"
+      ReplacementText="versionCode $(_versionCode)"
+      Encoding="utf-8-without-bom" />
+
+    <MSBuild.Community.Tasks.FileUpdate
+      Files="$(VersionGradleFile)"
+      Regex='versionName \"(\d+)\.(\d+)\.(\d+)\.(\d+)\"'
+      ReplacementText='versionName "$(VersionInfo)"'
+      Encoding="utf-8-without-bom" />
+  </Target>
+</Project>

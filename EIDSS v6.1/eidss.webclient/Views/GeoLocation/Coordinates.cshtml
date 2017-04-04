@@ -1,0 +1,68 @@
+﻿@model eidss.model.Schema.GeoLocation
+
+@using eidss.webclient.Utils
+
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        var buttonSelect = $("#buttonCoordinatesPicker");
+        var isButtonsReadOnly = $("#hdnIsReadOnly").val().toLowerCase() == "true";
+        if (isButtonsReadOnly) {
+            buttonSelect.attr('disabled', 'disabled');
+        }
+        else {
+            buttonSelect.removeAttr('disabled');
+        }
+    });
+</script>
+
+<input type="hidden" id="hdnIsReadOnly" value="@Model.IsReadOnly("buttonCoordinatesPicker")"/>
+<input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+
+@{
+    var panelCoordinatesClass = Model.IsInvisible("panelCoordinates") ? "level1 invisible" : "level1";
+}
+
+<table class="@panelCoordinatesClass" id="panelCoordinates"> 
+    <tr>
+        <td class="xlarge firstLabel">
+            @Html.BvLabel(Model, m => m.dblLongitude)&nbsp;(&#177;&#35;.&#35;&#35;&#35;&#35;&#35;&#176;)
+        </td>
+        <td>
+        @if (Model.IsHiddenPersonalData("dblLongitude"))
+        {
+            @Html.BvHiddenPersonalData(Model, m => m.dblLongitude)
+        }
+        else
+        {
+            @Html.BvNumeric(Model, m => m.dblLongitude, 5, -180, 180, true, "geoLocation.onCoordinateChanged")
+            @Html.BvNumeric(Model, m => m.dblRelLongitude, 5, -180, 180)
+        }
+        </td>
+        <td>
+        </td>
+    </tr>
+    <tr>
+        <td class="firstLabel">
+            @Html.BvLabel(Model, m => m.dblLatitude)&nbsp;(&#177;&#35;.&#35;&#35;&#35;&#35;&#35;&#176;)
+        </td>
+        <td>
+            @if (Model.IsHiddenPersonalData("dblLatitude"))
+            {
+                @Html.BvHiddenPersonalData(Model, m => m.dblLatitude)
+            }
+            else
+            {
+                @Html.BvNumeric(Model, m => m.dblLatitude, 5, -90, 90, true, "geoLocation.onCoordinateChanged")
+                @Html.BvNumeric(Model, m => m.dblRelLatitude, 5, -180, 180)
+            }
+        </td>
+        <td>
+            @if (!Model.IsHiddenPersonalData("dblLongitude"))
+            {
+                <button type='button' class='button smallImageButton' onclick='ShowMap("@Model.ObjectIdent", geoLocation.onCoordinateByMapChanged);' id="buttonCoordinatesPicker">
+                    <img src="@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/globe1.png"))" alt="Map" draggable='false' />
+                </button>
+            }
+        </td>
+    </tr>
+</table>

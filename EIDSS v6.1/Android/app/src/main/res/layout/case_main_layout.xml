@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The main content view -->
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+style="@style/CommonLayout"
+    >
+
+<include layout="@layout/activity_spinner_toolbar"/>
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <android.support.v4.view.PagerTabStrip
+                android:id="@+id/pagerTabStrip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                style="@style/Base.TextAppearance.AppCompat.Title"
+                android:paddingBottom="14dp"
+                android:paddingTop="14dp"
+                >
+            </android.support.v4.view.PagerTabStrip>
+        </android.support.v4.view.ViewPager>
+    </FrameLayout>
+
+ </LinearLayout>

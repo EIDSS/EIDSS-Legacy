@@ -1,0 +1,40 @@
+﻿@using bv.common.Configuration
+@using bv.model.Model.Core
+@using eidss.model.Core
+@using eidss.model.Enums
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".page").addClass("homePage");
+    });
+</script>
+
+@if (BaseSettings.TranslationMode)
+{
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+    <input type='hidden' id='dummy' value='@Translator.GetMessageString("About")' />
+}
+
+@Html.Heartbeat()
+
+@if (EidssSiteContext.Instance.IsAzerbaijanCustomization)
+{
+    <img class="center" src="../../Content/Images/EIDSS_AZ_Logo.png"/>
+}
+else if (EidssSiteContext.Instance.IsThaiCustomization)
+{
+    <img class="center" src="../../Content/Images/EIDSS_TH_Logo.png" />
+}
+else if (EidssSiteContext.Instance.IsIraqCustomization)
+{
+    <img class="center" src="../../Content/Images/EIDSS_IQ_Background.png"/>
+}
+else
+{
+    <img class="center" src="../../Content/Images/11_MainForm_background_image.png"/>
+}

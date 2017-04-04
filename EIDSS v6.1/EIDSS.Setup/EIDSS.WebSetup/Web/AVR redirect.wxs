@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?include "$(var.ProjectDir)ProductInfo.wxi" ?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Fragment Id="AVR Settings">
+    <ComponentGroup Id="AvrSettings">
+      <ComponentRef Id="AvrRedirect" />
+      <ComponentRef Id="RowsPerPage" />
+      <ComponentRef Id="SQLDbSettingsForAvr" />  
+    </ComponentGroup>
+  </Fragment>
+    
+  <Fragment Id="Avr redirect">
+    <PropertyRef Id="AVR_WEBSITE_HEADER" />
+    <PropertyRef Id="AVR_WEBSITE_IP" />
+    <PropertyRef Id="AVR_WEBSITE_PORT" />
+
+    <Property Id="AVR_URL" Secure="yes">
+      <RegistrySearch Id="AVR_URL.rs" Root="HKLM" Key="$(var.WebRegistryKey)" Name="AvrUrl" Type="raw" />
+    </Property>
+    <SetProperty
+      Action="SetAvrUrlToHost"
+      Id="AVR_URL"
+      Value="{[AVR_WEBSITE_HEADER]:[AVR_WEBSITE_PORT]}"
+      Before="SetAvrUrlPrefix"
+      Sequence="execute">
+      <![CDATA[Not AVR_URL And AVR_WEBSITE_HEADER And AVR_WEBSITE_HEADER <> ""]]>
+    </SetProperty>
+    <SetProperty
+      Action="SetAvrUrlToIP"
+      Id="AVR_URL"
+      Value="{[AVR_WEBSITE_IP]:[AVR_WEBSITE_PORT]}"
+      Before="SetAvrUrlPrefix"
+      Sequence="execute">
+      <![CDATA[Not AVR_URL And (Not AVR_WEBSITE_HEADER Or AVR_WEBSITE_HEADER = "")]]>
+    </SetProperty>
+    <SetProperty Action="SetAvrUrlPrefix" Id="AVR_URL" Value="{http://[AVR_URL]}" After="AppSearch" Sequence="execute">
+      <![CDATA[AVR_URL And AVR_URL <> "" And Not AVR_URL << "http://" And Not AVR_URL << "https://"]]>
+    </SetProperty>
+
+    <DirectoryRef Id="APPLICATIONFOLDER">
+      <Component Id="AvrRedirect" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.WebRegistryKey)">
+          <RegistryValue Name="AvrUrl" Value="[AVR_URL]" Type="string" KeyPath="yes" />
+        </RegistryKey>
+
+        <?define key = AvrUrl ?>
+        <?define value = [AVR_URL] ?>
+        <?define order = 42 ?>
+        <?include $(var.ProjectDir)AddConfigKey.wxi?>
+      </Component>
+
+      <Component Id="RowsPerPage" Guid="{94B3A871-82EE-4D2F-81A9-988794DE8003}" MultiInstance="yes" KeyPath="yes">
+        <?define key = AvrRowsPerPage ?>
+        <?define value = 20 ?>
+        <?define order = 43 ?>
+        <?include $(var.ProjectDir)AddConfigKey.wxi?>
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+
+  <Fragment Id="AVR linking">
+    <Property Id="DBUSER_FOR_AVR" Secure="yes" Hidden="yes" />
+    <Property Id="DBPASSWORD_FOR_AVR" Secure="yes" Hidden="yes" />
+    <Property Id="EncryptedDBUSERForAvr" Hidden="yes" />
+    <Property Id="EncryptedDBPASSWORDForAvr" Hidden="yes" />
+
+    <CustomAction Id="EncryptDbAccountForAvrDetails" DllEntry="EncryptDbAccountForAvrDetails" BinaryKey="CustomActions" />
+
+    <InstallExecuteSequence>
+      <Custom Action="EncryptDbAccountForAvrDetails" After="AppSearch">Not REMOVE~="ALL" And DBUSER_FOR_AVR And DBPASSWORD_FOR_AVR</Custom>
+    </InstallExecuteSequence>
+
+    <DirectoryRef Id="APPLICATIONFOLDER">
+      <Component Id="SQLDbSettingsForAvr" MultiInstance="yes">
+        <Condition>Not SKIP_VALIDATE_CONNECTION</Condition>
+
+        <RegistryKey Root="HKLM" Key="$(var.WebRegistryKey)">
+          <RegistryValue Name="AvrDatabase" Value="[SQLDATABASE_FOR_AVR]" Type="string" KeyPath="yes" />
+        </RegistryKey>
+
+        <?define key = "AvrConnectionString" ?>
+        <?define value = "Persist Security Info=False;User ID={0};Password={1};Initial Catalog={2};server={3};Asynchronous Processing=True;" ?>
+        <?define order = 71 ?>
+        <?include $(var.ProjectDir)AddConfigKey.wxi?>
+
+        <?define key = AvrDatabase ?>
+        <?define value = [SQLDATABASE_FOR_AVR] ?>
+        <?define order = 72 ?>
+        <?include $(var.ProjectDir)AddConfigKey.wxi?>
+
+        <?define key = AvrServer ?>
+        <?define value = [DBSERVER_FOR_AVR] ?>
+        <?define order = 73 ?>
+        <?include $(var.ProjectDir)AddConfigKey.wxi?>
+
+        <?define key = AvrUser ?>
+        <?define value = [EncryptedDBUSERForAvr] ?>
+        <?define order = 74 ?>
+        <?include $(var.ProjectDir)AddConfigKey.wxi?>
+
+        <?define key = AvrPassword ?>
+        <?define value = [EncryptedDBPASSWORDForAvr] ?>
+        <?define order = 75 ?>
+        <?include $(var.ProjectDir)AddConfigKey.wxi?>
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+</Wix>

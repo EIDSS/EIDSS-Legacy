@@ -1,0 +1,41 @@
+﻿@model eidss.model.Schema.HumanCase
+           
+@using eidss.mobileclient.Utils
+
+<script src="@Url.Content("~/Scripts/EIDSS.Organization.js")" type="text/javascript"></script>
+
+<table> 
+    <tr>                                                               
+        <td>
+            @Translator.GetString("strInvestigatedByOffice")
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.Action("InlineOrganizationPicker", "Organization", new { obj = Model, objectId = Model.idfCase, 
+                idfsOrganizationPropertyName = "idfInvestigatedByOffice", strOrganizationPropertyName = "strInvestigatedByOffice",
+                returnUrl = "/HumanCase/Investigation?id=" + Session["IdfCase"], 
+                currentControllerName = "HumanCase" })
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Translator.GetString("datInvestigationStartDate")
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvDateBox(Model, "datInvestigationStartDate")
+        </td>
+    </tr>    
+    <tr>                
+        <td>
+            @Html.LabelFor(m => m.idfsInitialCaseStatus)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvDropDownList(Model, "InitialCaseClassification")
+        </td>
+    </tr>    
+</table>

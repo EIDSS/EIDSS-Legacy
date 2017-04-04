@@ -1,0 +1,59 @@
+﻿@model eidss.model.Schema.AsSessionAnimalSample.AsSessionAnimalSampleGridModelList
+@using bv.model.Model.Core
+@using eidss.model.Schema
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+@using eidss.webclient.Configurations;
+
+@{
+    var gridName = (string)ViewBag.GridName;
+    var key = (long)ViewBag.Root;
+    var pageableCheck = (bool)ViewBag.AsSessionAnimalSamplePageable ? "checked='checked'" : "";
+}
+
+
+@(Html.BvDetailsFormGrid<AsSessionAnimalSample.AsSessionAnimalSampleGridModel, AsSessionAnimalSample.AsSessionAnimalSampleGridModelList>
+      ((string)ViewBag.GridName, Model, "detailsGrid",
+       "asSession.showAnimalSampleGridEditWindow", null, (bool)ViewBag.IsReadOnly,
+       deleteItemFuncName: "asSession.deleteAnimalSample", 
+       bCustomToolbar: true,
+       selectionType: GridRowSelectionType.Single,
+       bPageable: (bool)ViewBag.AsSessionAnimalSamplePageable,
+       editableColumns: new List<GridModelEditableItem>()
+           {
+               new GridModelEditableItem() { Name = "strAnimalCode", Type = typeof(string), Width = 160},
+               new GridModelEditableItem() { Name = "AnimalAge", Type = typeof(AsSessionAnimalSample.AsSessionAnimalAge), ClientTemplate = "#=AnimalAge == null ? \"\" : AnimalAge.name#", Width = 110 },
+               new GridModelEditableItem() { Name = "strColor", Type = typeof(string)},
+               new GridModelEditableItem() { Name = "AnimalGender", Type = typeof(AsSessionAnimalSample.AsSessionBaseReference), ClientTemplate = "#=AnimalGender == null ? \"\" : AnimalGender.name#", Width = 110 },
+               new GridModelEditableItem() { Name = "strName", Type = typeof(string) },
+               new GridModelEditableItem() { Name = "strDescription", Type = typeof(string) },
+               new GridModelEditableItem() { Name = "SampleType", Type = typeof(AsSessionAnimalSample.AsSessionSampleTypeForDiagnosis), ClientTemplate = "#=SampleType == null ? \"\" : SampleType.name#", Width = 160 },
+               new GridModelEditableItem() { Name = "strFieldBarcode", Type = typeof(string) },
+               new GridModelEditableItem() { Name = "datFieldCollectionDate", Type = typeof(DateTime), Width = 110 },
+           },
+      clientOnEndEdit: "asSession.onEndEditAnimalSample"
+      )
+      .ToolBar(toolBar => toolBar.Template(
+          @<text>
+               <table>
+                   <tr>
+                       <td style="border-style: none">
+               <div style='text-align: @(Cultures.IsRtl ? "right" : "left")'>
+                   <input class='bvCheckbox' type='checkbox' id='chkAsSessionAnimalSamplePageable' name='chkAsSessionAnimalSamplePageable' onclick='asSession.clickPageable()' @pageableCheck />
+                   <label for='chkAsSessionAnimalSamplePageable'>@Translator.GetBvOrEidssMessageString("strPaging")</label>
+               </div>
+                       </td>
+                       <td style="border-style: none; width: 50%">
+                           <div id="idGetDataError" class="invalidText invisible">@Translator.GetMessageString("strTooMuchDataForDisplay")</div>
+                       </td>
+                       <td style="border-style: none">
+               <input type='button' class='button'  data-role='grid-add-button' value='@Translator.GetMessageString("strNew")'
+                      onclick='bvGrid.addRow("@Model.ListKey", "@gridName", asSession.showAnimalSampleGridEditWindow)'/>
+               <input type='button' disabled="disabled" class="button k-state-disabled" data-role='grid-on-row-button' value='@Translator.GetBvMessageString("strCopy_Id")'
+                      onclick="@string.Format("asSession.onSampleCopy('{0}','{1}');", key, gridName)"/>
+                       </td>
+                   </tr>
+               </table>
+           </text>)
+      ))
+

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<object name="UsersAndGroupsListItem" connection="EidssConnectionString" generator="ObjectGenerator.xslt" xmlns="urn:schemas-bv:objectmodel">
+ 
+  <storage>
+    <get name="fn_UsersAndGroups_SelectList" type="fnlist" />
+    <count name="spUsersAndGroups_SelectCount"/>
+  </storage>
+
+  <tables>
+    <table name="UsersAndGroupsListItem">
+      <properties auditObject="daoUser" auditTable="tlbEmployee" permissionObject="UserGroup"/>
+      <help win="Access_Rights_Management"/>
+      <searchpanel>
+        <item name="idfsEmployeeType" editor="Lookup" labelId="Type" 
+					lookupName="EmployeeTypeLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        <item name="strName" editor="Text" labelId="strName" />
+        <item name="OrganizationName" editor="Text" labelId="UserGroupMember.OrganizationName" />
+        <item name="strDescription" editor="Text" labelId="strDescription" />
+      </searchpanel>
+
+      <grid>
+        <item name="idfEmployee" visible="false" key="true"  />
+        <item name="EmployeeTypeName"  />
+        <item name="strName"  />
+        <item name="OrganizationName" />
+        <item name="strDescription" />
+      </grid>
+      <labels>
+        <item labelId="UserGroupMember.EmployeeTypeName" name="EmployeeTypeName"/>
+        <item labelId="UserGroupMember.strName" name="strName"/>
+        <item labelId="UserGroupMember.OrganizationName" name="OrganizationName"/>
+        <item labelId="UserGroupMember.strDescription" name="strDescription"/>
+      </labels>
+      <lookups>
+        <lookup name="EmployeeType" table="BaseReference" section="rftEmployeeType" source="idfsEmployeeType" target="idfsBaseReference" />
+      </lookups>
+
+      <storage>
+      </storage>
+      <actions  child="UserGroup">
+        <standard>
+          <remove type="Create"/>
+          <remove type="Delete"/>
+          <remove type="Edit"/>
+          <remove type="Report"/>
+        </standard>
+      </actions>
+    </table>
+  </tables>
+
+</object>

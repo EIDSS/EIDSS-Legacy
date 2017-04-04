@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup Label="Directory harvest settings">
+    <HarvestNoLogo>true</HarvestNoLogo>
+    <HarvestDirectoryVerboseOutput Condition=" '$(Configuration)' == 'Debug' ">true</HarvestDirectoryVerboseOutput>
+    <HarvestDirectoryAutogenerateGuids>true</HarvestDirectoryAutogenerateGuids>
+    <HarvestDirectoryGenerateGuidsNow>true</HarvestDirectoryGenerateGuidsNow>
+    <HarvestDirectorySuppressFragments>true</HarvestDirectorySuppressFragments>
+    <HarvestDirectorySuppressUniqueIds>false</HarvestDirectorySuppressUniqueIds>
+    <HarvestDirectoryKeepEmptyDirectories>false</HarvestDirectoryKeepEmptyDirectories>
+    <HarvestDirectorySuppressCom>true</HarvestDirectorySuppressCom>
+    <HarvestDirectorySuppressRootDirectory>true</HarvestDirectorySuppressRootDirectory>
+    <HarvestDirectorySuppressRegistry>true</HarvestDirectorySuppressRegistry>
+    <Transforms>$(ProjectDir)Directories.harvest.xslt</Transforms>
+
+    <BaseWebPath>$(IntermediateDistribDir)</BaseWebPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <HarvestDependsOn>
+      PrepareDirectoryHarvest;
+      $(HarvestDependsOn)
+    </HarvestDependsOn>
+
+    <PrepareDirectoryHarvestDependsOn>
+      PrepareDirectory_AVR;
+      PrepareDirectory_Mobile;
+      PrepareDirectory_Smartphone;
+      PrepareDirectory_OpenAPI;
+      PrepareDirectory_Web;
+      PrepareDirectory_Help;
+      PrepareDirectory_GIS;
+    </PrepareDirectoryHarvestDependsOn>
+  </PropertyGroup>
+  <Target Name="PrepareDirectoryHarvest" DependsOnTargets="$(PrepareDirectoryHarvestDependsOn)">
+    <Message Importance="low" Text="HarvestDirectory:%0d%0a%09@(HarvestDirectory, '%0d%0a%09')" />
+  </Target>
+
+  <Target Name="PrepareDirectory_AVR">
+    <PropertyGroup>
+      <AVRPath>$(BaseWebPath)eidss.avr\</AVRPath>
+      <DefineConstants>AVRPath=$(AVRPath);$(DefineConstants)</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <HarvestDirectory Include="$(AVRPath)">
+        <Transforms>$(Transforms);$(ProjectDir)Directories.harvest.Avr.xslt</Transforms>
+        <ComponentGroupName>eidss.avr.Harvested</ComponentGroupName>
+        <DirectoryRefId>eidss.avr</DirectoryRefId>
+        <PreprocessorVariable>var.AVRPath</PreprocessorVariable>
+      </HarvestDirectory>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="PrepareDirectory_Mobile">
+    <PropertyGroup>
+      <MobilePath>$(BaseWebPath)eidss.mobile\</MobilePath>
+      <DefineConstants>MobilePath=$(MobilePath);$(DefineConstants)</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <HarvestDirectory Include="$(MobilePath)">
+        <Transforms>$(Transforms);$(ProjectDir)Directories.harvest.Mobile.xslt</Transforms>
+        <ComponentGroupName>eidss.mobile.Harvested</ComponentGroupName>
+        <DirectoryRefId>eidss.mobile</DirectoryRefId>
+        <PreprocessorVariable>var.MobilePath</PreprocessorVariable>
+      </HarvestDirectory>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="PrepareDirectory_Smartphone">
+    <PropertyGroup>
+      <SmartphonePath>$(BaseWebPath)eidss.smartphone.web\</SmartphonePath>
+      <DefineConstants>SmartphonePath=$(SmartphonePath);$(DefineConstants)</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <HarvestDirectory Include="$(SmartphonePath)">
+        <Transforms>$(Transforms);$(ProjectDir)Directories.harvest.Smartphone.xslt</Transforms>
+        <ComponentGroupName>eidss.smartphone.Harvested</ComponentGroupName>
+        <DirectoryRefId>eidss.smartphone</DirectoryRefId>
+        <PreprocessorVariable>var.SmartphonePath</PreprocessorVariable>
+      </HarvestDirectory>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="PrepareDirectory_OpenAPI">
+    <PropertyGroup>
+      <OpenAPIPath>$(BaseWebPath)eidss.openapi.web\</OpenAPIPath>
+      <DefineConstants>OpenAPIPath=$(OpenAPIPath);$(DefineConstants)</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <HarvestDirectory Include="$(OpenAPIPath)">
+        <Transforms>$(Transforms);$(ProjectDir)Directories.harvest.OpenAPI.xslt</Transforms>
+        <ComponentGroupName>eidss.openapi.Harvested</ComponentGroupName>
+        <DirectoryRefId>eidss.openapi</DirectoryRefId>
+        <PreprocessorVariable>var.OpenAPIPath</PreprocessorVariable>
+      </HarvestDirectory>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="PrepareDirectory_Web">
+    <PropertyGroup>
+      <WebPath>$(BaseWebPath)eidss.web\</WebPath>
+      <DefineConstants>WebPath=$(WebPath);$(DefineConstants)</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <HarvestDirectory Include="$(WebPath)">
+        <Transforms>$(Transforms);$(ProjectDir)Directories.harvest.Web.xslt</Transforms>
+        <ComponentGroupName>eidss.web.Harvested</ComponentGroupName>
+        <DirectoryRefId>eidss.web</DirectoryRefId>
+        <PreprocessorVariable>var.WebPath</PreprocessorVariable>
+      </HarvestDirectory>
+    </ItemGroup>
+  </Target>
+
+
+  <PropertyGroup>
+    <HelpSource>$(SourceDir)\Help\</HelpSource>
+    <Skin>$(HelpSource)EIDSS_Desktop_WebHelp.hmskin</Skin>
+    <IncludeOptions>WEB_EIDSS</IncludeOptions>
+  </PropertyGroup>
+  <ItemGroup>
+    <HelpProject Include="$(HelpSource)AZ\WebEIDSS_Main\EIDSS_Web_AZ.hmxz">
+      <Culture>az</Culture>
+    </HelpProject>
+    <HelpProject Include="$(HelpSource)EN\WebEIDSS_Main\EIDSS_Web.hmxz">
+      <Culture>en</Culture>
+    </HelpProject>
+    <HelpProject Include="$(HelpSource)GG\WebEIDSS_Main\EIDSS_Web_GG.hmxz">
+      <Culture>gg</Culture>
+    </HelpProject>
+    <HelpProject Include="$(HelpSource)RU\WebEIDSS_Main\EIDSS_Web_RU.hmxz">
+      <Culture>ru</Culture>
+    </HelpProject>
+    <HelpProject Include="$(HelpSource)AM\WebEIDSS_Main\EIDSS_Web_AM.hmxz">
+      <Culture>hy-AM</Culture>
+    </HelpProject>
+    <HelpProject Include="$(HelpSource)KZ\WebEIDSS_Main\EIDSS_Web_KZ.hmxz">
+      <Culture>kk-KZ</Culture>
+    </HelpProject>
+  </ItemGroup>
+  <Import Project="$(SolutionDir)HelpBuilder.Common.targets" />
+  
+  <Target Name="PrepareDirectory_Help" DependsOnTargets="BuildHelp">
+    <PropertyGroup>
+      <DefineConstants>HelpPath=$(BuiltHelpDirectory);$(DefineConstants)</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <HarvestDirectory Include="$(BuiltHelpDirectory)">
+        <Transforms>$(Transforms)</Transforms>
+        <ComponentGroupName>Help.Harvested</ComponentGroupName>
+        <DirectoryRefId>Help</DirectoryRefId>
+        <PreprocessorVariable>var.HelpPath</PreprocessorVariable>
+      </HarvestDirectory>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="PrepareDirectory_GIS">
+    <PropertyGroup>
+      <GISPath Condition=" '' == '$(GISPath)' ">$(SourceDir)EIDSS\dlls\gis\</GISPath>
+      <DefineConstants>GISPath=$(GISPath);$(DefineConstants)</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <HarvestDirectory Include="$(GISPath)">
+        <Transforms>$(Transforms)</Transforms>
+        <ComponentGroupName>gis.Harvested</ComponentGroupName>
+        <DirectoryRefId>gis</DirectoryRefId>
+        <PreprocessorVariable>var.GISPath</PreprocessorVariable>
+      </HarvestDirectory>
+    </ItemGroup>
+  </Target>
+</Project>

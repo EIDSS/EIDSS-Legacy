@@ -1,0 +1,100 @@
+﻿@model eidss.model.Schema.Patient
+           
+@using eidss.mobileclient.Utils
+
+<table> 
+    <tr>                                                               
+        <td>
+            @Html.LabelFor(m => m.strLastName)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvEditBox(Model, "strLastName")
+        </td>
+    </tr>
+    <tr>                                                               
+        <td>
+            @Html.LabelFor(m => m.strFirstName)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvEditBox(Model, "strFirstName")
+        </td>
+    </tr>
+    <tr>                                                               
+        <td>
+            @Html.LabelFor(m => m.strSecondName)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvEditBox(Model, "strSecondName")
+        </td>
+    </tr>
+    <tr>                                                               
+        <td>
+            @Html.LabelFor(m => m.datDateofBirth)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvDateBox(Model, "datDateofBirth", string.Format("OnDateOfBirthChanged(\"{0}\")", Model.ObjectIdent))
+        </td>
+    </tr>
+    <tr>                                                               
+        <td>
+            <label>@Translator.GetMessageString("Age")</label>
+        </td>
+    </tr>  
+    <tr>
+        <td>
+            <table>
+                <tr>
+                    <td class="age">
+                        @Html.BvNumeric(Model, "intPatientAgeFromCase", true)
+                    </td>
+                    <td>
+                        @Html.BvDropDownList(Model, "HumanAgeType")
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr> 
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.idfsHumanGender)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvDropDownList(Model, "Gender")
+        </td>
+    </tr>
+    <tr>
+        <td class="noIndent">
+            @Html.Action("ShowAddress", "Common", new { root = Model.idfCase.HasValue ? Model.idfCase.Value : Model.idfHuman, address = Model.CurrentResidenceAddress })                    
+        </td>
+    </tr> 
+    <tr>                                                               
+        <td>
+            @Html.LabelFor(m => m.strHomePhone)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvEditBox(Model, "strHomePhone")
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.idfsNationality)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvDropDownList(Model, "Nationality")
+        </td>
+    </tr>                  
+</table>

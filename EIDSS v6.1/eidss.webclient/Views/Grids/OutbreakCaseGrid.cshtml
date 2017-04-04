@@ -1,0 +1,39 @@
+﻿@model OutbreakCase.OutbreakCaseGridModelList
+@using bv.model.Model.Core
+@using eidss.model.Schema
+@using eidss.webclient.Configurations
+@using eidss.webclient.Utils;
+@using eidss.web.common.Utils;
+
+<input type="hidden" id="OutbreakCaseGridName" value="@ViewBag.OutbreakCaseGridName"/>
+
+@(Html.BvDetailsFormGrid<OutbreakCase.OutbreakCaseGridModel, OutbreakCase.OutbreakCaseGridModelList>
+      ((string)ViewBag.OutbreakCaseGridName, 
+      Model, "detailsGrid", "outbreak.showOutbreakCase", null, (bool)ViewBag.IsReadOnly, 
+      deleteItemFuncName: "outbreak.deleteCase",
+      bCustomToolbar: true,
+      selectionType: GridRowSelectionType.Single)
+      .ToolBar(toolBar =>
+                 toolBar.Template(
+                     @<text>
+                          <input type='button' class='button' id="buttonMarkAsPrimary" data-role='grid-on-row-button' data-grid-name="@ViewBag.OutbreakCaseGridName" value='@Translator.GetMessageString("btTitleMarkAsPrimary")' 
+                                 onclick="outbreak.setPrimaryCase($('#idfOutbreak').val(), bvGrid.getSelectedItemId('@((string)ViewBag.OutbreakCaseGridName)'));"/>
+
+                          @if (ModelUserContext.Instance.CanDo("HumanCase.Select"))
+                          {
+                              <input type='button' class='button' id="buttonAddHumanCase" data-role='grid-add-button' value='@Translator.GetMessageString("btTitleAddHumanCase")' 
+                                     onclick=" outbreak.showHumanCasePicker($('#idfOutbreak').val()); "/>
+                          }
+                          @if (ModelUserContext.Instance.CanDo("VetCase.Select"))
+                          {
+                              <input type='button' class='button' id="buttonAddVeterinaryCase" data-role='grid-add-button' value='@Translator.GetMessageString("btTitleAddVeterinaryCase")' 
+                                     onclick=" outbreak.showVetCasePicker($('#idfOutbreak').val()); "/>
+                          }
+                          @if (ModelUserContext.Instance.CanDo("MonitoringSession.Select"))
+                          {
+                              <input type='button' class='button' id="buttonAddVSSession" data-role='grid-add-button' value='@Translator.GetMessageString("btTitleAddVSSession")' 
+                                     onclick=" outbreak.showVSSessionPicker($('#idfOutbreak').val()); "/>
+                          }
+                      </text>) 
+            ))
+        

@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="SystemPreferences"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spSystemPreferences_SelectDetail" type="detailone" />
+  </storage>
+
+  <tables>
+    <table name="SystemPreferences">
+      <extenders>
+        <loaded>
+          <lambda_extender target="intListGridPageSize" type="int?" lambda="c => EidssUserContext.User.Options.Prefs.ListGridPageSize"/>
+          <lambda_extender target="intPopupGridPageSize" type="int?" lambda="c => EidssUserContext.User.Options.Prefs.PopupGridPageSize"/>
+          <lambda_extender target="intDetailGridPageSize" type="int?" lambda="c => EidssUserContext.User.Options.Prefs.DetailGridPageSize"/>
+          <lambda_extender target="intLabSectionPageSize" type="int?" lambda="c => EidssUserContext.User.Options.Prefs.LabSectionPageSize"/>
+          <lambda_extender target="intDefaultDays" type="int?" lambda="c => EidssUserContext.User.Options.Prefs.DefaultDays"/>
+          <lambda_extender target="blnDefaultRegion" type="bool?" lambda="c => EidssUserContext.User.Options.Prefs.DefaultRegion"/>
+          <lambda_extender target="blnFilterByDiagnosis" type="bool?" lambda="c => EidssUserContext.User.Options.Prefs.FilterByDiagnosis"/>
+          <lambda_extender target="blnPrintMapInVetInvestigationForm" type="bool?" lambda="c => EidssUserContext.User.Options.Prefs.PrintMapInVetInvestigationForm"/>
+          <lambda_extender target="blnShowWharningForFinalCaseDefinition" type="bool?" lambda="c => EidssUserContext.User.Options.Prefs.ShowWharningForFinalCaseDefinition"/>
+        </loaded>
+      </extenders>
+      <validators>
+        <post>
+          <required_validator target="intListGridPageSize" />
+          <required_validator target="intPopupGridPageSize" />
+          <required_validator target="intDetailGridPageSize" />
+          <required_validator target="intLabSectionPageSize" />
+          <required_validator target="intDefaultDays" />
+        </post>
+      </validators>
+      <actions>
+        <action name="Save" type="Action">
+          <run>
+            <preText>
+              EidssUserContext.User.Options.Prefs.ListGridPageSize = obj.intListGridPageSize.Value;
+              EidssUserContext.User.Options.Prefs.PopupGridPageSize = obj.intPopupGridPageSize.Value;
+              EidssUserContext.User.Options.Prefs.DetailGridPageSize = obj.intDetailGridPageSize.Value;
+              EidssUserContext.User.Options.Prefs.LabSectionPageSize = obj.intLabSectionPageSize.Value;
+              EidssUserContext.User.Options.Prefs.DefaultDays = obj.intDefaultDays.Value;
+              EidssUserContext.User.Options.Prefs.DefaultRegion = obj.blnDefaultRegion.Value;
+              EidssUserContext.User.Options.Prefs.FilterByDiagnosis = obj.blnFilterByDiagnosis.Value;
+              EidssUserContext.User.Options.Prefs.PrintMapInVetInvestigationForm = obj.blnPrintMapInVetInvestigationForm.Value;
+              EidssUserContext.User.Options.Prefs.ShowWharningForFinalCaseDefinition = obj.blnShowWharningForFinalCaseDefinition.Value;
+              return true;
+            </preText>
+          </run>
+        </action>
+        <action name="ToDefault" type="Action">
+          <run>
+            <preText>
+              obj.intListGridPageSize = BaseSettings.ListGridPageSize;
+              obj.intPopupGridPageSize = BaseSettings.PopupGridPageSize;
+              obj.intDetailGridPageSize = BaseSettings.DetailGridPageSize;
+              obj.intLabSectionPageSize = BaseSettings.LabSectionPageSize;
+              obj.intDefaultDays = BaseSettings.DefaultDateFilter;
+              obj.blnDefaultRegion = BaseSettings.DefaultRegionInSearch;
+              obj.blnFilterByDiagnosis = false;
+              obj.blnPrintMapInVetInvestigationForm = false;
+              obj.blnShowWharningForFinalCaseDefinition = false;
+              return true;
+            </preText>
+          </run>
+        </action>
+      </actions>
+    </table>
+  </tables>
+</object>

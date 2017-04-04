@@ -1,0 +1,23 @@
+﻿@model eidss.model.Schema.AsCampaign
+           
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+
+<div class="tabPanelContent">
+    @Html.Action("AsCampaignDiseasesAndSpeciesGrid", "Grids",
+            new
+            {
+                root = Model.idfCampaign,
+                name = Model.ObjectIdent + "Diseases",
+                diseaseslist = Model.Diseases,
+                isReadOnly = Model.IsReadOnly("Diseases") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit)
+            })
+    <div class="sectionTitle">
+        @Html.BvLabel(Model, m => m.strComments)     
+    </div>
+    <div class="fullPageWidth">
+        @Html.BvTextArea(Model, m => m.strComments) 
+    </div>           
+</div>
+

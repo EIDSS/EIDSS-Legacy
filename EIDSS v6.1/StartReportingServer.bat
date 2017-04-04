@@ -1,0 +1,1 @@
+cmd /C "EIDSS.Reports.Service\bin\Debug\EIDSS.Reports.Service.exe /c"

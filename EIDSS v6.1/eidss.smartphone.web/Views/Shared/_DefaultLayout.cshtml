@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    
+@{
+    string[] langs = Config.GetSetting("SupportedLanguages", Localizer.SupportedLanguages.Keys.Aggregate("", (s, i) => s + "," + i)).Split(',');
+    var SupportedLanguages = new List<string>(
+        Localizer.SupportedLanguages.Keys.Intersect(langs).Select(c =>
+            CustomCultureHelper.GetCustomCultureName(c)
+            )
+        );
+    var selectedLang = SupportedLanguages.FirstOrDefault(x => x == ViewBag.SelectedLanguage) ?? Cultures.GetCulture(bv.model.Model.Core.ModelUserContext.CurrentLanguage);
+}
+
+    <head>
+        <title>@ViewBag.Title</title>
+
+
+        <link href="@Url.Content("~/Content/Kendo/kendo.common.min.css")" rel="stylesheet" />
+        @if (Cultures.IsRtl)
+        {
+            <link href="@Url.Content("~/Content/Kendo/kendo.rtl.min.css")" rel="stylesheet" />
+        }
+        <link href="@Url.Content("~/Content/Kendo/kendo.silver.min.css")" rel="stylesheet" />
+
+        <link href="~/Content/Styles/Login.css" rel="stylesheet" type="text/css">
+        
+        <script src="@Url.Content("~/Scripts/jquery-1.9.1.min.js")" type="text/javascript"></script>
+            
+@*        <script src="@Url.Content("~/Scripts/Kendo/min/kendo.web.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/Kendo/min/kendo.aspnetmvc.min.js")" type="text/javascript"></script>*@
+        
+        @*<script src="@Url.Content(String.Format("~/Scripts/Messages/EIDSS.BvMessages.{0}.js", selectedLang))" type="text/javascript"></script>*@
+        <script src="@Url.Action("MessagesScript", "Account", new { version = Extenders.VersionCode() })"></script>
+
+        <script src="@Url.Content("~/Scripts/EIDSS/TwinkleTextBox.js")" type="text/javascript"></script>
+@*        <script src="@Url.Content("~/Scripts/WidgetsFacades/WindowFacade.js")" type="text/javascript"></script>*@
+        <script src="@Url.Content("~/Scripts/EIDSS/DefaultPage.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/WidgetsFacades/CommonWidgetsFacade.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/EIDSS/Common.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/EIDSS/BvUrls.js")" type="text/javascript"></script>
+@*        <script src="@Url.Content("~/Scripts/EIDSS/Dialogs.js")" type="text/javascript"></script>*@
+    </head>
+
+    @using bv.common.Configuration
+    @using bv.common.Core
+    @using eidss.web.common.Utils
+    @using eidss.smartphone.web.Utils
+
+    <body class='@(Cultures.IsRtl ? "k-rtl" : "")'>    
+        <div class='pageDefault'>
+            @using (Html.BeginForm())
+            {
+                <div class="infoPanel">
+                </div>
+                <div class="header">
+                    <img src="/Content/Images/Web_Login_Title.png" class="headerImg" border="0" alt='@Translator.GetMessageString("WelcomeTitle")' title='@Translator.GetMessageString("WelcomeTitle")'/>
+                </div>
+                <div class="content">
+                    <div class="contentData">
+                        @RenderBody() 
+                    </div>
+                    @*
+                    <div class="footer"> 
+                        <div class="siteInfo">       
+                            @Translator.GetMessageString("Version"): <strong>@typeof(eidss.webclient.MvcApplication).Assembly.GetName().Version</strong>
+                        </div>                      
+                    </div>
+                    *@
+                </div>
+                
+            }
+        </div>
+        <div id="PopupWindow"></div>
+        <div id="DialogWindow"></div> 
+    </body>
+</html>

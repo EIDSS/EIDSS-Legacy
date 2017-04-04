@@ -1,0 +1,203 @@
+﻿@using System.Globalization;
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+@model eidss.webclient.Models.VetMap
+           
+@{
+    Layout = null;
+}
+
+@{
+    
+}
+<!DOCTYPE html>
+<html>
+    <head>
+         @*<script src="@Url.Content("~/Scripts/jquery-1.4.4.js")"></script>*@
+
+        <script src="@Url.Content("~/Scripts/jquery.custom_radio_checkbox.js")" type="text/javascript"></script>
+
+        <link rel="stylesheet" href="@Url.Content("~/Content/leaflet.css")" />
+        <!--[if lte IE 8]><link rel="stylesheet" href="@Url.Content("~//Content/leaflet.ie.css")" /><![endif]-->
+        <link rel="stylesheet" href="@Url.Content("~//Scripts/zoom/L.Control.Zoomslider.css")" />
+        <!--[if lte IE 8]><link rel="stylesheet" href="@Url.Content("~//Scripts/zoom/L.Control.Zoomslider.ie.css")" /><![endif]-->
+        <script src="@Url.Content("~//Scripts/leaflet-src.js")"></script>
+        <script src="@Url.Content("~//Scripts/zoom/L.Control.Zoomslider.js")"></script>
+
+        <style type="text/css">
+            .checkbox_layer {height: 35px;width: 19px;clear:left;float:left;margin: 0 0 3px;padding: 0 0 0 36px; background: url("/Content/Toolbar/checkbox_layer.png") no-repeat;cursor: pointer;text-align:left;}
+            .checkbox_info {height: 35px;width: 19px;clear:left;float:left;margin: 0 0 3px;padding: 0 0 0 36px; background: url("/Content/Toolbar/checkbox_info.png") no-repeat;cursor: pointer;text-align:left;}
+            .checkbox_meas {height: 35px;width: 19px;clear:left;float:left;margin: 0 0 3px;padding: 0 0 0 36px; background: url("/Content/Toolbar/checkbox_meas.png") no-repeat;cursor: pointer;text-align:left;}
+            .checkbox input,.radio input {display: none;}
+            .checkbox input.show,.radio input.show {display: inline;}
+            .selected {background-position: 0 -70px;}
+            .block {width: 50%;float: left;}
+            label {padding-left:10px;float:left;text-align:left;}
+        </style>
+    </head>
+<body class='@(Cultures.IsRtl ? "k-rtl" : "")'>
+    <div>
+<table cellspacing='0' cellpadding='2'>
+<tr>
+<!--<td title='@Translator.GetMessageString("Select")' valign='top'><img src='/Content/Toolbar/marker.png' style='cursor:pointer;' onClick='ChangeAction("SelectVet");'></td> -->
+<td title='@Translator.GetMessageString("mapChangeLayer")'><div><div id='checkbox_layer' style='display:none;' class="checkbox_layer checkbox" onClick='ChangeAction("ChangeLayer");'><input type="checkbox" checked id="map_base_layer"></div></div></td> 
+<td title='@Translator.GetMessageString("mapInfo")'><div><div id='checkbox_info' style='display:none;' class="checkbox_info checkbox" onClick='ChangeAction("Info");'><input type="checkbox" checked id="map_chk_info"></div></div></td> 
+<td title='@Translator.GetMessageString("mapMeasure")'><div><div id='checkbox_meas' style='display:none;' class="checkbox_meas checkbox" onClick='ChangeAction("Measure");'><input type="checkbox" checked id="map_chk_meas"></div></div></td> 
+<td><input id="idButtonSelect" type="button" class="windowButton" onclick="ChangeAction('SelectVet');" value="@Translator.GetMessageString("Select")"/></td>
+<td><input id="idButtonCancel" type="button" class="windowButton" onclick="ChangeAction('Close');" value="@Translator.GetMessageString("Cancel")"/></td>
+</tr>
+</table>
+    <div id='map_info_line'></div>
+	<div id="map" style="width: 600px; height: 600px; border: 1px solid #ccc"></div>
+	<script type="text/javascript">
+	    $(document).ready(function () {
+	        $("#checkbox_layer").get(0).style.display = '';
+	        $("#checkbox_info").get(0).style.display = '';
+	        $("#checkbox_meas").get(0).style.display = '';
+	        $(".checkbox").dgStyle();
+	        $(".checkbox").dgCheck($("#checkbox_layer").get(0));
+	        $(".checkbox").dgCheck($("#checkbox_info").get(0));
+	        $(".checkbox").dgCheck($("#checkbox_meas").get(0));
+	        //hideLoading();
+	    });
+
+
+	    var vet_lat = '@Model.m_VetLat';
+	    vet_lat = vet_lat.replace(',', '.');
+	    vet_lat = parseFloat(vet_lat);
+
+	    var vet_lon = '@Model.m_VetLon';
+	    vet_lon = vet_lon.replace(',', '.');
+	    vet_lon = parseFloat(vet_lon);
+        
+        var localUrl = '@Model.m_VelMapLocalUrl';
+        var localUrlLabel = '@Model.m_VelMapLocalUrlLabel';
+
+        var vet_latlng = new L.LatLng(vet_lat, vet_lon);
+
+        var osm_url = 'http://b.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        osmAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+        osm_layer = new L.TileLayer(osm_url, { maxZoom: 18, attribution: osmAttribution });
+
+        local_layer = new L.TileLayer(localUrl + "/{z}/{x}/{y}.png", { maxZoom: 18});
+        local_layer_label = new L.TileLayer(localUrlLabel + "/{z}/{x}/{y}.png", { maxZoom: 18 });
+        var map_center = vet_latlng; var map_zoom = 10;
+        if (vet_lat == 0 && vet_lon == 0) { map_center = new L.LatLng(41.7, 44.8); map_zoom = 6;}
+        var map = new L.Map('map', { center: map_center, zoom: map_zoom, layers: [osm_layer, local_layer, local_layer_label] });
+
+        var vet_marker = null;
+        if (vet_lat != 0 || vet_lon != 0)
+        {
+            vet_marker = new L.Marker(vet_latlng, { draggable: true });
+            map.addLayer(vet_marker);
+        }
+        map.on('click', function (e) {
+            if (Action == "Info") {
+                Action = '';
+                $(".checkbox").dgCheck($("#checkbox_info").get(0));
+                $("#map_info_line").html("Loading...");
+                var lang = GetSiteLanguage();
+                $.ajax({
+                    url: "/" + lang + "/Map/InfoMap?lon=" + e.latlng.lng + "&lat=" + e.latlng.lat,
+                    success: function (html) {
+                        if (html.search("InfoMapResult") > -1) {
+                            $("#map_info_line").html(html.replace("InfoMapResult", ""));
+                        }
+                    }
+                }
+                );
+            }
+            else if (Action == "Measure") {
+                if (MeasureLine) { map.removeLayer(MeasureLine); }
+                MeasurePoints.push(e.latlng);
+                MeasureLine = new L.Polyline(MeasurePoints, { color: 'red' });
+                map.addLayer(MeasureLine);
+
+                var MeasureValue = 0;
+                for (var i = 0; i < MeasurePoints.length - 1; i++) { MeasureValue += MeasurePoints[i].distanceTo(MeasurePoints[i + 1]); }
+                $("#map_info_line").html((MeasureValue / 1000).toFixed(2) + " km");
+            }
+            else {
+                if (!vet_marker)
+                {
+                    vet_marker = new L.Marker(vet_latlng, { draggable: true });
+                    map.addLayer(vet_marker);
+                }
+                vet_marker.setLatLng(e.latlng);
+            }
+        });
+
+
+        var Action;
+        var BaseLayer = 1;
+        var MeasureLine;
+        var MeasurePoints = new Array();
+        function ChangeAction(pAction) {
+            if (pAction == 'Measure') {
+                if (Action != pAction) {
+                    if (Action == 'Info') { $(".checkbox").dgCheck($("#checkbox_info").get(0)); }
+                    Action = 'Measure';
+                }
+                else {
+                    StopAction('Measure');
+                    Action = '';
+                }
+            }
+            else if (pAction == 'Info')
+            {
+                if (Action != pAction)
+                {
+                    if (Action == 'Measure') { StopAction('Measure'); $(".checkbox").dgCheck($("#checkbox_meas").get(0)); }
+                    Action = 'Info';
+                }
+                else { Action = ''; $("#map_info_line").html(''); }
+            }
+            else if (pAction == 'ChangeLayer') { Action = ''; ChangeLayer(); }
+            else if (pAction == 'Close') { Action = ''; Close(); }
+            else { Action = ''; SelectVet(); }
+        }
+
+        function StopAction(pAction) {
+            if (pAction == 'Measure') {
+                if (MeasureLine) { map.removeLayer(MeasureLine); }
+                MeasurePoints = new Array();
+                $("#map_info_line").html('');
+
+            }
+
+        }
+
+        function SelectVet()
+        {
+            if (vet_marker)
+            {
+                var lat = vet_marker.getLatLng().lat;
+                var lon = vet_marker.getLatLng().lng;
+                //alert("New coords: " + lat + " / " + lon);    
+                SetNewCoordinates(lat, lon);
+            }
+            bvPopup.closeById("MapWindow");
+        }
+
+        function Close() {
+            bvPopup.closeById("MapWindow");
+        }
+
+        function ChangeLayer() {
+            // var pCheck = $('#map_base_layer').get(0).checked; Style conflict / not work in popup
+            if (!BaseLayer) {
+                map.addLayer(local_layer);
+                map.addLayer(local_layer_label);
+                BaseLayer = 1;
+            }
+            else {
+                map.removeLayer(local_layer);
+                map.removeLayer(local_layer_label);
+                BaseLayer = 0;
+            }
+        } 
+    </script>
+    <script src="@Url.Content("~/Scripts/LeafMap/eidss-map-include.js")"></script>
+    </div>
+</body>
+</html>

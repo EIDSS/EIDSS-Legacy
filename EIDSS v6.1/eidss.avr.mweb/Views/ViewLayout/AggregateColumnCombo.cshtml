@@ -1,0 +1,25 @@
+﻿@model AvrView
+@using eidss.avr.mweb.Utils
+@using eidss.model.Avr.View
+@using eidss.web.common.Utils
+@using System.Web.UI.WebControls
+@using eidss.avr.mweb.Models
+
+@Html.DevExpress().ComboBox(settings => {
+        settings.Name = "cbColumn";
+        settings.CallbackRouteValues = new { Controller = "ViewLayout", Action = "GetDataColumns", layoutId = ViewBag.LayoutId, viewName = "AggregateColumnCombo" };
+        settings.ControlStyle.CssClass = "wide";
+        settings.Enabled = !Model.IsReadOnly;
+        settings.Properties.DropDownStyle = DropDownStyle.DropDownList;
+        settings.Properties.TextFormatString = "{0}"; 
+        settings.Properties.ValueType = typeof(string);
+        settings.Properties.ValueField = "UniquePath";
+        settings.Properties.ClientSideEvents.ValueChanged = "viewGridForm.OnColBandSelectionChanged";
+
+        settings.Properties.Columns.Add("FullPath", Translator.GetMessageString("strColumnName"), Unit.Percentage(100));
+        settings.Properties.Columns.Add("Info", Translator.GetMessageString("ColumnType"), 250);
+        settings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+    //settings.Properties.ClientSideEvents.EndCallback = "aggregateForm.cbColumn_OnEndCallback";
+
+}).BindList(Model.GetAllBandsColumns()).Bind(Model.SelectedColBand).GetHtml()
+

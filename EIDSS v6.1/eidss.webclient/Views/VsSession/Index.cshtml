@@ -1,0 +1,41 @@
+﻿@using bv.common.Configuration
+@using bv.model.BLToolkit
+@using eidss.model.Core
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+@using eidss.model.Schema
+@using bv.model.Model.Core
+@model VsSessionListItem.Accessor
+@{
+    ViewBag.Title = Translator.GetMessageString("titleVsSessionList");
+    ViewBag.FormCode = "W01";
+    ViewBag.HelpIndex = Model.HelpIdWeb;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<input type="hidden" id="grid_selecteditem" />
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+@Html.Heartbeat()
+
+<div class="listForm">
+    <div id="searchpanel" class="customSearchPanel">
+        @Html.SearchPanel(Model, (FilterParams)ViewBag.Filter, (IObject)ViewBag.InitObject)
+    </div>
+    <table class="lfSearchPanelTable">
+        <tr>
+            <td class="lfSearchPanelTd">
+                @Html.SearchPanelOperator()
+            </td>
+            <td class="lfGridTd">
+                @using (DbManagerFactory.Factory.Create(EidssUserContext.Instance))
+                {
+                    Html.ListFormGrid<VsSessionListItem.VsSessionListItemGridModel, VsSessionListItem.VsSessionListItemGridModelList>(
+                        new VsSessionListItem.VsSessionListItemGridModelList((long)AutoGridRoots.VsSessionList),
+                        Model, "VsSession")
+                        .Render();                                                                 
+                }
+            </td>
+        </tr>
+    </table>
+</div>

@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="DataAuditListItem"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="fn_DataAudit_SelectList" type="fnlist" filter-object="DataAuditEvent" />
+		<count name="spDataAudit_SelectCount"/>
+	</storage>
+
+	<tables>
+		<table name="DataAuditListItem">
+      <properties permissionObject="AccessToDataAudit"/>
+      <help win="Data_Audit_Management"/>
+			<extfilters>
+				<filter>
+					<join>
+            JOIN		tauTable
+            ON			tauTable.idfTable = fn_DataAudit_SelectList.idfMainObjectTable
+            LEFT JOIN	tlbHumanCase
+            ON			tlbHumanCase.idfHumanCase = fn_DataAudit_SelectList.idfMainObject
+            LEFT JOIN	tlbVetCase
+            ON			tlbVetCase.idfVetCase = fn_DataAudit_SelectList.idfMainObject
+            LEFT JOIN	tlbOutbreak
+            ON			tlbOutbreak.idfOutbreak = fn_DataAudit_SelectList.idfMainObject
+            LEFT JOIN	tlbCampaign
+            ON			tlbCampaign.idfCampaign = fn_DataAudit_SelectList.idfMainObject
+            LEFT JOIN	tlbMonitoringSession
+            ON			tlbMonitoringSession.idfMonitoringSession = fn_DataAudit_SelectList.idfMainObject
+            LEFT JOIN	tlbAggrCase
+            ON			tlbAggrCase.idfAggrCase = fn_DataAudit_SelectList.idfMainObject
+            LEFT JOIN	tlbVectorSurveillanceSession
+            ON			tlbVectorSurveillanceSession.idfVectorSurveillanceSession = fn_DataAudit_SelectList.idfMainObject
+            LEFT JOIN	tlbBasicSyndromicSurveillance
+            ON			tlbBasicSyndromicSurveillance.idfBasicSyndromicSurveillance = fn_DataAudit_SelectList.idfMainObject
+            LEFT JOIN	tlbBasicSyndromicSurveillanceAggregateHeader
+            ON			tlbBasicSyndromicSurveillanceAggregateHeader.idfAggregateHeader = fn_DataAudit_SelectList.idfMainObject
+          </join>
+					<where>
+						<expr param="strObjectName"
+							  value="CASE tauTable.strName	WHEN 'tlbVetCase' THEN tlbVetCase.strCaseID	WHEN 'tlbHumanCase'	THEN tlbHumanCase.strCaseID	WHEN 'tlbOutbreak'	THEN tlbOutbreak.strOutbreakID	WHEN 'tlbCampaign'	THEN tlbCampaign.strCampaignID WHEN 'tlbMonitoringSession'	THEN tlbMonitoringSession.strMonitoringSessionID  WHEN 'tlbVectorSurveillanceSession'	THEN tlbVectorSurveillanceSession.strSessionID WHEN 'tlbAggrCase'	THEN tlbAggrCase.strCaseID WHEN 'tlbBasicSyndromicSurveillance'	THEN tlbBasicSyndromicSurveillance.strFormID WHEN 'tlbBasicSyndromicSurveillanceAggregateHeader'	THEN tlbBasicSyndromicSurveillanceAggregateHeader.strFormID END  {0} @strObjectName"/>
+					</where>
+				</filter>
+
+			</extfilters>
+
+			<searchpanel>
+				<item name="datEnteringDate" editor="Date" labelId="datTransactionDate" range="true" mandatory="true"
+					  default="c => DateTime.Today.AddDays(-EidssUserContext.User.Options.Prefs.DefaultDays)"/>
+        <item name="idfsSite" editor="Lookup" labelId="idfsSite"
+						lookupName="SiteLookup" lookupType="SiteLookup" lookupText="c.strSiteName" lookupValue="c.idfsSite">
+          <columns>
+            <column name="strSiteName" />
+            <column name="strSiteID"  />
+          </columns>
+        </item>
+				<item name="idfPerson" editor="Lookup" labelId="strPersonName"	lookupName="PersonLookup"
+					  lookupType="PersonLookup" lookupText="c.FullName" lookupValue="c.idfPerson"/>
+				<item name="idfsActionName" editor="Lookup" labelId="strActionName"	lookupName="AuditEventTypeLookup"
+					  lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+				<item name="idfsObjectType" editor="Lookup" labelId="strObjectType"	lookupName="AuditObjectTypeLookup"
+					  lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference" dependent="strObjectName"/>
+
+				<item name="strObjectName" editor="Text" isParam="true" labelId="idfObjectID" />
+			</searchpanel>
+
+			<grid>
+				<item name="idfDataAuditEvent" key="true" visible="false" />
+				<item name="datEnteringDate" format="G" defaultSort="Descending" />
+				<item name="strObjectType"  />
+				<item name="strActionName"/>
+				<item name="strPersonName"/>
+				<item name="strSiteID"/>
+			</grid>
+            <labels>
+                <item name="datEnteringDate" labelId="datTransactionDate"/>
+                <item name="strSiteID" labelId="idfsSite"/>
+            </labels>
+            <readonly>
+                <fields name="strObjectName"
+                        predicate="c => c.AuditObjectType == null ||
+                        !((c.AuditObjectType != null &amp;&amp; c.AuditObjectType.idfsBaseReference == (long)eidss.model.Enums.EIDSSAuditObject.daoHumanCase)
+                        || (c.AuditObjectType != null &amp;&amp; c.AuditObjectType.idfsBaseReference == (long)eidss.model.Enums.EIDSSAuditObject.daoOutbreak)
+                        || (c.AuditObjectType != null &amp;&amp; c.AuditObjectType.idfsBaseReference == (long)eidss.model.Enums.EIDSSAuditObject.daoVetCase)
+                        || (c.AuditObjectType != null &amp;&amp; c.AuditObjectType.idfsBaseReference == (long)eidss.model.Enums.EIDSSAuditObject.daoCampaign)
+                        || (c.AuditObjectType != null &amp;&amp; c.AuditObjectType.idfsBaseReference == (long)eidss.model.Enums.EIDSSAuditObject.daoMonitoringSession)
+                        || (c.AuditObjectType != null &amp;&amp; c.AuditObjectType.idfsBaseReference == (long)eidss.model.Enums.EIDSSAuditObject.daoAgregateHumanCase)
+                        || (c.AuditObjectType != null &amp;&amp; c.AuditObjectType.idfsBaseReference == (long)eidss.model.Enums.EIDSSAuditObject.daoAggregateVetCase)
+                        || (c.AuditObjectType != null &amp;&amp; c.AuditObjectType.idfsBaseReference == (long)eidss.model.Enums.EIDSSAuditObject.daoAggregateVetAction)
+                        || (c.AuditObjectType != null &amp;&amp; c.AuditObjectType.idfsBaseReference == (long)eidss.model.Enums.EIDSSAuditObject.daoVectorSurveillanceSession)
+                        || (c.AuditObjectType != null &amp;&amp; c.AuditObjectType.idfsBaseReference == (long)eidss.model.Enums.EIDSSAuditObject.daoBssForm)
+                        || (c.AuditObjectType != null &amp;&amp; c.AuditObjectType.idfsBaseReference == (long)eidss.model.Enums.EIDSSAuditObject.daoBssAggregateForm)
+                        )" />
+                <fields name="*" predicate="c => false" />
+            </readonly>
+            <lookups>
+				<lookup name="AuditObjectType" table="BaseReference"  section="rftDataAuditObjectType" source="idfsObjectType" target="idfsBaseReference" />
+				<lookup name="AuditEventType" table="BaseReference"  section="rftDataAuditEventType" source="idfsActionName" target="idfsBaseReference" />
+				<lookup name="Site" table="SiteLookup" source="idfsSite" target="idfsSite"/>
+				<lookup name="Person" table="PersonLookup" source="idfPerson" target="idfPerson">
+					<params>
+						<param name="OfficeID" lambda="c => {
+                                                                var siteLookups = c.SiteLookup.Where(s => s.idfsSite == c.idfsSite);
+                                                                var item = siteLookups.SingleOrDefault();
+                                                                if (item == null)
+                                                                {
+                                                                    return 0;
+                                                                }
+                                                                else
+                                                                {
+                                                                    return item.idfOffice ?? 0;
+                                                                }
+                                                                
+                                                            }" type="long" />
+						<param name="ID" const="null" />
+            <param name="ShowUsersOnly" const="true"/>
+            <param name="intHACode" const="null"/>
+          </params>
+				</lookup>
+			</lookups>
+
+			<storage>
+				<delete name="spReadOnlyObject_Delete"/>
+				<candelete name="spReadOnlyObject_CanDelete"/>
+			</storage>
+
+			<actions child="DataAudit">
+        <standard>
+          <remove type="Create"/>
+          <remove type="Delete"/>
+          <remove type="Edit"/>
+          <remove type="Report"/>
+        </standard>
+				<action name="View" type="Edit">
+          <visual alignment="Right" panel="Top">
+            <regular caption="strView_Id" tooltip="strView_Id"  icon="View1"/>
+          </visual>
+          <run>
+					  <params>
+						  <param name="key" type="object" />
+						  <param name="item" type="IObject" />
+						  <param name="listPanel" type="object" />
+					  </params>
+          </run>
+				</action>
+        <action name="Restore" type="Action">
+          <run>
+            <preText>
+              manager.SetSpCommand("dbo.spDataAudit_Restore"
+                , manager.Parameter("idfDataAuditEvent", obj.idfDataAuditEvent)
+                ).ExecuteNonQuery();
+              return true;
+            </preText>
+          </run>
+        </action>
+			</actions>
+
+		</table>
+	</tables>
+</object>

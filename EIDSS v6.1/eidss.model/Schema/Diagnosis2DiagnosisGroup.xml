@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="Diagnosis2DiagnosisGroup"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spDiagnosis2DiagnosisGroup_SelectDetail" type= "detaillist" />
+  </storage>
+
+  <tables>
+    <table name="Diagnosis2DiagnosisGroup">
+      <grid>
+        <item name="idfDiagnosisToDiagnosisGroup" visible ="false" />
+        <item name="idfsDiagnosis" />
+        <item name="strUsingType"/>
+        <item name="strHACode" />
+        <item name="intOrder" />
+      </grid>
+      <labels>
+        <item name="idfsDiagnosis" labelId="strDiagnosisName"/>
+        <item name="idfsDiagnosisGroup" labelId="strDiagnosisGroup"/>
+      </labels>
+      <fields>
+      </fields>
+      <fieldtags>
+        <field name="DiagnosisGroupName">
+          <tag name="en" />
+        </field>
+        <field name="DiagnosisGroupNameTranslated">
+          <tag name="def" />
+        </field>
+      </fieldtags>
+      <readonly>
+        <fields name="strUsingType,strHACode,intOrder" predicate="c => true" />
+      </readonly>
+      <lookups>
+        <lookup name="Diagnosis" table="DiagnosisLookup" source="idfsDiagnosis" target="idfsDiagnosis" >
+          <!--<filters>
+            <filter predicate="c => ((c.intHACode &amp; (int)HACode.All) != 0) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+            <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+          </filters>-->
+        </lookup>
+        <lookup name="DiagnosisGroup" table="BaseReference" section="rftDiagnosisGroup" source="idfsDiagnosisGroup" target="idfsBaseReference" />
+      </lookups>
+      <storage>
+        <post name="spDiagnosis2DiagnosisGroup_Post" />
+      </storage>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfDiagnosisToDiagnosisGroup" class="GetNewIDExtender" />
+        </creating>
+        <loading>
+        </loading>
+        <posting>
+        </posting>
+        <posted>
+        </posted>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <lambda_handler field="idfsDiagnosis" target="intOrder" type="int?" lambda="c => c.DiagnosisLookup != null ? c.DiagnosisLookup.FirstOrDefault(w => w.idfsDiagnosis == c.idfsDiagnosis).intOrder : c.intOrder" />
+          <lambda_handler field="idfsDiagnosis" target="strUsingType" type="string" lambda="c => c.DiagnosisLookup != null ? c.DiagnosisLookup.FirstOrDefault(w => w.idfsDiagnosis == c.idfsDiagnosis).UsingTypeName : c.strUsingType" />
+          <lambda_handler field="idfsDiagnosis" target="strHACode" type="string" lambda="c => c.DiagnosisLookup != null ? c.DiagnosisLookup.FirstOrDefault(w => w.idfsDiagnosis == c.idfsDiagnosis).HACode : c.strHACode" />
+        </fieldhandler>
+      </handlers>
+      <validators>
+        <change>
+        </change>
+        <post>
+          <required_validator target="idfDiagnosisToDiagnosisGroup" />
+          <required_validator target="idfsDiagnosisGroup" />
+          <required_validator target="idfsDiagnosis" />
+        </post>
+      </validators>
+    </table>
+
+  </tables>
+</object>

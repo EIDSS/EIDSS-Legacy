@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<object name="SettlementListItem" connection="EidssConnectionString" generator="ObjectGenerator.xslt" xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="fn_Settlement_SelectList" type="fnlist" />
+		<count name="spSettlement_SelectCount"/>
+	</storage> 
+
+	<tables>
+		<table name="SettlementListItem">
+      <properties auditObject="daoSettlement" auditTable="gisSettlement" permissionObject="GisReference">
+        <lookupcache>
+          <item name="Settlements"/>
+        </lookupcache>
+      </properties>
+       <help win="settlements"/>
+      <searchpanel>
+				<item name="SettlementDefaultName"  editor="Text" labelId="SettlementDefaultName" />
+				<item name="SettlementNationalName"  editor="Text" labelId="SettlementNationalName" />
+				<item name="idfsSettlementType" editor="Lookup" labelId="SettlementTypeNationalName" 
+					  lookupName="SettlementTypeLookup" lookupType="SettlementTypeLookup" lookupText="c.name" lookupValue="c.idfsReference" />
+				<item name="idfsCountry" editor="Lookup" labelId="idfsCountry"  dependent="idfsRegion"
+					  lookupName="CountryLookup" lookupType="CountryLookup" lookupText="c.strCountryName" lookupValue="c.idfsCountry" />
+				<item name="idfsRegion" editor="Lookup" labelId="idfsRegion"  dependent="idfsRayon"
+					  lookupName="RegionLookup" lookupType="RegionLookup" lookupText="c.strRegionName" lookupValue="c.idfsRegion" 
+					  defaultoper="="/>
+				<item name="idfsRayon" editor="Lookup" labelId="idfsRayon"
+					  lookupName="RayonLookup" lookupType="RayonLookup" lookupText="c.strRayonName" lookupValue="c.idfsRayon" />
+				<item name="strSettlementCode"  editor="Text" labelId="strSettlementCode" />
+				<item name="dblLongitude"  editor="Numeric" labelId="dblLongitude" range="true"/>
+				<item name="dblLatitude"  editor="Numeric" labelId="dblLatitude"  range="true"/>
+				<item name="intElevation"  editor="Numeric" labelId="intElevation" range="true"/>
+			</searchpanel>
+
+			<grid>
+				<item name="idfsSettlement" visible="false" key="true" />
+				<item name="SettlementDefaultName" defaultSort="Ascending" />
+				<item name="SettlementNationalName" />
+				<item name="SettlementTypeNationalName" />
+				<item name="CountryNationalName" />
+				<item name="RegionNationalName" />
+				<item name="RayonNationalName" />
+				<item name="strSettlementCode" />
+				<item name="dblLongitude" />
+				<item name="dblLatitude" />
+        <item name="intElevation" />
+			</grid>
+
+			<labels>
+				<item name="CountryNationalName" labelId="idfsCountry" />
+				<item name="RegionNationalName" labelId="idfsRegion" />
+				<item name="RayonNationalName" labelId="idfsRayon" />
+			</labels>
+			
+			<lookups>
+				<lookup name="Country" table="CountryLookup" source="idfsCountry" target="idfsCountry" />
+				<lookup name="Region" table="RegionLookup" source="idfsRegion" target="idfsRegion">
+					<params>
+						<param name="CountryID" lambda="c => c.idfsCountry ?? 0" type="long" />
+						<param name="ID" const="null" />
+					</params>
+				</lookup>
+				<lookup name="Rayon" table="RayonLookup" source="idfsRayon" target="idfsRayon">
+					<params>
+						<param name="RegionID" lambda="c => c.idfsRegion ?? 0" type="long" />
+						<param name="ID" const="null" />
+					</params>
+				</lookup>
+				<lookup name="SettlementType" table="SettlementTypeLookup" source="idfsSettlementType" target="idfsReference">
+				</lookup>
+			</lookups>
+
+			<storage> 
+				<delete name="spSettlement_Delete" />
+				<candelete name="spSettlement_CanDelete"/>
+			</storage>
+			 
+			<extenders>
+				<created>
+					<!-- set default country as current country of database -->
+					<lambda_extender target="Country" type="CountryLookup" lambda='c => 
+                                     c.CountryLookup.Where(a => a.idfsCountry == eidss.model.Core.EidssSiteContext.Instance.CountryID)
+                                     .SingleOrDefault()' />
+          <lambda_extender target="Region" type="RegionLookup" lambda='c => 
+                                     EidssUserContext.User.Options.Prefs.DefaultRegion == true?
+                                     c.RegionLookup.Where(a => a.idfsRegion == eidss.model.Core.EidssSiteContext.Instance.RegionID)
+                                     .SingleOrDefault(): null'/>
+				</created>
+			</extenders>
+			<handlers>
+				<fieldhandler>
+					<lambda_handler field="idfsCountry" target="Region" type="RegionLookup" lambda="c => null" />
+					<lambda_handler field="idfsRegion" target="Rayon" type="RayonLookup" lambda="c => null" />
+					<lookup_handler lookup="Region" field="idfsCountry" />
+					<lookup_handler lookup="Rayon" field="idfsRegion" />
+				</fieldhandler>
+			</handlers> 
+
+			<actions child="Settlement">
+        <standard>
+          <remove type="Report"/>
+        </standard>
+			</actions>
+			
+		</table>
+	</tables>
+
+</object>

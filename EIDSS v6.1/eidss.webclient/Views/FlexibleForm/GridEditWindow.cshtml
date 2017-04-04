@@ -1,0 +1,41 @@
+﻿@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+@model eidss.model.Model.FlexibleForms.FlexNodes.FlexNode
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+         <div class="windowButtonsPn">                  
+             <input id="idButtonOk" type="button" class="windowButton" onclick="ffGrid.saveAndClosePopUp('@string.Format("idfsSection_{0}", ViewBag.IdfsSection)    ')" value="@Translator.GetMessageString("Ok")"/>     
+             <input id="idButtonCancel" type="button" class="windowButton" onclick="bvPopup.closeDefaultPopup();" value="@Translator.GetMessageString("Cancel")"/>  
+         </div>   
+        <div class="windowSeparator"></div>
+        <div class="FFContainer">
+            @{
+                var parameterList = Model.GetParameterTemplateNodesForDataTable();
+
+                foreach (var node in parameterList)
+                {
+                    //выводим полный заголовок
+                    node.UseFullPath = true;
+                    node.idfRow = Model.idfRow;
+                    @Html.Partial("FlexNode", node)                            
+                }
+            }
+        </div>
+    }
+</div> 

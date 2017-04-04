@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "ProductInfo.wxi" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <Property Id="COUNTRY" Value="!(loc.Georgia)" Secure="yes">
+      <RegistrySearch Id="COUNTRY.RS" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="Country" Type="raw" />
+    </Property>
+
+    <DirectoryRef Id="APPLICATIONFOLDER">
+      <Component Id="Country" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.ProductRegistryKey)">
+          <RegistryValue Name="Country" Value="[COUNTRY]" Type="string" KeyPath="yes" />
+        </RegistryKey>
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+</Wix>

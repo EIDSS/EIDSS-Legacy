@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<object name="AsCampaignListItem" connection="EidssConnectionString" generator="ObjectGenerator.xslt" xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="fn_AsCampaign_SelectList" type="fnlist" />
+		<count name="spASCampaign_SelectCount"/>
+	</storage>
+
+	<tables>
+		<table name="AsCampaignListItem">
+      <properties auditObject="daoCampaign" auditTable="tlbCampaign" permissionObject="Campaign"/>
+      <help web="VC_V15" win="VC_V15"/>
+      <extfilters>
+				<filter>
+					<join>
+            LEFT JOIN( select distinct d1.idfCampaign, d1.idfsDiagnosis from tlbCampaignToDiagnosis d1
+            where d1.intRowStatus = 0) as d
+            ON			fn_AsCampaign_SelectList.idfCampaign = d.idfCampaign
+          </join>
+					<where>
+						<expr param="idfsDiagnosis" value="d.idfsDiagnosis {0} @idfsDiagnosis" />
+					</where>
+				</filter>
+			</extfilters>
+
+			<searchpanel>
+				<item name="strCampaignID" editor="Text" labelId="strCampaignID" />
+				<item name="strCampaignName" editor="Text" labelId="strCampaignName" />
+				<item name="idfsCampaignType" editor="Lookup" labelId="strCampaignType" lookupName="AsCampaignTypeLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference" />
+				<item name="idfsCampaignStatus" editor="Lookup" labelId="strCampaignStatus" lookupName="AsCampaignStatusLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference" 
+              default="c => (c as AsCampaignListItem).AsCampaignStatusLookup.SingleOrDefault(a => a.idfsBaseReference == (long)eidss.model.Enums.AsCampaignStatus.Open)"/>
+        <item name="idfsDiagnosis" editor="Lookup" editorWidth="Large" labelId="AsCampaignListItem.idfsDiagnosis" isParam="true" lookupName="DiagnosisLookup" lookupType="DiagnosisLookup" lookupText="c.name" lookupValue="c.idfsDiagnosis" />
+        <item name="strCampaignAdministrator" editor="Text" labelId="strCampaignAdministrator" />        
+        <item name="datCampaignDateStart" editor="Date" labelId="datStartDate" range="true" rangeDefDates="true" />
+				<item name="datCampaignDateEnd" editor="Date" labelId="datFinishDate" range="true" />
+        <item name="idfsSite" editor="Lookup" labelId="lbDataEntrySiteID"
+						lookupName="SiteLookup" lookupType="SiteLookup" lookupText="c.strSiteName" lookupValue="c.idfsSite">
+          <columns>
+            <column name="strSiteName" />
+            <column name="strSiteID"  />
+          </columns>
+        </item>
+      </searchpanel>
+			<grid>
+				<item name="idfCampaign" key="true" visible="false"/>
+				<item name="strCampaignID" action="ActionEditAsCampaign" required="true"/>
+				<item name="strCampaignName" />
+				<item name="strCampaignType" />
+				<item name="strCampaignStatus" />
+				<item name="datCampaignDateStart" />
+				<item name="datCampaignDateEnd" />
+				<item name="strCampaignAdministrator" />
+			</grid>
+
+			<labels>
+				<item name="datCampaignDateStart" labelId="datStartDate" />
+				<item name="datCampaignDateEnd" labelId="datFinishDate" />
+				<item name="strCampaignAdministrator" labelId="strASAdministrator"/>
+			</labels>
+
+			<fields>
+				<storage name="idfsDiagnosis" type="long?" />
+			</fields>
+
+			<lookups>
+				<lookup name="AsCampaignType" table="BaseReference" section="rftCampaignType" source="idfsCampaignType" target="idfsBaseReference" />
+				<lookup name="AsCampaignStatus" table="BaseReference" section="rftCampaignStatus" source="idfsCampaignStatus" target="idfsBaseReference" />
+
+				<lookup name="Diagnosis" table="DiagnosisLookup" source="idfsDiagnosis" target="idfsDiagnosis">
+          <filters>
+            <filter predicate="c => ((c.intHACode &amp; (int)HACode.Livestock) != 0) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+            <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+          </filters>
+				</lookup>
+
+        <lookup name="Site" table="SiteLookup" source="idfsSite" target="idfsSite">
+          <filters>
+            <filter predicate="c => (c.intHACode.GetValueOrDefault() &amp; (int)HACode.LivestockAvian) != 0"/>
+          </filters>
+        </lookup>
+			</lookups>
+
+			<storage>
+				<delete name="spAsCampaign_Delete"/>
+				<candelete name="spAsCampaign_CanDelete"/>
+			</storage>
+
+      <actions child="AsCampaign">
+        <standard>
+          <remove type="Report"/>
+        </standard>
+        <action name="ActionEditAsCampaign" type="Action">                
+          <run>
+            <preUI webType="JScript"/>                  
+          </run>
+        </action>
+      </actions>
+
+      <!--actions child="AsCampaign">
+				<action name="Report" type="Report" visible="false" />
+			</actions-->
+		</table>
+	</tables>
+
+</object>

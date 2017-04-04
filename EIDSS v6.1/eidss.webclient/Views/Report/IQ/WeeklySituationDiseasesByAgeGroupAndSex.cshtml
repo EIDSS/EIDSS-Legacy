@@ -1,0 +1,26 @@
+﻿@using bv.common.Configuration
+@model eidss.webclient.Models.Reports.SituationOnInfectiousDiseasesModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/ExportButtons", Model)
+    <div class="bluelayout">
+        <div class="tabPanelContent">
+        
+            @Html.Partial("Common/BaseFilter", Model)
+
+            @Html.Partial("IQ/RegionFilter", Model.RegionFilter)
+
+            @Html.Partial("Common/BaseYearFilter", Model)
+            
+            @Html.Partial("Common/WeeksFilter", Model.WeeksFilter)
+        </div>
+    </div>
+}

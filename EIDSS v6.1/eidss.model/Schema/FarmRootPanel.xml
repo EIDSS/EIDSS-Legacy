@@ -1,0 +1,294 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="FarmPanel"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get />
+    </storage>
+
+    <tables>
+        <table name="FarmRootPanel" hacodable="true">
+            <properties permissionObject="AccessToFarmData"  auditObject="daoFarm" auditTable="tlbFarmActual"/>
+          <labels>
+            <item labelId="strFarmFullName" name="strFullName"/>
+            <item labelId="idfFarmOwner" name="idfOwner"/>
+          </labels>
+          <fields>
+            <storage name="_blnAllowFarmReload" type="bool"/>
+          </fields>
+          <readonly>
+            <fields name="strFarmCode" predicate="c => true"/>
+            <fields name="*" predicate="c => false"/>
+          </readonly>
+            <relations>
+              <relation name="Address" table="Address" internal="false" type="link" source="idfFarmAddress" target="idfGeoLocation" />
+              <relation name="FarmLivestockTree" table="RootFarmTree" internal="false" type="child" lazy="false" source="idfFarm" target="" paramsonly="true">
+                <params>
+                  <param name="idFarm" type="long?" lambda="c => c.idfFarm"/>
+                  <param name="hacode" type="int?" lambda="c => (int)HACode.Livestock"/>
+                </params>
+              </relation>
+              <relation name="FarmAvianTree" table="RootFarmTree" internal="false" type="child" lazy="false" source="idfFarm" target="" paramsonly="true">
+                <params>
+                  <param name="idFarm" type="long?" lambda="c => c.idfFarm"/>
+                  <param name="hacode" type="int?" lambda="c => (int)HACode.Avian"/>
+                </params>
+              </relation>              
+              <!--<relation name="EpiFormTemplate" table="Template" internal="false" type="link" lazy="false" source="idfsFormTemplate" target="idfsFormTemplate">
+                <params>
+                  <param name="idfsFormType" type="long?" lambda="c => c._HACode == (int)HACode.Livestock  ? (long)FFTypeEnum.LivestockFarmEPI : (long)FFTypeEnum.AvianFarmEPI"/>
+                </params>
+              </relation>
+              <relation name="EpiActivityParameters" table="ActivityParameter" internal="false" type="child" lazy="false" source="idfObservation" target="idfObservation" paramsonly="true">
+                <params>
+                  <param name="observationList" type="string" lambda='c => c.idfObservation == null ? "" : c.idfObservation.Value.ToString()' />
+                </params>
+              </relation>-->
+            </relations>
+          <lookups>
+            <lookup name="OwnershipStructure" table="BaseReference" section="rftOwnershipType" source="idfsOwnershipStructure" target="idfsBaseReference" />
+            <lookup name="AvianFarmType" table="BaseReference" section="rftAvianFarmType" source="idfsAvianFarmType" target="idfsBaseReference" />
+          </lookups>
+          
+            <storage>
+                <post name="spFarmPanel_Post" />
+            </storage>
+            <postorder>
+                <item name="Address" />
+                <item name="this" />
+                <item name="FarmAvianTree" />
+                <item name="FarmLivestockTree" />
+              <!--<item name="EpiActivityParameters"/>-->
+            </postorder>
+         
+            <deleteorder>
+                <!--<item name="FarmTree" />
+                <item name="Address" />-->
+                <item name="this" />
+            </deleteorder>
+            <extenders>
+                <creating>
+                  <scalar_extender target="idfFarm" class="GetNewIDExtender" />
+                  <lambda_extender target="strFarmCode" type="string" lambda='c => "(new farm)"' />
+                  <create_extender target="Address" table="Address" class="ObjectCreateExtender" />
+                  <add_extender    target="FarmLivestockTree" type="RootFarmTree" lambda="c => FarmLivestockTreeAccessor.CreateFarm(manager, c, c, (int)eidss.model.Enums.HACode.Livestock)" />
+                  <add_extender    target="FarmAvianTree" type="RootFarmTree" lambda="c => FarmAvianTreeAccessor.CreateFarm(manager, c, c, (int)eidss.model.Enums.HACode.Avian)" />
+                  <!--<lambda_extender target="blnIsLivestock" type="bool?" lambda="c=> obj._HACode == (int)eidss.model.Enums.HACode.Livestock "/>
+                  <lambda_extender target="blnIsAvian" type="bool?" lambda="c=> obj._HACode == (int)eidss.model.Enums.HACode.Avian"/>-->                 
+                  <value_extender target="_blnAllowFarmReload" value="true"/>
+                  <scalar_extender target="idfObservation" class="GetNewIDExtender" />
+                  <value_extender target="blnRootFarm" value="true"/>
+                </creating>
+              <created>
+                <value_extender target="Address.blnGeoLocationShared" value="true"/>
+              </created>
+              <loaded>
+                <lambda_extender target="Address" type="Address" lambda="c => c.Address == null ? AddressAccessor.CreateNewT(manager, c) : c.Address" />
+                <value_extender target="_blnAllowFarmReload" value="true"/>
+                <custom_extender>
+                  <text>
+                    if (obj.FarmAvianTree != null) obj.FarmAvianTree.Where(x => x.idfsPartyType == (int)PartyTypeEnum.Species).ToList().ForEach(x => x.strHerdName = (obj.FarmAvianTree.Single(h => h.idfParty == x.idfParentParty).strName));
+                    if (obj.FarmLivestockTree != null) obj.FarmLivestockTree.Where(x => x.idfsPartyType == (int)PartyTypeEnum.Species).ToList().ForEach(x => x.strHerdName = (obj.FarmLivestockTree.Single(h => h.idfParty == x.idfParentParty).strName));
+                  </text>
+                </custom_extender>
+              </loaded>
+                <posting>
+                  <value_extender target="_blnAllowFarmReload" value="false"/>
+                  <!--<lambda_extender target='blnRootFarm' lambda='c=>true' type='bool'/>-->
+                    <db_lambda_extender target="strFarmCode" type="string" lambda='(c,m) => 
+                        c.strFarmCode != "(new farm)" 
+                        ? c.strFarmCode 
+                        : m.SetSpCommand("dbo.spGetNextNumber", (long)NumberingObjectEnum.Farm, DBNull.Value, DBNull.Value)
+                        .ExecuteScalar&lt;string&gt;(ScalarSourceType.OutputParameter, "NextNumberValue")' />
+                  <custom_extender>
+                    <text>
+                      if ((obj.intHACode &amp; 64)>0)
+                      {
+                      obj.FarmAvianTree.Clear();
+                      obj.idfsAvianFarmType = null;
+                      obj.idfsAvianProductionType = null;
+                      obj.idfsIntendedUse = null;
+                      obj.intBirdsPerBuilding = null;
+                      obj.intBuidings = null;
+                      }
+                      if((obj.intHACode &amp; 32)>0)
+                      {
+                      obj.FarmLivestockTree.Clear();
+                      obj.idfsOwnershipStructure = null;
+                      obj.idfsLivestockProductionType = null;
+                      obj.idfsMovementPattern = null;
+                      obj.idfsGrazingPattern = null;
+                      }
+
+                    </text>
+                  </custom_extender>
+                </posting>
+              <posted>
+                <value_extender target="_blnAllowFarmReload" value="true"/>
+              </posted>                      
+            </extenders>         
+            <handlers>
+                <childhandler>
+                    <custom_handler field="intTotalAnimalQty" container="FarmLivestockTree" filter="c => c.idfsPartyType == (long)PartyTypeEnum.Herd || c.idfsPartyType == (long)PartyTypeEnum.Species">
+                        <text>
+                            var sum = obj.FarmLivestockTree.Where(c => c.idfParentParty == item.idfParentParty &amp;&amp; !c.IsMarkedToDelete).Sum(c => c.intTotalAnimalQty);
+                            obj.FarmLivestockTree.Where(c => c.idfParty == item.idfParentParty).Single().intTotalAnimalQty = sum == 0 ? null : sum;
+                        </text>
+                    </custom_handler>
+                    <custom_handler field="intSickAnimalQty" container="FarmLivestockTree" filter="c => c.idfsPartyType == (long)PartyTypeEnum.Herd || c.idfsPartyType == (long)PartyTypeEnum.Species">
+                        <text>
+                            var sum = obj.FarmLivestockTree.Where(c => c.idfParentParty == item.idfParentParty &amp;&amp; !c.IsMarkedToDelete).Sum(c => c.intSickAnimalQty);
+                            obj.FarmLivestockTree.Where(c => c.idfParty == item.idfParentParty).Single().intSickAnimalQty = sum == 0 ? null : sum;
+                        </text>
+                    </custom_handler>
+                    <custom_handler field="intDeadAnimalQty" container="FarmLivestockTree" filter="c => c.idfsPartyType == (long)PartyTypeEnum.Herd || c.idfsPartyType == (long)PartyTypeEnum.Species">
+                        <text>
+                            var sum = obj.FarmLivestockTree.Where(c => c.idfParentParty == item.idfParentParty &amp;&amp; !c.IsMarkedToDelete).Sum(c => c.intDeadAnimalQty);
+                            obj.FarmLivestockTree.Where(c => c.idfParty == item.idfParentParty).Single().intDeadAnimalQty = sum == 0 ? null : sum;
+                        </text>
+                    </custom_handler>
+                    <custom_handler field="IsMarkedToDelete" container="FarmLivestockTree" filter="c => c.idfsPartyType == (long)PartyTypeEnum.Herd || c.idfsPartyType == (long)PartyTypeEnum.Species">
+                        <text>
+                            var sum = obj.FarmLivestockTree.Where(c => c.idfParentParty == item.idfParentParty &amp;&amp; !c.IsMarkedToDelete).Sum(c => c.intTotalAnimalQty);
+                            obj.FarmLivestockTree.Where(c => c.idfParty == item.idfParentParty).Single().intTotalAnimalQty = sum == 0 ? null : sum;
+                            sum = obj.FarmLivestockTree.Where(c => c.idfParentParty == item.idfParentParty &amp;&amp; !c.IsMarkedToDelete).Sum(c => c.intSickAnimalQty);
+                            obj.FarmLivestockTree.Where(c => c.idfParty == item.idfParentParty).Single().intSickAnimalQty = sum == 0 ? null : sum;
+                            sum = obj.FarmLivestockTree.Where(c => c.idfParentParty == item.idfParentParty &amp;&amp; !c.IsMarkedToDelete).Sum(c => c.intDeadAnimalQty);
+                            obj.FarmLivestockTree.Where(c => c.idfParty == item.idfParentParty).Single().intDeadAnimalQty = sum == 0 ? null : sum;
+                        </text>
+                    </custom_handler>
+
+                  <custom_handler field="intTotalAnimalQty" container="FarmAvianTree" filter="c => c.idfsPartyType == (long)PartyTypeEnum.Herd || c.idfsPartyType == (long)PartyTypeEnum.Species">
+                    <text>
+                      var sum = obj.FarmAvianTree.Where(c => c.idfParentParty == item.idfParentParty &amp;&amp; !c.IsMarkedToDelete).Sum(c => c.intTotalAnimalQty);
+                      obj.FarmAvianTree.Where(c => c.idfParty == item.idfParentParty).Single().intTotalAnimalQty = sum == 0 ? null : sum;
+                    </text>
+                  </custom_handler>
+                  <custom_handler field="intSickAnimalQty" container="FarmAvianTree" filter="c => c.idfsPartyType == (long)PartyTypeEnum.Herd || c.idfsPartyType == (long)PartyTypeEnum.Species">
+                    <text>
+                      var sum = obj.FarmAvianTree.Where(c => c.idfParentParty == item.idfParentParty &amp;&amp; !c.IsMarkedToDelete).Sum(c => c.intSickAnimalQty);
+                      obj.FarmAvianTree.Where(c => c.idfParty == item.idfParentParty).Single().intSickAnimalQty = sum == 0 ? null : sum;
+                    </text>
+                  </custom_handler>
+                  <custom_handler field="intDeadAnimalQty" container="FarmAvianTree" filter="c => c.idfsPartyType == (long)PartyTypeEnum.Herd || c.idfsPartyType == (long)PartyTypeEnum.Species">
+                    <text>
+                      var sum = obj.FarmAvianTree.Where(c => c.idfParentParty == item.idfParentParty &amp;&amp; !c.IsMarkedToDelete).Sum(c => c.intDeadAnimalQty);
+                      obj.FarmAvianTree.Where(c => c.idfParty == item.idfParentParty).Single().intDeadAnimalQty = sum == 0 ? null : sum;
+                    </text>
+                  </custom_handler>
+                  <custom_handler field="IsMarkedToDelete" container="FarmAvianTree" filter="c => c.idfsPartyType == (long)PartyTypeEnum.Herd || c.idfsPartyType == (long)PartyTypeEnum.Species">
+                    <text>
+                      var sum = obj.FarmAvianTree.Where(c => c.idfParentParty == item.idfParentParty &amp;&amp; !c.IsMarkedToDelete).Sum(c => c.intTotalAnimalQty);
+                      obj.FarmAvianTree.Where(c => c.idfParty == item.idfParentParty).Single().intTotalAnimalQty = sum == 0 ? null : sum;
+                      sum = obj.FarmAvianTree.Where(c => c.idfParentParty == item.idfParentParty &amp;&amp; !c.IsMarkedToDelete).Sum(c => c.intSickAnimalQty);
+                      obj.FarmAvianTree.Where(c => c.idfParty == item.idfParentParty).Single().intSickAnimalQty = sum == 0 ? null : sum;
+                      sum = obj.FarmAvianTree.Where(c => c.idfParentParty == item.idfParentParty &amp;&amp; !c.IsMarkedToDelete).Sum(c => c.intDeadAnimalQty);
+                      obj.FarmAvianTree.Where(c => c.idfParty == item.idfParentParty).Single().intDeadAnimalQty = sum == 0 ? null : sum;
+                    </text>
+                  </custom_handler>
+                </childhandler>
+               
+            </handlers>          
+            <validators>
+                <childchange>
+                  <container field="strName" name="FarmAvianTree" filter="c => c.idfsPartyType == (long)PartyTypeEnum.Species">
+                    <predicate_validator field="strName" container="FarmAvianTree" 
+                                         predicate='(farm,i) => 
+                                            farm.FarmAvianTree.Where(c => 
+                                                c.idfParentParty == i.idfParentParty 
+                                                &amp;&amp; c.idfParty != i.idfParty 
+                                                &amp;&amp; c.strName == i.strName
+                                                &amp;&amp; !c.IsMarkedToDelete
+                                                ).Count() == 0'
+                                         message="DuplicateSpeciesAvian_msgId" />
+                  </container>
+                  <container field="strName" name="FarmLivestockTree" filter="c => c.idfsPartyType == (long)PartyTypeEnum.Species">
+                    <predicate_validator field="strName" container="FarmLivestockTree" 
+                                         predicate='(farm,i) => 
+                                              farm.FarmLivestockTree.Where(c => 
+                                                  c.idfParentParty == i.idfParentParty 
+                                                  &amp;&amp; c.idfParty != i.idfParty 
+                                                  &amp;&amp; c.strName == i.strName
+                                                  &amp;&amp; !c.IsMarkedToDelete
+                                                  ).Count() == 0'
+                                         message="DuplicateSpeciesLivestock_msgId" />
+                  </container>
+                </childchange>
+              <post>
+                <required_validator target="Address.idfsCountry" property="Address.Country" label ="Farm.Address.idfsCountry"/>
+                <required_validator target="Address.idfsRegion" property="Address.Region" label ="Farm.Address.idfsRegion"/>
+                <required_validator target="Address.idfsRayon" property="Address.Rayon" label ="Farm.Address.idfsRayon"/>
+              </post>
+            </validators>
+          
+          <actions>
+            <action name="Create" type="Create">
+              <run>
+                <params>
+                  <param name="HACode" type="int?" />
+                </params>
+                <creating>
+                  <lambda_extender target="_HACode" type="int?" lambda='c => HACode' />
+                  <db_lambda_extender target="idfOwner" type="long?" lambda='(c,m) => 
+                            c.idfOwner ??
+                            m.SetSpCommand("dbo.spsysGetNewID", DBNull.Value)
+                            .ExecuteScalar&lt;long&gt;(ScalarSourceType.OutputParameter)' />
+                </creating>
+              </run>
+            </action>
+            <action name="CreateHerd" type="Create">
+              <run>
+                <preText>
+                  RootFarmTree item = FarmLivestockTreeAccessor.CreateHerd(manager, obj, obj.FarmLivestockTree[0]);
+                  obj.FarmLivestockTree.Add(item);
+                  _SetupChildHandlers(obj, item);
+                  return true;
+                </preText>
+              </run>
+            </action>
+            <action name="CreateFlock" type="Action">
+              <run>
+                <preText>
+                  RootFarmTree item = FarmAvianTreeAccessor.CreateHerd(manager, obj, obj.FarmAvianTree[0]);
+                  obj.FarmAvianTree.Add(item);
+                  _SetupChildHandlers(obj, item);
+                  return true;
+                </preText>
+              </run>
+            </action>
+            <action name="CreateLvstckSpecies" type="Action">
+              <run>
+                <params>
+                  <param name="parent" type="RootFarmTree" />
+                </params>
+                <preText>
+                  RootFarmTree item = FarmLivestockTreeAccessor.CreateSpecies(manager, obj, parent);
+                  int find = obj.FarmLivestockTree.FindLastIndex(c => c.idfParentParty == parent.idfParty);
+                  if (find &lt; 0) find = obj.FarmLivestockTree.FindIndex(c => c.idfParty == parent.idfParty);
+                  obj.FarmLivestockTree.Insert(find + 1, item);
+                  return true;
+                </preText>
+              </run>
+            </action>
+            <action name="CreateAvianSpecies" type="Action">
+              <run>
+                <params>
+                  <param name="parent" type="RootFarmTree" />
+                </params>
+                <preText>
+                  RootFarmTree item = FarmAvianTreeAccessor.CreateSpecies(manager, obj, parent);
+                  int find = obj.FarmAvianTree.FindLastIndex(c => c.idfParentParty == parent.idfParty);
+                  if (find &lt; 0) find = obj.FarmAvianTree.FindIndex(c => c.idfParty == parent.idfParty);
+                  obj.FarmAvianTree.Insert(find + 1, item);
+                  return true;
+                </preText>
+              </run>
+            </action>
+          </actions>
+        </table>
+    </tables>
+
+</object>
+

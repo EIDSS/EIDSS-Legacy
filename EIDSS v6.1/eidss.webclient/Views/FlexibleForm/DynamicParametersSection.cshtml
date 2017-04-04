@@ -1,0 +1,24 @@
+﻿@using eidss.web.common.Utils
+@using eidss.model.Schema
+@model eidss.model.Model.FlexibleForms.FlexNodes.FlexNode
+@{
+    var idObservation = Model.FFModel.CurrentObservation.HasValue ? Model.FFModel.CurrentObservation.Value : 0;
+}
+
+@if (Model.ChildListCount > 0)
+{
+    <div class="sectionTitle">
+        @(((SectionDeletedFromTemplate)Model.DataItem.LinkedObject).DefaultName)
+    </div>
+    
+    foreach (var node in Model.ChildList)
+    {
+        @Html.Partial("FlexNode", node)
+    }
+}
+@*панель управления*@
+<br/>
+<div class="sectionTitle">
+    <input id="idButtonAdd" class="button" type="button" value="@(Translator.GetMessageString("AddParameter"))" onclick='flexForms.AddParameterEditWindow("@idObservation");' />
+    <input id="idButtonRemove" class="button" type="button" value="@(Translator.GetMessageString("RemoveDifferences"))" onclick="flexForms.removeParameters();"/>
+</div>

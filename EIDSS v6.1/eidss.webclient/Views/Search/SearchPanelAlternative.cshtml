@@ -1,0 +1,89 @@
+﻿@model eidss.webclient.Models.SearchPanelModel
+@{
+    ViewBag.Title = "SearchPanelAlternative";    
+}
+@using bv.model.Model.Core;
+@using eidss.webclient.Utils;
+@using eidss.webclient.Models;
+@using eidss.web.common.Utils
+
+
+<div class="spTableContainer">
+    <form id="panelForm">
+        @if (Model.ObjectAdditional != null)
+        {
+            @Html.Hidden("ObjectAdditional", Model.ObjectAdditional)
+            @Html.Hidden("SearchIgnoreChanges", "")
+        }
+        @if (Model.StaticFilter != null)
+        {
+            @Html.Hidden("StaticFilter", Model.StaticFilter.Serialize())
+        }
+        @Html.Hidden("bFirstSearchClick", "1")
+        @Html.Hidden("bSearchClick", "0")
+        <div class="spPinButtonContainer">
+            <table>
+                <tr>
+                    <td>
+            <div class="checkbox_wrapper_not_hide">
+                <input class="checkbox_not_hide" type="checkbox" id="NotHidePanel" name="NotHidePanel" />
+                <label></label>
+            </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="spFilterItems">
+            <table class="spTable">
+                @foreach (var t in Model.SearchPanelItemsBasic)
+                {
+                    if (t.EditorType == bv.model.Model.Core.EditorType.Separator)
+                    {
+                        continue;
+                    }
+                    <tr>
+                        <td>                    
+                            @if (t.EditorType == EditorType.Lookup)
+                            {
+                                var o = Model.SearchPanelItems.FirstOrDefault(m => m.Dependent == t.Name); 
+                                var masterName = o == null? null : o.Name;
+                                @Html.Partial("../Search/SearchPanelMetaItem",
+                                              t,
+                                              SearchPanelDataExtractor.GetDataForItem(
+                                                  Model.Id.ToString(),
+                                                  t,
+                                                  Model.ResultObjectInstance,
+                                                  Model.CurrentFilter,
+                                                  masterName,
+                                                  Model.FieldIsHiddenPersonalData(t.Name))
+                                     )
+                            }
+                            else
+                            {                                                
+                                @Html.Partial("../Search/SearchPanelMetaItem", t, SearchPanelDataExtractor.GetDataForItem(Model.Id.ToString(), t, Model.ResultObjectInstance, Model.CurrentFilter, isHiddenPersonalData: Model.FieldIsHiddenPersonalData(t.Name)))  
+                            }
+                        </td>
+                    </tr>  
+                }
+            </table>   
+        </div>
+        <div class="spSearchButtonContainer">
+            <table>
+                <tr>
+                    <td>
+            <input id="idButtonClear" type="button" class="button" value="@Translator.GetMessageString("Clear")" onclick='searchPanel.clear(this);'/>   
+                    </td>
+                    <td>
+            <input id="idButtonSearch" type="button" class="button" value="@Translator.GetMessageString("Search")" onclick='@(Model.IsSearchWithCheckChange ? "searchPanel.searchWithCheckChanges(this);" : "searchPanel.search(this);")'/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div> 
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        searchPanel.init();
+    });
+</script>

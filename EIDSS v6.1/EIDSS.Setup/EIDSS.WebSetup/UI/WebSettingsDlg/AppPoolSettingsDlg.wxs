@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <PropertyRef Id="APP_POOL_IDLE_TIMEOUT_IN_MINUTES" />
+    <UI>
+      <Dialog Id="AppPoolSettingsDlg" Width="370" Height="270" Title="!(loc.AppPoolSettingsDlg_Title)">
+        <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)">
+          <Publish Property="TestNumber" Value="[APP_POOL_IDLE_TIMEOUT_IN_MINUTES]" Order="1">1</Publish>
+          <Publish Property="TestNumberName" Value="!(loc.IdleTiemoutInMinutesName)" Order="1">1</Publish>
+          <Publish Property="NumberLowerBound" Value="[IdleTimoutLowerBound]" Order="1">1</Publish>
+          <Publish Property="NumberUpperBound" Value="[IdleTimoutUpperBound]" Order="1">1</Publish>
+          <Publish Event="DoAction" Value="MustBeNumber" Order="2">1</Publish>
+          <Publish Event="SpawnDialog" Value="MustBeNumberDlg" Order="3"><![CDATA[BadNumber]]></Publish>
+        </Control>
+        <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" />
+        <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+          <Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+        </Control>
+
+        <Control Id="Description" Type="Text" X="25" Y="23" Width="280" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.AppPoolSettingsDlgDescription)" />
+        <Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.AppPoolSettingsDlgTitle)" />
+        <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="!(loc.AppPoolSettingsDlgBannerBitmap)" />
+        <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+        <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+
+        <Control Id="IdleTimeOutInMinutesTitle" Type="Text" Width="150" Height="17" X="40" Y="135" Text="!(loc.AppPoolSettingsDlgIdleTimeOutInMinutesTitle)" />
+        <Control Id="IdleTimeOutInMinutes" Type="Edit" Width="50" Height="15" X="220" Y="133" Property="APP_POOL_IDLE_TIMEOUT_IN_MINUTES" />
+      </Dialog>
+    </UI>
+  </Fragment>
+</Wix>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+
+  <Component Id="$(var.website).web.config_turnOffDebug" MultiInstance="yes">
+    <RegistryKey Root="HKLM" Key="$(var.WebRegistryKey)">
+      <RegistryValue Key="$(var.website).web.config_turnOffDebug" Value="1" Type="string" KeyPath="yes" />
+    </RegistryKey>
+
+    <util:XmlFile
+      Id="$(var.website).web.config.TurnOffDebug"
+      File="[#$(var.website).web.config]"
+      Action="setValue"
+      ElementPath="//configuration/system.web/compilation"
+      SelectionLanguage="XPath"
+      Name="debug"
+      Sequence="11"
+      Value="false" />
+  </Component>
+  <?undef website?>
+</Include>

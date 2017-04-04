@@ -1,0 +1,33 @@
+﻿@using Kendo.Mvc.UI
+@using bv.model.Model.Core
+@model eidss.model.Reports.TH.MultipleZoneTHModel
+@{
+    var originalName = ViewData["FilterName"].ToString();
+    var kendoName = originalName.Replace(".", "_");
+    var maxCheckedCount = ViewData["maxCheckedCount"] ?? 0;
+    //var clearLink = "bvCheckedComboBox.onClearCheckedComboBox('" + @kendoName + "')";
+    var checkedIds = ViewData["checkedIds"] ?? "";
+}
+
+
+<span class="picker">
+    <span class="pickerWrap">
+        @(
+            @Html.Kendo().DropDownList()
+                .Name(kendoName)
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .HtmlAttributes(new { @maxcheckedcount = maxCheckedCount.ToString()})
+                .Template("<input type=\"checkbox\"checkedname=\"${ data.Text }\" value=\"${ data.Value }\" class=\"check-item\" id=\"chb${ data.Value }\"/><span>${ data.Text }</span>")
+                .Events(e => e.Select("bvCheckedComboBox.onCheckedComboBoxChanged")
+                    .DataBound("function(e) { bvCheckedComboBox.bindCheckedComboBoxClickEvent('" + kendoName + "', '" + checkedIds + "');}")
+                    .Open("function(e) { bvCheckedComboBox.onComboBoxOpen(e, " + (int) EditorControlWidth.Large + ", true); }")
+                    .Change("paperForm.OnThaiZoneChanged"))
+                .BindTo(new SelectList(Model.ItemsList, "Value", "Text", null))
+                                    )
+    </span>
+</span>
+@*<button id="@ViewBag.BtnSearchPicker" class="button smallImageButton" style="min-height: 22px;" onclick="@clearLink" type="button">
+    <img src="@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/clear.png"))" alt="Clear" draggable='false' />
+</button>*@
+

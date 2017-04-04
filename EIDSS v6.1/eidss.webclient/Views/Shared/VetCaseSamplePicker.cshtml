@@ -1,0 +1,196 @@
+﻿@model eidss.model.Schema.VetCaseSample
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+<script type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        @Html.Hidden("idfMaterial", Model.idfMaterial)
+        <div class="windowButtonsPn">
+            <input id="idButtonOk" type="button" class="windowButton" onclick="sample.saveAndCloseVetCaseSampleGridEditWindow('@(Model.CaseObjectIdent)');" value="@Translator.GetMessageString("Ok")"/>                        
+            <input id="idButtonCancel" type="button" class="windowButton" onclick="bvPopup.closeDefaultPopup()" value="@Translator.GetMessageString("Cancel")"/>        
+        </div>   
+        <div class="windowSeparator"></div>
+        <table class="level1">
+            <tr>
+                <td class="firstLabel" colspan="2">
+                    @Html.BvCheckBox(Model, m => m.FilterByDiagnosis, true /*false, "sample.onFilterByDiagnosisClick"*/)
+                    @*Html.Hidden("fieldForFilterByDiagnosis", "SampleTypeForDiagnosis")*@
+                </td>
+            </tr>
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Html.BvLabel(Model, m => m.strSampleName)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.SampleTypeForDiagnosis, false, "sample.onSampleTypeChange", keyName:"idfsReference")
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strFieldBarcode)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strFieldBarcode)
+                </td>                            
+            </tr>
+
+            @if (Model._HACode == (int)eidss.model.Enums.HACode.Livestock)
+            {
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.AnimalID)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.Animal, false, keyName: "idfAnimal")
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.Species)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.Species)
+                </td>                            
+            </tr>
+            }
+            else
+            {
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.Species)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.FarmTree)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strBirdStatus)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.BirdStatus)
+                </td>                            
+            </tr>
+            }
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.datFieldCollectionDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datFieldCollectionDate)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Translator.GetString("VetCaseSample.idfSendToOffice")
+                </td>
+                <td>                     
+                    @Html.Action("InlineOrganizationPicker", "Organization", new
+                        {
+                            obj = Model,
+                            objectId = Model.idfMaterial,
+                            idfsOrganizationPropertyName = "idfSendToOffice",
+                            strOrganizationPropertyName = "strSendToOffice",
+                            idfsEmployeePropertyName = "",
+                            strEmployeePropertyName = "",
+                            showInInternalWindow = true,
+                            HACode = Model._HACode
+                        })     
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="collapseEditWindowPanel" id="idfSendToOffice_InternalPicker">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.datAccession)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datAccession)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strAccessionCondition)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strAccessionCondition)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strCondition)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strCondition)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strFieldCollectedByOffice, m => m.idfFieldCollectedByOffice)
+                </td>
+                <td>
+                    @Html.Action("InlineOrganizationPicker", "Organization", new
+                        {
+                            obj = Model,
+                            objectId = Model.idfMaterial,
+                            idfsOrganizationPropertyName = "idfFieldCollectedByOffice",
+                            strOrganizationPropertyName = "strFieldCollectedByOffice",
+                            idfsEmployeePropertyName = "idfFieldCollectedByPerson",
+                            strEmployeePropertyName = "strFieldCollectedByPerson",
+                            showInInternalWindow = true,
+                            HACode = Model._HACode
+                        })     
+                </td>                            
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="collapseEditWindowPanel" id="idfFieldCollectedByOffice_InternalPicker">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strFieldCollectedByPerson, m => m.idfFieldCollectedByPerson)
+                </td>
+                <td>
+                    @Html.Action("InlineEmployeePicker", "Employee", new
+                        {
+                            obj = Model,
+                            objectId = Model.idfMaterial,
+                            idfsEmployeePropertyName = "idfFieldCollectedByPerson",
+                            strEmployeePropertyName = "strFieldCollectedByPerson",
+                            idfsOrganizationPropertyName = "idfFieldCollectedByOffice",
+                            strOrganizationPropertyName = "strFieldCollectedByOffice",
+                            showInInternalWindow = true
+                        })
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="collapseEditWindowPanel" id="idfFieldCollectedByPerson_InternalPicker">
+                    </div>
+                    <div class="collapseEditWindowPanel secondButton" id="idfFieldCollectedByPerson_InternalCreator">
+                    </div>
+                </td>
+            </tr>
+        </table>
+    }
+</div>

@@ -1,0 +1,151 @@
+﻿<!DOCTYPE mobile>
+
+<html>    
+    <head>    
+        <meta name="viewport" content="width=device-width,user-scalable=0,inital-scale=1,maximum-scale=1,minimum-scale=1" /> 
+        <meta http-equiv="cache-control" content="no-cache">
+        <meta http-equiv="pragma" content="no-cache">
+
+        <title>@Translator.GetMessageString("EIDSSLogin")</title>
+
+        <script src="@Url.Content("~/Scripts/jquery-1.7.1.min.js")" type="text/javascript"></script>
+
+        <link href="@Url.Content("~/Content/Styles/Common.css")" rel="stylesheet" type="text/css" />
+    </head>
+
+    @model eidss.mobileclient.Models.Login
+    @{
+        ViewBag.Title = "Login";
+        Layout = null;
+    }
+
+    @using bv.common.Configuration    @using bv.model.Model.Core    
+    @using eidss.mobileclient.Utils
+
+    @*<script src="@Url.Content(String.Format("~/Scripts/Messages/EIDSS.BvMessages.{0}.js", Cultures.GetCulture(ModelUserContext.CurrentLanguage)))" type="text/javascript" ></script>*@
+    <script src="@Url.Action("MessagesScript", "Account", new { version = Extenders.VersionCode() })"></script>
+        
+    <script language="javascript" type="text/javascript">
+        function GetSiteLanguage() {
+            var expr = new RegExp('(http(s?)\://)', 'ig');
+            var currentLang = document.URL.replace(expr, '', '$1');
+            currentLang = currentLang.substring(currentLang.indexOf("/") + 1, currentLang.length);
+            currentLang = currentLang.substring(0, currentLang.indexOf("/"));
+            return currentLang;
+        }
+
+        function CheckFields() {
+            var org = document.getElementById("Organization");
+            var log = document.getElementById("UserName");
+            var pwd = document.getElementById("Password");
+            if (org && log && pwd) {
+                if (org.value.length == 0 || log.value.length == 0 || pwd.value.length == 0) {
+                    document.getElementById('errorMessageSpan').innerHTML = EIDSS.BvMessages['errLoginMandatoryFields'];
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+        }
+
+        function ChangeLanguage(obj) {
+            var current = GetSiteLanguage();
+            var overriding = obj[obj.selectedIndex].value;
+            document.location = document.URL.replace(current, overriding);
+        }
+
+        function DetectCurrentLanguage() {
+            var currentLang = GetSiteLanguage();
+            var sel = document.getElementById('LanguagePreference');
+            if (sel) {
+                for (i = 0; i < sel.length; i++) {
+                    if (sel[i].value == currentLang) {
+                        sel[i].selected = true;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        $(document).ready(function () {
+            $('form').attr('autocomplete', 'off');
+        });
+
+    </script>    
+
+    <body onload='DetectCurrentLanguage();'>        
+        @using (Html.BeginForm())
+        {
+            <div class="page defaultWidth">      
+                <div class="header">  
+                    <img src="../../Content/Images/Logo.png" class="headerImage" alt="" />    
+                    <span class="headerText">       
+                        @Translator.GetMessageString("titleMobileHeader")    
+                    </span>                                                                       
+                </div>   
+                <div class="title">                     
+                    <span class="titleText">       
+                        @Translator.GetMessageString("titleLogin")    
+                    </span>                                                                                                 
+                </div>     
+                <div class="content defaultHeigth">                    
+                    <table class="fillAll">
+                        <tr>
+                            <td colspan="2">
+                                <span class="errorMessage" id='errorMessageSpan'>@Html.Encode(Model.ErrorMessage)</span> 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.LabelFor(m => m.LanguagePreference)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @(Html.DropDownListFor(m => m.LanguagePreference, Model.SupportedLanguages, new { onchange = "ChangeLanguage(this);" }))
+                            </td>
+                        </tr>                   
+                        <tr>
+                            <td>
+                                @Html.LabelFor(m => m.Organization)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.TextBoxFor(m => m.Organization, new { @class = "requiredField" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.LabelFor(m => m.UserName)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" id="prevent_autofill_usr" style="display:none"/>
+                                @Html.TextBoxFor(m => m.UserName, new { @class = "requiredField" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.LabelFor(m => m.Password)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="password" id="prevent_autofill_pwd" style="display:none"/>
+                                @Html.PasswordFor(m => m.Password, new { @class = "requiredField" })
+                            </td>
+                        </tr>                        
+                    </table>
+                    <br />
+                    <input type="submit" class="fillAll" value="@Translator.GetMessageString("btActionLogIn")" onclick="return CheckFields();" />
+                    <br />
+                    <br />
+                    <a class="headerLink" href="@Config.GetSetting("FullWebEidssPath")">@Translator.GetMessageString("titleFullWebVersion")</a>
+                </div>
+            </div>
+        }
+    </body>
+</html>

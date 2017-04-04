@@ -1,0 +1,181 @@
+﻿@model eidss.model.Schema.CaseTestValidation
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml"; 
+}
+@using bv.common.Configuration
+@using bv.model.Model.Core
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+<input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+
+@if (BaseSettings.TranslationMode)
+{
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        <div class="windowButtonsPn">
+            <input id="idButtonOk" type="button" class="windowButton" onclick="sample.saveAndCloseCaseTestValidationGridEditWindow('@(Model.CaseObjectIdent)');" value="@Translator.GetMessageString("Ok")"/>                        
+            <input id="idButtonCancel" type="button" class="windowButton" onclick="bvPopup.closeDefaultPopup()" value="@Translator.GetMessageString("Cancel")"/>        
+        </div>  
+        <div class="windowSeparator"></div>    
+        @Html.Hidden("idfTestValidation", Model.idfTestValidation)
+        <table class="level1">
+            @if (Model.idfsCaseType == 0)
+            {
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Html.BvLabel(Model, m => m.strFarmCode)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strFarmCode)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.Species)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.Species)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.AnimalID)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.AnimalID)
+                </td>                            
+            </tr>
+            }
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Html.BvLabel(Model, m => m.Diagnosis)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.Diagnosis, width: EditorControlWidth.Large)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.TestName)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.TestName)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.TestType)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.TestType)
+                </td>                            
+            </tr>
+
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strBarcode)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strBarcode)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strSampleName)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strSampleName)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @if (Model.idfsCaseType == 10012001) // Human
+                    {
+                        @Html.BvLabel(Model, m => m.strFieldBarcode2)
+                    }
+                    else
+                    {
+                        @Html.BvLabel(Model, m => m.strFieldBarcode)
+                    }
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strFieldBarcode)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.idfsInterpretedStatus)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.RuleInOut, true, null, null, "CanValidateTestResult.Execute")
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strInterpretedComment)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strInterpretedComment, true, null, "CanValidateTestResult.Execute")
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.datInterpretationDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datInterpretationDate)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.InterpretedName)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.InterpretedName, true)
+                </td>                            
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                    @Html.BvCheckBox(Model, m => m.blnValidateStatus, false, "sample.onValidateStatusClick", "CanValidateTestInterpretation.Execute")
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strValidateComment)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strValidateComment, true, null, "CanValidateTestInterpretation.Execute")
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.datValidationDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datValidationDate)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.ValidatedName)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.ValidatedName, true)
+                </td>                            
+            </tr>
+        </table>    
+    }           
+</div>

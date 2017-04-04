@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<object name="SecurityEventLogListItem" connection="EidssConnectionString" generator="ObjectGenerator.xslt" xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="fn_SecurityEventLog_SelectList" type="fnlist" />
+		<count name="spSecurityEventLog_SelectCount"/>
+	</storage>
+
+	<tables>
+		<table name="SecurityEventLogListItem">
+      <properties permissionObject="SecurityLog"/>
+      <help win="Security_Log"/>
+			<searchpanel>
+
+				<item name="datActionDate" editor="Date" labelId="datActionDate" range="true"  mandatory="true"
+					  default="c => DateTime.Today.AddDays(-EidssUserContext.User.Options.Prefs.DefaultDays)"/>
+
+				<item name="idfsAction" editor="Lookup" labelId="strActionNationalName"	lookupName="SecurityActionLookup"
+					  lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+				<item name="idfsProcessType" editor="Lookup" labelId="strProcessTypeNationalName"	lookupName="SecurityProcessTypeLookup"
+					  lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+				<item name="idfsResult" editor="Lookup" labelId="strResultNationalName"	lookupName="SecurityResultLookup"
+					  lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+
+				<item name="strObjectID"  editor="Text" labelId="idfObjectID"/>
+				<!--<item name="strAccountName"  editor="Text" labelId="strAccountName" />-->
+        <item name="idfPerson" editor="Lookup" labelId="strPersonName"
+					  lookupName="PersonEnteredByLookup" lookupType="PersonLookup" lookupText="c.FullName" lookupValue="c.idfPerson" />
+        <item name="strErrorText"  editor="Text" labelId="strErrorText" />
+				<item name="strProcessID"  editor="Text" labelId="strProcessID" />
+				<item name="strDescription"  editor="Text" labelId="strDescription" />
+
+			</searchpanel>
+
+			<grid>
+				<item name="idfSecurityAudit" visible="false" key="true"  />
+
+				<item name="datActionDate" format="G" />
+				<item name="strActionNationalName"  />
+				<item name="strResultNationalName"  />
+				<item name="strProcessTypeNationalName"  />
+				<item name="strObjectID"  />
+				<item name="strPersonName"  />
+				<item name="strErrorText"  />
+				<item name="strProcessID"  />
+				<item name="strDescription"  />
+
+			</grid>
+      <labels>
+        <item name="strObjectID" labelId="idfObjectID"/>
+      </labels>
+			<lookups>
+				<lookup name="SecurityAction" table="BaseReference"  section="rftSecurityAuditAction" source="idfsAction" target="idfsBaseReference" />
+				<lookup name="SecurityProcessType" table="BaseReference"  section="rftSecurityAuditProcessType" source="idfsProcessType" target="idfsBaseReference" />
+				<lookup name="SecurityResult" table="BaseReference"  section="rftSecurityAuditResult" source="idfsResult" target="idfsBaseReference" />
+        <lookup name="PersonEnteredBy" table="PersonLookup" source="idfPerson" target="idfPerson">
+          <params>
+            <param name="OfficeID" const="null" />
+            <param name="ID" const="null" />
+            <param name="ShowUsersOnly" const="true"/>
+            <param name="intHACode" const="null"/>
+          </params>
+        </lookup>
+
+      </lookups>
+
+
+			<storage>
+				<delete name="spReadOnlyObject_Delete"/>
+				<candelete name="spReadOnlyObject_CanDelete"/>
+			</storage>
+
+			<actions child="SecurityEventLog">
+        <standard>
+          <remove type="Create"/>
+          <remove type="Edit"/>
+          <remove type="Delete"/>
+          <remove type="Report"/>
+        </standard>
+			</actions>
+		</table>
+	</tables>
+
+</object>

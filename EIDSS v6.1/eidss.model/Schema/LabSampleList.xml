@@ -1,0 +1,333 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="LabSampleListItem"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="fn_Sample_SelectList" type="fnlist" />
+		<count name="spLabSample_SelectCount"/>
+	</storage>
+
+	<tables>
+		<table name="LabSampleListItem">
+      <properties auditObject="daoSample" auditTable="tlbMaterial" permissionObject="Sample"/>
+      <help win="lab_l01" web="lab_l01"/>
+      <extfilters>
+        <filter>
+          <join>
+          </join>
+          <where>
+            <expr param="idfsDiagnosis" value="(idfsShowDiagnosis = @idfsDiagnosis OR idfsTentativeDiagnosis = @idfsDiagnosis OR idfsTentativeDiagnosis1 = @idfsDiagnosis OR idfsTentativeDiagnosis2 = @idfsDiagnosis OR idfsFinalDiagnosis = @idfsDiagnosis OR (exists(select * from tlbMonitoringSessionToDiagnosis msd where msd.idfMonitoringSession = fn_Sample_SelectList.idfMonitoringSession and msd.idfsDiagnosis = @idfsDiagnosis and msd.intRowStatus = 0)))"/>
+          </where>
+        </filter>
+        <filter>
+          <join></join>
+          <where>
+            <!--expr param="Custom_CaseStatus" lambda='() => "((@Custom_CaseStatus = 1 and idfMonitoringSession is not null) or (@Custom_CaseStatus = 2 and idfCase is not null) or (@Custom_CaseStatus = 3 and idfCase is null and idfMonitoringSession is null))"' /-->
+            <expr param="idfsCaseStatus" lambda='() => "((@idfsCaseStatus = 1 and idfMonitoringSession is not null) or (@idfsCaseStatus = 2 and idfCase is not null) or (@idfsCaseStatus = 3 and idfCase is null and idfMonitoringSession is null))"' />
+          </where>
+        </filter>
+      </extfilters>
+      <searchpanel> 
+				<item name="CaseID" editor="Text" labelId="CaseID"/>
+				<item name="strFieldBarcode" editor="Text" labelId="strFieldBarcode"/>
+				<item name="idfsDiagnosis" isParam="true" editor="Lookup" editorWidth="Large" labelId="idfsDiagnosis"
+							lookupName="DiagnosisLookup" lookupType="DiagnosisLookup" lookupText="c.name" lookupValue="c.idfsDiagnosis"/>
+				<item name="idfsSampleType" editor="Lookup" labelId="SampleType"
+							lookupName="SampleTypeLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+				<item name="strBarcode" editor="Text" labelId="strLabBarcode"/>
+        <item name="strPatientName" editor="Text" labelId="strHumanPatientName"/>
+        <item name="strFarmOwner" editor="Text" labelId="strFarmOwnerName"/>
+        <item name="datFieldCollectionDate" editor="Date" labelId="datFieldCollectionDate" range="true"/>
+				<item name="datAccession" editor="Date" labelId="datAccession" range="true" mandatory ="true"
+              default="c => DateTime.Today.AddDays(-EidssUserContext.User.Options.Prefs.DefaultDays)"/>
+				<item name="idfInDepartment" editor="Lookup" labelId="DepartmentName"
+							lookupName="DepartmentLookup" lookupType="DepartmentLookup" lookupText="c.name" lookupValue="c.idfDepartment"/>
+
+        <item name="idfsSampleStatus" editor="Lookup" labelId="idfsSampleStatus" mandatory ="true" 
+                      lookupName="SampleStatusLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        <item name="idfsCaseStatus" editor="Lookup" labelId="LabCaseStatus"  isParam="true" mandatory="true"
+              lookupName="CaseStatusLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+				<item name="TestsCount" editor="Numeric" labelId="TestsCount"  range="true"/>
+			
+      
+      </searchpanel>
+			<grid>
+				<item name="idfMaterial" key="true" visible="false" />
+				<item name="strBarcode" />
+				<item name="strFieldBarcode" />
+				<item name="datAccession"/>
+				<item name="strSampleName" />
+				<item name="datFieldCollectionDate" defaultSort="Descending"/>
+				<item name="DepartmentName"/>
+				<item name="CaseID"/>
+				<item name="DiagnosisName"/>
+				<item name="HumanName"/>
+				<item name="AnimalName"/>
+				<item name="TestsCount"/>
+			</grid>
+			<labels>
+				<item name="strBarcode" labelId="strLabBarcode"/>
+				<item name="DiagnosisName" labelId="idfsDiagnosis"/>
+			</labels>
+      <fields>
+        <storage name="idfsDiagnosis" type="long?" />
+        <storage name="idfsCaseStatus" type="long?" />
+      </fields>
+      <personaldata>
+        <group name="Human_PersonName">
+          <item name="strPatientName"/>
+        </group>
+        <group name="Vet_Farm_Settlement">
+          <item name="strFarmOwner"/>
+        </group>
+        <group name="Vet_Farm_Details">
+          <item name="strFarmOwner"/>
+        </group>
+      </personaldata>
+      <lookups>
+				<lookup name="Diagnosis" table="DiagnosisLookup" source="idfsDiagnosis" target="idfsDiagnosis">
+          <filters>
+            <filter predicate="c => ((c.intHACode &amp; (int)eidss.model.Enums.HACode.All) != 0)" />
+            <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase)" />
+          </filters>
+				</lookup>
+        <lookup name="SampleType" table="BaseReference" section="rftSampleType" source="idfsSampleType" target="idfsBaseReference">
+          <filters>
+            <filter predicate="c => c.idfsBaseReference != (long)SampleTypeEnum.Unknown"/>
+          </filters>
+        </lookup>
+        <lookup name="SampleStatus" table="BaseReference" section="rftSampleStatus" source="idfsSampleStatus" target="idfsBaseReference" >
+          <filters>
+            <filter predicate="c=>c.idfsBaseReference != (long)eidss.model.Enums.SampleStatus.IsDeleted &amp;&amp; c.idfsBaseReference != (long)eidss.model.Enums.SampleStatus.Delete"/>
+          </filters>
+        </lookup>
+        <lookup name="CaseStatus" table="BaseReference" section="rftSampleStatus" source="idfsCaseStatus" target="idfsBaseReference" >
+          <filters>
+            <filter predicate="c=>c.idfsBaseReference == 0"/>
+          </filters>
+        </lookup>
+        <lookup name="Department" table="DepartmentLookup" source="idfInDepartment" target="idfDepartment">
+					<params>
+						<param name="OrganizationID" type="long" lambda="c => eidss.model.Core.EidssSiteContext.Instance.OrganizationID" />
+						<param name="ID" const="null" />
+					</params>
+				</lookup>
+			</lookups>
+
+			<storage>
+				<delete name="spLabSample_Delete"/>
+        <candelete name="spLabSample_CanDelete"/>
+			</storage>
+      <extenders>
+        <created>
+          <!-- set default contaainer status = accessioned -->
+          <lambda_extender target="SampleStatus" type="BaseReference" lambda='c => 
+                                     c.SampleStatusLookup.FirstOrDefault(a => a.idfsBaseReference == (long)eidss.model.Enums.SampleStatus.Accessioned)'/>
+          <custom_extender>
+            <text>
+              obj.CaseStatusLookup.AddRange(CaseStatusLookupTemplate);
+            </text>
+          </custom_extender>
+          <lambda_extender target="CaseStatus" type="BaseReference" lambda="c => c.CaseStatusLookup.FirstOrDefault(i => i.idfsBaseReference == 2)"/>
+        </created>
+        <loaded>
+          <custom_extender>
+            <text>
+              obj.CaseStatusLookup.AddRange(CaseStatusLookupTemplate);
+            </text>
+          </custom_extender>
+          <lambda_extender target="CaseStatus" type="BaseReference" lambda="c => c.CaseStatusLookup.FirstOrDefault(i => i.idfsBaseReference == 2)"/>
+        </loaded>
+      </extenders>
+
+      <actions child="LabSample">
+        <standard>
+          <remove type="Create"/>
+          <remove type="Delete"/>
+        </standard>
+				<action name="SelectTest" type="Action">
+          <visual alignment="Right" panel="Top" 
+                  enablePredicate='(c, p, b) => c != null &amp;&amp; ((long)(eidss.model.Enums.SampleStatus.Accessioned)).Equals(c.GetValue("idfsSampleStatus"))'>
+            <regular  caption="strSelectTest_Id" tooltip="strSelectTest_Id"  icon="Select_Tests__small_"/>
+          </visual>
+          <permissions type="Test.Insert"/>
+          <hierarchy relatedList="LabTestListItem,LabSampleListItem"/>
+          <run>
+					  <params>
+						  <param name="key" type="object" />
+						  <param name="item" type="IObject" />
+						  <param name="listPanel" type="object" />
+					  </params>
+          </run>
+				</action>
+        <action name="Destroy" type="Container">
+          <visual alignment="Right" panel="Top"
+                  enablePredicate='(c, p, b) => c != null'>
+            <regular caption="strDestroySample_Id" tooltip="strDestroySample_Id"  icon="Sample_Disposition__small_"/>
+          </visual>
+          <permissions type="Sample.Delete"/>
+        </action>
+				<action name="MarkForDisposition" type="Action">
+          <visual alignment="Right" panel="Top"
+                  enablePredicate='(c, p, b) => c != null &amp;&amp; ((long)(eidss.model.Enums.SampleStatus.Accessioned)).Equals(c.GetValue("idfsSampleStatus"))'>
+            <regular caption="strMarkForDisposition_Id" tooltip="strMarkForDisposition_Id"  icon="Sample_Disposition__small_"/>
+          </visual>
+          <permissions type="Sample.Delete"/>
+          <hierarchy relatedList="LabSampleDispositionListItem,LabSampleListItem" container="Destroy"/>
+          <run>
+            <params>
+              <param name="key" type="object" />
+              <param name="item" type="IObject" />
+              <param name="listPanel" type="object" />
+            </params>
+          </run>
+        </action>
+        <action name="DeleteSample" type="Action">
+          <visual alignment="Right" panel="Top"
+                  enablePredicate='(c, p, b) => c != null &amp;&amp; ((long)(eidss.model.Enums.SampleStatus.Accessioned)).Equals(c.GetValue("idfsSampleStatus"))'>
+            <regular caption="strDeleteSample_Id" tooltip="strDeleteSample_Id"  icon="Delete_Remove"/>
+          </visual>
+          <permissions type="Sample.Delete"/>
+          <hierarchy relatedList="LabSampleListItem" container="Destroy"/>
+          <run>
+            <params>
+              <param name="key" type="object" />
+              <param name="item" type="IObject" />
+              <param name="listPanel" type="object" />
+            </params>
+            <preText>
+              manager.SetSpCommand("dbo.spLabSample_SetDeletedStatus"
+              , manager.Parameter("idfMaterial", key)
+              ).ExecuteNonQuery();
+              return true;
+            </preText>
+          </run>
+        </action>
+        
+				<action name="TransferOut" type="Action">
+          <visual alignment="Right" panel="Top"
+                  enablePredicate='(c, p, b) => c != null &amp;&amp; ((long)(eidss.model.Enums.SampleStatus.Accessioned)).Equals(c.GetValue("idfsSampleStatus"))'>
+            <regular caption="strTransferOut_Id" tooltip="strTransferOut_Id"  icon="Sample_Transfer_Out__small_"/>
+          </visual>
+          <permissions type="SampleTransfer.Execute"/>
+          <hierarchy relatedList="LabSampleTransferListItem,LabSampleListItem"/>
+          <run>
+            <params>
+              <param name="key" type="object" />
+              <param name="item" type="IObject" />
+              <param name="listPanel" type="object" />
+            </params>
+          </run>
+        </action>
+				<action name="AliquotsDerivatives" type="Action">
+          <visual alignment="Right" panel="Top"
+                  enablePredicate='(c, p, b) => c != null &amp;&amp; ((long)(eidss.model.Enums.SampleStatus.Accessioned)).Equals(c.GetValue("idfsSampleStatus"))'>
+            <regular caption="strAliquotsDerivatives_Id" tooltip="strAliquotsDerivatives_Id"  icon="Aliquots_Derivatives__small_"/>
+          </visual>
+          <permissions type="Sample.Insert"/>
+          <hierarchy relatedList="LabTestListItem,LabSampleListItem"/>
+          <run>
+            <params>
+              <param name="key" type="object" />
+              <param name="item" type="IObject" />
+              <param name="listPanel" type="object" />
+            </params>
+          </run>
+        </action>
+        <action name="AccessionIn" type="Container">
+          <visual alignment="Right" panel="Top">
+            <regular caption="titleAccessionIn" tooltip="titleAccessionIn"  icon="Sample_Accession__small_"/>
+          </visual>
+          <permissions predicate='() => 
+                        EidssUserContext.User.HasPermission(PermissionHelper.ExecutePermission(EIDSSPermissionObject.AccessionIn1)) &amp;&amp;
+                        (EidssUserContext.User.HasPermission(PermissionHelper.SelectPermission(EIDSSPermissionObject.HumanCase))
+                        || EidssUserContext.User.HasPermission(PermissionHelper.SelectPermission(EIDSSPermissionObject.VetCase))
+                        || EidssUserContext.User.HasPermission(PermissionHelper.SelectPermission(EIDSSPermissionObject.MonitoringSession))
+                        || EidssUserContext.User.HasPermission(PermissionHelper.SelectPermission(EIDSSPermissionObject.VsSession)))
+                        '/>
+        </action>
+				<action name="HumanAccessionIn" type="Action">
+          <visual alignment="Right" panel="Top">
+            <regular caption="titleHumanAccessionIn" tooltip="titleHumanAccessionIn"  icon="Search_Human_Case_in_Browse_Mode__small_1"/>
+          </visual>
+          <permissions predicate='() => 
+                        EidssUserContext.User.HasPermission(PermissionHelper.ExecutePermission(EIDSSPermissionObject.AccessionIn1)) &amp;&amp;
+                        EidssUserContext.User.HasPermission(PermissionHelper.SelectPermission(EIDSSPermissionObject.HumanCase))'/>
+          <hierarchy relatedList="LabTestListItem,LabSampleListItem" container="AccessionIn"/>
+          <run>
+            <params>
+              <param name="key" type="object" />
+              <param name="item" type="IObject" />
+              <param name="listPanel" type="object" />
+            </params>
+          </run>
+        </action>
+				<action name="VetAccessionIn" type="Action">
+          <visual alignment="Right" panel="Top">
+            <regular caption="titleVetAccessionIn" tooltip="titleVetAccessionIn"  icon="Search_Vet_Case__small_2"/>
+          </visual>
+          <permissions predicate="() => 
+                        EidssUserContext.User.HasPermission(PermissionHelper.ExecutePermission(EIDSSPermissionObject.AccessionIn1)) &amp;&amp;
+                        EidssUserContext.User.HasPermission(PermissionHelper.SelectPermission(EIDSSPermissionObject.VetCase))"/>
+          <hierarchy relatedList="LabTestListItem,LabSampleListItem" container="AccessionIn"/>
+          <run>
+            <params>
+              <param name="key" type="object" />
+              <param name="item" type="IObject" />
+              <param name="listPanel" type="object" />
+            </params>
+          </run>
+        </action>
+				<action name="AsAccessionIn" type="Action">
+          <visual alignment="Right" panel="Top">
+            <regular caption="titleASAccessionIn" tooltip="titleASAccessionIn"  icon="Active_Surveillance_Session_small"/>
+          </visual>
+          <permissions predicate="() => 
+                        EidssUserContext.User.HasPermission(PermissionHelper.ExecutePermission(EIDSSPermissionObject.AccessionIn1)) &amp;&amp;
+                        EidssUserContext.User.HasPermission(PermissionHelper.SelectPermission(EIDSSPermissionObject.MonitoringSession))"/>
+          <hierarchy relatedList="LabTestListItem,LabSampleListItem" container="AccessionIn"/>
+          <run>
+            <params>
+              <param name="key" type="object" />
+              <param name="item" type="IObject" />
+              <param name="listPanel" type="object" />
+            </params>
+          </run>
+        </action>
+        <action name="VsAccessionIn" type="Action">
+          <visual alignment="Right" panel="Top">
+            <regular caption="titleVsAccessionIn" tooltip="titleVsAccessionIn"  icon="Vector_Surveillance_Sessions_List__small__04_"/>
+          </visual>
+          <permissions predicate="() => 
+                        EidssUserContext.User.HasPermission(PermissionHelper.ExecutePermission(EIDSSPermissionObject.AccessionIn1)) &amp;&amp;
+                        EidssUserContext.User.HasPermission(PermissionHelper.SelectPermission(EIDSSPermissionObject.VsSession))"/>
+          <hierarchy relatedList="LabTestListItem,LabSampleListItem" container="AccessionIn"/>
+          <run>
+            <params>
+              <param name="key" type="object" />
+              <param name="item" type="IObject" />
+              <param name="listPanel" type="object" />
+            </params>
+          </run>
+        </action>
+        <action name="GroupAccessionIn" type="Action">
+          <visual alignment="Right" panel="Top">
+            <regular caption="titleGroupAccessionIn" tooltip="titleGroupAccessionIn"  icon="Sample_Accession__small_"/>
+          </visual>
+          <permissions type="AccessionIn1.Execute"/>
+          <hierarchy relatedList="LabTestListItem,LabSampleListItem" container="AccessionIn"/>
+          <run>
+            <params>
+              <param name="key" type="object" />
+              <param name="item" type="IObject" />
+              <param name="listPanel" type="object" />
+            </params>
+          </run>
+        </action>
+      </actions>
+		</table>
+	</tables>
+
+</object>

@@ -1,0 +1,260 @@
+﻿@using System.Web.UI.WebControls
+@using eidss.avr.mweb.Utils
+@using eidss.web.common.Utils
+@using bv.model.ResourcesUsage
+
+@model bv.common.Resources.TranslationTool.TranslatorContainer
+
+@{
+    var grid = Html.DevExpress().GridView(
+        settings => {
+            settings.Name = "grdTranslations";
+            settings.KeyFieldName = "Key";
+            settings.CallbackRouteValues = new { Controller = "Account", Action = "TranslationGridPartial", curClassName = ViewBag.AppClassName };
+            settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Account", Action = "TranslationGridUpdatePartial", curClassName = ViewBag.AppClassName, curSplit = ViewBag.CurSelect };
+            settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+
+            settings.Width = Unit.Percentage(100);
+            settings.SettingsPager.PageSize = 20;
+            settings.Settings.VerticalScrollBarStyle = GridViewVerticalScrollBarStyle.Standard;
+            settings.Settings.ShowVerticalScrollBar = true;
+            settings.Settings.VerticalScrollableHeight = 500;
+            settings.SettingsBehavior.ColumnResizeMode = ColumnResizeMode.NextColumn;
+            settings.SettingsBehavior.AllowDragDrop = false;
+            settings.ClientSideEvents.BeginCallback = "avrTranslation.OnGridBeginCallback";
+            
+            settings.CommandColumn.Visible = true;
+            settings.CommandColumn.ShowNewButton = false;
+            settings.CommandColumn.ShowDeleteButton = false;
+            settings.CommandColumn.ShowEditButton = true;
+            settings.CommandColumn.Width = System.Web.UI.WebControls.Unit.Percentage(10);
+            settings.CommandColumn.VisibleIndex = 5;
+            settings.CommandColumn.Caption = "";
+
+            settings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+            
+            settings.Columns.Add("Lang1", "1st language");
+            if (bv.common.Configuration.Config.GetSetting("TranslationModeLanguages", "en").Split(',').Length > 1)
+            {
+                settings.Columns.Add("Lang2", "2nd language");
+            }
+            settings.Columns.Add("Val", "Translation");
+
+            settings.SetEditFormTemplateContent(c =>
+            {
+                var product = ViewData["EditableProduct"] != null ? ViewData["EditableProduct"] : c.DataItem;
+                ViewContext.Writer.Write("<div class=\"edit_form\">");
+
+                ViewContext.Writer.Write("<table style='width:100%;'>");
+                ViewContext.Writer.Write("<tr><td padding=3px;>");
+                Html.DevExpress().Label(
+                    edtSettings =>
+                    {
+                        edtSettings.ControlStyle.CssClass = "label";
+                        edtSettings.Text = "Lang1:";
+                        edtSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                    }
+                )
+                .Render();
+                ViewContext.Writer.Write("</td><td>");
+                Html.DevExpress().Label(
+                    edtSettings =>
+                    {
+                        edtSettings.ControlStyle.CssClass = "label";
+                        edtSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                    }
+                )
+                .Bind(DataBinder.Eval(product, "Lang1"))
+                .Render();
+                if (bv.common.Configuration.Config.GetSetting("TranslationModeLanguages", "en").Split(',').Length > 1)
+                {
+                    ViewContext.Writer.Write("</td></tr><tr><td>");
+                    Html.DevExpress().Label(
+                        edtSettings =>
+                        {
+                            edtSettings.ControlStyle.CssClass = "label";
+                            edtSettings.Text = "Lang2:";
+                            edtSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                        }
+                    )
+                    .Render();
+                    ViewContext.Writer.Write("</td><td>");
+                    Html.DevExpress().Label(
+                        edtSettings =>
+                        {
+                            edtSettings.ControlStyle.CssClass = "label";
+                            edtSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                        }
+                    )
+                    .Bind(DataBinder.Eval(product, "Lang2"))
+                    .Render();
+                }
+                ViewContext.Writer.Write("</td></tr><tr><td>");
+                Html.DevExpress().Label(
+                    edtSettings =>
+                    {
+                        edtSettings.ControlStyle.CssClass = "label";
+                        edtSettings.Text = "Translation:";
+                        edtSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                    }
+                )
+                .Render();
+                ViewContext.Writer.Write("</td><td>");
+                Html.DevExpress().TextBox(
+                    edtSettings =>
+                    {
+                        edtSettings.Name = "Val";
+                        edtSettings.ControlStyle.CssClass = "editor";
+                        edtSettings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                        edtSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                    }
+                )
+                .Bind(DataBinder.Eval(product, "Val"))
+                .Render();
+
+                ViewContext.Writer.Write("</td></tr>");
+                
+                // first display of edit dialog
+                if (ViewData["ResourceUsage"] == null)
+                {
+                    ViewContext.Writer.Write("<tr><td></td><td>");
+                    Html.DevExpress().Button(
+                        btnSettings =>
+                        {
+                            btnSettings.Name = "btnUpdate";
+                            btnSettings.ControlStyle.CssClass = "button";
+                            btnSettings.Text = "Update";
+                            btnSettings.ClientSideEvents.Click = "function(s, e){ grdTranslations.UpdateEdit(); }";
+                            btnSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                        }
+                    )
+                    .Render();
+                    ViewContext.Writer.Write(" &nbsp; ");
+                    Html.DevExpress().Button(
+                        btnSettings =>
+                        {
+                            btnSettings.Name = "btnCancel";
+                            btnSettings.ControlStyle.CssClass = "button";
+                            btnSettings.Text = "Cancel";
+                            btnSettings.ClientSideEvents.Click = "function(s, e){ grdTranslations.CancelEdit(); }";
+                            btnSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                        }
+                    )
+                    .Render();
+                    ViewContext.Writer.Write("</td></tr>");
+                }
+                // second display of edit dialog - split dialog
+                else
+                {
+                    ViewContext.Writer.Write("<tr><td colspan='2'>");
+                    
+                    Html.DevExpress().Label(
+                        edtSettings =>
+                        {
+                            edtSettings.ControlStyle.ForeColor = System.Drawing.Color.Crimson;
+                            edtSettings.Text = "This term is used in other forms. Do you want to save the term translation?";
+                            edtSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                        }
+                    )
+                    .Render();
+
+                    ViewContext.Writer.Write("</td></tr><tr><td colspan='2'>");
+
+                    List<FormDescription> list = ViewData["ResourceUsage"] as List<FormDescription>;
+                    ViewContext.Writer.Write("<table border='1' width='100%'>");
+                    ViewContext.Writer.Write("<tr>");
+                    ViewContext.Writer.Write("<th>Key</th>");
+                    ViewContext.Writer.Write("<th>App</th>");
+                    ViewContext.Writer.Write("<th>Caption</th>");
+                    ViewContext.Writer.Write("<th>Comment</th>");
+                    ViewContext.Writer.Write("<th>Form</th>");
+                    ViewContext.Writer.Write("<th>Obsolete</th>");
+                    ViewContext.Writer.Write("<th>Paths</th>");
+                    ViewContext.Writer.Write("<th>Views</th>");
+                    ViewContext.Writer.Write("</tr>");
+                    foreach (FormDescription row in list)
+                    {
+                        if (row != null)
+                        {
+                            ViewContext.Writer.Write("<tr>");
+                            ViewContext.Writer.Write("<td>");
+                            ViewContext.Writer.Write(row.Key);
+                            ViewContext.Writer.Write("</td>");
+                            ViewContext.Writer.Write("<td>");
+                            ViewContext.Writer.Write(row.Apptype);
+                            ViewContext.Writer.Write("</td>");
+                            ViewContext.Writer.Write("<td>");
+                            ViewContext.Writer.Write(row.Caption);
+                            ViewContext.Writer.Write("</td>");
+                            ViewContext.Writer.Write("<td>");
+                            ViewContext.Writer.Write(row.Comment);
+                            ViewContext.Writer.Write("</td>");
+                            ViewContext.Writer.Write("<td>");
+                            ViewContext.Writer.Write(row.FormID);
+                            ViewContext.Writer.Write("</td>");
+                            ViewContext.Writer.Write("<td>");
+                            ViewContext.Writer.Write(row.Obsolete);
+                            ViewContext.Writer.Write("</td>");
+                            ViewContext.Writer.Write("<td>");
+                            ViewContext.Writer.Write(row.PathsString);
+                            ViewContext.Writer.Write("</td>");
+                            ViewContext.Writer.Write("<td>");
+                            ViewContext.Writer.Write(row.ViewsString);
+                            ViewContext.Writer.Write("</td>");
+                            ViewContext.Writer.Write("</tr>");
+                        }
+                    }
+                    ViewContext.Writer.Write("</table>");
+                    
+                    ViewContext.Writer.Write("</td></tr><tr><td colspan='2'>");
+                    
+                    Html.DevExpress().Button(
+                       btnSettings =>
+                        {
+                            btnSettings.Name = "btnSplit";
+                            btnSettings.ControlStyle.CssClass = "button";
+                            btnSettings.Text = Translator.GetMessageString("Split");
+                            btnSettings.ClientSideEvents.Click = "function(s, e){ avrTranslation.SplitDoSplit(); }";
+                            btnSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                        }
+                    )
+                    .Render();
+                    ViewContext.Writer.Write(" &nbsp; ");
+                    Html.DevExpress().Button(
+                        btnSettings =>
+                        {
+                            btnSettings.Name = "btnAccept";
+                            btnSettings.ControlStyle.CssClass = "button";
+                            btnSettings.Text = Translator.GetMessageString("Accept");
+                            btnSettings.ClientSideEvents.Click = "function(s, e){ avrTranslation.SplitDoAccept(); }";
+                            btnSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                        }
+                    )
+                    .Render();
+                    ViewContext.Writer.Write(" &nbsp; ");
+                    Html.DevExpress().Button(
+                        btnSettings =>
+                        {
+                            btnSettings.Name = "btnCancel";
+                            btnSettings.ControlStyle.CssClass = "button";
+                            btnSettings.Text = Translator.GetMessageString("Cancel");
+                            btnSettings.ClientSideEvents.Click = "function(s, e){ grdTranslations.CancelEdit(); }";
+                            btnSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                        }
+                    )
+                    .Render();
+                    
+                    ViewContext.Writer.Write("</td></tr>");
+                }
+                
+                ViewContext.Writer.Write("</table>");
+                ViewContext.Writer.Write("</div>");
+            });
+        });
+
+    if (ViewData["EditError"] != null){
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+
+@grid.Bind(Model).GetHtml()

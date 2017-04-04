@@ -1,0 +1,1919 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="LaboratorySectionItem"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="fn_LaboratorySection_SelectList" type="fnlist" />
+  </storage>
+
+  <tables>
+    <table name="LaboratorySectionItem">
+      <properties auditObject="daoTest" auditTable="tlbTesting" permissionObject ="Sample">
+        <events>
+          <create name="HumanTestResultRegistrationLocal" startReplication="true" predicate="c => c.idfHumanCase.HasValue &amp;&amp; c.idfHumanCase.Value != 0 &amp;&amp; c.idfTesting.HasValue &amp;&amp; c.idfTesting.Value != 0 &amp;&amp; c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Finalized &amp;&amp; (c.idfsTestStatus_Original != (long)eidss.model.Enums.TestStatus.Finalized || c.bTestInserted || c.bTestInsertedFirst)" mainobj="idfHumanCase"/>
+          <create name="VetCaseTestResultRegistrationLocal" startReplication="true" predicate="c => c.idfVetCase.HasValue &amp;&amp; c.idfVetCase.Value != 0 &amp;&amp; c.idfTesting.HasValue &amp;&amp; c.idfTesting.Value != 0 &amp;&amp; c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Finalized &amp;&amp; (c.idfsTestStatus_Original != (long)eidss.model.Enums.TestStatus.Finalized || c.bTestInserted || c.bTestInsertedFirst)" mainobj="idfVetCase"/>
+          <create name="AsSessionTestResultRegistrationLocal" startReplication="true" predicate="c => c.idfMonitoringSession.HasValue &amp;&amp; c.idfMonitoringSession.Value != 0 &amp;&amp; c.idfTesting.HasValue &amp;&amp; c.idfTesting.Value != 0 &amp;&amp; c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Finalized &amp;&amp; (c.idfsTestStatus_Original != (long)eidss.model.Enums.TestStatus.Finalized || c.bTestInserted || c.bTestInsertedFirst)" mainobj="idfMonitoringSession"/>
+          <create name="VsSessionTestResultRegistrationLocal" startReplication="true" predicate="c => c.idfVectorSurveillanceSession.HasValue &amp;&amp; c.idfVectorSurveillanceSession.Value != 0 &amp;&amp; c.idfTesting.HasValue &amp;&amp; c.idfTesting.Value != 0 &amp;&amp; c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Finalized &amp;&amp; (c.idfsTestStatus_Original != (long)eidss.model.Enums.TestStatus.Finalized || c.bTestInserted || c.bTestInsertedFirst)" mainobj="idfVectorSurveillanceSession"/>
+
+          <change name="HumanTestResultRegistrationLocal" startReplication="true" predicate="c => c.idfHumanCase.HasValue &amp;&amp; c.idfHumanCase.Value != 0 &amp;&amp; c.idfTesting.HasValue &amp;&amp; c.idfTesting.Value != 0 &amp;&amp; c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Finalized &amp;&amp; (c.idfsTestStatus_Original != (long)eidss.model.Enums.TestStatus.Finalized || c.bTestInserted || c.bTestInsertedFirst)" mainobj="idfHumanCase"/>
+          <change name="VetCaseTestResultRegistrationLocal" startReplication="true" predicate="c => c.idfVetCase.HasValue &amp;&amp; c.idfVetCase.Value != 0 &amp;&amp; c.idfTesting.HasValue &amp;&amp; c.idfTesting.Value != 0 &amp;&amp; c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Finalized &amp;&amp; (c.idfsTestStatus_Original != (long)eidss.model.Enums.TestStatus.Finalized || c.bTestInserted || c.bTestInsertedFirst)" mainobj="idfVetCase"/>
+          <change name="AsSessionTestResultRegistrationLocal" startReplication="true" predicate="c => c.idfMonitoringSession.HasValue &amp;&amp; c.idfMonitoringSession.Value != 0 &amp;&amp; c.idfTesting.HasValue &amp;&amp; c.idfTesting.Value != 0 &amp;&amp; c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Finalized &amp;&amp; (c.idfsTestStatus_Original != (long)eidss.model.Enums.TestStatus.Finalized || c.bTestInserted || c.bTestInsertedFirst)" mainobj="idfMonitoringSession"/>
+          <change name="VsSessionTestResultRegistrationLocal" startReplication="true" predicate="c => c.idfVectorSurveillanceSession.HasValue &amp;&amp; c.idfVectorSurveillanceSession.Value != 0 &amp;&amp; c.idfTesting.HasValue &amp;&amp; c.idfTesting.Value != 0 &amp;&amp; c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Finalized &amp;&amp; (c.idfsTestStatus_Original != (long)eidss.model.Enums.TestStatus.Finalized || c.bTestInserted || c.bTestInsertedFirst)" mainobj="idfVectorSurveillanceSession"/>
+
+          <change name="TestResultForSampleTransferredIn" startReplication="true" predicate="c => c.idfTesting.HasValue &amp;&amp; c.idfTesting.Value != 0 &amp;&amp; c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Finalized &amp;&amp; (c.idfsTestStatus_Original != (long)eidss.model.Enums.TestStatus.Finalized || c.bTestInserted) &amp;&amp; c.idfsSampleKind == (long)eidss.model.Enums.SampleKind.TranferredIn" mainobj="idfTesting"/>
+
+          <change name="HumanTestResultAmendmentLocal" startReplication="true" predicate="c => c.idfHumanCase.HasValue &amp;&amp; c.idfHumanCase.Value != 0 &amp;&amp; c.AmendmentHistory.Count(i => i.IsNew &amp;&amp; !i.IsMarkedToDelete) > 0" mainobj="idfHumanCase"/>
+          <change name="VetCaseTestResultAmendmentLocal" startReplication="true" predicate="c => c.idfVetCase.HasValue &amp;&amp; c.idfVetCase.Value != 0 &amp;&amp; c.AmendmentHistory.Count(i => i.IsNew &amp;&amp; !i.IsMarkedToDelete) > 0" mainobj="idfVetCase"/>
+          <change name="AsSessionTestResultAmendmentLocal" startReplication="true" predicate="c => c.idfMonitoringSession.HasValue &amp;&amp; c.idfMonitoringSession.Value != 0 &amp;&amp; c.AmendmentHistory.Count(i => i.IsNew &amp;&amp; !i.IsMarkedToDelete) > 0" mainobj="idfMonitoringSession"/>
+          <change name="VsSessionTestResultAmendmentLocal" startReplication="true" predicate="c => c.idfVectorSurveillanceSession.HasValue &amp;&amp; c.idfVectorSurveillanceSession.Value != 0 &amp;&amp; c.AmendmentHistory.Count(i => i.IsNew &amp;&amp; !i.IsMarkedToDelete) > 0" mainobj="idfVectorSurveillanceSession"/>
+        </events>
+      </properties>
+
+      <extfilters>
+        <!--filter>
+          <join>
+            inner join tstLocalSamplesTestsPreferences as pref
+                on pref.idfMaterial = fn_LaboratorySection_SelectList.idfMaterial
+                and isnull(pref.idfTesting, 0) = isnull(fn_LaboratorySection_SelectList.idfTesting, 0)
+          </join>
+          <where>
+            <expr param="MyPref" lambda='() => "(pref.idfUserID = " + ModelUserContext.Instance.CurrentUser.ID.ToString() + ")"'/>
+          </where>
+        </filter-->
+        <filter>
+          <join>
+          </join>
+          <where>
+            <expr param="MyPref" lambda='() => "(fn_LaboratorySection_SelectList.idfMaterial in (select idfMaterial from tstLocalSamplesTestsPreferences where idfUserID = " + ModelUserContext.Instance.CurrentUser.ID.ToString() + ") and isnull(fn_LaboratorySection_SelectList.idfTesting,0) in (select isnull(idfTesting,0) from tstLocalSamplesTestsPreferences where idfUserID = " + ModelUserContext.Instance.CurrentUser.ID.ToString() + "))"'/>
+          </where>
+        </filter>
+      </extfilters>
+
+      <searchpanel>
+        <item name="idfsSampleStatus" editor="Lookup" labelId="SampleStatus" multiple="true"
+              lookupName="SampleStatusLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        <item name="datSampleStatusDate" editor="Date" labelId="datSampleStatusDate" range="true" rangeDefDates="true" 
+              mandatoryPredicate="c => !(c as LaboratorySectionItem).bIsMyPref"
+              default="c => !(c as LaboratorySectionItem).bIsMyPref ? DateTime.Today.AddDays(-EidssUserContext.User.Options.Prefs.DefaultDays) : default(DateTime?)"
+              />
+        <item name="strFieldBarcode" editor="Text" labelId="strFieldBarcode"/>
+        <item name="strCalculatedCaseID" editor="Text" labelId="strCaseIDSessionID" />
+        <item name="idfSendToOffice" editor="Lookup" labelId="strOrganizationSendTo" 
+              lookupName="SendToOfficeLookup" lookupType="OrganizationLookup" lookupText="c.name" lookupValue="c.idfInstitution"
+              default="c => !(c as LaboratorySectionItem).bIsMyPref ? (c as LaboratorySectionItem).SendToOfficeLookup.FirstOrDefault(i => i.idfInstitution == (long)EidssUserContext.User.OrganizationID) : null"
+              />
+        <item name="idfSendToOfficeOut" editor="Lookup" labelId="strOrganizationTransferTo" 
+              lookupName="SendToOfficeOutLookup" lookupType="OrganizationLookup" lookupText="c.name" lookupValue="c.idfInstitution"/>
+        <item name="idfPerformedByOffice" editor="Lookup" labelId="strResultsReceivedFrom"
+              lookupName="PerformedByOfficeLookup" lookupType="OrganizationLookup" lookupText="c.name" lookupValue="c.idfInstitution"/>
+        <item name="datAccession" editor="Date" labelId="datAccession" range="true" rangeDefDates="true" />
+        <item name="strBarcode" editor="Text" labelId="strLabBarcode"/>
+        <item name="idfsSampleType" editor="Lookup" labelId="SampleType"
+          lookupName="SampleTypeAllLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        <item name="idfsSampleKind" editor="Lookup" labelId="SampleKind" multiple="true"
+          lookupName="SampleKindLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        <item name="idfsTestName" editor="Lookup" labelId="TestName"
+          lookupName="TestNameForSearchLookup" lookupType="TestForDiseaseLookup" lookupText="c.name" lookupValue="c.idfsReference"/>
+        <item name="idfsDiagnosis" editor="Lookup" editorWidth="Large" labelId="TestDiagnosisName"
+          lookupName="DiagnosisLookup" lookupType="DiagnosisLookup" lookupText="c.name" lookupValue="c.idfsDiagnosis"/>
+        <item name="idfsTestStatus" editor="Lookup" labelId="TestStatus"
+          lookupName="TestStatusForSearchLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        <item name="idfsTestResult" editor="Lookup" labelId="TestResult"
+          lookupName="TestResultDummyLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        <item name="datStartedDate" editor="Date" labelId="datStartedDate" range="true" />
+        <item name="datConcludedDate" editor="Date" labelId="datTestResultDate" range="true" />
+        <item name="strPatientName" editor="Text" labelId="strHumanPatientName"/>
+        <item name="strFarmOwner" editor="Text" labelId="strFarmOwnerName"/>
+        <item name="idfsRegion" editor="Lookup" labelId="strRegion" isParam="true" dependent="idfsRayon"
+              lookupName="RegionLookup" lookupType="RegionLookup" lookupText="c.strRegionName" lookupValue="c.idfsRegion"
+              defaultoper="=" />
+        <item name="idfsRayon" editor="Lookup" labelId="strRayon" isParam="true" dependent="idfsSettlement"
+              lookupName="RayonLookup" lookupType="RayonLookup" lookupText="c.strRayonName" lookupValue="c.idfsRayon"/>
+        <item name="idfsSettlement" editor="Lookup" labelId="idfsSettlement" isParam="true" 
+              lookupName="SettlementLookup" lookupType="SettlementLookup" lookupText="c.strSettlementName" lookupValue="c.idfsSettlement"/>
+        <item name="idfInDepartment" editor="Lookup" labelId="DepartmentName"
+              lookupName="DepartmentLookup" lookupType="DepartmentLookup" lookupText="c.name" lookupValue="c.idfDepartment"/>
+        
+        <item location="Toolbox" name="idfsSampleStatus" editor="Lookup" defaultoper="=" labelId="SampleStatus" multiple="true"
+              lookupName="SampleStatusLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        <item location="Toolbox" name="strFieldBarcode" editor="Text" defaultoper="Like" labelId="strFieldBarcode"/>
+        <item location="Toolbox" name="strCalculatedCaseID" editor="Text" defaultoper="Like" labelId="strCaseIDSessionID"/>
+        <item location="Toolbox" name="idfSendToOffice" editor="Lookup" defaultoper="=" labelId="strOrganizationSendTo"
+              lookupName="SendToOfficeLookup" lookupType="OrganizationLookup" lookupText="c.name" lookupValue="c.idfInstitution"/>
+        <item location="Toolbox" name="idfSendToOfficeOut" editor="Lookup" defaultoper="=" labelId="strOrganizationTransferTo"
+              lookupName="SendToOfficeOutLookup" lookupType="OrganizationLookup" lookupText="c.name" lookupValue="c.idfInstitution"/>
+        <item location="Toolbox" name="idfPerformedByOffice" editor="Lookup" defaultoper="=" labelId="strResultsReceivedFrom"
+              lookupName="PerformedByOfficeLookup" lookupType="OrganizationLookup" lookupText="c.name" lookupValue="c.idfInstitution"/>
+        <item location="Toolbox" name="datAccession" editor="Date" labelId="datAccession" range="true" />
+        <item location="Toolbox" name="strBarcode" editor="Text" defaultoper="Like" labelId="strLabBarcode"/>
+        <item location="Toolbox" name="idfsSampleType" editor="Lookup" defaultoper="=" labelId="SampleType"
+          lookupName="SampleTypeAllLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        <item location="Toolbox" name="idfsTestName" editor="Lookup" defaultoper="=" labelId="TestName"
+          lookupName="TestNameForSearchLookup" lookupType="TestForDiseaseLookup" lookupText="c.name" lookupValue="c.idfsReference"/>
+        <item location="Toolbox" name="idfsDiagnosis" editor="Lookup" editorWidth="Large" defaultoper="=" labelId="TestDiagnosisName"
+          lookupName="DiagnosisLookup" lookupType="DiagnosisLookup" lookupText="c.name" lookupValue="c.idfsDiagnosis"/>
+        <item location="Toolbox" name="idfsTestStatus" editor="Lookup" defaultoper="=" labelId="TestStatus"
+          lookupName="TestStatusForSearchLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        <item location="Toolbox" name="idfsTestResult" editor="Lookup" defaultoper="=" labelId="TestResult"
+          lookupName="TestResultDummyLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        <item location="Toolbox" name="datStartedDate" editor="Date" labelId="datStartedDate" range="true" />
+        <item location="Toolbox" name="datConcludedDate" editor="Date" labelId="datTestResultDate" range="true" />
+
+      </searchpanel>
+      <grid>
+        <item name="ID" key="true" visible="false" />
+        <item name="idfTesting" visible="false" />
+        <item name="idfMaterial" visible="false" />
+        <item name="isChanges" type="bool" visible="false" useInWin="false"/>
+        <item name="strBarcodeReadonly" type="bool" visible="false" useInWin="false"/>
+        <item name="strCalculatedCaseID" required="true"/>
+        <item name="HumanName"/>
+        <item name="strRegion"/>
+        <item name="strRayon"/>
+        <item name="strFieldBarcode" required="true" />
+        <item name="idfsSampleStatus" useInWeb="false" required="true"/>
+        <item name="strSampleStatus" useInWin="false" required="true"/>
+        <item name="strBarcode" required="true" />
+        <item name="idfsSampleType" useInWeb="false" required="true"/>
+        <item name="strSampleName" useInWin="false" required="true"/>
+        <item name="datAccession" type="DateTime?" uihint="AccessionDateEditor" required="true"/>
+        <item name="idfsAccessionCondition" useInWeb="false"/>
+        <item name="strSampleConditionReceivedStatus" useInWin="false"/>
+        <item name="idfsDiagnosis" useInWeb="false" required="true"/>
+        <item name="strDiagnosisName" useInWin="false" required="true"/>
+        <item name="idfsTestName" useInWeb="false" required="true"/>
+        <item name="strTestName" useInWin="false" required="true"/>
+        <item name="idfsTestStatus" useInWeb="false" required="true"/>
+        <item name="strTestStatus" useInWin="false" required="true"/>
+        <item name="idfsTestResult" useInWeb="false" required="true"/>
+        <item name="strTestResult" useInWin="false" required="true"/>
+        <item name="datStartedDate" type="DateTime?" uihint="StartedDateEditor" required="true"/>
+        <item name="datConcludedDate" type="DateTime?" uihint="ConcludedDateEditor" required="true"/>
+        <item name="idfsTestCategory" useInWeb="false"/>
+        <item name="strTestCategory" useInWin="false"/>
+        <item name="strObservation" type="string" useInWeb="false"/>
+        <item name="idfInDepartment" useInWeb="false"/>
+        <item name="strDepartmentName" type="string" useInWin="false"/>
+      </grid>
+      <labels>
+        <item name="strBarcode" labelId="strLabBarcode"/>
+        <item name="strCalculatedCaseID" labelId="strCaseIDSessionID"/>
+        <item name="strSampleName" labelId="idfsSampleType"/>
+        <item name="strSampleConditionReceivedStatus" labelId="idfsAccessionCondition"/>
+        <item name="idfsSampleStatus" labelId="SampleStatus"/>
+        <item name="strSampleStatus" labelId="SampleStatus"/>
+        <item name="idfsDiagnosis" labelId="TestDiagnosisName"/>
+        <item name="strDiagnosisName" labelId="TestDiagnosisName"/>
+        <item name="idfsTestName" labelId="TestName"/>
+        <item name="strTestName" labelId="TestName"/>
+        <item name="idfsTestStatus" labelId="TestStatus"/>
+        <item name="strTestStatus" labelId="TestStatus"/>
+        <item name="TestStatusShort" labelId="TestStatus"/>
+        <item name="idfsTestResult" labelId="TestResult"/>
+        <item name="strTestResult" labelId="TestResult"/>
+        <item name="idfsTestCategory" labelId="TestCategory"/>
+        <item name="strTestCategory" labelId="TestCategory"/>
+        <item name="idfSendToOffice" labelId="strOrganizationSendTo"/>
+        <item name="idfSendToOfficeOut" labelId="TransferTo"/>
+        <item name="SendToOfficeOut" labelId="TransferTo"/>
+        <item name="idfPerformedByOffice" labelId="strResultsReceivedFrom"/>
+        <item name="idfInDepartment" labelId="DepartmentName"/>
+        <item name="strDepartmentName" labelId="DepartmentName"/>
+        <item name="strParentMaterial" labelId="strParentBarcode"/>
+        <item name="idfsCaseType" labelId="idfsCaseSessionType"/>
+        <item name="idfSpeciesVectorInfo" labelId="strPatientSessionVectorInfo"/>
+        <item name="SpeciesVectorInfo" labelId="strPatientSessionVectorInfo"/>
+        <item name="idfFieldCollectedByOffice" labelId="CollectedbyInstitution"/>
+        <item name="idfFieldCollectedByPerson" labelId="CollectedbyOfficer"/>
+        <item name="strSampleNote" labelId="strNotes"/>
+        <item name="idfsDestructionMethod" labelId="DestructionMethod"/>
+        <item name="strTestCount" labelId="intTestCount"/>
+        <item name="idfPerformedByOffice" labelId="strResultsReceivedFrom"/>
+        <item name="strContactPerson" labelId="strContact"/>
+        <item name="datConcludedDate" labelId="datTestResultDate"/>
+        <item name="strReason" labelId="strReasonChangeTestResult"/>
+        <item name="TestResultForAmend" labelId="strNewTestResult"/>
+        <item name="DiagnosisForTest" labelId="TestDiagnosisName"/>
+        <item name="TestNameRef" labelId="TestName"/>
+        <item name="TestNameForSearch" labelId="TestName"/>
+        <item name="TestResultRef" labelId="TestResult"/>
+        <item name="TestCategoryRef" labelId="TestCategory"/>
+        <item name="strComments" labelId="strComment"/>
+        <item name="strCondition" labelId="strAccessionInComment"/>
+      </labels>
+      <keys>
+        <key name="ID"/>
+        <key2 name="idfMaterial"/>
+        <key3 name="idfTesting"/>
+      </keys>
+      <fields>
+        <storage name="bIsMyPref" type="bool"/>
+        <storage name="intNewMode" type="LabNewModeEnum"/>
+        <storage name="bIsCreateNewSample" type="bool"/>
+        <storage name="idfsTestResultDummy" type="long?"/>
+        <storage name="idfsTestStatusDummy" type="long?"/>
+        <storage name="idfDerivativeForSampleType" type="long?"/>
+        <storage name="idfsOldTestResult" type="long?"/>
+        <storage name="bSendToCurrentOffice" type="bool"/>
+        <storage name="idfMaterialForGroupAccIn" type="long"/>
+
+        <storage name="idfsSampleStatusOriginalIsSaved" type="bool"/>
+        <storage name="idfsSampleStatusOriginalSaved" type="long"/>
+        <storage name="idfsTestStatusOriginalIsSaved" type="bool"/>
+        <storage name="idfsTestStatusOriginalSaved" type="long?"/>
+        <storage name="idfsTestResultOriginalIsSaved" type="bool"/>
+        <storage name="idfsTestResultOriginalSaved" type="long?"/>
+        <storage name="idfsAccessionConditionOriginalIsSaved" type="bool"/>
+        <storage name="idfsAccessionConditionOriginalSaved" type="long?"/>
+        <storage name="idfSendToOfficeOutOriginalIsSaved" type="bool"/>
+        <storage name="idfSendToOfficeOutOriginalSaved" type="long?"/>
+        <storage name="strBarcodeOriginalIsSaved" type="bool"/>
+        <storage name="strBarcodeOriginalSaved" type="string"/>
+        <storage name="idfsTestNamePreviousIsSaved" type="bool"/>
+        <storage name="idfsTestNamePreviousSaved" type="long?"/>
+        <storage name="idfsTestResultPreviousIsSaved" type="bool"/>
+        <storage name="idfsTestResultPreviousSaved" type="long?"/>
+        <storage name="blnExternalTestPreviousIsSaved" type="bool"/>
+        <storage name="blnExternalTestPreviousSaved" type="bool"/>
+        <calculated name="idfsSampleStatusOriginal" type="long" depends="" lambda="c => c.idfsSampleStatusOriginalIsSaved ? c.idfsSampleStatusOriginalSaved : c.idfsSampleStatus_Original"/>
+        <calculated name="idfsTestStatusOriginal" type="long?" depends="" lambda="c => c.idfsTestStatusOriginalIsSaved ? c.idfsTestStatusOriginalSaved : c.idfsTestStatus_Original"/>
+        <calculated name="idfsTestResultOriginal" type="long?" depends="" lambda="c => c.idfsTestResultOriginalIsSaved ? c.idfsTestResultOriginalSaved : c.idfsTestResult_Original"/>
+        <calculated name="idfsAccessionConditionOriginal" type="long?" depends="" lambda="c => c.idfsAccessionConditionOriginalIsSaved ? c.idfsAccessionConditionOriginalSaved : c.idfsAccessionCondition_Original"/>
+        <calculated name="idfSendToOfficeOutOriginal" type="long?" depends="" lambda="c => c.idfSendToOfficeOutOriginalIsSaved ? c.idfSendToOfficeOutOriginalSaved : c.idfSendToOfficeOut_Original"/>
+        <calculated name="strBarcodeOriginal" type="string" depends="" lambda="c => c.strBarcodeOriginalIsSaved ? c.strBarcodeOriginalSaved : c.strBarcode_Original"/>
+        <calculated name="idfsTestNamePrevious" type="long?" depends="" lambda="c => c.idfsTestNamePreviousIsSaved ? c.idfsTestNamePreviousSaved : c.idfsTestName_Previous"/>
+        <calculated name="idfsTestResultPrevious" type="long?" depends="" lambda="c => c.idfsTestResultPreviousIsSaved ? c.idfsTestResultPreviousSaved : c.idfsTestResult_Previous"/>
+        <calculated name="blnExternalTestPrevious" type="bool" depends="" lambda="c => c.blnExternalTestPreviousIsSaved ? c.blnExternalTestPreviousSaved : c.blnExternalTest_Previous"/>
+
+        <calculated name="strFieldBarcodePrevious" type="string" depends="" lambda="c => c.strFieldBarcode_Previous"/>
+
+        <calculated name="isChanges" type="bool" lambda='c => c.HasChanges' depends=""/>
+        <calculated name="strBarcodeReadonly" type="bool" lambda='c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; !(c.idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.Accessioned &amp;&amp; c.idfsSampleStatusOriginal &lt;= 0)' depends=""/>
+
+        <!--calculated name="strDepartmentName" type="string" lambda='c => c.Department == null ? "" : c.Department.name' depends="idfInDepartment"/-->
+        <!--calculated name="strSampleStatus" type="string" lambda='c => c.SampleStatus == null ? "" : c.SampleStatus.name' depends="idfsSampleStatus"/-->
+        <!--calculated name="strSampleStatus" type="string" lambda='c => c.SampleStatusFullLookup.SingleOrDefault(i => i.idfsBaseReference == c.idfsSampleStatus) == null ? "" : c.SampleStatusFullLookup.Single(i => i.idfsBaseReference == c.idfsSampleStatus).name' depends="idfsSampleStatus"/-->
+        <!--calculated name="strSampleName" type="string" lambda='c => c.SampleType == null ? "" : c.SampleType.name' depends="idfsSampleType"/-->
+        <!--calculated name="strSampleConditionReceivedStatus" type="string" lambda='c => c.AccessionCondition == null ? "" : c.AccessionCondition.name' depends="idfsAccessionCondition"/-->
+        <!--calculated name="strDiagnosisName" type="string" lambda='c => c.DiagnosisForTest == null ? (c.Diagnosis == null ? "" : c.Diagnosis.name) : c.DiagnosisForTest.name' depends="idfsDiagnosis"/-->
+        <!--calculated name="strTestName" type="string" lambda='c => c.TestNameRef == null ? "" : c.TestNameRef.name' depends="idfsTestName"/-->
+        <!--calculated name="strTestStatus" type="string" lambda='c => c.TestStatusFull == null ? "" : c.TestStatusFull.name' depends="idfsTestStatus"/-->
+        <!--calculated name="strTestResult" type="string" lambda='c => c.TestResultRef == null ? "" : c.TestResultRef.name' depends="idfsTestResult"/-->
+        <!--calculated name="strTestCategory" type="string" lambda='c => c.TestCategoryRef == null ? "" : c.TestCategoryRef.name' depends="idfsTestCategory"/-->
+
+        <calculated name="strSendToOffice" type="string" lambda='c => c.SendToOffice == null ? "" : c.SendToOffice.name' depends="idfSendToOffice"/>
+        <calculated name="strSendToOfficeOut" type="string" lambda='c => c.SendToOfficeOut == null ? "" : c.SendToOfficeOut.name' depends="idfSendToOfficeOut"/>
+        <calculated name="strFieldCollectedByOffice" type="string" lambda='c => c.CollectedByOffice == null ? "" : c.CollectedByOffice.name' depends="idfFieldCollectedByOffice"/>
+        <calculated name="strFieldCollectedByPerson" type="string" lambda='c => c.CollectedByPerson == null ? "" : c.CollectedByPerson.FullName' depends="idfFieldCollectedByPerson"/>
+
+        <calculated name="strTestCount" type="string" lambda="c => c.intTestCount.ToString()" depends="intTestCount"/>
+        <calculated name="strObservation" type="string" lambda='c => c.FFPresenter != null &amp;&amp; c.FFPresenter.HasAnyValue ? "*" : ""' depends="FFPresenter" setter=""/>
+
+        <calculated name="isTestExists" type="bool" depends="idfTesting" lambda="c => c.idfTesting.HasValue &amp;&amp; c.idfTesting.Value != 0"/>
+        <calculated name="isNotTestExistsWithAccessioned" type="bool" depends="idfTesting" lambda="c => (!c.idfTesting.HasValue || c.idfTesting.Value == 0) &amp;&amp; c.idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.Accessioned &amp;&amp; c.idfsAccessionCondition.HasValue &amp;&amp; c.idfsAccessionCondition.Value != (long)eidss.model.Enums.AccessionConditionEnum.Rejected"/>
+        <calculated name="isTestNotStartedBefore" type="bool" depends="idfTesting,idfsTestStatus,bTestInserted,bTestInsertedFirst" lambda="c => c.idfTesting.HasValue &amp;&amp; c.idfTesting.Value != 0 &amp;&amp; c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.NotStarted &amp;&amp; (c.bTestInserted || c.bTestInsertedFirst)"/>
+        <calculated name="isTestNotStartedAfter" type="bool" depends="idfTesting,idfsTestStatus" lambda="c => c.idfTesting.HasValue &amp;&amp; c.idfTesting.Value != 0 &amp;&amp; c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.NotStarted &amp;&amp; c.idfsTestStatusOriginal == (long)eidss.model.Enums.TestStatus.NotStarted"/>
+        <calculated name="isTestInProcessBefore" type="bool" depends="idfTesting,idfsTestStatus" lambda="c => c.idfTesting.HasValue &amp;&amp; c.idfTesting.Value != 0 &amp;&amp; c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.InProcess &amp;&amp; c.idfsTestStatusOriginal != (long)eidss.model.Enums.TestStatus.InProcess"/>
+        <calculated name="isTestInProcessAfter" type="bool" depends="idfTesting,idfsTestStatus" lambda="c => c.idfTesting.HasValue &amp;&amp; c.idfTesting.Value != 0 &amp;&amp; c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.InProcess &amp;&amp; c.idfsTestStatusOriginal == (long)eidss.model.Enums.TestStatus.InProcess"/>
+        <calculated name="isTestPreliminary" type="bool" depends="idfTesting,idfsTestStatus" lambda="c => (c.idfTesting.HasValue &amp;&amp; c.idfTesting.Value != 0 || c.intNewMode == LabNewModeEnum.AssignTest) &amp;&amp; c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Preliminary"/>
+        <calculated name="isTestFinalInternalBefore" type="bool" depends="idfTesting,idfsTestStatus,blnExternalTest" lambda="c => c.idfTesting.HasValue &amp;&amp; c.idfTesting.Value != 0 &amp;&amp; c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Finalized &amp;&amp; c.idfsTestStatusOriginal != (long)eidss.model.Enums.TestStatus.Finalized &amp;&amp; !(/*c.blnExternalTest.HasValue &amp;&amp; */c.blnExternalTest/*.Value*/)"/>
+        <calculated name="isTestFinalInternalAfter" type="bool" depends="idfTesting,idfsTestStatus,blnExternalTest" lambda="c => c.idfTesting.HasValue &amp;&amp; c.idfTesting.Value != 0 &amp;&amp; c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Finalized &amp;&amp; c.idfsTestStatusOriginal == (long)eidss.model.Enums.TestStatus.Finalized &amp;&amp; !(/*c.blnExternalTest.HasValue &amp;&amp; */c.blnExternalTest/*.Value*/)"/>
+        <calculated name="isTestFinalExternalBefore" type="bool" depends="idfTesting,idfsTestStatus,blnExternalTest,bTestInserted,bTestInsertedFirst" lambda="c => c.idfTesting.HasValue &amp;&amp; c.idfTesting.Value != 0 &amp;&amp; c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Finalized &amp;&amp; (c.bTestInserted || c.bTestInsertedFirst) &amp;&amp; (/*c.blnExternalTest.HasValue &amp;&amp; */c.blnExternalTest/*.Value*/)"/>
+        <calculated name="isTestFinalOrAmend" type="bool" depends="idfTesting,idfsTestStatus" lambda="c => c.idfTesting.HasValue &amp;&amp; c.idfTesting.Value != 0 &amp;&amp; (c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Finalized || c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Amended)"/>
+        <calculated name="isTestFinalOrAmendSaved" type="bool" depends="idfTesting,idfsTestStatus" lambda="c => c.idfTesting.HasValue &amp;&amp; c.idfTesting.Value != 0 &amp;&amp; (c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Finalized || c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Amended) &amp;&amp; (c.idfsTestStatusOriginal == (long)eidss.model.Enums.TestStatus.Finalized || c.idfsTestStatusOriginal == (long)eidss.model.Enums.TestStatus.Amended)"/>
+        <calculated name="isSampleTypeReadOnly" type="bool" depends="intNewMode,idfsSampleStatus,bIsCreateNewSample" lambda="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; !(c.idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.Accessioned &amp;&amp; c.idfsSampleStatusOriginal &lt;= 0 &amp;&amp; c.bIsCreateNewSample)"/>
+      </fields>
+      <readonly>
+        <fields name="HumanName,strRegion,strRayon,strSampleName,strSendToOffice,strSendToOfficeOut,strFieldCollectedByOffice,strFieldCollectedByPerson" predicate="c => true"/>
+        <fields name="strCalculatedCaseID" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; c.intNewMode != LabNewModeEnum.CreateSample"/>
+        <fields name="strFieldBarcode" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; c.intNewMode != LabNewModeEnum.GroupAccessionIn"/>
+        <fields name="idfsSampleStatus,SampleStatusFull" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None"/>
+
+        <fields name="strBarcode" predicate="c => c.strBarcodeReadonly || (c.idfsAccessionCondition.HasValue &amp;&amp; c.idfsAccessionCondition.Value == (long)eidss.model.Enums.AccessionConditionEnum.Rejected)"/>
+        <fields name="idfsSampleType,SampleTypeFiltered" predicate="c => c.isSampleTypeReadOnly"/>
+        <fields name="datFieldCollectionDate" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; !(c.idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.Accessioned &amp;&amp; c.idfsSampleStatusOriginal &lt;= 0 &amp;&amp; c.bIsCreateNewSample)"/>
+        <fields name="datAccession" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; !(c.idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.Accessioned &amp;&amp; c.idfsSampleStatusOriginal &lt;= 0) || (c.idfsAccessionCondition.HasValue &amp;&amp; c.idfsAccessionCondition.Value == (long)eidss.model.Enums.AccessionConditionEnum.Rejected)"/>
+        <fields name="idfsAccessionCondition,AccessionCondition" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; !((c.idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.Accessioned &amp;&amp; c.idfsSampleStatusOriginal &lt;= 0) || c.idfsSampleStatus &lt;= 0) || (c.idfsAccessionCondition.HasValue &amp;&amp; c.idfsAccessionCondition.Value == (long)eidss.model.Enums.AccessionConditionEnum.Rejected)"/>
+        <fields name="strCondition" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; !(c.idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.Accessioned &amp;&amp; c.idfsSampleStatusOriginal &lt;= 0) || (c.idfsAccessionCondition.HasValue &amp;&amp; c.idfsAccessionCondition.Value == (long)eidss.model.Enums.AccessionConditionEnum.Rejected)"/>
+        <fields name="idfSubdivision,Freezer" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; !(c.idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.Accessioned || c.idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.OutOfRepository) || (c.idfsAccessionCondition.HasValue &amp;&amp; c.idfsAccessionCondition.Value == (long)eidss.model.Enums.AccessionConditionEnum.Rejected)"/>
+        <fields name="idfInDepartment,Department,strDepartmentName" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; !(c.idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.Accessioned || c.idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.OutOfRepository) || (c.idfsAccessionCondition.HasValue &amp;&amp; c.idfsAccessionCondition.Value == (long)eidss.model.Enums.AccessionConditionEnum.Rejected)"/>
+        <fields name="strParentMaterial,strParentMaterial" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None"/>
+        <fields name="idfsCaseType,CaseType" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None"/>
+        <fields name="idfSpeciesVectorInfo,SpeciesVectorInfo" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; !(c.intCaseHACode != (long)eidss.model.Enums.HACode.Human &amp;&amp; c.bIsCreateNewSample)"/>
+        <fields name="intTestCount,strTestCount" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None"/>
+        <fields name="idfFieldCollectedByOffice,CollectedByOffice" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; !(c.bIsCreateNewSample)"/>
+        <fields name="idfFieldCollectedByPerson,CollectedByPerson" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; !(c.bIsCreateNewSample)"/>
+        <fields name="idfSendToOffice,SendToOffice" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None"/>
+        <fields name="idfSendToOfficeOut,SendToOfficeOut" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; !(!c.IsNew &amp;&amp; (c.idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.Accessioned &amp;&amp; c.idfsSampleStatusOriginal == (long)eidss.model.Enums.SampleStatus.Accessioned) || (c.idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.OutOfRepository &amp;&amp; c.idfsSampleStatusOriginal == (long)eidss.model.Enums.SampleStatus.Accessioned))"/>
+        <fields name="strSampleNote" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; c.idfsSampleStatus &lt;= 0 || (c.idfsAccessionCondition.HasValue &amp;&amp; c.idfsAccessionCondition.Value == (long)eidss.model.Enums.AccessionConditionEnum.Rejected)"/>
+        <fields name="idfsDestructionMethod,DestructionMethod" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; !((c.idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.RoutineDestruction) || (c.idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.Destroyed &amp;&amp; c.idfsSampleStatusOriginal != (long)eidss.model.Enums.SampleStatus.Destroyed))"/>
+<!--
+        <fields name="idfsDiagnosis" predicate="c => c.Parent != null &amp;&amp; !(c.idfTesting.HasValue &amp;&amp; c.idfTesting.Value != 0 &amp;&amp; (c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.NotStarted || (c.blnExternalTest.HasValue &amp;&amp; c.blnExternalTest.Value)))"/>
+        <fields name="idfsTestName" predicate="c => c.Parent != null &amp;&amp; !(c.idfTesting.HasValue &amp;&amp; c.idfTesting.Value != 0 &amp;&amp; (c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.NotStarted || (c.blnExternalTest.HasValue &amp;&amp; c.blnExternalTest.Value)))"/>
+        <fields name="idfsTestStatus" predicate="c => c.Parent != null &amp;&amp; !(c.idfTesting.HasValue &amp;&amp; c.idfTesting.Value != 0 &amp;&amp; (c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.NotStarted || c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.InProcess || c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Preliminary))"/>
+        <fields name="idfsTestResult" predicate="c => c.Parent != null &amp;&amp; !(c.idfTesting.HasValue &amp;&amp; c.idfTesting.Value != 0 &amp;&amp; (c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Preliminary || c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Finalized || (c.blnExternalTest.HasValue &amp;&amp; c.blnExternalTest.Value)))"/>
+        <fields name="datStartedDate" predicate="c => c.Parent != null &amp;&amp; !(c.idfTesting.HasValue &amp;&amp; c.idfTesting.Value != 0 &amp;&amp; c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Preliminary || (c.blnExternalTest.HasValue &amp;&amp; c.blnExternalTest.Value))"/>
+        <fields name="datConcludedDate" predicate="c => c.Parent != null &amp;&amp; !(c.idfTesting.HasValue &amp;&amp; c.idfTesting.Value != 0 &amp;&amp; (c.blnExternalTest.HasValue &amp;&amp; c.blnExternalTest.Value))"/>
+        <fields name="idfsTestCategory" predicate="c => c.Parent != null &amp;&amp; !(c.idfTesting.HasValue &amp;&amp; c.idfTesting.Value != 0 &amp;&amp; c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.NotStarted || (c.blnExternalTest.HasValue &amp;&amp; c.blnExternalTest.Value))"/>
+-->    
+        <fields name="idfsDiagnosis,DiagnosisForTest" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; !(c.isTestNotStartedBefore || c.isTestFinalExternalBefore)"/>
+        <fields name="idfsTestName,TestNameRef,TestNameForSearch" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; !(c.isNotTestExistsWithAccessioned || c.isTestNotStartedBefore || c.isTestFinalExternalBefore)"/>
+        <fields name="strTestStatus" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None"/>
+        <fields name="idfsTestStatus,TestStatusShort" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; !(c.idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.Accessioned &amp;&amp; (c.isTestNotStartedBefore || c.isTestNotStartedAfter || c.isTestInProcessBefore || c.isTestInProcessAfter || c.isTestPreliminary))"/>
+        <fields name="idfsTestResult,TestResultRef" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; !((c.idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.Accessioned || c.idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.OutOfRepository) &amp;&amp; (c.isTestInProcessBefore || c.isTestInProcessAfter || c.isTestPreliminary || c.isTestFinalInternalBefore || c.isTestFinalExternalBefore))"/>
+        <fields name="datStartedDate" predicate="c => c.Parent != null &amp;&amp; (c.intNewMode == LabNewModeEnum.None || c.intNewMode == LabNewModeEnum.AssignTest) &amp;&amp; !(c.isTestInProcessBefore || c.isTestInProcessAfter || c.isTestPreliminary || c.isTestFinalExternalBefore)"/>
+        <fields name="datConcludedDate" predicate="c => c.Parent != null &amp;&amp; (c.intNewMode == LabNewModeEnum.None || c.intNewMode == LabNewModeEnum.AssignTest) &amp;&amp; !(c.isTestPreliminary || c.isTestFinalInternalBefore || c.isTestFinalExternalBefore)"/>
+        <!--fields name="idfsTestCategory,TestCategoryRef" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; !(c.isTestNotStartedBefore)"/ Task 11153 -->
+        <fields name="idfsTestCategory,TestCategoryRef" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; !(c.isTestNotStartedBefore || c.isTestNotStartedAfter || c.isTestInProcessBefore || c.isTestInProcessAfter || c.isTestPreliminary || c.isTestFinalInternalBefore || c.isTestFinalExternalBefore)"/>
+        <fields name="strObservation" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; !(c.isTestExists || c.isTestFinalExternalBefore)"/>
+        
+        <fields name="idfTestedByPerson,TestedByPerson" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; !(c.isTestInProcessBefore || c.isTestInProcessAfter || c.isTestPreliminary || c.isTestFinalInternalBefore || c.isTestFinalExternalBefore)"/>
+        <!--fields name="idfResultEnteredByPerson,ResultEnteredByPerson" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; !(c.isTestPreliminary || c.isTestFinalInternalBefore || c.isTestFinalInternalAfter)"/ Task 11154 -->
+        <fields name="idfResultEnteredByPerson,ResultEnteredByPerson" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None"/>
+        <fields name="idfValidatedByPerson,ValidatedByPerson" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None"/>
+        <fields name="blnExternalTest" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; !(c.idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.OutOfRepository &amp;&amp; !c.isTestExists &amp;&amp; c.bExternalOffice.HasValue &amp;&amp; c.bExternalOffice.Value)"/>
+        <fields name="idfPerformedByOffice,PerformedByOffice" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; !(c.isTestFinalExternalBefore)"/>
+        <fields name="datReceivedDate" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; !(c.isTestFinalExternalBefore)"/>
+        <fields name="strContactPerson" predicate="c => c.Parent != null &amp;&amp; c.intNewMode == LabNewModeEnum.None &amp;&amp; !(c.isTestFinalExternalBefore)"/>
+        
+        <fields name="*" predicate="c => false"/>
+      </readonly>
+      <!--personaldata>
+        <group name="Human_PersonName">
+          <item name="HumanName"/>
+        </group>
+        <group name="Vet_Farm_Settlement">
+          <item name="HumanName"/>
+        </group>
+        <group name="Vet_Farm_Details">
+          <item name="HumanName"/>
+        </group>
+      </personaldata-->
+      <invisible>
+        <fields name="strTestStatus" predicate="c => c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.InProcess || c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Preliminary || c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.NotStarted"/>
+        <fields name="TestStatusShort" predicate="c => !(c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.InProcess || c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Preliminary || c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.NotStarted)"/>
+      </invisible>
+      <relations>
+        <relation name="Sample" table="LaboratorySectionItem" internal="false" type="child" lazy="false" notautoload="true" self="true" source="ID" target="ID" />
+        <relation name="Test" table="LaboratorySectionItem" internal="false" type="child" lazy="false" notautoload="true" self="true" source="ID" target="ID" />
+        <relation name="AmendmentHistory" table="LabTestAmendment" internal="false" type="child" predicate="c => c.idfTesting.HasValue &amp;&amp;c.idfTesting.Value != 0" lazy="false" source="idfTesting" target="idfTesting" />
+        <relation name="FFPresenter" table="FFPresenterModel" internal="false" type="link" source="idfObservation" target="CurrentObservation" lazy="false" />
+      </relations>
+      <lookups>
+        <lookup name="Region" table="RegionLookup" source="idfsRegion" target="idfsRegion">
+          <params>
+            <param name="CountryID" lambda="c => c.idfsCountry ?? 0" type="long" />
+            <param name="ID" const="null" />
+          </params>
+        </lookup>
+        <lookup name="Rayon" table="RayonLookup" source="idfsRayon" target="idfsRayon">
+          <params>
+            <param name="RegionID" lambda="c => c.idfsRegion ?? 0" type="long" />
+            <param name="ID" const="null" />
+          </params>
+        </lookup>
+        <lookup name="Settlement" table="SettlementLookup" source="idfsSettlement" target="idfsSettlement">
+          <params>
+            <param name="RayonID" lambda="c => c.idfsRayon ?? 0" type="long" />
+            <param name="ID" const="null" />
+          </params>
+        </lookup>
+        <lookup name="Diagnosis" table="DiagnosisLookup" source="idfsDiagnosis" target="idfsDiagnosis">
+          <filters>
+            <filter predicate="c => ((c.intHACode &amp; (int)HACode.All) != 0) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+            <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+          </filters>
+        </lookup>
+        <lookup name="DiagnosisForTest" table="TestDiagnosisLookup" source="idfsDiagnosis" target="idfsDiagnosis">
+          <params>
+            <param name="idfMaterial" type="long?" lambda="c => c.idfMaterial"/>
+            <param name="idfCase" type="long?" lambda="c => c.idfCaseOrSession"/>
+            <param name="idfCaseType" type="long?" lambda="c => c.idfsCaseType"/>
+            <!--param name="idfsDiagnosis" type="long?" lambda="c => c.idfsDiagnosis"/-->
+          </params>
+        </lookup>
+        <lookup name="SampleTypeAll" table="BaseReference" section="rftSampleType" source="idfsSampleType" target="idfsBaseReference">
+          <filters>
+            <filter predicate="c => c.idfsBaseReference != (long)SampleTypeEnum.Unknown"/>
+          </filters>
+        </lookup>
+        <lookup name="SampleTypeFiltered" table="SampleTypeForDiagnosisLookup" source="idfsSampleType" target="idfsReference">
+          <params>
+            <param name="intHACode" const="null"/>
+          </params>
+          <filters>
+            <filter predicate="c => (obj.intCaseHACode.HasValue &amp;&amp; ((c.intHACode &amp; obj.intCaseHACode) != 0)) || c.idfsReference == obj.idfsSampleType"/>
+            <filter predicate="c => c.idfsDiagnosis == 0"/>
+            <filter predicate="c => c.idfsReference != (long)SampleTypeEnum.Unknown"/>
+            <filter predicate="c => c.idfsReference != 0"/>
+            <filter distinct="SampleTypeForDiagnosisLookupComparator" />
+          </filters>
+        </lookup>
+        <lookup name="DerivativeType" table="LabDerivativeTypesLookup" source="idfDerivativeForSampleType" target="idfDerivativeForSampleType">
+          <filters>
+            <filter predicate="c => c.idfsSampleType == obj.idfsSampleType"/>
+          </filters>
+        </lookup>
+        <lookup name="AccessionCondition" table="BaseReference" section="rftAccessionCondition" source="idfsAccessionCondition" target="idfsBaseReference" notaddempty="true" />
+        <lookup name="TestNameForSearch" table="TestForDiseaseLookup" source="idfsTestName" target="idfsReference">
+          <filters>
+            <filter predicate="c => c.idfsDiagnosis == 0" />
+          </filters>
+        </lookup>
+        <lookup name="TestNameRef" table="TestForDiseaseLookup" source="idfsTestName" target="idfsReference" notaddempty="true">
+          <filters>
+            <filter predicate="c => (c.intHACode &amp; obj.intCaseHACode) != 0 || c.idfsReference == obj.idfsTestName"/>
+            <filter predicate="c => c.idfsDiagnosis == (obj.bFilterTestByDiagnosis ? obj.idfsDiagnosis : 0)" />
+          </filters>
+        </lookup>
+        <lookup name="TestNameByDiagnosis" table="TestForDiseaseLookup" source="idfsTestName" target="idfsReference" notaddempty="true">
+          <filters>
+            <filter predicate="c => (c.intHACode &amp; obj.intCaseHACode) != 0"/>
+            <filter predicate="c => c.idfsDiagnosis == obj.idfsDiagnosis"/>
+          </filters>
+        </lookup>
+        <lookup name="TestResultRef" table="TestResultLookup" source="idfsTestResult" target="idfsReference">
+          <filters>
+            <filter predicate="c => c.idfsTestName == obj.idfsTestName"/>
+          </filters>
+        </lookup>
+        <lookup name="TestResultForAmend" table="TestResultLookup" source="idfsTestResult" target="idfsReference">
+          <filters>
+            <filter predicate="c => c.idfsTestName == obj.idfsTestName"/>
+            <filter predicate="c => c.idfsReference != obj.idfsOldTestResult"/>
+          </filters>
+        </lookup>
+        <lookup name="TestResultDummy" table="BaseReference" section="rftTestResult" source="idfsTestResultDummy" target="idfsBaseReference" />
+        <lookup name="TestCategoryRef" table="BaseReference" section="rftTestCategory" source="idfsTestCategory" target="idfsBaseReference" />
+        <lookup name="TestStatusShort" table="BaseReference" section="rftTestStatus" source="idfsTestStatusDummy" target="idfsBaseReference" notaddempty="true">
+          <filters>
+            <filter predicate='c => c.idfsBaseReference == (long)eidss.model.Enums.TestStatus.InProcess || c.idfsBaseReference == (long)eidss.model.Enums.TestStatus.Preliminary || c.idfsBaseReference == (long)eidss.model.Enums.TestStatus.NotStarted' />
+          </filters>
+        </lookup>
+        <lookup name="TestStatusForSearch" table="BaseReference" section="rftTestStatus" source="idfsTestStatusDummy" target="idfsBaseReference">
+          <filters>
+            <filter predicate='c => c.idfsBaseReference == (long)eidss.model.Enums.TestStatus.Finalized || c.idfsBaseReference == (long)eidss.model.Enums.TestStatus.InProcess || c.idfsBaseReference == (long)eidss.model.Enums.TestStatus.Preliminary || c.idfsBaseReference == (long)eidss.model.Enums.TestStatus.NotStarted || c.idfsBaseReference == (long)eidss.model.Enums.TestStatus.Amended' />
+          </filters>
+        </lookup>
+        <lookup name="TestStatusFull" table="BaseReference" section="rftTestStatus" source="idfsTestStatus" target="idfsBaseReference" emptyTextId="Deleted" emptyKey="-1" />
+        <lookup name="SampleStatus" table="BaseReference" section="rftSampleStatus" source="idfsSampleStatus" target="idfsBaseReference" zeroTextId="SelectAll" emptyTextId="Unaccessioned" emptyKey="-1" >
+          <filters>
+            <filter predicate="c => c.idfsBaseReference != (long)eidss.model.Enums.SampleStatus.IsDeleted &amp;&amp; c.idfsBaseReference != (long)eidss.model.Enums.SampleStatus.Delete"/>
+          </filters>
+        </lookup>
+        <lookup name="SampleStatusFull" table="BaseReference" section="rftSampleStatus" source="idfsSampleStatus" target="idfsBaseReference" emptyTextId="Unaccessioned" emptyKey="-1" />
+        <lookup name="AccessionByPerson" table="PersonLookup" source="idfAccesionByPerson" target="idfPerson">
+          <params>
+            <param name="OfficeID" type="long" lambda="c => eidss.model.Core.EidssSiteContext.Instance.OrganizationID"/>
+            <param name="ID" const="null" />
+            <param name="ShowUsersOnly" const="false"/>
+            <param name="intHACode" const="null"/>
+          </params>
+        </lookup>
+        <lookup name="SendToOffice" table="OrganizationLookup" source="idfSendToOffice" target="idfInstitution">
+          <params>
+            <param name="ID" const="null" />
+            <param name="intHACode" const="null" />
+          </params>
+        </lookup>
+        <lookup name="SendToOfficeOut" table="OrganizationLookup" source="idfSendToOfficeOut" target="idfInstitution">
+          <params>
+            <param name="ID" const="null" />
+            <param name="intHACode" const="null" />
+          </params>
+        </lookup>
+        <lookup name="PerformedByOffice" table="OrganizationLookup" source="idfPerformedByOffice" target="idfInstitution">
+          <params>
+            <param name="ID" const="null" />
+            <param name="intHACode" const="null" />
+          </params>
+        </lookup>
+        <lookup name="CollectedByOffice" table="OrganizationLookup" source="idfFieldCollectedByOffice" target="idfInstitution">
+          <params>
+            <param name="ID" const="null" />
+            <param name="intHACode" const="null" />
+          </params>
+        </lookup>
+        <lookup name="CollectedByPerson" table="PersonLookup" source="idfFieldCollectedByPerson" target="idfPerson">
+          <params>
+            <param name="OfficeID" lambda="c => c.idfFieldCollectedByOffice ?? -1" type="long" />
+            <param name="ID" const="null" />
+            <param name="ShowUsersOnly" const="false"/>
+            <param name="intHACode" const="null"/>
+          </params>
+        </lookup>
+        <lookup name="CaseType" table="BaseReference" section="rftCaseType" source="idfsCaseType" target="idfsBaseReference" />
+        <lookup name="DestructionMethod" table="BaseReference" section="rftDestructionMethod" source="idfsDestructionMethod" target="idfsBaseReference" />
+        <lookup name="SampleKind" table="BaseReference" section="rftSampleKind" source="idfsSampleKind" target="idfsBaseReference" zeroTextId="SelectAll" emptyTextId="strInitiallyCollected" emptyKey="-1" />
+
+        <lookup name="SpeciesVectorInfo" table="SpeciesVectorInfoLookup" source="idfSpeciesVectorInfo" target="idfSpeciesVectorInfo" >
+          <params>
+            <param name="idfCaseOrSession" type="long?" lambda="c => c.idfCaseOrSession"/>
+            <!--param name="idfCaseType" type="long?" lambda="c => c.idfsCaseType"/-->
+          </params>
+        </lookup>
+
+        <lookup name="Department" table="DepartmentLookup" source="idfInDepartment" target="idfDepartment" >
+          <params>
+            <param name="OrganizationID" type="long" lambda="c => eidss.model.Core.EidssSiteContext.Instance.OrganizationID"/>
+            <param name="ID" const="null" />
+          </params>
+        </lookup>
+        <lookup name="Freezer" table="FreezerTreeLookup" source="idfSubdivision" target="ID" />
+
+        <lookup name="TestedByOffice" table="OrganizationLookup" source="idfTestedByOffice" target="idfInstitution">
+          <params>
+            <param name="ID" const="null" />
+            <param name="intHACode" const="null" />
+          </params>
+        </lookup>
+        <lookup name="TestedByPerson" table="PersonLookup" source="idfTestedByPerson" target="idfPerson">
+          <params>
+            <param name="OfficeID" lambda="c => (long)EidssUserContext.User.OrganizationID /*c.idfTestedByOffice ?? -1*/" type="long" />
+            <param name="ID" const="null" />
+            <param name="ShowUsersOnly" const="false"/>
+            <param name="intHACode" const="null"/>
+          </params>
+        </lookup>
+        <lookup name="ResultEnteredByOffice" table="OrganizationLookup" source="idfResultEnteredByOffice" target="idfInstitution">
+          <params>
+            <param name="ID" const="null" />
+            <param name="intHACode" const="null" />
+          </params>
+        </lookup>
+        <lookup name="ResultEnteredByPerson" table="PersonLookup" source="idfResultEnteredByPerson" target="idfPerson">
+          <params>
+            <param name="OfficeID" lambda="c => (long)EidssUserContext.User.OrganizationID /*c.idfResultEnteredByOffice ?? -1*/" type="long" />
+            <param name="ID" const="null" />
+            <param name="ShowUsersOnly" const="false"/>
+            <param name="intHACode" const="null"/>
+          </params>
+        </lookup>
+        <lookup name="ValidatedByOffice" table="OrganizationLookup" source="idfValidatedByOffice" target="idfInstitution">
+          <params>
+            <param name="ID" const="null" />
+            <param name="intHACode" const="null" />
+          </params>
+        </lookup>
+        <lookup name="ValidatedByPerson" table="PersonLookup" source="idfValidatedByPerson" target="idfPerson">
+          <params>
+            <param name="OfficeID" lambda="c => (long)EidssUserContext.User.OrganizationID /*c.idfValidatedByOffice ?? -1*/" type="long" />
+            <param name="ID" const="null" />
+            <param name="ShowUsersOnly" const="false"/>
+            <param name="intHACode" const="null"/>
+          </params>
+        </lookup>
+
+      </lookups>
+      <storage>
+        <post name="spLaboratorySectionItem_Post" />        
+      </storage>
+      <postorder>
+        <item name="this"/>
+        <item name="AmendmentHistory"/>
+        <item name="FFPresenter"/>
+      </postorder>
+      <extenders>
+        <creating>
+          <lambda_extender target="idfsCountry" type="long?" lambda="c => eidss.model.Core.EidssSiteContext.Instance.CountryID"/>
+        </creating>
+        <created>
+          <lambda_extender target="m_bSetupLoaded" type="bool" lambda="c => true"/>
+        </created>
+        <loaded>
+          <lambda_extender target="TestStatusShort" type="BaseReference" lambda="c => c.TestStatusShortLookup.FirstOrDefault(i => i.idfsBaseReference == c.idfsTestStatus)"/>
+          <custom_extender>
+            <text>
+              if (obj.idfsFormTemplate.HasValue) obj.FFPresenter.SetProperties(obj.idfsFormTemplate.Value, obj.ID);
+              if (obj.idfsCaseType == (long)CaseTypeEnum.Human &amp;&amp; EidssUserContext.User.ForbiddenPersonalDataGroups.Contains(PersonalDataGroup.Human_PersonName) &amp;&amp; obj.SpeciesVectorInfo != null) obj.SpeciesVectorInfo.name = "*******";
+            </text>
+          </custom_extender>
+        </loaded>
+        <posted>
+          <custom_extender>
+            <text>
+              if (obj.IsNew &amp;&amp; obj.bIsMyPref)
+                Accessor.Instance(null).MenuAddToPreferences(manager, obj);
+            </text>
+          </custom_extender>
+        </posted>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <lambda_handler target='strDepartmentName' type='string' field='idfInDepartment' lambda='c => c.DepartmentLookup.SingleOrDefault(i => i.idfDepartment == c.idfInDepartment) == null ? "" : c.DepartmentLookup.Single(i => i.idfDepartment == c.idfInDepartment).name'/>
+          <lambda_handler target='strSampleStatus' type='string' field='idfsSampleStatus' lambda='c => c.SampleStatusFullLookup.SingleOrDefault(i => i.idfsBaseReference == c.idfsSampleStatus) == null ? "" : c.SampleStatusFullLookup.Single(i => i.idfsBaseReference == c.idfsSampleStatus).name'/>
+          <lambda_handler target='strSampleName' type='string' field='idfsSampleType' lambda='c => c.SampleTypeAllLookup.FirstOrDefault(i => i.idfsBaseReference == c.idfsSampleType, i => i.name)'/>
+          <lambda_handler target='strSampleConditionReceivedStatus' type='string' field='idfsAccessionCondition' lambda='c => c.AccessionCondition == null ? "" : c.AccessionCondition.name'/>
+          <lambda_handler target='strDiagnosisName' type='string' field='idfsDiagnosis' lambda='c => c.DiagnosisForTest == null ? (c.Diagnosis == null ? "" : c.Diagnosis.name) : c.DiagnosisForTest.name'/>
+          <lambda_handler target='strTestName' type='string' field='idfsTestName' lambda='c => c.TestNameRef == null ? "" : c.TestNameRef.name'/>
+          <lambda_handler target='strTestStatus' type='string' field='idfsTestStatus' lambda='c => c.TestStatusFull == null ? "" : c.TestStatusFull.name'/>
+          <lambda_handler target='strTestResult' type='string' field='idfsTestResult' lambda='c => c.TestResultRef == null ? "" : c.TestResultRef.name'/>
+          <lambda_handler target='strTestCategory' type='string' field='idfsTestCategory' lambda='c => c.TestCategoryRef == null ? "" : c.TestCategoryRef.name'/>
+
+          <lambda_handler field="idfsRegion" target="Rayon" type="RayonLookup" lambda="c => null"/>
+          <lookup_handler lookup="Rayon" field="idfsRegion" />
+          <lambda_handler field="idfsRayon" target="Settlement" type="SettlementLookup" lambda="c => null"/>
+          <lookup_handler lookup="Settlement" field="idfsRayon" />
+          <!--lambda_handler field="idfsRegion" target="strRegion" type="string" lambda="c => c.RegionLookup.FirstOrDefault(i => i.idfsRegion == c.idfsRegion, i => i.strRegionName)"/>
+          <lambda_handler field="idfsRayon" target="strRayon" type="string" lambda="c => c.RayonLookup.FirstOrDefault(i => i.idfsRayon == c.idfsRayon, i => i.strRayonName)"/-->
+          
+          <!--lambda_handler target='strSampleStatus' type='string' field='idfsSampleStatus' lambda='c => c.SampleStatusFull == null ? "" : c.SampleStatusFull.name'/-->
+          <!--lambda_handler target='strSampleName' type='string' field='idfsSampleType' lambda='c => c.SampleType == null ? "" : c.SampleType.name'/-->
+          <!--lambda_handler target='strSampleConditionReceivedStatus' type='string' field='idfsAccessionCondition' lambda='c => c.AccessionCondition == null ? "" : c.AccessionCondition.name'/-->
+          <!--lambda_handler target='TestName' type='string' field='idfsTestName' lambda='c => c.TestNameRef == null ? "" : c.TestNameRef.name'/-->
+          <!--lambda_handler target='Status' type='string' field='idfsTestStatus' lambda='c => c.TestStatusFull == null ? "" : c.TestStatusFull.name'/-->
+          <!--lambda_handler target='TestResult' type='string' field='idfsTestResult' lambda='c => c.TestResultRef == null ? "" : c.TestResultRef.name'/-->
+          <!--lambda_handler target='DiagnosisName' type='string' field='idfsDiagnosis' lambda='c => c.Diagnosis == null ? "" : c.Diagnosis.name'/-->
+          <!--lambda_handler target='TestCategory' type='string' field='idfsTestCategory' lambda='c => c.TestCategoryRef == null ? "" : c.TestCategoryRef.name'/-->
+          <lambda_handler target='idfAnimal' type='long?' field='idfSpeciesVectorInfo' lambda='c => c.SpeciesVectorInfo == null ? null : c.SpeciesVectorInfo.idfAnimal'/>
+          <lambda_handler target='idfSpecies' type='long?' field='idfSpeciesVectorInfo' lambda='c => c.SpeciesVectorInfo == null ? null : (c.SpeciesVectorInfo.idfAnimal.HasValue ? null : c.SpeciesVectorInfo.idfSpecies)'/>
+          <lambda_handler target='idfVector' type='long?' field='idfSpeciesVectorInfo' lambda='c => c.SpeciesVectorInfo == null ? null : c.SpeciesVectorInfo.idfVector'/>
+          <lambda_handler target='HumanName' type='string' field='idfSpeciesVectorInfo' lambda='c => c.SpeciesVectorInfo == null ? "" : 
+                           ((c.idfsCaseType == (long)CaseTypeEnum.Human &amp;&amp; EidssUserContext.User.ForbiddenPersonalDataGroups.Contains(PersonalDataGroup.Human_PersonName))
+                            ||
+                            (c.idfsCaseType != (long)CaseTypeEnum.Human &amp;&amp; (EidssUserContext.User.ForbiddenPersonalDataGroups.Contains(PersonalDataGroup.Vet_Farm_Settlement) || EidssUserContext.User.ForbiddenPersonalDataGroups.Contains(PersonalDataGroup.Vet_Farm_Details)))
+                            ? "*******" : c.SpeciesVectorInfo.HumanName)
+                          '/>
+          <!--lambda_handler target='HumanName' type='string' field='idfSpeciesVectorInfo' lambda='c => c.SpeciesVectorInfo == null ? "" : c.SpeciesVectorInfo.HumanName'/-->
+          <lambda_handler target='strRegion' type='string' field='idfSpeciesVectorInfo' lambda='c => c.SpeciesVectorInfo == null ? "" : c.SpeciesVectorInfo.strRegion'/>
+          <lambda_handler target='strRayon' type='string' field='idfSpeciesVectorInfo' lambda='c => c.SpeciesVectorInfo == null ? "" : c.SpeciesVectorInfo.strRayon'/>
+          <lambda_handler target='TestStatusShort' type='BaseReference' field='idfsTestStatus' lambda='c => c.TestStatusShortLookup.FirstOrDefault(i => i.idfsBaseReference == c.idfsTestStatus)'/>
+          <lambda_handler target='TestStatusFull' type='BaseReference' field='idfsTestStatusDummy' lambda='c => !c.idfsTestStatusDummy.HasValue || c.idfsTestStatus == c.idfsTestStatusDummy ? c.TestStatusFull : c.TestStatusFullLookup.FirstOrDefault(i => i.idfsBaseReference == c.idfsTestStatusDummy)'/>
+          <lambda_handler target='TestResultRef' type='TestResultLookup' field='idfsTestStatus' lambda='c => (c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.NotStarted || c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.InProcess) ? null : c.TestResultRef'/>
+          <lambda_handler target='datStartedDate' type='DateTime?' field='idfsTestStatus' lambda='c => (c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.InProcess || c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Preliminary) ? (c.datStartedDate == null ? DateTime.Today : c.datStartedDate) : (c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.NotStarted ? null : c.datStartedDate)'/>
+          <lambda_handler target='datConcludedDate' type='DateTime?' field='idfsTestStatus' lambda='c => 
+                          (c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Preliminary)
+                            ? (c.datConcludedDate.HasValue ? c.datConcludedDate : DateTime.Today)
+                            : (
+                              (c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Finalized) 
+                                ? (DateTime.Today)
+                                : (
+                                  (c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.NotStarted)
+                                    ? (null)
+                                    : (c.datConcludedDate)
+                                  )
+                              )'/>
+          <lambda_handler target='TestedByOffice' type='OrganizationLookup' field='idfsTestStatus' lambda='c => (c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.InProcess) ? (c.TestedByOfficeLookup.FirstOrDefault(l => l.idfInstitution == (long)EidssUserContext.User.OrganizationID)) : ((c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Preliminary &amp;&amp; c.TestedByOffice == null) ? (c.TestedByOfficeLookup.FirstOrDefault(l => l.idfInstitution == (long)EidssUserContext.User.OrganizationID)) : (c.TestedByOffice))'/>
+          <lambda_handler target='TestedByPerson' type='PersonLookup' field='idfsTestStatus' lambda='c => (c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.InProcess) ? (c.TestedByPersonLookup.FirstOrDefault(l => l.idfPerson == (long)EidssUserContext.User.EmployeeID)) : ((c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Preliminary &amp;&amp; c.TestedByPerson == null) ? (c.TestedByPersonLookup.FirstOrDefault(l => l.idfPerson == (long)EidssUserContext.User.EmployeeID)) : (c.TestedByPerson))'/>
+          <lambda_handler target='ResultEnteredByOffice' type='OrganizationLookup' field='idfsTestStatus' lambda='c => c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Preliminary ? c.ResultEnteredByOfficeLookup.FirstOrDefault(l => l.idfInstitution == (long)EidssUserContext.User.OrganizationID) : c.ResultEnteredByOffice'/>
+          <lambda_handler target='ResultEnteredByPerson' type='PersonLookup' field='idfsTestStatus' lambda='c => c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Preliminary ? c.ResultEnteredByPersonLookup.FirstOrDefault(l => l.idfPerson == (long)EidssUserContext.User.EmployeeID) : c.ResultEnteredByPerson'/>
+          <lambda_handler target='ValidatedByOffice' type='OrganizationLookup' field='idfsTestStatus' lambda='c => c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Finalized ? c.ValidatedByOfficeLookup.FirstOrDefault(l => l.idfInstitution == (long)EidssUserContext.User.OrganizationID) : c.ValidatedByOffice'/>
+          <lambda_handler target='ValidatedByPerson' type='PersonLookup' field='idfsTestStatus' lambda='c => c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Finalized ? c.ValidatedByPersonLookup.FirstOrDefault(l => l.idfPerson == (long)EidssUserContext.User.EmployeeID) : c.ValidatedByPerson'/>
+          <lambda_handler target='TestStatusFull' type='BaseReference' field='idfsTestResult' lambda='c => c.idfsTestResult.HasValue &amp;&amp; !c.idfsTestResultPrevious.HasValue &amp;&amp; (!c.idfsTestStatus.HasValue || c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.InProcess) ? c.TestStatusFullLookup.FirstOrDefault(l => l.idfsBaseReference == (long)eidss.model.Enums.TestStatus.Preliminary) : c.TestStatusFull'/>
+          <custom_handler field='idfsAccessionCondition'>
+            <text>
+              if (!obj.idfsAccessionCondition_Original.HasValue &amp;&amp; obj.idfsAccessionCondition.HasValue &amp;&amp; 
+                  (obj.idfsAccessionCondition.Value == (long)eidss.model.Enums.AccessionConditionEnum.AcceptedInPoorCondition
+                || obj.idfsAccessionCondition.Value == (long)eidss.model.Enums.AccessionConditionEnum.AcceptedInGoodCondition))
+              {
+                  obj.SampleStatus = obj.SampleStatusLookup.FirstOrDefault(c => c.idfsBaseReference == (long)eidss.model.Enums.SampleStatus.Accessioned);
+                  obj.SampleStatusFull = obj.SampleStatusFullLookup.FirstOrDefault(c => c.idfsBaseReference == (long)eidss.model.Enums.SampleStatus.Accessioned);
+                  obj.AccessionByPerson = obj.AccessionByPersonLookup.SingleOrDefault(l => l.idfPerson == (long)EidssUserContext.User.EmployeeID);
+                  obj.datAccession = DateTime.Today;
+                  /*if (string.IsNullOrEmpty(obj.strBarcode))
+                      obj.strBarcode = "(new" + ++(obj.Parent as LaboratorySectionMaster).newCounter + ")";*/
+                  using (DbManagerProxy manager = DbManagerFactory.Factory.Create(ModelUserContext.Instance))
+                  {
+                      obj.strBarcode = manager.SetSpCommand("dbo.spGetNextNumber", (long)NumberingObjectEnum.Sample, DBNull.Value, DBNull.Value)
+                          .ExecuteScalar&lt;string&gt;(ScalarSourceType.OutputParameter, "NextNumberValue");
+                  }
+              }
+              else if (!obj.idfsAccessionCondition_Original.HasValue &amp;&amp; obj.idfsAccessionCondition.HasValue &amp;&amp; 
+                  obj.idfsAccessionCondition.Value == (long)eidss.model.Enums.AccessionConditionEnum.Rejected)
+              {
+                  obj.SampleStatus = obj.SampleStatusLookup.FirstOrDefault(c => c.idfsBaseReference == (long)eidss.model.Enums.SampleStatus.Accessioned);
+                  obj.SampleStatusFull = obj.SampleStatusFullLookup.FirstOrDefault(c => c.idfsBaseReference == (long)eidss.model.Enums.SampleStatus.Accessioned);
+                  obj.AccessionByPerson = obj.AccessionByPersonLookup.SingleOrDefault(l => l.idfPerson == (long)EidssUserContext.User.EmployeeID);
+                  obj.datAccession = DateTime.Today;
+                  /*if (string.IsNullOrEmpty(obj.strBarcode))
+                      obj.strBarcode = "(new" + ++(obj.Parent as LaboratorySectionMaster).newCounter + ")";*/
+                  using (DbManagerProxy manager = DbManagerFactory.Factory.Create(ModelUserContext.Instance))
+                  {
+                      obj.strBarcode = manager.SetSpCommand("dbo.spGetNextNumber", (long)NumberingObjectEnum.Sample, DBNull.Value, DBNull.Value)
+                          .ExecuteScalar&lt;string&gt;(ScalarSourceType.OutputParameter, "NextNumberValue");
+                  }
+              }
+              else if (!obj.idfsAccessionCondition_Original.HasValue &amp;&amp; (!obj.idfsAccessionCondition.HasValue || obj.idfsAccessionCondition.Value == 0))
+              {
+                  obj.SampleStatus = null;
+                  obj.SampleStatusFull = null;
+                  obj.AccessionByPerson = null;
+                  obj.strBarcode = obj.strBarcode_Original;
+                  obj.datAccession = null;
+              }
+            </text>
+          </custom_handler>
+          <custom_handler field='idfSendToOfficeOut'>
+            <text>
+              if (!obj.idfSendToOfficeOut_Original.HasValue &amp;&amp; obj.idfSendToOfficeOut.HasValue)
+              {
+                  obj.SendToOfficeOut = obj.SendToOfficeOutLookup.Single(c => c.idfInstitution == obj.idfSendToOfficeOut);
+                  obj.bExternalOffice = !obj.SendToOfficeOut.idfsSite.HasValue;
+                  obj.SampleStatus = obj.SampleStatusLookup.FirstOrDefault(c => c.idfsBaseReference == (long)eidss.model.Enums.SampleStatus.OutOfRepository);
+                  obj.SampleStatusFull = obj.SampleStatusFullLookup.FirstOrDefault(c => c.idfsBaseReference == (long)eidss.model.Enums.SampleStatus.OutOfRepository);
+                  obj.idfSendByPerson = (long)EidssUserContext.User.EmployeeID;
+                  obj.datSendDate = DateTime.Today;
+              }
+              else if (!obj.idfSendToOfficeOut_Original.HasValue &amp;&amp; (!obj.idfSendToOfficeOut.HasValue || obj.idfSendToOfficeOut.Value == 0))
+              {
+                  obj.bExternalOffice = false;
+                  obj.SampleStatus = obj.SampleStatusLookup.FirstOrDefault(c => c.idfsBaseReference == (long)eidss.model.Enums.SampleStatus.Accessioned);
+                  obj.SampleStatusFull = obj.SampleStatusFullLookup.FirstOrDefault(c => c.idfsBaseReference == (long)eidss.model.Enums.SampleStatus.Accessioned);
+                  obj.idfSendByPerson = null;
+                  obj.datSendDate = null;
+              }
+            </text>
+          </custom_handler>
+          <custom_handler field='strCalculatedCaseID'>
+            <text>
+                using (DbManagerProxy manager = DbManagerFactory.Factory.Create(ModelUserContext.Instance))
+                {
+                    var pop = manager.SetSpCommand("dbo.spLaboratorySection_PopulateCaseInfo", obj.strCalculatedCaseID, ModelUserContext.CurrentLanguage).ExecuteObject&lt;LaboratorySectionItem&gt;();
+                    obj.idfHumanCase = pop.idfHumanCase;
+                    obj.idfHuman = pop.idfHuman;
+                    obj.idfVetCase = pop.idfVetCase;
+                    obj.idfMonitoringSession = pop.idfMonitoringSession;
+                    obj.idfVectorSurveillanceSession = pop.idfVectorSurveillanceSession;
+                    obj.idfsCaseType = pop.idfsCaseType;
+                    obj.intCaseHACode = pop.intCaseHACode;
+                    //obj.idfsDiagnosis = pop.idfsDiagnosis;
+                    //obj.DiagnosisName = pop.DiagnosisName;
+                    obj.Diagnosis = obj.DiagnosisLookup.FirstOrDefault(j => j.idfsDiagnosis == pop.idfsDiagnosis);
+                    obj.idfCaseOrSession = pop.idfCaseOrSession;
+                    obj.SpeciesVectorInfo = obj.SpeciesVectorInfoLookup.SingleOrDefault(c => c.idfSpeciesVectorInfo == pop.idfSpeciesVectorInfo);
+                    //obj.strPatientName = pop.strPatientName;
+                    //obj.strFarmOwner = pop.strFarmOwner;
+                    //obj.HumanName = pop.HumanName;
+                    obj.HumanName = 
+                            (obj.idfsCaseType == (long)CaseTypeEnum.Human &amp;&amp; EidssUserContext.User.ForbiddenPersonalDataGroups.Contains(PersonalDataGroup.Human_PersonName))
+                            ||
+                            (obj.idfsCaseType != (long)CaseTypeEnum.Human &amp;&amp; (EidssUserContext.User.ForbiddenPersonalDataGroups.Contains(PersonalDataGroup.Vet_Farm_Settlement) || EidssUserContext.User.ForbiddenPersonalDataGroups.Contains(PersonalDataGroup.Vet_Farm_Details)))
+                            ? "*******" : pop.HumanName;
+                    obj.strRegion = pop.strRegion;
+                    obj.strRayon= pop.strRayon;
+                    //obj.Region = obj.RegionLookup.SingleOrDefault(c => c.idfsRegion == pop.idfsRegion);
+                    //obj.Rayon = obj.RayonLookup.SingleOrDefault(c => c.idfsRayon == pop.idfsRayon);
+                }
+            </text>
+          </custom_handler>
+          <custom_handler field='idfsTestName'>
+            <text>
+              if (!obj.idfTesting.HasValue &amp;&amp; !obj.idfsTestNamePrevious.HasValue &amp;&amp; obj.idfsTestName.HasValue &amp;&amp; obj.intNewMode != LabNewModeEnum.AssignTest)
+              {
+                  using (DbManagerProxy manager = DbManagerFactory.Factory.Create(ModelUserContext.Instance))
+                  {
+                      if (!Accessor.Instance(null).ItemAssignTest(manager, obj, new List&lt;IObject&gt;() { obj }, obj.Parent, obj.bIsMyPref).result)
+                      {
+                          obj.idfsTestName = obj.idfsTestNamePrevious;
+                      }
+                  }
+              }
+            </text>
+          </custom_handler>
+          
+          <!-- set FF templates -->
+          <custom_handler field="idfsTestName">
+              <text>
+                if (obj.FFPresenter != null)
+                {
+                  obj.FFPresenter.SetProperties(FFPresenterModel.LoadActualTemplate(EidssSiteContext.Instance.CountryID, obj.idfsTestName, FFTypeEnum.TestDetails), obj.ID);
+                  obj.idfsFormTemplate = obj.FFPresenter.CurrentTemplate.idfsFormTemplate;
+                }
+              </text>
+          </custom_handler>
+            
+          <custom_handler field='blnExternalTest'>
+            <text>
+              //if (obj.blnExternalTest.HasValue/* &amp;&amp; obj.blnExternalTest != obj.blnExternalTestPrevious*/)
+              //{
+                  if (obj.blnExternalTest/*.Value*/)
+                  {
+                      using (DbManagerProxy manager = DbManagerFactory.Factory.Create(ModelUserContext.Instance))
+                      {
+                          Accessor.Instance(null).MenuExternalTestResult(manager, obj);
+                      }
+                  }
+                  /*else if (!obj.blnExternalTestPrevious.HasValue || !obj.blnExternalTestPrevious.Value)
+                  {
+                      obj.bTestInserted = false;
+                      obj.idfTesting = null;
+                      obj.ID = obj.idfMaterial;
+                      obj.PerformedByOffice = null;
+                      obj.datStartedDate = null;
+                      obj.datReceivedDate = null;
+                      obj.datConcludedDate = null;
+                      obj.TestStatusFull = null;
+                      //obj.Diagnosis = null;
+                      obj.TestNameRef = null;
+                      obj.TestResultRef = null;
+                      obj.TestCategoryRef = null;
+                      obj.TestedByOffice = null;
+                      obj.TestedByPerson = null;
+                      obj.strContactPerson = null;
+                      //obj.idfObservation = null;
+                      //obj.FFPresenter = null;
+                  }*/
+              //}
+            </text>
+          </custom_handler>
+          
+          <lookup_handler lookup="SpeciesVectorInfo" field="idfCaseOrSession" />
+          <scalar_handler class="SetScalarHandler" target="SpeciesVectorInfo" field="idfCaseOrSession" lambda="(o, fld, prev_fld) => null" />
+          <lookup_handler lookup="SampleTypeFiltered" field="intCaseHACode" />
+          <scalar_handler class="SetScalarHandler" target="SampleTypeFiltered" field="intCaseHACode" lambda="(o, fld, prev_fld) => null" />
+          <lookup_handler lookup="DerivativeType" field="idfsSampleType" />
+          <scalar_handler class="SetScalarHandler" target="DerivativeType" field="idfsSampleType" lambda="(o, fld, prev_fld) => null" />
+          <lookup_handler lookup="CollectedByPerson" field="idfFieldCollectedByOffice" />
+          <scalar_handler class="SetScalarHandler" target="CollectedByPerson" field="idfFieldCollectedByOffice" lambda="(o, fld, prev_fld) => null" />
+          <!--lookup_handler lookup="TestedByPerson" field="idfTestedByOffice" />
+          <scalar_handler class="SetScalarHandler" target="TestedByPerson" field="idfTestedByOffice" lambda="(o, fld, prev_fld) => null" /-->
+          <!--lookup_handler lookup="ResultEnteredByPerson" field="idfResultEnteredByOffice" />
+          <scalar_handler class="SetScalarHandler" target="ResultEnteredByPerson" field="idfResultEnteredByOffice" lambda="(o, fld, prev_fld) => null" /-->
+          <!--lookup_handler lookup="ValidatedByPerson" field="idfValidatedByOffice" />
+          <scalar_handler class="SetScalarHandler" target="ValidatedByPerson" field="idfValidatedByOffice" lambda="(o, fld, prev_fld) => null" /-->
+          <lookup_handler lookup="TestNameRef" field="idfsDiagnosis" predicate="c => c.bFilterTestByDiagnosis"/>
+          <scalar_handler class="SetScalarHandler" target="TestNameRef" field="idfsDiagnosis" lambda="(o, fld, prev_fld) => o.bFilterTestByDiagnosis ? null : o.TestNameRef" />
+          <lookup_handler lookup="TestNameRef" field="intCaseHACode" />
+          <lookup_handler lookup="TestNameRef" field="bFilterTestByDiagnosis" />
+          <lookup_handler lookup="TestNameByDiagnosis" field="idfsDiagnosis" />
+          <lookup_handler lookup="TestNameByDiagnosis" field="intCaseHACode" />
+          <scalar_handler class="SetScalarHandler" target="TestNameRef" field="bFilterTestByDiagnosis" lambda="(o, fld, prev_fld) => null" />
+          <lookup_handler lookup="TestResultRef" field="idfsTestName" />
+          <scalar_handler class="SetScalarHandler" target="TestResultRef" field="idfsTestName" lambda="(o, fld, prev_fld) => null" />
+          <lambda_handler target='TestCategoryRef' type='BaseReference' field='idfsTestName' lambda='c => c.TestCategoryRefLookup.FirstOrDefault(i => i.idfsBaseReference == c.TestNameByDiagnosisLookup.FirstOrDefault(k => k.idfsReference == c.idfsTestName, k => k.idfsTestCategory, () => (long)TestCategoryEnum.Presumptive))'/>
+      </fieldhandler>
+      </handlers>
+      <validators>
+        <chains>
+          <item field="datSendDate" type="DateTime">
+            <item field="CurrentDate" value="DateTime.Now" />
+          </item>
+          <item field="datFieldCollectionDate" type="DateTime">
+            <item field="CurrentDate" value="DateTime.Now" />
+          </item>
+          <item field="datFieldCollectionDate" type="DateTime">
+            <item field="datFieldSentDate">
+              <item field="datAccession">
+                <item field="datStartedDate">
+                  <item field="datConcludedDate">
+                    <item field="CurrentDate" value="DateTime.Now" />
+                  </item>
+                </item>
+              </item>
+            </item>
+          </item>
+        </chains>
+        <change>
+          <required_validator field="idfsTestStatus" target="idfsDiagnosis" label="TestDiagnosisName" predicate="c => c.intNewMode != LabNewModeEnum.AmendTestResult &amp;&amp; !c.bTestDeleted &amp;&amp; c.idfsTestStatus.HasValue &amp;&amp; c.idfsTestStatus != (long)eidss.model.Enums.TestStatus.NotStarted &amp;&amp; !(/*c.blnExternalTest.HasValue &amp;&amp; */c.blnExternalTest/*.Value*/)"/>
+        </change>
+        <post>
+          <required_validator target="intNewSample" predicate="c => (int)c.intNewMode > 0"/>
+          <required_validator target="datAccession" predicate="c => c.intNewMode == LabNewModeEnum.AcceptInGoodCondition || c.intNewMode == LabNewModeEnum.CreateAliquot || c.intNewMode == LabNewModeEnum.CreateDerivative"/>
+          <required_validator target="DerivativeType" predicate="c => c.intNewMode == LabNewModeEnum.CreateDerivative"/>
+          <required_validator target="strCalculatedCaseID" label="strCaseIDSessionID" predicate="c => c.intNewMode == LabNewModeEnum.CreateSample"/>
+          <required_validator target="SampleTypeFiltered" predicate="c => c.intNewMode == LabNewModeEnum.CreateSample"/>
+          <required_validator target="strComments" label="strComment" predicate="c => c.intNewMode == LabNewModeEnum.Accept"/>
+          <predicate_validator message="errCommentsIsTooShort" predicate="c => c.intNewMode != LabNewModeEnum.Accept || (c.intNewMode == LabNewModeEnum.Accept &amp;&amp; c.strComments.Length &gt;= 6)" />
+          <required_validator target="strFieldBarcode" predicate="c => c.intNewMode == LabNewModeEnum.GroupAccessionIn"/>
+          <required_validator target="SendToOfficeOut" label="TransferTo" predicate="c => c.intNewMode == LabNewModeEnum.TransferOutSample"/>
+          <required_validator target="idfSendToOfficeOut" label="TransferTo" predicate="c => c.intNewMode == LabNewModeEnum.TransferOutSample"/>
+          <required_validator target="strSendToOfficeOut" label="TransferTo" predicate="c => c.intNewMode == LabNewModeEnum.TransferOutSample"/>
+          <required_validator target="DiagnosisForTest" label="TestDiagnosisName" predicate="c => (c.intNewMode == LabNewModeEnum.AssignTest) || (c.intNewMode == LabNewModeEnum.None &amp;&amp; (c.isTestNotStartedBefore || c.isTestFinalExternalBefore) &amp;&amp; !c.idfsDiagnosis.HasValue)"/>
+          <required_validator target="TestNameRef" label="TestName" predicate="c =>  (c.intNewMode == LabNewModeEnum.AssignTest) || (c.intNewMode == LabNewModeEnum.None &amp;&amp; c.isTestFinalExternalBefore &amp;&amp; !c.idfsTestName.HasValue)"/>
+          <required_validator target="strReason" label="strReasonChangeTestResult" predicate="c => c.intNewMode == LabNewModeEnum.AmendTestResult"/>
+          <predicate_validator message="errReasonForChangeIsTooShort" predicate="c => c.intNewMode != LabNewModeEnum.AmendTestResult || (c.intNewMode == LabNewModeEnum.AmendTestResult &amp;&amp; c.strReason.Length &gt;= 6)" />
+          <required_validator target="TestResultForAmend" label="strNewTestResult" predicate="c => c.intNewMode == LabNewModeEnum.AmendTestResult"/>
+          <predicate_validator message="New_test_result_as_old_one" predicate="c => c.intNewMode != LabNewModeEnum.AmendTestResult || (c.intNewMode == LabNewModeEnum.AmendTestResult &amp;&amp; c.idfsOldTestResult != c.idfsTestResult)" />
+          <custom_validator_manager method="CheckSamplesForGroupAccesionInExists" />
+          <predicate_validator message="ErrExistingBarcode" predicate="c => !bDeepValidation || (bDeepValidation &amp;&amp; c.CheckBarcodeForExist())">
+            <params>
+              <param type="string" lambda="c => c.strBarcode"/>
+            </params>
+          </predicate_validator>
+
+          <required_validator target="datStartedDate" predicate="c => (c.intNewMode == LabNewModeEnum.AssignTest || c.idfTesting.HasValue) &amp;&amp; !c.bTestDeleted &amp;&amp; (c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Preliminary || (/*c.blnExternalTest.HasValue &amp;&amp; */c.blnExternalTest/*.Value*/))" />
+          <required_validator target="datConcludedDate" predicate="c => ((c.intNewMode == LabNewModeEnum.AssignTest || c.idfTesting.HasValue) &amp;&amp; !c.bTestDeleted &amp;&amp; (c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Preliminary || (/*c.blnExternalTest.HasValue &amp;&amp; */c.blnExternalTest/*.Value*/))) || (c.intNewMode == LabNewModeEnum.SetTestResult || c.intNewMode == LabNewModeEnum.ValidateTestResult)" />
+          <!--required_validator target="idfsDiagnosis" label="TestDiagnosisName" predicate="c => c.idfTesting.HasValue &amp;&amp; !c.bTestDeleted &amp;&amp; (c.blnExternalTest.HasValue &amp;&amp; c.blnExternalTest.Value)" />
+          <required_validator target="idfsTestName" label="TestName" predicate="c => c.idfTesting.HasValue &amp;&amp; !c.bTestDeleted &amp;&amp; (c.blnExternalTest.HasValue &amp;&amp; c.blnExternalTest.Value)" /-->
+          <required_validator target="idfsTestStatus" label="TestStatus" predicate="c => c.idfTesting.HasValue &amp;&amp; !c.bTestDeleted &amp;&amp; (/*c.blnExternalTest.HasValue &amp;&amp; */c.blnExternalTest/*.Value*/)" />
+          <required_validator target="idfsTestResult" label="TestResult" predicate="c => c.idfTesting.HasValue &amp;&amp; !c.bTestDeleted &amp;&amp; (/*c.blnExternalTest.HasValue &amp;&amp; */c.blnExternalTest/*.Value*/)" />
+          <!-- 10417,10418 required_validator target="idfTestedByPerson" predicate="c => c.idfTesting.HasValue &amp;&amp; !c.bTestDeleted &amp;&amp; (c.blnExternalTest.HasValue &amp;&amp; c.blnExternalTest.Value)" /-->
+          <required_validator target="strContactPerson" label="strContact" predicate="c => c.idfTesting.HasValue &amp;&amp; !c.bTestDeleted &amp;&amp; (/*c.blnExternalTest.HasValue &amp;&amp; */c.blnExternalTest/*.Value*/)" />
+          
+          <required_validator target="strCondition" label="strAccessionInComment" predicate="c => c.intNewMode == LabNewModeEnum.None &amp;&amp; c.idfsAccessionCondition.HasValue &amp;&amp; (c.idfsAccessionCondition.Value == (long)eidss.model.Enums.AccessionConditionEnum.AcceptedInPoorCondition || c.idfsAccessionCondition.Value == (long)eidss.model.Enums.AccessionConditionEnum.Rejected)"/>
+          <predicate_validator message="errAccessionInCommentIsTooShort" predicate="c => !(c.intNewMode == LabNewModeEnum.None &amp;&amp; c.idfsAccessionCondition.HasValue &amp;&amp; (c.idfsAccessionCondition.Value == (long)eidss.model.Enums.AccessionConditionEnum.AcceptedInPoorCondition || c.idfsAccessionCondition.Value == (long)eidss.model.Enums.AccessionConditionEnum.Rejected) &amp;&amp; c.strCondition.Length &lt; 6)" />
+          <required_validator target="SpeciesVectorInfo" label="strPatientSessionVectorInfo" predicate="c => c.intNewMode == LabNewModeEnum.None &amp;&amp; (c.intCaseHACode != (long)eidss.model.Enums.HACode.Human &amp;&amp; c.bIsCreateNewSample)" />
+          <custom_validator method="CustomValidations" />
+        </post>
+      </validators>
+      <actions child="LaboratorySectionItem">
+        <standard>
+          <remove type="Create"/>
+          <remove type="Edit"/>
+          <remove type="Delete"/>
+          <remove type="Close"/>
+          <remove type="Refresh"/>
+          <remove type="Report"/>
+        </standard>
+
+        <action name="OK" type="Action" forceClose="true">
+          <visual panel="Main" alignment="Right" visiblePredicate="(c,a,p,r) => (int)(c as LaboratorySectionItem).intNewMode > 0 &amp;&amp; (c as LaboratorySectionItem).intNewMode != LabNewModeEnum.CreateSample &amp;&amp; (c as LaboratorySectionItem).intNewMode != LabNewModeEnum.GroupAccessionIn &amp;&amp; (c as LaboratorySectionItem).intNewMode != LabNewModeEnum.AssignTest">
+            <regular caption="strOK_Id" icon="" tooltip="tooltipOK_Id"/>
+          </visual>
+          <run>
+            <preText>
+              obj.SetupLoad(manager);
+              return (obj.GetAccessor() as IObjectValidator).Validate(manager, obj, true, true, true);
+            </preText>
+          </run>
+        </action>
+        <action name="ItemCreate" type="Action">
+          <visual panel="Main" alignment="Right" visiblePredicate="(c,a,p,r) => (c as LaboratorySectionItem).intNewMode == LabNewModeEnum.CreateSample">
+            <regular caption="strAdd_Id" icon="" tooltip="tooltipAdd_Id"/>
+          </visual>
+          <run>
+            <params>
+              <param name="count" type="int"/>
+              <param name="parent" type="IObject"/>
+              <param name="sample" type="LaboratorySectionItem"/>
+              <param name="idfsSampleType" type="long?"/>
+              <param name="bIsMyPref" type="bool"/>
+            </params>
+            <preText>
+                obj.SetupLoad(manager);
+                var check = (obj.GetAccessor() as IObjectValidator).Validate(manager, obj, true, true, true);
+                if (!check)
+                    return new ActResult(false, obj);
+
+                for (int i = 0; i &lt; count; i++)
+                  {
+                      var o = Create(manager, parent);
+                      o.ID = o.idfMaterial;
+                      o.strCalculatedCaseID = sample.strCalculatedCaseID;
+                      o.HumanName = sample.HumanName;
+                      o.strRegion = sample.strRegion;
+                      o.strRayon = sample.strRayon;
+                      o.idfHumanCase = sample.idfHumanCase;
+                      o.idfVetCase = sample.idfVetCase;
+                      o.idfMonitoringSession = sample.idfMonitoringSession;
+                      o.idfVectorSurveillanceSession = sample.idfVectorSurveillanceSession;
+                      o.intCaseHACode = sample.intCaseHACode;
+                      o.idfCaseOrSession = sample.idfCaseOrSession;
+                      o.idfHuman = sample.idfHuman;
+                      o.SpeciesVectorInfo = o.SpeciesVectorInfoLookup.SingleOrDefault(c => c.idfSpeciesVectorInfo == sample.idfSpeciesVectorInfo);
+                      o.CaseType = o.CaseTypeLookup.SingleOrDefault(c => c.idfsBaseReference == sample.idfsCaseType);
+                      o.DiagnosisForTest = o.DiagnosisForTestLookup.SingleOrDefault(c => c.idfsDiagnosis == sample.idfsDiagnosis);
+                      o.SampleTypeFiltered = o.SampleTypeFilteredLookup.SingleOrDefault(c => c.idfsReference == idfsSampleType);
+                      o.intTestCount = 0;
+                      o.AccessionCondition = o.AccessionConditionLookup.FirstOrDefault(c => c.idfsBaseReference == (long)eidss.model.Enums.AccessionConditionEnum.AcceptedInGoodCondition);
+                      o.datFieldCollectionDate = DateTime.Today;
+                      o.SendToOffice = obj.SendToOfficeLookup.FirstOrDefault(c => c.idfInstitution == (long)EidssUserContext.User.OrganizationID);
+                      o.bIsCreateNewSample = true;
+                      o.Sample.Add(o);
+                      o.Test.Add(o);
+                      o.bIsMyPref = bIsMyPref;
+                      if (bIsMyPref)
+                          (parent as LaboratorySectionMaster).LaboratorySectionMyPrefItems.Add(o);
+                      else
+                          (parent as LaboratorySectionMaster).LaboratorySectionItems.Add(o);
+                  }
+                sample.intNewSample = 1;
+                sample.SampleTypeFiltered = null;
+                return new ActResult(true, obj);
+            </preText>
+          </run>
+        </action>
+        <action name="ItemGroupAccessionIn" type="Action">
+          <visual panel="Main" alignment="Right" visiblePredicate="(c,a,p,r) => (c as LaboratorySectionItem).intNewMode == LabNewModeEnum.GroupAccessionIn">
+            <regular caption="strAdd_Id" icon="" tooltip="tooltipAdd_Id"/>
+          </visual>
+          <run>
+            <params>
+              <param name="parent" type="IObject"/>
+              <param name="bIsMyPref" type="bool"/>
+              <param name="idfMaterial" type="long"/>
+            </params>
+            <preText>
+                obj.SetupLoad(manager);
+                
+                if (idfMaterial == 0)
+                {
+                    var check = (obj.GetAccessor() as IObjectValidator).Validate(manager, obj, true, true, true);
+                    if (!check)
+                        return new ActResult(false, obj);
+                }
+                    
+                obj.idfMaterialForGroupAccIn = (idfMaterial == 0) 
+                  ? manager.SetSpCommand("dbo.spLaboratorySection_GetByFieldBarcodeCount", 
+                    obj.strFieldBarcode,
+                    obj.bSendToCurrentOffice ? EidssSiteContext.Instance.OrganizationID : 0).ExecuteScalar&lt;long&gt;()
+                  : idfMaterial;
+                if (obj.idfMaterialForGroupAccIn > 0)
+                {
+                    var pop = manager.SetSpCommand("dbo.spLaboratorySection_GetByFieldBarcode", 
+                        //obj.strFieldBarcode, 
+                        //obj.bSendToCurrentOffice ? EidssSiteContext.Instance.OrganizationID : 0,
+                        //idfMaterial,
+                        obj.idfMaterialForGroupAccIn,
+                        ModelUserContext.CurrentLanguage
+                        ).ExecuteList&lt;LaboratorySectionItem&gt;();
+                    foreach (LaboratorySectionItem o in pop)
+                    {
+                        EditableList&lt;LaboratorySectionItem&gt; list;
+                        if (bIsMyPref)
+                            list = (parent as LaboratorySectionMaster).LaboratorySectionMyPrefItems;
+                        else
+                            list = (parent as LaboratorySectionMaster).LaboratorySectionItems;
+                        var oldObj = list.SingleOrDefault(c => c.ID == o.ID);
+                        if (oldObj != null)
+                        {
+                            if (!oldObj.idfsAccessionCondition.HasValue || oldObj.idfsAccessionCondition.Value &lt;= 0)
+                            {
+                                _SetupLoad(manager, oldObj);
+                                oldObj.m_bSetupLoaded = true;
+                                oldObj.AccessionCondition = oldObj.AccessionConditionLookup.FirstOrDefault(c => c.idfsBaseReference == (long)eidss.model.Enums.AccessionConditionEnum.AcceptedInGoodCondition);
+                            }
+                        }
+                        else
+                        {
+                            _SetupLoad(manager, o);
+                            o.m_bSetupLoaded = true;
+                            o.Parent = parent;
+                            o.AccessionCondition = o.AccessionConditionLookup.FirstOrDefault(c => c.idfsBaseReference == (long)eidss.model.Enums.AccessionConditionEnum.AcceptedInGoodCondition);
+                            o.strRegion = o.RegionLookup.FirstOrDefault(c => c.idfsRegion == o.idfsRegion, c => c.strRegionName);
+                            o.strRayon = o.RayonLookup.FirstOrDefault(c => c.idfsRayon == o.idfsRayon, c => c.strRayonName);
+                            //o.strDiagnosisName = o.DiagnosisLookup.FirstOrDefault(c => c.idfsDiagnosis == o.idfsDiagnosis, c => c.ToStringProp);
+                            o.Sample.Add(o);
+                            o.Test.Add(o);
+                            o.bIsMyPref = bIsMyPref;
+                            list.Add(o);
+                        }
+                    }
+                }
+                obj.strFieldBarcode = "";
+                return new ActResult(true, obj);
+            </preText>
+          </run>
+        </action>
+        <action name="ItemAssignTest" type="Action">
+          <visual panel="Main" alignment="Right" visiblePredicate="(c,a,p,r) => (c as LaboratorySectionItem).intNewMode == LabNewModeEnum.AssignTest">
+            <regular caption="strAdd_Id" icon="" tooltip="tooltipAdd_Id"/>
+          </visual>
+          <run>
+            <params>
+              <param name="selected" type="List&lt;IObject&gt;"/>
+              <param name="parent" type="IObject"/>
+              <param name="bIsMyPref" type="bool"/>
+            </params>
+            <preText>
+                obj.SetupLoad(manager);
+                var check = (obj.GetAccessor() as IObjectValidator).Validate(manager, obj, true, true, true);
+                if (!check)
+                    return new ActResult(false, obj);
+
+                foreach (var i in selected.Cast&lt;LaboratorySectionItem&gt;().Distinct(new LaboratorySectionItemSamplesComparator()).ToList())
+                {
+                    i.SetupLoad(manager);
+                    i.intTestCount++;
+                    LaboratorySectionItem o;
+                    if (i.idfTesting.HasValue)
+                    {
+                        o = i.CloneWithSetup(manager) as LaboratorySectionItem;
+                        o.m_bSetupLoaded = true;
+                        o.Sample.Clear();
+                        o.Test.Clear();
+                        o.Sample.Add(o);
+                        o.Test.Add(o);
+                        o.bTestInserted = true;
+                        o.bIsMyPref = bIsMyPref;
+                        if (bIsMyPref)
+                            (parent as LaboratorySectionMaster).LaboratorySectionMyPrefItems.Add(o);
+                        else
+                            (parent as LaboratorySectionMaster).LaboratorySectionItems.Add(o);
+                    }
+                    else
+                    {
+                        o = i;
+                        o.bTestInsertedFirst = true;
+                    }
+
+                    o.idfTesting = (new GetNewIDExtender&lt;LaboratorySectionItem&gt;()).GetScalar(manager, obj);
+                    o.ID = o.idfTesting.Value;
+                    
+                    var idfsDiagnosis = obj.idfsDiagnosis;
+                    var idfsTestName = obj.idfsTestName;
+                    var idfsTestResult = obj.idfsTestResult;
+                    var idfsTestCategory = obj.idfsTestCategory;
+                    var datStartedDate = obj.datStartedDate;
+                    var datConcludedDate = obj.datConcludedDate;
+
+                    o.Diagnosis = null;
+                    o.DiagnosisForTest = null;
+                    o.TestNameRef = null;
+                    o.TestResultDummy = null;
+                    o.TestResultForAmend = null;
+                    o.TestResultRef = null;
+                    o.TestCategoryRef = null;
+                    o.TestStatusShort = null;
+                    o.TestStatusFull = null;
+                    o.datStartedDate = null;
+                    o.datConcludedDate = null;
+                    
+                    //o.idfsDiagnosis = idfsDiagnosis;
+                    o.Diagnosis = o.DiagnosisLookup.FirstOrDefault(j => j.idfsDiagnosis == idfsDiagnosis);
+                    o.DiagnosisForTest = o.DiagnosisForTestLookup.FirstOrDefault(j => j.idfsDiagnosis == idfsDiagnosis);
+                    o.strDiagnosisName = o.DiagnosisForTest == null ? (o.Diagnosis == null ? "" : o.Diagnosis.name) : o.DiagnosisForTest.name;
+                    //o.idfsTestName = idfsTestName;
+                    o.TestNameRef = o.TestNameRefLookup.FirstOrDefault(j => j.idfsReference == idfsTestName);
+                    o.strTestName = o.TestNameRef == null ? "" : o.TestNameRef.name;
+                    //o.idfsTestResult = idfsTestResult;
+                    o.TestResultDummy = o.TestResultDummyLookup.FirstOrDefault(j => j.idfsBaseReference == idfsTestResult);
+                    o.TestResultForAmend = o.TestResultForAmendLookup.FirstOrDefault(j => j.idfsReference == idfsTestResult);
+                    o.TestResultRef = o.TestResultRefLookup.FirstOrDefault(j => j.idfsReference == idfsTestResult);
+                    o.strTestResult = o.TestResultRef == null ? "" : o.TestResultRef.name;
+                    //o.idfsTestCategory = idfsTestCategory;
+                    o.TestCategoryRef = o.TestCategoryRefLookup.FirstOrDefault(j => j.idfsBaseReference == idfsTestCategory);
+                    o.strTestCategory = o.TestCategoryRef == null ? "" : o.TestCategoryRef.name;
+                    o.TestStatusShort = o.TestStatusShortLookup.FirstOrDefault(j => j.idfsBaseReference == (idfsTestResult.HasValue ? (long)eidss.model.Enums.TestStatus.Preliminary : (long)eidss.model.Enums.TestStatus.NotStarted));
+                    o.TestStatusFull = o.TestStatusFullLookup.FirstOrDefault(j => j.idfsBaseReference == (idfsTestResult.HasValue ? (long)eidss.model.Enums.TestStatus.Preliminary : (long)eidss.model.Enums.TestStatus.NotStarted));
+                    o.datStartedDate = datStartedDate;
+                    o.datConcludedDate = datConcludedDate;
+                    
+                    o.idfObservation = (new GetNewIDExtender&lt;LaboratorySectionItem&gt;()).GetScalar(manager, obj);
+                    o.FFPresenter = FFPresenterModel.Accessor.Instance(null).SelectByKey(manager, o.idfObservation);
+                    o.FFPresenter.SetProperties(EidssSiteContext.Instance.CountryID, o.idfsTestName, FFTypeEnum.TestDetails, o.idfObservation.Value, o.ID);
+                    if (o.FFPresenter.CurrentTemplate != null) o.idfsFormTemplate = o.FFPresenter.CurrentTemplate.idfsFormTemplate;
+                }
+                if (obj.intNewMode == LabNewModeEnum.AssignTest)
+                {
+                    obj.TestNameRef = null;
+                    obj.TestResultRef = null;
+                    obj.TestCategoryRef = null;
+                    obj.TestStatusFull = null;
+                    obj.datStartedDate = null;
+                    obj.datConcludedDate = null;
+                }
+                return new ActResult(true, obj);
+            </preText>
+          </run>
+        </action>
+        <action name="ItemCancel" type="Action" forceClose="true">
+          <visual alignment="Right" visiblePredicate="(c,a,p,r) => (int)(c as LaboratorySectionItem).intNewMode > 0 &amp;&amp; (c as LaboratorySectionItem).intNewMode != LabNewModeEnum.CreateSample &amp;&amp; (c as LaboratorySectionItem).intNewMode != LabNewModeEnum.GroupAccessionIn &amp;&amp; (c as LaboratorySectionItem).intNewMode != LabNewModeEnum.AssignTest">
+            <regular caption="strCancel_Id" icon="" tooltip="tooltipCancel_Id"/>
+          </visual>
+        </action>
+        <action name="ItemClose" type="Action" forceClose="true">
+          <visual alignment="Right" visiblePredicate="(c,a,p,r) => (c as LaboratorySectionItem).intNewMode == LabNewModeEnum.CreateSample || (c as LaboratorySectionItem).intNewMode == LabNewModeEnum.GroupAccessionIn || (c as LaboratorySectionItem).intNewMode == LabNewModeEnum.AssignTest">
+            <regular caption="strClose_Id" icon="" tooltip="tooltipClose_Id"/>
+          </visual>
+        </action>
+
+        
+        <action name="Create" type="Create">
+          <run>
+            <creating>
+              <scalar_extender_external target="idfMaterial" class="GetNewIDExtender" />
+              <lambda_extender target="ID" type="long" lambda='c => c.idfMaterial' />
+              <lambda_extender target="idfRootMaterial" type="long?" lambda='c => c.idfMaterial' />
+              <scalar_extender_external target="idfObservation" class="GetNewIDExtender" />
+              <!--custom_extender>
+                <text>
+                  obj.FFPresenter = FFPresenterModel.Accessor.Instance(null).SelectByKey(manager, obj.idfObservation);
+                  obj.FFPresenter.SetProperties(EidssSiteContext.Instance.CountryID, obj.idfsTestName, FFTypeEnum.TestDetails, obj.idfObservation.Value, obj.ID);
+                  if (obj.FFPresenter.CurrentTemplate != null) obj.idfsFormTemplate = obj.FFPresenter.CurrentTemplate.idfsFormTemplate;
+                </text>
+              </custom_extender-->
+            </creating>
+            <created>
+              <lambda_extender target="AccessionCondition" type="BaseReference" lambda='c => c.AccessionConditionLookup.FirstOrDefault(i => i.idfsBaseReference == (long)AccessionConditionEnum.AcceptedInGoodCondition)' />
+              <!--lambda_extender target="strBarcode" type="string" lambda='c => "(new" + ++(obj.Parent as LaboratorySectionMaster).newCounter + ")"' /-->
+              <db_lambda_extender target='strBarcode' type='string' lambda='(c,m) => m.SetSpCommand("dbo.spGetNextNumber", (long)NumberingObjectEnum.Sample, DBNull.Value, DBNull.Value).ExecuteScalar&lt;string&gt;(ScalarSourceType.OutputParameter, "NextNumberValue")'/>
+            </created>
+          </run>
+        </action>
+        <action name="CreateWithNewMode" type="Create">
+          <run>
+            <params>
+              <param name="intNewMode" type="LabNewModeEnum"/>
+              <param name="idfsSampleType" type="long"/>
+              <param name="idfsTestName" type="long?"/>
+              <param name="idfCaseOrSession" type="long?" />
+              <param name="idfsCaseType" type="long?" />
+              <param name="intCaseHACode" type="int?" />
+              <param name="idfsOldTestResult" type="long?" default="null" />
+              <param name="datSendDate" type="DateTime?" default="null" />
+              <param name="idfMaterial" type="long" default="0" />
+              <param name="idfsShowDiagnosis" type="long?" default="null" />
+              <param name="datStartedDate" type="DateTime?" default="null" />
+              <param name="datConcludedDate" type="DateTime?" default="null" />
+              <param name="idfsTestResult" type="long?" default="null" />
+              <param name="idfsVetFinalDiagnosis" type="long?" default="null" />
+            </params>
+            <creating>
+              <scalar_extender_external target="ID" class="GetNewIDExtender" />
+              <lambda_extender target="intCaseHACode" type="int" lambda='c => 0' />
+              <lambda_extender target="intNewMode" type="LabNewModeEnum" lambda='c => intNewMode' />
+              <lambda_extender target="intNewSample" type="int" lambda='c => 1' />
+              <lambda_extender target="idfsSampleType" type="long" lambda='c => idfsSampleType' />
+              <lambda_extender target="idfsTestName" type="long?" lambda='c => idfsTestName' />
+              <lambda_extender target="idfCaseOrSession" type="long?" lambda='c => idfCaseOrSession' />
+              <lambda_extender target="idfsCaseType" type="long?" lambda='c => idfsCaseType' />
+              <lambda_extender target="intCaseHACode" type="int?" lambda='c => intCaseHACode' />
+              <lambda_extender target="idfsOldTestResult" type="long?" lambda='c => idfsOldTestResult' />
+              <lambda_extender target="datSendDate" type="DateTime?" lambda='c => datSendDate' />
+              <lambda_extender target="idfMaterial" type="long" lambda='c => idfMaterial' />
+              <lambda_extender target="idfsDiagnosis" type="long?" lambda='c => idfsShowDiagnosis' />
+              <lambda_extender target="datAccession" type="DateTime?" lambda="c => (intNewMode == LabNewModeEnum.AcceptInGoodCondition || intNewMode == LabNewModeEnum.CreateAliquot || intNewMode == LabNewModeEnum.CreateDerivative) ? DateTime.Today : c.datAccession"/>
+              <lambda_extender target="datStartedDate" type="DateTime?" lambda='c => datStartedDate' />
+              <lambda_extender target="datConcludedDate" type="DateTime?" lambda='c => datConcludedDate' />
+              <lambda_extender target="idfsTestResult" type="long?" lambda='c => idfsTestResult' />
+              <lambda_extender target="bSendToCurrentOffice" type="bool" lambda="c => (intNewMode == LabNewModeEnum.GroupAccessionIn) ? true : false"/>
+              <lambda_extender target="idfsVetFinalDiagnosis" type="long?" lambda='c => idfsVetFinalDiagnosis' />
+            </creating>
+            <created>
+              <lambda_extender target="DiagnosisForTest" type="TestDiagnosisLookup" lambda="c => (c.DiagnosisForTest == null &amp;&amp; c.DiagnosisForTestLookup.Count(i => !i.IsMarkedToDelete &amp;&amp; i.idfsDiagnosis != 0) == 1) ? c.DiagnosisForTestLookup.FirstOrDefault(i => !i.IsMarkedToDelete &amp;&amp; i.idfsDiagnosis != 0) : c.DiagnosisForTest"/>
+            </created>
+          </run>
+        </action>
+        <action name="CreateSampleFrom" type="Create">
+          <run>
+            <params>
+              <param name="from" type="LaboratorySectionItem"/>
+              <param name="numberType" type="string"/>
+            </params>
+            <creating>
+              <scalar_extender_external target="idfMaterial" class="GetNewIDExtender" />
+              <lambda_extender target="ID" type="long" lambda='c => c.idfMaterial' />
+              <lambda_extender target="idfsSampleType" type="long" lambda='c => from.idfsSampleType' />
+              <lambda_extender target="strSampleName" type="string" lambda='c => from.strSampleName' />
+              <lambda_extender target="idfRootMaterial" type="long?" lambda='c => from.idfRootMaterial' />
+              <lambda_extender target="idfParentMaterial" type="long?" lambda='c => from.idfMaterial' />
+              <lambda_extender target="strParentMaterial" type="string" lambda='c => from.strBarcode' />
+              <lambda_extender target="idfHuman" type="long?" lambda='c => from.idfHuman' />
+              <lambda_extender target="idfSpecies" type="long?" lambda='c => from.idfSpecies' />
+              <lambda_extender target="idfAnimal" type="long?" lambda='c => from.idfAnimal' />
+              <lambda_extender target="idfHumanCase" type="long?" lambda='c => from.idfHumanCase' />
+              <lambda_extender target="idfVetCase" type="long?" lambda='c => from.idfVetCase' />
+              <lambda_extender target="idfMonitoringSession" type="long?" lambda='c => from.idfMonitoringSession' />
+              <lambda_extender target="idfsDiagnosis" type="long?" lambda='c => from.idfsDiagnosis' />
+              <lambda_extender target="strDiagnosisName" type="string" lambda='c => from.strDiagnosisName' />
+              <lambda_extender target="idfFieldCollectedByPerson" type="long?" lambda='c => from.idfFieldCollectedByPerson' />
+              <lambda_extender target="idfFieldCollectedByOffice" type="long?" lambda='c => from.idfFieldCollectedByOffice' />
+              <lambda_extender target="idfMainTest" type="long?" lambda='c => from.idfMainTest' />
+              <lambda_extender target="datFieldCollectionDate" type="DateTime?" lambda='c => from.datFieldCollectionDate' />
+              <lambda_extender target="datFieldSentDate" type="DateTime?" lambda='c => from.datFieldSentDate' />
+              <lambda_extender target="strFieldBarcode" type="string" lambda='c => from.strFieldBarcode' />
+              <lambda_extender target="strCalculatedCaseID" type="string" lambda='c => from.strCalculatedCaseID' />
+              <lambda_extender target="strCalculatedHumanName" type="string" lambda='c => from.strCalculatedHumanName' />
+              <lambda_extender target="HumanName" type="string" lambda='c => from.HumanName' />
+              <lambda_extender target="strRegion" type="string" lambda='c => from.strRegion' />
+              <lambda_extender target="strRayon" type="string" lambda='c => from.strRayon' />
+              <lambda_extender target="idfVectorSurveillanceSession" type="long?" lambda='c => from.idfVectorSurveillanceSession' />
+              <lambda_extender target="idfVector" type="long?" lambda='c => from.idfVector' />
+              <lambda_extender target="idfSubdivision" type="long?" lambda='c => from.idfSubdivision' />
+              <lambda_extender target="idfsSampleStatus" type="long" lambda='c => (long)eidss.model.Enums.SampleStatus.Accessioned' />
+              <lambda_extender target="strSampleStatus" type="string" lambda='c => from.strSampleStatus' />
+              <lambda_extender target="idfInDepartment" type="long?" lambda='c => from.idfInDepartment' />
+              <lambda_extender target="strDepartmentName" type="string" lambda='c => from.strDepartmentName' />
+              <lambda_extender target="idfDestroyedByPerson" type="long?" lambda='c => from.idfDestroyedByPerson' />
+              <lambda_extender target="datAccession" type="DateTime?" lambda='c => DateTime.Today' />
+              <lambda_extender target="idfsAccessionCondition" type="long?" lambda='c => from.idfsAccessionCondition' />
+              <lambda_extender target="strSampleConditionReceivedStatus" type="string" lambda='c => from.strSampleConditionReceivedStatus' />
+              <lambda_extender target="idfAccesionByPerson" type="long?" lambda='c => from.idfAccesionByPerson' />
+              <lambda_extender target="datEnteringDate" type="DateTime?" lambda='c => from.datEnteringDate' />
+              <lambda_extender target="datDestructionDate" type="DateTime?" lambda='c => from.datDestructionDate' />
+              <lambda_extender target="idfsDestructionMethod" type="long?" lambda='c => from.idfsDestructionMethod' />
+              <lambda_extender target="strBarcode" type="string" lambda='c => "(new" + ++(from.Parent as LaboratorySectionMaster).newCounter + ")"' />
+              <!--db_lambda_extender target='strBarcode' type='string' lambda='(c,m) => {
+                                  switch(numberType) {
+                                    case "A":
+                                    case "D":
+                                      return m.SetSpCommand("dbo.spGetNextSampleVariantNumber", c.idfParentMaterial, numberType, DBNull.Value).ExecuteScalar&lt;string&gt;(ScalarSourceType.OutputParameter, "NextNumberValue");
+                                    default:
+                                      return m.SetSpCommand("dbo.spGetNextNumber", (long)NumberingObjectEnum.Sample, DBNull.Value, DBNull.Value).ExecuteScalar&lt;string&gt;(ScalarSourceType.OutputParameter, "NextNumberValue");
+                                  }}
+                                  '/-->
+              <lambda_extender target="strSampleNote" type="string" lambda='c => from.strSampleNote' />
+              <lambda_extender target="strCondition" type="string" lambda='c => from.strCondition' />
+              <lambda_extender target="idfsCaseType" type="long?" lambda='c => from.idfsCaseType' />
+              <lambda_extender target="idfSpeciesVectorInfo" type="long?" lambda='c => from.idfSpeciesVectorInfo' />
+              <lambda_extender target="idfCaseOrSession" type="long?" lambda='c => from.idfCaseOrSession' />
+              <lambda_extender target="intTestCount" type="int" lambda='c => 0' />
+              <lambda_extender target="idfSendToOffice" type="long?" lambda='c => from.idfSendToOffice' />
+              <scalar_extender_external target="idfObservation" class="GetNewIDExtender" />
+              <lambda_extender target="idfsVetFinalDiagnosis" type="long?" lambda='c => from.idfsVetFinalDiagnosis' />
+              <!--custom_extender>
+                <text>
+                  obj.FFPresenter = FFPresenterModel.Accessor.Instance(null).SelectByKey(manager, obj.idfObservation);
+                  obj.FFPresenter.SetProperties(EidssSiteContext.Instance.CountryID, obj.idfsTestName, FFTypeEnum.TestDetails, obj.idfObservation.Value, obj.ID);
+                  if (obj.FFPresenter.CurrentTemplate != null) obj.idfsFormTemplate = obj.FFPresenter.CurrentTemplate.idfsFormTemplate;
+                </text>
+              </custom_extender-->
+            </creating>
+          </run>
+        </action>
+
+        <action name="CreateSample" type="Action">
+          <visual app="Win" panel="Top" alignment="Right">
+            <regular caption="titleBtnCreateSample" tooltip="titleBtnCreateSample" icon="add"/>
+          </visual>
+          <permissions type="Sample.Insert"/>
+          <run>
+            <preUI webType="JScript" methodName="laboratory.CreateSample"/>
+          </run>
+        </action>
+        
+        <action name="GroupAccessionIn" type="Action">
+          <visual app="Win" panel="Top" alignment="Right">
+            <regular caption="titleGroupAccessionIn" tooltip="titleGroupAccessionIn"  icon="Sample_Accession__small_"/>
+          </visual>
+          <permissions type="AccessionIn1.Execute"/>
+          <run>
+            <preUI webType="JScript" methodName="laboratory.GroupAccessionIn"/>
+          </run>
+        </action>
+        
+        <action name="MenuAccessionIn" onRow="true" type="Action">
+          <visual panel="ContextMenu" visiblePredicate="(c,a,p,r) => r &amp;&amp; !(c as LaboratorySectionItem).idfTesting.HasValue &amp;&amp; (c as LaboratorySectionItem).idfsSampleStatus &lt;= 0 &amp;&amp; !string.IsNullOrEmpty((c as LaboratorySectionItem).strCalculatedCaseID)">
+            <regular caption="menuAccessionIn" icon="" tooltip="menuAccessionIn"/>
+          </visual>
+          <actions>
+            <action name="MenuAccessionInGoodCondition" onRow="true" type="Action">
+              <visual panel="ContextMenu" visiblePredicate="(c,a,p,r) => r &amp;&amp; true">
+                <regular caption="menuAccessionInGoodCondition" icon="" tooltip="menuAccessionInGoodCondition"/>
+              </visual>
+              <run>
+                <preUI webType="JScript" methodName="laboratory.AccessionInGoodCondition"/>
+                <params>
+                  <param name="datAccession" type="DateTime?"/>
+                </params>
+                <preText>
+                  obj.SetupLoad(manager);
+                  obj.AccessionCondition = obj.AccessionConditionLookup.FirstOrDefault(c => c.idfsBaseReference == (long)eidss.model.Enums.AccessionConditionEnum.AcceptedInGoodCondition);
+                  obj.Validation += (sender, args) => obj.strCondition = string.Format(eidss.model.Resources.EidssMessages.Get(args.MessageId), args.Pars ?? new object[] { });
+                  obj.datAccession = datAccession;
+                  if (obj.datAccession != datAccession)
+                  {
+                    return false;
+                  }
+                  return true;
+                </preText>
+              </run>
+            </action>
+            <action name="MenuAccessionInPoorCondition" onRow="true" type="Action">
+              <visual panel="ContextMenu" visiblePredicate="(c,a,p,r) => r &amp;&amp; true">
+                <regular caption="menuAccessionInPoorCondition" icon="" tooltip="menuAccessionInPoorCondition"/>
+              </visual>
+              <run>
+                <preUI webType="JScript" methodName="laboratory.AccessionInPoorCondition"/>
+                <params>
+                  <param name="strComments" type="string"/>
+                </params>
+                <preText>
+                  obj.SetupLoad(manager);
+                  obj.AccessionCondition = obj.AccessionConditionLookup.FirstOrDefault(c => c.idfsBaseReference == (long)eidss.model.Enums.AccessionConditionEnum.AcceptedInPoorCondition);
+                  obj.strCondition = strComments;
+                  return true;
+                </preText>
+              </run>
+            </action>
+            <action name="MenuAccessionInRejected" onRow="true" type="Action">
+              <visual panel="ContextMenu" visiblePredicate="(c,a,p,r) => r &amp;&amp; true">
+                <regular caption="menuAccessionInRejected" icon="" tooltip="menuAccessionInRejected"/>
+              </visual>
+              <run>
+                <preUI webType="JScript" methodName="laboratory.AccessionInRejected"/>
+                <params>
+                  <param name="strComments" type="string"/>
+                </params>
+                <preText>
+                  obj.SetupLoad(manager);
+                  obj.AccessionCondition = obj.AccessionConditionLookup.FirstOrDefault(c => c.idfsBaseReference == (long)eidss.model.Enums.AccessionConditionEnum.Rejected);
+                  obj.strCondition = strComments;
+                  return true;
+                </preText>
+              </run>
+            </action>
+          </actions>
+        </action>
+
+        <action name="MenuAssignTest" onRow="true" type="Action">
+          <visual panel="ContextMenu" visiblePredicate="(c,a,p,r) => r &amp;&amp; !(c as LaboratorySectionItem).IsNew &amp;&amp; (c as LaboratorySectionItem).idfsSampleStatusOriginal == (long)eidss.model.Enums.SampleStatus.Accessioned &amp;&amp; (c as LaboratorySectionItem).idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.Accessioned &amp;&amp; (c as LaboratorySectionItem).idfsAccessionCondition.Value != (long)eidss.model.Enums.AccessionConditionEnum.Rejected &amp;&amp; (a == null ? true : (a as LaboratorySectionItem).strCalculatedCaseID == (c as LaboratorySectionItem).strCalculatedCaseID)">
+            <regular caption="menuAssignTest" icon="" tooltip="menuAssignTest"/>
+          </visual>
+          <run>
+            <preUI webType="JScript" methodName="laboratory.AssignTest"/>
+            <preText>
+              obj.SetupLoad(manager);
+              return true;
+            </preText>
+          </run>
+        </action>
+        <action name="MenuExternalTestResult" onRow="true" type="Action" isSingle="true">
+          <visual panel="ContextMenu" visiblePredicate="(c,a,p,r) => r &amp;&amp; (c as LaboratorySectionItem).idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.OutOfRepository &amp;&amp; (c as LaboratorySectionItem).bExternalOffice.HasValue &amp;&amp; (c as LaboratorySectionItem).bExternalOffice.Value">
+            <regular caption="menuExternalTestResult" icon="" tooltip="menuExternalTestResult"/>
+          </visual>
+          <run>
+            <preText>
+              obj.SetupLoad(manager);
+              obj.intTestCount++;
+              LaboratorySectionItem o;
+              if (obj.idfTesting.HasValue)
+              {
+                  o = obj.CloneWithSetup(manager) as LaboratorySectionItem;
+                  o.Sample.Clear();
+                  o.Test.Clear();
+                  o.Sample.Add(o);
+                  o.Test.Add(o);
+                  o.SampleStatus = o.SampleStatusLookup.FirstOrDefault(c => c.idfsBaseReference == obj.idfsSampleStatus);
+                  o.SampleStatusFull = o.SampleStatusFullLookup.FirstOrDefault(c => c.idfsBaseReference == obj.idfsSampleStatus);
+                  o.bTestInserted = true;
+                  
+                  o.LockNotifyChanges();
+                  o.blnExternalTest = true;
+                  o.UnlockNotifyChanges();
+                  
+                  o.bIsMyPref = obj.bIsMyPref;
+                  if (obj.bIsMyPref)
+                      (obj.Parent as LaboratorySectionMaster).LaboratorySectionMyPrefItems.Add(o);
+                  else
+                      (obj.Parent as LaboratorySectionMaster).LaboratorySectionItems.Add(o);
+              }
+              else
+              {
+                  o = obj;
+                  o.bTestInsertedFirst = true;
+                  if (/*!o.blnExternalTest.HasValue || */!o.blnExternalTest/*.Value*/)
+                  {
+                      obj.intTestCount--;
+                      o.blnExternalTest = true;
+                      return true;
+                  }
+              }
+
+              o.idfTesting = (new GetNewIDExtender&lt;LaboratorySectionItem&gt;()).GetScalar(manager, obj);
+              o.ID = o.idfTesting.Value;
+              o.idfPerformedByOffice = o.idfSendToOfficeOut;
+              o.datStartedDate = DateTime.Today;
+              o.datReceivedDate = DateTime.Today;
+              o.datConcludedDate = DateTime.Today;
+              o.TestStatusFull = o.TestStatusFullLookup.FirstOrDefault(j => j.idfsBaseReference == (long)eidss.model.Enums.TestStatus.Finalized);
+              //o.Diagnosis = null;
+              o.TestNameRef = null;
+              o.TestResultRef = null;
+              o.TestCategoryRef = null;
+              o.TestedByOffice = o.TestedByOfficeLookup.FirstOrDefault(l => l.idfInstitution == (long)EidssUserContext.User.OrganizationID);
+              o.TestedByPerson = null;
+              o.ValidatedByOffice = null;
+              o.ValidatedByPerson = null;
+              o.strContactPerson = null;
+              o.idfObservation = (new GetNewIDExtender&lt;LaboratorySectionItem&gt;()).GetScalar(manager, obj);
+              o.FFPresenter = FFPresenterModel.Accessor.Instance(null).SelectByKey(manager, o.idfObservation);
+              o.FFPresenter.SetProperties(EidssSiteContext.Instance.CountryID, o.idfsTestName, FFTypeEnum.TestDetails, o.idfObservation.Value, o.ID);
+              if (o.FFPresenter.CurrentTemplate != null) o.idfsFormTemplate = o.FFPresenter.CurrentTemplate.idfsFormTemplate;
+
+              return true;
+            </preText>
+          </run>
+        </action>
+        <action name="MenuCreateAliquot" onRow="true" type="Action">
+          <visual panel="ContextMenu" visiblePredicate="(c,a,p,r) => r &amp;&amp; !(c as LaboratorySectionItem).IsNew &amp;&amp; (c as LaboratorySectionItem).idfsSampleStatusOriginal == (long)eidss.model.Enums.SampleStatus.Accessioned &amp;&amp; (c as LaboratorySectionItem).idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.Accessioned &amp;&amp; (!(c as LaboratorySectionItem).idfsAccessionCondition.HasValue || (c as LaboratorySectionItem).idfsAccessionCondition.Value != (long)eidss.model.Enums.AccessionConditionEnum.Rejected)">
+            <regular caption="menuCreateAliquot" icon="" tooltip="menuCreateAliquot"/>
+          </visual>
+          <permissions type="Sample.Insert"/>
+          <run>
+            <preUI webType="JScript" methodName="laboratory.CreateAliquot"/>
+            <params>
+              <param name="count" type="int"/>
+              <param name="datAccession" type="DateTime?"/>
+            </params>
+            <preText>
+              if (datAccession &lt; obj.datAccession)
+              {
+                  obj.strCondition = String.Format(eidss.model.Resources.EidssMessages.Get("errParentAccessionDateMoreThanInAliquotDerivative"), obj.datAccession, datAccession);
+                  return new ActResult(false, obj);
+              }
+              obj.SetupLoad(manager);
+              for (int i = 0; i &lt; count; i++)
+                {
+                    var o = CreateSampleFrom(manager, obj.Parent, obj, "A");
+                    o.SampleKind = o.SampleKindLookup.SingleOrDefault(c => c.idfsBaseReference == (long)eidss.model.Enums.SampleKind.Aliquot);
+                    o.datAccession = datAccession;
+                    o.Sample.Add(o);
+                    o.Test.Add(o);
+                    o.bIsMyPref = obj.bIsMyPref;
+                    if (obj.bIsMyPref)
+                        (obj.Parent as LaboratorySectionMaster).LaboratorySectionMyPrefItems.Add(o);
+                    else
+                        (obj.Parent as LaboratorySectionMaster).LaboratorySectionItems.Add(o);
+                }
+              return new ActResult(true, obj);
+            </preText>
+          </run>
+        </action>
+        <action name="MenuCreateDerivative" onRow="true" type="Action">
+          <visual panel="ContextMenu" visiblePredicate="(c,a,p,r) => r &amp;&amp; !(c as LaboratorySectionItem).IsNew &amp;&amp; (c as LaboratorySectionItem).idfsSampleStatusOriginal == (long)eidss.model.Enums.SampleStatus.Accessioned &amp;&amp; (c as LaboratorySectionItem).idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.Accessioned &amp;&amp; (a == null ? true : (a as LaboratorySectionItem).idfsSampleType == (c as LaboratorySectionItem).idfsSampleType) &amp;&amp; (!(c as LaboratorySectionItem).idfsAccessionCondition.HasValue || (c as LaboratorySectionItem).idfsAccessionCondition.Value != (long)eidss.model.Enums.AccessionConditionEnum.Rejected)">
+            <regular caption="menuCreateDerivative" icon="" tooltip="menuCreateDerivative"/>
+          </visual>
+          <permissions type="Sample.Insert"/>
+          <run>
+            <preUI webType="JScript" methodName="laboratory.CreateDerivative"/>
+            <params>
+              <param name="count" type="int"/>
+              <param name="idfsSampleType" type="long"/>
+              <param name="datAccession" type="DateTime?"/>
+            </params>
+            <preText>
+              if (datAccession &lt; obj.datAccession)
+              {
+                  obj.strCondition = String.Format(eidss.model.Resources.EidssMessages.Get("errParentAccessionDateMoreThanInAliquotDerivative"), obj.datAccession, datAccession);
+                  return new ActResult(false, obj);
+              }
+              obj.SetupLoad(manager);
+              for (int i = 0; i &lt; count; i++)
+                {
+                    var o = CreateSampleFrom(manager, obj.Parent, obj, "D");
+                    o.SampleTypeAll = o.SampleTypeAllLookup.SingleOrDefault(c => c.idfsBaseReference == idfsSampleType);
+                    o.SampleKind = o.SampleKindLookup.SingleOrDefault(c => c.idfsBaseReference == (long)eidss.model.Enums.SampleKind.Derivative);
+                    o.datAccession = datAccession;
+                    o.Sample.Add(o);
+                    o.Test.Add(o);
+                    o.bIsMyPref = obj.bIsMyPref;
+                    if (obj.bIsMyPref)
+                        (obj.Parent as LaboratorySectionMaster).LaboratorySectionMyPrefItems.Add(o);
+                    else
+                        (obj.Parent as LaboratorySectionMaster).LaboratorySectionItems.Add(o);
+                }
+              return new ActResult(true, obj);
+            </preText>
+          </run>
+        </action>
+        <action name="MenuTransferOutSample" onRow="true" type="Action">
+          <visual panel="ContextMenu" visiblePredicate="(c,a,p,r) => r  /*&amp;&amp; !(c as LaboratorySectionItem).idfTesting.HasValue*/ &amp;&amp; !(c as LaboratorySectionItem).IsNew &amp;&amp; (c as LaboratorySectionItem).idfsSampleStatusOriginal == (long)eidss.model.Enums.SampleStatus.Accessioned &amp;&amp; (c as LaboratorySectionItem).idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.Accessioned &amp;&amp; (!(c as LaboratorySectionItem).idfsAccessionCondition.HasValue || (c as LaboratorySectionItem).idfsAccessionCondition.Value != (long)eidss.model.Enums.AccessionConditionEnum.Rejected)">
+            <regular caption="menuTransferOutSample" icon="" tooltip="menuTransferOutSample"/>
+          </visual>
+          <run>
+            <preUI webType="JScript" methodName="laboratory.TransferOutSample"/>
+            <params>
+              <param name="idfSendToOfficeOut" type="long?"/>
+              <param name="datSendDate" type="DateTime?"/>
+            </params>
+            <preText>
+              obj.SetupLoad(manager);
+              obj.SendToOfficeOut = obj.SendToOfficeOutLookup.FirstOrDefault(c => c.idfInstitution == idfSendToOfficeOut);
+              obj.datSendDate = datSendDate;
+              return new ActResult(true, obj);
+            </preText>
+          </run>
+        </action>
+
+        <action name="MenuSeparator1" onRow="true" type="Action">
+          <visual panel="ContextMenu">
+            <regular caption="-" icon="" tooltip=""/>
+          </visual>
+        </action>
+
+        <action name="MenuStartTest" onRow="true" type="Action">
+          <visual panel="ContextMenu" visiblePredicate="(c,a,p,r) => r &amp;&amp; (c as LaboratorySectionItem).idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.Accessioned &amp;&amp; (c as LaboratorySectionItem).idfTesting.HasValue &amp;&amp; (c as LaboratorySectionItem).idfsTestStatus == (long)eidss.model.Enums.TestStatus.NotStarted">
+            <regular caption="menuStartTest" icon="" tooltip="menuStartTest"/>
+          </visual>
+          <run>
+            <preUI webType="JScript" methodName="laboratory.StartTest"/>
+            <params>
+              <param name="datStartedDate" type="DateTime?"/>
+            </params>
+            <preText>
+              obj.SetupLoad(manager);
+              obj.TestStatusFull = obj.TestStatusFullLookup.FirstOrDefault(c => c.idfsBaseReference == (long)eidss.model.Enums.TestStatus.InProcess);
+              obj.Validation += (sender, args) => obj.strCondition = string.Format(eidss.model.Resources.EidssMessages.Get(args.MessageId), args.Pars ?? new object[] { });
+              obj.datStartedDate = datStartedDate.HasValue ? datStartedDate : obj.datStartedDate;
+              if (obj.datStartedDate != datStartedDate &amp;&amp; datStartedDate.HasValue)
+              {
+                  return false;
+              }
+              return true;
+            </preText>
+          </run>
+        </action>
+        <action name="MenuSetTestResult" onRow="true" type="Action">
+          <visual panel="ContextMenu" visiblePredicate="(c,a,p,r) => r &amp;&amp; (c as LaboratorySectionItem).idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.Accessioned &amp;&amp; (c as LaboratorySectionItem).idfTesting.HasValue &amp;&amp; ((c as LaboratorySectionItem).idfsTestStatus == (long)eidss.model.Enums.TestStatus.NotStarted || (c as LaboratorySectionItem).idfsTestStatus == (long)eidss.model.Enums.TestStatus.InProcess || (c as LaboratorySectionItem).idfsTestStatus == (long)eidss.model.Enums.TestStatus.Preliminary) &amp;&amp; (a == null ? true : (a as LaboratorySectionItem).idfsTestStatus == (c as LaboratorySectionItem).idfsTestStatus)">
+            <regular caption="menuSetTestResult" icon="" tooltip="menuSetTestResult"/>
+          </visual>
+          <run>
+            <preUI webType="JScript" methodName="laboratory.SetTestResult"/>
+            <params>
+              <param name="idfsTestResult" type="long"/>
+              <param name="datConcludedDate" type="DateTime?"/>
+            </params>
+            <preText>
+              obj.SetupLoad(manager);
+              obj.TestStatusFull = obj.TestStatusFullLookup.FirstOrDefault(c => c.idfsBaseReference == (long)eidss.model.Enums.TestStatus.Preliminary);
+              obj.TestResultRef = obj.TestResultRefLookup.FirstOrDefault(c => c.idfsReference == idfsTestResult);
+              obj.Validation += (sender, args) => obj.strCondition = string.Format(eidss.model.Resources.EidssMessages.Get(args.MessageId), args.Pars ?? new object[] { });
+              obj.datConcludedDate = datConcludedDate;
+              if (obj.datConcludedDate != datConcludedDate)
+              {
+                  return false;
+              }
+              return true;
+            </preText>
+          </run>
+          <actions>
+            <dynamic container="TestResultRef" type="TestResultLookup" filter="c => c.idfsReference != 0" name="c => c.idfsReference.ToString()" param="idfsReference">
+              <visual>
+                <regular caption="c => c.name" tooltip="c => c.name"/>
+              </visual>
+            </dynamic>
+          </actions>
+        </action>
+        <action name="MenuValidateTestResult" onRow="true" type="Action">
+          <visual panel="ContextMenu" visiblePredicate="(c,a,p,r) => r &amp;&amp; (c as LaboratorySectionItem).idfTesting.HasValue &amp;&amp; (c as LaboratorySectionItem).idfsTestStatus == (long)eidss.model.Enums.TestStatus.Preliminary">
+            <regular caption="menuValidateTestResult" icon="" tooltip="menuValidateTestResult"/>
+          </visual>
+          <permissions type="CanFinalizeLabTest"/>
+          <run>
+            <preUI webType="JScript" methodName="laboratory.ValidateTestResult"/>
+            <params>
+              <param name="datConcludedDate" type="DateTime?"/>
+            </params>
+            <preText>
+              obj.SetupLoad(manager);
+              var check = (obj.GetAccessor() as IObjectValidator).Validate(manager, obj, true, true, true);
+              if (!check)
+                  return new ActResult(false, obj);
+                  
+              obj.TestStatusFull = obj.TestStatusFullLookup.FirstOrDefault(c => c.idfsBaseReference == (long)eidss.model.Enums.TestStatus.Finalized);
+              obj.Validation += (sender, args) => obj.strCondition = string.Format(eidss.model.Resources.EidssMessages.Get(args.MessageId), args.Pars ?? new object[] { });
+              obj.datConcludedDate = datConcludedDate;
+              if (obj.datConcludedDate != datConcludedDate)
+              {
+                  return false;
+              }
+              return true;
+            </preText>
+          </run>
+        </action>
+        <action name="MenuAmendTestResult" onRow="true" type="Action" isSingle="true">
+          <visual panel="ContextMenu" visiblePredicate="(c,a,p,r) => r &amp;&amp; (c as LaboratorySectionItem).idfTesting.HasValue &amp;&amp; ((c as LaboratorySectionItem).isTestFinalOrAmendSaved)">
+            <regular caption="menuAmendTestResult" icon="" tooltip="menuAmendTestResult"/>
+          </visual>
+          <permissions type="CanAmendTest"/>
+          <run>
+            <preUI webType="JScript" methodName="laboratory.AmendTestResult"/>
+            <params>
+              <param name="strReason" type="string"/>
+              <param name="idfsTestResult" type="long"/>
+            </params>
+            <preText>
+                obj.SetupLoad(manager);
+                if (obj.AmendmentHistory.SingleOrDefault(c => c.IsNew) == null)
+                {
+                    var item = LabTestAmendment.Accessor.Instance(null).Create(manager, obj, obj.idfTesting.Value, obj.idfsTestResult, idfsTestResult, strReason);
+                    obj.AmendmentHistory.Add(item);
+                    obj.datConcludedDate = DateTime.Today;
+                }
+                else
+                {
+                    var item = obj.AmendmentHistory.Single(c => c.IsNew);
+                    item.strReason = strReason;
+                    item.NewTestResult = item.NewTestResultLookup.SingleOrDefault(c => c.idfsBaseReference == idfsTestResult);
+                }
+                obj.TestResultRef = obj.TestResultRefLookup.FirstOrDefault(c => c.idfsReference == idfsTestResult);
+                obj.TestStatusFull = obj.TestStatusFullLookup.FirstOrDefault(c => c.idfsBaseReference == (long)eidss.model.Enums.TestStatus.Amended);
+                return true;
+            </preText>
+          </run>
+        </action>
+        
+        <action name="MenuSeparator2" onRow="true" type="Action">
+          <visual panel="ContextMenu">
+            <regular caption="-" icon="" tooltip=""/>
+          </visual>
+        </action>
+        
+        <action name="MenuAddToPreferences" onRow="true" type="Action">
+          <visual panel="ContextMenu" visiblePredicate="(c,a,p,r) => r &amp;&amp; !(c as LaboratorySectionItem).bIsMyPref &amp;&amp; !(c as LaboratorySectionItem).IsNew &amp;&amp; !(c as LaboratorySectionItem).bTestInserted &amp;&amp; (!(c as LaboratorySectionItem).idfsAccessionCondition.HasValue || (c as LaboratorySectionItem).idfsAccessionCondition.Value != (long)eidss.model.Enums.AccessionConditionEnum.Rejected)">
+            <regular caption="menuAddToPreferences" icon="" tooltip="menuAddToPreferences"/>
+          </visual>
+          <run>
+            <preText>
+              obj.SetupLoad(manager);
+              manager.SetSpCommand("dbo.spLocalSamplesTestsPreference_Add"
+                , manager.Parameter("idfTestingOrMaterial", obj.bTestInsertedFirst ? obj.idfMaterial : obj.ID)
+                , manager.Parameter("idfUserID", (long)ModelUserContext.Instance.CurrentUser.ID)
+                ).ExecuteNonQuery();
+              return true;
+            </preText>
+          </run>
+        </action>
+        <action name="MenuRemoveFromPreferences" onRow="true" type="Action">
+          <visual panel="ContextMenu" visiblePredicate="(c,a,p,r) => r &amp;&amp; (c as LaboratorySectionItem).bIsMyPref &amp;&amp; !(c as LaboratorySectionItem).IsNew &amp;&amp; !(c as LaboratorySectionItem).bTestInserted">
+            <regular caption="menuRemoveFromPreferences" icon="" tooltip="menuRemoveFromPreferences"/>
+          </visual>
+          <run>
+            <preText>
+              obj.SetupLoad(manager);
+              manager.SetSpCommand("dbo.spLocalSamplesTestsPreference_Remove"
+                , manager.Parameter("idfTestingOrMaterial", obj.ID)
+                , manager.Parameter("idfUserID", (long)ModelUserContext.Instance.CurrentUser.ID)
+                ).ExecuteNonQuery();
+              (obj.Parent as LaboratorySectionMaster).LaboratorySectionMyPrefItems.Remove(obj);
+              return true;
+            </preText>
+          </run>
+        </action>
+
+        <action name="MenuRemove" onRow="true" type="Action">
+          <visual panel="ContextMenu" visiblePredicate="(c,a,p,r) => r &amp;&amp; !c.HasChanges">
+            <regular caption="menuRemove" icon="" tooltip="menuRemove"/>
+          </visual>
+          <run>
+            <preText>
+              if (obj.bIsMyPref)
+                  (obj.Parent as LaboratorySectionMaster).LaboratorySectionMyPrefItems.Remove(obj);
+              else
+                  (obj.Parent as LaboratorySectionMaster).LaboratorySectionItems.Remove(obj);
+              return true;
+            </preText>
+          </run>
+        </action>
+        <action name="MenuCancelChanges" onRow="true" type="Action">
+          <visual panel="ContextMenu" visiblePredicate="(c,a,p,r) => r &amp;&amp; c.HasChanges">
+            <regular caption="menuCancelChanges" icon="" tooltip="menuCancelChanges"/>
+          </visual>
+          <run>
+            <preText>
+              if (obj.IsNew || obj.bTestInserted)
+              {
+                if (obj.bIsMyPref)
+                    (obj.Parent as LaboratorySectionMaster).LaboratorySectionMyPrefItems.Remove(obj);
+                else
+                    (obj.Parent as LaboratorySectionMaster).LaboratorySectionItems.Remove(obj);
+              }
+              else
+              {
+                obj.DeepRejectChanges();
+                obj.DeepRejectChanges();
+              }
+              return true;
+            </preText>
+          </run>
+        </action>
+       
+        <action name="MenuSeparator3" onRow="true" type="Action">
+          <visual panel="ContextMenu">
+            <regular caption="-" icon="" tooltip=""/>
+          </visual>
+        </action>
+
+        <action name="MenuSampleDestruction" onRow="true" type="Action">
+          <visual panel="ContextMenu" visiblePredicate="(c,a,p,r) => r /*&amp;&amp; !(c as LaboratorySectionItem).idfTesting.HasValue*/">
+            <regular caption="menuSampleDestruction" icon="" tooltip="menuSampleDestruction"/>
+          </visual>
+          <actions>
+            <action name="MenuRoutineSampleDestruction" onRow="true" type="Action">
+              <visual panel="ContextMenu" visiblePredicate="(c,a,p,r) => r /*&amp;&amp; !(c as LaboratorySectionItem).idfTesting.HasValue*/ &amp;&amp; (c as LaboratorySectionItem).idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.Accessioned">
+                <regular caption="menuRoutineSampleDestruction" icon="" tooltip="menuRoutineSampleDestruction"/>
+              </visual>
+              <run>
+                <params>
+                  <param name="idfsDestructionMethod" type="long"/>
+                </params>
+                <preText>
+                  obj.SetupLoad(manager);
+                  obj.SampleStatus = obj.SampleStatusLookup.FirstOrDefault(c => c.idfsBaseReference == (long)eidss.model.Enums.SampleStatus.RoutineDestruction);
+                  obj.SampleStatusFull = obj.SampleStatusFullLookup.FirstOrDefault(c => c.idfsBaseReference == (long)eidss.model.Enums.SampleStatus.RoutineDestruction);
+                  obj.DestructionMethod = obj.DestructionMethodLookup.FirstOrDefault(c => c.idfsBaseReference == idfsDestructionMethod);
+                  obj.idfMarkedForDispositionByPerson = (long)EidssUserContext.User.EmployeeID;
+                  obj.datDestructionDate = DateTime.Today;
+                  obj.Freezer = null;
+                  return true;
+                </preText>
+              </run>
+              <actions>
+                <dynamic container="DestructionMethod" type="BaseReference" filter="c => c.idfsBaseReference != 0" name="c => c.idfsBaseReference.ToString()" param="idfsBaseReference" newparams="true">
+                  <visual>
+                    <regular caption="c => c.name" tooltip="c => c.name"/>
+                  </visual>
+                </dynamic>
+              </actions>
+            </action>
+            <action name="MenuAcceptDestruction" onRow="true" type="Action">
+              <visual panel="ContextMenu" visiblePredicate="(c,a,p,r) => r /*&amp;&amp; !(c as LaboratorySectionItem).idfTesting.HasValue*/ &amp;&amp; (c as LaboratorySectionItem).idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.RoutineDestruction">
+                <regular caption="menuAcceptDestruction" icon="" tooltip="menuAcceptDestruction"/>
+              </visual>
+              <run>
+                <preText>
+                  obj.SetupLoad(manager);
+                  obj.SampleStatus = obj.SampleStatusLookup.FirstOrDefault(c => c.idfsBaseReference == (long)eidss.model.Enums.SampleStatus.Destroyed);
+                  obj.SampleStatusFull = obj.SampleStatusFullLookup.FirstOrDefault(c => c.idfsBaseReference == (long)eidss.model.Enums.SampleStatus.Destroyed);
+                  obj.idfDestroyedByPerson = (long)EidssUserContext.User.EmployeeID;
+                  return true;
+                </preText>
+              </run>
+            </action>
+            <action name="MenuRejectDestruction" onRow="true" type="Action">
+              <visual panel="ContextMenu" visiblePredicate="(c,a,p,r) => r /*&amp;&amp; !(c as LaboratorySectionItem).idfTesting.HasValue*/ &amp;&amp; (c as LaboratorySectionItem).idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.RoutineDestruction">
+                <regular caption="menuRejectDestruction" icon="" tooltip="menuRejectDestruction"/>
+              </visual>
+              <run>
+                <preText>
+                  obj.SetupLoad(manager);
+                  obj.SampleStatus = obj.SampleStatusLookup.FirstOrDefault(c => c.idfsBaseReference == (long)eidss.model.Enums.SampleStatus.Accessioned);
+                  obj.SampleStatusFull = obj.SampleStatusFullLookup.FirstOrDefault(c => c.idfsBaseReference == (long)eidss.model.Enums.SampleStatus.Accessioned);
+                  obj.DestructionMethod = null;
+                  obj.idfMarkedForDispositionByPerson = null;
+                  obj.datDestructionDate = null;
+                  return true;
+                </preText>
+              </run>
+            </action>
+          </actions>
+        </action>
+        <action name="MenuDelete" onRow="true" type="Action">
+          <visual panel="ContextMenu" visiblePredicate="(c,a,p,r) => r &amp;&amp; (!(c as LaboratorySectionItem).idfsAccessionCondition.HasValue || (c as LaboratorySectionItem).idfsAccessionCondition.Value != (long)eidss.model.Enums.AccessionConditionEnum.Rejected)">
+            <regular caption="menuDelete" icon="" tooltip="menuDelete"/>
+          </visual>
+          <actions>
+            <action name="MenuDeleteSample" onRow="true" type="Action">
+              <visual panel="ContextMenu" visiblePredicate="(c,a,p,r) => r &amp;&amp; !(c as LaboratorySectionItem).idfTesting.HasValue &amp;&amp; (c as LaboratorySectionItem).idfsSampleStatus &gt; 0  &amp;&amp; (c as LaboratorySectionItem).idfsSampleStatus != (long)eidss.model.Enums.SampleStatus.IsDeleted">
+                <regular caption="menuDeleteSample" icon="" tooltip="menuDeleteSample"/>
+              </visual>
+              <run>
+                <preUI webType="JScript" methodName="laboratory.DeleteSample"/>
+                <preText>
+                  obj.SetupLoad(manager);
+                  obj.SampleStatusFull = obj.SampleStatusFullLookup.FirstOrDefault(c => c.idfsBaseReference == (long)eidss.model.Enums.SampleStatus.IsDeleted);
+                  return true;
+                </preText>
+              </run>
+            </action>
+            <action name="MenuDeleteTest" onRow="true" type="Action">
+              <visual panel="ContextMenu" visiblePredicate="(c,a,p,r) => r  &amp;&amp; (c as LaboratorySectionItem).idfTesting.HasValue &amp;&amp; ((c as LaboratorySectionItem).idfsTestStatus == (long)eidss.model.Enums.TestStatus.NotStarted || (c as LaboratorySectionItem).idfsTestStatus == (long)eidss.model.Enums.TestStatus.InProcess || (c as LaboratorySectionItem).idfsTestStatus == (long)eidss.model.Enums.TestStatus.Preliminary)">
+                <regular caption="menuDeleteTest" icon="" tooltip="menuDeleteTest"/>
+              </visual>
+              <run>
+                <preText>
+                  obj.SetupLoad(manager);
+                  obj.bTestDeleted = true;
+                  obj.TestStatusFull = obj.TestStatusFullLookup.FirstOrDefault(c => c.idfsBaseReference == -1);
+                  return true;
+                </preText>
+              </run>
+            </action>
+          </actions>
+        </action>
+
+        <action name="MenuSeparator4" onRow="true" type="Action">
+          <visual panel="ContextMenu">
+            <regular caption="-" icon="" tooltip=""/>
+          </visual>
+        </action>
+
+        <action name="MenuPaperForms" onRow="true" type="Action">
+          <visual panel="ContextMenu" app="Web" visiblePredicate="(c,a,p,r) => r &amp;&amp; (!(c as LaboratorySectionItem).idfsAccessionCondition.HasValue || (c as LaboratorySectionItem).idfsAccessionCondition.Value != (long)eidss.model.Enums.AccessionConditionEnum.Rejected)">
+            <regular caption="titlePaperForms" icon="" tooltip="titlePaperForms"/>
+          </visual>
+          <actions>
+            <action name="MenuSampleReport" onRow="true" type="Action" isSingle="true">
+              <visual panel="ContextMenu" app="Web" visiblePredicate="(c,a,p,r) => r">
+                <regular caption="rptSampleReport" icon="" tooltip="rptSampleReport"/>
+              </visual>
+              <run>
+                <preUI webType="JScript" methodName="laboratory.SampleReport"/>
+              </run>
+            </action>
+            <action name="MenuTestResultReport" onRow="true" type="Action" isSingle="true">
+              <visual panel="ContextMenu" app="Web" visiblePredicate="(c,a,p,r) => r &amp;&amp; (c as LaboratorySectionItem).idfTesting.HasValue &amp;&amp; !(c as LaboratorySectionItem).bTestInserted">
+                <regular caption="rptTestResultReport" icon="" tooltip="rptTestResultReport"/>
+              </visual>
+              <run>
+                <preUI webType="JScript" methodName="laboratory.TestResultReport"/>
+              </run>
+            </action>
+            <action name="MenuSampleDestructionReport" onRow="true" type="Action">
+              <visual panel="ContextMenu" app="Web" visiblePredicate="(c,a,p,r) => r &amp;&amp; ((c as LaboratorySectionItem).idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.RoutineDestruction || (c as LaboratorySectionItem).idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.Destroyed)">
+                <regular caption="rptSampleDestructionReport" icon="" tooltip="rptSampleDestructionReport"/>
+              </visual>
+              <run>
+                <preUI webType="JScript" methodName="laboratory.SampleDestructionReport"/>
+              </run>
+            </action>
+          </actions>
+        </action>
+        <action name="MenuPrintBarcode" onRow="true" type="Action">
+          <visual panel="ContextMenu" visiblePredicate='(c,a,p,r) => r &amp;&amp; (c as LaboratorySectionItem).idfsSampleStatus &gt; 0 &amp;&amp; (c as LaboratorySectionItem).idfsSampleStatus != (long)eidss.model.Enums.SampleStatus.Destroyed &amp;&amp; !(c as LaboratorySectionItem).strBarcode.StartsWith("(new") &amp;&amp; (!(c as LaboratorySectionItem).idfsAccessionCondition.HasValue || (c as LaboratorySectionItem).idfsAccessionCondition.Value != (long)eidss.model.Enums.AccessionConditionEnum.Rejected)'>
+            <regular caption="menuPrintBarcode" icon="" tooltip="menuPrintBarcode"/>
+          </visual>
+          <run>
+            <preUI webType="JScript" methodName="laboratory.PrintBarcode"/>
+          </run>
+        </action>
+
+
+      </actions>
+    </table>
+  </tables>
+</object>

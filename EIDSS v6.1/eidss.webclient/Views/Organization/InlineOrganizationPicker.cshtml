@@ -1,0 +1,29 @@
+﻿@model bv.model.Model.Core.IObject
+           
+@using eidss.webclient.Utils
+
+<script language="javascript" type="text/javascript">
+    $($('#@(ViewBag.MainDivId)')).ready(function () {
+        organization.initInlinePicker('@(ViewBag.BtnSearchPicker)', '@(ViewBag.BtnClianPicker)', '@(ViewBag.IsSearchButtonReadOnly)', '@(ViewBag.IsClianButtonReadOnly)',
+        '@(ViewBag.MainDivId)');
+    });  
+</script>
+
+@{
+    var className = Model.IsInvisible(ViewBag.IdfsOrganizationPropertyName) ? "invisible" : "";
+}
+
+<div id="@ViewBag.MainDivId" class="@className">
+    <span class="picker">
+        <span class="pickerWrap">
+            @Html.BvHidden(Model, (string)ViewBag.IdfsOrganizationPropertyName)
+            @Html.BvEditbox(Model, (string)ViewBag.StrOrganizationPropertyName)  
+            <span class="pickerSelect" onclick='@ViewBag.OnClianButtonClick' id='@ViewBag.BtnClianPicker'>
+                <span class="k-icon k-i-close"></span>
+            </span>
+        </span>
+    </span>
+    <button id='@ViewBag.BtnSearchPicker' class="button smallImageButton" onclick='@ViewBag.OnSelectItemClick' type="button" alt="Select">
+        <img src="@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/Search.png"))" alt="Select" draggable='false' />
+    </button>
+</div>

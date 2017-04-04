@@ -1,0 +1,34 @@
+﻿@model AsDisease.AsDiseaseGridModelList
+@using eidss.model.Schema
+@using eidss.webclient.Utils;
+@using eidss.web.common.Utils;
+@using eidss.webclient.Configurations
+
+
+@{
+    var gridName = (string)ViewBag.GridName;
+    var key = (long)ViewBag.Root;
+}
+
+
+@(Html.BvDetailsFormGrid<AsDisease.AsDiseaseGridModel, AsDisease.AsDiseaseGridModelList>
+      ((string)ViewBag.GridName, 
+      Model, "detailsGrid", "asCampaign.showDiseasesGridEditWindow", null, (bool)ViewBag.IsReadOnly, 
+      bCustomToolbar: true,
+      bFilterable: false,
+      strExcludeColumns: (string)ViewBag.ExcludeColumns,
+      selectionType: GridRowSelectionType.Single)
+      .DataSource(dataSource => dataSource
+            .Ajax()
+            .Sort(sort => sort.Add("intOrder").Ascending()))                
+      .ToolBar(toolBar =>
+            toolBar.Template(
+                @<text>
+                    <input type='button' class='button'  data-role='grid-add-button' value='@Translator.GetMessageString("strNew")' 
+                        onclick='bvGrid.addRow("@Model.ListKey", "@gridName", asCampaign.showDiseasesGridEditWindow)'/>
+                    <input type='button' disabled="disabled" class="button k-state-disabled" data-role='grid-on-row-button' value='@Translator.GetMessageString("Up")' 
+                        onclick="@string.Format("asCampaign.onDiseaseMove('{0}','{1}','{2}');", key, gridName, "-1")"/>
+                    <input type='button' disabled="disabled" class="button k-state-disabled" data-role='grid-on-row-button' value='@Translator.GetMessageString("Down")' 
+                        onclick="@string.Format("asCampaign.onDiseaseMove('{0}','{1}','{2}');", key, gridName, "1")"/>
+                </text>)
+            ))

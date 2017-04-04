@@ -1,0 +1,79 @@
+﻿@using Kendo.Mvc.UI
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+@model eidss.webclient.Models.Reports.NumberOfCasesDeathsMorbidityMortalityTHWebModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+@if (BaseSettings.TranslationMode)
+{
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/ExportButtons", Model)
+    <div class="bluelayout">
+        <div class="tabPanelContent">
+
+            @Html.Partial("Common/BaseFilter", Model)
+
+            @Html.Partial("TH/THIntervalFilter", Model)
+
+            <table id="FilterTable">
+                <tr>
+                    <td class="mediumreport">
+                        @Translator.GetString("ThaiZone")
+                    </td>
+                    <td class="largereport">
+                        @Html.Partial("TH/ZoneFilter", Model.Zones, new ViewDataDictionary { { "FilterName", "ZoneFilter.CheckedItems" } })
+                    </td>
+                    <td class="mediumreport">
+                        @Translator.GetString("ThaiRegion")
+                    </td>
+                    <td class="largereport">
+                        @Html.Partial("TH/RegionFilter", Model.Regions, new ViewDataDictionary { { "FilterName", "RegionFilter.CheckedItems" } })
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="mediumreport">
+                        @Translator.GetString("Region")
+                    </td>
+                    <td class="largereport">
+                        @Html.Partial("TH/ProvinceFilter", Model.Provinces, new ViewDataDictionary { { "FilterName", "ProvinceFilter.CheckedItems" } })
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="mediumreport">
+                        @Translator.GetString("strDiagnoses")
+                    </td>
+                    <td class="largereport">
+                        @Html.Partial("Common/BaseMultipleDiagnosisFilter", Model.Diagnoses,
+                                        new ViewDataDictionary
+                                            {
+                                                {"FilterName", "Diagnoses.CheckedItems"}
+                                            })
+                    </td>
+                    <td class="mediumreport">
+                        @Translator.GetString("strCaseClassification")
+                    </td>
+                    <td class="largereport">
+                        @{
+                            @(Html.Kendo().ComboBox()
+                                  .BindTo(Model.CaseClassificationsList.ConvertToSelectListItem())
+                                  .Name("CaseClassification")
+                                  )
+                        }
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+}

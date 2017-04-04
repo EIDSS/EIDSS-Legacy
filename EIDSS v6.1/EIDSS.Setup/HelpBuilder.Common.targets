@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  
+  <Target Name="BuildHelp" DependsOnTargets="$(BuildHelpDependsOn)" Outputs="$(BuiltHelpDirectory)" />
+
+  <PropertyGroup Label="Common Help Builder settings">
+    <BuiltHelpDirectory>$(OutDir)Help\$(ProjectName)\</BuiltHelpDirectory>
+    <BuiltHelpDirectory
+      Condition=" 'True' != '$([System.IO.Path]::IsPathRooted(&quot;$(BuiltHelpDirectory)&quot;))' ">$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\$(BuiltHelpDirectory)'))</BuiltHelpDirectory>
+    <HelpBuilder Condition=" '$(HelpBuilder)' == '' ">HELPMAN.EXE</HelpBuilder>
+    <Mode>HTML</Mode>
+  </PropertyGroup>
+  
+  <ItemDefinitionGroup>
+    <HelpProject>
+      <DeleteLog>false</DeleteLog>
+    </HelpProject>
+  </ItemDefinitionGroup>
+
+
+  <PropertyGroup>
+    <BuildHelpDependsOn>
+      PrepareForHelpBuild;
+      CompileHelp;
+      RedirectHelpBuildLog;
+      UpdateFileWrites;
+    </BuildHelpDependsOn>
+  </PropertyGroup>
+
+  <Target Name="PrepareForHelpBuild">
+    <MakeDir Directories="$(IntermediateOutputPath)" Condition=" !Exists('$(IntermediateOutputPath)') " />
+    <MakeDir Directories="$(BuiltHelpDirectory)" Condition=" !Exists('$(BuiltHelpDirectory)') " />
+  </Target>
+
+  <Target Name="CompileHelp" Outputs="%(HelpProject.Culture);$(BuiltHelpDirectory);$(HelpBuilderLog)">
+    <PropertyGroup>
+      <Culture>%(HelpProject.Culture)</Culture>
+      <_includeOptions Condition=" '$(IncludeOptions)' != '' ">/I=$(Mode),$(IncludeOptions)</_includeOptions>
+      <_helpBuilderLog>$(IntermediateOutputPath)_HelpBuilderLog_$(Culture).txt</_helpBuilderLog>
+    </PropertyGroup>
+    <Message Importance="low" Text="Current culture is $(Culture)" />
+
+    <ItemGroup>
+      <HelpBuilderLog Include="$(_helpBuilderLog)">
+        <DeleteLog>%(HelpProject.DeleteLog)</DeleteLog>
+      </HelpBuilderLog>
+    </ItemGroup>
+
+    <Exec
+      Command='"$(HelpBuilder)" "%(HelpProject.Identity)" /$(Mode)="$(BuiltHelpDirectory)$(Culture)\index.html" /O="$(Skin)" /L="$(_helpBuilderLog)" $(_includeOptions)'
+      IgnoreExitCode="true"
+      WorkingDirectory="$(MSBuildProjectDirectory)">
+
+      <Output TaskParameter="ExitCode" PropertyName="HelpBuilderExitCode" />
+    </Exec>
+    <Message Importance="low" Text="ExitCode = '$(HelpBuilderExitCode)'" />
+    
+    <Error
+      Condition=" '1' == '$(HelpBuilderExitCode)' "
+      Text="Error during help compiling. General critical error, compilation could not be finished, aborted. See log file for details"
+      File="$(_helpBuilderLog)" />
+
+    <Warning
+      Condition=" '2' == '$(HelpBuilderExitCode)' "
+      Text="One or more warnings during help compiling, see log file for details"
+      File="$(_helpBuilderLog)" />
+    
+    <Warning
+      Condition=" '3' == '$(HelpBuilderExitCode)' "
+      Text="One or more non-critical errors during help compiling, see log file for details"
+      File="$(_helpBuilderLog)" />
+
+    <OnError ExecuteTargets="RedirectHelpBuildLog;UpdateFileWrites" />
+  </Target>
+
+  <Target Name="RedirectHelpBuildLog" Outputs="%(HelpBuilderLog.Identity)">
+
+    <PropertyGroup>
+      <LogFile>%(HelpBuilderLog.Identity)</LogFile>
+      <DeleteHelpBuilderLog>%(HelpBuilderLog.DeleteLog)</DeleteHelpBuilderLog>
+    </PropertyGroup>
+
+      <ReadLinesFromFile File="$(LogFile)">
+      <Output TaskParameter="Lines" ItemName="BuilderLogLines" />
+    </ReadLinesFromFile>
+
+    <Message Text="@(BuilderLogLines, '%0d%0a')" />
+
+    <Delete
+      Condition=" 'true' == '$(DeleteHelpBuilderLog)' "
+      Files="$(LogFile)"
+      TreatErrorsAsWarnings="true" />
+
+    <ItemGroup>
+      <FileWrites Condition=" 'true' != '$(DeleteHelpBuilderLog)' " Include="$(LogFile)" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="UpdateFileWrites">
+    <ItemGroup>
+      <FileWrites Include="$(BuiltHelpDirectory)$(Culture)\**\*" />
+    </ItemGroup>
+  </Target>
+</Project>

@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="VsSessionSummaryDiagnosis"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spVsSessionSummaryDiagnosis_SelectDetail" type="detaillist"/>
+  </storage>
+
+  <tables>
+    <table name="VsSessionSummaryDiagnosis">
+      <properties auditObject="daoVectorSurveillanceSession" auditTable="tlbVectorSurveillanceSessionSummaryDiagnosis" permissionObject="VsSessionSummary"/>
+      <keys>
+        <key name="idfsVSSessionSummaryDiagnosis" />
+      </keys>
+      <grid>
+        <item name="idfsVSSessionSummaryDiagnosis" visible="false" key="true"/>
+        <item name="idfsDiagnosis" />
+        <item name="strDiagnosis" />
+        <item name="intPositiveQuantity" />
+      </grid>
+      <labels>
+        <item labelId="FT.strDisease" name="idfsDiagnosis"/>
+        <item labelId="FT.strDisease" name="strDiagnosis"/>
+      </labels>
+      <fields>
+        <calculated name="SessionSummary" type="VsSessionSummary" lambda="c => Parent as VsSessionSummary" depends="Parent"/>
+        <calculated name="CaseObjectIdent" type="string" depends="idfsVSSessionSummary" lambda='c => "Summaries_" + c.idfsVSSessionSummary + "_"' />
+      </fields>
+      <lookups>
+        <lookup name="Diagnoses" table="DiagnosisLookup" source="idfsDiagnosis" target="idfsDiagnosis">
+          <filters>
+            <filter predicate="c => ((c.intHACode &amp; (int)HACode.Vector) != 0) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+            <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+          </filters>
+        </lookup>
+      </lookups>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfsVSSessionSummaryDiagnosis" class="GetNewIDExtender" />
+          <!--<lambda_extender target="intPositiveQuantity" type="int" lambda="c => 0"/>-->
+        </creating>
+        <created>
+          <lambda_extender target="idfsVSSessionSummary" type="long" lambda='c => c.SessionSummary != null ? c.SessionSummary.idfsVSSessionSummary : c.idfsVSSessionSummary' />
+        </created>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <lambda_handler target="Diagnoses" field="idfsDiagnosis" type="DiagnosisLookup" lambda='c => c.DiagnosesLookup.Where(x => x.idfsDiagnosis == c.idfsDiagnosis).FirstOrDefault()'/>
+          <lambda_handler target="strDiagnosis" field="idfsDiagnosis" type="string" lambda='c => c.DiagnosesLookup != null ? c.DiagnosesLookup.FirstOrDefault(d => d.idfsDiagnosis == c.idfsDiagnosis).name : String.Empty'/> <!--c.Diagnoses.DiagnosisName-->
+        </fieldhandler>
+      </handlers>
+      <validators>
+        <chains>
+          <item field="MinValue" type="NullableInt" value="1">
+            <item field="intPositiveQuantity"/>
+          </item>
+        </chains>
+        <change>
+          <!--<custom_validator field="intPositiveQuantity" method="CheckSum" />-->
+        </change>
+        <post>
+          <required_validator target="idfsVSSessionSummaryDiagnosis"/>
+          <required_validator target="idfsVSSessionSummary"/>
+          <required_validator target="idfsDiagnosis" label="FT.strDisease"/>
+          <predicate_validator field="intPositiveQuantity" predicate="c => c.SessionSummary.intQuantity > 0 ? c.SessionSummary.intQuantity >= c.intPositiveQuantity : true" message="intQuantity_intPositiveQuantity_msgId" />
+          <custom_validator method="CustomValidations" />
+        </post>
+      </validators>  
+      <storage>
+        <post name="spVsSessionSummaryDiagnosis_Post"/>
+        <delete name="spVsSessionSummaryDiagnosis_Delete"/>
+      </storage>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <remove type="Edit"/>
+        </standard>
+        <action name="Create" type="Create">
+          <visual panel="Group" visiblePredicate="(c, a, b, p) => false" />
+        </action>
+        <action name="Edit" type="Edit">
+          <visual panel="Group" visiblePredicate="(c, a, b, p) => false" />
+        </action>
+      </actions>
+    </table>
+  </tables>
+
+</object>

@@ -1,0 +1,125 @@
+﻿@model List<VetFarmTree>
+@{    
+    Layout = "~/Views/Shared/_VetCaseDetailsLayout.cshtml";
+}
+
+@using eidss.mobileclient.Utils
+@using eidss.model.Schema;
+
+<script src="@Url.Content("~/Scripts/EIDSS.Grid.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/EIDSS.Flocks.js")" type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript">
+    $(function () {
+        var tabs = [2, 5];
+        SelectTabs(tabs);
+        SelectGridRow("FlocksList", 1);
+        if (@(Model.Count) == 0) {
+            $("#btEdit").attr('disabled', 'disabled');
+            $("#btRemove").attr('disabled', 'disabled');
+            $("#btClinicalSigns").attr('disabled', 'disabled');
+        }
+        $("#tbButtons").width("auto");
+        var tableWidth = $("#FlocksList").outerWidth();
+        var scontent = $("#scontent");
+        var paddings = parseInt(scontent.css("padding-right"), 10) + parseInt(scontent.css("padding-left"), 10);
+        scontent.width(tableWidth + paddings);
+//        $("div.page.defaultWidth").width("auto");
+//        $("#tabs-1").width("auto");
+    });                 
+</script>
+
+@using (Html.BeginForm())
+{
+    var editButtonName =  (bool)ViewBag.CanUpdate ? Translator.GetMessageString("Edit") : Translator.GetMessageString("View");
+    <table id="tbButtons">        
+        <tr>
+            @if ((bool)ViewBag.CanUpdate)
+            {
+                <td>
+                    <input type="button" class="smallButton" value="@Translator.GetMessageString("btNewSpecies")" onclick="document.location.href='@Url.Action("SpeciesDetails", "Flock", new { rootKey = Session["IdfCase"], name = "FarmTree" })';" />         
+                </td>
+            }
+            <td>
+                <input type="button" class="smallButton" id="btEdit" value="@editButtonName" onclick="onEditSpeciesClick('@Session["IdfCase"]', 'FarmTree');" />         
+            </td>
+            @if ((bool)ViewBag.CanUpdate)
+            {
+                <td>
+                    <input type="button" class="smallButton" id="btRemove" value="@Translator.GetMessageString("Delete")" onclick="onRemoveSpeciesClick('@Session["IdfCase"]');" />                                  
+                </td>  
+            } 
+        </tr>
+        <tr>
+            <td colspan="3">
+                <input type="button" class="smallButton" id="btClinicalSigns" value="@Translator.GetMessageString("titleClinicalSigns")" onclick="onClinicalSignsClick('@Session["IdfCase"]', 'FarmTree');" />                     
+            </td>         
+        </tr>        
+    </table>  
+    <br />
+    <table class="bvGrid" id="FlocksList">
+        <tr>
+            <th></th>
+            <th>
+                @Translator.GetString("Flock")
+            </th>
+            <th>
+                @Translator.GetString("strSpeciesName")
+            </th>
+            <th>
+                @Translator.GetString("intTotalAnimalQty")
+            </th>
+            <th>
+                @Translator.GetString("intDeadAnimalQty")
+            </th>
+            <th>
+                @Translator.GetString("intSickAnimalQty")
+            </th>
+            <th>
+                @Translator.GetString("strAverageAge")
+            </th>
+            <th>
+                @Translator.GetString("datStartOfSignsDate")
+            </th>
+        </tr>
+        @if (Model.Count == 0)
+        {
+            <tr>
+                <td colspan="8">
+                    @Translator.GetMessageString("msgNoRecords")
+                </td>
+            </tr>
+        }
+        @foreach (VetFarmTree herd in Model)
+        { 
+            <tr>
+                <td>
+                    <input type="radio" onclick="SelectGridRowByRadioButton('FlocksList', this);" />
+                    <input type="hidden" value="@herd.idfParty" />
+                </td>
+                <td>
+                    @herd.strHerdName
+                </td>
+                <td>
+                    @herd.strSpeciesName
+                </td>
+                <td>
+                    @herd.intTotalAnimalQty
+                </td>
+                <td>
+                    @herd.intDeadAnimalQty
+                </td>
+                <td>
+                    @herd.intSickAnimalQty
+                </td>
+                <td>
+                    @herd.strAverageAge
+                </td>
+                <td>
+                    @(herd.datStartOfSignsDate.HasValue ? herd.datStartOfSignsDate.Value.Date.ToString("MM/dd/yyyy") : "")
+                </td>
+            </tr>
+        }        
+    </table> 
+    <br />
+}

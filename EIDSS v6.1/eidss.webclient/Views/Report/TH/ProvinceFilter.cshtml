@@ -1,0 +1,28 @@
+﻿@using Kendo.Mvc.UI
+@using bv.model.Model.Core
+@model eidss.model.Reports.TH.MultipleProvinceTHModel
+@{
+    var originalName = ViewData["FilterName"].ToString();
+    var kendoName = originalName.Replace(".", "_");
+    var maxCheckedCount = ViewData["maxCheckedCount"] ?? 0;
+    //var clearLink = "bvCheckedComboBox.onClearCheckedComboBox('" + @kendoName + "')";
+    var checkedIds = ViewData["checkedIds"] ?? "";
+}
+
+<span class="picker">
+    <span class="pickerWrap">
+        @(
+            @Html.Kendo().DropDownList()
+                .Name(kendoName)
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .HtmlAttributes(new { @maxcheckedcount = maxCheckedCount.ToString()})
+                .Template("<input type=\"checkbox\"checkedname=\"${ data.Text }\" value=\"${ data.Value }\" class=\"check-item\" id=\"chb${ data.Value }\"/><span>${ data.Text }</span>")
+                .Events(e => e.Select("bvCheckedComboBox.onCheckedComboBoxChanged")
+                    .DataBound("function(e) { bvCheckedComboBox.bindCheckedComboBoxClickEvent('" + kendoName + "', '" + checkedIds + "');}")
+                    .Open("function(e) { bvCheckedComboBox.onComboBoxOpen(e, " + (int) EditorControlWidth.Large + ", true); }")
+                    .Change("paperForm.OnThaiMultipleProvinceChanged"))
+                .BindTo(new SelectList(Model.ItemsList, "Value", "Text", null))
+                )
+    </span>
+</span>

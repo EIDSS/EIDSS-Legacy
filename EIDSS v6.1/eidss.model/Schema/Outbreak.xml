@@ -1,0 +1,341 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="Outbreak"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="spOutbreak_SelectDetail" />
+    <validate name="spOutbreak_Validate" />
+  </storage>
+	<tables>
+		<table name="Outbreak">
+      <properties auditObject="daoOutbreak" auditTable="tlbOutbreak" permissionObject="Outbreak">
+        <events>
+          <create name="OutbreakCreatedLocal" />
+          <change name="NewHumanCaseAddedToOutbreakLocal" predicate="c => c.Cases.Count(i => i.IsNew &amp;&amp; i.idfsCaseType == (long)CaseTypeEnum.Human &amp;&amp; !i.IsMarkedToDelete) > 0" />
+          <change name="NewVetCaseAddedToOutbreakLocal" predicate="c => c.Cases.Count(i => i.IsNew &amp;&amp; (i.idfsCaseType == (long)CaseTypeEnum.Livestock || i.idfsCaseType == (long)CaseTypeEnum.Avian || i.idfsCaseType == (long)CaseTypeEnum.Veterinary) &amp;&amp; !i.IsMarkedToDelete) > 0" />
+          <change name="NewVsSessionAddedToOutbreakLocal" predicate="c => c.Cases.Count(i => i.IsNew &amp;&amp; i.idfsCaseType == (long)CaseTypeEnum.Vector &amp;&amp; !i.IsMarkedToDelete) > 0" />
+          <change name="OutbreakPrimaryCaseChangedLocal" fields="idfPrimaryCaseOrSession" />
+          <change name="OutbreakStatusChangedLocal" fields="idfsOutbreakStatus" />
+        </events>
+      </properties>
+      <labels>
+        <item name="idfsOutbreakStatus" labelId="strOutbreakStatus"/>
+        <item name="idfGeoLocation" labelId="strGeoLocationName"/>
+      </labels>
+      <fields>
+        <!-- not remove! test for two-level drop-down with check-boxes 
+        <storage name="idfsDiagOrGroup" type="long?"/>
+        <storage name="DiagOrGroupSelected" type="List&lt;long&gt;"/>-->
+
+        <calculated name="intCaseCount" type="int" lambda="c => c.Cases.Count(i => !i.IsMarkedToDelete)" depends="Cases"/>
+        <calculated name="intCaseConfirmedCount" type="int" lambda="c => c.Cases.Count(i => !i.IsMarkedToDelete &amp;&amp; i.Confirmed.HasValue &amp;&amp; i.Confirmed.Value > 0)" depends="Cases"/>
+      </fields>
+      <readonly>
+        <fields name="strOutbreakID" predicate="c => true" />
+        <fields name="strPrimaryCase" predicate="c => true" />
+        <fields name="intCaseCount,intCaseConfirmedCount" predicate="c => true" />
+      </readonly>
+      <relations>
+        <relation name="Location" table="GeoLocation" internal="false" type="link" lazy="false" source="idfGeoLocation" target="idfGeoLocation" />
+        <relation name="Cases" table="OutbreakCase" internal="true" type="child" lazy="false" source="idfOutbreak" target="idfOutbreak" />
+        <relation name="Notes" table="OutbreakNote" internal="true" type="child" lazy="false" source="idfOutbreak" target="idfOutbreak" />
+      </relations>
+      <lookups>
+        <lookup name="Diagnosis" table="DiagnosesAndGroupsLookup" source="idfsDiagnosisOrDiagnosisGroup" target="idfsDiagnosisOrDiagnosisGroup">
+          <params>
+            <param name="HACode" type="int" lambda="c => (int)HACode.HumanLivestockAvianVector"/>
+            <param name="DiagnosisUsingType" type="long" lambda="c => (long)DiagnosisUsingTypeEnum.StandardCase"/>
+            <param name="idfsGroupReference" type="long" lambda="c => 19000156"/> <!--Diagnoses Group-->
+          </params>
+          <filters>
+            <filter predicate="c => !EidssUserContext.User.DenyDiagnosis.ContainsKey((long)c.idfsDiagnosisOrDiagnosisGroup)"/>
+          </filters>
+        </lookup>
+
+        <!-- not remove! test for two-level drop-down with check-boxes 
+        <lookup name="DiagOrGroup" table="DiagnosesAndGroupsLookup" source="idfsDiagOrGroup" target="idfsDiagnosisOrDiagnosisGroup" emptyTextId="SelectAll" emptyKey="0">
+          <params>
+            <param name="HACode" type="int" lambda="c => (int)HACode.Human"/>
+            <param name="DiagnosisUsingType" type="long" lambda="c => (long)DiagnosisUsingTypeEnum.StandardCase"/>
+            <param name="idfsGroupReference" type="long" lambda="c => 19000156"/> 
+          </params>
+          <filters>
+            <filter predicate="c => !EidssUserContext.User.DenyDiagnosis.ContainsKey((long)c.idfsDiagnosisOrDiagnosisGroup)"/>
+          </filters>
+        </lookup> -->
+        
+        <lookup name="OutbreakStatus" table="BaseReference" section="rftOutbreakStatus" source="idfsOutbreakStatus" target="idfsBaseReference" />
+      </lookups>
+      <storage>
+        <post name="spOutbreak_Post"/>
+        <delete name="spOutbreak_Delete"/>
+        <candelete name="spOutbreak_CanDelete"/>
+      </storage>
+      <postorder>
+        <item name="Location"/>
+        <item name="this"/>
+        <item name="Cases"/>
+        <item name="Notes"/>
+      </postorder>
+      <deleteorder>
+        <item name="this"/>
+        <item name="Location"/>
+      </deleteorder>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfOutbreak" class="GetNewIDExtender" />
+          <lambda_extender target="strOutbreakID" type="string" lambda='c => string.Empty' />
+          <lambda_extender target="Location" type="GeoLocation" lambda="c => LocationAccessor.CreateWithCountry(manager, c)" />
+          <lambda_extender target="Location.GeoLocationType" type="BaseReference" lambda="c => c.Location.GeoLocationTypeLookup.SingleOrDefault(a => a.idfsBaseReference == (long)GeoLocationTypeEnum.RelativePoint)" />
+        </creating>
+        <loaded>
+          <lambda_extender target="Location" type="GeoLocation" lambda="c => c.Location == null ? LocationAccessor.CreateWithCountry(manager, c) : c.Location" />
+        </loaded>
+        <posting>
+          <lambda_extender target="datModificationForArchiveDate" type="DateTime?" lambda="c => c.HasChanges ? DateTime.Now : c.datModificationForArchiveDate"/>
+          <db_lambda_extender target="strOutbreakID" type="string" lambda='(c,m) => 
+                        c.strOutbreakID != string.Empty 
+                        ? c.strOutbreakID 
+                        : m.SetSpCommand("dbo.spGetNextNumber", (long)NumberingObjectEnum.Outbreak, DBNull.Value, DBNull.Value)
+                        .ExecuteScalar&lt;string&gt;(ScalarSourceType.OutputParameter, "NextNumberValue")' />
+        </posting>
+      </extenders>
+      <handlers>
+        <childaddlist>
+          <custom_handler container="Cases" field="">
+            <text>
+              if (e.ListChangedType == ListChangedType.ItemAdded &amp;&amp; obj.Cases.Count > e.NewIndex &amp;&amp; obj.Cases.Count(c => c.idfCase == obj.Cases[e.NewIndex].idfCase &amp;&amp; !c.IsMarkedToDelete) > 1) 
+              {
+                  obj.Cases.RemoveAt(e.NewIndex);
+              }
+              else 
+              {
+                  if (e.ListChangedType == ListChangedType.ItemChanged &amp;&amp; obj.Cases.Count > e.NewIndex &amp;&amp; obj.Cases[e.NewIndex].IsMarkedToDelete &amp;&amp; obj.Cases[e.NewIndex].idfCase == obj.idfPrimaryCaseOrSession)
+                  {
+                      using (DbManagerProxy manager = DbManagerFactory.Factory.Create(ModelUserContext.Instance))
+                      {
+                          ClearPrimaryCase(manager, obj);
+                      }
+                  }
+                  if (obj.Cases.Count > e.NewIndex &amp;&amp; obj.Cases.Count(c => c.idfCase == obj.Cases[e.NewIndex].idfCase &amp;&amp; !c.IsMarkedToDelete) == 1 &amp;&amp; obj.Diagnosis != null)
+                  {
+                      if (obj.Cases.Single(c => c.idfCase == obj.Cases[e.NewIndex].idfCase &amp;&amp; !c.IsMarkedToDelete).idfsDefaultDiagnosis != obj.Diagnosis.idfsDiagnosisOrDiagnosisGroup &amp;&amp; obj.Diagnosis.blnGroup.HasValue &amp;&amp; !obj.Diagnosis.blnGroup.Value &amp;&amp; obj.Diagnosis.idfsDiagnosisGroup.HasValue &amp;&amp; obj.Diagnosis.idfsDiagnosisGroup.Value != 0)
+                      {
+                          obj.Diagnosis = obj.DiagnosisLookup.SingleOrDefault(i => i.idfsDiagnosisOrDiagnosisGroup == obj.Diagnosis.idfsDiagnosisGroup);
+                      }
+                  }
+                  if (e.ListChangedType == ListChangedType.ItemAdded &amp;&amp; obj.Cases.Count > e.NewIndex &amp;&amp; obj.Cases.Count(c => !c.IsMarkedToDelete) == 1)
+                  {
+                      using (DbManagerProxy manager = DbManagerFactory.Factory.Create(ModelUserContext.Instance))
+                      {
+                          var location = GeoLocation.Accessor.Instance(null).SelectByKey(manager, obj.Cases.FirstOrDefault(c => !c.IsMarkedToDelete, i => i.idfGeoLocation));
+                          if (location != null)
+                          {
+                              location.CopyFieldsTo(obj.Location);
+                          }
+                      }
+                  }
+              }
+            </text>
+          </custom_handler>
+          <lambda_handler container="Cases" field="" target="Diagnosis" type="DiagnosesAndGroupsLookup" 
+                          lambda="c => c.Cases.Count(i => !i.IsMarkedToDelete) != 1 || c.Diagnosis != null ? c.Diagnosis : (c.DiagnosisLookup.SingleOrDefault(i => i.idfsDiagnosisOrDiagnosisGroup == c.Cases.First(j => !j.IsMarkedToDelete).idfsDefaultDiagnosis))" />
+        </childaddlist>
+      </handlers>
+      <validators>
+        <chains>
+            <!-- Date of Finish shall be greater than Date of Start -->
+          <item field="datStartDate" type="DateTime">
+            <item field="datFinishDate">
+              <item field="CurrentDate" value="DateTime.Now" />
+            </item>
+          </item>
+        </chains>
+        <change>
+          <custom_validator field="idfsDiagnosisOrDiagnosisGroup" method="CheckDiagnosisOnChange" 
+                            onYesAsk="c => c.Diagnosis = c.DiagnosisLookup.SingleOrDefault(i => i.idfsDiagnosisOrDiagnosisGroup == c.Diagnosis.idfsDiagnosisGroup)"/>
+        </change>
+        <childaddlist container="Cases">
+          <custom_validator method="CheckOnAddCase" />
+        </childaddlist>
+        <post>
+          <required_validator property="Diagnosis" target="idfsDiagnosisOrDiagnosisGroup" />
+        </post>
+      </validators>
+      <actions>
+        <standard>
+          <remove type='Create'/>
+        </standard>
+        <action name="ClearPrimaryCase" type="Action">
+          <run>
+            <preText>
+              obj.idfPrimaryCaseOrSession = null;
+              obj.idfsCasePrimaryType = 0;
+              obj.strPrimaryCase = "";
+              return true;
+            </preText>
+          </run>
+        </action>
+        <action name="SetPrimaryCase" type="Action">
+          <run>
+            <params>
+              <param name="caseOrSession" type="OutbreakCase"/>
+            </params>
+            <preText>
+              if (caseOrSession != null) 
+              {
+                  obj.idfPrimaryCaseOrSession = caseOrSession.idfCase;
+                  obj.idfsCasePrimaryType = caseOrSession.idfsCaseType;
+                  obj.strPrimaryCase = caseOrSession.strCaseID + (string.IsNullOrEmpty(caseOrSession.strDiagnosis) ? "" : ", " + caseOrSession.strDiagnosis);
+              }
+              return true;
+            </preText>
+          </run>
+        </action>
+
+        <action name="ReportContextMenu" type="Action">
+          <visual panel="Main" alignment="Left">
+            <regular caption="strReport_Id" icon="Report" tooltip="strReport_Id"/>
+          </visual>
+          <run>
+            <preUI webType="JScript"/>
+          </run>
+        </action>
+
+        <action name="OutbreakReport" type="Action" >
+          <visual panel="ContextMenu" alignment="Left" visiblePredicate="(o1, o2, p, r) => eidss.model.Reports.BaseMenuReportRegistrator.IsPaperFormAllowed(&quot;Outbreak&quot;)">
+            <regular caption="titleOutbreakReport" icon="" tooltip=""/>
+          </visual>
+          <run>
+            <preUI webType="JScript"/>
+          </run>
+        </action>
+      </actions>
+    </table>
+    
+    <table name="OutbreakCase" type="detaillist">
+      <grid>
+        <item name="idfCase" visible="false" key="true" />
+        <item name="strCaseID" required="true" />
+        <item name="datEnteredDate" required="true" />
+        <item name="strSourceOfCaseSessionDate" type="string" />
+        <item name="strCaseStatus" />
+        <item name="strDiagnosis" required="true" />
+        <item name="strGeoLocation" />
+        <item name="strAddress" />
+        <item name="strPatientName" />
+      </grid>
+      <labels>
+        <item name="strCaseID" labelId="strCaseSessionID"/>
+        <item name="datEnteredDate" labelId="strCaseSessionDate"/>
+        <item name="strCaseStatus" labelId="CaseStatusName"/>
+        <item name="strGeoLocation" labelId="strExposureLocation"/>
+        <item name="strDiagnosis" labelId="DiagnosisName"/>
+        <item name="strAddress" labelId="AddressName"/>
+      </labels>
+      <fields>
+        <calculated name="strSourceOfCaseSessionDate" depends="idfsSourceOfCaseSessionDate" type="string" lambda="c => SourceOfCaseSessionDateMapper.Map((SourceOfCaseSessionDate)c.idfsSourceOfCaseSessionDate)"/>
+      </fields>
+      <personaldata>
+        <group name="Human_PersonName" predicate="c => c.idfsCaseType == (long)CaseTypeEnum.Human">
+          <item name="strPatientName"/>
+        </group>
+        <group name="Human_CurrentResidence_Details" predicate="c => c.idfsCaseType == (long)CaseTypeEnum.Human">
+          <item name="strAddress"/>
+          <item name="strGeoLocation"/>
+        </group>
+        <group name="Human_CurrentResidence_Settlement" predicate="c => c.idfsCaseType == (long)CaseTypeEnum.Human">
+          <item name="strAddress"/>
+          <item name="strGeoLocation"/>
+        </group>
+        <group name="Vet_Farm_Settlement" predicate="c => c.idfsCaseType == (long)CaseTypeEnum.Livestock || c.idfsCaseType == (long)CaseTypeEnum.Avian || c.idfsCaseType == (long)CaseTypeEnum.Veterinary">
+          <item name="strGeoLocation"/>
+          <item name="strPatientName"/>
+        </group>
+        <group name="Vet_Farm_Details" predicate="c => c.idfsCaseType == (long)CaseTypeEnum.Livestock || c.idfsCaseType == (long)CaseTypeEnum.Avian || c.idfsCaseType == (long)CaseTypeEnum.Veterinary">
+          <item name="strGeoLocation"/>
+          <item name="strPatientName"/>
+        </group>
+      </personaldata>
+      <storage>
+        <post name="spOutbreak_PostCaseList"/>
+      </storage>
+      <extenders>
+        <creating>
+          <lambda_extender target="idfOutbreak" type="long" lambda='c => (Parent as Outbreak).idfOutbreak' />
+        </creating>
+      </extenders>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+        </standard>
+        <action type="Create" name="Create">
+          <run>
+            <params>
+              <param name="idfCase" type="long"/>
+            </params>
+            <creating>
+              <lambda_extender target="idfCase" type="long" lambda="c => idfCase"/>
+              <custom_extender>
+                <text>
+                  var pop = manager.SetSpCommand("dbo.spOutbreak_PopulateCaseInfo", idfCase, ModelUserContext.CurrentLanguage).ExecuteObject&lt;OutbreakCase&gt;();
+                  obj.strCaseStatus = pop.strCaseStatus;
+                  obj.Confirmed = pop.Confirmed;
+                  obj.strDiagnosis = pop.strDiagnosis;
+                  obj.idfsDefaultDiagnosis = pop.idfsDefaultDiagnosis;
+                  obj.datEnteredDate = pop.datEnteredDate;
+                  obj.idfsSourceOfCaseSessionDate = pop.idfsSourceOfCaseSessionDate;
+                  obj.idfGeoLocation = pop.idfGeoLocation;
+                  obj.idfAddress = pop.idfAddress;
+                  obj.strGeoLocation = pop.strGeoLocation;
+                  obj.strAddress = pop.strAddress;
+                  obj.strPatientName = pop.strPatientName;
+                  obj.strCaseID = pop.strCaseID;
+                  obj.idfsCaseType = pop.idfsCaseType;
+                </text>
+              </custom_extender>
+            </creating>
+          </run>
+        </action>
+      </actions>
+    </table>
+    
+    <table name="OutbreakNote" type="detaillist">
+      <grid>
+        <item name="idfOutbreakNote" visible="false" key="true" />
+        <item name="strNote" required="true" />
+        <item name="datNoteDate" />
+        <item name="FullName" />
+        <item name="strInstitution" />
+      </grid>
+      <labels>
+        <item name="strNote" labelId="Note"/>
+        <item name="datNoteDate" labelId="datDate"/>
+        <item name="FullName" labelId="CreatedName"/>
+        <item name="strInstitution" labelId="strInstitutionName"/>
+      </labels>
+      <readonly>
+        <fields name="datNoteDate" predicate="c => true"/>
+        <fields name="FullName,strInstitution" predicate="c => true"/>
+      </readonly>
+      <storage>
+        <post name="spOutbreak_PostNotes"/>
+      </storage>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfOutbreakNote" class="GetNewIDExtender" />
+          <lambda_extender target="idfOutbreak" type="long" lambda='c => (Parent as Outbreak).idfOutbreak' />
+          <lambda_extender target="datNoteDate" type="DateTime?" lambda="c => DateTime.Now" />
+        </creating>
+        <created>
+          <lambda_extender target="idfPerson" type="long" lambda="c => (long)EidssUserContext.User.EmployeeID" />
+          <lambda_extender target="FullName" type="string" lambda="c => EidssUserContext.User.FullName" />
+          <lambda_extender target="idfInstitution" type="long" lambda="c => (long)EidssUserContext.User.OrganizationID" />
+          <lambda_extender target="strInstitution" type="string" lambda="c => OrganizationLookup.OrganizationNational" />
+        </created>
+      </extenders>
+    </table>
+	</tables>
+</object>

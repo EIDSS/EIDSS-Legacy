@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html>
+    @using Kendo.Mvc.UI
+    @using bv.common.Configuration
+    @using bv.common.Enums;
+    @using bv.model.Model.Core;    
+    @using eidss.web.common.Utils
+    @using eidss.smartphone.web.Utils
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+@*        <link href="@Url.Content("~/Content/Kendo/kendo.common.min.css")" rel="stylesheet" />
+        @if (Cultures.IsRtl)
+        {
+            <link href="@Url.Content("~/Content/Kendo/kendo.rtl.min.css")" rel="stylesheet" />
+        }
+        <link href="@Url.Content("~/Content/Kendo/kendo.uniform.min.css")" rel="stylesheet" />*@
+        
+        <link href="~/Content/Styles/Common.css" rel="stylesheet" type="text/css">
+        <link href="~/Content/Styles/Details.css" rel="stylesheet" type="text/css">
+        <link href="~/Content/Styles/ErrorPage.css" rel="stylesheet" type="text/css">
+        <link href="~/Content/Styles/CountrySpecific.css" rel="stylesheet" type="text/css">
+    
+        <script src="@Url.Content("~/Scripts/jquery-1.9.1.min.js")" type="text/javascript"></script>
+@*        <script src="@Url.Content("~/Scripts/Kendo/min/kendo.web.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/Kendo/min/kendo.aspnetmvc.min.js")" type="text/javascript"></script>
+
+        <!-- Translations -->
+        <script src="@Url.Content(String.Format("~/Scripts/Kendo/min/cultures/kendo.culture.{0}.min.js", Cultures.GetCultureStandard(ModelUserContext.CurrentLanguage)))" type="text/javascript" ></script>*@
+@*        <script src="@Url.Content(String.Format("~/Scripts/Messages/EIDSS.BvMessages.{0}.js", Cultures.GetCulture(ModelUserContext.CurrentLanguage)))" type="text/javascript" ></script>*@
+@*        <script src="@Url.Content("~/Scripts/EIDSS/DefaultPage.js")" type="text/javascript"></script>*@
+@*        <script src="@Url.Content("~/Scripts/EIDSS/Common.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/EIDSS/BvUrls.js")" type="text/javascript"></script>*@
+
+@*        <script src="@Url.Content("~/Scripts/EIDSS/TwinkleTextBox.js")" type="text/javascript"></script>*@
+@*        <script src="@Url.Content("~/Scripts/WidgetsFacades/WindowFacade.js")" type="text/javascript"></script>*@
+@*        <script src="@Url.Content("~/Scripts/WidgetsFacades/CommonWidgetsFacade.js")" type="text/javascript"></script>*@
+@*        <script src="@Url.Content("~/Scripts/EIDSS/Actions.js")" type="text/javascript"></script>*@
+@*        <script src="@Url.Content("~/Scripts/EIDSS/UploadFile.js")" type="text/javascript"></script>*@
+@*        <script src="@Url.Content("~/Scripts/EIDSS/Dialogs.js")" type="text/javascript"></script>*@
+</head>
+    <body class='detailsViewContainer @(Cultures.IsRtl ? "k-rtl" : "")'>
+    <div class='page'>
+        <div class="detailPageContent">
+            <div class="detailHeader">
+                <span class="formTitle">
+                    @Translator.GetMessageString("EIDSS_Short_Caption")
+                </span>
+                <span class="formNumber">
+                        <a href='@Url.Action("Logout", "Account")'>@Translator.GetMessageString("Logout")</a>
+                </span>
+            </div>
+            
+            @RenderBody()
+        </div>
+    </div>
+        
+</body>
+</html>
+
+<script language="javascript" type="text/javascript">
+    $(document).ready(function() {
+        $('form').attr('autocomplete', 'off');
+    });
+</script>

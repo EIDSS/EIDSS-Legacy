@@ -1,0 +1,17 @@
+﻿@model AsSessionSummary.AsSessionSummaryGridModelList
+@using eidss.model.Schema;
+@using eidss.webclient.Utils;
+@using eidss.web.common.Utils;
+
+
+@(Html.BvDetailsFormGrid<AsSessionSummary.AsSessionSummaryGridModel, AsSessionSummary.AsSessionSummaryGridModelList>
+      ((string)ViewBag.GridName, Model, "detailsGrid",
+       "asSession.showSummaryGridEditWindow", null, (bool)ViewBag.IsReadOnly,
+       bCustomToolbar: true
+      )
+      .ToolBar(toolBar => toolBar.Template(
+          @<text>
+               <input type='button' class='button'  data-role='grid-add-button' value='@Translator.GetMessageString("strNew")'
+                      onclick='bvGrid.addRow("@Model.ListKey", "@ViewBag.GridName", asSession.showSummaryGridEditWindow)'/>
+           </text>)
+      ))

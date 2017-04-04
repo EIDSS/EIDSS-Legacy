@@ -1,0 +1,1604 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{EFF278D7-1CF3-4F45-8E6C-F4D7852A9503}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>eidss.model</RootNamespace>
+    <AssemblyName>eidss.model</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\android\EIDSS\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;MONO</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\android\EIDSS\bin\Release\</OutputPath>
+    <DefineConstants>TRACE;MONO</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\EIDSSAssemblyInfo.cs">
+      <Link>EIDSSAssemblyInfo.cs</Link>
+    </Content>
+    <Content Include="Model\AggregateCaseHeader.cs" />
+    <Content Include="Model\AsSessionAnimal.cs" />
+    <Content Include="Model\AsSessionSummary.cs" />
+    <Content Include="Model\AsSessionTableViewItem.cs" />
+    <Content Include="Model\BaseReference.cs" />
+    <Content Include="Model\CaseTest.cs" />
+    <Content Include="Model\FlexibleForms\Components\ActivityParameter.cs" />
+    <Content Include="Model\FlexibleForms\Components\Label.cs" />
+    <Content Include="Model\FlexibleForms\Components\ParameterTemplate.cs" />
+    <Content Include="Model\FlexibleForms\Components\SectionTemplate.cs" />
+    <Content Include="Model\FarmRootPanel.cs" />
+    <Content Include="Model\FlexibleForms\FFPresenterModel.cs" />
+    <Content Include="Model\FlexibleForms\FFSettings.cs" />
+    <Content Include="Model\FlexibleForms\FlexNodes\FlexItem.cs" />
+    <Content Include="Model\FlexibleForms\FlexNodes\FlexNode.cs" />
+    <Content Include="Model\FlexibleForms\FlexNodes\FlexNodesHelper.cs" />
+    <Content Include="Model\FlexibleForms\Helpers\ActivityParametersComparer.cs" />
+    <Content Include="Model\FlexibleForms\Helpers\DataHelper.cs" />
+    <Content Include="Model\FlexibleForms\Helpers\FFHelper.cs" />
+    <Content Include="Model\FlexibleForms\Helpers\HelperFunctions.cs" />
+    <Content Include="Model\FlexibleForms\Helpers\IFFRender.cs" />
+    <Content Include="Model\FlexibleForms\Helpers\ParameterControlTypeHelper.cs" />
+    <Content Include="Model\FlexibleForms\Helpers\ParameterSchemeHelper.cs" />
+    <Content Include="Model\FlexibleForms\Helpers\ParameterTemplateComparer.cs" />
+    <Content Include="Model\FlexibleForms\Helpers\PredefinedStubComparer.cs" />
+    <Content Include="Model\FlexibleForms\Helpers\ParameterTypeHelper.cs" />
+    <Content Include="Import\CsvError.cs" />
+    <Content Include="Model\Address.cs" />
+    <Content Include="Model\AnimalListItem.cs" />
+    <Content Include="Model\AsSession.cs" />
+    <Content Include="Model\ContactedCasePerson.cs" />
+    <Content Include="Model\CaseTestValidation.cs" />
+    <Content Include="Model\EventLogListItem.cs" />
+    <Content Include="Model\RootFarmTree.cs" />
+    <Content Include="Model\VectorLabTest.cs" />
+    <Content Include="Model\VetCaseSample.cs" />
+    <Content Include="Model\Patient.cs" />
+    <Content Include="Model\FarmPanel.cs" />
+    <Content Include="Model\LabSample.cs" />
+    <Content Include="Model\HumanCaseSample.cs" />
+    <Content Include="Model\LabSampleReceiveItem.cs" />
+    <Content Include="Model\LabTest.cs" />
+    <Content Include="Model\SessionToVectorTypeItem.cs" />
+    <Content Include="Model\SummaryTable.cs" />
+    <Content Include="Import\StatisticHelper.cs" />
+    <Content Include="Model\Vector.cs" />
+    <Content Include="Model\HumanCase.cs" />
+    <Content Include="Model\GeoLocation.cs" />
+    <Content Include="Model\VectorFieldTest.cs" />
+    <Content Include="Model\VectorSample.cs" />
+    <Content Include="Model\VetCase.cs" />
+    <Content Include="Model\VetFarmTree.cs" />
+    <Content Include="Model\VsSession.cs" />
+    <Content Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Schema\Address.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Address.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\AggregateCaseHeader.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AggregateCaseHeader.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\AggregateMatrixVersionLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AggregateMatrixVersionLookup.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\AggregateSettings.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AggregateSettings.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\AnimalAgeLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AnimalAgeLookup.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\AnimalList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AnimalList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\AntimicrobialTherapy.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AntimicrobialTherapy.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\AsCampaign.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AsCampaign.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\AsCampaignList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AsCampaignList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\AsSession.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AsSession.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\AsSessionAction.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AsSessionAction.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\AsSessionAnimal.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AsSessionAnimal.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\AsSessionCase.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AsSessionCase.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\AsSessionFarmSpeciesList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AsSessionFarmSpeciesList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\AsSessionList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AsSessionList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\AsSessionSample.model.cs">
+      <DependentUpon>AsSessionSample.xml</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Content>
+    <Content Include="Schema\AsSessionSummary.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AsSessionSummary.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\AsSessionSummaryDiagnosis.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AsSessionSummaryDiagnosis.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\AsSessionSummarySample.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AsSessionSummarySample.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\AsSessionTableViewItem.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AsSessionTableViewItem.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\BaseReference.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BaseReference.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\CaseTest.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CaseTest.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\CaseTestValidation.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CaseTestValidation.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\ChangeDiagnosisHistory.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChangeDiagnosisHistory.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\ContactedCasePerson.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ContactedCasePerson.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\DataArchiveSettings.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataArchiveSettings.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\Diagnosis2PensideTest.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Diagnosis2PensideTest.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\Diagnosis2PensideTestLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Diagnosis2PensideTestLookup.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\Diagnosis2PensideTestMaster.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Diagnosis2PensideTestMaster.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\LabSampleLogBookBaseList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LabSampleLogBookBaseList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\LabSampleLogBookMyPrefList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LabSampleLogBookMyPrefList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\SpeciesTypeLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SpeciesTypeLookup.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\StatisticTypeLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StatisticTypeLookup.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VectorSubTypeLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VectorSubTypeLookup.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VectorType2CollectionMethod.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VectorType2CollectionMethod.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VectorType2CollectionMethodMaster.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VectorType2CollectionMethodMaster.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VectorType2PensideTest.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VectorType2PensideTest.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VectorType2PensideTestMaster.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VectorType2PensideTestMaster.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VectorType2SampeTypeMaster.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VectorType2SampeTypeMaster.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VectorType2SampleType.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VectorType2SampleType.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VectorType2SampleTypeLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VectorType2SampleTypeLookup.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VectorTypeLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VectorTypeLookup.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VetAggregateActionDiagnosticDetailed.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VetAggregateActionDiagnosticDetailed.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VetAggregateActionProphylacticDetailed.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VetAggregateActionProphylacticDetailed.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\CountryLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CountryLookup.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\DataAudit.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataAudit.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\DataAuditList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataAuditList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\DepartmentLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DepartmentLookup.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\DiagnosisLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DiagnosisLookup.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\EventLog.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EventLog.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\EventLogList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EventLogList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\FarmList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FarmList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\FarmPanel.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FarmPanel.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\FarmRootPanel.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FarmRootPanel.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\FlexibleForms\ActivityParameter.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ActivityParameter.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\FlexibleForms\FormType.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FormType.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\FlexibleForms\Label.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Label.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\FlexibleForms\Line.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Line.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\FlexibleForms\Parameter.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Parameter.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\FlexibleForms\ParameterSelect.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ParameterSelect.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\FlexibleForms\ParameterTemplate.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ParameterTemplate.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\FlexibleForms\Section.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Section.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\FlexibleForms\SectionTemplate.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SectionTemplate.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\FlexibleForms\Template.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Template.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\FreezerTreeLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FreezerTreeLookup.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\GeoLocation.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GeoLocation.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\HumanAggergateCaseList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HumanAggergateCaseList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\HumanAggregateCase.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HumanAggregateCase.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\HumanAggregateCaseDetailed.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HumanAggregateCaseDetailed.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\HumanCase.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HumanCase.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\HumanCaseDeduplicationList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HumanCaseDeduplicationList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\HumanCaseList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HumanCaseList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\HumanCaseSample.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HumanCaseSample.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\LabBatch.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LabBatch.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\LabBatchList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LabBatchList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\LabSample.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LabSample.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\LabSampleDisposition.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LabSampleDisposition.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\LabSampleDispositionList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LabSampleDispositionList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\LabSampleList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LabSampleList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\LabSampleLogBookList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LabSampleLogBookList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\LabSampleReceive.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LabSampleReceive.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\LabSampleTransfer.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LabSampleTransfer.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\LabSampleTransferList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LabSampleTransferList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\LabTest.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LabTest.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\LabTestAmendmentHistory.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LabTestAmendmentHistory.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\LabTestList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LabTestList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\NextNumbers.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NextNumbers.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\NextNumbersList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NextNumbersList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\Observation.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Observation.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\OrganizationList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OrganizationList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\OrganizationLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OrganizationLookup.xml</DependentUpon>
+    </Content>
+    <Content Include="Model\FlexibleForms\Components\Parameter.cs" />
+    <Content Include="Schema\Outbreak.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Outbreak.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\OutbreakList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OutbreakList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\OutbreakLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OutbreakLookup.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\PatientList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PatientList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\Patient.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Patient.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\PensideTest.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PensideTest.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\PensideTestLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PensideTestLookup.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\Person.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Person.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\PersonList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PersonList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\PersonLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PersonLookup.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\Personnel.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Personnel.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\PostalCodeLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PostalCodeLookup.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\FlexibleForms\PredefinedStub.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PredefinedStub.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\RayonLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RayonLookup.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\RegionLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RegionLookup.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\RepositoryScheme.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RepositoryScheme.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\RepositorySchemeList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RepositorySchemeList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\RootFarmTree.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RootFarmTree.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\SampleTypeForDiagnosisLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SampleTypeForDiagnosisLookup.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\SecurityEventLog.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SecurityEventLog.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\SecurityEventLogList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SecurityEventLogList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\Settlement.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Settlement.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\SettlementList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SettlementList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\SettlementLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SettlementLookup.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\SettlementTypeLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SettlementTypeLookup.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\SiteActivationServer.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SiteActivationServer.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\SiteActivationServerList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SiteActivationServerList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\SiteLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SiteLookup.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\SmallHumanCaseList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SmallHumanCaseList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\SmallVetCaseList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SmallVetCaseList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\Statistic.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Statistic.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\StatisticList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StatisticList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\StreetLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StreetLookup.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\TestDiagnosisLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestDiagnosisLookup.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\TypeFieldTestToResultMatrixLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TypeFieldTestToResultMatrixLookup.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\TypeLabTestToResultMatrixLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TypeLabTestToResultMatrixLookup.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\UserGroup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UserGroup.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\UserGroupList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UserGroupList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\UsersAndGroupsList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UsersAndGroupsList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VaccinationList.model.cs">
+      <DependentUpon>VaccinationList.xml</DependentUpon>
+      <SubType>Code</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Content>
+    <Content Include="Schema\Vector.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Vector.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VectorFieldTest.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VectorFieldTest.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VectorLabTest.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VectorLabTest.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VectorSample.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VectorSample.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VectorSubType.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VectorSubType.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VectorSubTypeMaster.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VectorSubTypeMaster.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VectorTypeReference.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VectorTypeReference.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VectorTypeReferenceMaster.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VectorTypeReferenceMaster.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VetAggergateActionList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VetAggergateActionList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VetAggergateCaseList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VetAggergateCaseList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VetAggregateAction.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VetAggregateAction.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VetAggregateActionDetailed.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VetAggregateActionDetailed.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VetAggregateActionSanitaryDetailed.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VetAggregateActionSanitaryDetailed.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VetAggregateCase.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VetAggregateCase.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VetAggregateCaseDetailed.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VetAggregateCaseDetailed.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VetCase.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VetCase.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VetCaseList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VetCaseList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VetCaseSample.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VetCaseSample.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VetFarmTree.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VetFarmTree.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VsSession.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VsSession.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\VsSessionList.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VsSessionList.xml</DependentUpon>
+    </Content>
+    <Content Include="Schema\WiderPersonLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WiderPersonLookup.xml</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Schema\AggregateCaseHeader.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>AggregateCaseHeader.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\AggregateSettings.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>AggregateSettings.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\AsSessionAction.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>AsSessionAction.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\AsSessionSample.xml">
+      <SubType>Designer</SubType>
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>AsSessionSample.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\AsSessionSummary.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>AsSessionSummary.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\AsSessionSummaryDiagnosis.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>AsSessionSummaryDiagnosis.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\AsSessionSummarySample.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>AsSessionSummarySample.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\AsSessionFarmSpeciesList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>AsSessionFarmSpeciesList.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\AsSessionCase.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>AsSessionCase.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\AggregateMatrixVersionLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>AggregateMatrixVersionLookup.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\LabSampleLogBookBaseList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>LabSampleLogBookBaseList.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\LabSampleLogBookMyPrefList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>LabSampleLogBookMyPrefList.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\Diagnosis2PensideTestLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Diagnosis2PensideTestLookup.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\VectorSubTypeLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VectorSubTypeLookup.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\VectorType2SampleTypeLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VectorType2SampleTypeLookup.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\VectorTypeLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VectorTypeLookup.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\StatisticTypeLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>StatisticTypeLookup.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\DataArchiveSettings.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>DataArchiveSettings.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\Diagnosis2PensideTest.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Diagnosis2PensideTest.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\Diagnosis2PensideTestMaster.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Diagnosis2PensideTestMaster.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\VectorType2CollectionMethod.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VectorType2CollectionMethod.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\VectorType2CollectionMethodMaster.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VectorType2CollectionMethodMaster.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\VectorType2PensideTest.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VectorType2PensideTest.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\VectorType2PensideTestMaster.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VectorType2PensideTestMaster.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\VectorType2SampeTypeMaster.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VectorType2SampeTypeMaster.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\VectorType2SampleType.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VectorType2SampleType.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\VetAggregateActionDiagnosticDetailed.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VetAggregateActionDiagnosticDetailed.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\VetAggregateActionProphylacticDetailed.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VetAggregateActionProphylacticDetailed.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\VetAggregateActionSanitaryDetailed.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VetAggregateActionSanitaryDetailed.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\SmallVetCaseList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>SmallVetCaseList.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\LabTestAmendmentHistory.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>LabTestAmendmentHistory.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\TestDiagnosisLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>TestDiagnosisLookup.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\SmallHumanCaseList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>SmallHumanCaseList.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\Observation.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>Observation.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\AsSessionTableViewItem.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>AsSessionTableViewItem.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\FlexibleForms\PredefinedStub.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>PredefinedStub.model.cs</LastGenOutput>
+      <CustomToolNamespace>eidss.model.Schema</CustomToolNamespace>
+    </Content>
+    <Content Include="Schema\UsersAndGroupsList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>UsersAndGroupsList.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\VectorSubType.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VectorSubType.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\VectorSubTypeMaster.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VectorSubTypeMaster.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\WiderPersonLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>WiderPersonLookup.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\VetAggregateActionDetailed.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VetAggregateActionDetailed.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\VetAggregateCaseDetailed.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VetAggregateCaseDetailed.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\HumanAggregateCaseDetailed.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>HumanAggregateCaseDetailed.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\AsSessionAnimal.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>AsSessionAnimal.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\FarmRootPanel.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>FarmRootPanel.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\RootFarmTree.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>RootFarmTree.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\FlexibleForms\Line.xml">
+      <Generator>ObjectGenerator</Generator>
+      <CustomToolNamespace>eidss.model.Schema</CustomToolNamespace>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Line.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\TypeLabTestToResultMatrixLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>TypeLabTestToResultMatrixLookup.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\TypeFieldTestToResultMatrixLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>TypeFieldTestToResultMatrixLookup.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\VectorLabTest.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>VectorLabTest.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\PensideTestLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>PensideTestLookup.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\CaseTestValidation.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>CaseTestValidation.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\SampleTypeForDiagnosisLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>SampleTypeForDiagnosisLookup.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\SiteLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>SiteLookup.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\VectorFieldTest.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>VectorFieldTest.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\VectorTypeReferenceMaster.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VectorTypeReferenceMaster.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\PersonList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>PersonList.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\Address.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>Address.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\AsSession.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>AsSession.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\AsSessionList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>AsSessionList.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\BaseReference.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>BaseReference.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\AnimalList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>AnimalList.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\AnimalAgeLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>AnimalAgeLookup.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\Person.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>Person.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\SettlementTypeLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>SettlementTypeLookup.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\VectorSample.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>VectorSample.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\DataAudit.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>DataAudit.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\DataAuditList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>DataAuditList.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\EventLog.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>EventLog.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\EventLogList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>EventLogList.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\FreezerTreeLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>FreezerTreeLookup.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\NextNumbers.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>NextNumbers.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\NextNumbersList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>NextNumbersList.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\HumanAggergateCaseList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>HumanAggergateCaseList.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\HumanAggregateCase.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>HumanAggregateCase.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\PatientList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>PatientList.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\LabSampleLogBookList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>LabSampleLogBookList.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\LabSampleReceive.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>LabSampleReceive.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\OrganizationList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>OrganizationList.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\RepositoryScheme.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>RepositoryScheme.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\RepositorySchemeList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>RepositorySchemeList.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\SecurityEventLog.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>SecurityEventLog.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\SecurityEventLogList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>SecurityEventLogList.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\Settlement.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>Settlement.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\SettlementList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>SettlementList.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\SiteActivationServer.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>SiteActivationServer.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\SiteActivationServerList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>SiteActivationServerList.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\Statistic.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>Statistic.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\StatisticList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>StatisticList.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\UserGroup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>UserGroup.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\UserGroupList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>UserGroupList.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\VectorTypeReference.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VectorTypeReference.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\VetAggergateActionList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VetAggergateActionList.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\VetAggergateCaseList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VetAggergateCaseList.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\VetAggregateAction.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VetAggregateAction.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\VetAggregateCase.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VetAggregateCase.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\VetCaseSample.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>VetCaseSample.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\PensideTest.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>PensideTest.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\FarmList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>FarmList.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\LabSampleTransferList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>LabSampleTransferList.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\LabSampleDispositionList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>LabSampleDispositionList.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\LabSampleDisposition.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>LabSampleDisposition.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\LabSampleTransfer.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>LabSampleTransfer.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\Outbreak.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>Outbreak.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\OutbreakList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>OutbreakList.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\Personnel.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Personnel.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\LabBatch.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>LabBatch.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\LabBatchList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>LabBatchList.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\ChangeDiagnosisHistory.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>ChangeDiagnosisHistory.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\AntimicrobialTherapy.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>AntimicrobialTherapy.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\ContactedCasePerson.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>ContactedCasePerson.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\CaseTest.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>CaseTest.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\HumanCaseDeduplicationList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>HumanCaseDeduplicationList.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\LabSample.xml">
+      <SubType>Designer</SubType>
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>LabSample.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\LabSampleList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>LabSampleList.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\LabTest.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>LabTest.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\LabTestList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>LabTestList.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\VaccinationList.xml">
+      <SubType>Designer</SubType>
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VaccinationList.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\Vector.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>Vector.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\AsCampaign.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>AsCampaign.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\AsCampaignList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>AsCampaignList.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\VsSession.xml">
+      <SubType>Designer</SubType>
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VsSession.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\VsSessionList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VsSessionList.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\OutbreakLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>OutbreakLookup.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\StreetLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>StreetLookup.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\PostalCodeLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>PostalCodeLookup.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\DepartmentLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>DepartmentLookup.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\PersonLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>PersonLookup.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\FlexibleForms\Label.xml">
+      <Generator>ObjectGenerator</Generator>
+      <CustomToolNamespace>eidss.model.Schema</CustomToolNamespace>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Label.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\OrganizationLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>OrganizationLookup.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\HumanCaseSample.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>HumanCaseSample.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\Patient.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Patient.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\HumanCase.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>HumanCase.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\HumanCaseList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>HumanCaseList.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\CountryLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>CountryLookup.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\DiagnosisLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>DiagnosisLookup.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\FarmPanel.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>FarmPanel.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\FlexibleForms\ActivityParameter.xml">
+      <Generator>ObjectGenerator</Generator>
+      <CustomToolNamespace>eidss.model.Schema</CustomToolNamespace>
+      <SubType>Designer</SubType>
+      <LastGenOutput>ActivityParameter.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\FlexibleForms\ParameterSelect.xml">
+      <Generator>ObjectGenerator</Generator>
+      <CustomToolNamespace>eidss.model.Schema</CustomToolNamespace>
+      <SubType>Designer</SubType>
+      <LastGenOutput>ParameterSelect.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\FlexibleForms\Parameter.xml">
+      <Generator>ObjectGenerator</Generator>
+      <CustomToolNamespace>eidss.model.Schema</CustomToolNamespace>
+      <LastGenOutput>Parameter.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\FlexibleForms\Section.xml">
+      <Generator>ObjectGenerator</Generator>
+      <CustomToolNamespace>eidss.model.Schema</CustomToolNamespace>
+      <LastGenOutput>Section.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\FlexibleForms\ParameterTemplate.xml">
+      <Generator>ObjectGenerator</Generator>
+      <CustomToolNamespace>eidss.model.Schema</CustomToolNamespace>
+      <SubType>Designer</SubType>
+      <LastGenOutput>ParameterTemplate.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\FlexibleForms\FormType.xml">
+      <Generator>ObjectGenerator</Generator>
+      <CustomToolNamespace>eidss.model.Schema</CustomToolNamespace>
+      <LastGenOutput>FormType.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\FlexibleForms\SectionTemplate.xml">
+      <Generator>ObjectGenerator</Generator>
+      <CustomToolNamespace>eidss.model.Schema</CustomToolNamespace>
+      <LastGenOutput>SectionTemplate.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\FlexibleForms\Template.xml">
+      <Generator>ObjectGenerator</Generator>
+      <CustomToolNamespace>eidss.model.Schema</CustomToolNamespace>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Template.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\GeoLocation.xml">
+      <Generator>ObjectGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>GeoLocation.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\RayonLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>RayonLookup.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\RegionLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>RegionLookup.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\SettlementLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>SettlementLookup.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\SpeciesTypeLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>SpeciesTypeLookup.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\VetCase.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VetCase.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\VetCaseList.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VetCaseList.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schema\VetFarmTree.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>VetFarmTree.model.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Stored\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\bltoolkit.3.2.dev\BLToolkit.4.android.csproj">
+      <Project>{0C325F5D-E50E-4340-8724-D29896CCC583}</Project>
+      <Name>BLToolkit.4.android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\bv.common\bv.common.android.csproj">
+      <Project>{BEE76B17-720D-4B65-996A-5712912B3ACF}</Project>
+      <Name>bv.common.android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\bv.model\bv.model.android.csproj">
+      <Project>{9067327E-1960-4326-ACB9-D982DDBEAA76}</Project>
+      <Name>bv.model.android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.core\eidss.core.android.csproj">
+      <Project>{ED4C805C-42E1-4072-A112-0705444762DD}</Project>
+      <Name>eidss.core.android</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+</Project>

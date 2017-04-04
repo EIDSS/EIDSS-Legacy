@@ -1,0 +1,444 @@
+﻿@model bv.model.Model.Core.SearchPanelMetaItem           
+
+@using Kendo.Mvc.UI
+@using eidss.model.Schema
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+@functions
+{
+
+    enum CBoxEditorType
+    {
+        Dependant,
+        Normal
+    }
+
+    CBoxEditorType GetCurrentType()
+    {
+        if (ViewData["MasterPropertyName"] != null)
+            if (!string.IsNullOrEmpty((string)ViewData["MasterPropertyName"]))
+                return CBoxEditorType.Dependant;
+        return CBoxEditorType.Normal;
+    }
+
+    IEnumerable<SelectListItem> GetOperators(bv.model.Model.Core.EditorType type)
+    {
+        switch (type)
+        {
+            case bv.model.Model.Core.EditorType.Text:
+                return new List<SelectListItem> {
+                    new SelectListItem { Value = "=", Text = "="},
+                    new SelectListItem { Value = "LIKE", Text = "LIKE" },
+                    new SelectListItem { Value = "<>", Text = "<>" } 
+                    };
+            case bv.model.Model.Core.EditorType.Lookup:
+                return new List<SelectListItem>
+                {
+                    new SelectListItem{ Value = "=", Text = "=" },
+                    new SelectListItem{ Value = "<>", Text = "<>" }
+                };
+            default:
+                return new List<SelectListItem> 
+                {
+                    new SelectListItem{ Value = "=", Text = "=" },
+                    new SelectListItem{ Value = "<>", Text = "<>" },
+                    new SelectListItem{ Value = ">", Text = ">" },
+                    new SelectListItem{ Value = "<", Text = "<" },
+                    new SelectListItem{ Value = ">=", Text = ">=" },
+                    new SelectListItem{ Value = "<=", Text = "<=" }
+                };
+        }
+    }
+
+    String GetControlName(string baseName, string intervalPart = "")
+    {
+        if (Model.Location == bv.model.Model.Core.SearchPanelLocation.Combobox)
+        {
+            if (!baseName.StartsWith("CBox"))
+                baseName = String.Format("CBox.Value");
+
+            return String.Format("{0}.{1}", baseName, ViewData["ObjNameIndex"]);
+        }
+        else if (Model.Location == bv.model.Model.Core.SearchPanelLocation.Toolbox)
+        {
+            if (intervalPart.Length > 0)
+                intervalPart += "_";
+            return String.Format("{0}_{1}-{2}", baseName, intervalPart, Model.Name.Replace(" ", ""));
+        }
+        else
+        {
+            if (intervalPart.Length > 0)
+                intervalPart += "_";
+            return String.Format("{0}_{1}{2}", baseName, intervalPart, Model.Name.Replace(" ", ""));
+        }
+    }
+
+    IDictionary<string, object> GetAttributes(string className, string placeholder = null)
+    {
+        IDictionary<string, object> attributes = new Dictionary<string, object>();
+        attributes.Add("class", className + (Model.Mandatory(ViewData["BusinessObject"]) && !(bool)ViewData["IsSimpleMode"] ? " requiredField" : ""));
+        if (string.IsNullOrEmpty(placeholder))
+        {
+            placeholder = Translator.GetString(Model.LabelId);
+        }
+        attributes.Add("title", placeholder);
+        if (Model.EditorType == bv.model.Model.Core.EditorType.Text)
+        {
+            attributes.Add("maxlength", "100");
+        }
+
+        if (Model.Mandatory(ViewData["BusinessObject"]) && !(bool)ViewData["IsSimpleMode"])
+        {
+            attributes.Add("required", "required");
+        }
+        return attributes;
+    }
+
+    String GetMasterControlName(string master, string baseName, string intervalPart = "")
+    {
+        if (intervalPart.Length > 0)
+            intervalPart += "_";
+        return String.Format("{0}_{1}{2}", baseName, intervalPart, master.Replace(" ", ""));
+    }
+
+
+    int GetSelectedIndex()
+    {
+        var selectlist = ViewData["LookupList"] as List<SelectListItem>;
+        int index = -1;
+
+        if (index < 0 && selectlist != null && selectlist != null && ViewData["Value"] != null)
+        {
+            string str = ViewData["Value"].ToString();
+            if (!string.IsNullOrEmpty(str))
+            {
+                for (int i = 0; i < selectlist.Count; i++)
+                {
+                    if (selectlist[i].Value == str)
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+            }
+        }
+        return index;
+    }
+
+    string GetSelectedIndexes()
+    {
+        var selectlist = ViewData["LookupList"] as List<SelectListItem>;
+        string ret = "";
+
+        if (selectlist != null && ViewData["Value"] != null)
+        {
+            string str = ViewData["Value"].ToString();
+            if (!string.IsNullOrEmpty(str))
+            {
+                long val = long.Parse(str);
+                for (int i = 0; i < selectlist.Count; i++)
+                {
+                    long cval = long.Parse(selectlist[i].Value);
+                    if (cval != 0 && (cval & val) == cval)
+                    {
+                        if (ret.Length > 0)
+                            ret += ",";
+                        ret += i.ToString();
+                    }
+                }
+            }
+        }
+        return ret;
+    }
+    
+}
+@switch (Model.EditorType)
+{
+    case bv.model.Model.Core.EditorType.Flag:
+        @*(Html.CheckBox(GetControlName("Flag"), (ViewData["Value"] == null) ? false : Convert.ToBoolean(ViewData["Value"])))
+        <label for="@GetControlName("Flag")">@Translator.GetString(Model.LabelId)</label>*@
+        @Html.BvSimpleCheckBox(GetControlName("Flag"), (ViewData["Value"] == null) ? false : Convert.ToBoolean(ViewData["Value"]), new Dictionary<string, object> { { "class", "bvCheckbox" } }, Translator.GetString(Model.LabelId))
+        break;
+    case bv.model.Model.Core.EditorType.Date:
+    case bv.model.Model.Core.EditorType.Datetime:
+        if (Model.IsRange)
+        {
+            <table class="spRange">
+                @if (!(bool)ViewData["IsSimpleMode"])
+                {
+                    <tr>
+                        <td colspan="2" class="rangeLabel">
+                            <label>@Translator.GetString(Model.LabelId)</label>
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td>
+                        <div class="twinkleInput range">
+                            @Html.Label("", Translator.GetString("strFrom"))
+                            @if (Model.EditorType == bv.model.Model.Core.EditorType.Date)
+                            {
+                                @(Html.Kendo().DatePicker()
+                                      .Name(GetControlName("Date", "From"))
+                                      .Value(ViewData["ValueFrom"] as DateTime?)
+                                      .HtmlAttributes(GetAttributes("spDate", Translator.GetString("strFrom")))
+                                      .Enable(!(bool)ViewData["IsHiddenPersonalData"]))
+                            }
+                            else
+                            {
+                                @(Html.Kendo().DateTimePicker()
+                                      .Name(GetControlName("DateTime", "From"))
+                                      .Value(ViewData["ValueFrom"] as DateTime?)
+                                      .HtmlAttributes(GetAttributes("spDate", Translator.GetString("strFrom")))
+                                      .Enable(!(bool)ViewData["IsHiddenPersonalData"]))
+                            }
+                        </div>
+                    </td>
+                    <td class="dateTo">
+                        <div class="twinkleInput range">
+                            @Html.Label("", Translator.GetString("strTo"))
+                            @if (Model.EditorType == bv.model.Model.Core.EditorType.Date)
+                            {
+                                @(Html.Kendo().DatePicker()
+                                      .Name(GetControlName("Date", "To"))
+                                      .Value(ViewData["ValueTo"] as DateTime?)
+                                      .HtmlAttributes(GetAttributes("spDate", Translator.GetString("strTo")))
+                                      .Enable(!(bool)ViewData["IsHiddenPersonalData"]))
+                            }
+                            else
+                            {
+                                @(Html.Kendo().DateTimePicker()
+                                      .Name(GetControlName("DateTime", "To"))
+                                      .Value(ViewData["ValueTo"] as DateTime?)
+                                      .HtmlAttributes(GetAttributes("spDate", Translator.GetString("strTo")))
+                                      .Enable(!(bool)ViewData["IsHiddenPersonalData"]))
+                            }
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            if (Model.IsRangeDefDates && !(bool)ViewData["IsSimpleMode"])
+            {
+                <div class="rangeDefDates">
+                    <a href="#" onclick='searchPanel.fillDateRange(event, "month", "@GetControlName("Date", "From")", "@GetControlName("Date", "To")");'>@Translator.GetMessageString("this month")</a>&nbsp;
+                    <a href="#" onclick='searchPanel.fillDateRange(event, "quarter", "@GetControlName("Date", "From")", "@GetControlName("Date", "To")");'>@Translator.GetMessageString("this quarter")</a>&nbsp;            
+                    <a href="#" onclick='searchPanel.fillDateRange(event, "year", "@GetControlName("Date", "From")", "@GetControlName("Date", "To")");'>@Translator.GetMessageString("this year")</a>&nbsp;
+                </div>
+            }
+            if (Model.Mandatory(ViewData["BusinessObject"]) && !(bool)ViewData["IsSimpleMode"])
+            {
+                <input type="hidden" id='@String.Format("Default{0}", GetControlName("Date", "From").Replace(".", "_"))' value='@ViewData["DefaultValueFrom"]' />
+                <input type="hidden" id='@String.Format("Default{0}", GetControlName("Date", "To").Replace(".", "_"))' value='@ViewData["DefaultValueTo"]' />
+            }
+        }
+        else
+        {
+            <div class="twinkleInput numeric">
+                @if (!(bool) ViewData["IsSimpleMode"])
+                {
+                    @Html.Label("", Translator.GetString(Model.LabelId))
+                }
+                @if (Model.EditorType == bv.model.Model.Core.EditorType.Date)
+                {
+                    @(Html.Kendo().DatePicker()
+                          .Name(GetControlName("Date"))
+                          .HtmlAttributes(GetAttributes("spDateSingle"))
+                          .Value(ViewData["Value"] as DateTime?)
+                          .Enable(!(bool)ViewData["IsHiddenPersonalData"]))
+                }
+                else
+                {
+                    @(Html.Kendo().DateTimePicker()
+                          .Name(GetControlName("DateTime"))
+                          .Value(ViewData["Value"] as DateTime?)
+                          .HtmlAttributes(GetAttributes("spDateSingle"))
+                          .Enable(!(bool)ViewData["IsHiddenPersonalData"]))
+                }
+            </div>
+        }
+        break;
+    case bv.model.Model.Core.EditorType.Numeric:
+        if (Model.IsRange)
+        {
+            <table class="spRange numberRange">
+                @if (!(bool) ViewData["IsSimpleMode"])
+                {
+                    <tr>
+                        <td colspan="2" class="rangeLabel">
+                            <label>@Translator.GetString(Model.LabelId)</label>
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td>
+                        <div class="twinkleInput range">
+                            @Html.Label("", Translator.GetString("strFromInt"))
+                            @(Html.Kendo().IntegerTextBox()
+                                  .Name(GetControlName("Int", "From"))
+                                  .HtmlAttributes(GetAttributes("spNumeric", Translator.GetString("strFromInt")))
+                                  .Value(ViewData["Value"] as int?)
+                                  .Enable(!(bool)ViewData["IsHiddenPersonalData"]))
+                        </div>
+                    </td>
+                    <td class="dateTo">
+                        <div class="twinkleInput range">
+                            @Html.Label("", Translator.GetString("strToInt"))
+                            @(Html.Kendo().IntegerTextBox()
+                                  .Name(GetControlName("Int", "To"))
+                                  .HtmlAttributes(GetAttributes("spNumeric", Translator.GetString("strToInt")))
+                                  .Value(ViewData["Value"] as int?)
+                                  .Enable(!(bool)ViewData["IsHiddenPersonalData"]))
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        }
+        else
+        {
+            <div class="twinkleInput numeric">
+                @if (!(bool) ViewData["IsSimpleMode"])
+                {
+                    @Html.Label("", Translator.GetString(Model.LabelId))
+                }
+                @(Html.Kendo().IntegerTextBox()
+                      .Name(GetControlName("Int"))
+                      .HtmlAttributes(GetAttributes("spNumeric"))
+                      .Value(ViewData["Value"] as int?)
+                      .Enable(!(bool)ViewData["IsHiddenPersonalData"]))
+            </div>
+            if (Model.Mandatory(ViewData["BusinessObject"]) && !(bool)ViewData["IsSimpleMode"])
+            {
+                <input type="hidden" id='@String.Format("Default{0}", GetControlName("Int").Replace(".", "_"))' value='@ViewData["DefaultValue"]' />                
+            }
+        }
+        break;
+    case bv.model.Model.Core.EditorType.Lookup:
+        if (Model.IsMultiple)
+        {
+            <div class="twinkleInput combobox">
+                @{
+                    var lookupName = GetControlName("Lookupmultiple");
+                }
+                @if (!(bool) ViewData["IsSimpleMode"])
+                {
+                    @Html.Label("", Translator.GetString(Model.LabelId))
+                }
+                @(Html.Kendo().DropDownList()
+                      .Name(lookupName)
+                      .DataTextField("Text")
+                      .DataValueField("Value")
+                      .Template("<input type=\"checkbox\"" +
+                                "checkedname=\"${ data.Text }\" value=\"${ data.Value }\" class=\"check-item\" id=\"chb${ data.Value }\"/><span>${ data.Text }</span>")
+                      .BindTo(ViewData["LookupList"] as IEnumerable<SelectListItem>)
+                      .HtmlAttributes(GetAttributes("spComboBox"))
+                      .Enable(!(bool) ViewData["IsHiddenPersonalData"])
+                      .Events(e => e
+                                       .Select("searchPanel.onCheckedComboBoxChanged")
+                                       .DataBound(@<text>function(e) { searchPanel.bindCheckedComboBoxClickEvent('@lookupName', '@GetSelectedIndexes()');}</text>)
+                                       .Open("function(e) { searchPanel.onComboBoxOpen(e, " + (int)Model.EditorControlWidth + ", true); }")
+                      ))
+                <input type="hidden" id="@string.Format("{0}_SelectedValues", lookupName)" value="" />
+            </div>
+            if (Model.Mandatory(ViewData["BusinessObject"]) && !(bool)ViewData["IsSimpleMode"])
+            {
+                <input type="hidden" id='@String.Format("Default{0}", GetControlName("Lookup").Replace(".", "_"))' value='@ViewData["DefaultValue"]' />
+            }
+        }
+        else
+        {
+            <div class="twinkleInput combobox">
+                @if (!(bool) ViewData["IsSimpleMode"])
+                {
+                    @Html.Label("", Translator.GetString(Model.LabelId))
+                }
+                @{ var specificType = GetCurrentType(); }
+                @if (specificType == CBoxEditorType.Normal)
+                {
+                    @*if (Model.LookupType == typeof (OrganizationLookup))
+                    {
+                        @(Html.Kendo().DropDownList()
+                              .Name(GetControlName("Lookup"))
+                              .DataTextField("Text")
+                              .DataValueField("Value")
+                              .DataSource(source => source.Read(read => read.Action("SelectOrganizationsForSearch", "System")))
+                              .SelectedIndex((bool)ViewData["IsSimpleMode"] ? -1 : GetSelectedIndex())
+                              .HtmlAttributes(GetAttributes("spComboBox"))
+                              .Enable(!(bool) ViewData["IsHiddenPersonalData"])
+                              .Events(e => e.DataBound("searchPanel.onComboboxBound")
+                                  .Select("searchPanel.onComboboxChanged")
+                                  .Open("function(e) { searchPanel.onComboBoxOpen(e, " + (int)Model.EditorControlWidth + ", true); }")
+                                )
+                              )
+                    }
+                    else
+                    {*@
+                        @(Html.Kendo().DropDownList()
+                              .Name(GetControlName("Lookup"))
+                              .DataTextField("Text")
+                              .DataValueField("Value")
+                              .BindTo(ViewData["LookupList"] as IEnumerable<SelectListItem>)
+                              .SelectedIndex((bool)ViewData["IsSimpleMode"] ? -1 : GetSelectedIndex())
+                              .HtmlAttributes(GetAttributes("spComboBox"))
+                              .Enable(!(bool) ViewData["IsHiddenPersonalData"])
+                              .Events(e => e.DataBound("searchPanel.onComboboxBound")
+                                  .Select("searchPanel.onComboboxChanged")
+                                  .Open("function(e) { searchPanel.onComboBoxOpen(e, " + (int)Model.EditorControlWidth + ", true); }")
+                                )
+                              )
+                    @*}*@
+                }
+                else
+                {
+                    @(Html.Kendo().DropDownList()
+                          .Name(GetControlName("Lookup"))
+                          .AutoBind(false)
+                          .DataTextField("Text")
+                          .DataValueField("Value")
+                          .CascadeFrom(GetMasterControlName((string) ViewData["MasterPropertyName"], "Lookup"))
+                          .DataSource(source =>
+                              {
+                                  source.Read(read =>
+                                      {
+                                          read.Action("GetLookupSourceNew", "Search")
+                                              .Data(@<text>function () { return { modelGuid: "@ViewData["ModelGuid"]", fieldName: "@Model.Name", parameterName: "@ViewData["MasterPropertyName"]", parameterValue: $("#@GetMasterControlName((string) ViewData["MasterPropertyName"], "Lookup")").val() }; }</text>);
+                                      })
+                                        .ServerFiltering(true);
+                              })
+                          .HtmlAttributes(GetAttributes("spComboBox"))
+                          .Enable(!(bool) ViewData["IsHiddenPersonalData"])
+                          .Events(e => e.DataBound("searchPanel.onComboboxBound")
+                              .Select("searchPanel.onComboboxChanged")
+                              .Open("function(e) { searchPanel.onComboBoxOpen(e, " + (int)Model.EditorControlWidth + ", true); }")
+                              )
+                          )
+                }
+            </div>
+            if (Model.Mandatory(ViewData["BusinessObject"]) && !(bool)ViewData["IsSimpleMode"])
+            {
+                <input type="hidden" id='@String.Format("Default{0}", GetControlName("Lookup").Replace(".", "_"))' value='@ViewData["DefaultValue"]' />
+            }
+        }
+        break;
+    case bv.model.Model.Core.EditorType.Text:
+        {
+            if ((bool) ViewData["IsHiddenPersonalData"])
+            {
+                <input type="text" class="spTextBox readonlyField" disabled="disabled"/>
+            }
+            else
+            {
+                <div class="twinkleInput text">
+                    @if (!(bool) ViewData["IsSimpleMode"])
+                    {
+                        @Html.Label("", Translator.GetString(Model.LabelId))
+                    }
+                    @(Html.TextBox(GetControlName("String"), ViewData["Value"], GetAttributes("spTextBox")))     
+                </div>
+                if (Model.Mandatory(ViewData["BusinessObject"]) && !(bool)ViewData["IsSimpleMode"])
+                {
+                    <input type="hidden" id='@String.Format("Default{0}", GetControlName("String").Replace(".", "_"))' value='@ViewData["DefaultValue"]' />
+                }
+            }
+            break;
+        }
+}

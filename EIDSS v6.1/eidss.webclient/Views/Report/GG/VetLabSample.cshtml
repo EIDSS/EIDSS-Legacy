@@ -1,0 +1,34 @@
+﻿@using bv.common.Configuration
+@model eidss.model.Reports.Common.VetLabSampleModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/ExportButtons", Model)
+    <div class="bluelayout">
+        <div class="tabPanelContent">
+        
+            @Html.Partial("Common/BaseFilter", Model)
+
+            <table id="DiagnosisTable" >
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.SampleId)
+                    </td>
+                    <td class="largereport">
+                        <div class='tdContainer'>
+                            @Html.TextBoxFor(m => m.SampleId, new Dictionary<string, object> {{"class", "requiredField"}})
+                        </div>
+                    </td>
+                    <td colspan="3"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+}

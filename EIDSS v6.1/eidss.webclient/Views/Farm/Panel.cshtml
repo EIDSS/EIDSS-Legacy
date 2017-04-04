@@ -1,0 +1,159 @@
+﻿@model eidss.model.Schema.FarmPanel
+           
+
+@using bv.common.Configuration
+@using eidss.model.Schema
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+@Html.BvHidden(Model, m => m.idfRootFarm)
+
+<input type="hidden" id="hdnIsReadOnly" value="@Model.IsReadOnly("buttonSelectFarm")"/>
+
+<div class="sectionTitle">
+    @Translator.GetMessageString("titleFarmContactInformation")
+</div>
+<table class="level1">
+    <tr>
+        <td class="xmedium firstLabel">
+            @Html.BvLabel(Model, m => m.strFarmCode)
+        </td>
+        <td colspan="3">
+            @Html.Action("InlineFarmPicker", "Farm", new { obj = Model })
+        </td>
+        <td class="xmedium label">
+            @Html.BvLabel(Model, m => m.strNationalName)
+        </td>
+        <td class="medium">
+            @Html.BvEditbox(Model, m => m.strNationalName)
+        </td>
+    </tr>
+    @if (!eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+    {
+        <tr>
+            <td class="firstLabel subSectionTitle">
+                @Translator.GetString("strOwnerName"):
+            </td>       
+        </tr>
+    }
+    <tr>
+        <td class="xmedium firstLabel">
+            @if (!eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+            {
+                @Translator.GetString("Patient.strLastName")
+            }
+            else
+            {
+                @Translator.GetString("strOwnerName")
+            }
+        </td>
+        <td class="xmedium">
+            @Html.Action("InlinePersonPicker", "Person", new { obj = Model, objectId = Model.idfFarm, idfsPatientPropertyName = "idfOwner", strPatientPropertyName = "strOwnerLastName"})
+            @*Html.BvEditbox(Model, m => m.strOwnerLastName)*@
+        </td>
+        <td class="xmedium label">
+            @if (!eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+            {
+                @Translator.GetString("Patient.strFirstName")
+            }
+        </td>
+        <td class="medium">
+            @if (!eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+            {
+                @Html.BvEditbox(Model, m => m.strOwnerFirstName)
+            }
+        </td>
+        <td class="xmedium label">
+            @if (!eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+            {
+                @Translator.GetString("Patient.strSecondName")
+            }
+        </td>
+        <td class="medium">
+            @if (!eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+            {
+                @Html.BvEditbox(Model, m => m.strOwnerMiddleName)
+            }
+        </td>
+    </tr>
+    <tr>
+        <td class="firstLabel">
+            @Html.BvLabel(Model, m => m.strContactPhone)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strContactPhone)
+        </td>
+@if (!eidss.model.Core.EidssSiteContext.Instance.IsDTRACustomization)
+{ 
+        <td class="label">
+            @Html.BvLabel(Model, m => m.strFax)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strFax)
+        </td>
+}
+        <td class="label">
+            @Html.BvLabel(Model, m => m.strEmail)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strEmail)
+        </td>
+    </tr>
+</table>
+
+@Html.Address(Model.idfFarm, Model.Address, true, false, true, true)
+
+@if (/*(Model.VCase != null && Model.VCase._HACode == (int)eidss.model.Enums.HACode.Livestock) || */
+    (/*Model.ASSession != null && */!eidss.model.Core.EidssSiteContext.Instance.IsGeorgiaCustomization))
+{
+<table class="level1">
+    <tr>
+        <td class="firstLabel subSectionTitle">
+            @Translator.GetString("idfsOwnershipStructure:")
+        </td>       
+    </tr>
+    <tr>
+        <td class="firstLabel">
+            @Html.BvRadioButtonGroup(Model, m => m.OwnershipStructure, false)
+        </td>
+    </tr>
+</table> 
+}
+
+@if (Model.VCase != null && Model.VCase._HACode == (int)eidss.model.Enums.HACode.Avian)
+{
+    <table class="level1">
+        <tr>
+            <td colspan="4" class="firstLabel subSectionTitle"> 
+                @Html.BvLabel(Model, m => m.idfsAvianFarmType)                        
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" class="firstLabel">
+                @Html.BvRadioButtonGroup(Model, m => m.AvianFarmType, false)
+            </td>
+        </tr>
+        <tr>
+            <td class="firstLabel subSectionTitle">
+                @Translator.GetMessageString("titleFarmDetails")
+            </td>
+        </tr>
+        <tr>
+            <td class="xlarge firstLabel">
+                @Html.BvLabel(Model, m => m.intBuidings)
+            </td>
+            <td class="large">
+                @Html.BvNumeric(Model, m => m.intBuidings, 0)
+            </td>
+            <td class="xlarge label">
+                @Html.BvLabel(Model, m => m.intBirdsPerBuilding)
+            </td>
+            <td class="xlarge">
+                @Html.BvNumeric(Model, m => m.intBirdsPerBuilding, 0)
+            </td>
+        </tr>
+    </table>
+}

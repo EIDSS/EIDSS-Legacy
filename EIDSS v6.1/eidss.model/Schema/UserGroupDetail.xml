@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="UserGroupDetail"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+    <get />		
+	</storage>
+	<tables>
+		<table name="UserGroupDetail">
+      <properties auditObject="daoUserGroup" auditTable="tlbEmployeeGroup" permissionObject="UserGroup" />
+      <help win="User_Groups"/>
+
+      <fields>
+        <calculated name="ObjectAccessListFiltered" type="EditableList&lt;ObjectAccess&gt;" depends="" lambda="c => new EditableList&lt;ObjectAccess&gt;(c.ObjectAccessList.Where(m => m.idfsSite == EidssSiteContext.Instance.PermissionSiteID).ToList())"/>
+      </fields>
+      <readonly>
+      </readonly>
+      <relations>
+        <relation name="UserGroupMemberList" table="UserGroupMember" internal="false" type="child" source="idfEmployeeGroup" target="idfEmployeeGroup" lazy="false" />
+        <relation name="ObjectAccessList" table="ObjectAccess" internal="false" type="child" source="idfEmployeeGroup" target="idfEmployee" lazy="false" />
+      </relations>
+      <storage>
+        <post />
+        <delete />
+      </storage>
+      <postorder>        
+        <item name="this"/>
+        <item name="UserGroupMemberList"/>
+        <item name="ObjectAccessList"/>
+      </postorder>
+      <deleteorder>
+        <item name="ObjectAccessList"/>
+        <item name="UserGroupMemberList"/>
+        <item name="this"/>      
+      </deleteorder>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfEmployeeGroup" class="GetNewIDExtender" />
+          <scalar_extender target="idfsEmployeeGroupName" class="GetNewIDExtender" />
+          <value_extender target="idfsSite" value="EidssSiteContext.Instance.PermissionSiteID"/>
+        </creating>
+        <created>
+          <custom_extender>
+            <text>
+              _LoadObjectAccessList(manager, obj);
+            </text>
+          </custom_extender>
+        </created>
+      </extenders>
+      <handlers>
+      </handlers> 
+      <validators>
+        <post>
+          <required_validator target="strGroupName" field="GroupName" />
+        </post>
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <remove type="Edit"/>
+          <remove type="Delete"/>
+        </standard>       
+      </actions>            
+		</table>
+	</tables>
+
+</object>

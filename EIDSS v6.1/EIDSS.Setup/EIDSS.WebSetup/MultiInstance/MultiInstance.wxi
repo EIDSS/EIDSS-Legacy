@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<?ifndef MultiInstance?>
+<?define MultiInstance = 21?>
+
+<?define DefaultInstance = "Default"?>
+<?define Instance01 = I01 ?>
+<?define Instance02 = I02 ?>
+<?define Instance03 = I03 ?>
+<?define Instance04 = I04 ?>
+<?define Instance05 = I05 ?>
+<?define Instance06 = I06 ?>
+<?define Instance07 = I07 ?>
+<?define Instance08 = I08 ?>
+<?define Instance09 = I09 ?>
+<?define Instance10 = I10 ?>
+<?define Instance11 = I11 ?>
+<?define Instance12 = I12 ?>
+<?define Instance13 = I13 ?>
+<?define Instance14 = I14 ?>
+<?define Instance15 = I15 ?>
+<?define Instance16 = I16 ?>
+<?define Instance17 = I17 ?>
+<?define Instance18 = I18 ?>
+<?define Instance19 = I19 ?>
+<?define Instance20 = I20 ?>
+
+<?define InstancePool = "$(var.DefaultInstance);$(var.Instance01);$(var.Instance02);$(var.Instance03);$(var.Instance04);$(var.Instance05);$(var.Instance06);$(var.Instance07);$(var.Instance08);$(var.Instance09);$(var.Instance10);$(var.Instance11);$(var.Instance12);$(var.Instance13);$(var.Instance14);$(var.Instance15);$(var.Instance16);$(var.Instance17);$(var.Instance18);$(var.Instance19);$(var.Instance20)"?>
+
+<?if $(var.Platform) = x86?>
+<?define UpgradeCode.Default = {5045C721-14CC-4645-9527-58C82E6A312B}?>
+<?define UpgradeCode.I01 = {391005F4-5133-4461-9969-C5581CC10412} ?>
+<?define UpgradeCode.I02 = {0592F3BC-F7B7-4B62-8AD6-54E951B55B66} ?>
+<?define UpgradeCode.I03 = {D8929EF9-D7F1-4565-96BF-155C9B198242} ?>
+<?define UpgradeCode.I04 = {0BE72199-C1B6-4881-9AC7-D028D62530C4} ?>
+<?define UpgradeCode.I05 = {DDF43566-7F75-472D-8EB4-03A789E4D51A} ?>
+<?define UpgradeCode.I06 = {6F4D0F8C-2ACD-4458-9E17-053FB3260B8F} ?>
+<?define UpgradeCode.I07 = {711103B2-9CEA-460E-8204-BF4CEF210727} ?>
+<?define UpgradeCode.I08 = {FEAD6359-BD74-4A69-A5CC-1C2F9A800CBD} ?>
+<?define UpgradeCode.I09 = {E8EE7A49-B72B-4B19-871A-33B8095FA36F} ?>
+<?define UpgradeCode.I10 = {D10E368B-E656-4BC6-B46A-E128A2CDDC8C} ?>
+<?define UpgradeCode.I11 = {998541E1-4113-4D91-9C9D-314D246DF400} ?>
+<?define UpgradeCode.I12 = {F49D1228-904B-4510-8C41-5E2797ABEF9B} ?>
+<?define UpgradeCode.I13 = {D8F6BB58-2E59-45C4-B337-9C7F02C5EE9C} ?>
+<?define UpgradeCode.I14 = {2919CF6A-43AC-4780-A7C9-3248C763476D} ?>
+<?define UpgradeCode.I15 = {20D32E53-A27B-4D90-87B9-005B815DDAC2} ?>
+<?define UpgradeCode.I16 = {93148B92-F011-4C69-92B0-E313FF8E2C86} ?>
+<?define UpgradeCode.I17 = {0BE7828D-CD16-45DD-808A-0893E1226C3A} ?>
+<?define UpgradeCode.I18 = {78B5EB81-2DE8-47EF-8742-735262A72E86} ?>
+<?define UpgradeCode.I19 = {B6FA08B2-8C8F-43DF-93D8-9D7A767A83CA} ?>
+<?define UpgradeCode.I20 = {571BEB98-37EB-48A6-96FC-AB980A0C43A6} ?>
+<?elseif $(var.Platform) = x64?>
+<?define UpgradeCode.Default = {2A2E2BA0-2E22-46B5-B889-CBA46D337C01}?>
+<?define UpgradeCode.I01 = {3D3779B9-5115-40D5-B08F-EB3FD66702DD} ?>
+<?define UpgradeCode.I02 = {453C37C6-09E9-401F-9A45-3FA849D9754B} ?>
+<?define UpgradeCode.I03 = {04352CE9-22D7-4693-AD5E-2D426C46FB0D} ?>
+<?define UpgradeCode.I04 = {BF5ACECB-DA2A-4801-876D-325853444D7B} ?>
+<?define UpgradeCode.I05 = {CF9CD4B5-2DB6-4D41-B8CB-06DC7A1225A1} ?>
+<?define UpgradeCode.I06 = {68573631-8766-4BA2-A403-1DE7260A276E} ?>
+<?define UpgradeCode.I07 = {010B9B40-DB14-41D8-9479-0F498089996E} ?>
+<?define UpgradeCode.I08 = {40DEDA66-B502-4158-9A6C-4F5F0FC96D69} ?>
+<?define UpgradeCode.I09 = {1C9C4127-69CB-4AD6-BEE3-E57CC9EA5BF0} ?>
+<?define UpgradeCode.I10 = {B1B2369A-D7D4-4ECC-A17B-71BB69E8E88D} ?>
+<?define UpgradeCode.I11 = {8209C886-4434-4E72-AD59-195AB4D04926} ?>
+<?define UpgradeCode.I12 = {08398201-F72E-4178-91B1-EC3FDFEA0E75} ?>
+<?define UpgradeCode.I13 = {27869E5C-D66F-4728-9DBC-49E432D1015E} ?>
+<?define UpgradeCode.I14 = {02B99F0A-A202-47FB-A39B-CE369CC43176} ?>
+<?define UpgradeCode.I15 = {3178DA96-4070-44E1-8CD4-DBCA76F4175B} ?>
+<?define UpgradeCode.I16 = {CC1F8471-46A6-4107-A9BA-FD1FF185C838} ?>
+<?define UpgradeCode.I17 = {169396BC-E154-4CCC-BC7E-330EF5BEB9CD} ?>
+<?define UpgradeCode.I18 = {A423FE6E-8890-4B8F-90D5-146AE3DADF0F} ?>
+<?define UpgradeCode.I19 = {CE00A102-0729-460B-A7E3-26186A55FBE1} ?>
+<?define UpgradeCode.I20 = {23EED275-770C-4A7F-96BC-0318B5BA9ADD} ?>
+<?endif?>
+
+<?endif?>
+
+<Include />

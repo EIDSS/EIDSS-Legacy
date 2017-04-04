@@ -1,0 +1,64 @@
+﻿@using Kendo.Mvc.UI
+@using eidss.webclient.Utils
+@model eidss.model.Reports.AZ.AFPModel
+
+
+<table id="AFPSurveillanceTable" >
+    <tr>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.Year)
+        </td>
+        <td class="largereport">
+            <div class='tdContainer'>
+                @{
+                    @(
+                        Html.Kendo().NumericTextBox()
+                            .Name("Year")
+                            .Value(Model.Year)
+                            .Min(2000)
+                            .Max(2030)
+                            .Decimals(0)
+                            .HtmlAttributes(new {@class = "requiredField"})
+                            .Placeholder("")
+                            .Format("g")
+                          )
+                }
+            </div>
+        </td>
+        <td colspan="3"></td>
+    </tr>
+        
+    <tr>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.PeriodType)
+        </td>
+        <td class="largereport">
+            @{
+                @(Html.Kendo().ComboBox()
+                      .BindTo(Model.PeriodTypeList.ConvertToSelectListItem())
+                      .Name("PeriodType")
+                      .Events(c => c.Change("paperForm.OnPeriodTypeChanged"))
+                      .HtmlAttributes(new {@class = "requiredField"})
+                      )
+            }
+        </td>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.Period)
+        </td>
+        <td class="largereport">
+            @{
+                @(Html.Kendo().DropDownList()
+                      .Name("Period")
+                      .DataValueField("Value")
+                      .DataTextField("Text")
+                      )
+            }
+        </td>
+        <td></td>
+    </tr>
+</table>
+<script>
+    $(document).ready(function () {        
+        paperForm.OnPeriodTypeChanged();
+    });
+</script>

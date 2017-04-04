@@ -1,0 +1,43 @@
+﻿@using eidss.avr.mweb.Utils
+@using eidss.web.common.Utils
+
+    @Html.DevExpress().PopupControl(
+    settings =>
+    {
+        settings.Name = "pcOkCancel";
+        settings.CallbackRouteValues = new { Controller = "System", Action = "LoadOnDemandOkCancel" };
+        settings.ClientSideEvents.BeginCallback = "okCancelForm.OnPopupBeginCallback";
+        settings.LoadContentViaCallback = LoadContentViaCallback.OnFirstShow;
+        settings.Width = 350;
+        settings.CloseAction = CloseAction.CloseButton;
+        settings.PopupAnimationType = AnimationType.None;
+        settings.HeaderText = Translator.GetBvMessageString("Confirmation");
+        settings.Modal = true;
+        settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+        settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+        settings.ControlStyle.CssClass = "k-window";
+        settings.Styles.Header.CssClass = "k-window-titlebar";
+        settings.ShowCloseButton = false;
+        settings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+        
+        settings.SetContent(() =>
+        {
+            using (Html.BeginForm("ModalMode", "PopupControl", FormMethod.Post, new { id = "popupForm", @style = "width: 350px" }))
+            {
+                ViewContext.Writer.Write("<div style='padding: 10px;'><div class='confirmationText'>");
+                Html.DevExpress().Label(
+                    labelSettings =>
+                    {
+                        labelSettings.ControlStyle.CssClass = "firstLabel";
+                        labelSettings.Text = ViewBag.MessageText;
+                        labelSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                    }
+                )
+                .Render();
+                ViewContext.Writer.Write("</div><table class='level1 right'><tr><td>");
+                ViewContext.Writer.Write("<input id='_btnOk' class='button buttonMarginLeft' type='button' value='" + Translator.GetBvMessageString("strOk_Id") + "' onclick=\"pcOkCancel.Hide();" + ViewBag.OkFunction + "\"/>");
+                ViewContext.Writer.Write("<input id='_btnCancel' class='button buttonMarginLeft' type='button' value='" + Translator.GetBvMessageString("strCancel_Id") + "' onclick='pcOkCancel.Hide();'/>");
+                ViewContext.Writer.Write("</td></tr></table></div>");
+            }
+        });
+    }).GetHtml()

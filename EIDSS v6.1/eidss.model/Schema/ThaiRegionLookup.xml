@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="ThaiRegionLookup"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spRepThaiRegionsSelectLookup" type="lookuplist" cache="true"/>
+  </storage>
+
+  <tables>
+    <table name="ThaiRegionLookup" tostring="c => c.name" lookupcachename="ThaiRegions">
+    </table>
+  </tables>
+</object>

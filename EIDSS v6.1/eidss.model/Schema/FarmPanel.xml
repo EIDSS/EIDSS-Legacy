@@ -1,0 +1,339 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="FarmPanel"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+      <get />
+      <validate name="spFarm_Validate" />
+    </storage>
+
+    <tables>
+        <table name="FarmPanel" hacodable="true" tostring='c => c.strFarmCode + " / " + c.strFullNameCalc'>
+          <properties permissionObject="AccessToFarmData" auditObject="daoFarm" auditTable="tlbFarm" />
+          <labels>
+            <item labelId="strFarmFullName" name="strFullName"/>            
+          </labels>
+          <fields>
+            <calculated name="VCase" type="VetCase" depends="Parent" lambda="c => c.Parent as VetCase" />
+            <calculated name="ASSession" type="AsSession" depends="Parent" lambda="c => c.Parent == null ? null : (c.Parent is AsSession ? c.Parent as AsSession : (c.Parent.Parent == null ? null : (c.Parent.Parent is AsSession ? c.Parent.Parent as AsSession : c.Parent.Parent.Parent as AsSession)))" />
+            <storage name="Case" type="WeakReference"/>
+            <calculated name="IsReadOnlyParent" depends="Parent" type="bool" 
+                        lambda="c => c.Parent == null ? false : (c.Parent is VetCase ? c.VCase.IsClosed || c.VCase.ReadOnly : c.ASSession.ReadOnly)"/>
+            <calculated name="IsReadOnlyByPermissions" depends="" type="bool"
+                        lambda="c => (!(c.GetAccessor() as IObjectPermissions).CanUpdate &amp;&amp; !c.IsNew) || (!(c.GetAccessor() as IObjectPermissions).CanInsert &amp;&amp; c.IsNew)"/>
+            <storage name="_blnAllowFarmReload" type="bool"/>
+            <calculated name="strFullNameCalc" type="string" depends="strOwnerLastName,strOwnerFirstName,strOwnerMiddleName" lambda='c => ((string.IsNullOrEmpty(c.strOwnerLastName) ? "" : c.strOwnerLastName + " ") + (string.IsNullOrEmpty(c.strOwnerFirstName) ? "" : c.strOwnerFirstName + " ") + (string.IsNullOrEmpty(c.strOwnerMiddleName) ? "" : c.strOwnerMiddleName)).Trim()' />
+            <calculated name="bInMonitoringSession" type="bool" lambda="c => c.idfMonitoringSession.HasValue &amp;&amp; c.idfMonitoringSession.Value != 0" depends="idfMonitoringSession" />
+          </fields>
+          <readonly>
+            <fields name="strFarmCode" predicate="c => true"/>
+            <fields name="*" predicate="c => c.IsReadOnlyParent || c.IsReadOnlyByPermissions"/>
+          </readonly>
+          <relations>
+              <relation name="Address" table="Address" internal="false" type="link" source="idfFarmAddress" target="idfGeoLocation" />              
+              <relation name="FarmTree" table="VetFarmTree" internal="false" type="child" lazy="false" source="idfFarm" target="idfFarm" hacodable="true" />
+              <relation name="FFPresenterEpi" table="FFPresenterModel" internal="false" type="link" source="idfObservation" target="CurrentObservation" lazy="false" predicate="c => !c.bInMonitoringSession" />
+          </relations>
+          <lookups>
+            <lookup name="OwnershipStructure" table="BaseReference" section="rftOwnershipType" source="idfsOwnershipStructure" target="idfsBaseReference" />
+            <lookup name="AvianFarmType" table="BaseReference" section="rftAvianFarmType" source="idfsAvianFarmType" target="idfsBaseReference" />
+          </lookups>
+          
+          <storage>
+              <post />
+          </storage>
+          <postorder>
+            <item name="Address" />
+            <item name="this" />
+            <item name="FarmTree" />
+            <!--<item name="EpiActivityParameters"/>-->
+            <item name="FFPresenterEpi" />
+          </postorder>         
+          <deleteorder>
+            <!--<item name="FarmTree" />
+            <item name="Address" />-->
+            <item name="FFPresenterEpi" />                           
+            <item name="this" />
+          </deleteorder>
+          <extenders>
+            <creating>
+              <scalar_extender target="idfFarm" class="GetNewIDExtender" />
+              <lambda_extender target="strFarmCode" type="string" lambda='c => c.ASSession == null ? "(new farm)" : "(new farm " + ++c.ASSession.newCounterFarm + ")"' />
+              <create_extender target="Address" table="Address" class="ObjectCreateExtender" />              
+              <lambda_extender target="Address.Region" type="RegionLookup" lambda="c => c.Address.RegionLookup.Where(l => l.idfsRegion == eidss.model.Core.EidssSiteContext.Instance.RegionID).FirstOrDefault()" />
+              <add_extender    target="FarmTree" type="VetFarmTree" lambda="c => FarmTreeAccessor.CreateFarm(manager, c, c)" />
+              <!--<lambda_extender target="blnIsLivestock" type="bool?" lambda="c=> obj._HACode == (int)eidss.model.Enums.HACode.Livestock "/>
+              <lambda_extender target="blnIsAvian" type="bool?" lambda="c=> obj._HACode == (int)eidss.model.Enums.HACode.Avian"/>-->                 
+              <value_extender target="_blnAllowFarmReload" value="true"/>
+              <scalar_extender target="idfObservation" class="GetNewIDExtender" />
+              <lambda_extender target="FFPresenterEpi" type="FFPresenterModel" lambda="c => !c.bInMonitoringSession ? FFPresenterModel.Accessor.Instance(null).SelectByKey(manager, c.idfObservation) : null" />
+              
+              <!--
+              <db_lambda_extender target='idfsFormTemplate' type='long?'
+              lambda='(c,m) => c.idfsFormTemplate.HasValue ? c.idfsFormTemplate : 
+                                  m.SetSpCommand("dbo.spFFGetActualTemplate"
+                      , m.Parameter("idfsGISBaseReference", EidssSiteContext.Instance.CountryID)
+                      , m.Parameter("idfsBaseReference", null)
+                      , m.Parameter("idfsFormType", ((c._HACode == (int)eidss.model.Enums.HACode.Livestock) ? (long)FFTypeEnum.LivestockFarmEPI : (long)FFTypeEnum.AvianFarmEPI) )
+                      ).ExecuteScalar&lt;long?&gt;() as long?'/>
+              
+              <custom_extender>
+                <text>
+                  _LoadEpiFormTemplate(obj);
+                  _LoadEpiActivityParameters(obj);                     
+                </text>
+              </custom_extender>
+              -->              
+              
+              
+            </creating>
+            <created>
+              <value_extender target="Address.blnGeoLocationShared" value="false"/>
+              <custom_extender>
+                <text>
+                  if (!obj.bInMonitoringSession)
+                  {
+                    obj.FFPresenterEpi.SetProperties(EidssSiteContext.Instance.CountryID, null, obj._HACode.Value == (int)eidss.model.Enums.HACode.Livestock ? FFTypeEnum.LivestockFarmEPI : FFTypeEnum.AvianFarmEPI, obj.idfObservation.Value, obj.idfCase.HasValue ? obj.idfCase.Value : 0);
+                    if (obj.FFPresenterEpi.CurrentTemplate != null) obj.idfsFormTemplate = obj.FFPresenterEpi.CurrentTemplate.idfsFormTemplate;
+                  }
+                </text>
+              </custom_extender>
+            </created>
+            <loaded>
+              <lambda_extender target="Address" type="Address" lambda="c => c.Address == null ? AddressAccessor.CreateNewT(manager, c) : c.Address" />
+              <lambda_list_extender list="FarmTree" type="WeakReference" target="Case" lambda="c => c.Case"/>
+              <lambda_list_extender list="FarmTree" type="WeakReference" target="VetFarmTreeList" lambda="c => new WeakReference(c.FarmTree)"/>
+              <value_extender target="_blnAllowFarmReload" value="true"/>
+              <custom_extender>
+                <text>
+                  if (!obj.bInMonitoringSession)
+                  {
+                    if (obj.idfsFormTemplate.HasValue)
+                    {
+                      obj.FFPresenterEpi.SetProperties(obj.idfsFormTemplate.Value, obj.idfCase.HasValue ? obj.idfCase.Value : 0);
+                    }
+                    else
+                    {
+                      if (obj.idfObservation == null)
+                        obj.idfObservation = (new GetNewIDExtender&lt;FarmPanel&gt;()).GetScalar(manager, obj);
+
+                      obj.FFPresenterEpi = FFPresenterModel.Accessor.Instance(null).SelectByKey(manager, obj.idfObservation);
+                      obj.FFPresenterEpi.SetProperties(EidssSiteContext.Instance.CountryID, null, ((obj.intHACode &amp; 32) &gt; 0) ? FFTypeEnum.LivestockFarmEPI : FFTypeEnum.AvianFarmEPI, obj.idfObservation.Value, obj.idfCase.HasValue ? obj.idfCase.Value : 0);
+
+                      if (obj.FFPresenterEpi.CurrentTemplate != null)
+                        obj.idfsFormTemplate = obj.FFPresenterEpi.CurrentTemplate.idfsFormTemplate;
+                    }
+                  }
+                  obj.FarmTree.Where(x => x.idfsPartyType == (int)PartyTypeEnum.Species).ToList().ForEach(x => x.strHerdName = (obj.FarmTree.Single(h => h.idfParty == x.idfParentParty).strName));
+                </text>
+              </custom_extender>
+            </loaded>
+            <posting>
+              <lambda_extender target="datModificationForArchiveDate" type="DateTime?" lambda="c => c.HasChanges ? DateTime.Now : c.datModificationForArchiveDate"/>
+              <value_extender target="_blnAllowFarmReload" value="false"/>
+              <db_lambda_extender target="strFarmCode" type="string" lambda='(c,m) => 
+                        !string.IsNullOrEmpty(c.strFarmCode) &amp;&amp; !c.strFarmCode.StartsWith("(new farm")
+                        ? c.strFarmCode 
+                        : m.SetSpCommand("dbo.spGetNextNumber", (long)NumberingObjectEnum.Farm, DBNull.Value, DBNull.Value)
+                        .ExecuteScalar&lt;string&gt;(ScalarSourceType.OutputParameter, "NextNumberValue")' />
+              <lambda_extender target='blnRootFarm' lambda='c=>c.blnRootFarm ?? !c.idfRootFarm.HasValue' type='bool'/>
+              <custom_extender>
+                    <text>
+                      //set correct idfObservation and idfsTemplate to FarmTree = farm
+                      if (!obj.bInMonitoringSession)
+                      {
+                        if (obj.FarmTree.Count(t => t.idfsPartyType == (int)PartyTypeEnum.Farm) > 0)
+                        {
+                          obj.FarmTree.Where(t => t.idfsPartyType == (int)PartyTypeEnum.Farm).ToList().ForEach(x => x.idfObservation = obj.idfObservation);
+                          obj.FarmTree.Where(t => t.idfsPartyType == (int)PartyTypeEnum.Farm).ToList().ForEach(x => x.idfsFormTemplate = obj.FFPresenterEpi.CurrentTemplate.idfsFormTemplate);
+                        }
+                      }
+                    </text>
+                  </custom_extender>
+            </posting>
+            <posted>
+              <value_extender target="_blnAllowFarmReload" value="true"/>
+              <custom_extender>
+                <text>
+                obj.FarmTree
+                  .Where(item=>item.idfsPartyType == (long)PartyTypeEnum.Species).ToList() //for species only
+                  .ForEach(species=>species.strHerdName = obj.FarmTree.Single(herd=>herd.idfParty == species.idfParentParty).strName);
+                </text>
+              </custom_extender>
+            </posted>
+          </extenders>         
+          <handlers>
+            <fieldhandler>
+              <custom_handler field='idfRootFarm'>
+                <text>
+                  if (obj._blnAllowFarmReload &amp;&amp; !obj.IsMarkedToDelete)
+                    obj.CopyFieldsFromRootFarm();
+                </text>
+              </custom_handler>                
+              <custom_handler field="idfOwner">
+                <text>
+                  using (var manager = DbManagerFactory.Factory.Create(ModelUserContext.Instance))
+                  {
+                      var patient = Patient.Accessor.Instance(null).SelectByKey(manager, obj.idfOwner);
+                      if (patient != null)
+                      {
+                          obj.strOwnerLastName = patient.strLastName;
+                          obj.strOwnerFirstName = patient.strFirstName;
+                          obj.strOwnerMiddleName = patient.strSecondName;
+                      }
+                  }
+                </text>
+              </custom_handler>
+              </fieldhandler>
+              <childhandler>
+                <custom_handler container="Address" field="idfsRegion">
+                  <text>
+                    if (item.idfsRegion != null &amp;&amp; item.idfsRegion != obj.Address.idfsRegion)
+                      obj.Address.Region = obj.Address.RegionLookup.SingleOrDefault(i => i.idfsRegion == item.idfsRegion);
+                  </text>
+                </custom_handler>
+                <custom_handler container="Address" field="idfsRayon">
+                  <text>
+                    if (item.idfsRayon != null &amp;&amp; item.idfsRayon != obj.Address.idfsRayon)
+                      obj.Address.Rayon = obj.Address.RayonLookup.SingleOrDefault(i => i.idfsRayon == item.idfsRayon);
+                  </text>
+                </custom_handler>
+                <!--
+                <lambda_handler target="Address.Region" field="idfsRegion" type="RegionLookup" container="Location" lambda="c => item.idfsRegion == null ? c.Address.Region : c.Address.RegionLookup.SingleOrDefault(i => i.idfsRegion == item.idfsRegion)"/>
+                <lambda_handler target="Address.Rayon" field="idfsRayon" type="RayonLookup" container="Location" lambda="c => item.idfsRayon == null ? c.Address.Rayon : c.Address.RayonLookup.SingleOrDefault(i => i.idfsRayon == item.idfsRayon)"/>
+                -->
+                <custom_handler field="intTotalAnimalQty" container="FarmTree" filter="c => c.idfsPartyType == (long)PartyTypeEnum.Herd || c.idfsPartyType == (long)PartyTypeEnum.Species">
+                  <text>RecalcTotalAnimalQty(obj, item);</text>
+                </custom_handler>
+                <custom_handler field="intSickAnimalQty" container="FarmTree" filter="c => c.idfsPartyType == (long)PartyTypeEnum.Herd || c.idfsPartyType == (long)PartyTypeEnum.Species">
+                  <text>RecalcSickAnimalQty(obj, item);</text>
+                </custom_handler>
+                <custom_handler field="intDeadAnimalQty" container="FarmTree" filter="c => c.idfsPartyType == (long)PartyTypeEnum.Herd || c.idfsPartyType == (long)PartyTypeEnum.Species">
+                  <text>RecalcDeadAnimalQty(obj, item);</text>
+                </custom_handler>
+                <custom_handler field="IsMarkedToDelete" container="FarmTree" filter="c => c.idfsPartyType == (long)PartyTypeEnum.Herd || c.idfsPartyType == (long)PartyTypeEnum.Species">
+                  <text>RecalcAllAnimalQty(obj, item);</text>
+                </custom_handler>                  
+              </childhandler>
+          </handlers>            
+          <validators>              
+            <childaddlist container="FarmTree">
+              <predicate_validator field="FarmTree" property="idfsSpeciesTypeReference" predicate="(c,i) => NewFarmTreeItemIsValid(c,i)" message=""/>
+              <predicate_validator field="FarmTree" property="idfParentParty" predicate="(c,i) => SpeciesContainsValidHerd(c,i)" message=""/>
+            </childaddlist>
+
+            <post>
+              <custom_validator field="FarmTree" method="DuplicateSpeciesRule" />
+              <required_validator target="Address.idfsCountry" property="Address.Country" label ="Farm.Address.idfsCountry"/>
+              <required_validator target="Address.idfsRegion" property="Address.Region" label ="Farm.Address.idfsRegion"/>
+              <required_validator target="Address.idfsRayon" property="Address.Rayon" label ="Farm.Address.idfsRayon"/>
+              <custom_validator field="Address" method="CheckAddressToSessionAddress" type="Question" />
+              <custom_validator method="CustomValidations" /> 
+            </post>
+          </validators>
+
+          <actions>
+            <action name="CreateByCase" type="Create">
+              <run>
+                <params>
+                  <param name="Case" type="VetCase" />
+                </params>
+                <creating>
+                  <lambda_extender target="Case" type="WeakReference" lambda='c => new WeakReference(Case)' />
+                  <lambda_extender target="_HACode" type="int?" lambda='c => Case._HACode' />
+                  <lambda_extender target="idfCase" type="long?" lambda='c => Case.idfCase' />
+                  <db_lambda_extender target="idfOwner" type="long?" lambda='(c,m) => 
+                          c.idfOwner ??
+                          m.SetSpCommand("dbo.spsysGetNewID", DBNull.Value)
+                          .ExecuteScalar&lt;long&gt;(ScalarSourceType.OutputParameter)' />
+                </creating>
+              </run>
+            </action>
+            <action name="CreateBySession" type="Create">
+              <run>
+                <params>
+                  <param name="Session" type="AsSession" />
+                </params>
+                <creating>
+                  <lambda_extender target="idfMonitoringSession" type="long?" lambda='c => Session.idfMonitoringSession' />
+                  <db_lambda_extender target="idfOwner" type="long?" lambda='(c,m) => 
+                          c.idfOwner ??
+                          m.SetSpCommand("dbo.spsysGetNewID", DBNull.Value)
+                          .ExecuteScalar&lt;long&gt;(ScalarSourceType.OutputParameter)' />
+                  <custom_extender>
+                    <text>
+                      obj._HACode = (int)eidss.model.Enums.HACode.Livestock;
+                    </text>
+                  </custom_extender>
+                </creating>
+                <created>
+                  <lambda_extender target="Address.Country" type="CountryLookup" lambda="c => c.Address.CountryLookup.Where(l => l.idfsCountry == Session.idfsCountry).FirstOrDefault()" />
+                  <lambda_extender target="Address.Region" type="RegionLookup" lambda="c => c.Address.RegionLookup.Where(l => l.idfsRegion == Session.idfsRegion).FirstOrDefault()" />
+                  <lambda_extender target="Address.Rayon" type="RayonLookup" lambda="c => c.Address.RayonLookup.Where(l => l.idfsRayon == Session.idfsRayon).FirstOrDefault()" />
+                  <lambda_extender target="Address.Settlement" type="SettlementLookup" lambda="c => c.Address.SettlementLookup.Where(l => l.idfsSettlement == Session.idfsSettlement).FirstOrDefault()" />
+                </created>
+              </run>
+            </action>
+            <action name="CreateByHACode" type="Create">
+              <run>
+                <params>
+                  <param name="HACode" type="int?" />
+                </params>
+                <creating>
+                  <lambda_extender target="_HACode" type="int?" lambda='c => HACode' />
+                  <db_lambda_extender target="idfOwner" type="long?" lambda='(c,m) => 
+                          c.idfOwner ??
+                          m.SetSpCommand("dbo.spsysGetNewID", DBNull.Value)
+                          .ExecuteScalar&lt;long&gt;(ScalarSourceType.OutputParameter)' />
+                </creating>
+              </run>
+            </action>
+            <action name="CreateFromRoot" type="Create">
+              <run>
+                <params>
+                  <param name="RootFarm" type="FarmRootPanel"/>
+                  <param name="HACode" type="int?" />
+                  <param name="idfMonitoringSession" type="long?" />
+                </params>
+                <creating>
+                  <lambda_extender target="_HACode" type="int?" lambda='c => HACode' />
+                  <lambda_extender target="idfMonitoringSession" type="long?" lambda='c => idfMonitoringSession' />
+                  <!-- copy fields here -->
+                </creating>
+              </run>
+            </action>
+            <action name="CreateHerd" type="Action">
+              <run>
+                <preText>
+                  VetFarmTree item = FarmTreeAccessor.CreateHerd(manager, obj, obj.FarmTree[0]);
+                  item.strName = String.Format("(new {0})",obj.FarmTree.Count(x=>x.idfsPartyType == (long)PartyTypeEnum.Herd &amp;&amp; !x.IsMarkedToDelete));
+                  obj.FarmTree.Add(item);
+                  _SetupChildHandlers(obj, item);
+                  return true;
+                </preText>
+              </run>
+            </action>
+            <action name="CreateSpecies" type="Action">
+              <run>
+                <params>
+                  <param name="parent" type="VetFarmTree" />
+                </params>
+                <preText>
+                  VetFarmTree item = FarmTreeAccessor.CreateSpecies(manager, obj, parent);
+                  int find = obj.FarmTree.FindLastIndex(c => c.idfParentParty == parent.idfParty);
+                  if (find &lt; 0) find = obj.FarmTree.FindIndex(c => c.idfParty == parent.idfParty);
+                  obj.FarmTree.Insert(find + 1, item);
+                  _SetupChildHandlers(obj, item);
+                  RecalcAllAnimalQty(obj, parent);
+                  return true;
+                </preText>
+              </run>
+            </action>
+          </actions>
+        </table>
+    </tables>
+
+</object>
+

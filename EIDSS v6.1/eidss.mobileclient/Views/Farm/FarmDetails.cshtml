@@ -1,0 +1,171 @@
+﻿@model eidss.model.Schema.FarmPanel
+           
+@using bv.model.Model.Core
+@using eidss.mobileclient.Utils
+
+<script src="@Url.Content("~/Scripts/EIDSS.Farm.js")" type="text/javascript"></script>
+
+@{
+    var permissions = Model.GetAccessor() as IObjectPermissions;
+}
+
+
+<script language="javascript" type="text/javascript">
+    $(function () {
+        if("@((bool)ViewBag.IsHiddenPersonalData)" == "True") {
+            $("#btSearch").attr('disabled', 'disabled');
+        }
+    });                 
+
+    /*$(window).load(function () { 
+        if ("@(Model.IsNew && !permissions.CanInsert)" == "True") {
+            StoreFarmAndOpenFarmsList('@ViewBag.RootKey', '@Model.idfFarm');
+        }
+    });*/         
+    
+</script>
+
+@using (Html.BeginForm())
+{
+    if ((bool)ViewBag.CanUpdate)
+    {
+        if (permissions.CanSelect)
+        {
+            <input id="btSearch" type="button" value="@Translator.GetMessageString("Search")" onclick=" StoreFarmAndOpenFarmsList('@ViewBag.RootKey', '@Model.idfFarm') " />
+        }
+        if (permissions.CanUpdate)
+        {
+            <input type="button" value="@Translator.GetMessageString("Clear")" onclick=" onClearFarm('@ViewBag.RootKey') " />
+        }
+        <input type="button" value="@Translator.GetMessageString("sectionTitleEpiInfo")" onclick="StoreFarmAndOpenEpi('@ViewBag.RootKey')" />
+    }
+
+    @Html.Hidden("idfFarm", Model.idfFarm) 
+    <table> 
+        <tr>                                                               
+            <td>
+                @Html.LabelFor(m => m.strFarmCode)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.BvEditBox(Model, "strFarmCode")
+            </td>
+        </tr>
+        <tr>                                                               
+            <td>
+                @Html.LabelFor(m => m.strNationalName)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.BvEditBox(Model, "strNationalName")
+            </td>
+        </tr>
+        <tr>                
+            <td>
+                @Html.LabelFor(m => m.idfOwner):
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.strOwnerLastName)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.BvEditBox(Model, "strOwnerLastName")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.strOwnerFirstName)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.BvEditBox(Model, "strOwnerFirstName")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.strOwnerMiddleName)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.BvEditBox(Model, "strOwnerMiddleName")
+            </td>
+        </tr>
+        <tr>                
+            <td>
+                @Html.LabelFor(m => m.strContactPhone)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.BvEditBox(Model, "strContactPhone")
+            </td>
+        </tr>    
+        <tr>
+            <td>
+                @Html.Action("ShowCoordinatesAddress", "Common", new { address = Model.Address })
+            </td>
+        </tr>  
+        <tr>
+            <td>            
+                @Html.Action("ShowAddress", "Common", new { root = Model.idfCase, address = Model.Address, isCountryFieldVisible = true }) 
+            </td>
+        </tr>    
+    </table>
+    if ((int)ViewBag.CaseType == (int)eidss.model.Enums.HACode.Livestock)
+    {
+        <table>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.idfsOwnershipStructure)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.BvDropDownList(Model, "OwnershipStructure")
+                </td>
+            </tr>    
+        </table>
+    }
+    else
+    { 
+        <table>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.idfsAvianFarmType)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.BvDropDownList(Model, "AvianFarmType")
+                </td>
+            </tr>   
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.intBuidings)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.BvNumeric(Model, "intBuidings")
+                </td>
+            </tr>  
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.intBirdsPerBuilding)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.BvNumeric(Model, "intBirdsPerBuilding")
+                </td>
+            </tr> 
+        </table>
+    }
+}

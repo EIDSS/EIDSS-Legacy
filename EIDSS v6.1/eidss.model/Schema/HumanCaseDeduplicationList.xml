@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="HumanCaseDeduplicationListItem"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="fn_HumanCaseDeduplicationWeb_SelectList" type="fnlist" />
+    </storage>
+
+    <tables>
+        <table name="HumanCaseDeduplicationListItem">
+        <help win="HC_H10" web="HC_H10"/>
+            <searchpanel>
+              <item name="strLocalIdentifier" editor="Text" labelId="strLocalIdentifier"/>
+              <item name="strLastName" editor="Text" labelId="HumanCase.strLastName" predicate="() => Customization.Instance.VisibilityFeatures.IsLastNameBeforeFirstName"/>
+              <item name="strFirstName" editor="Text" labelId="strFirstName" predicate="() => !EidssSiteContext.Instance.IsIraqCustomization" />
+              <item name="strLastName" editor="Text" labelId="HumanCase.strLastName" predicate="() => !Customization.Instance.VisibilityFeatures.IsLastNameBeforeFirstName"/>
+              <item name="strSecondName" editor="Text" labelId="strSecondName" predicate="() => !EidssSiteContext.Instance.IsIraqCustomization" />
+              <item name="intPatientAge" editor="Numeric" labelId="intPatientAge"/>
+              <item name="idfsHumanAgeType" editor="Lookup" labelId="idfsHumanAgeType" defaultoper="="/>
+              <item name="idfsTentativeDiagnosis" editor="Lookup" editorWidth="Large" labelId="idfsTentativeDiagnosis" defaultoper="="/>
+              <item name="idfsFinalDiagnosis" editor="Lookup" editorWidth="Large" labelId="idfsFinalDiagnosis" defaultoper="="/>
+            </searchpanel>
+            <grid>
+              <item name="idfCase" visible="false" key="true" />
+              <item name="strLocalIdentifier" />
+              <item name="strLastName" />
+              <item name="strFirstName" predicate="() => !EidssSiteContext.Instance.IsIraqCustomization"/>
+              <item name="strSecondName" predicate="() => !EidssSiteContext.Instance.IsIraqCustomization"/>
+              <item name="intPatientAge" />                
+              <item name="HumanAgeTypeName" />
+              <item name="TentativeDiagnosisName" />
+              <item name="FinalDiagnosisName" />                
+            </grid>
+            <labels>
+              <item name="HumanAgeTypeName" labelId="HumanAgeType_Name" />
+              <item name="strLastName"  labelId="HumanCase.strLastName"/>
+            </labels>
+            <actions child="HumanCase">
+            </actions>
+        </table>
+    </tables>
+
+</object>

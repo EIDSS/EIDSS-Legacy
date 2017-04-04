@@ -1,0 +1,1666 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ReportFacade" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost:8097/?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:8097/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:8097/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" />
+      <xsd:import schemaLocation="http://localhost:8097/?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/eidss.model.Enums" />
+      <xsd:import schemaLocation="http://localhost:8097/?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://localhost:8097/?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/eidss.model.Reports.GG" />
+      <xsd:import schemaLocation="http://localhost:8097/?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/eidss.model.Reports" />
+      <xsd:import schemaLocation="http://localhost:8097/?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/EIDSS.Reports.Parameterized.Human.GG.Report" />
+      <xsd:import schemaLocation="http://localhost:8097/?xsd=xsd8" namespace="http://schemas.datacontract.org/2004/07/eidss.model.Reports.AZ" />
+      <xsd:import schemaLocation="http://localhost:8097/?xsd=xsd9" namespace="http://schemas.datacontract.org/2004/07/eidss.model.Reports.IQ" />
+      <xsd:import schemaLocation="http://localhost:8097/?xsd=xsd10" namespace="http://schemas.datacontract.org/2004/07/eidss.model.Reports.TH" />
+      <xsd:import schemaLocation="http://localhost:8097/?xsd=xsd11" namespace="http://schemas.datacontract.org/2004/07/eidss.model.Reports.ARM" />
+      <xsd:import schemaLocation="http://localhost:8097/?xsd=xsd12" namespace="http://schemas.datacontract.org/2004/07/eidss.model.Reports.KZ" />
+      <xsd:import schemaLocation="http://localhost:8097/?xsd=xsd13" namespace="http://schemas.datacontract.org/2004/07/bv.common.Core" />
+      <xsd:import schemaLocation="http://localhost:8097/?xsd=xsd14" namespace="http://schemas.datacontract.org/2004/07/System" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IReportFacade_ExportHumAggregateCase_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumAggregateCase" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumAggregateCase_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumAggregateCaseResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumAggregateCaseSummary_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumAggregateCaseSummary" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumAggregateCaseSummary_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumAggregateCaseSummaryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumCaseInvestigation_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumCaseInvestigation" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumCaseInvestigation_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumCaseInvestigationResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumUrgentyNotification_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumUrgentyNotification" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumUrgentyNotification_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumUrgentyNotificationResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumDiagnosisToChangedDiagnosis_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumDiagnosisToChangedDiagnosis" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumDiagnosisToChangedDiagnosis_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumDiagnosisToChangedDiagnosisResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumMonthlyMorbidityAndMortality_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumMonthlyMorbidityAndMortality" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumMonthlyMorbidityAndMortality_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumMonthlyMorbidityAndMortalityResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHum60BJournal_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHum60BJournal" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHum60BJournal_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHum60BJournalResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumMonthInfectiousDiseaseV4_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumMonthInfectiousDiseaseV4" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumMonthInfectiousDiseaseV4_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumMonthInfectiousDiseaseV4Response" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumMonthInfectiousDiseaseV5_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumMonthInfectiousDiseaseV5" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumMonthInfectiousDiseaseV5_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumMonthInfectiousDiseaseV5Response" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumMonthInfectiousDiseaseV6_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumMonthInfectiousDiseaseV6" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumMonthInfectiousDiseaseV6_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumMonthInfectiousDiseaseV6Response" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumMonthInfectiousDiseaseV61_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumMonthInfectiousDiseaseV61" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumMonthInfectiousDiseaseV61_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumMonthInfectiousDiseaseV61Response" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumIntermediateMonthInfectiousDiseaseV4_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumIntermediateMonthInfectiousDiseaseV4" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumIntermediateMonthInfectiousDiseaseV4_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumIntermediateMonthInfectiousDiseaseV4Response" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumIntermediateMonthInfectiousDiseaseV5_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumIntermediateMonthInfectiousDiseaseV5" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumIntermediateMonthInfectiousDiseaseV5_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumIntermediateMonthInfectiousDiseaseV5Response" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumIntermediateMonthInfectiousDiseaseV6_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumIntermediateMonthInfectiousDiseaseV6" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumIntermediateMonthInfectiousDiseaseV6_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumIntermediateMonthInfectiousDiseaseV6Response" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumIntermediateMonthInfectiousDiseaseV61_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumIntermediateMonthInfectiousDiseaseV61" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumIntermediateMonthInfectiousDiseaseV61_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumIntermediateMonthInfectiousDiseaseV61Response" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumAnnualInfectiousDisease_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumAnnualInfectiousDisease" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumAnnualInfectiousDisease_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumAnnualInfectiousDiseaseResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumIntermediateAnnualInfectiousDisease_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumIntermediateAnnualInfectiousDisease" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumIntermediateAnnualInfectiousDisease_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumIntermediateAnnualInfectiousDiseaseResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumSerologyResearchCard_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumSerologyResearchCard" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumSerologyResearchCard_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumSerologyResearchCardResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumMicrobiologyResearchCard_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumMicrobiologyResearchCard" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumMicrobiologyResearchCard_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumMicrobiologyResearchCardResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumAntibioticResistanceCard_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumAntibioticResistanceCard" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumAntibioticResistanceCard_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumAntibioticResistanceCardResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumAntibioticResistanceCardLma_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumAntibioticResistanceCardLma" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumAntibioticResistanceCardLma_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumAntibioticResistanceCardLmaResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetRabiesBulletinEurope_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetRabiesBulletinEurope" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetRabiesBulletinEurope_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetRabiesBulletinEuropeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetLaboratoryResearchResult_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetLaboratoryResearchResult" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetLaboratoryResearchResult_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetLaboratoryResearchResultResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumFormN1_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumFormN1" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumFormN1_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumFormN1Response" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumDataQualityIndicators_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumDataQualityIndicators" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumDataQualityIndicators_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumDataQualityIndicatorsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumDataQualityIndicatorsRayons_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumDataQualityIndicatorsRayons" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumDataQualityIndicatorsRayons_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumDataQualityIndicatorsRayonsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumSummaryByRayonDiagnosisAgeGroups_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumSummaryByRayonDiagnosisAgeGroups" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumSummaryByRayonDiagnosisAgeGroups_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumSummaryByRayonDiagnosisAgeGroupsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumComparativeAZReport_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumComparativeAZReport" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumComparativeAZReport_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumComparativeAZReportResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumExternalComparativeReport_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumExternalComparativeReport" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumExternalComparativeReport_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumExternalComparativeReportResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumMainIndicatorsOfAFPSurveillance_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumMainIndicatorsOfAFPSurveillance" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumMainIndicatorsOfAFPSurveillance_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumMainIndicatorsOfAFPSurveillanceResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumAdditionalIndicatorsOfAFPSurveillance_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumAdditionalIndicatorsOfAFPSurveillance" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumAdditionalIndicatorsOfAFPSurveillance_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumAdditionalIndicatorsOfAFPSurveillanceResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumWhoMeaslesRubellaReport_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumWhoMeaslesRubellaReport" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumWhoMeaslesRubellaReport_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumWhoMeaslesRubellaReportResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumComparativeReportOfTwoYears_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumComparativeReportOfTwoYears" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumComparativeReportOfTwoYears_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumComparativeReportOfTwoYearsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumBorderRayonsComparativeReport_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumBorderRayonsComparativeReport" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumBorderRayonsComparativeReport_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumBorderRayonsComparativeReportResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumTuberculosisCasesTested_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumTuberculosisCasesTested" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumTuberculosisCasesTested_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumTuberculosisCasesTestedResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportLabTestingResultsAZ_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportLabTestingResultsAZ" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportLabTestingResultsAZ_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportLabTestingResultsAZResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportAssignmentLabDiagnosticAZ_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportAssignmentLabDiagnosticAZ" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportAssignmentLabDiagnosticAZ_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportAssignmentLabDiagnosticAZResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportZoonoticComparativeAZ_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportZoonoticComparativeAZ" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportZoonoticComparativeAZ_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportZoonoticComparativeAZResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumComparativeIQReport_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumComparativeIQReport" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumComparativeIQReport_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumComparativeIQReportResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportWeeklySituationDiseasesByAgeGroupAndSex_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportWeeklySituationDiseasesByAgeGroupAndSex" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportWeeklySituationDiseasesByAgeGroupAndSex_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportWeeklySituationDiseasesByAgeGroupAndSexResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportMonthlySituationDiseasesByAgeGroupAndSex_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportMonthlySituationDiseasesByAgeGroupAndSex" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportMonthlySituationDiseasesByAgeGroupAndSex_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportMonthlySituationDiseasesByAgeGroupAndSexResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportWeeklySituationDiseasesByDistricts_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportWeeklySituationDiseasesByDistricts" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportWeeklySituationDiseasesByDistricts_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportWeeklySituationDiseasesByDistrictsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportMonthlySituationDiseasesByDistricts_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportMonthlySituationDiseasesByDistricts" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportMonthlySituationDiseasesByDistricts_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportMonthlySituationDiseasesByDistrictsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVeterinaryCasesReport_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVeterinaryCasesReport" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVeterinaryCasesReport_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVeterinaryCasesReportResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVeterinaryLaboratoriesAZReport_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVeterinaryLaboratoriesAZReport" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVeterinaryLaboratoriesAZReport_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVeterinaryLaboratoriesAZReportResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVeterinaryFormVet1_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVeterinaryFormVet1" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVeterinaryFormVet1_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVeterinaryFormVet1Response" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVeterinaryFormVet1A_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVeterinaryFormVet1A" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVeterinaryFormVet1A_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVeterinaryFormVet1AResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVeterinarySummaryAZ_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVeterinarySummaryAZ" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVeterinarySummaryAZ_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVeterinarySummaryAZResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumComparativeReportOfSeveralYearsTH_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumComparativeReportOfSeveralYearsTH" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumComparativeReportOfSeveralYearsTH_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumComparativeReportOfSeveralYearsTHResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumNumberOfCasesDeathsMorbidityMortalityTH_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumNumberOfCasesDeathsMorbidityMortalityTH" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumNumberOfCasesDeathsMorbidityMortalityTH_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumNumberOfCasesDeathsMorbidityMortalityTHResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumNumberOfCasesDeathsMonthTH_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumNumberOfCasesDeathsMonthTH" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumNumberOfCasesDeathsMonthTH_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumNumberOfCasesDeathsMonthTHResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumFormN85ARM_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumFormN85ARM" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportHumFormN85ARM_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportHumFormN85ARMResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetAggregateCase_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetAggregateCase" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetAggregateCase_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetAggregateCaseResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetAggregateCaseSummary_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetAggregateCaseSummary" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetAggregateCaseSummary_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetAggregateCaseSummaryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetAggregateCaseActions_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetAggregateCaseActions" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetAggregateCaseActions_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetAggregateCaseActionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetAggregateCaseActionsSummary_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetAggregateCaseActionsSummary" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetAggregateCaseActionsSummary_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetAggregateCaseActionsSummaryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetAvianInvestigation_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetAvianInvestigation" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetAvianInvestigation_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetAvianInvestigationResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetLivestockInvestigation_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetLivestockInvestigation" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetLivestockInvestigation_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetLivestockInvestigationResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetActiveSurveillanceSampleCollected_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetActiveSurveillanceSampleCollected" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetActiveSurveillanceSampleCollected_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetActiveSurveillanceSampleCollectedResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetSamplesCount_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetSamplesCount" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetSamplesCount_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetSamplesCountResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetSamplesBySampleType_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetSamplesBySampleType" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetSamplesBySampleType_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetSamplesBySampleTypeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetSamplesBySampleTypesWithinRegions_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetSamplesBySampleTypesWithinRegions" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetSamplesBySampleTypesWithinRegions_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetSamplesBySampleTypesWithinRegionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetYearlySituation_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetYearlySituation" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetYearlySituation_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetYearlySituationResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetActiveSurveillance_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetActiveSurveillance" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetActiveSurveillance_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetActiveSurveillanceResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportInfectiousParasiticKZReport_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportInfectiousParasiticKZReport" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportInfectiousParasiticKZReport_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportInfectiousParasiticKZReportResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetCountryPreventiveMeasures_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetCountryPreventiveMeasures" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetCountryPreventiveMeasures_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetCountryPreventiveMeasuresResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetCountrySanitaryMeasures_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetCountrySanitaryMeasures" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetCountrySanitaryMeasures_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetCountrySanitaryMeasuresResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetCountryPlannedDiagnosticTests_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetCountryPlannedDiagnosticTests" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetCountryPlannedDiagnosticTests_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetCountryPlannedDiagnosticTestsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetOblastPreventiveMeasures_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetOblastPreventiveMeasures" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetOblastPreventiveMeasures_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetOblastPreventiveMeasuresResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetOblastSanitaryMeasures_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetOblastSanitaryMeasures" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetOblastSanitaryMeasures_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetOblastSanitaryMeasuresResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetOblastPlannedDiagnosticTests_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetOblastPlannedDiagnosticTests" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVetOblastPlannedDiagnosticTests_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVetOblastPlannedDiagnosticTestsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportLimTestResult_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportLimTestResult" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportLimTestResult_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportLimTestResultResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportLimSampleTransfer_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportLimSampleTransfer" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportLimSampleTransfer_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportLimSampleTransferResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportLimTest_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportLimTest" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportLimTest_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportLimTestResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportLimBatchTest_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportLimBatchTest" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportLimBatchTest_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportLimBatchTestResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportLimSample_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportLimSample" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportLimSample_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportLimSampleResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportLimContainerContent_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportLimContainerContent" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportLimContainerContent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportLimContainerContentResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportLimAccessionIn_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportLimAccessionIn" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportLimAccessionIn_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportLimAccessionInResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportLimSampleDestruction_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportLimSampleDestruction" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportLimSampleDestruction_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportLimSampleDestructionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportOutbreak_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportOutbreak" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportOutbreak_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportOutbreakResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportAdmEventLog_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportAdmEventLog" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportAdmEventLog_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportAdmEventLogResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVectorSurveillanceSessionSummary_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVectorSurveillanceSessionSummary" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportVectorSurveillanceSessionSummary_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportVectorSurveillanceSessionSummaryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportNewBarcodes_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportNewBarcodes" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportNewBarcodes_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportNewBarcodesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportExistingBarcodes_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportExistingBarcodes" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportExistingBarcodes_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportExistingBarcodesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportSampleBarcodes_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportSampleBarcodes" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_ExportSampleBarcodes_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportSampleBarcodesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_GetServiceVersion_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetServiceVersion" />
+  </wsdl:message>
+  <wsdl:message name="IReportFacade_GetServiceVersion_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetServiceVersionResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IReportFacade">
+    <wsdl:operation name="ExportHumAggregateCase">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumAggregateCase" message="tns:IReportFacade_ExportHumAggregateCase_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumAggregateCaseResponse" message="tns:IReportFacade_ExportHumAggregateCase_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumAggregateCaseSummary">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumAggregateCaseSummary" message="tns:IReportFacade_ExportHumAggregateCaseSummary_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumAggregateCaseSummaryResponse" message="tns:IReportFacade_ExportHumAggregateCaseSummary_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumCaseInvestigation">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumCaseInvestigation" message="tns:IReportFacade_ExportHumCaseInvestigation_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumCaseInvestigationResponse" message="tns:IReportFacade_ExportHumCaseInvestigation_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumUrgentyNotification">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumUrgentyNotification" message="tns:IReportFacade_ExportHumUrgentyNotification_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumUrgentyNotificationResponse" message="tns:IReportFacade_ExportHumUrgentyNotification_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumDiagnosisToChangedDiagnosis">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumDiagnosisToChangedDiagnosis" message="tns:IReportFacade_ExportHumDiagnosisToChangedDiagnosis_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumDiagnosisToChangedDiagnosisResponse" message="tns:IReportFacade_ExportHumDiagnosisToChangedDiagnosis_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumMonthlyMorbidityAndMortality">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumMonthlyMorbidityAndMortality" message="tns:IReportFacade_ExportHumMonthlyMorbidityAndMortality_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumMonthlyMorbidityAndMortalityResponse" message="tns:IReportFacade_ExportHumMonthlyMorbidityAndMortality_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHum60BJournal">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHum60BJournal" message="tns:IReportFacade_ExportHum60BJournal_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHum60BJournalResponse" message="tns:IReportFacade_ExportHum60BJournal_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumMonthInfectiousDiseaseV4">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumMonthInfectiousDiseaseV4" message="tns:IReportFacade_ExportHumMonthInfectiousDiseaseV4_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumMonthInfectiousDiseaseV4Response" message="tns:IReportFacade_ExportHumMonthInfectiousDiseaseV4_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumMonthInfectiousDiseaseV5">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumMonthInfectiousDiseaseV5" message="tns:IReportFacade_ExportHumMonthInfectiousDiseaseV5_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumMonthInfectiousDiseaseV5Response" message="tns:IReportFacade_ExportHumMonthInfectiousDiseaseV5_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumMonthInfectiousDiseaseV6">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumMonthInfectiousDiseaseV6" message="tns:IReportFacade_ExportHumMonthInfectiousDiseaseV6_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumMonthInfectiousDiseaseV6Response" message="tns:IReportFacade_ExportHumMonthInfectiousDiseaseV6_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumMonthInfectiousDiseaseV61">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumMonthInfectiousDiseaseV61" message="tns:IReportFacade_ExportHumMonthInfectiousDiseaseV61_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumMonthInfectiousDiseaseV61Response" message="tns:IReportFacade_ExportHumMonthInfectiousDiseaseV61_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumIntermediateMonthInfectiousDiseaseV4">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumIntermediateMonthInfectiousDiseaseV4" message="tns:IReportFacade_ExportHumIntermediateMonthInfectiousDiseaseV4_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumIntermediateMonthInfectiousDiseaseV4Response" message="tns:IReportFacade_ExportHumIntermediateMonthInfectiousDiseaseV4_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumIntermediateMonthInfectiousDiseaseV5">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumIntermediateMonthInfectiousDiseaseV5" message="tns:IReportFacade_ExportHumIntermediateMonthInfectiousDiseaseV5_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumIntermediateMonthInfectiousDiseaseV5Response" message="tns:IReportFacade_ExportHumIntermediateMonthInfectiousDiseaseV5_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumIntermediateMonthInfectiousDiseaseV6">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumIntermediateMonthInfectiousDiseaseV6" message="tns:IReportFacade_ExportHumIntermediateMonthInfectiousDiseaseV6_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumIntermediateMonthInfectiousDiseaseV6Response" message="tns:IReportFacade_ExportHumIntermediateMonthInfectiousDiseaseV6_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumIntermediateMonthInfectiousDiseaseV61">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumIntermediateMonthInfectiousDiseaseV61" message="tns:IReportFacade_ExportHumIntermediateMonthInfectiousDiseaseV61_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumIntermediateMonthInfectiousDiseaseV61Response" message="tns:IReportFacade_ExportHumIntermediateMonthInfectiousDiseaseV61_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumAnnualInfectiousDisease">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumAnnualInfectiousDisease" message="tns:IReportFacade_ExportHumAnnualInfectiousDisease_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumAnnualInfectiousDiseaseResponse" message="tns:IReportFacade_ExportHumAnnualInfectiousDisease_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumIntermediateAnnualInfectiousDisease">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumIntermediateAnnualInfectiousDisease" message="tns:IReportFacade_ExportHumIntermediateAnnualInfectiousDisease_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumIntermediateAnnualInfectiousDiseaseResponse" message="tns:IReportFacade_ExportHumIntermediateAnnualInfectiousDisease_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumSerologyResearchCard">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumSerologyResearchCard" message="tns:IReportFacade_ExportHumSerologyResearchCard_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumSerologyResearchCardResponse" message="tns:IReportFacade_ExportHumSerologyResearchCard_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumMicrobiologyResearchCard">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumMicrobiologyResearchCard" message="tns:IReportFacade_ExportHumMicrobiologyResearchCard_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumMicrobiologyResearchCardResponse" message="tns:IReportFacade_ExportHumMicrobiologyResearchCard_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumAntibioticResistanceCard">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumAntibioticResistanceCard" message="tns:IReportFacade_ExportHumAntibioticResistanceCard_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumAntibioticResistanceCardResponse" message="tns:IReportFacade_ExportHumAntibioticResistanceCard_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumAntibioticResistanceCardLma">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumAntibioticResistanceCardLma" message="tns:IReportFacade_ExportHumAntibioticResistanceCardLma_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumAntibioticResistanceCardLmaResponse" message="tns:IReportFacade_ExportHumAntibioticResistanceCardLma_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetRabiesBulletinEurope">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportVetRabiesBulletinEurope" message="tns:IReportFacade_ExportVetRabiesBulletinEurope_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportVetRabiesBulletinEuropeResponse" message="tns:IReportFacade_ExportVetRabiesBulletinEurope_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetLaboratoryResearchResult">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportVetLaboratoryResearchResult" message="tns:IReportFacade_ExportVetLaboratoryResearchResult_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportVetLaboratoryResearchResultResponse" message="tns:IReportFacade_ExportVetLaboratoryResearchResult_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumFormN1">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumFormN1" message="tns:IReportFacade_ExportHumFormN1_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumFormN1Response" message="tns:IReportFacade_ExportHumFormN1_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumDataQualityIndicators">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumDataQualityIndicators" message="tns:IReportFacade_ExportHumDataQualityIndicators_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumDataQualityIndicatorsResponse" message="tns:IReportFacade_ExportHumDataQualityIndicators_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumDataQualityIndicatorsRayons">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumDataQualityIndicatorsRayons" message="tns:IReportFacade_ExportHumDataQualityIndicatorsRayons_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumDataQualityIndicatorsRayonsResponse" message="tns:IReportFacade_ExportHumDataQualityIndicatorsRayons_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumSummaryByRayonDiagnosisAgeGroups">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumSummaryByRayonDiagnosisAgeGroups" message="tns:IReportFacade_ExportHumSummaryByRayonDiagnosisAgeGroups_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumSummaryByRayonDiagnosisAgeGroupsResponse" message="tns:IReportFacade_ExportHumSummaryByRayonDiagnosisAgeGroups_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumComparativeAZReport">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumComparativeAZReport" message="tns:IReportFacade_ExportHumComparativeAZReport_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumComparativeAZReportResponse" message="tns:IReportFacade_ExportHumComparativeAZReport_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumExternalComparativeReport">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumExternalComparativeReport" message="tns:IReportFacade_ExportHumExternalComparativeReport_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumExternalComparativeReportResponse" message="tns:IReportFacade_ExportHumExternalComparativeReport_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumMainIndicatorsOfAFPSurveillance">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumMainIndicatorsOfAFPSurveillance" message="tns:IReportFacade_ExportHumMainIndicatorsOfAFPSurveillance_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumMainIndicatorsOfAFPSurveillanceResponse" message="tns:IReportFacade_ExportHumMainIndicatorsOfAFPSurveillance_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumAdditionalIndicatorsOfAFPSurveillance">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumAdditionalIndicatorsOfAFPSurveillance" message="tns:IReportFacade_ExportHumAdditionalIndicatorsOfAFPSurveillance_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumAdditionalIndicatorsOfAFPSurveillanceResponse" message="tns:IReportFacade_ExportHumAdditionalIndicatorsOfAFPSurveillance_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumWhoMeaslesRubellaReport">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumWhoMeaslesRubellaReport" message="tns:IReportFacade_ExportHumWhoMeaslesRubellaReport_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumWhoMeaslesRubellaReportResponse" message="tns:IReportFacade_ExportHumWhoMeaslesRubellaReport_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumComparativeReportOfTwoYears">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumComparativeReportOfTwoYears" message="tns:IReportFacade_ExportHumComparativeReportOfTwoYears_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumComparativeReportOfTwoYearsResponse" message="tns:IReportFacade_ExportHumComparativeReportOfTwoYears_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumBorderRayonsComparativeReport">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumBorderRayonsComparativeReport" message="tns:IReportFacade_ExportHumBorderRayonsComparativeReport_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumBorderRayonsComparativeReportResponse" message="tns:IReportFacade_ExportHumBorderRayonsComparativeReport_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumTuberculosisCasesTested">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumTuberculosisCasesTested" message="tns:IReportFacade_ExportHumTuberculosisCasesTested_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumTuberculosisCasesTestedResponse" message="tns:IReportFacade_ExportHumTuberculosisCasesTested_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportLabTestingResultsAZ">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportLabTestingResultsAZ" message="tns:IReportFacade_ExportLabTestingResultsAZ_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportLabTestingResultsAZResponse" message="tns:IReportFacade_ExportLabTestingResultsAZ_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportAssignmentLabDiagnosticAZ">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportAssignmentLabDiagnosticAZ" message="tns:IReportFacade_ExportAssignmentLabDiagnosticAZ_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportAssignmentLabDiagnosticAZResponse" message="tns:IReportFacade_ExportAssignmentLabDiagnosticAZ_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportZoonoticComparativeAZ">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportZoonoticComparativeAZ" message="tns:IReportFacade_ExportZoonoticComparativeAZ_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportZoonoticComparativeAZResponse" message="tns:IReportFacade_ExportZoonoticComparativeAZ_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumComparativeIQReport">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumComparativeIQReport" message="tns:IReportFacade_ExportHumComparativeIQReport_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumComparativeIQReportResponse" message="tns:IReportFacade_ExportHumComparativeIQReport_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportWeeklySituationDiseasesByAgeGroupAndSex">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportWeeklySituationDiseasesByAgeGroupAndSex" message="tns:IReportFacade_ExportWeeklySituationDiseasesByAgeGroupAndSex_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportWeeklySituationDiseasesByAgeGroupAndSexResponse" message="tns:IReportFacade_ExportWeeklySituationDiseasesByAgeGroupAndSex_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportMonthlySituationDiseasesByAgeGroupAndSex">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportMonthlySituationDiseasesByAgeGroupAndSex" message="tns:IReportFacade_ExportMonthlySituationDiseasesByAgeGroupAndSex_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportMonthlySituationDiseasesByAgeGroupAndSexResponse" message="tns:IReportFacade_ExportMonthlySituationDiseasesByAgeGroupAndSex_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportWeeklySituationDiseasesByDistricts">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportWeeklySituationDiseasesByDistricts" message="tns:IReportFacade_ExportWeeklySituationDiseasesByDistricts_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportWeeklySituationDiseasesByDistrictsResponse" message="tns:IReportFacade_ExportWeeklySituationDiseasesByDistricts_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportMonthlySituationDiseasesByDistricts">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportMonthlySituationDiseasesByDistricts" message="tns:IReportFacade_ExportMonthlySituationDiseasesByDistricts_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportMonthlySituationDiseasesByDistrictsResponse" message="tns:IReportFacade_ExportMonthlySituationDiseasesByDistricts_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportVeterinaryCasesReport">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportVeterinaryCasesReport" message="tns:IReportFacade_ExportVeterinaryCasesReport_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportVeterinaryCasesReportResponse" message="tns:IReportFacade_ExportVeterinaryCasesReport_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportVeterinaryLaboratoriesAZReport">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportVeterinaryLaboratoriesAZReport" message="tns:IReportFacade_ExportVeterinaryLaboratoriesAZReport_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportVeterinaryLaboratoriesAZReportResponse" message="tns:IReportFacade_ExportVeterinaryLaboratoriesAZReport_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportVeterinaryFormVet1">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportVeterinaryFormVet1" message="tns:IReportFacade_ExportVeterinaryFormVet1_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportVeterinaryFormVet1Response" message="tns:IReportFacade_ExportVeterinaryFormVet1_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportVeterinaryFormVet1A">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportVeterinaryFormVet1A" message="tns:IReportFacade_ExportVeterinaryFormVet1A_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportVeterinaryFormVet1AResponse" message="tns:IReportFacade_ExportVeterinaryFormVet1A_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportVeterinarySummaryAZ">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportVeterinarySummaryAZ" message="tns:IReportFacade_ExportVeterinarySummaryAZ_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportVeterinarySummaryAZResponse" message="tns:IReportFacade_ExportVeterinarySummaryAZ_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumComparativeReportOfSeveralYearsTH">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumComparativeReportOfSeveralYearsTH" message="tns:IReportFacade_ExportHumComparativeReportOfSeveralYearsTH_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumComparativeReportOfSeveralYearsTHResponse" message="tns:IReportFacade_ExportHumComparativeReportOfSeveralYearsTH_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumNumberOfCasesDeathsMorbidityMortalityTH">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumNumberOfCasesDeathsMorbidityMortalityTH" message="tns:IReportFacade_ExportHumNumberOfCasesDeathsMorbidityMortalityTH_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumNumberOfCasesDeathsMorbidityMortalityTHResponse" message="tns:IReportFacade_ExportHumNumberOfCasesDeathsMorbidityMortalityTH_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumNumberOfCasesDeathsMonthTH">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumNumberOfCasesDeathsMonthTH" message="tns:IReportFacade_ExportHumNumberOfCasesDeathsMonthTH_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumNumberOfCasesDeathsMonthTHResponse" message="tns:IReportFacade_ExportHumNumberOfCasesDeathsMonthTH_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumFormN85ARM">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportHumFormN85ARM" message="tns:IReportFacade_ExportHumFormN85ARM_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportHumFormN85ARMResponse" message="tns:IReportFacade_ExportHumFormN85ARM_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetAggregateCase">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportVetAggregateCase" message="tns:IReportFacade_ExportVetAggregateCase_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportVetAggregateCaseResponse" message="tns:IReportFacade_ExportVetAggregateCase_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetAggregateCaseSummary">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportVetAggregateCaseSummary" message="tns:IReportFacade_ExportVetAggregateCaseSummary_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportVetAggregateCaseSummaryResponse" message="tns:IReportFacade_ExportVetAggregateCaseSummary_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetAggregateCaseActions">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportVetAggregateCaseActions" message="tns:IReportFacade_ExportVetAggregateCaseActions_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportVetAggregateCaseActionsResponse" message="tns:IReportFacade_ExportVetAggregateCaseActions_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetAggregateCaseActionsSummary">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportVetAggregateCaseActionsSummary" message="tns:IReportFacade_ExportVetAggregateCaseActionsSummary_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportVetAggregateCaseActionsSummaryResponse" message="tns:IReportFacade_ExportVetAggregateCaseActionsSummary_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetAvianInvestigation">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportVetAvianInvestigation" message="tns:IReportFacade_ExportVetAvianInvestigation_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportVetAvianInvestigationResponse" message="tns:IReportFacade_ExportVetAvianInvestigation_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetLivestockInvestigation">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportVetLivestockInvestigation" message="tns:IReportFacade_ExportVetLivestockInvestigation_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportVetLivestockInvestigationResponse" message="tns:IReportFacade_ExportVetLivestockInvestigation_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetActiveSurveillanceSampleCollected">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportVetActiveSurveillanceSampleCollected" message="tns:IReportFacade_ExportVetActiveSurveillanceSampleCollected_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportVetActiveSurveillanceSampleCollectedResponse" message="tns:IReportFacade_ExportVetActiveSurveillanceSampleCollected_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetSamplesCount">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportVetSamplesCount" message="tns:IReportFacade_ExportVetSamplesCount_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportVetSamplesCountResponse" message="tns:IReportFacade_ExportVetSamplesCount_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetSamplesBySampleType">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportVetSamplesBySampleType" message="tns:IReportFacade_ExportVetSamplesBySampleType_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportVetSamplesBySampleTypeResponse" message="tns:IReportFacade_ExportVetSamplesBySampleType_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetSamplesBySampleTypesWithinRegions">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportVetSamplesBySampleTypesWithinRegions" message="tns:IReportFacade_ExportVetSamplesBySampleTypesWithinRegions_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportVetSamplesBySampleTypesWithinRegionsResponse" message="tns:IReportFacade_ExportVetSamplesBySampleTypesWithinRegions_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetYearlySituation">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportVetYearlySituation" message="tns:IReportFacade_ExportVetYearlySituation_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportVetYearlySituationResponse" message="tns:IReportFacade_ExportVetYearlySituation_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetActiveSurveillance">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportVetActiveSurveillance" message="tns:IReportFacade_ExportVetActiveSurveillance_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportVetActiveSurveillanceResponse" message="tns:IReportFacade_ExportVetActiveSurveillance_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportInfectiousParasiticKZReport">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportInfectiousParasiticKZReport" message="tns:IReportFacade_ExportInfectiousParasiticKZReport_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportInfectiousParasiticKZReportResponse" message="tns:IReportFacade_ExportInfectiousParasiticKZReport_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetCountryPreventiveMeasures">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportVetCountryPreventiveMeasures" message="tns:IReportFacade_ExportVetCountryPreventiveMeasures_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportVetCountryPreventiveMeasuresResponse" message="tns:IReportFacade_ExportVetCountryPreventiveMeasures_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetCountrySanitaryMeasures">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportVetCountrySanitaryMeasures" message="tns:IReportFacade_ExportVetCountrySanitaryMeasures_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportVetCountrySanitaryMeasuresResponse" message="tns:IReportFacade_ExportVetCountrySanitaryMeasures_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetCountryPlannedDiagnosticTests">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportVetCountryPlannedDiagnosticTests" message="tns:IReportFacade_ExportVetCountryPlannedDiagnosticTests_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportVetCountryPlannedDiagnosticTestsResponse" message="tns:IReportFacade_ExportVetCountryPlannedDiagnosticTests_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetOblastPreventiveMeasures">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportVetOblastPreventiveMeasures" message="tns:IReportFacade_ExportVetOblastPreventiveMeasures_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportVetOblastPreventiveMeasuresResponse" message="tns:IReportFacade_ExportVetOblastPreventiveMeasures_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetOblastSanitaryMeasures">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportVetOblastSanitaryMeasures" message="tns:IReportFacade_ExportVetOblastSanitaryMeasures_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportVetOblastSanitaryMeasuresResponse" message="tns:IReportFacade_ExportVetOblastSanitaryMeasures_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetOblastPlannedDiagnosticTests">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportVetOblastPlannedDiagnosticTests" message="tns:IReportFacade_ExportVetOblastPlannedDiagnosticTests_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportVetOblastPlannedDiagnosticTestsResponse" message="tns:IReportFacade_ExportVetOblastPlannedDiagnosticTests_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportLimTestResult">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportLimTestResult" message="tns:IReportFacade_ExportLimTestResult_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportLimTestResultResponse" message="tns:IReportFacade_ExportLimTestResult_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportLimSampleTransfer">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportLimSampleTransfer" message="tns:IReportFacade_ExportLimSampleTransfer_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportLimSampleTransferResponse" message="tns:IReportFacade_ExportLimSampleTransfer_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportLimTest">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportLimTest" message="tns:IReportFacade_ExportLimTest_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportLimTestResponse" message="tns:IReportFacade_ExportLimTest_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportLimBatchTest">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportLimBatchTest" message="tns:IReportFacade_ExportLimBatchTest_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportLimBatchTestResponse" message="tns:IReportFacade_ExportLimBatchTest_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportLimSample">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportLimSample" message="tns:IReportFacade_ExportLimSample_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportLimSampleResponse" message="tns:IReportFacade_ExportLimSample_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportLimContainerContent">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportLimContainerContent" message="tns:IReportFacade_ExportLimContainerContent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportLimContainerContentResponse" message="tns:IReportFacade_ExportLimContainerContent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportLimAccessionIn">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportLimAccessionIn" message="tns:IReportFacade_ExportLimAccessionIn_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportLimAccessionInResponse" message="tns:IReportFacade_ExportLimAccessionIn_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportLimSampleDestruction">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportLimSampleDestruction" message="tns:IReportFacade_ExportLimSampleDestruction_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportLimSampleDestructionResponse" message="tns:IReportFacade_ExportLimSampleDestruction_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportOutbreak">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportOutbreak" message="tns:IReportFacade_ExportOutbreak_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportOutbreakResponse" message="tns:IReportFacade_ExportOutbreak_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportAdmEventLog">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportAdmEventLog" message="tns:IReportFacade_ExportAdmEventLog_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportAdmEventLogResponse" message="tns:IReportFacade_ExportAdmEventLog_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportVectorSurveillanceSessionSummary">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportVectorSurveillanceSessionSummary" message="tns:IReportFacade_ExportVectorSurveillanceSessionSummary_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportVectorSurveillanceSessionSummaryResponse" message="tns:IReportFacade_ExportVectorSurveillanceSessionSummary_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportNewBarcodes">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportNewBarcodes" message="tns:IReportFacade_ExportNewBarcodes_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportNewBarcodesResponse" message="tns:IReportFacade_ExportNewBarcodes_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportExistingBarcodes">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportExistingBarcodes" message="tns:IReportFacade_ExportExistingBarcodes_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportExistingBarcodesResponse" message="tns:IReportFacade_ExportExistingBarcodes_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExportSampleBarcodes">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/ExportSampleBarcodes" message="tns:IReportFacade_ExportSampleBarcodes_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/ExportSampleBarcodesResponse" message="tns:IReportFacade_ExportSampleBarcodes_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetServiceVersion">
+      <wsdl:input wsaw:Action="http://tempuri.org/IReportFacade/GetServiceVersion" message="tns:IReportFacade_GetServiceVersion_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IReportFacade/GetServiceVersionResponse" message="tns:IReportFacade_GetServiceVersion_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IReportFacade" type="tns:IReportFacade">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ExportHumAggregateCase">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumAggregateCase" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumAggregateCaseSummary">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumAggregateCaseSummary" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumCaseInvestigation">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumCaseInvestigation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumUrgentyNotification">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumUrgentyNotification" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumDiagnosisToChangedDiagnosis">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumDiagnosisToChangedDiagnosis" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumMonthlyMorbidityAndMortality">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumMonthlyMorbidityAndMortality" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHum60BJournal">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHum60BJournal" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumMonthInfectiousDiseaseV4">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumMonthInfectiousDiseaseV4" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumMonthInfectiousDiseaseV5">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumMonthInfectiousDiseaseV5" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumMonthInfectiousDiseaseV6">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumMonthInfectiousDiseaseV6" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumMonthInfectiousDiseaseV61">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumMonthInfectiousDiseaseV61" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumIntermediateMonthInfectiousDiseaseV4">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumIntermediateMonthInfectiousDiseaseV4" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumIntermediateMonthInfectiousDiseaseV5">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumIntermediateMonthInfectiousDiseaseV5" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumIntermediateMonthInfectiousDiseaseV6">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumIntermediateMonthInfectiousDiseaseV6" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumIntermediateMonthInfectiousDiseaseV61">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumIntermediateMonthInfectiousDiseaseV61" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumAnnualInfectiousDisease">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumAnnualInfectiousDisease" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumIntermediateAnnualInfectiousDisease">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumIntermediateAnnualInfectiousDisease" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumSerologyResearchCard">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumSerologyResearchCard" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumMicrobiologyResearchCard">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumMicrobiologyResearchCard" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumAntibioticResistanceCard">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumAntibioticResistanceCard" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumAntibioticResistanceCardLma">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumAntibioticResistanceCardLma" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetRabiesBulletinEurope">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportVetRabiesBulletinEurope" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetLaboratoryResearchResult">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportVetLaboratoryResearchResult" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumFormN1">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumFormN1" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumDataQualityIndicators">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumDataQualityIndicators" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumDataQualityIndicatorsRayons">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumDataQualityIndicatorsRayons" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumSummaryByRayonDiagnosisAgeGroups">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumSummaryByRayonDiagnosisAgeGroups" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumComparativeAZReport">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumComparativeAZReport" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumExternalComparativeReport">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumExternalComparativeReport" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumMainIndicatorsOfAFPSurveillance">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumMainIndicatorsOfAFPSurveillance" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumAdditionalIndicatorsOfAFPSurveillance">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumAdditionalIndicatorsOfAFPSurveillance" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumWhoMeaslesRubellaReport">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumWhoMeaslesRubellaReport" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumComparativeReportOfTwoYears">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumComparativeReportOfTwoYears" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumBorderRayonsComparativeReport">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumBorderRayonsComparativeReport" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumTuberculosisCasesTested">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumTuberculosisCasesTested" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportLabTestingResultsAZ">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportLabTestingResultsAZ" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportAssignmentLabDiagnosticAZ">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportAssignmentLabDiagnosticAZ" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportZoonoticComparativeAZ">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportZoonoticComparativeAZ" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumComparativeIQReport">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumComparativeIQReport" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportWeeklySituationDiseasesByAgeGroupAndSex">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportWeeklySituationDiseasesByAgeGroupAndSex" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportMonthlySituationDiseasesByAgeGroupAndSex">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportMonthlySituationDiseasesByAgeGroupAndSex" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportWeeklySituationDiseasesByDistricts">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportWeeklySituationDiseasesByDistricts" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportMonthlySituationDiseasesByDistricts">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportMonthlySituationDiseasesByDistricts" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportVeterinaryCasesReport">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportVeterinaryCasesReport" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportVeterinaryLaboratoriesAZReport">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportVeterinaryLaboratoriesAZReport" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportVeterinaryFormVet1">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportVeterinaryFormVet1" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportVeterinaryFormVet1A">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportVeterinaryFormVet1A" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportVeterinarySummaryAZ">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportVeterinarySummaryAZ" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumComparativeReportOfSeveralYearsTH">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumComparativeReportOfSeveralYearsTH" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumNumberOfCasesDeathsMorbidityMortalityTH">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumNumberOfCasesDeathsMorbidityMortalityTH" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumNumberOfCasesDeathsMonthTH">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumNumberOfCasesDeathsMonthTH" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportHumFormN85ARM">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportHumFormN85ARM" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetAggregateCase">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportVetAggregateCase" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetAggregateCaseSummary">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportVetAggregateCaseSummary" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetAggregateCaseActions">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportVetAggregateCaseActions" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetAggregateCaseActionsSummary">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportVetAggregateCaseActionsSummary" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetAvianInvestigation">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportVetAvianInvestigation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetLivestockInvestigation">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportVetLivestockInvestigation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetActiveSurveillanceSampleCollected">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportVetActiveSurveillanceSampleCollected" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetSamplesCount">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportVetSamplesCount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetSamplesBySampleType">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportVetSamplesBySampleType" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetSamplesBySampleTypesWithinRegions">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportVetSamplesBySampleTypesWithinRegions" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetYearlySituation">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportVetYearlySituation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetActiveSurveillance">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportVetActiveSurveillance" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportInfectiousParasiticKZReport">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportInfectiousParasiticKZReport" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetCountryPreventiveMeasures">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportVetCountryPreventiveMeasures" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetCountrySanitaryMeasures">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportVetCountrySanitaryMeasures" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetCountryPlannedDiagnosticTests">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportVetCountryPlannedDiagnosticTests" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetOblastPreventiveMeasures">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportVetOblastPreventiveMeasures" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetOblastSanitaryMeasures">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportVetOblastSanitaryMeasures" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportVetOblastPlannedDiagnosticTests">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportVetOblastPlannedDiagnosticTests" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportLimTestResult">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportLimTestResult" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportLimSampleTransfer">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportLimSampleTransfer" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportLimTest">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportLimTest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportLimBatchTest">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportLimBatchTest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportLimSample">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportLimSample" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportLimContainerContent">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportLimContainerContent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportLimAccessionIn">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportLimAccessionIn" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportLimSampleDestruction">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportLimSampleDestruction" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportOutbreak">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportOutbreak" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportAdmEventLog">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportAdmEventLog" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportVectorSurveillanceSessionSummary">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportVectorSurveillanceSessionSummary" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportNewBarcodes">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportNewBarcodes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportExistingBarcodes">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportExistingBarcodes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExportSampleBarcodes">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/ExportSampleBarcodes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetServiceVersion">
+      <soap:operation soapAction="http://tempuri.org/IReportFacade/GetServiceVersion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ReportFacade">
+    <wsdl:port name="BasicHttpBinding_IReportFacade" binding="tns:BasicHttpBinding_IReportFacade">
+      <soap:address location="http://localhost:8097/" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

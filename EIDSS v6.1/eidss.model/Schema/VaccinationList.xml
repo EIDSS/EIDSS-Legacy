@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="VaccinationList"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spVaccination_SelectDetail" type="detaillist" />
+        
+  </storage> 
+  <tables>
+    <table name="VaccinationListItem">
+      <grid>
+        <item name="idfVaccination" key="true" visible="false"/>
+        <item name="idfSpecies" visible="false"/>
+        <item name="strDiagnosis" type="string" required="true"/>
+        <item name="datVaccinationDate" />
+        <item name="strSpecies" type="string" required="true" />
+        <item name="intNumberVaccinated" type="int?"/>
+        <item name="strVaccinationType" type="string" />
+        <item name="strVaccinationRoute" type="string"/>
+        <item name="strLotNumber" type="string"/>
+        <item name="strManufacturer" type="string"/>
+        <item name="strNote" type="string"/>
+      </grid>
+      <labels>
+        <item labelId="strAnimalFlockSpecies" name="strSpecies"/>
+        <item labelId="Vaccination.strNote" name="strNote"/>
+        <item labelId="Vaccination.strDiagnosis" name="strDiagnosis"/>
+      </labels>
+      <fields>
+        <storage name="_HACode" type="int?"/>
+        <calculated name="CaseObjectIdent" type="string" depends="idfVetCase" lambda='c => "VetCase_" + c.idfVetCase + "_"' />
+        <calculated name="strSpecies" type="string" depends="Parent" 
+                    lambda='c => { var ft = (c.Parent as VetCase).Farm.FarmTree.FirstOrDefault(f => f.idfsPartyType == (long)PartyTypeEnum.Species &amp;&amp; c.idfSpecies == f.idfParty); return ft == null ? "" : String.Format("{0}/{1}", ft.strHerdName, ft.strSpeciesName); }' />
+        <calculated name="strDiagnosis" depends="idfsDiagnosis" type="string" lambda='c=> c.Diagnosis == null ? "" : c.Diagnosis.name'/>
+        <calculated name="strVaccinationRoute" depends="idfsVaccinationRoute" type="string" lambda='c => c.VaccinationRoute == null ? "" : c.VaccinationRoute.name'/>
+        <calculated name="strVaccinationType" depends="idfsVaccinationType" type="string" lambda='c => c.VaccinationType == null ? "" : c.VaccinationType.name'/>        
+      </fields>
+      <lookups>
+        <lookup name="Diagnosis" table="DiagnosisLookup" source="idfsDiagnosis" target="idfsDiagnosis">
+          <filters>
+            <filter predicate="c => ((obj._HACode.HasValue &amp;&amp; (c.intHACode &amp; (int)obj._HACode) != 0)) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+            <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+          </filters>
+        </lookup>
+        <lookup name="VaccinationType" table="BaseReference" section="rftVaccinationType" source="idfsVaccinationType" target="idfsBaseReference" />
+        <lookup name="VaccinationRoute" table="BaseReference" section="rftVaccinationRoute" source="idfsVaccinationRoute" target="idfsBaseReference" />        
+          <!--<lookup name="SpeciesType" table="SpeciesTypeLookup" source="idfSpecies" target="idfsBaseReference">
+            <filters>
+              <filter predicate="c => (c.intHACode.GetValueOrDefault() &amp; obj._HACode.GetValueOrDefault()) != 0 || c.idfsBaseReference == obj.idfSpecies" />
+            </filters>
+          </lookup>-->        
+      </lookups>
+      <storage>
+        <post name="spVaccination_Post"/>
+      </storage>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfVaccination" class="GetNewIDExtender" />
+        </creating>
+        <loading>
+          <lambda_extender target="_HACode" type="int?" lambda='c => (c.idfsCaseType == (long)CaseTypeEnum.Livestock ? 32 : 64)' />
+        </loading>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+        </fieldhandler>
+      </handlers>
+      <validators>
+        <chains>
+          <item field="datVaccinationDate" type="DateTime">
+            <item field="CurrentDate" value="DateTime.Now" />
+          </item>
+        </chains>
+        <change>
+        </change>
+        <post>
+          <!--required_validator target='datVaccinationDate'/--> 
+          <predicate_validator message="errCantSaveEmptyRow" predicate="c=>c.idfsDiagnosis.HasValue || c.idfSpecies.HasValue || c.datVaccinationDate.HasValue || c.idfsVaccinationRoute.HasValue || c.idfsVaccinationType.HasValue || !String.IsNullOrWhiteSpace(c.strLotNumber) || !String.IsNullOrWhiteSpace(c.strManufacturer) || !String.IsNullOrWhiteSpace(c.strNote) || c.intNumberVaccinated.HasValue"/>
+        </post>
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+        </standard>
+        <action name="Create" type="Create">
+          <run>
+            <creating>
+              <lambda_extender target="_HACode" type="int?" lambda="c => (Parent as VetCase)._HACode"/>
+              <lambda_extender target="idfVetCase" type="long?" lambda="c => (Parent as VetCase).idfCase"/>
+            </creating>
+          </run>
+        </action>
+      </actions>
+    </table>
+  </tables>
+
+</object>

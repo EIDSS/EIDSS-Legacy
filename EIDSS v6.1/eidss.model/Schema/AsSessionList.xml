@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<object name="AsSessionListItem" connection="EidssConnectionString" generator="ObjectGenerator.xslt" xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="fn_AsSession_SelectList" type="fnlist" filter-object="MonitoringSession" />
+    <count name="spASSession_SelectCount"/>
+  </storage>
+
+  <tables>
+    <table name="AsSessionListItem">
+      <properties auditObject="daoMonitoringSession" auditTable="tlbMonitoringSession"  permissionObject="MonitoringSession"/>
+      <help web="VC_V17" win="VC_V17"/>
+      <extfilters>
+        <filter>
+          <join>
+            LEFT JOIN( select distinct d1.idfMonitoringSession, d1.idfsDiagnosis from tlbMonitoringSessionToDiagnosis d1
+            where d1.intRowStatus = 0) as d
+            ON			fn_AsSession_SelectList.idfMonitoringSession = d.idfMonitoringSession
+          </join>
+          <where>
+            <expr param="idfsDiagnosis" value="d.idfsDiagnosis {0} @idfsDiagnosis" />
+          </where>
+        </filter>
+        <filter>
+          <join>
+            INNER JOIN (select distinct strFieldBarcode, idfMonitoringSession from tlbMaterial where intRowStatus = 0) m
+            ON			fn_AsSession_SelectList.idfMonitoringSession = m.idfMonitoringSession
+          </join>
+          <where>
+            <expr param="strFieldBarCode" value="m.strFieldBarcode {0} @strFieldBarCode" />
+          </where>
+        </filter>      </extfilters>
+      <searchpanel>
+        <item name="strMonitoringSessionID" editor="Text" labelId="strMonitoringSessionID" />
+        <item name="strFieldBarCode" isParam="true" editor="Text" labelId="strFieldBarcodeField" />
+        <item name="idfsMonitoringSessionStatus" editor="Lookup" labelId="strStatus" lookupName="AsSessionStatusLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference" />
+        <item name="idfsDiagnosis" editor="Lookup" editorWidth="Large" labelId="AsSessionListItem.idfsDiagnosis" isParam="true"
+					  lookupName="DiagnosisLookup" lookupType="DiagnosisLookup" lookupText="c.name" lookupValue="c.idfsDiagnosis" />
+        <item name="idfsRegion" editor="Lookup" labelId="idfsRegion"  dependent="idfsRayon"
+					  lookupName="RegionLookup" lookupType="RegionLookup" lookupText="c.strRegionName" lookupValue="c.idfsRegion"
+					  defaultoper="="/>
+        <item name="idfsRayon" editor="Lookup" labelId="idfsRayon"  dependent="idfsSettlement"
+					  lookupName="RayonLookup" lookupType="RayonLookup" lookupText="c.strRayonName" lookupValue="c.idfsRayon" />
+        <item name="idfsSettlement" editor="Lookup" labelId="strTownOrVillage"
+					  lookupName="SettlementLookup" lookupType="SettlementLookup" lookupText="c.strSettlementName" lookupValue="c.idfsSettlement" />
+        <item name="datStartDate" editor="Date" labelId="datStartDate" range="true" rangeDefDates="true"/>
+        <item name="datEndDate" editor="Date" labelId="datEndDate" range="true" />
+        <item name="datEnteredDate" editor="Date" labelId="AsSessionListItem.datEnteredDate" range="true"  mandatory="true"
+					  default="c => DateTime.Today.AddDays(-EidssUserContext.User.Options.Prefs.DefaultDays)" />
+        <item name="idfPersonEnteredBy" editor="Lookup" labelId="idfPersonEnteredBy"
+					  lookupName="PersonEnteredByLookup" lookupType="PersonLookup" lookupText="c.FullName" lookupValue="c.idfPerson" />
+        <item name="strCampaignID" editor="Text" labelId="strCampaignID" />
+        <item name="strCampaignName" editor="Text" labelId="strCampaignName" />
+        <item name="idfsCampaignType" editor="Lookup" labelId="strCampaignType" lookupName="AsCampaignTypeLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference" />
+
+        <item location="Combobox" name="uidOfflineCaseID" editor="Text" labelId="" isParam="true" defaultoper="=" />
+
+        <item name="idfsSite" editor="Lookup" labelId="lbDataEntrySiteID"
+						lookupName="SiteLookup" lookupType="SiteLookup" lookupText="c.strSiteName" lookupValue="c.idfsSite">
+          <columns>
+            <column name="strSiteName" />
+            <column name="strSiteID"  />
+          </columns>
+        </item>
+      </searchpanel>
+      <grid>
+        <item name="idfMonitoringSession" key="true" visible="false" />
+        <item name="strMonitoringSessionID" action="ActionEditAsSession" required="true" />
+        <item name="datStartDate" />
+        <item name="datEndDate" />
+        <item name="strRegion" />
+        <item name="strRayon" />
+        <item name="strSettlement" />
+        <item name="strCampaignID" />
+        <item name="strCampaignName" />
+      </grid>
+      <labels>
+        <item name="strRegion" labelId="idfsRegion" />
+        <item name="strRayon" labelId="idfsRayon" />
+        <item name="strSettlement" labelId="AsSession.strSettlement" />
+        <!--<item name="datEnteredDate" labelId="AsSessionListItem.datEnteredDate" />-->
+      </labels>
+      <fields>
+        <storage name="idfsDiagnosis" type="long?" />
+        <storage name="idfsCountry" type="long?" />
+        <!--				<storage name="idfsRegion" type="long?" />-->
+        <!--				<storage name="idfsRayon" type="long?" />-->
+        <!--				<storage name="idfsSettlement" type="long?" />-->
+      </fields>
+      <lookups>
+
+        <lookup name="Country" table="CountryLookup" source="idfsCountry" target="idfsCountry" />
+        <lookup name="Region" table="RegionLookup" source="idfsRegion" target="idfsRegion">
+          <params>
+            <param name="CountryID" lambda="c => c.idfsCountry ?? 0" type="long" />
+            <param name="ID" const="null" />
+          </params>
+        </lookup>
+        <lookup name="Rayon" table="RayonLookup" source="idfsRayon" target="idfsRayon">
+          <params>
+            <param name="RegionID" lambda="c => c.idfsRegion ?? 0" type="long" />
+            <param name="ID" const="null" />
+          </params>
+        </lookup>
+        <lookup name="Settlement" table="SettlementLookup" source="idfsSettlement" target="idfsSettlement">
+          <params>
+            <param name="RayonID" lambda="c => c.idfsRayon ?? 0" type="long" />
+            <param name="ID" const="null" />
+          </params>
+        </lookup>
+
+        <lookup name="AsSessionStatus" table="BaseReference" section="rftMonitoringSessionStatus" source="idfsMonitoringSessionStatus" target="idfsBaseReference" />
+        <lookup name="AsCampaignType" table="BaseReference" section="rftCampaignType" source="idfsCampaignType" target="idfsBaseReference" />
+        <lookup name="Diagnosis" table="DiagnosisLookup" source="idfsDiagnosis" target="idfsDiagnosis">
+          <filters>
+            <filter predicate="c => ((c.intHACode &amp; (int)HACode.Livestock) != 0) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+            <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+          </filters>
+        </lookup>
+        <lookup name="PersonEnteredBy" table="PersonLookup" source="idfPersonEnteredBy" target="idfPerson">
+          <params>
+            <param name="OfficeID" const="null" />
+            <param name="ID" const="null" />
+            <param name="ShowUsersOnly" const="false"/>
+            <param name="intHACode" const="null"/>
+          </params>
+        </lookup>
+
+        <lookup name="Site" table="SiteLookup" source="idfsSite" target="idfsSite">
+          <filters>
+            <filter predicate="c => (c.intHACode.GetValueOrDefault() &amp; (int)HACode.LivestockAvian) != 0"/>
+          </filters>
+        </lookup>
+      </lookups>
+
+      <storage>
+        <delete name="spASSession_Delete"/>
+        <candelete name="spASSession_CanDelete"/>
+      </storage>
+
+      <extenders>
+        <created>
+          <!-- set default country as current country of database -->
+          <lambda_extender target="Country" type="CountryLookup" lambda='c => 
+                                     c.CountryLookup.Where(a => a.idfsCountry == eidss.model.Core.EidssSiteContext.Instance.CountryID)
+                                     .SingleOrDefault()' />
+          <lambda_extender target="Region" type="RegionLookup" lambda='c => 
+                                     EidssUserContext.User.Options.Prefs.DefaultRegion == true?
+                                     c.RegionLookup.Where(a => a.idfsRegion == eidss.model.Core.EidssSiteContext.Instance.RegionID)
+                                     .SingleOrDefault(): null'/>
+        </created>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <lambda_handler field="idfsCountry" target="Region" type="RegionLookup" lambda="c => null" />
+          <lambda_handler field="idfsRegion" target="Rayon" type="RayonLookup" lambda="c => null" />
+          <lambda_handler field="idfsRayon" target="Settlement" type="SettlementLookup" lambda="c => null" />
+          <lookup_handler lookup="Region" field="idfsCountry" />
+          <lookup_handler lookup="Rayon" field="idfsRegion" />
+          <lookup_handler lookup="Settlement" field="idfsRayon" />
+        </fieldhandler>
+      </handlers>
+      <actions child="AsSession">
+        <action name="ActionEditAsSession" type="Action">                
+          <run>
+            <preUI webType="JScript"/>                  
+          </run>
+        </action>
+      </actions>
+    </table>
+  </tables>
+
+</object>

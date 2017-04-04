@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- EXTERNAL_PROPERTY: SourcesToPrepare -->
+<!-- EXTERNAL_PROPERTY: DestinationFolder -->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Import Project="$(MSBuildthisFileDirectory)\Zip.targets" />
+
+  <PropertyGroup Label="AfterBuildDependsOn">
+    <PrepareDistributiveDependsOn>
+      PrepareOutputsToDistrib;
+      ZipFolder;
+    </PrepareDistributiveDependsOn>
+  </PropertyGroup>
+
+  <Target Name="PrepareDistributive" Condition=" 'true' == '$(PrepareDistributive)' " DependsOnTargets="$(PrepareDistributiveDependsOn)" AfterTargets="AfterBuild">
+    <Message Importance="low" Text="File '$(MSBuildThisFileName)' is successfully imported." />
+  </Target>
+
+  <Target Name="PrepareOutputsToDistrib">
+    <ItemGroup>
+      <_assemblies Include="$(SourcesToPrepare)**\*.dll" />
+      <_assemblies Include="$(SourcesToPrepare)**\*.exe" />
+      <_autoDocs Include="%(_assemblies.RootDir)%(Directory)%(Filename).xml" />
+      <_unnecessaryWebConfigs Include="$(SourcesToPrepare)Web.*.config" />
+
+      <!-- we don't need .pdb, auto docs .xml files and web.SMTH.config in distributive -->
+      <_filesToPrepare Include="$(SourcesToPrepare)**\*" Exclude="$(SourcesToPrepare)**\*.pdb;@(_autoDocs);@(_unnecessaryWebConfigs)" />
+    </ItemGroup>
+
+    <Copy
+      SourceFiles="@(_filesToPrepare)"
+      DestinationFiles="@(_filesToPrepare->'$(DestinationFolder)%(RecursiveDir)%(Filename)%(Extension)')"
+      UseHardlinksIfPossible="true">
+
+      <Output TaskParameter="CopiedFiles" ItemName="FileWrites" />
+    </Copy>
+
+    <PropertyGroup>
+      <FolderToZip>$(DestinationFolder)</FolderToZip>
+    </PropertyGroup>
+  </Target>
+</Project>

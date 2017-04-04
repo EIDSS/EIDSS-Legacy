@@ -1,0 +1,269 @@
+﻿@model eidss.model.Schema.Patient
+
+@using eidss.model.Core
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+     
+<table class="level1">    
+    @if (Customization.Instance.VisibilityFeatures.IsPersonIDBeforeName)
+    {
+    <tr>
+        <td class="xmedium firstLabel">
+            @Html.BvLabel(Model, m => m.idfsPersonIDType)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, m => m.PersonIDType)
+        </td>
+        <td class="label">
+            @Html.BvLabel(Model, m => m.strPersonID)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strPersonID, true)
+        </td>
+        <td colspan="2">
+            @if (Customization.Instance.PersonIdentityServiceFeatures.IsAvailable && (Customization.Instance.PersonIdentityServiceFeatures.IsOnPatient || (Customization.Instance.PersonIdentityServiceFeatures.IsOnHumanCasePatient && Model.idfCase.HasValue && Model.idfCase.Value != 0)))
+            {
+                <button class="button findPerson2" id="buttonFindInPersonIdentityService" type="button" onclick="patient.onFindInPersonIdentityServiceClick();">
+                    @Translator.GetMessageString(Customization.Instance.PersonIdentityServiceFeatures.ButtonResId)
+                </button>
+            }
+        </td>
+    </tr>
+    }
+    <tr>
+        <td class="xmedium firstLabel">
+            <span class="subSectionTitle">@Translator.GetString("strPatientNameShort")</span>&nbsp;&nbsp;
+            @if (!eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+            {
+                if (Customization.Instance.VisibilityFeatures.IsLastNameBeforeFirstName)
+                {
+                    @Translator.GetString("Patient.strLastName")
+                }
+                else
+                {
+                    @Translator.GetString("Patient.strFirstName")
+                }
+            }
+        </td>
+        <td class="medium">
+            @if (Customization.Instance.VisibilityFeatures.IsLastNameBeforeFirstName)
+            {
+                if (ViewBag.IsLastNameSearchVisible == null || !(bool)ViewBag.IsLastNameSearchVisible)
+                {
+                    @Html.BvEditbox(Model, m => m.strLastName, true)
+                }
+                else
+                {
+                    <div>
+                        @*Такой внешний вид контрола для выбора пациента является исключением. Лупа помещена внутрь текстового поля, что бы не переделывать верску адреса. Согласовано с аналитиками.*@
+                        <span class="picker">
+                            <span class="pickerWrap inlinePatientPicker requiredField">
+                                @Html.BvEditbox(Model, m => m.strLastName, true)
+                                @Html.BvHidden(Model, "idfRootHuman")
+                                @if (!((bv.model.Model.Core.IObject)Model).IsHiddenPersonalData("strLastName"))
+                                {
+                                    <span class="pickerSelect cleanPatientButton" onclick='patient.deleteLinkToRootHuman()'>
+                                        <span class="k-icon k-i-close"></span>
+                                    </span>
+                                    <span class="pickerSelect searchPatientButton" onclick="patient.showRootHumanSearchPicker()" ondrag="detailPage.dragNothing(event)">
+                                        <img src="@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/Search.png"))" alt="Select" draggable='false' />
+                                    </span>
+                                }
+                            </span>
+                        </span>
+                    </div>
+                }
+            }
+            else
+            {
+                @Html.BvEditbox(Model, m => m.strFirstName, true)
+            }
+        </td>
+        <td class="xmedium label">
+            @if (!eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+            {
+                if (Customization.Instance.VisibilityFeatures.IsLastNameBeforeFirstName)
+                {
+                    @Translator.GetString("Patient.strFirstName")
+                }
+                else
+                {
+                    @Translator.GetString("Patient.strLastName")
+                }
+            }
+        </td>
+        <td class="medium">
+            @if (!eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+            {
+                if (Customization.Instance.VisibilityFeatures.IsLastNameBeforeFirstName)
+                {
+                    @Html.BvEditbox(Model, m => m.strFirstName, true)
+                }
+                else
+                {
+                    if (ViewBag.IsLastNameSearchVisible == null || !(bool)ViewBag.IsLastNameSearchVisible)
+                    {
+                        @Html.BvEditbox(Model, m => m.strLastName, true)
+                    }
+                    else
+                    {
+                        <div>
+                            @*Такой внешний вид контрола для выбора пациента является исключением. Лупа помещена внутрь текстового поля, что бы не переделывать верску адреса. Согласовано с аналитиками.*@
+                            <span class="picker">
+                                <span class="pickerWrap inlinePatientPicker requiredField">
+                                    @Html.BvEditbox(Model, m => m.strLastName, true)
+                                    @Html.BvHidden(Model, "idfRootHuman")
+                                    @if (!((bv.model.Model.Core.IObject)Model).IsHiddenPersonalData("strLastName"))
+                                    {
+                                        <span class="pickerSelect cleanPatientButton" onclick='patient.deleteLinkToRootHuman()'>
+                                            <span class="k-icon k-i-close"></span>
+                                        </span>
+                                        <span class="pickerSelect searchPatientButton" onclick="patient.showRootHumanSearchPicker()" ondrag="detailPage.dragNothing(event)">
+                                            <img src="@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/Search.png"))" alt="Select" draggable='false' />
+                                        </span>
+                                    }
+                                </span>
+                            </span>
+                        </div>
+                    }
+                }
+            }
+        </td>
+        <td class="xmedium label">
+            @if (!eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+            {
+                @Translator.GetString("Patient.strSecondName")
+            }
+        </td>
+        <td class="medium">
+            @if (!eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+            {
+                @Html.BvEditbox(Model, m => m.strSecondName, true)
+            }
+        </td>
+    </tr>
+    <tr>
+        <td class="firstLabel">
+            @Html.BvLabel(Model, m => m.datDateofBirth)
+        </td>
+        <td>
+            @if (((bv.model.Model.Core.IObject)Model).IsHiddenPersonalData("datDateofBirth"))
+            {
+                @Html.BvHiddenPersonalData(Model, m => m.datDateofBirth, "**.**.****")
+            }
+            else {
+                @Html.BvDatebox(Model, m => m.datDateofBirth)
+            }
+        </td>
+        @if((bool)ViewBag.IsAgeVisible)
+        {
+            <td class="label">
+                @Translator.GetMessageString("Age")
+            </td>
+            <td class="age">
+                @Html.BvNumeric(Model, m => m.intPatientAgeFromCase, 0, 1, 1000, refreshOnLostFocus: true)
+                @if (((bv.model.Model.Core.IObject)Model).IsHiddenPersonalData("HumanAgeType"))
+                {
+                    @Html.BvHiddenPersonalData(Model, m => m.HumanAgeType)
+                }
+                else {
+                    @Html.BvCombobox(Model, m => m.HumanAgeType)
+                }
+            </td>
+        }
+        else
+        {
+            <td class="label">
+            </td>
+            <td class="age">
+            </td>
+        }
+        <td class="label">
+            @Translator.GetString("idfsSex")
+        </td>
+        <td>
+            @if (((bv.model.Model.Core.IObject)Model).IsHiddenPersonalData("Gender"))
+            {
+                @Html.BvHiddenPersonalData(Model, m => m.Gender)
+            }
+            else {
+                @Html.BvCombobox(Model, m => m.Gender)
+            }
+        </td>
+    </tr>
+    @if (!Customization.Instance.VisibilityFeatures.IsPersonIDBeforeName)
+    {
+    <tr>
+        <td class="firstLabel">
+            @Html.BvLabel(Model, m => m.idfsPersonIDType)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, m => m.PersonIDType)
+        </td>
+        <td class="label">
+            @Html.BvLabel(Model, m => m.strPersonID)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strPersonID, true)
+        </td>
+        <td colspan="2">
+            @if (Customization.Instance.PersonIdentityServiceFeatures.IsAvailable && (Customization.Instance.PersonIdentityServiceFeatures.IsOnPatient || (Customization.Instance.PersonIdentityServiceFeatures.IsOnHumanCasePatient && Model.idfCase.HasValue && Model.idfCase.Value != 0)))
+            {
+                <button class="button findPerson2" id="buttonFindInPersonIdentityService" type="button" onclick="patient.onFindInPersonIdentityServiceClick();">
+                    @Translator.GetMessageString(Customization.Instance.PersonIdentityServiceFeatures.ButtonResId)
+                </button>
+            }
+        </td>
+    </tr>
+    }
+    <tr>
+        <td colspan="6" class="firstLabel subSectionTitle">      
+            @Translator.GetMessageString("titleCurrentResidence")    
+        </td>        
+    </tr>
+</table>
+@Html.Address(Model.idfCase.HasValue ? Model.idfCase.Value : Model.idfHuman, Model.CurrentResidenceAddress, false, false, false, (bool)ViewBag.IsCoordinatesFieldsVisible)
+<table class="level1">
+    <tr>
+        <td class="xmedium firstLabel">
+            @Html.Label(Translator.GetString("Patient.strHomePhone"))
+        </td>
+        <td class="mlarge">
+            @Html.BvEditbox(Model, m => m.strHomePhone, true)
+        </td>
+        <td class="xmedium label">
+            @Html.BvLabel(Model, m => m.idfsNationality)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, m => m.Nationality)
+        </td>
+                <td class="xmedium label">
+                </td>
+                <td class="medium">
+                </td>
+    </tr>
+    <tr>
+        <td class="firstLabel">
+            @Html.BvLabel(Model, m => m.strEmployerName)
+        </td>
+        <td colspan="2" class="employerName">
+            @Html.BvEditbox(Model, m => m.strEmployerName, true)
+        </td>
+        <td></td>
+                <td class="xmedium label">
+                </td>
+                <td class="medium">
+                </td>
+    </tr> 
+    <tr>
+        <td colspan="4" class="firstLabel subSectionTitle">  
+            @Html.BvLabel(Model, m => m.idfEmployerAddress)
+        </td>
+                <td class="xmedium label">
+                </td>
+                <td class="medium">
+                </td>
+    </tr>
+</table> 
+@Html.Address(Model.idfCase.HasValue ? Model.idfCase.Value : Model.idfHuman, Model.EmployerAddress, true, false, true)   

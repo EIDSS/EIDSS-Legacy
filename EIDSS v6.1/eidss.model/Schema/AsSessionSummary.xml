@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="AsSessionSummary"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spASSessionSummary_SelectDetail" type="detaillist" />
+  </storage>
+
+  <tables>
+    <table name="AsSessionSummary">
+      <grid>
+        <item name="idfMonitoringSessionSummary" key="true" visible="false"/>
+        <item name="strFarmCode" type="string" required="true"/>
+        <item name="strSpecies"  type="string" required="true"/>
+        <item name="strGender"  type="string"/>
+        <item name="intSampledAnimalsQty" />
+        <item name="strSamplesCalc"  type="string" required="true"/>
+        <item name="intSamplesQty" />
+        <item name="datCollectionDate"/>
+        <item name="intPositiveAnimalsQty" required="true"/>
+        <item name="strDiagnosisCalc"  type="string" required="true"/>
+      </grid>
+      <labels>
+        <item name="Farms" labelId="Farm"/>
+        <item name="Species" labelId="strHerdSpecies"/>
+        <item name="strSamplesCalc" labelId="AsSessionSummary.strSamples"/>
+        <item name="strDiagnosisCalc" labelId="strDiagnosis"/>
+      </labels>
+      <fields>
+        <calculated name="strGender" type="string" depends="idfsAnimalSex" lambda='c => c.AnimalSex == null ? "" : c.AnimalSex.name'/>
+        <calculated name="ParentFarms" depends="Parent" type="List&lt;FarmPanel&gt;" lambda="c => c.Parent == null ? new List&lt;FarmPanel&gt;() : (c.Parent as AsSession).ASFarmsSummary.Where(i => !i.IsMarkedToDelete).Select(i => i.Farm).ToList()"/>
+        <calculated name="ParentSpecies" depends="Parent" type="List&lt;VetFarmTree&gt;"
+                    lambda="c => c.Parent == null ? new List&lt;VetFarmTree&gt;() : (c.Parent as AsSession).ASFarmsSummary.SingleOrDefault(i => i.idfFarm == c.idfFarm, farm => farm.Farm.FarmTree.Where(i => i.idfsPartyType == (long)PartyTypeEnum.Species &amp;&amp; !i.IsMarkedToDelete &amp;&amp; ( !(c.Parent as AsSession).Diseases.Any(j => !j.IsMarkedToDelete &amp;&amp; j.idfsSpeciesType.HasValue) || (c.Parent as AsSession).Diseases.Any(j => !j.IsMarkedToDelete &amp;&amp; j.idfsSpeciesType == i.idfsSpeciesTypeReference) ) ).ToList())"/>
+
+        <!--calculated name="DiseasesList" type="List&lt;AsSessionDisease&gt;" depends="idfsSpeciesType,Parent"
+                    lambda="c => new List&lt;AsSessionDisease&gt;((c.Parent as AsSession)
+                      .Diseases.Where(d => !d.IsMarkedToDelete &amp;&amp; (!d.idfsSpeciesType.HasValue || (d.idfsSpeciesType.HasValue &amp;&amp; c.Species != null &amp;&amp; d.idfsSpeciesType == c.Species.idfsSpeciesTypeReference)))
+                      .Distinct())"/ bug 11251 -->
+        <calculated name="DiseasesList" type="List&lt;AsSessionDisease&gt;" depends="idfsSpeciesType,Parent"
+                    lambda="c => new List&lt;AsSessionDisease&gt;((c.Parent as AsSession).Diseases.Where(d => !d.IsMarkedToDelete).Distinct())"/>
+        
+        <calculated name="DiagnosisList" type="List&lt;AsSessionSummaryDiagnosis&gt;" depends="idfsSpeciesType,Parent" forList="true"
+                    lambda="c => new List&lt;AsSessionSummaryDiagnosis&gt;(c.Diagnosis.Where(d => c.DiseasesList.Any(i => i.idfsDiagnosis == d.idfsDiagnosis))
+                      .Distinct())"/>
+        <calculated name="strSamplesCalc" type="string" depends="Samples" lambda='s => s.Samples.ToList().Aggregate("", (r, c) => c.blnChecked.HasValue &amp;&amp; c.blnChecked.Value ? (r == "" ? c.name.ToString() : r + "," + c.name.ToString()) : r)'/>
+        <calculated name="strDiagnosisCalc" type="string" depends="Diagnosis" lambda='s => s.Diagnosis.ToList().Aggregate("", (r, c) => c.blnChecked.HasValue &amp;&amp; c.blnChecked.Value ? (r == "" ? c.name.ToString() : r + "," + c.name.ToString()) : r)'/>
+        <calculated name="SamplesFiltered" type="List&lt;AsSessionSummarySample&gt;" depends="Samples" 
+                    lambda="c => !(c.Parent as AsSession).Diseases.Any(j => !j.IsMarkedToDelete)
+                      ? (c.Samples.ToList())
+                      : (c.Samples.Where(i => !i.IsMarkedToDelete &amp;&amp; (c.Parent as AsSession).Diseases.Any(j => !j.IsMarkedToDelete &amp;&amp; (j.idfsSampleType == i.idfsSampleType || !j.idfsSampleType.HasValue || j.idfsSampleType.Value == 0) &amp;&amp; (j.idfsSpeciesType == c.idfsSpeciesType/* || !j.idfsSpeciesType.HasValue || j.idfsSpeciesType.Value == 0*/))).ToList())"/>
+      </fields>
+      <readonly>
+        <fields name="strGender,strSpecies,strSamples,strDiagnosis" predicate="c=>true"/>
+        <fields name="idfSpecies" predicate="c => c.Farms == null"/>
+        <fields name="AnimalSex,Samples,intSampledAnimalsQty,intSamplesQty,datCollectionDate,intPositiveAnimalsQty" predicate="c => !c.idfSpecies.HasValue || c.idfSpecies == 0"/>
+        <fields name="Diagnosis,DiagnosisList" predicate="c => !c.idfSpecies.HasValue || c.idfSpecies == 0 || /*c.strSamplesCalc.Length == 0 ||*/ !c.intPositiveAnimalsQty.HasValue || c.intPositiveAnimalsQty.Value == 0"/>
+      </readonly>
+      <relations>
+        <relation name="Samples" table="AsSessionSummarySample" internal="false" lazy="false" source="idfMonitoringSessionSummary" target="idfMonitoringSessionSummary" type="child"/>
+        <relation name="Diagnosis" table="AsSessionSummaryDiagnosis" internal="false" lazy="false" source="idfMonitoringSessionSummary" target="idfMonitoringSessionSummary" type="child"/>        
+      </relations>
+      <lookups>
+        <lookup name="Farms" table="FarmPanel" existinglookup="ParentFarms" source="idfFarm" target="idfFarm" notaddempty="true" />
+        <lookup name="Species" table="VetFarmTree" existinglookup="ParentSpecies" source="idfSpecies" target="idfParty" notaddempty="true" />
+        <lookup name="AnimalSex" table="BaseReference" section="rftAnimalSex" source="idfsAnimalSex" target="idfsBaseReference" >
+          <filters>
+            <filter predicate="c => (c.intHACode &amp; (int)HACode.Livestock) != 0"/>
+          </filters>
+        </lookup>
+      </lookups>
+      <storage>
+        <post name="spASSessionSummary_Post"/>
+      </storage>
+      <postorder>
+        <item name="this"/>
+        <item name="Samples"/>
+        <item name="Diagnosis"/>        
+      </postorder>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfMonitoringSessionSummary" class="GetNewIDExtender"/>
+          <value_extender target="blnNewFarm" value="true"/>
+        </creating>
+        <created>
+          <lambda_extender target="idfMonitoringSession" type="long" lambda='c => c.Parent != null ? ((AsSession)c.Parent).idfMonitoringSession : c.idfMonitoringSession' />
+          <custom_extender>
+            <text>
+              _LoadSamples(obj);
+              _LoadDiagnosis(obj);
+            </text>
+          </custom_extender>
+          <lambda_extender target="Farms" type="FarmPanel" lambda="c => c.FarmsLookup.Count() == 1 ? c.FarmsLookup.FirstOrDefault() : null"/>
+        </created>
+        <posted>
+          <lambda_extender target="strFarmCode" type="string" lambda='c => c.Farms == null ? "" : c.Farms.strFarmCode'/>
+        </posted>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <!--scalar_handler field="idfFarm" class="SetScalarHandler" target="Species" lambda="(o, fld, prev_fld) => null" /-->
+          <lambda_handler field="idfFarm" target="Species" type="VetFarmTree" lambda='c => c.SpeciesLookup.Count() == 1 ? c.SpeciesLookup.FirstOrDefault() : null'/>
+          <lambda_handler field="idfFarm" target="strFarmCode" type="string" lambda='c => c.Farms == null ? "" : c.Farms.strFarmCode'/>
+          <lambda_handler field="idfFarm" target="idfFarmActual" type="long?" lambda='c => c.Farms == null ? null : c.Farms.idfRootFarm'/>
+          <lambda_handler field="idfSpecies" target="strSpecies" type="string" lambda='c => c.Species == null ? "" : c.Species.strSpeciesName'/>
+          <lambda_handler field="idfSpecies" target="idfsSpeciesType" type="long?" lambda='c => c.Species == null ? null : c.Species.idfsSpeciesTypeReference'/>
+          <custom_handler field="idfSpecies">
+            <text>
+              if (obj.SamplesFiltered.Count == 1)
+              {
+                  obj.SamplesFiltered.ForEach(c => c.blnChecked = true);
+              }
+            </text>
+          </custom_handler>
+          <custom_handler field="intPositiveAnimalsQty">
+            <text>
+              if (obj.intPositiveAnimalsQty > 0)
+              {
+                  if (obj.DiagnosisList.Count == 1)
+                  {
+                      obj.DiagnosisList.ForEach(c => c.blnChecked = true);
+                  }
+              }
+              else
+              {
+                  obj.Diagnosis.ForEach(c => c.blnChecked = false);
+              }
+            </text>
+          </custom_handler>
+        </fieldhandler>        
+      </handlers>
+      <validators>
+        <chains>
+          <item field="datCollectionDate" type="DateTime">
+            <item field="CurrentDate" value="DateTime.Now" />
+          </item>
+        </chains>
+        <change>
+          <predicate_validator field="datCollectionDate" message="AsSession.SummaryItem.datCollectionDate_msgId" property="datCollectionDate" predicate="c=>AsSessionSummary.ValidateDateInRange(c)"/>
+        </change>
+        <post>
+          <required_validator target="Farms" label="Farm" />
+          <required_validator target="Species" label="strHerdSpecies" />
+          <predicate_validator field="intPositiveAnimalsQty" predicate="c=>c.intPositiveAnimalsQty == null || c.intPositiveAnimalsQty &lt;= c.intSamplesQty" message="AsSessionSummary_PositiveGreaterThanSampled"/>
+          <custom_validator method="ValidateDateInRange" type="Question" />
+        </post>
+      </validators>
+    </table>
+  </tables>
+
+</object>

@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="ReportDiagnosesGroup2Diagnosis"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spReportDiagnosesGroup2Diagnosis_SelectDetail" type= "detaillist" />
+  </storage>
+
+  <tables>
+    <table name="ReportDiagnosesGroup2Diagnosis">
+      <grid>
+        <item name="idfDiagnosisToGroupForReportType" visible="false" key="true"/>
+        <item name="idfsCustomReportType" visible="false" />
+        <item name="idfsReportDiagnosisGroup" visible="false" />
+        <item name="idfsDiagnosis"/>
+        <item name="strUsingType"/>
+        <item name="strHACode" />
+        <item name="strIsDeleted" />
+      </grid>
+      <labels>
+        <item name="idfsDiagnosis" labelId="strDiagnosisName"/>
+      </labels>
+      <fields>
+      </fields>
+      <fieldtags>
+        <!-- TODO правильные значения
+        <field name="DiagnosisGroupName">
+          <tag name="en" />
+        </field>
+        <field name="DiagnosisGroupNameTranslated">
+          <tag name="def" />
+        </field>
+        -->
+      </fieldtags>
+      <readonly>
+        <fields name="strUsingType,strHACode" predicate="c => true" />
+      </readonly>
+      <lookups>
+        <lookup name="Diagnosis" table="DiagnosisLookup" source="idfsDiagnosis" target="idfsDiagnosis" />
+        <lookup name="YNU" table="BaseReference" section="rftYesNoValue" source="intIsDeleted" target="idfsBaseReference" />
+      </lookups>
+      <storage>
+        <post name="spReportDiagnosesGroup2Diagnosis_Post" />
+      </storage>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfDiagnosisToGroupForReportType" class="GetNewIDExtender" />
+        </creating>
+        <loading>
+        </loading>
+        <posting>
+        </posting>
+        <posted>
+        </posted>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <lambda_handler field="idfsDiagnosis" target="strUsingType" type="string" lambda="c => c.DiagnosisLookup != null ? c.DiagnosisLookup.FirstOrDefault(w => w.idfsDiagnosis == c.idfsDiagnosis).UsingTypeName : c.strUsingType" />
+          <lambda_handler field="idfsDiagnosis" target="strHACode" type="string" lambda="c => c.DiagnosisLookup != null ? c.DiagnosisLookup.FirstOrDefault(w => w.idfsDiagnosis == c.idfsDiagnosis).HACode : c.strHACode" />
+          <lambda_handler field="idfsDiagnosis" target="intIsDeleted" type="long" lambda="c => (c.DiagnosisLookup.FirstOrDefault(w => w.idfsDiagnosis == c.idfsDiagnosis).intRowStatus) == 0 ? 10100002 : 10100001" />
+          <lambda_handler field="idfsDiagnosis" target="strIsDeleted" type="string" lambda="c => c.YNULookup.FirstOrDefault(w => w.idfsBaseReference == c.intIsDeleted).name" />
+        </fieldhandler>
+      </handlers>
+      <validators>
+        <change>
+        </change>
+        <post>
+          <required_validator target="idfsCustomReportType" />
+          <required_validator target="idfsReportDiagnosisGroup" />
+          <required_validator target="idfsDiagnosis" />
+        </post>
+      </validators>
+    </table>
+
+  </tables>
+</object>

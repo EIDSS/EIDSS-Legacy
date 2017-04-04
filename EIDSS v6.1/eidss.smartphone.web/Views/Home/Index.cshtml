@@ -1,0 +1,194 @@
+﻿@using eidss.web.common.Utils
+@using eidss.smartphone.web.Models
+@model UploadModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    // wait 
+    <div id="divLoading" style="margin: 0px; padding: 0px; position: fixed; right: 0px;
+    top: 0px; width: 100%; height: 100%; background-color: #aaaaaa; z-index: 30001;
+    opacity: .4; filter: alpha(opacity=40);display:none" >
+    <p style="position: absolute; top: 10%; left: 45%; color: White;">
+        <img src="/Content/Images/ajax-loading.gif">
+    </p>
+    </div>
+    
+    <div class="tabPanelContent">
+        <div class="sectionTitle">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+@*            <a href="#" onclick="upFile.showDialog();">@Translator.GetMessageString("uploadFile")</a>
+            <br />*@
+
+@*        <input type="file" name="FileUpload1" /><br />
+        <input type="submit" name="Submit" id="Submit" value="Upload" />
+        <br />*@
+
+@*        <label class="file_upload">
+            <span class="button">@Translator.GetMessageString("uploadFile")</span>
+            <mark>@Translator.GetMessageString("chooseFileUpload")</mark>
+            <input type="file">
+        </label>
+        <br />
+        <br />*@
+
+        <table class="level1">
+            <tr>
+                <td class="firstLabel1">
+                    @Translator.GetMessageString("chooseFileUpload"):
+                </td>
+                <td>
+                     <span class="psevdoFile">
+                        <input id="psevdoFileValue" class="inputFileText" type="text"/>
+                        <input class="fileInput" type="file" size="1" onchange="document.getElementById('psevdoFileValue').value = this.value.replace(/.+[\\\/]/, '')" name="addImg"/>
+                    </span>
+                </td>
+                <td>
+                    <input type="submit" class="windowButton" name="Submit" id="Submit" value='@Translator.GetMessageString("upload")' onclick='$("#divLoading").show();'/>
+                </td>
+            </tr>
+        </table>
+
+
+        <div class="errorMessage" id='errorMessageSpan'>@Html.Encode(Model.ErrorMessage)</div> 
+    
+        @if (Model.HumanCases != null && Model.HumanCases.Count > 0)
+        {
+            <table>
+                <tr>
+                    <td colspan="2">@Translator.GetMessageString("titleHumanCaseList")</td>
+                </tr>
+                <tr>
+                    <td>@Translator.GetMessageString("added"):</td>
+                    <td>@Model.HumanCases.Count(c => c.isCreated)</td>
+                </tr>
+                <tr>
+                    <td>@Translator.GetMessageString("updated"):</td>
+                    <td>@Model.HumanCases.Count(c => c.isUpdated)</td>
+                </tr>
+                <tr>
+                    <td>@Translator.GetMessageString("failed"):</td>
+                    <td>@Model.HumanCases.Count(c => c.isFailed)</td>
+                </tr>
+            </table>
+            if (Model.HumanCases.Count(c => c.isFailed) > 0)
+            {
+                <table>
+                    <tr>
+                        <td>@Translator.GetMessageString("cbReportSource0")</td>
+                        <td>@Translator.GetMessageString("offlineCaseID")</td>
+                        <td>@Translator.GetMessageString("ErrErrorFormCaption")</td>
+                    </tr>
+                    @foreach (eidss.smartphone.web.Models.HumanCaseInfoOut m in Model.HumanCases.Where(c => c.isFailed))
+                    {
+                    <tr>
+                        <td>@m.idfCase</td>
+                        <td>@m.uidOfflineCaseID</td>
+                        <td>@m.lastErrorDescription</td>
+                    </tr>
+                    }
+                </table>
+            }
+        }
+
+
+        @if (Model.VetCases != null && Model.VetCases.Count > 0)
+        {
+            <table>
+                <tr>
+                    <td colspan="2">@Translator.GetMessageString("titleVeterinaryCaseList")</td>
+                </tr>
+                <tr>
+                    <td>@Translator.GetMessageString("added"):</td>
+                    <td>@Model.VetCases.Count(c => c.isCreated)</td>
+                </tr>
+                <tr>
+                    <td>@Translator.GetMessageString("updated"):</td>
+                    <td>@Model.VetCases.Count(c => c.isUpdated)</td>
+                </tr>
+                <tr>
+                    <td>@Translator.GetMessageString("failed"):</td>
+                    <td>@Model.VetCases.Count(c => c.isFailed)</td>
+                </tr>
+            </table>
+            if (Model.VetCases.Count(c => c.isFailed) > 0)
+            {
+                <table>
+                    <tr>
+                        <td>@Translator.GetMessageString("cbReportSource0")</td>
+                        <td>@Translator.GetMessageString("offlineCaseID")</td>
+                        <td>@Translator.GetMessageString("ErrErrorFormCaption")</td>
+                    </tr>
+                    @foreach (eidss.smartphone.web.Models.VetCaseInfoOut m in Model.VetCases.Where(c => c.isFailed))
+                    {
+                    <tr>
+                        <td>@m.idfCase</td>
+                        <td>@m.uidOfflineCaseID</td>
+                        <td>@m.lastErrorDescription</td>
+                    </tr>
+                    }
+                </table>
+            }
+        }
+        
+        
+        @if (Model.ASSessions != null && Model.ASSessions.Count > 0)
+        {
+            <table>
+                <tr>
+                    <td colspan="2">@Translator.GetMessageString("titleASSessionList")</td>
+                </tr>
+                <tr>
+                    <td>@Translator.GetMessageString("added"):</td>
+                    <td>@Model.ASSessions.Count(c => c.isCreated)</td>
+                </tr>
+                <tr>
+                    <td>@Translator.GetMessageString("updated"):</td>
+                    <td>@Model.ASSessions.Count(c => c.isUpdated)</td>
+                </tr>
+                <tr>
+                    <td>@Translator.GetMessageString("failed"):</td>
+                    <td>@Model.ASSessions.Count(c => c.isFailed)</td>
+                </tr>
+            </table>
+            if (Model.ASSessions.Count(c => c.isFailed) > 0)
+            {
+                <table>
+                    <tr>
+                        <td>@Translator.GetMessageString("cbReportSource0")</td>
+                        <td>@Translator.GetMessageString("offlineCaseID")</td>
+                        <td>@Translator.GetMessageString("ErrErrorFormCaption")</td>
+                    </tr>
+                    @foreach (ASSessionInfoOut m in Model.ASSessions.Where(c => c.isFailed))
+                    {
+                    <tr>
+                        <td>@m.idfMonitoringSession</td>
+                        <td>@m.uidOfflineCaseID</td>
+                        <td>@m.lastErrorDescription</td>
+                    </tr>
+                    }
+                </table>
+            }
+        }
+            
+
+        </div>
+        <div class="sectionTitle">
+            @Html.ActionLink(Translator.GetMessageString("downloadReferences"), "Referencies", "Home")
+        </div>
+        <div class="sectionTitle">
+            @Html.ActionLink(Translator.GetMessageString("downloadLists"), "Lists", "Home")
+        </div>
+        <div class="sectionTitle">
+            <a href='@Url.Action("AndroidApp", "Home")'>@String.Format(Translator.GetMessageString("downloadApplication"), ViewBag.Version)</a>
+        </div>
+    
+    </div>
+}
+

@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="LabSampleDispositionListItem"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="fn_SampleDestruction_SelectList" type="fnlist" />
+		<count name="spLabSampleDestruction_SelectCount"/>
+	</storage>
+
+	<tables>
+		<table name="LabSampleDispositionListItem">
+      <properties auditObject="daoSample" auditTable="tlbMaterial" permissionObject="Sample"/>
+      <help win="lab_l07"/>
+      <searchpanel>
+				<item  name="strBarcode" editor="Text" labelId="strLabBarcode" defaultoper="=" />
+				<item name="idfsSampleType" editor="Lookup" labelId="SampleType"
+							lookupName="SampleTypeLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        <item name="idfsDestructionMethod" editor="Lookup" labelId="DestructionMethod"
+							lookupName="DestructionLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+      </searchpanel>
+			
+			<grid>
+				<item name="idfMaterial" key="true" visible="false" />
+				<item name="strBarcode"  />
+				<item name="strSampleName"  />
+        <item name="DestructionMethod"  />
+      </grid>
+			<labels>
+				<item name="strBarcode" labelId="strLabBarcode"/>
+        <item name="SampleStatusName" labelId="DestructionStatus"/>
+      </labels>
+			<lookups>
+        <lookup name="SampleType" table="BaseReference" section="rftSampleType" source="idfsSampleType" target="idfsBaseReference">
+          <filters>
+            <filter predicate="c => c.idfsBaseReference != (long)SampleTypeEnum.Unknown"/>
+          </filters>
+        </lookup>
+        <lookup name="Destruction" table="BaseReference" section="rftDestructionMethod" source="idfsDestructionMethod" target="idfsBaseReference"/>
+			</lookups>
+
+			<storage>
+				<delete name="spLabSampleDestruction_Delete"/>
+				<!--<candelete name="spReadOnlyObject_CanDelete"/>-->
+			</storage>
+
+			<actions child="LabSampleDisposition">
+        <standard>
+          <remove type="Create"/>
+          <remove type="Delete"/>
+          <remove type="Edit"/>
+        </standard>
+				<action name="Accept" type="Action">
+          <visual alignment="Right" panel="Top" >
+            <regular caption="strAccept_Id" tooltip="strAccept_Id"  icon=""/>
+          </visual>
+          <hierarchy relatedList="LabSampleDispositionListItem,LabSampleListItem"/>
+          <run>
+					  <params>
+						  <param name="key" type="object" />
+						  <param name="item" type="IObject" />
+						  <param name="listPanel" type="object" />
+					  </params>
+          </run>
+				</action>
+				<action name="Reject" type="Action">
+          <visual alignment="Right" panel="Top">
+            <regular caption="strReject_Id" tooltip="strReject_Id"  icon=""/>
+          </visual>
+          <hierarchy relatedList="LabSampleDispositionListItem,LabSampleListItem"/>
+          <run>
+            <params>
+              <param name="id" type="long"/>
+              <param name="item" type="IObject" />
+              <param name="listPanel" type="object" />
+            </params>
+            <preText>
+              manager.SetSpCommand("dbo.spLabSampleDestruction_Delete"
+                , manager.Parameter("ID", id)
+                ).ExecuteNonQuery();
+              return true;
+            </preText>
+          </run>
+				</action>
+			</actions>
+		</table>
+	</tables>
+
+</object>

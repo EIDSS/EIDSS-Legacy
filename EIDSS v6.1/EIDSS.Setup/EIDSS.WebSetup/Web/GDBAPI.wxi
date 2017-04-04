@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?foreach Bitness in x64;x86?>
+  <ComponentGroup
+    Id="$(var.website).ThirdParty.GIS.GDBAPI.$(var.Bitness)"
+    Directory="eidss.$(var.website).ESRI$(var.Bitness)"
+    Source="$(var.ThirdParty.GIS)ESRI\$(var.Bitness)">
+
+    <Component Id="$(var.website).Esri.FileGDBAPI.dll_$(var.Bitness)">
+      <File Id="$(var.website).Esri.FileGDBAPI.dll_$(var.Bitness)" Name="Esri.FileGDBAPI.dll" KeyPath="yes" Checksum="yes" />
+    </Component>
+
+    <Component Id="$(var.website).FileGDBAPI.dll_$(var.Bitness)">
+      <File Id="$(var.website).FileGDBAPI.dll_$(var.Bitness)" Name="FileGDBAPI.dll" KeyPath="yes" Checksum="yes" />
+    </Component>
+  </ComponentGroup>
+  <?endforeach?>
+  
+  <?undef website?>
+</Include>

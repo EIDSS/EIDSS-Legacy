@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="Vector"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spPensideTestForVectorType_SelectDetail" type= "detaillist" />
+  </storage>
+
+  <tables>
+    <table name="VectorType2PensideTest">
+      <grid>
+        <item name="idfPensideTestTypeForVectorType" visible ="false" type="long"/>
+        <item name="idfsPensideTestName" type="long" required="true"/>
+      </grid>
+
+      <fields>
+
+      </fields>
+      <lookups>
+        <lookup name="PensideTest" table="BaseReference" section="rftPensideTestType" source="idfsPensideTestName" target="idfsBaseReference" />
+      </lookups>
+      <storage>
+        <post name="spPensideTestForVectorType_Post" />
+        <!--<candelete name="spVectorTypeReference_CanDelete" />-->
+      </storage>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfPensideTestTypeForVectorType" class="AutoIncrementExtender" />
+        </creating>
+        <loading>
+        </loading>
+        <posting>
+        </posting>
+        <posted>
+        </posted>
+      </extenders>
+      <validators>
+        <change>
+        </change>
+        <post>
+          <required_validator target="idfsPensideTestName"  />
+        </post>
+      </validators>
+    </table>
+
+  </tables>
+</object>

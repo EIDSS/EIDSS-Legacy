@@ -1,0 +1,31 @@
+﻿@using Kendo.Mvc.UI
+@model eidss.model.Reports.Common.BaseYearModel
+           
+<table id="BaseDateFilterTable" >
+    <tr>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.Year)
+        </td>
+        <td class="largereport">
+            <div class="tdContainer">
+                @{
+                    @(
+                    Html.Kendo().NumericTextBox()
+                        .Name("Year")
+                          .Value(null)
+                          .Min(Model.MinYear)
+                          .Max(Model.MaxYear)
+                          .Decimals(0)
+                          .Format("0000")
+                          .HtmlAttributes(new {@class = "requiredField"})
+                          .Events(c => c.Change("paperForm.OnYearCustomChanged"))
+                          .Placeholder(string.Empty)
+                          )
+                }
+            </div>
+        </td>
+        <td></td>
+      
+    </tr>
+  
+</table>

@@ -1,0 +1,104 @@
+﻿@using bv.common.Configuration
+@using bv.model.Model.Core
+@using eidss.model.Reports.AZ
+@using eidss.model.Reports.Common
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+@using Kendo.Mvc.UI
+@model eidss.model.Reports.AZ.VetSummaryModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/ExportButtons", Model)
+    <div class="bluelayout">
+        <div class="tabPanelContent">
+
+            @Html.Partial("Common/BaseFilter", Model)
+
+            @Html.Partial("Common/BaseIntervalFilterEx", Model)
+            <table id="RadioButtonsFilterTable" >
+                <tr>
+                    <td class="mediumreport">
+                        @Html.Label(Translator.GetMessageString("strSurveillanceType"))
+                    </td>
+                    <td class="largereport">
+                            @Html.RadioButtonFor(m=>m.SurveillanceType, VetSummarySurveillanceType.ActiveSurveillanceIndex,new { id = "SurveillanceType_ActiveSurveillanceIndex" , onclick = "paperForm.OnSurveillanceTypeChange('active')" }) @Translator.GetMessageString("strActiveSurveillance")
+                            <br />
+                            @Html.RadioButtonFor(m=>m.SurveillanceType, VetSummarySurveillanceType.PassiveSurveillanceIndex,new { id = "SurveillanceType_PassiveSurveillanceIndex", onclick = "paperForm.OnSurveillanceTypeChange('passive')"  })  @Translator.GetMessageString("strPassiveSurveillance")
+                            <br />
+                            @Html.RadioButtonFor(m=>m.SurveillanceType, VetSummarySurveillanceType.AggregateActionsIndex,new { id = "SurveillanceType_AggregateActionsIndex", onclick = "paperForm.OnSurveillanceTypeChange('action')"  })  @Translator.GetMessageString("strAggregateActions")
+                            <br />
+                    </td>
+                    <td class="mediumreport">
+                        @Html.Label(Translator.GetMessageString("strInvestigationMeasureName"))
+                    </td>
+                    <td class="largereport">
+
+                        @(Html.Kendo().ComboBox()
+                              .BindTo(FilterHelper.GetActionMethods().ConvertToSelectListItem())
+                              .Name("ActionMethodId")
+                              .Enable(false)
+                              .Events(c => c.Open("function(e) {  bvComboBox.onOpen(e, " + (int) EditorControlWidth.Large + "); }")))
+                    </td>
+                </tr>
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m=>m.DiagnosisId)
+                    </td>
+                    <td class="largereport">
+                        @{
+                            @(Html.Kendo().ComboBox()
+                                    .Events(e => e.Open("function(e) { bvComboBox.onOpen(e, " + (int) EditorControlWidth.Large + "); }"))
+                                    .BindTo(Model.DiagnosisList.ConvertToSelectListItem())
+                                    .HtmlAttributes(new {@class = "requiredField"})
+                                    .Name("DiagnosisId")
+                                    .Events(c => c.Change("paperForm.OnVetSummaryDiagnosisChange"))
+                                    )
+                        }
+                        
+                    </td>
+                    <td class="mediumreport">
+                        @Html.Label(Translator.GetMessageString("strSpeciesType"))
+                    </td>
+                    <td class="largereport">
+            <span class="picker">
+                <span class="pickerWrap">
+                    @(
+                         @Html.Kendo().DropDownList()
+                                 .Name("SpeciesType_CheckedItems")
+                                 .DataTextField("Text")
+                                 .DataValueField("Value")
+                                 .HtmlAttributes(new { @class = "requiredField" , @maxcheckedcount = VetSummaryModel.VetMaxSpeciesTypeCount.ToString(), @validationMessage = "msgTooManySpeciesType" })
+                                 .Template("<input type=\"checkbox\"checkedname=\"${ data.Text }\" value=\"${ data.Value }\" class=\"check-item\" id=\"chb${ data.Value }\"/><span>${ data.Text }</span>")
+                                 .Events(e => e.Select("bvCheckedComboBox.onCheckedComboBoxChanged")
+                                        .DataBound("function(e) { bvCheckedComboBox.bindCheckedComboBoxClickEvent('SpeciesType_CheckedItems', '');}")
+                                        .Open("function(e) { bvCheckedComboBox.onComboBoxOpen(e, " + (int) EditorControlWidth.Large + ", true); }"))
+                                 .BindTo(new SelectList(Model.CheckedItems, "Value", "Text", null))
+                                                  )
+                                        </span>
+                                    </span>
+
+                    </td>
+                </tr>
+   
+            </table>
+@*            @Html.Partial("Common/MultipleDiagnosisFilter"*@
+@*            , Model.MultipleDiagnosisFilter*@
+@*            , new ViewDataDictionary*@
+@*                {*@
+@*                    {"FilterName", "MultipleDiagnosisFilter.CheckedItems"}*@
+@*                    , {"Caption", Translator.GetMessageString("colDiseaseName")}*@
+@*                    , {"maxCheckedCount", ViewBag.MaxCheckedCount ?? 0}*@
+@*                })*@
+
+        </div>
+    </div>
+
+}

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "$(var.ProjectDir)ProductInfo.wxi" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Fragment Id="AVR">
+    <ComponentGroup Id="AVR" Directory="APPLICATIONFOLDER" Source="$(var.BinariesPaths)">
+      <Component Id="EIDSS.AVR.dll">
+        <File Name="EIDSS.AVR.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="EIDSS.AVR_DB.dll">
+        <File Name="EIDSS.AVR_DB.dll" KeyPath="yes" Checksum="yes" />
+        <File Name="eidss.avr_db.dll.config" />
+      </Component>
+
+      <Component Id="eidss.avr.export.x64.exe">
+        <Condition><![CDATA[VersionNT64]]></Condition>
+        <File Name="eidss.avr.export.x64.exe" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="eidss.avr.export.x64.exe.config">
+        <Condition><![CDATA[VersionNT64]]></Condition>
+        <File Name="eidss.avr.export.x64.exe.config" KeyPath="yes" />
+      </Component>
+      <Component Id="eidss.avr.export.x86.exe">
+        <File Name="eidss.avr.export.x86.exe" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="eidss.avr.export.x86.exe.config">
+        <File Name="eidss.avr.export.x86.exe.config" KeyPath="yes" />
+      </Component>
+      <ComponentRef Id="template.mdb" />
+    </ComponentGroup>
+
+    <DirectoryRef Id="AccessTemplate">
+      <Component Id="template.mdb">
+        <File Source="$(var.BinariesPaths)AccessTemplate\template.mdb" KeyPath="yes" />
+
+        <CreateFolder>
+          <util:PermissionEx User="Users" GenericRead="yes" GenericWrite="yes" />
+        </CreateFolder>
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+</Wix>

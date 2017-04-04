@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8071/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/eidss.model.AVR.ServiceData" />
+  <xs:import schemaLocation="http://localhost:8071/?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/System" />
+  <xs:import schemaLocation="http://localhost:8071/?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/eidss.model.AVR.Db" />
+  <xs:import schemaLocation="http://localhost:8071/?xsd=xsd6" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:element name="ExportChartToJpg">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/eidss.model.AVR.ServiceData" minOccurs="0" name="zippedData" nillable="true" type="q1:ChartTableDTO" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ExportChartToJpgResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/eidss.model.AVR.ServiceData" minOccurs="0" name="ExportChartToJpgResult" nillable="true" type="q2:ChartExportDTO" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCachedView">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="sessionId" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="layoutId" type="xs:long" />
+        <xs:element minOccurs="0" name="lang" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCachedViewResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/eidss.model.AVR.ServiceData" minOccurs="0" name="GetCachedViewResult" nillable="true" type="q3:ViewDTO" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCachedQueryTableHeader">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="queryId" type="xs:long" />
+        <xs:element minOccurs="0" name="lang" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="isArchive" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCachedQueryTableHeaderResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/eidss.model.AVR.ServiceData" minOccurs="0" name="GetCachedQueryTableHeaderResult" nillable="true" type="q4:QueryTableHeaderDTO" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetConcreteCachedQueryTableHeader">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="queryCacheId" type="xs:long" />
+        <xs:element minOccurs="0" name="queryId" type="xs:long" />
+        <xs:element minOccurs="0" name="lang" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="isArchive" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetConcreteCachedQueryTableHeaderResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/eidss.model.AVR.ServiceData" minOccurs="0" name="GetConcreteCachedQueryTableHeaderResult" nillable="true" type="q5:QueryTableHeaderDTO" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCachedQueryTablePacket">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="queryCacheId" type="xs:long" />
+        <xs:element minOccurs="0" name="packetNumber" type="xs:int" />
+        <xs:element minOccurs="0" name="totalPacketCount" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCachedQueryTablePacketResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/eidss.model.AVR.ServiceData" minOccurs="0" name="GetCachedQueryTablePacketResult" nillable="true" type="q6:QueryTablePacketDTO" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InvalidateQueryCacheForLanguage">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="queryId" type="xs:long" />
+        <xs:element minOccurs="0" name="lang" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InvalidateQueryCacheForLanguageResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InvalidateQueryCache">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="queryId" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InvalidateQueryCacheResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetQueryRefreshDateTime">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="queryId" type="xs:long" />
+        <xs:element minOccurs="0" name="lang" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetQueryRefreshDateTimeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetQueryRefreshDateTimeResult" type="xs:dateTime" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetServiceVersion">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetServiceVersionResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/System" minOccurs="0" name="GetServiceVersionResult" nillable="true" type="q7:Version" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDatabaseName">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDatabaseNameResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/eidss.model.AVR.Db" minOccurs="0" name="GetDatabaseNameResult" nillable="true" type="q8:DatabaseNames" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetQueryIdList">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetQueryIdListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetQueryIdListResult" nillable="true" type="q9:ArrayOflong" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetLayoutIdList">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetLayoutIdListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="GetLayoutIdListResult" nillable="true" type="q10:ArrayOflong" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CopyLayout">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="layoutId" type="xs:long" />
+        <xs:element minOccurs="0" name="lang" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CopyLayoutResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="CopyLayoutResult" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

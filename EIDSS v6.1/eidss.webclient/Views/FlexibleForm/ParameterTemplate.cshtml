@@ -1,0 +1,264 @@
+﻿@using System.Globalization
+@using Kendo.Mvc.UI
+@using bv.common.Core
+@using eidss.model.Enums
+@using eidss.model.FlexibleForms.Helpers
+@using eidss.model.Model.FlexibleForms.FlexNodes
+@using eidss.model.Model.FlexibleForms.Helpers
+@using eidss.model.Schema
+@using eidss.webclient.Utils
+@model FlexNode
+           
+<table class="level1">
+    <tr>        
+        @{
+            var parameterTemplate = Model.GetParameterTemplate();
+            var deletedParameter = Model.GetParametersDeletedFromTemplate();
+            string parameterCaption;
+            var idfsParameter = parameterTemplate != null ? parameterTemplate.idfsParameter : deletedParameter.idfsParameter;
+            //var idKey = parameterTemplate != null ? parameterTemplate.RootKeyID : deletedParameter.RootKeyID;
+            var idKey = Model.FFModel.RootKeyID;
+            var editor = parameterTemplate != null ? parameterTemplate.Editor : ParameterControlTypeHelper.ConvertToParameterControlType(deletedParameter.idfsEditor);
+            var parameterType = parameterTemplate != null ? parameterTemplate.ParameterType : ParameterTypeHelper.ConvertToParameterType(deletedParameter.idfsParameterType);
+            var selectList = parameterTemplate != null ? parameterTemplate.SelectListLookup : deletedParameter.SelectListLookup;
+            var idObservation = Model.FFModel.CurrentObservation ?? 0;
+            var activityParameter = Model.GetParameterValue();
+
+            if (activityParameter == null)
+            {
+                //создаём новый АП, чтобы сформировать ключ
+                activityParameter = Model.ActivityParameters.SetActivityParameterValue(Model.FFModel.CurrentTemplate, idObservation, idfsParameter, DBNull.Value);
+                activityParameter.varValue = null;
+            }
+            else if (parameterType == FFParameterTypes.Boolean && activityParameter.varValue == "")//activityParameter.varValue shouldn't be "" if it is boolean, but I couldn't find place where it is assigned to "" - so it is "patch"
+            {
+                activityParameter.varValue = null;
+            }
+            var idRow = activityParameter.idfRow ?? 0;
+            if (idRow < 0)
+            {
+                idRow = 0;
+            }
+            if (Model.idfRow.HasValue && (Model.idfRow > 0) && (idRow == 0))
+            {
+                activityParameter.idfRow = idRow = Model.idfRow.Value;
+            }
+            var controlName = HelperFunctions.GetParameterKey(idObservation, idfsParameter, idRow, idKey);
+            var lableName = controlName.Substring(controlName.LastIndexOf("_") + 1);
+                
+            if (Model.UseFullPath)
+            {
+                parameterCaption = Model.GetFullPathForNode(true);
+            }
+            else
+            {
+                parameterCaption = parameterTemplate != null ? parameterTemplate.NationalName : deletedParameter.NationalName;
+            }
+        }
+        <td class="firstLabel ffLabelTd">
+            @Html.Label(lableName, parameterCaption)
+        </td>
+        <td class="ffEditorTd">        
+            @*рендеринг управляющего контрола*@
+
+            @{
+                var enable = !Model.FFModel.ReadOnly;
+                //дополнительно проверяем сам параметр
+                if (enable && (parameterTemplate != null))
+                {
+                    //enable = !parameterTemplate.ReadOnly;
+                    enable = !Model.FFModel.ParameterTemplateReadOnly[parameterTemplate];
+                }
+                var htmlAttributes = new Dictionary<string, object> {{"class", "control"}};
+                if (!enable && parameterType == FFParameterTypes.String && editor == FFParameterEditors.TextBox)
+                {
+                    htmlAttributes.Add("readonly", "readonly");
+                    htmlAttributes["class"] += " readonlyField";
+                }
+
+                if ((parameterTemplate != null) && parameterTemplate.IsMandatory())
+                {
+                    htmlAttributes["class"] += " requiredField";
+                }
+            }
+            @switch (editor)
+            {
+                case FFParameterEditors.TextBox:
+
+                    var minValue = -99000000;
+                    const int maxValue = 99000000;
+                    var typeControl = 2; //0-NumericTextBox, 1-IntegerTextBox, 2-String
+
+                    switch (parameterType)
+                    {
+                        case FFParameterTypes.NumericPositive:
+                            minValue = 0;
+                            typeControl = 0;
+                            break;
+                        case FFParameterTypes.NumericNatural:
+                            minValue = 0;
+                            typeControl = 1;
+                            break;
+                        case FFParameterTypes.NumericInteger:
+                            typeControl = 1;
+                            break;
+                    }
+
+                    if (typeControl == 0)
+                    {
+                        double? valueDouble = null;
+                        if (!Utils.IsEmpty(activityParameter.varValue))
+                        {
+                            valueDouble = Convert.ToDouble(activityParameter.varValue);
+                        }
+                        Html.Kendo().NumericTextBox()
+                            .Name(controlName)
+                            .Placeholder(String.Empty)
+                            .Format(CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator)
+                            .Spinners(false)
+                            .Min(minValue)
+                            .Max(maxValue)
+                            .HtmlAttributes(htmlAttributes)
+                            .Value(valueDouble)
+                            .Enable(enable)
+                            .Events(c => c.Change("formRefresher.onNumericChanged"))
+                            .Render();
+                    }
+                    else if (typeControl == 1)
+                    {
+                        int? valueInt = null;
+                        if (!Utils.IsEmpty(activityParameter.varValue))
+                        {
+                            valueInt = Convert.ToInt32(activityParameter.varValue);
+                        }
+                        Html.Kendo().IntegerTextBox()
+                            .Name(controlName)
+                            .Placeholder(String.Empty)
+                            .Spinners(false)
+                            .Min(minValue)
+                            .Max(maxValue)
+                            .HtmlAttributes(htmlAttributes)
+                            .Value(valueInt)
+                            .Enable(enable)
+                            .Events(c => c.Change("formRefresher.onNumericChanged"))
+                            .Render();
+                    }
+                    else if (typeControl == 2)
+                    {
+                        <div class='tdContainer'>
+                            @{
+                                htmlAttributes.Add("onchange", String.Format("formRefresher.onTextBoxChanged('{0}')", controlName));
+                            }
+                            @Html.TextBox(controlName, ActivityParameter.ToString(activityParameter), htmlAttributes)
+                        </div>
+                    }
+                    break;
+                case FFParameterEditors.ComboBox:
+                    var index = -1;
+                    var idValue = ActivityParameter.ToLong(activityParameter);
+                    var selected = selectList.FirstOrDefault(c => c.idfsValue == idValue);
+                    if (selected != null)
+                    {
+                        for (var i = 0; i < selectList.Count; i++)
+                        {
+                            if (selectList[i].strValueCaption == selected.strValueCaption)
+                            {
+                                index = i;
+                                break;
+                            }
+                        }
+                    }
+
+                    var sl = new SelectList(selectList, "idfsValue", "strValueCaption", selected);
+                    
+                    var ddl = Html.Kendo().ComboBox()
+                                  .Name(controlName)
+                                  .SelectedIndex(index)
+                                  .HtmlAttributes(htmlAttributes)
+                                  .Enable(enable)
+                                  .Events(c => c.Change("bvComboBox.onChanged"))
+                                  .BindTo(sl);
+                    ddl.Render();
+
+                    break;
+                case FFParameterEditors.CheckBox:
+                    if (!enable)
+                    {
+                        htmlAttributes.Add("disabled", "disabled");
+                    }
+                    if (htmlAttributes.ContainsKey("class"))
+                    {
+                        htmlAttributes["class"] = htmlAttributes["class"] + " bvCheckbox";
+                    }
+                    else
+                    {
+                        htmlAttributes.Add("class", "bvCheckbox");
+                    }
+                    htmlAttributes.Add("onchange", string.Format("formRefresher.onCheckBoxChanged('{0}')", controlName));
+                    @*Html.CheckBox(controlName, ActivityParameter.ToBool(activityParameter), htmlAttributes)*@
+                    @Html.BvSimpleCheckBox(controlName, ActivityParameter.ToBool(activityParameter), htmlAttributes)
+                    break;
+                case FFParameterEditors.Date:
+                    var dt = Html.Kendo().DatePicker()
+                                 .Name(controlName)
+                                 .HtmlAttributes(htmlAttributes)
+                                 .Enable(enable)
+                                 .Events(c => c.Change("formRefresher.onDateChanged"))
+                                 .Min(new DateTime(999, 1, 1));
+                    if (!Utils.IsEmpty(activityParameter.varValue) && !activityParameter.varValue.Equals(DateTime.MinValue))
+                    {
+                        dt.Value(ActivityParameter.ToDate(activityParameter));
+                    }
+                    dt.Render();
+                    break;
+                case FFParameterEditors.DateTime:
+                    var dtd = Html.Kendo().DateTimePicker()
+                                  .Name(controlName)
+                                  .HtmlAttributes(htmlAttributes)
+                                  .Events(c => c.Change("formRefresher.onDateTimeChanged"))
+                                  .Enable(enable);
+                    if (!Utils.IsEmpty(activityParameter.varValue) && !activityParameter.varValue.Equals(DateTime.MinValue))
+                    {
+                        dtd.Value(ActivityParameter.ToDateTime(activityParameter));
+                    }
+                    dtd.Render();
+                    break;
+                case FFParameterEditors.Memo:
+                    htmlAttributes.Add("onchange", String.Format("formRefresher.onTextBoxChanged('{0}')", controlName));
+                    @Html.TextArea(controlName, ActivityParameter.ToString(activityParameter), htmlAttributes)
+                    @*
+                    if (enable)
+                    {
+                        htmlAttributes.Add("onchange", String.Format("formRefresher.onTextBoxChanged('{0}')", controlName));
+                        Html.TextArea(controlName, ActivityParameter.ToString(activityParameter), htmlAttributes);
+                    }
+                    else
+                    {
+                        <span>@activityParameter.varValue</span>
+                    }
+                    *@
+                    break;
+                case FFParameterEditors.UpDown:
+                    Html.Kendo().IntegerTextBox()
+                        .Name(controlName)
+                        .Value(ActivityParameter.ToInt(activityParameter))
+                        .HtmlAttributes(htmlAttributes)
+                        .Min(0)
+                        .Max(99000000)
+                        .Enable(enable)
+                        .Events(c => c.Change("formRefresher.onNumericChanged"))
+                        .Render();
+                    break;
+                default:
+                    //это крайне маловероятно, но всё же
+                    <div class='tdContainer'>
+                        @{
+                            htmlAttributes.Add("onchange", String.Format("formRefresher.onTextBoxChanged('{0}')", controlName));
+                            Html.TextBox(controlName, ActivityParameter.ToString(activityParameter), htmlAttributes);
+                        }
+                    </div>
+                    break;
+            }
+        </td>
+    </tr>    
+</table>

@@ -1,0 +1,74 @@
+﻿@model eidss.model.Schema.LaboratorySectionItem
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+@Html.IncludeVersionedCss("~/Content/Styles/LaboratorySection.css")
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });
+    
+    $(function () {
+        $('.requiredField').keypress(function (e) {
+            var code = e.keyCode ? e.keyCode : e.which;
+            if (code == 13) {
+                laboratory.saveGroupAccessionIn();
+            }
+        });
+    });
+</script>
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+
+<input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+         <div class="windowButtonsPn">                  
+             <input id="idButtonAdd" type="button" class="windowButton" onclick="laboratory.saveGroupAccessionIn();" value="@Translator.GetMessageString("Add")"/>
+             <input id="idButtonClose" type="button" class="windowButton" onclick="bvPopup.closeDefaultPopup();" value="@Translator.GetMessageString("Close")"/>
+         </div>   
+        <div class="windowSeparator"></div>
+        @Html.Hidden("ID", Model.ID)
+        @Html.Hidden("IDThis", Model.ID)
+        @Html.Hidden("Root", (object)ViewBag.Root)
+        @Html.Hidden("strFieldBarcode", "")
+        <table class="level1">
+            <tr>
+                <td class="large firstLabel">
+                </td>
+                <td>
+                    <label id="lblAddMessage" class="invisible">@Translator.GetMessageString("msgSampleGroupAccessed")</label>
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                </td>
+                <td>
+                    @Html.BvCheckBox(Model, m => m.bSendToCurrentOffice, false)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Translator.GetString("strFieldBarcode")
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strFieldBarcode)
+                </td>                            
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="collapseEditWindowPanel" id="SampleGroupAccessionInGrid_InternalPicker">
+                    </div>
+                </td>
+            </tr>
+        </table> 
+    }           
+</div>

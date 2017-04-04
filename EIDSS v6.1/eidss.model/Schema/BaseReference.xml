@@ -1,0 +1,463 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="BaseReference"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spBaseReference_SelectLookup" type="lookuplist" cache="true" />
+  </storage>
+
+  <tables>
+    <table name="BaseReference" tostring="c => c.name">
+      <keys>
+        <key name="idfsBaseReference" />
+      </keys>
+      <sections>
+        <section name="rftEmpty" cache="true" lookupcachename="rftEmpty">
+          <filters>
+            <filter const="0" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftTestStatus" cache="true" lookupcachename="rftTestStatus">
+          <filters>
+            <filter const="19000001" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftAnimalAgeList" cache="true" lookupcachename="rftAnimalAgeList">
+          <filters>
+            <filter const="19000005" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftAnimalCondition" cache="true" lookupcachename="rftAnimalCondition">
+          <filters>
+            <filter const="19000006" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftAnimalSex" cache="true" lookupcachename="rftAnimalSex">
+          <filters>
+            <filter const="19000007" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftAvianFarmType" cache="true" lookupcachename="rftAvianFarmType">
+          <filters>
+            <filter const="19000008" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftCaseClassification" cache="true" lookupcachename="rftCaseClassification">
+          <filters>
+            <filter const="19000011" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftCaseType" cache="true" lookupcachename="rftCaseType">
+          <filters>
+            <filter const="19000012" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftContact_Type" cache="true" lookupcachename="rftContact_Type">
+          <filters>
+            <filter const="19000014" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftSampleStatus" cache="true" lookupcachename="rftSampleStatus">
+          <filters>
+            <filter const="19000015" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftDataAuditEventType" cache="true" lookupcachename="rftDataAuditEventType">
+	        <filters>
+  		      <filter const="19000016" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftDataAuditObjectType" cache="true" lookupcachename="rftDataAuditObjectType">
+          <filters>
+            <filter const="19000017" target="idfsReferenceType" />
+          </filters>
+        </section>        
+        <section name="rftDiagnosis" cache="true" lookupcachename="rftDiagnosis">
+          <filters>
+            <filter const="19000019" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftEmployeeType" cache="true" lookupcachename="rftEmployeeType">
+          <filters>
+            <filter const="19000023" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftEventType" cache="true" lookupcachename="rftEventType">
+          <filters>
+            <filter const="19000025" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftFFType" cache="true" lookupcachename="rftFFType">
+          <filters>
+            <filter const="19000034" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftPatientState" cache="true" lookupcachename="rftPatientState">
+          <filters>
+            <filter const="19000035" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftGeoLocType" cache="true" lookupcachename="rftGeoLocType">
+          <filters>
+            <filter const="19000036" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftGroundType" cache="true" lookupcachename="rftGroundType">
+          <filters>
+            <filter const="19000038" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftHACodes" cache="true" lookupcachename="rftHA_Code_List">
+          <filters>
+            <filter const="19000040" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftHospStatus" cache="true" lookupcachename="rftHospStatus">
+          <filters>
+            <filter const="19000041" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftHumanAgeType" cache="true" lookupcachename="rftHumanAgeType">
+          <filters>
+            <filter const="19000042" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftHumanGender" cache="true" lookupcachename="rftHumanGender">
+          <filters>
+            <filter const="19000043" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftInstitutionName" cache="true" lookupcachename="rftInstitutionName">
+          <filters>
+            <filter const="19000046" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftNationality" cache="true" lookupcachename="rftNationality">
+          <filters>
+            <filter const="19000054" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftNumberingType" cache="true" lookupcachename="rftNumberingType">
+          <filters>
+            <filter const="19000057" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftOccupationType" cache="true" lookupcachename="rftOccupationType">
+          <filters>
+            <filter const="19000061" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftOutbreakStatus" cache="true" lookupcachename="rftOutbreakStatus">
+          <filters>
+            <filter const="19000063" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftOutcome" cache="true" lookupcachename="rftOutcome">
+          <filters>
+            <filter const="19000064" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftOwnershipType" cache="true" lookupcachename="rftOwnershipType">
+          <filters>
+            <filter const="19000065" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftPosition" cache="true" lookupcachename="rftPosition">
+          <filters>
+            <filter const="19000073" target="idfsReferenceType"/>
+          </filters>
+        </section>
+        <section name="rftSiteType" cache="true" lookupcachename="rftSiteType">
+          <filters>
+            <filter const="19000085" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftSpeciesList" cache="true" lookupcachename="rftSpeciesList">
+          <filters>
+            <filter const="19000086" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftSampleType" cache="true" lookupcachename="rftSampleType">
+          <filters>
+            <filter const="19000087" target="idfsReferenceType" />
+          </filters>
+        </section>        
+        <section name="rftStatisticAreaType" cache="true" lookupcachename="rftStatisticAreaType">
+          <filters>
+            <filter const="19000089" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftStatisticDataType" cache="false" lookupcachename="rftStatisticDataType">
+          <filters>
+            <filter const="19000090" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftStatisticPeriodType" cache="true" lookupcachename="rftStatisticPeriodType">
+          <filters>
+            <filter const="19000091" target="idfsReferenceType" />
+          </filters>
+        </section>
+  		  <section name="rftStorageType" cache="true" lookupcachename="rftStorageType">
+          <filters>
+            <filter const="19000092" target="idfsReferenceType" />
+          </filters>
+	  	  </section>
+		    <section name="rftTestCategory" cache="true" lookupcachename="rftTestCategory">
+          <filters>
+            <filter const="19000095" target="idfsReferenceType" />
+          </filters>
+		    </section>
+        <section name="rftTestResult" cache="true" lookupcachename="rftTestResult">
+          <filters>
+            <filter const="19000096" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftTestName" cache="true" lookupcachename="rftTestName">
+          <filters>
+            <filter const="19000097" target="idfsReferenceType" />
+          </filters>
+        </section>        
+        <section name="rftVaccinationRoute" cache="true" lookupcachename="rftVaccinationRoute">
+          <filters>
+            <filter const="19000098" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftVaccinationType" cache="true" lookupcachename="rftVaccinationType">
+          <filters>
+            <filter const="19000099" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftYesNoValue" cache="true" lookupcachename="rftYesNoValue">
+          <filters>
+            <filter const="19000100" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftVetCaseLogStatus" cache="true" lookupcachename="rftVetCaseLogStatus">
+          <filters>
+            <filter const="19000103" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftPensideTestType" cache="true" lookupcachename="rftPensideTestType">
+          <filters>
+            <filter const="19000104" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftPensideTestResult" cache="true" lookupcachename="rftPensideTestResult">
+          <filters>
+            <filter const="19000105" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftRuleInValue" cache="true" lookupcachename="rftRuleInValue">
+          <filters>
+            <filter const="19000106" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftAccessionCondition" cache="true" lookupcachename="rftAccessionCondition">
+          <filters>
+            <filter const="19000110" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftCaseProgressStatus" cache="true" lookupcachename="rftCaseProgressStatus">
+          <filters>
+            <filter const="19000111" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftSecurityAuditAction" cache="true" lookupcachename="rftSecurityAuditAction">
+          <filters>
+            <filter const="19000112" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftSecurityAuditResult" cache="true" lookupcachename="rftSecurityAuditResult">
+          <filters>
+            <filter const="19000113" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftSecurityAuditProcessType" cache="true" lookupcachename="rftSecurityAuditProcessType">
+          <filters>
+            <filter const="19000114" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftCampaignStatus" cache="true" lookupcachename="rftCampaignStatus">
+          <filters>
+            <filter const="19000115" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftCampaignType" cache="true" lookupcachename="rftCampaignType">
+          <filters>
+            <filter const="19000116" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftMonitoringSessionStatus" cache="true" lookupcachename="rftMonitoringSessionStatus">
+          <filters>
+            <filter const="19000117" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftMonitoringSessionActionType" cache="true" lookupcachename="rftMonitoringSessionActionType">
+          <filters>
+            <filter const="19000127" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftMonitoringSessionActionStatus" cache="true" lookupcachename="rftMonitoringSessionActionStatus">
+          <filters>
+            <filter const="19000128" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftVectorSurveillanceSessionStatus" cache="true" lookupcachename="rftVectorSurveillanceSessionStatus">
+          <filters>
+            <filter const="19000133" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftPensideTestCategory" cache="true" lookupcachename="rftPensideTestCategory">
+          <filters>
+            <filter const="19000134" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftCollectionMethod" cache="true" lookupcachename="rftCollectionMethod">
+          <filters>
+            <filter const="19000135" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftCollectionTimePeriod" cache="true" lookupcachename="rftCollectionTimePeriod">
+          <filters>
+            <filter const="19000136" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftBasisOfRecord" cache="true" lookupcachename="rftBasisOfRecord">
+          <filters>
+            <filter const="19000137" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftIdentificationMethod" cache="true" lookupcachename="rftIdentificationMethod">
+          <filters>
+            <filter const="19000138" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftSurrounding" cache="true" lookupcachename="rftSurrounding">
+          <filters>
+            <filter const="19000139" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftVectorType" cache="true" lookupcachename="rftVectorType">
+          <filters>
+            <filter const="19000140" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftVectorSubType" cache="true" lookupcachename="rftVectorSubType">
+          <filters>
+            <filter const="19000141" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftCaseReportType" cache="true" lookupcachename="rftCaseReportType">
+          <filters>
+            <filter const="19000144" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftStatisticalAgeGroup" cache="true" lookupcachename="rftStatisticalAgeGroup">
+          <filters>
+            <filter const="19000145" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftChangeDiagnosisReason" cache="true" lookupcachename="rftChangeDiagnosisReason">
+          <filters>
+            <filter const="19000147" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftNonNotifiableDiagnosis" cache="true" lookupcachename="rftNonNotifiableDiagnosis">
+          <filters>
+            <filter const="19000149" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftNotCollectedReason" cache="true" lookupcachename="rftNotCollectedReason">
+          <filters>
+            <filter const="19000150" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftBirdStatus" cache="true" lookupcachename="rftBirdStatus">
+          <filters>
+            <filter const="19000151" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftDiagnosisGroup" cache="true" lookupcachename="rftDiagnosisGroup">
+          <filters>
+            <filter const="19000156" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftDestructionMethod" cache="true" lookupcachename="rftDestructionMethod">
+          <filters>
+            <filter const="19000157" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftSampleKind" cache="true" lookupcachename="rftSampleKind">
+          <filters>
+            <filter const="19000158" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftBssType" cache="true" lookupcachename="rftBssType">
+          <filters>
+            <filter const="19000159" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftBssMethodOfMeasurement" cache="true" lookupcachename="rftBssMethodOfMeasurement">
+          <filters>
+            <filter const="19000160" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftBssOutcome" cache="true" lookupcachename="rftBssOutcome">
+          <filters>
+            <filter const="19000161" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftBssTestResult" cache="true" lookupcachename="rftBssTestResult">
+          <filters>
+            <filter const="19000162" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftBssAggregateColumns" cache="true" lookupcachename="rftBssAggregateColumns">
+          <filters>
+            <filter const="19000163" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftPersonIDType" cache="true" lookupcachename="rftPersonIDType">
+          <filters>
+            <filter const="19000148" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftSummaryReportType" cache="true" lookupcachename="rftSummaryReportType">
+          <filters>
+            <filter const="19000129" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftReportDiagnosisGroup" cache="true" lookupcachename="rftReportDiagnosisGroup">
+          <filters>
+            <filter const="19000130" target="idfsReferenceType" />
+          </filters>
+        </section>
+        <section name="rftReportAdditionalText" cache="true" lookupcachename="rftReportAdditionalText">
+          <filters>
+            <filter const="19000132" target="idfsReferenceType" />
+          </filters>
+        </section>
+      </sections>      
+      <storage>
+      </storage>
+      <actions>
+        <action name="CreateDummy" type="Create">
+          <run>
+            <params>
+              <param name="id" type="long"/>
+              <param name="name" type="string"/>
+            </params>
+            <creating>
+              <lambda_extender target="idfsBaseReference" type="long" lambda="c => id"/>
+              <lambda_extender target="name" type="string" lambda="c => name"/>
+            </creating>
+          </run>
+        </action>
+      </actions>
+    </table>
+  </tables>
+
+</object>
+

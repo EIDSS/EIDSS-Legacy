@@ -1,0 +1,99 @@
+﻿@using Kendo.Mvc.UI
+@using bv.common.Configuration
+@using eidss.webclient.Utils
+@model eidss.model.Reports.GG.VetLaboratoryResearchResultModel
+           
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/ExportButtons", Model)
+    
+    <div class="bluelayout">
+        <div class="tabPanelContent">
+    
+            @Html.Partial("Common/BaseFilter", Model)
+            
+            <table class="level1">
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.idReportSource)
+                    </td>
+                    <td class="largereport">
+                        @(Html.Kendo().ComboBoxFor(m => m.idReportSource)
+                              .Name("cbReportSource")
+                              .BindTo(Model.ReportSourcesList.ConvertToSelectListItem())
+                              .HtmlAttributes(new {@class = "requiredField"})
+                              .Events(c => c.Change("paperForm.OnReportSourceChanged"))
+                              )
+                    </td>
+                </tr>
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.CaseId)
+                    </td>
+                    <td class="largereport">
+                        <div class='tdContainer'>
+                            @Html.TextBoxFor(m => m.CaseId, new {@class = "requiredField"})
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.SessionId)
+                    </td>
+                    <td class="largereport">
+                        <div class='tdContainer'>
+                            @Html.TextBoxFor(m => m.SessionId, new {@class = "requiredField"})
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.RegistrationNumber)
+                    </td>
+                    <td class="largereport">
+                        <div class='tdContainer'>
+                            @Html.TextBoxFor(m => m.RegistrationNumber, new {@class = "requiredField"})
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.ConditionSampleReceived)
+                    </td>
+                    <td class="largereport">
+                        @(Html.Kendo().ComboBoxFor(m => m.ConditionSampleReceived)
+                              .Name("cbConditionSampleReceived")
+                              .BindTo(Model.ConditionSampleReceivedList.ConvertToSelectListItem())
+                              )
+                    </td>
+                </tr>
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.ResultRecipient)
+                    </td>
+                    <td class="largereport">
+                        <div class='tdContainer'>
+                            @Html.TextBoxFor(m => m.ResultRecipient, new {@class = "requiredField"})
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+}
+
+<script>
+    //TODO можно обновлять сообщения диалога через PartialView. Есть ли какое-то преимущество?
+    
+    $(document).ready(function () {
+        paperForm.OnReportSourceChanged(null);
+    });
+    
+</script>

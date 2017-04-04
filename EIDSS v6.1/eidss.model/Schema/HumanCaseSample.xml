@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="HumanCaseSample"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spHumanCaseSamples_SelectDetail" type="detaillist" />
+  </storage>
+
+  <tables>
+    <table name="HumanCaseSample" tostring='c => string.IsNullOrEmpty(c.strSampleName) ? "" : c.strSampleName + " / " + c.strFieldBarcode'>
+      <grid>
+        <item name="idfMaterial" visible="false" key="true"/>
+        <item name="strSampleName" type="string" required="true" />
+        <item name="strFieldBarcode" type="string" required="true" />
+        <item name="datFieldCollectionDate" required="true" />
+        <item name="datFieldSentDate" required="true" />
+        <item name="datAccession" />
+        <item name="strAccessionCondition" type="string" />
+        <item name="strNote" type="string" />
+        <item name="strTestName" type="string" />
+        <item name="strTestResult" type="string" />
+        <item name="datTestPerformedDate" type="DateTimeWrap" />
+        <item name="strFieldCollectedByOffice" type="string" />
+        <item name="strFieldCollectedByPerson" type="string" />
+        <item name="strSendToOffice" type="string" required="true" />
+      </grid>
+      <labels>
+        <item name="strAccessionCondition" labelId="idfsAccessionCondition"/>
+        <item name="strFieldCollectedByOffice" labelId="CollectedbyInstitution"/>
+        <item name="strFieldCollectedByPerson" labelId="CollectedbyOfficer"/>
+        <item name="idfSendToOffice" labelId="strSendToOffice"/>
+        <item name="strSendToOffice" labelId="strSendToOrganization"/>
+        <item name="strNote" labelId="strComment"/>
+        <item name="strSampleName" labelId="idfsSampleType"/>
+        <item name="strFieldBarcode" labelId="strFieldBarcodeLocal"/>
+        <item name="strBarcode" labelId="strLabBarcode"/>
+        <item name="idfFieldCollectedByOffice" labelId="strFieldCollectedByOffice"/>
+        <item name="idfFieldCollectedByPerson" labelId="strFieldCollectedByPerson"/>
+        <item name="idfInDepartment" labelId="DepartmentName"/>
+        <item name="strTestResult" labelId="TestResult"/>
+        <item name="strTestName" labelId="TestName"/>
+        <item name="idfMainTest" labelId="TestName"/>
+        <item name="datTestPerformedDate" labelId="datConcludedDate"/>
+      </labels>
+      <fields>
+        <storage name="FilterByDiagnosis" type="bool" />
+        <!--storage name="NewObject" type="bool"/-->
+        <storage name="idfsSampleTypeSaved" type="long?"/>
+        <calculated name="idfsDiagnosisFromCase" type="long?" depends="Parent" lambda="c => (c.Parent is HumanCase) ? (c.Parent as HumanCase).idfsDiagnosis : null"/>
+        <calculated name="CaseTests" type="EditableList&lt;CaseTest&gt;" depends="Parent" lambda="c => (c.Parent is HumanCase) ? (c.Parent as HumanCase).CaseTests : null"/>
+
+        <calculated name="strAccessionCondition" type="string" depends="idfsAccessionCondition"
+                    lambda='c => c.AccessionCondition == null ? "" : c.AccessionCondition.name' />
+        <calculated name="CaseObjectIdent" type="string" depends="idfCase" lambda='c => "HumanCase_" + c.idfCase + "_"' />
+        <calculated name="strTestName" type="string" depends="idfMainTest" lambda='c => c.Testing == null ? "" : c.Testing.TestName' />
+        <calculated name="strTestResult" type="string" depends="idfMainTest" lambda='c => c.Testing == null ? "" : c.Testing.TestResult' />
+        <calculated name="datTestPerformedDate" type="DateTime?" depends="idfMainTest" lambda='c => c.Testing == null ? default(DateTime?) : c.Testing.datPerformedDate' />
+      </fields>
+      <readonly>
+        <fields name="Testing,idfMainTest" predicate="c => false" />
+        <fields name="SampleType,SampleTypeWithUnknown,idfsSampleType,strFieldBarcode,datFieldCollectionDate,datFieldSentDate,idfFieldCollectedByOffice,idfFieldCollectedByPerson,idfSendToOffice,FilterByDiagnosis"
+                  predicate="c => c.idfsAccessionCondition != null" />
+        <fields name="strFieldCollectedByOffice,strFieldCollectedByPerson,strSendToOffice" predicate="c => true" />
+        <fields name="*" predicate="c => true" />
+      </readonly>
+      <relations>
+        <relation name="Tests" table="HumanCaseSampleTest" internal="true" type="child" source="idfMaterial" target="idfMaterial" lazy="false" />
+        <!-- idfRootMaterial -->
+        <!-- idfParty -->
+        <!-- idfTesting -->
+        <!-- idfCase -->
+        <!-- idfsSite -->
+        <!-- idfAccesionByPerson -->
+      </relations>
+      <lookups>
+        <lookup name="SampleTypeWithUnknown" table="SampleTypeForDiagnosisLookup" source="idfsSampleType" target="idfsReference">
+          <params>
+            <param name="intHACode" const="null"/>
+          </params>
+          <filters>
+            <filter predicate="c => (c.intHACode &amp; (int)HACode.Human) != 0 || c.idfsReference == obj.idfsSampleType"/>
+            <!--filter predicate="c => (c.idfsDiagnosis == ((obj.FilterByDiagnosis &amp;&amp; obj.idfsDiagnosisFromCase != null) ? obj.idfsDiagnosisFromCase.Value : 0)) || (c.idfsReference == obj.idfsSampleType)"/-->
+            <filter predicate="c => (c.idfsDiagnosis == 0) || (c.idfsReference == obj.idfsSampleType)"/>
+            <filter predicate="c => c.idfsReference != 0"/>
+            <filter distinct="SampleTypeForDiagnosisLookupComparator" />
+          </filters>
+        </lookup>
+        <lookup name="SampleType" table="SampleTypeForDiagnosisLookup" source="idfsSampleType" target="idfsReference" >
+          <params>
+            <param name="intHACode" const="null"/>
+          </params>
+          <filters>
+            <filter predicate="c => (c.intHACode &amp; (int)HACode.Human) != 0 || c.idfsReference == obj.idfsSampleType"/>
+            <filter predicate="c => (c.idfsDiagnosis == ((obj.FilterByDiagnosis &amp;&amp; obj.idfsDiagnosisFromCase != null) ? obj.idfsDiagnosisFromCase.Value : 0)) || (c.idfsReference == obj.idfsSampleType)"/>
+            <filter predicate="c => c.idfsReference != (long)SampleTypeEnum.Unknown"/>
+            <filter predicate="c => c.idfsReference != 0"/>
+            <filter distinct="SampleTypeForDiagnosisLookupComparator" />
+          </filters>
+        </lookup>
+        <lookup name="AccessionCondition" table="BaseReference" section="rftAccessionCondition" source="idfsAccessionCondition" target="idfsBaseReference" />
+        <lookup name="Testing" table="HumanCaseSampleTest" existinglookup="Tests" source="idfMainTest" target="idfTesting">
+          <filters>
+            <filter predicate="c => !c.IsMarkedToDelete &amp;&amp; ((c.idfRootMaterial ?? c.idfMaterial) == (idfRootMaterial ?? idfMaterial))" />
+          </filters>
+        </lookup>
+      </lookups>
+      <storage>
+        <insert name="spLabSample_Create" />
+        <update name="spLabSample_Update" />
+        <delete name="spLabSample_Delete" />
+      </storage>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfMaterial" class="GetNewIDExtender" />
+          <lambda_extender target="datFieldCollectionDate" type="DateTime?" lambda="c => DateTime.Now.Date" />
+          <lambda_extender target="datFieldSentDate" type="DateTime?" lambda="c => DateTime.Now.Date" />
+          <lambda_extender target="FilterByDiagnosis" type="bool" lambda="c => EidssUserContext.User.Options.Prefs.FilterByDiagnosis" />
+        </creating>
+        <loading>
+          <lambda_extender target="idfsSampleTypeSaved" type="long?" lambda="c => c.idfsSampleType"/>
+          <lambda_extender target="FilterByDiagnosis" type="bool" lambda="c => EidssUserContext.User.Options.Prefs.FilterByDiagnosis" />
+        </loading>
+        <loaded>
+          <lambda_extender target="SampleType" type="SampleTypeForDiagnosisLookup" lambda="c => c.SampleTypeLookup.FirstOrDefault(a => a.idfsReference == c.idfsSampleTypeSaved)"/>
+          <lambda_extender target="SampleTypeWithUnknown" type="SampleTypeForDiagnosisLookup" lambda="c => c.SampleTypeWithUnknownLookup.FirstOrDefault(a => a.idfsReference == c.idfsSampleTypeSaved)"/>
+        </loaded>
+        <posting>
+          <lambda_extender target="idfParty" type="long?" lambda="c => (c.Parent is HumanCase) ? (c.Parent as HumanCase).idfHuman : null"/>
+        </posting>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <lambda_handler target="strSampleName" field="idfsSampleType" type="string" lambda='c => c.SampleType == null ? (c.idfsSampleType == (long) SampleTypeEnum.Unknown ? c.SampleTypeWithUnknownLookup.FirstOrDefault(a => a.idfsReference == (long) SampleTypeEnum.Unknown).name : "") : c.SampleType.name' />
+          <!--lambda_handler target="SampleType" field="FilterByDiagnosis" type="SampleTypeForDiagnosisLookup" lambda='c => null' /-->
+          <lookup_handler lookup="SampleType" field="FilterByDiagnosis" />
+        </fieldhandler>
+      </handlers>
+      <validators>
+        <chains>
+          <item field="datFieldCollectionDate" type="DateTime">
+            <item field="datFieldSentDate">
+              <item field="datAccession">
+                <item field="CurrentDate" value="DateTime.Now" />
+              </item>
+            </item>
+          </item>
+        </chains>
+        <post>
+          <required_validator target="idfsSampleType" property="SampleType" field="SampleType" />
+          <custom_mandatory_validator name="idfSendToOffice" fieldId="HumanCaseSample_SentTo" predicate="c => c.idfsSampleType != (long)SampleTypeEnum.Unknown"/>
+          <custom_mandatory_validator name="strSendToOffice" fieldId="HumanCaseSample_SentTo" predicate="c => c.idfsSampleType != (long)SampleTypeEnum.Unknown"/>
+        </post>
+        <delete>
+          <predicate_validator predicate="c => c.idfsAccessionCondition == null" message="msgCantDeleteRecord" />
+          <predicate_validator predicate="c => c.CaseTests.Where(i => !i.IsMarkedToDelete &amp;&amp; i.idfMaterialHuman == c.idfMaterial).Count() == 0"
+                               message="msgCantDeleteRecord" />
+          <predicate_validator predicate='c => {
+                                     using (DbManagerProxy manager = DbManagerFactory.Factory.Create(ModelUserContext.Instance))
+                                     {
+                                        return manager.SetSpCommand("spLabSample_CheckAccession", manager.Parameter("@idfMaterial", c.idfMaterial)).ExecuteScalar&lt;long&gt;(ScalarSourceType.DataReader, "idfMaterial") == 0;
+                                     }}' message="msgCantDeleteRecord" />
+        </delete>
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+        </standard>
+        <action name="Create" type="Create">
+          <visual app="Web" alignment="Right" panel="Group">
+            <regular caption="Add" tooltip="" icon=""/>
+          </visual>
+          <run>
+            <params>
+              <param name="idfSendToOffice" type="long?" />
+              <param name="idfFieldCollectedByOffice" type="long?" />
+              <param name="idfFieldCollectedByPerson" type="long?" />
+              <param name="strSendToOffice" type="string" />
+              <param name="strFieldCollectedByOffice" type="string" />
+              <param name="strFieldCollectedByPerson" type="string" />
+            </params>
+            <creating>
+              <lambda_extender target="idfCase" type="long" lambda='c => (Parent as HumanCase).idfCase' />
+
+              <lambda_extender target="idfSendToOffice" type="long?" lambda='c => idfSendToOffice' />
+              <lambda_extender target="idfFieldCollectedByOffice" type="long?" lambda='c => idfFieldCollectedByOffice' />
+              <lambda_extender target="idfFieldCollectedByPerson" type="long?" lambda='c => idfFieldCollectedByPerson' />
+              <lambda_extender target="strSendToOffice" type="string" lambda='c => strSendToOffice' />
+              <lambda_extender target="strFieldCollectedByOffice" type="string" lambda='c => strFieldCollectedByOffice' />
+              <lambda_extender target="strFieldCollectedByPerson" type="string" lambda='c => strFieldCollectedByPerson' />
+            </creating>
+          </run>
+        </action>
+      </actions>
+    </table>
+    <table name="HumanCaseSampleTest" tostring="c => c.TestName">
+      <actions>
+        <action name="CreateFromCaseTest" type="Create">
+          <run>
+            <params>
+              <param name="test" type="CaseTest"/>
+            </params>
+            <creating>
+              <lambda_extender target="idfTesting" type="long" lambda="c => test.idfTesting"/>
+              <lambda_extender target="idfMaterial" type="long" lambda="c => test.idfMaterialHuman.Value"/>
+              <lambda_extender target="TestName" type="string" lambda="c => test.TestName"/>
+              <lambda_extender target="TestResult" type="string" lambda="c => test.TestResult"/>
+              <lambda_extender target="datPerformedDate" type="DateTime?" lambda="c => test.datConcludedDate"/>
+            </creating>
+          </run>
+        </action>
+        <action name="UpdateFromCaseTest" type="Action">
+          <run>
+            <params>
+              <param name="test" type="CaseTest"/>
+            </params>
+            <preText>
+              obj.idfTesting = test.idfTesting;
+              obj.idfMaterial = test.idfMaterialHuman.Value;
+              obj.TestName = test.TestName;
+              obj.TestResult = test.TestResult;
+              obj.datPerformedDate = test.datConcludedDate;
+              return true;
+            </preText>
+          </run>
+        </action>
+      </actions>
+    </table>
+    <!--table name="HumanCaseSampleNote">
+        </table-->
+  </tables>
+
+</object>

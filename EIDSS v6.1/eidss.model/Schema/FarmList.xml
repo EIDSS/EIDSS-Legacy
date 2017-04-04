@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="FarmListItem"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="fn_Farm_SelectList" type="fnlist" />
+	<count name="spFarm_SelectCount"/>
+  </storage>
+
+  <tables>
+    <table name="FarmListItem">
+      <properties auditObject="daoFarm" auditTable="tlbFarm" permissionObject="AccessToFarmData" />
+      <help win="VC_V04" web="VC_V04"/>
+      <searchpanel>
+        <item name="strFarmCode" editor="Text" labelId="strFarmCode"/>
+        <item name="strNationalName" editor="Text" labelId="FarmName" />
+        <item name="strContactPhone" editor="Text" labelId="FarmListItem.strContactPhone" />
+        <item name="idfsRegion" editor="Lookup" labelId="idfsRegion" isParam="true" dependent="idfsRayon"
+			    lookupName="RegionLookup" lookupType="RegionLookup" lookupText="c.strRegionName" lookupValue="c.idfsRegion"
+			    defaultoper="="/>
+        <item name="idfsRayon" editor="Lookup" labelId="idfsRayon" isParam="true" dependent="idfsSettlement"
+              lookupName="RayonLookup" lookupType="RayonLookup" lookupText="c.strRayonName" lookupValue="c.idfsRayon"/>
+        <item name="idfsSettlement" editor="Lookup" labelId="strTownOrVillage" isParam="true"
+              lookupName="SettlementLookup" lookupType="SettlementLookup" lookupText="c.strSettlementName" lookupValue="c.idfsSettlement"/>
+        <item name="strLastName" editor="Text" labelId="FarmOwner.strLastName" />
+        <item name="strFirstName" editor="Text" labelId="FarmOwner.strFirstName" predicate="() => !EidssSiteContext.Instance.IsIraqCustomization"/>
+        <item name="strSecondName" editor="Text" labelId="FarmOwner.strSecondName" predicate="() => !EidssSiteContext.Instance.IsIraqCustomization"/>
+        <item name="intHACode" editor="Lookup" labelId="strFarmType" multiple="true" bitmask="true"
+              lookupName="HACodeLookup" lookupType="HACodeLookup" lookupText="c.CodeName" lookupValue="c.intHACode"/>
+
+      </searchpanel>
+
+      <grid>
+        <item name="idfFarm" key="true" visible="false" />
+        <item name="strFarmCode" action="ActionEditFarm" required="true" />
+        <item name="strOwnerName" type="string"/>
+        <item name="strNationalName"  />
+        <item name="strContactPhone"/>
+        <item name="strRegion" type="string"/>
+        <item name="strRayon" type="string"/>
+        <item name="strSettlement" type="string"/>
+        <item name ="strFarmType"/>
+      </grid>
+      <labels>
+        <item name="strNationalName" labelId="FarmName"/>
+        <item name="strContactPhone" labelId="FarmListItem.strContactPhone"/>
+        <item name="strSettlement" labelId="strTownOrVillage"/>
+      </labels>
+      <fields>
+        <!--calculated name="strOwnerName" depends="strLastName,strFirstName,strSecondName"  type="string" lambda='c=>String.Format("{0} {1} {2}",c.strLastName, c.strFirstName, c.strSecondName)'/-->
+      </fields>
+      <lookups>
+        <lookup name="Country" table="CountryLookup" source="idfsCountry" target="idfsCountry" />
+        <lookup name="Region" table="RegionLookup" source="idfsRegion" target="idfsRegion">
+          <params>
+            <param name="CountryID" lambda="c => c.idfsCountry ?? 0" type="long" />
+            <param name="ID" const="null" />
+          </params>
+        </lookup>
+        <lookup name="Rayon" table="RayonLookup" source="idfsRayon" target="idfsRayon">
+          <params>
+            <param name="RegionID" lambda="c => c.idfsRegion ?? 0" type="long" />
+            <param name="ID" const="null" />
+          </params>
+        </lookup>
+        <lookup name="Settlement" table="SettlementLookup" source="idfsSettlement" target="idfsSettlement">
+          <params>
+            <param name="RayonID" lambda="c => c.idfsRayon ?? 0" type="long" />
+            <param name="ID" const="null" />
+          </params>
+        </lookup>
+        <lookup name="OwnershipStructure" table="BaseReference" section="rftOwnershipType" source="idfsOwnershipStructure" target="idfsBaseReference" />
+        <lookup name="HACode" table="HACodeLookup" source="intHACode" target="intHACode" emptyTextProp="CodeName" emptyTextId="SelectAll" emptyKey="0" notaddempty="true">
+          <params>
+            <param name="intHACode" lambda="c => (int)eidss.model.Enums.HACode.LivestockAvian" type="int" />
+          </params>
+        </lookup>
+      </lookups>
+      <storage>
+        <delete name="spFarm_Delete"/>
+        <candelete name="spFarm_CanDelete"/>
+      </storage>
+
+      <extenders>
+        <created>
+          <!-- set default country as current country of database -->
+          <lambda_extender target="Country" type="CountryLookup" lambda='c => 
+                                     c.CountryLookup.Where(a => a.idfsCountry == eidss.model.Core.EidssSiteContext.Instance.CountryID)
+                                     .SingleOrDefault()'/>
+          <lambda_extender target="Region" type="RegionLookup" lambda='c => 
+                                     EidssUserContext.User.Options.Prefs.DefaultRegion == true?
+                                     c.RegionLookup.Where(a => a.idfsRegion == eidss.model.Core.EidssSiteContext.Instance.RegionID)
+                                     .SingleOrDefault(): null'/>
+        </created>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <scalar_handler class="SetScalarHandler" target="Region" field="idfsCountry" lambda="(o, fld, prev_fld) => null" />
+          <scalar_handler class="SetScalarHandler" target="Rayon" field="idfsRegion" lambda="(o, fld, prev_fld) => null" />
+          <scalar_handler class="SetScalarHandler" target="Settlement" field="idfsRayon" lambda="(o, fld, prev_fld) => null" />
+          <lookup_handler lookup="Region" field="idfsCountry" />
+          <lookup_handler lookup="Rayon" field="idfsRegion" />
+          <lookup_handler lookup="Settlement" field="idfsRayon" />
+        </fieldhandler>
+      </handlers>
+      <actions child="FarmRoot">
+        <standard>
+          <remove type="Report"/>
+        </standard>
+        <action name="ActionEditFarm" type="Action">
+          <run>
+            <preUI webType="JScript"/>
+          </run>
+        </action>
+      </actions>
+    </table>
+  </tables>
+
+</object>

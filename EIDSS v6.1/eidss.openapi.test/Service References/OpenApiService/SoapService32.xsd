@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://apitest.eidss.info/SoapService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" />
+  <xs:element name="Login">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="value" nillable="true" type="q1:Login" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LoginResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HumanCaseCreate">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="value" nillable="true" type="q2:HumanCase" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HumanCaseCreateResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="HumanCaseCreateResult" nillable="true" type="q3:HumanCase" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HumanCaseUpdate">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="id" type="xs:long" />
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="value" nillable="true" type="q4:HumanCase" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HumanCaseUpdateResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="HumanCaseUpdateResult" nillable="true" type="q5:HumanCase" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HumanCaseGet">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="id" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HumanCaseGetResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="HumanCaseGetResult" nillable="true" type="q6:HumanCase" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HumanCaseDelete">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="id" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HumanCaseDeleteResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HumanCaseList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="filter" nillable="true" type="q7:HumanCaseListFilter" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HumanCaseListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="HumanCaseListResult" nillable="true" type="q8:ArrayOfHumanCaseListItem" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HumanCaseSampleCreate">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="idHumanCase" type="xs:long" />
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="value" nillable="true" type="q9:Sample" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HumanCaseSampleCreateResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="HumanCaseSampleCreateResult" nillable="true" type="q10:Sample" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HumanCaseSampleDelete">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="idHumanCase" type="xs:long" />
+        <xs:element minOccurs="0" name="id" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HumanCaseSampleDeleteResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HumanCaseTestCreate">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="idHumanCase" type="xs:long" />
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="value" nillable="true" type="q11:Test" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HumanCaseTestCreateResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="HumanCaseTestCreateResult" nillable="true" type="q12:Test" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HumanCaseTestDelete">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="idHumanCase" type="xs:long" />
+        <xs:element minOccurs="0" name="id" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HumanCaseTestDeleteResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HumanCaseTestInterpretationCreate">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="idHumanCase" type="xs:long" />
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="value" nillable="true" type="q13:TestInterpretation" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HumanCaseTestInterpretationCreateResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="HumanCaseTestInterpretationCreateResult" nillable="true" type="q14:TestInterpretation" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HumanCaseTestInterpretationDelete">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="idHumanCase" type="xs:long" />
+        <xs:element minOccurs="0" name="id" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HumanCaseTestInterpretationDeleteResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VetCaseCreate">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="value" nillable="true" type="q15:VetCase" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VetCaseCreateResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="VetCaseCreateResult" nillable="true" type="q16:VetCase" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VetCaseUpdate">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="id" type="xs:long" />
+        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="value" nillable="true" type="q17:VetCase" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VetCaseUpdateResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="VetCaseUpdateResult" nillable="true" type="q18:VetCase" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VetCaseGet">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="id" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VetCaseGetResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="VetCaseGetResult" nillable="true" type="q19:VetCase" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VetCaseDelete">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="id" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VetCaseDeleteResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VetCaseList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="filter" nillable="true" type="q20:VetCaseListFilter" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VetCaseListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="VetCaseListResult" nillable="true" type="q21:ArrayOfVetCaseListItem" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VetCaseSampleCreate">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="idHumanCase" type="xs:long" />
+        <xs:element xmlns:q22="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="value" nillable="true" type="q22:Sample" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VetCaseSampleCreateResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q23="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="VetCaseSampleCreateResult" nillable="true" type="q23:Sample" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VetCaseSampleDelete">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="idHumanCase" type="xs:long" />
+        <xs:element minOccurs="0" name="id" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VetCaseSampleDeleteResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VetCaseTestCreate">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="idVetCase" type="xs:long" />
+        <xs:element xmlns:q24="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="value" nillable="true" type="q24:Test" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VetCaseTestCreateResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q25="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="VetCaseTestCreateResult" nillable="true" type="q25:Test" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VetCaseTestDelete">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="idVetCase" type="xs:long" />
+        <xs:element minOccurs="0" name="id" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VetCaseTestDeleteResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VetCaseTestInterpretationCreate">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="idVetCase" type="xs:long" />
+        <xs:element xmlns:q26="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="value" nillable="true" type="q26:TestInterpretation" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VetCaseTestInterpretationCreateResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q27="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="VetCaseTestInterpretationCreateResult" nillable="true" type="q27:TestInterpretation" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VetCaseTestInterpretationDelete">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="idVetCase" type="xs:long" />
+        <xs:element minOccurs="0" name="id" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VetCaseTestInterpretationDeleteResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VetCasePensideTestCreate">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="idVetCase" type="xs:long" />
+        <xs:element xmlns:q28="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="value" nillable="true" type="q28:PensideTest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VetCasePensideTestCreateResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q29="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="VetCasePensideTestCreateResult" nillable="true" type="q29:PensideTest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VetCasePensideTestDelete">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="idVetCase" type="xs:long" />
+        <xs:element minOccurs="0" name="id" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="VetCasePensideTestDeleteResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FarmGet">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="id" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FarmGetResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q30="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="FarmGetResult" nillable="true" type="q30:Farm" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FarmList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q31="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="filter" nillable="true" type="q31:FarmListFilter" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FarmListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q32="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="FarmListResult" nillable="true" type="q32:ArrayOfFarmListItem" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OrganizationCreate">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q33="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="value" nillable="true" type="q33:Organization" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OrganizationCreateResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q34="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="OrganizationCreateResult" nillable="true" type="q34:Organization" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OrganizationUpdate">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="id" type="xs:long" />
+        <xs:element xmlns:q35="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="value" nillable="true" type="q35:Organization" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OrganizationUpdateResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q36="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="OrganizationUpdateResult" nillable="true" type="q36:Organization" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OrganizationGet">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="id" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OrganizationGetResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q37="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="OrganizationGetResult" nillable="true" type="q37:Organization" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OrganizationDelete">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="id" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OrganizationDeleteResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OrganizationList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q38="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="filter" nillable="true" type="q38:OrganizationListFilter" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OrganizationListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q39="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="OrganizationListResult" nillable="true" type="q39:ArrayOfOrganizationListItem" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OrganizationPersonCreate">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="idOrganization" type="xs:long" />
+        <xs:element xmlns:q40="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="value" nillable="true" type="q40:Person" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OrganizationPersonCreateResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q41="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="OrganizationPersonCreateResult" nillable="true" type="q41:Person" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OrganizationPersonDelete">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="idOrganization" type="xs:long" />
+        <xs:element minOccurs="0" name="id" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OrganizationPersonDeleteResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PatientGet">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="id" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PatientGetResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q42="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="PatientGetResult" nillable="true" type="q42:Patient" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PatientList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q43="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="filter" nillable="true" type="q43:PatientListFilter" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PatientListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q44="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="PatientListResult" nillable="true" type="q44:ArrayOfPatientListItem" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReferenceList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="type" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReferenceListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q45="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="ReferenceListResult" nillable="true" type="q45:ArrayOfReference" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DiagnosisList">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DiagnosisListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q46="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="DiagnosisListResult" nillable="true" type="q46:ArrayOfDiagnosis" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SampleTypeForDiagnosisList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="haCode" type="xs:int" />
+        <xs:element minOccurs="0" name="diagnosis" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SampleTypeForDiagnosisListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q47="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="SampleTypeForDiagnosisListResult" nillable="true" type="q47:ArrayOfReference" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CountryList">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CountryListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q48="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="CountryListResult" nillable="true" type="q48:ArrayOfGisReference" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RegionList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="country" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RegionListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q49="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="RegionListResult" nillable="true" type="q49:ArrayOfGisReference" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RayonList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="region" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RayonListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q50="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="RayonListResult" nillable="true" type="q50:ArrayOfGisReference" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SettlementList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="rayon" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SettlementListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q51="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" minOccurs="0" name="SettlementListResult" nillable="true" type="q51:ArrayOfGisReference" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,28 @@
+﻿@using eidss.web.common.Utils
+@model string
+
+@{
+    ViewBag.Title = @Translator.GetMessageString("titleAVR");
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="mainDiv">
+        
+        <div class="topButtonPanel">
+            <table class="actionPanel">
+                <tbody>
+                    <tr>
+                        <td> &nbsp;</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="divErrorMessage" class="filterTopPanel">
+        @Model
+        </div>
+    </div>
+}
+
+

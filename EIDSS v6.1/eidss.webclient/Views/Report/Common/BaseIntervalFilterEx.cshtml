@@ -1,0 +1,42 @@
+﻿@using Kendo.Mvc.UI
+@model eidss.model.Reports.Common.BaseIntervalModel
+           
+@*применяются другие правила сравнения дат*@
+
+<table id="BaseIntervalFilterTable" >
+    <tr>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.StartDate)
+        </td>
+        <td class="largereport">
+            @{
+                @(Html.Kendo().DatePicker()
+                        .Name("StartDate")
+                        .Value(Model.StartDate)
+                        .HtmlAttributes(new {@class = "requiredField"})
+                        .Events(c => c.Change("paperForm.OnStartDateChangedEx"))
+                        .Min(Model.MinStartDate ?? DateTime.MinValue)
+                        .Max(Model.MaxStartDate ?? DateTime.MaxValue)
+                      )
+                }
+        </td>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.EndDate)
+        </td>
+        <td class="largereport">
+            @{
+                @(
+                    Html.Kendo().DatePicker()
+                        .Name("EndDate")
+                        .Value(Model.EndDate)
+                        .HtmlAttributes(new {@class = "requiredField"})
+                        .Events(c => c.Change("paperForm.OnEndDateChangedEx"))
+                        .Min(Model.MinEndDate ?? DateTime.MinValue)
+                        .Max(Model.MaxEndDate ?? DateTime.MaxValue)
+                      )
+            }
+        </td>
+        
+    </tr>
+   
+</table>

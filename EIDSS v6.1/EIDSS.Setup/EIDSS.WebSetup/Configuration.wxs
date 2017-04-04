@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "ProductInfo.wxi" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Fragment Id="Configuration">
+    <ComponentGroup Id="EidssConfig" Directory="APPLICATIONFOLDER">
+      <Component Id="EidssConfigEditor.exe" MultiInstance="yes">
+        <File Id="EidssConfigEditor.exe" Name="EidssConfigEditor.exe" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="bv.common.dll_configurator" MultiInstance="yes">
+        <File Id="bv.common.dll_configurator" Name="bv.common.dll" Checksum="yes" KeyPath="yes" Source="$(var.bv.common.TargetPath)" />
+      </Component>
+      <Component Id="general_DUSK.config" MultiInstance="yes">
+        <File Id="GeneralConfig" Name="eidss_general.config" Source="$(var.SourceDir)eidss_general.config" KeyPath="yes" />
+
+        <util:XmlConfig
+          Id="Config.appSettings"
+          File="[#GeneralConfig]"
+          Action="create"
+          ElementPath="/configuration"
+          VerifyPath="/configuration/appSettings"
+          Name="appSettings"
+          Node="element"
+          On="install"
+          Sequence="1" />
+      </Component>
+
+      <ComponentRef Id="Languages" />
+      <ComponentRef Id="ErrorLogPath" />
+      <ComponentGroupRef Id="DbSettings" />
+    </ComponentGroup>
+
+    <CustomAction Id="LaunchConfigurator" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
+  </Fragment>
+
+  <Fragment Id="Languages">
+    <DirectoryRef Id="APPLICATIONFOLDER">
+      <Component Id="Languages" Guid="{8C5002B4-1EE2-4279-BD5E-43DAE38B7A46}" KeyPath="yes" MultiInstance="yes">
+        <?define key = SupportedLanguages ?>
+        <?define value = [SUPPORTEDLANGUAGES] ?>
+        <?define order = 2 ?>
+        <?include AddConfigKey.wxi?>
+
+        <?define key = DefaultLanguage ?>
+        <?define value = [DEFAULTLANGUAGE] ?>
+        <?define order = 3 ?>
+        <?include AddConfigKey.wxi?>
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+
+  <Fragment Id="Error Log Path">
+    <Property Id="ERRORLOGS" Secure="yes">
+      <RegistrySearch Id="ERRORLOGS.RS" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="ErrorLogPath" Type="directory" />
+    </Property>
+    <DirectoryRef Id="ERRORLOGS">
+      <Component Id="ErrorLogPath" MultiInstance="yes">
+        <RegistryValue Root="HKLM" Key="$(var.ProductRegistryKey)" Name="ErrorLogPath" Value="[ERRORLOGS]" Type="string" KeyPath="yes" />
+
+        <?define key = ErrorLogPath ?>
+        <?define value = [ERRORLOGS] ?>
+        <?define order = 4 ?>
+        <?include AddConfigKey.wxi?>
+
+        <CreateFolder>
+          <util:PermissionEx
+            Domain="[SERVICE_ACCOUNT_DOMAIN]"
+            User="[SERVICE_ACCOUNT_NAME]"
+            CreateFile="yes"
+            GenericRead="yes"
+            GenericWrite="yes"
+            Read="yes" />
+        </CreateFolder>
+
+        <RemoveFolder Id="RemoveErrorLogsFolder" On="uninstall" />
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+</Wix>

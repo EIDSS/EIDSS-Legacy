@@ -1,0 +1,69 @@
+﻿@model eidss.model.Schema.LaboratorySectionItem
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+@Html.IncludeVersionedCss("~/Content/Styles/LaboratorySection.css")
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+
+<input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+         <div class="windowButtonsPn">                  
+             <input id="idButtonOk" type="button" class="windowButton" onclick="laboratory.saveTransferOutSample();" value="@Translator.GetMessageString("Ok")"/>
+             <input id="idButtonCancel" type="button" class="windowButton" onclick="bvPopup.closeDefaultPopup();" value="@Translator.GetMessageString("Cancel")"/>
+         </div>   
+        <div class="windowSeparator"></div>
+        @Html.Hidden("ID", Model.ID)
+        @Html.Hidden("Idents", (object)ViewBag.Idents)
+        @Html.Hidden("Root", (object)ViewBag.Root)
+        <table class="level1">
+            <tr>
+                <td class="large firstLabel">
+                    @Html.BvLabel(Model, m => m.SendToOfficeOut)
+                </td>
+                <td>
+                    @*Html.BvCombobox(Model, m => m.SendToOfficeOut, false, cacheKey: CachedLookup.SelectOrganizations)*@
+                    @Html.Action("InlineOrganizationPicker", "Organization", new
+                       {
+                           obj = Model,
+                           objectId = Model.ID,
+                           idfsOrganizationPropertyName = "idfSendToOfficeOut",
+                           strOrganizationPropertyName = "strSendToOfficeOut",
+                           idfsEmployeePropertyName = "",
+                           strEmployeePropertyName = "",
+                           showInInternalWindow = true, 
+                           HACode = (int)eidss.model.Enums.HACode.All
+                       })
+                </td>                            
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="collapseEditWindowPanel" id="idfSendToOfficeOut_InternalPicker">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.datSendDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datSendDate)
+                </td>                            
+            </tr>
+        </table> 
+    }           
+</div>

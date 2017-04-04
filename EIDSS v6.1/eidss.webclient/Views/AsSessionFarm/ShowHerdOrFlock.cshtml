@@ -1,0 +1,40 @@
+﻿@using eidss.model.Schema
+@using eidss.web.common.Utils
+@using eidss.webclient.Configurations
+@using eidss.webclient.Utils;
+@model eidss.model.Schema.VetFarmTree
+         
+@Html.Hidden("IdfRoot", (long)ViewBag.IdfRoot)        
+  
+<div class="herdFlockItem" id="@string.Format("Herd_{0}", Model.idfParty)">
+    <div class="sectionTitle" onclick="vetCase.onHerdOrFlockClick(this)">
+        <span class="openArrow">&#x25B6;</span><span class="closeArrow">&#x25BC;</span>
+        <span class="herdFlockName">
+            @string.Format("{0} - {1}", Translator.GetMessageString("strHerd"), Model.strHerdName)
+        </span>
+    </div>
+    <div class="speciesList">
+        @{
+            var speciesList = (VetFarmTree.VetFarmTreeGridModelList) ViewBag.SpeciesList;
+            var gridName = (string)ViewBag.GridName;
+        }
+        @(Html.BvDetailsFormGrid<VetFarmTree.VetFarmTreeGridModel, VetFarmTree.VetFarmTreeGridModelList>(gridName, speciesList,
+                "detailsGrid", "asSession.showSpeciesGridEditWindow", null, (bool)ViewBag.IsReadOnly, true, 
+                false, 
+                strExcludeColumns: "strAverageAge,strFlockName,strHerdName,intSickAnimalQty,intDeadAnimalQty,strNote,datStartOfSignsDate",
+                onDataBound: "asSession.onDataBoundSpecies", 
+                deleteItemFuncName: "asSession.deleteSpecies",
+                selectionType: GridRowSelectionType.None)
+              .ToolBar(toolBar =>
+                       toolBar.Template(
+                           @<text>
+                                <input type='button' class='button' data-role='grid-add-button' value='@Translator.GetMessageString("btNewSpecies")' 
+                                       onclick='bvGrid.addRow("@ViewBag.ListKey", "@gridName", asSession.showSpeciesGridEditWindow)'/>
+
+                                <input type='button' class='button' value='@Translator.GetMessageString("btDeleteHerd")' 
+                                       onclick="@string.Format("asSession.deleteHerd('{0}', '{1}');", Model.idfParty, ViewBag.ListName)"/>
+                            </text>) 
+              ))
+    </div>
+</div>
+

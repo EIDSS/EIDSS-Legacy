@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="CaseClassification"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spCaseClassification_SelectDetail" type= "detaillist" />
+  </storage>
+
+  <tables>
+    <table name="CaseClassification">
+      <grid>
+        <item name="idfsCaseClassification" visible ="false" />
+        <item name="CaseClassificationName" />
+        <item name="CaseClassificationNameTranslated" />
+        <item name="intHACode" />
+        <item name="intOrder" />
+        <item name="blnInitialHumanCaseClassification" />
+        <item name="blnFinalHumanCaseClassification" />
+      </grid>
+      <labels>
+        <item name="CaseClassificationName" labelId="strCaseClassificationDefaultName"/>
+        <item name="CaseClassificationNameTranslated" labelId="strCaseClassificationTranslatedName"/>
+        <item name="intHACode" labelId="strHACode"/>
+      </labels>
+      <fields>
+      </fields>
+      <fieldtags>
+        <field name="CaseClassificationName">
+          <tag name="en" />
+        </field>
+        <field name="CaseClassificationNameTranslated">
+          <tag name="def" />
+        </field>
+      </fieldtags>
+      <readonly>
+        <fields name="blnInitialHumanCaseClassification" predicate="c => c.ReadOnly || ((c.intHACode &amp; (int)HACode.Human) == 0)" />
+        <fields name="blnFinalHumanCaseClassification" predicate="c => c.ReadOnly || ((c.intHACode &amp; (int)HACode.Human) == 0)" />
+        <fields name="*" predicate="c => c.ReadOnly" />
+      </readonly>
+      <lookups>
+        <!--<lookup name="AgeType" table="BaseReference" section="rftHumanAgeType" source="idfsAgeType" target="idfsBaseReference" />-->
+      </lookups>
+      <storage>
+        <post name="spCaseClassification_Post" />        
+      </storage>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfsCaseClassification" class="GetNewIDExtender" />
+          <lambda_extender target="intOrder" type="int" lambda="c => 0" />
+          <lambda_extender target="blnInitialHumanCaseClassification" type="bool" lambda="c => false" />
+          <lambda_extender target="blnFinalHumanCaseClassification" type="bool" lambda="c => false" />
+        </creating>
+        <loading>
+        </loading>
+        <posting>
+        </posting>
+        <posted>
+        </posted>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <lambda_handler field="intHACode" target="blnInitialHumanCaseClassification" type="bool" lambda="c => ((c.intHACode &amp; (int)HACode.Human) == 0) ? false : c.blnInitialHumanCaseClassification"/>
+          <lambda_handler field="intHACode" target="blnFinalHumanCaseClassification" type="bool" lambda="c => ((c.intHACode &amp; (int)HACode.Human) == 0) ? false : c.blnFinalHumanCaseClassification"/>
+        </fieldhandler>
+      </handlers>
+      <validators>
+        <change>
+        </change>
+        <post>          
+          <required_validator target="CaseClassificationName"/>
+          <required_validator target="CaseClassificationNameTranslated" predicate ="c => ModelUserContext.CurrentLanguage != Localizer.lngEn"/>
+          <required_validator target="idfsCaseClassification"/>
+        </post>
+      </validators>
+    </table>
+
+  </tables>
+</object>

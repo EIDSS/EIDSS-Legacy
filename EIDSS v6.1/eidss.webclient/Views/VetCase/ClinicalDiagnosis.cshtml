@@ -1,0 +1,18 @@
+﻿@model eidss.model.Schema.VetCase
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+<div class="tabPanelContent">
+    @Html.Partial("../VetCase/Diagnosis", Model)
+    <div class="sectionTitle">
+        @Translator.GetMessageString("titleVaccinationSection")
+    </div>
+
+    @Html.Action("VetCaseVaccinationGrid", "Grids",
+        new
+        {
+            root = Model.idfCase,
+            name = Model.ObjectIdent + "Vaccination",
+            items = Model.Vaccination,
+            readOnly = Model.IsClosed || Model.IsReadOnly("Vaccination") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit)
+        })
+</div>

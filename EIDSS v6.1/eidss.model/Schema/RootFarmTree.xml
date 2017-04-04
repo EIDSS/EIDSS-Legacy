@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="RootFarmTree"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="spRootFarmTree_SelectDetail" type="detaillist" />
+    </storage>
+
+    <tables>
+        <table name="RootFarmTree" hacodable="true" tostring='c => c.strSpeciesName'>
+          <grid>
+            <item key="true" name="idfParty" visible="false"/>
+            <item name="strHerdName" type="string"/>
+            <item name="strSpeciesName" type="string"/>            
+            <item name="intTotalAnimalQty" type="int?"/>
+            <item name="intSickAnimalQty" type="int?"/>
+            <item name="intDeadAnimalQty" type="int?"/>
+            <item name="strNote" type="string"/>
+            <item name="datStartOfSignsDate" />
+            <item name="idfsPartyType" type="long?" visible="false"/>
+          </grid>
+          <labels>
+            <item labelId="VetFarmTree.strNote" name="strNote"/>
+          </labels>
+            <fields>
+                <calculated name="idfsSpeciesTypeReference" type="long?" depends="strName"
+                            lambda="c => ExprUtils.LongFromString(c.strName)" 
+                            setter="strName = ExprUtils.StringFromObject(value)" />
+              <calculated name="lOrderingSequence" type="long?" depends="idfParentParty"
+                          lambda="c=>c.idfsPartyType == (long)PartyTypeEnum.Species ? c.idfParentParty : c.idfParty"/>
+              <calculated name="strSpeciesName" depends="idfsPartyType" lambda='c=>c.idfsPartyType == (long)PartyTypeEnum.Species ? SpeciesType.name : ""' type="string"/>
+              <storage name="strHerdName" type="string"/>
+            </fields>
+            <lookups>
+              <lookup name="SpeciesType" table="BaseReference" section="rftSpeciesList" source="idfsSpeciesTypeReference" target="idfsBaseReference">
+                <filters>
+                  <filter predicate="c => (c.intHACode.GetValueOrDefault() &amp; obj._HACode.GetValueOrDefault()) != 0 || c.idfsBaseReference == obj.idfsSpeciesTypeReference" />
+                  <filter predicate="c => obj.idfsPartyType == (long)PartyTypeEnum.Species" />
+                </filters>
+              </lookup>
+              <!--lookup name="SpeciesType" table="SpeciesTypeLookup" source="idfsSpeciesTypeReference" target="idfsBaseReference">
+                    <filters>
+                        <filter predicate="c => (c.intHACode.GetValueOrDefault() &amp; obj._HACode.GetValueOrDefault()) != 0 || c.idfsBaseReference == obj.idfsSpeciesTypeReference" />
+                        <filter predicate="c => obj.idfsPartyType == (long)PartyTypeEnum.Species" />
+                    </filters>
+                </lookup-->
+            </lookups>
+            <storage>
+                <post />
+            </storage>
+          <postorder>
+            <item name="this"/>            
+          </postorder>
+            <extenders>
+              <creating>
+                <db_lambda_extender target="strName" type="string" lambda='(c,m) => 
+                        c.strName != "(new herd)" 
+                        ? c.strName 
+                        : m.SetSpCommand("dbo.spGetNextNumber", (long)NumberingObjectEnum.AnimalGroup, DBNull.Value, DBNull.Value)
+                        .ExecuteScalar&lt;string&gt;(ScalarSourceType.OutputParameter, "NextNumberValue")' />
+                <lambda_extender target='strHerdName' type='string' lambda='c => c.GetHerdName()'/>
+                <!--<db_lambda_extender target='idfsFormTemplate' type='long?'
+              lambda='(c,m) => c.idfsPartyType == (long)PartyTypeEnum.Species ? (c.idfsFormTemplate.HasValue ? c.idfsFormTemplate : 
+                            m.SetSpCommand("dbo.spFFGetActualTemplate"
+                          , m.Parameter("idfsGISBaseReference", EidssSiteContext.Instance.CountryID)
+                          , m.Parameter("idfsBaseReference", null)
+                          , m.Parameter("idfsFormType", c._HACode == (int)eidss.model.Enums.HACode.Livestock ? (long)FFTypeEnum.LivestockSpeciesCS : (long)FFTypeEnum.AvianSpeciesCS )
+                          ).ExecuteScalar&lt;long?&gt;() as long?) : null' />
+                <custom_extender>
+                  <text>
+                    if (obj.idfsPartyType == (long)PartyTypeEnum.Species)
+                    {
+                      _LoadCsFormTemplate(obj);
+                      _LoadCsActivityParameters(obj);
+                    }
+                  </text>
+                </custom_extender>-->
+              </creating>
+              <loaded>
+                <lambda_extender target='strHerdName' type='string' lambda='c => c.GetHerdName()'/>
+              </loaded>
+                <posting>
+                    <!--<db_lambda_extender target="idfObservation" type="long?" lambda='(c,m) => 
+                        c.idfObservation ??
+                        m.SetSpCommand("dbo.spsysGetNewID", DBNull.Value)
+                        .ExecuteScalar&lt;long&gt;(ScalarSourceType.OutputParameter)' />-->
+                </posting>              
+            </extenders>
+            <handlers>
+              <fieldhandler>
+              </fieldhandler>              
+            </handlers>
+          <validators>
+            <change>              
+              <custom_validator
+                  field="intDeadAnimalQty" method="TotalQuantityRule"/>
+              <custom_validator
+                  field="intSickAnimalQty"
+                  method="TotalQuantityRule"/>
+              <custom_validator
+                  field="intTotalAnimalQty"
+                  method="TotalQuantityRule"/>
+            </change>
+            <post>
+              <required_validator target="SpeciesType" label="strSpeciesName" predicate="c => c.idfsPartyType == (long)PartyTypeEnum.Species" />
+            </post>
+          </validators>
+          <actions>
+            <action name="CreateFarm" type="Create">
+              <run>
+                <params>
+                  <param name="farm" type="FarmRootPanel" />
+                  <param name="hacode" type="int?"/>
+                </params>
+                <creating>
+                  <lambda_extender target="_HACode" type="int?" lambda='c => hacode' />
+                  <!--<lambda_extender target="idfCase" type="long" lambda='c => farm.idfCase ?? 0' />-->
+                  <lambda_extender target="idfParty" type="long" lambda='c => farm.idfFarm' />
+                  <lambda_extender target="strName" type="string" lambda='c => farm.strFarmCode' />
+                  <!--<lambda_extender target="idfsPartyType" type="long" lambda='c => (long)PartyTypeEnum.Farm' />-->
+                  <value_extender target='idfsPartyType' value='(int)PartyTypeEnum.Farm'/>
+                  <!--<scalar_extender target="idfObservation" class="GetNewIDExtender" />-->
+                </creating>
+              </run>
+            </action>
+            <action name="CreateHerd" type="Create">
+              <run>
+                <params>
+                  <param name="parent" type="RootFarmTree" />
+                </params>
+                <creating>
+                  <lambda_extender target="_HACode" type="int?" lambda='c => parent._HACode' />
+                  <!--<lambda_extender target="idfCase" type="long" lambda='c => parent.idfCase' />-->
+                  <scalar_extender_external target="idfParty" class="GetNewIDExtender" />
+                  <lambda_extender target="idfParentParty" type="long?" lambda='c => parent.idfParty' />
+                  <value_extender target="idfsPartyType" value='(int)PartyTypeEnum.Herd' />
+                  <lambda_extender target="strName" type="string" lambda='c => "(new herd)"' />
+                </creating>
+              </run>
+            </action>
+            <action name="CreateSpecies" type="Create">
+              <run>
+                <params>
+                  <param name="parent" type="RootFarmTree" />
+                </params>
+                <creating>
+                  <lambda_extender target="_HACode" type="int?" lambda='c => parent._HACode' />
+                  <!--<lambda_extender target="idfCase" type="long" lambda='c => parent.idfCase' />-->
+                  <scalar_extender_external target="idfParty" class="GetNewIDExtender" />
+                  <lambda_extender target="idfParentParty" type="long?" lambda='c => parent.idfParty' />
+                  <value_extender target="idfsPartyType" value='(int)PartyTypeEnum.Species' />
+                  <!--<lambda_extender target="strName" type="string" lambda='c => c.SpeciesTypeLookup.FirstOrDefault().ToString()' />-->
+                  <!--<scalar_extender target="idfObservation" class="GetNewIDExtender" />-->
+                </creating>
+              </run>
+            </action>
+          </actions>
+        </table>
+    </tables>
+
+</object>
+

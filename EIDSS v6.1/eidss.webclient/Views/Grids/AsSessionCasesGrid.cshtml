@@ -1,0 +1,14 @@
+﻿@model AsSessionCase.AsSessionCaseGridModelList
+@using bv.model.Model.Core;
+@using eidss.model.Schema;
+@using eidss.webclient.Utils;
+@using eidss.web.common.Utils;
+
+<input type="hidden" id="GridName" value="@ViewBag.GridName"/>
+
+@(Html.BvDetailsFormGrid<AsSessionCase.AsSessionCaseGridModel, AsSessionCase.AsSessionCaseGridModelList>
+      ((string)ViewBag.GridName, 
+      Model, "detailsGrid", "asSession.showCase", null, (bool)ViewBag.IsReadOnly, 
+      bCustomToolbar: true)
+ )
+        

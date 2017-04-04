@@ -1,0 +1,10 @@
+﻿@model AsSessionAction.AsSessionActionGridModelList
+@using eidss.model.Schema;
+@using eidss.webclient.Utils;
+@using eidss.web.common.Utils;
+
+@(Html.BvDetailsFormGrid<AsSessionAction.AsSessionActionGridModel, AsSessionAction.AsSessionActionGridModelList>
+      ((string)ViewBag.GridName, 
+      Model, "detailsGrid", "asSession.showActionsGridEditWindow", null, (bool)ViewBag.IsReadOnly, 
+      strExcludeColumns: (string)ViewBag.ExcludeColumns)
+)

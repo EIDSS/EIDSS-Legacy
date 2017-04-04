@@ -1,0 +1,108 @@
+﻿@model eidss.model.Schema.LaboratorySectionItem
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using bv.common.Configuration
+@using bv.model.Model.Core
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+@Html.IncludeVersionedCss("~/Content/Styles/LaboratorySection.css")
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+
+<input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+         <div class="windowButtonsPn">                  
+             <input id="idButtonAdd" type="button" class="windowButton" onclick="laboratory.saveAssignTest();" value="@Translator.GetMessageString("Add")"/>
+             <input id="idButtonClose" type="button" class="windowButton" onclick="bvPopup.closeDefaultPopup();" value="@Translator.GetMessageString("Close")"/>
+         </div>   
+        <div class="windowSeparator"></div>
+        @Html.Hidden("ID", Model.ID)
+        @Html.Hidden("Idents", (object)ViewBag.Idents)
+        @Html.Hidden("Root", (object)ViewBag.Root)
+        <table class="level1">
+            <tr>
+                <td class="large firstLabel">
+                </td>
+                <td>
+                    <label id="lblAddMessage" class="invisible">@Translator.GetMessageString("msgTestAdded")</label>
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.DiagnosisForTest)
+                </td>
+                <td>
+                    @(Html.BvCombobox(Model, m => m.DiagnosisForTest, width: EditorControlWidth.Large)
+                        .DataSource(source =>
+                            source.Read(read =>
+                                read.Action("SelectDiagnosis", "Laboratory", new { root = (long)ViewBag.Root, ids = (string)ViewBag.Idents })
+                                )
+                            )
+                        .DataValueField("id")
+                        .DataTextField("name").Events(events => events.Change("bvComboBox.onChanged"))
+                        .Template("<div class='${data.classname}'>${ data.name }<div>")
+                        )
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                </td>
+                <td>
+                    @Html.BvCheckBox(Model, m => m.bFilterTestByDiagnosis, true /*false, "laboratory.onFilterByDiagnosisClick"*/)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.TestNameRef)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.TestNameRef, false, /*"laboratory.onTestNameChanged",*/ keyName:"idfsReference")
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.TestResultRef)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.TestResultRef, false)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.TestCategoryRef)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.TestCategoryRef)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.datStartedDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datStartedDate)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.datConcludedDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datConcludedDate)
+                </td>
+            </tr>
+        </table> 
+    }           
+</div>

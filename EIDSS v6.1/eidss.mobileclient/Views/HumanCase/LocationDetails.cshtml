@@ -1,0 +1,54 @@
+﻿@model eidss.model.Schema.GeoLocation
+@{
+    ViewBag.Title = Translator.GetMessageString("titleLocationOfExposureDetails");
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+}
+           
+@using eidss.mobileclient.Utils
+
+<script src="@Url.Content("~/Scripts/EIDSS.Location.js")" type="text/javascript"></script>
+
+<table>
+    <tr>
+        @if ((bool)ViewBag.CanUpdate)
+        {
+            <td>
+                <input type="submit" value="@Translator.GetMessageString("Ok")" onclick="ShowEidssDialogOKPromptWithActionSaveExecutionAndCloseWindow(onSaveAndCloseLocationOfExposure, '@ViewBag.RootKey');" />         
+            </td>
+            <td>
+                <input type="button" value="@Translator.GetMessageString("Cancel")" onclick="ShowEidssDialogCancelPromptWithActionCancelExecution(onCancelLocationOfExposureEdit, '@ViewBag.RootKey');" />                                  
+            </td>
+        }
+        else
+        {
+            <td>
+                <input type="button" value="@Translator.GetMessageString("Cancel")" onclick="ShowEidssDialogClosePromptWithActionCloseExecution(onCancelLocationOfExposureEdit, '@ViewBag.RootKey');" />                                  
+            </td>
+        }
+    </tr>
+</table>   
+
+@using (Html.BeginForm())
+{
+    @Html.Action("ShowGeoLocation", "Common", new { root = Session["IdfCase"], geoLocation = Model })
+}
+
+<table>
+    <tr>
+        @if ((bool)ViewBag.CanUpdate)
+        {
+            <td>
+                <input type="submit" value="@Translator.GetMessageString("Ok")" onclick="ShowEidssDialogOKPromptWithActionSaveExecutionAndCloseWindow(onSaveAndCloseLocationOfExposure, '@ViewBag.RootKey');" />         
+            </td>
+            <td>
+                <input type="button" value="@Translator.GetMessageString("Cancel")" onclick="ShowEidssDialogCancelPromptWithActionCancelExecution(onCancelLocationOfExposureEdit, '@ViewBag.RootKey');" />                                  
+            </td>
+        }
+        else
+        {
+            <td>
+                <input type="button" value="@Translator.GetMessageString("Cancel")" onclick="ShowEidssDialogClosePromptWithActionCloseExecution(onCancelLocationOfExposureEdit, '@ViewBag.RootKey');" />                                  
+            </td>
+        }
+    </tr>
+</table>

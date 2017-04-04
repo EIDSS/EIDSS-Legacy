@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <Property Id="SharePortsCheckBox" Value="1" />
+    <Property Id="SharedWebsitePort" Value="80" />
+
+    <Property Id="PortsAllowedToOccupy" Value="80" />
+    <UI>
+      <Dialog Id="SharedWebsitePortDlg" Width="370" Height="270" Title="!(loc.SharedWebsitePortDlg_Title)">
+        <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)">
+          <Publish Property="SharePorts" Value="1" Order="1"><![CDATA[SharePortsCheckBox = "1"]]></Publish>
+          <Publish Property="SharePorts" Value="{}" Order="2"><![CDATA[SharePortsCheckBox <> "1"]]></Publish>
+          <Publish Property="TestNumber" Value="[SharedWebsitePort]" Order="1">SharePorts</Publish>
+          <Publish Property="TestNumberName" Value="!(loc.SharedWebsitePortName)" Order="1">SharePorts</Publish>
+          <Publish Event="DoAction" Value="MustBeNumber" Order="2">SharePorts</Publish>
+          <Publish Event="SpawnDialog" Value="MustBeNumberDlg" Order="3"><![CDATA[BadNumber And SharePorts]]></Publish>
+          <Publish Property="WEBSITE_PORT" Value="[SharedWebsitePort]" Order="4">SharePorts</Publish>
+          <Publish Property="AVR_WEBSITE_PORT" Value="[SharedWebsitePort]" Order="4">SharePorts</Publish>
+          <Publish Property="MOBILE_WEBSITE_PORT" Value="[SharedWebsitePort]" Order="4">SharePorts</Publish>
+          <Publish Property="SMARTPHONE_WEBSITE_PORT" Value="[SharedWebsitePort]" Order="4">SharePorts</Publish>
+          <Publish Property="OPEN_API_WEBSITE_PORT" Value="[SharedWebsitePort]" Order="4">SharePorts</Publish>
+
+          <Publish Property="WEBSITE_PORT" Value="{}" Order="5">Not SharePorts</Publish>
+          <Publish Property="AVR_WEBSITE_PORT" Value="{}" Order="5">Not SharePorts</Publish>
+          <Publish Property="MOBILE_WEBSITE_PORT" Value="{}" Order="5">Not SharePorts</Publish>
+          <Publish Property="SMARTPHONE_WEBSITE_PORT" Value="{}" Order="5">Not SharePorts</Publish>
+          <Publish Property="OPEN_API_WEBSITE_PORT" Value="{}" Order="5">Not SharePorts</Publish>
+          <Publish Event="DoAction" Value="FindInstallerPorts" Order="6">Not SharePorts</Publish>
+        </Control>
+        <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" />
+        <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+          <Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+        </Control>
+        <Control Id="Description" Type="Text" X="25" Y="23" Width="280" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.SharedWebsitePortDlgDescription)" />
+        <Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.SharedWebsitePortDlgTitle)" />
+        <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="!(loc.SharedWebsitePortDlgBannerBitmap)" />
+        <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+        <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+
+        <Control Id="SharePorts" Type="CheckBox" Width="274" Height="17" X="25" Y="128" Text="!(loc.SharedWebsitePortDlgCheckBox)" Property="SharePortsCheckBox" CheckBoxValue="1" />
+        <Control Id="SharedWebsitePortTitle" Type="Text" Width="30" Height="17" X="25" Y="150" Text="!(loc.SharedWebsitePortDlgSharedWebsitePort)">
+          <Condition Action="enable">SharePortsCheckBox</Condition>
+          <Condition Action="disable">Not SharePortsCheckBox</Condition>
+        </Control>
+        <Control Id="SharedWebsitePort" Type="Edit" Width="50" Height="17" X="65" Y="147" Property="SharedWebsitePort">
+          <Condition Action="enable">SharePortsCheckBox</Condition>
+          <Condition Action="disable">Not SharePortsCheckBox</Condition>
+        </Control>
+      </Dialog>
+    </UI>
+  </Fragment>
+</Wix>

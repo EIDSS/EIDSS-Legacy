@@ -1,0 +1,47 @@
+﻿@model bv.model.Model.Core.IObject
+           
+@using eidss.mobileclient.Utils
+
+<script language="javascript" type="text/javascript">
+    $(document.getElementById('@(ViewBag.MainDivId)')).ready(function () {
+        var btnSearchPicker = $("#" + '@(ViewBag.BtnSearchPicker)');
+        var btnClian = $("#" + '@(ViewBag.BtnClianPicker)');
+        var isSearchButtonReadOnly = '@(ViewBag.IsSearchButtonReadOnly)';
+        var isClianButtonReadOnly = '@(ViewBag.IsClianButtonReadOnly)';
+        if (isSearchButtonReadOnly.toString().toLowerCase() == 'true') {
+            btnSearchPicker.attr('disabled', 'disabled');
+        }
+        else {
+            btnSearchPicker.removeAttr('disabled');
+        }
+        if (isClianButtonReadOnly.toString().toLowerCase() == 'true') {
+            btnClian.attr('disabled', 'disabled');
+        }
+        else {
+            btnClian.removeAttr('disabled');
+        }
+    });  
+</script>
+@{
+    var isRequired = Model.IsRequired(ViewBag.IdfsOrganizationPropertyName);
+    var className = isRequired ? "requiredTd" : "";
+}
+<div id="@ViewBag.MainDivId">
+    <table>
+        <tr>
+            <td class="@className">
+                @Html.BvEditBox(Model, (string)ViewBag.StrOrganizationPropertyName)      
+            </td> 
+            <td>
+                <input type='button' id='@ViewBag.BtnSearchPicker' value='...' 
+                       onclick="OpenFacilityPage('@ViewBag.CurrentControllerName', '@Url.Action("Facility", "Organization", 
+                  new { rootId = ViewBag.ObjectId, idfsOrganizationPropertyName = ViewBag.IdfsOrganizationPropertyName,
+                        strOrganizationPropertyName = ViewBag.StrOrganizationPropertyName, returnUrl = ViewBag.ReturnUrl })');" />
+            </td>
+            <td>
+                <input type='button' id='@ViewBag.BtnClianPicker' value='X' 
+                    onclick="onClianOrganization('@ViewBag.BtnClianPicker', '@ViewBag.ObjectId', '@ViewBag.IdfsOrganizationPropertyName', '@ViewBag.StrOrganizationPropertyName')" />
+            </td>
+        </tr>
+    </table>    
+</div>

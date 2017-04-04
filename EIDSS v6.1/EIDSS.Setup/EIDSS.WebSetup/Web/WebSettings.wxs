@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="Common Website Components">
+    <ComponentGroup Id="CommonWebsiteComponents">
+      <ComponentRef Id="ServiceAccount" />
+    </ComponentGroup>
+
+    <CustomActionRef Id="RegisterCustomCultures" />
+  </Fragment>
+
+  <Fragment Id="CustomCulture">
+    <CustomAction
+      Id="RegisterCustomCultures"
+      DllEntry="RegisterCustomCultures"
+      BinaryKey="CustomActions"
+      Execute="deferred"
+      Impersonate="no" />
+    <InstallExecuteSequence>
+      <Custom Action="RegisterCustomCultures" After="InstallFiles">
+        <![CDATA[&Websites > 2 Or !Websites > 2 And &Websites <> 2 ]]>
+      </Custom>
+    </InstallExecuteSequence>
+
+    <UI>
+      <ProgressText Action="RegisterCustomCultures">!(loc.RegisterCustomCultures)</ProgressText>
+    </UI>
+  </Fragment>
+
+  <Fragment Id="Detect IIS Version">
+    <Property Id="IISVERSION">
+      <RegistrySearch Id="DetectIISVersion" Root="HKLM" Key="SOFTWARE\Microsoft\InetStp" Name="MajorVersion" Type="raw" />
+    </Property>
+    <Property Id="IISRequiredVersion" Value="7" />
+    <Condition Message="!(loc.ConditionInternetInformationServer)"><![CDATA[Installed OR IISVERSION >= "#7"]]></Condition>
+  </Fragment>
+
+  <Fragment Id="Find AppCMD.exe">
+    <Property Id="APPCMD" Secure="yes">
+      <DirectorySearch Id="APPCMD.DS" Path="[%systemroot]\system32\inetsrv">
+        <FileSearch Id="APPCMD.FS" Name="appcmd.exe" />
+      </DirectorySearch>
+    </Property>
+  </Fragment>
+</Wix>

@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
+    <ProductVersion>3.8</ProductVersion>
+    <ProjectGuid>{10dcaace-0aeb-4c21-9c8c-b2662653155b}</ProjectGuid>
+    <SchemaVersion>2.0</SchemaVersion>
+    <Name>Setup.EIDSS_Web</Name>
+    <OutputName>EIDSS_Web</OutputName>
+    <OutputType>Package</OutputType>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <CustomAfterWixTargets>$(MSBuildProjectDirectory)\..\Common.AfterWix.targets</CustomAfterWixTargets>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <DefineConstants>Debug</DefineConstants>
+    <LeaveTemporaryFiles>False</LeaveTemporaryFiles>
+    <SuppressPdbOutput>True</SuppressPdbOutput>
+    <VerboseOutput>True</VerboseOutput>
+    <SuppressAllWarnings>False</SuppressAllWarnings>
+    <Pedantic>True</Pedantic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\\$(Configuration)\</IntermediateOutputPath>
+    <LeaveTemporaryFiles>True</LeaveTemporaryFiles>
+    <SuppressPdbOutput>True</SuppressPdbOutput>
+    <VerboseOutput>True</VerboseOutput>
+    <SuppressAllWarnings>False</SuppressAllWarnings>
+    <Pedantic>True</Pedantic>
+    <SuppressValidation>False</SuppressValidation>
+    <SuppressIces>ICE61</SuppressIces>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\ErrorDlg.wxs">
+      <Link>UI\ErrorDlg.wxs</Link>
+    </Compile>
+    <Compile Include="..\Fonts.wxs">
+      <Link>ReportsService\Fonts.wxs</Link>
+    </Compile>
+    <Compile Include="..\Microsoft Access Database Engine 2010 Redistributable x86.wxs">
+      <Link>UI\Microsoft Access Database Engine 2010 Redistributable x86.wxs</Link>
+    </Compile>
+    <Compile Include="..\OnExitCustomDialogs\ExitDialog.wxs">
+      <Link>UI\OnExitCustomDialogs\ExitDialog.wxs</Link>
+    </Compile>
+    <Compile Include="..\OnExitCustomDialogs\FatalError.wxs">
+      <Link>UI\OnExitCustomDialogs\FatalError.wxs</Link>
+    </Compile>
+    <Compile Include="..\OnExitCustomDialogs\ShowLog.wxs">
+      <Link>UI\OnExitCustomDialogs\ShowLog.wxs</Link>
+    </Compile>
+    <Compile Include="..\OnExitCustomDialogs\UserExit.wxs">
+      <Link>UI\OnExitCustomDialogs\UserExit.wxs</Link>
+    </Compile>
+    <Compile Include="Binaries.wxs" />
+    <Compile Include="Configuration.wxs" />
+    <Compile Include="Country.wxs" />
+    <Compile Include="DbSettings.wxs" />
+    <Compile Include="DirectoryTree.wxs" />
+    <Compile Include="Product.wxs" />
+    <Content Include="..\StructureMap.wxi">
+      <Link>StructureMap.wxi</Link>
+    </Content>
+    <Content Include="AddConfigKey.wxi" />
+    <None Include="Directories.harvest.Smartphone.xslt" />
+    <Content Include="Directories.harvest.OpenAPI.xslt" />
+    <Content Include="Web\GDBAPI.wxi" />
+    <Content Include="Web\TurnOffDebug.wxi" />
+    <None Include="Directories.harvest.Mobile.xslt" />
+    <None Include="Directories.harvest.Avr.xslt" />
+    <Content Include="ProductInfo.wxi" />
+    <None Include="Directories.harvest" />
+    <None Include="Directories.harvest.xslt" />
+    <None Include="Directories.harvest.Web.xslt" />
+    <Folder Include="ReportsService" />
+    <Content Include="ReportsService\ReportsServiceResources.wxi" />
+    <Compile Include="ReportsService\ReportsService.wxs" />
+    <Folder Include="UI\OnExitCustomDialogs" />
+    <Compile Include="UI\DbSettingsDlg\DbSettingsForAVRDlg.wxs" />
+    <Compile Include="UI\DbSettingsDlg\DbSettingsForAVRDlg2.wxs" />
+    <Compile Include="UI\MustBeNumberDlg.wxs" />
+    <Compile Include="UI\WebSettingsDlg\AppPoolSettingsDlg.wxs" />
+    <Compile Include="UI\WebSettingsDlg\WebAppSettingsDlg.wxs" />
+    <Compile Include="UI\WebSettingsDlg\GisMapsFolderDlg.wxs" />
+    <Compile Include="UI\WebSettingsDlg\OpenAPIDlg.wxs" />
+    <Compile Include="UI\WebSettingsDlg\OpenAPIDlg2.wxs" />
+    <Compile Include="UI\WebSettingsDlg\SharedWebSitePortDlg.wxs" />
+    <Folder Include="Web\" />
+    <Compile Include="Web\AVR redirect.wxs" />
+    <Compile Include="Web\CommonAppPoolSettings.wxs" />
+    <Compile Include="Web\EIDSS.AVR.wxs" />
+    <Compile Include="Web\EIDSS.Mobile.wxs" />
+    <Compile Include="Web\EIDSS.OpenAPI.wxs" />
+    <Compile Include="Web\EIDSS.Smartphone.wxs" />
+    <Compile Include="Web\EIDSS.Web.wxs" />
+    <Compile Include="Web\GIS.wxs" />
+    <Compile Include="Web\ServiceAccount.wxs" />
+    <Content Include="Web\SetAppPoolIdleTimeout.wxi" />
+    <Compile Include="Web\Translations.wxs" />
+    <Compile Include="Web\WebSettings.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UI" />
+    <Compile Include="UI\BadAccountDlg.wxs" />
+    <Compile Include="UI\BadPortDlg.wxs" />
+    <Compile Include="UI\BadServicePingDlg.wxs" />
+    <Compile Include="UI\CountryDlg.wxs" />
+    <Compile Include="UI\CustomizeDlg.wxs" />
+    <Content Include="UI\FeatureConditions.wxi" />
+    <Compile Include="UI\InstallDirDlg.wxs" />
+    <Compile Include="UI\InvalidDirDlg.wxs" />
+    <Compile Include="UI\LogPathsDlg.wxs" />
+    <Compile Include="UI\ReportsSvcSettingsDlg.wxs" />
+    <Compile Include="UI\ReportsSvcSettingsDlg2.wxs" />
+    <Compile Include="UI\UI.wxs" />
+    <Compile Include="UI\UIBinaries.wxs" />
+    <Folder Include="UI\DbSettingsDlg" />
+    <Compile Include="UI\DbSettingsDlg\ArchiveDbSettingsDlg.wxs" />
+    <Compile Include="UI\DbSettingsDlg\ArchiveDbSettingsDlg2.wxs" />
+    <Compile Include="UI\DbSettingsDlg\DbSettingsDlg.wxs" />
+    <Compile Include="UI\DbSettingsDlg\DbSettingsDlg2.wxs" />
+    <Compile Include="UI\DbSettingsDlg\ErrorConnectionDlg.wxs" />
+    <Compile Include="UI\DbSettingsDlg\InnerSettings.wxs" />
+    <Folder Include="UI\LanguagesDlg" />
+    <Compile Include="UI\LanguagesDlg\ArmeniaLanguagesDlg.wxs" />
+    <Compile Include="UI\LanguagesDlg\AzerbaijanLanguagesDlg.wxs" />
+    <Compile Include="UI\LanguagesDlg\ErrorValidateLanguagesDlg.wxs" />
+    <Compile Include="UI\LanguagesDlg\GeorgiaLanguagesDlg.wxs" />
+    <Compile Include="UI\LanguagesDlg\IraqLanguagesDlg.wxs" />
+    <Compile Include="UI\LanguagesDlg\KazakhstanLanguagesDlg.wxs" />
+    <Compile Include="UI\LanguagesDlg\LaosLanguagesDlg.wxs" />
+    <Compile Include="UI\LanguagesDlg\ThailandLanguagesDlg.wxs" />
+    <Compile Include="UI\LanguagesDlg\UkraineLanguagesDlg.wxs" />
+    <Compile Include="UI\LanguagesDlg\VietnamLanguagesDlg.wxs" />
+    <Content Include="UI\LanguagesDlg\PublishLanguagesDlg.wxi" />
+    <Folder Include="UI\WebSettingsDlg" />
+    <Compile Include="UI\WebSettingsDlg\AvrSvcSettingsDlg.wxs" />
+    <Compile Include="UI\WebSettingsDlg\AvrSvcSettingsDlg2.wxs" />
+    <Compile Include="UI\WebSettingsDlg\MobileDlg.wxs" />
+    <Compile Include="UI\WebSettingsDlg\MobileDlg2.wxs" />
+    <Compile Include="UI\WebSettingsDlg\ServiceAccountDlg.wxs" />
+    <Compile Include="UI\WebSettingsDlg\SmartphoneDlg.wxs" />
+    <Compile Include="UI\WebSettingsDlg\SmartphoneDlg2.wxs" />
+    <Compile Include="UI\WebSettingsDlg\WebSettingsDlg.wxs" />
+    <Compile Include="UI\WebSettingsDlg\WebSettingsDlg2.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources" />
+    <EmbeddedResource Include="Resources\en-US.wxl" />
+    <Folder Include="Resources\Bitmaps" />
+    <Content Include="..\Source_Files\Bitmaps\failure.ico">
+      <Link>Resources\Bitmaps\failure.ico</Link>
+    </Content>
+    <Content Include="..\Source_Files\Bitmaps\success.ico">
+      <Link>Resources\Bitmaps\success.ico</Link>
+    </Content>
+    <Content Include="..\Source_Files\Bitmaps\eidss.ico">
+      <Link>Resources\Bitmaps\eidss.ico</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="MultiInstance" />
+    <Content Include="..\MultiInstance\MultiInstanceActivator.wxi">
+      <Link>MultiInstance\MultiInstanceActivator.wxi</Link>
+    </Content>
+    <Content Include="MultiInstance\MultiInstance.wxi" />
+    <None Include="..\MultiInstance\MultiInstance.targets">
+      <Link>MultiInstance\MultiInstance.targets</Link>
+    </None>
+    <Compile Include="..\MultiInstance\MultiInstanceEngine.wxs">
+      <Link>MultiInstance\MultiInstanceEngine.wxs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <WixExtension Include="WixUtilExtension">
+      <HintPath>$(WixExtDir)\WixUtilExtension.dll</HintPath>
+      <Name>WixUtilExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixUIExtension">
+      <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
+      <Name>WixUIExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixNetFxExtension">
+      <HintPath>$(WixExtDir)\WixNetFxExtension.dll</HintPath>
+      <Name>WixNetFxExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixIIsExtension">
+      <HintPath>$(WixExtDir)\WixIIsExtension.dll</HintPath>
+      <Name>WixIIsExtension</Name>
+    </WixExtension>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\bv.common\bv.common.csproj">
+      <Name>bv.common</Name>
+      <Project>{bee76b17-720d-4b65-996a-5712912b3acf}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\CustomActions.MultiInstanceSupport\CustomActions.MultiInstanceSupport.csproj">
+      <Name>CustomActions.MultiInstanceSupport</Name>
+      <Project>{cf669b33-6903-471d-836c-01446a14aa3d}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\CustomActions.Web\CustomActions.Web.csproj">
+      <Name>CustomActions.Web</Name>
+      <Project>{639e3410-a9a5-4309-bd02-908deea0af0d}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(WixTargetsPath)" />
+  <Import Project="$(SolutionDir)MultiInstance\MultiInstance.targets" />
+  <!--
+  To modify your build process, add your task inside one of the targets below and uncomment it.
+  Other similar extension points exist, see Wix.targets.
+    -->
+  <PropertyGroup>
+    <BeforeBuildDependsOn>
+      GenerateInnerVersion;
+      GenerateInstanceProductCodes;
+      GetAndroidTargetsPath
+    </BeforeBuildDependsOn>
+  </PropertyGroup>
+  <Target Name="BeforeBuild" DependsOnTargets="$(BeforeBuildDependsOn)" />
+  <Target Name="GetAndroidTargetsPath">
+    <MSBuild Projects="$(SourceDir)android.java\studio\TeamBuild.proj" Targets="GetTargetApplications" Properties="OutDir=$(BinariesRoot)Android\;Configuration=Release;Platform=Android">
+      <Output TaskParameter="TargetOutputs" ItemName="AndroidApps" />
+    </MSBuild>
+    <PropertyGroup>
+      <AndroidAppsDefineConstants>
+        @(AndroidApps->'%(SubConfiguration)Apk.TargetPath=%(Identity)', ';')
+      </AndroidAppsDefineConstants>
+      <DefineConstants>
+        $(AndroidAppsDefineConstants);
+        $(DefineConstants)
+      </DefineConstants>
+    </PropertyGroup>
+    <Message Importance="low" Text="DefineConstants:%0d%0a%09$(DefineConstants)" />
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  <Target Name="GetProjectReferences" Outputs="@(ProjectReference)" />
+  <PropertyGroup>
+    <GetProjectOutputsDependsOn>
+      GetTargetPath;
+      GetInstanceProductCodesFile
+    </GetProjectOutputsDependsOn>
+  </PropertyGroup>
+  <Target Name="GetProjectOutputs" Outputs="@(ProjectOutputs)" DependsOnTargets="$(GetProjectOutputsDependsOn)">
+    <ItemGroup>
+      <ProjectOutputs Include="$(TargetPath);$(ProductCodesFile)" />
+    </ItemGroup>
+  </Target>
+</Project>

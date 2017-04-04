@@ -1,0 +1,52 @@
+﻿@model List<PatientListItem>
+@{
+    ViewBag.Title = Translator.GetMessageString("titlePersonsList"); 
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+}
+@using eidss.mobileclient.Utils
+@using eidss.model.Schema;
+
+<script src="@Url.Content("~/Scripts/EIDSS.Contacts.js")" type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript">
+    $(window).load(function () { 
+        var page = $("div.page");
+        var hasItems = '@(ViewBag.ItemsCount > 0)'.toLowerCase(); 
+        if (page && hasItems == 'true') {
+            page.removeClass("defaultHeigth");
+        }
+    });         
+</script>
+
+@using (Html.BeginForm())
+{        
+    <input type="button" value="@Translator.GetMessageString("Cancel")" onclick="document.location.href='@Url.Action("ContactDetails", "ContactedCasePerson", new { rootKey = ViewBag.IdfCase, contactedCasePersonId = ViewBag.ContactedCasePersonId, getFromSession = true })';" />
+    <br />
+    if (ViewBag.ItemsCount == 0)
+    {
+        <label>@Translator.GetMessageString("msgNoRecords")</label> 
+    }
+    if (ViewBag.ItemsCount > 100)
+    {
+        <label>@Translator.GetMessageString("msgFirstHundredRecords")</label> 
+    }
+    if (ViewBag.ItemsCount > 0)
+    {        
+        <ul class="searchResults">  
+            @{ var i = 1; }     
+            @foreach (PatientListItem patient in Model)
+            { 
+                <li>
+                    <a href="javascript:onPatientSelected('@ViewBag.IdfCase', '@patient.idfHumanActual')">
+                        @(i). @patient.strLastName @patient.strFirstName @patient.strSecondName @patient.datDateofBirth<br />@patient.AddressName
+                    </a>
+                </li>
+                if (i == 100)
+                {
+                    break;
+                }
+                { i++; }                
+            }           
+        </ul>
+    }   
+}

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/eidss.model.Reports.KZ" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/eidss.model.Reports.KZ" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8097/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" />
+  <xs:import schemaLocation="http://localhost:8097/?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:complexType name="InfectiousParasiticKZSurrogateModel">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" base="q1:BaseYearModel">
+        <xs:sequence>
+          <xs:element name="_x003C_EndMonth_x003E_k__BackingField" nillable="true" type="xs:int" />
+          <xs:element name="_x003C_RayonId_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_RayonName_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_RegionId_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_RegionName_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_StartMonth_x003E_k__BackingField" nillable="true" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="InfectiousParasiticKZSurrogateModel" nillable="true" type="tns:InfectiousParasiticKZSurrogateModel" />
+  <xs:complexType name="ProphylacticModel">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q2="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" base="q2:BaseIntervalModel">
+        <xs:sequence>
+          <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" name="_x003C_CheckedDiagnosis_x003E_k__BackingField" nillable="true" type="q3:ArrayOfstring" />
+          <xs:element xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays" name="_x003C_CheckedMeasureTypes_x003E_k__BackingField" nillable="true" type="q4:ArrayOfstring" />
+          <xs:element xmlns:q5="http://schemas.microsoft.com/2003/10/Serialization/Arrays" name="_x003C_CheckedSpecies_x003E_k__BackingField" nillable="true" type="q5:ArrayOfstring" />
+          <xs:element name="_x003C_RegionFilter_x003E_k__BackingField" nillable="true" type="tns:RegionModel" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ProphylacticModel" nillable="true" type="tns:ProphylacticModel" />
+  <xs:complexType name="RegionModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="RegionId" nillable="true" type="xs:long" />
+      <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" minOccurs="0" name="RegionList" nillable="true" type="q6:ArrayOfSelectListItemSurrogate" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RegionModel" nillable="true" type="tns:RegionModel" />
+  <xs:complexType name="SanitaryModel">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q7="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" base="q7:BaseIntervalModel">
+        <xs:sequence>
+          <xs:element xmlns:q8="http://schemas.microsoft.com/2003/10/Serialization/Arrays" name="_x003C_CheckedMeasureTypes_x003E_k__BackingField" nillable="true" type="q8:ArrayOfstring" />
+          <xs:element name="_x003C_RegionFilter_x003E_k__BackingField" nillable="true" type="tns:RegionModel" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SanitaryModel" nillable="true" type="tns:SanitaryModel" />
+  <xs:complexType name="DiagnosticInvestigationModel">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q9="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" base="q9:BaseIntervalModel">
+        <xs:sequence>
+          <xs:element xmlns:q10="http://schemas.microsoft.com/2003/10/Serialization/Arrays" name="_x003C_CheckedDiagnosis_x003E_k__BackingField" nillable="true" type="q10:ArrayOfstring" />
+          <xs:element xmlns:q11="http://schemas.microsoft.com/2003/10/Serialization/Arrays" name="_x003C_CheckedInvestigationTypes_x003E_k__BackingField" nillable="true" type="q11:ArrayOfstring" />
+          <xs:element xmlns:q12="http://schemas.microsoft.com/2003/10/Serialization/Arrays" name="_x003C_CheckedSpecies_x003E_k__BackingField" nillable="true" type="q12:ArrayOfstring" />
+          <xs:element name="_x003C_RegionFilter_x003E_k__BackingField" nillable="true" type="tns:RegionModel" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DiagnosticInvestigationModel" nillable="true" type="tns:DiagnosticInvestigationModel" />
+</xs:schema>

@@ -1,0 +1,54 @@
+﻿@model AvrView
+
+@using eidss.avr.mweb.Utils
+@using eidss.model.Avr.View
+@using System.Drawing
+@using System.Web.UI.WebControls
+
+@Html.DevExpress().DropDownEdit(settings =>
+{
+    settings.Name = "cbChartDefSeries";
+    settings.Properties.NullText = "";
+    settings.ControlStyle.CssClass = "wide";
+    settings.ClientEnabled = !Model.IsReadOnly && eidss.model.Core.AvrPermissions.UpdatePermission;
+    settings.SetDropDownWindowTemplateContent(c =>
+    {
+        Html.DevExpress().ListBox(
+            listBoxSettings =>
+            {
+                listBoxSettings.Name = "chlChartDefSeries";
+                listBoxSettings.ControlStyle.Border.BorderWidth = 0;
+                listBoxSettings.ControlStyle.BorderBottom.BorderWidth = 1;
+                listBoxSettings.ControlStyle.BorderBottom.BorderColor = Color.FromArgb(0xDCDCDC);
+                listBoxSettings.Width = Unit.Percentage(100);
+
+                listBoxSettings.Properties.SelectionMode = ListEditSelectionMode.CheckColumn;
+
+                listBoxSettings.Properties.ValueType = typeof(string);
+                listBoxSettings.Properties.TextField = "FullPath";
+                listBoxSettings.Properties.ValueField = "UniquePath";
+
+                listBoxSettings.Properties.ClientSideEvents.SelectedIndexChanged = "viewGridForm.OnChartDefSeriesSelectionChanged";
+                listBoxSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+            }).BindList(AvrView.GetMapDefChartListWeb(Model)).Render();
+
+        //ViewContext.Writer.Write("<div style=\"padding: 6px; height: 24px;\">");
+
+        //Html.DevExpress().Button(
+        //    buttonSettings =>
+        //    {
+        //        buttonSettings.Name = "btclChartDefSeries";
+        //        buttonSettings.Text = "Close";
+        //        buttonSettings.Style.Add("float", "right");
+        //        buttonSettings.Style.Add("padding", "0px 2px");
+        //        buttonSettings.ClientSideEvents.Click = "function(s, e){ cbChartDefSeries.HideDropDown(); }";
+        //        buttonSettings.Height = 26;
+        //    }).Render();
+
+        //ViewContext.Writer.Write("</div>");
+    });
+    settings.Properties.AnimationType = AnimationType.None;
+    settings.Properties.ClientSideEvents.TextChanged = "viewGridForm.SynchronizeChartDefSeriesValues";
+    settings.Properties.ClientSideEvents.DropDown = "viewGridForm.SynchronizeChartDefSeriesValues";
+    settings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+}).Bind(AvrView.GetColumnsBooleanTexts(Model, "IsChartSeries")).GetHtml()

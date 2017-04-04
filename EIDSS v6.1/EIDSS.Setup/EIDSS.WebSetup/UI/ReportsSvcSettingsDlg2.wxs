@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <UI>
+      <Dialog Id="ReportsSvcSettingsDlg2" Width="370" Height="270" Title="!(loc.ReportsSvcSettingsDlg_Title)">
+        <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)">
+          <Publish Event="DoAction" Value="TestReportsServicePort" Order="1">1</Publish>
+          <Publish Event="SpawnDialog" Value="BadPortDlg" Order="2"><![CDATA[REPORTS_SERVICE_PORT_VALID <> "1"]]></Publish>
+        </Control>
+        <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" />
+        <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+          <Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+        </Control>
+        
+        <Control Id="Description" Type="Text" X="25" Y="23" Width="280" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.ReportsSvcSettingsDlgDescription)" />
+        <Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.ReportsSvcSettingsDlgTitle)" />
+        <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="!(loc.ReportsSvcSettingsDlgBannerBitmap)" />
+        <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+        <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+        
+        <Control Id="ServiceNameTitle" Type="Text" Width="80" Height="17" X="10" Y="80" Text="!(loc.ReportsSvcSettingsDlgServiceName)" />
+        <Control Id="ServiceName" Type="Edit" Width="220" Height="15" X="110" Y="80" Property="REPORTS_SERVICE" />
+
+        <Control Id="ServiceDisplayNameTitle" Type="Text" Width="80" Height="17" X="10" Y="110" Text="!(loc.ReportsSvcSettingsDlgServiceDisplayName)" />
+        <Control Id="ServiceDisplayName" Type="Edit" Width="220" Height="15" X="110" Y="110" Property="REPORTS_SERVICE_DISPLAY_NAME" />
+
+        <Control Id="ServicePortTitle" Type="Text" Width="80" Height="17" X="10" Y="140" Text="!(loc.ReportsSvcSettingsDlgServicePort)" />
+        <Control Id="ServicePort" Type="Edit" Width="80" Height="15" X="110" Y="140" Property="REPORTS_SERVICE_PORT" />
+
+        <Control Id="TestPort" Type="PushButton" X="210" Y="138" Width="50" Height="17" Text="!(loc.ReportsSvcSettingsDlgTestPort)">
+          <Publish Event="DoAction" Value="TestReportsServicePort" Order="1">1</Publish>
+          <Publish Event="NewDialog" Value="ReportsSvcSettingsDlg" Order="2">1</Publish>
+        </Control>
+
+        <Control Id="TestResult_Success" Type="Icon" IconSize="32" X="280" Y="130" Width="34" Height="34" Text="SuccessImg" FixedSize="yes" Hidden="yes">
+          <Condition Action="hide"><![CDATA[REPORTS_SERVICE_PORT_VALID <> "1"]]></Condition>
+          <Condition Action="show"><![CDATA[REPORTS_SERVICE_PORT_VALID = "1"]]></Condition>
+        </Control>
+        <Control Id="TestResult_Failure" Type="Icon" IconSize="32" X="280" Y="130" Width="34" Height="34" Text="FailureImg" FixedSize="yes" Hidden="yes">
+          <Condition Action="hide"><![CDATA[REPORTS_SERVICE_PORT_VALID = "1"]]></Condition>
+          <Condition Action="show"><![CDATA[REPORTS_SERVICE_PORT_VALID And REPORTS_SERVICE_PORT_VALID <> "1"]]></Condition>
+        </Control>
+      </Dialog>
+    </UI>
+  </Fragment>
+</Wix>

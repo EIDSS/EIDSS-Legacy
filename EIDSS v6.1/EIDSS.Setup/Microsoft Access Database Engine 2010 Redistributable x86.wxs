@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <Fragment Id="AODBCD2010">
+    <!-- Microsoft Access Database Engine 2010 Redistributable x86 -->
+    <Property Id="AODBCD2010">
+      <RegistrySearch
+        Id="AODBCD2010Search"
+        Root="HKLM"
+        Key="SOFTWARE\ODBC\ODBCINST.INI\Microsoft Access Driver (*.mdb, *.accdb)"
+        Name="DriverODBCVer"
+        Type="raw"
+        Win64="no" />
+    </Property>
+    <Property
+      Id="AODBCDUrl"
+      Value="https://download.microsoft.com/download/2/4/3/24375141-E08D-4803-AB0E-10F2E3A07AAA/AccessDatabaseEngine.exe" />
+
+    <Property Id="AODBCD2010x86Name" Value="Microsoft Access Database Engine 2010 Redistributable (x86)" />
+  </Fragment>
+
+
+  <!-- Reference this fragment to introduce feature dependency:
+       enque CA.AODBCD2010NotFound_Under5 and CA.AODBCD2010NotFound_Over5 -->
+  <!-- Set AODBCD2010DependentFeatures property to list of dependent features -->
+  <!-- Set messages to
+    AODBCD2010NotFound_Under5 = Feature[AODBCD2010DependentFeatures] requires [AODBCD2010x86Name] ([AODBCDUrl]).
+    AODBCD2010NotFound_Over5 = Feature[AODBCD2010DependentFeatures] requires &lt;A HREF="[AODBCDUrl]"&gt;[AODBCD2010x86Name]&lt;/A&gt;.
+    AODBCD2010Check = [AODBCD2010x86Name] is required
+  -->
+  <Fragment Id="Fragment.CAForPartialDependency">
+    <PropertyRef Id="AODBCD2010" />
+    <PropertyRef Id="AODBCD2010x86Name" />
+    
+    <CustomAction Id="CA.AODBCD2010NotFound_Under5" Error="!(loc.AODBCD2010NotFound_Under5)" />
+    <CustomAction Id="CA.AODBCD2010NotFound_Over5" Error="!(loc.AODBCD2010NotFound_Over5)" />
+
+    <UI>
+      <ProgressText Action="CA.AODBCD2010NotFound_Under5">!(loc.AODBCD2010Check)</ProgressText>
+      <ProgressText Action="CA.AODBCD2010NotFound_Over5">!(loc.AODBCD2010Check)</ProgressText>
+    </UI>
+  </Fragment>
+
+  <!-- Reference this fragment to introduce whole setup dependency -->
+  <!-- Set messages to
+    ProductRequiresAODBCD2010_Under5 = [ProductName] requires [AODBCD2010x86Name]. ([AODBCDUrl])
+    ProductRequiresAODBCD2010_Over5 = [ProductName] requires &lt;A HREF="[AODBCDUrl]"&gt;[AODBCD2010x86Name]&lt;/A&gt;.
+  -->
+  <Fragment Id="Fragment.TotalDependency">
+    <Property Id="Fragment.AODBCD2010.TotalDependency" Hidden="yes" />
+
+    <PropertyRef Id="AODBCD2010" />
+    <PropertyRef Id="AODBCD2010x86Name" />
+    <Condition Message="!(loc.ProductRequiresAODBCD2010_Under5)">
+      <![CDATA[AODBCD2010 >= "02.50" Or VersionMsi >= "5.00"]]>
+    </Condition>
+    <Condition Message="!(loc.ProductRequiresAODBCD2010_Over5)">
+      <![CDATA[AODBCD2010 >= "02.50" Or VersionMsi < "5.00"]]>
+    </Condition>
+  </Fragment>
+</Wix>

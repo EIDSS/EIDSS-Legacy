@@ -1,0 +1,72 @@
+﻿@model eidss.model.Schema.ContactedCasePerson
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+<input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+
+@Html.Hidden("idfContactedCasePerson", Model.idfContactedCasePerson)          
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+
+<div class="popupSummary">
+    <table class="level1 twoColumns"> 
+        <tr>                                                               
+            <td class="small firstLabel">
+                @Html.BvLabel(Model.Person, m => m.datEnteredDate)
+            </td>
+            <td class="xlarge">
+                @Html.BvEditbox(Model.Person, m => m.datEnteredDate)
+            </td>
+            <td class="small label">
+                @Html.BvLabel(Model.Person, m => m.datModificationDate)
+            </td>
+            <td class="xlarge">
+                @Html.BvEditbox(Model.Person, m => m.datModificationDate)
+            </td>
+        </tr>
+    </table> 
+</div>
+
+<div class="sectionTitle">
+    @Translator.GetMessageString("titlePersonalInformation")  
+</div>
+
+@Html.Action("PatientInTwoColumns", "Person", new { root = Model.idfHuman, patient = Model.Person, isAgeVisible = false, isCoordinatesFieldsVisible = false })
+
+<div class="sectionTitle">
+    @Translator.GetMessageString("titleContactInformation")  
+</div>
+                         
+<table class="level1 twoColumns">  
+    <tr>
+        <td class="small firstLabel">
+            @Html.BvLabel(Model, m => m.idfsPersonContactType)
+        </td>
+        <td class="xlarge">
+            @Html.BvCombobox(Model, m => m.PersonContactType)
+        </td>            
+        <td class="small label">
+            @Html.BvLabel(Model, m => m.datDateOfLastContact)
+        </td>
+        <td>
+            @Html.BvDatebox(Model, m => m.datDateOfLastContact)
+        </td>   
+    </tr>   
+    <tr>     
+        <td class="firstLabel">
+            @Html.BvLabel(Model, m => m.strPlaceInfo)
+        </td>
+        <td colspan="3">
+            @Html.BvEditbox(Model, m => m.strPlaceInfo)
+        </td>  
+    </tr>          
+</table>            
+
+<div class="sectionTitle">
+    @Html.BvLabel(Model, m=>m.strComments)     
+</div>
+<div class="contactedPersonNotes">
+    @Html.BvTextArea(Model, m => m.strComments) 
+</div> 

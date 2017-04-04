@@ -1,0 +1,64 @@
+﻿@model eidss.model.Schema.PersonLite
+@{
+    Layout = null;
+} 
+@using eidss.webclient.Utils;
+    
+<table class="level1">   
+    <tr>
+        <td class="xlarge firstLabel">
+            @Html.BvLabel(Model, m => m.strFirstName)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strFirstName, true)                   
+        </td>                            
+    </tr>
+    <tr>
+        <td class="firstLabel">
+            @Html.BvLabel(Model, m => m.strSecondName)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strSecondName, true)                   
+        </td>                            
+    </tr>            
+    <tr>
+        <td class="firstLabel">
+            @Html.BvLabel(Model, m => m.strFamilyName)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strFamilyName, true)                   
+        </td>                            
+    </tr>
+    <tr>
+        <td class="firstLabel">
+            @Html.BvLabel(Model, m => m.strInstitutionName)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strInstitutionName)                   
+        </td>                            
+    </tr>
+    <tr>
+        <td class="firstLabel">
+            @Html.BvLabel(Model, m => m.idfDepartment)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, m => m.Department)              
+        </td>
+    </tr>
+    <tr>
+        <td class="firstLabel">
+            @Html.BvLabel(Model, m => m.idfsStaffPosition)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, m => m.StaffPosition)              
+        </td>
+    </tr>     
+    <tr>
+        <td class="firstLabel">
+            @Html.BvLabel(Model, m => m.strContactPhone)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strContactPhone, true)             
+        </td>
+    </tr>
+</table>

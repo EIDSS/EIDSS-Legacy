@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "ProductInfo.wxi" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="Directory tree">
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="FontsFolder" SourceName="Fonts" />
+      <?if $(var.Platform) = x64?>
+      <Directory Id="ProgramFiles64Folder">
+        <Directory Id="ManufacturerFolder" Name="$(var.Manufacturer)" />
+      </Directory>
+      <?else?>
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="ManufacturerFolder" Name="$(var.Manufacturer)" />
+      </Directory>
+      <?endif?>
+
+      <Directory Id="CommonAppDataFolder" />
+      <Directory Id="GISMAPS" Name="Maps" />
+    </Directory>
+  </Fragment>
+
+  <Fragment Id="CommonAppDataFolder">
+    <DirectoryRef Id="CommonAppDataFolder">
+      <Directory Id="CommonAppData.Manufacturer" Name="$(var.ManufacturerFullName)">
+        <Directory Id="CommonAppData.Product" Name="$(var.ProductFamilyName)">
+          <Directory Id="CommonAppData.Translations" Name="Translations" />
+        </Directory>
+      </Directory>
+    </DirectoryRef>
+  </Fragment>
+
+  <Fragment Id="APPLICATIONFOLDER">
+    <DirectoryRef Id="ManufacturerFolder">
+      <Directory Id="VersionFolder" Name="$(var.MajorVersion).$(var.MinorVersion)">
+        <Directory Id="PRODUCTFOLDER" Name="$(var.ProductName)">
+          <Directory Id="APPLICATIONFOLDER" Name="_country(instance)">
+            <Directory Id="eidss.avr" Name="eidss.avr">
+              <Directory Id="eidss.avr.bin" Name="bin">
+                <Directory Id="AccessTemplate" Name="AccessTemplate" />
+                <Directory Id="eidss.avr.ESRI" Name="ESRI">
+                  <Directory Id="eidss.avr.ESRIx64" Name="x64" />
+                  <Directory Id="eidss.avr.ESRIx86" Name="x86" />
+                </Directory>
+              </Directory>
+              <Directory Id="eidss.avr.app_data" Name="App_Data">
+                <Directory Id="ExportQueryFiles" Name="ExportQueryFiles" />
+              </Directory>
+            </Directory>
+            <Directory Id="eidss.mobile" Name="eidss.mobile">
+              <Directory Id="eidss.mobile.bin" Name="bin">
+                <Directory Id="eidss.mobile.ESRI" Name="ESRI">
+                  <Directory Id="eidss.mobile.ESRIx64" Name="x64" />
+                  <Directory Id="eidss.mobile.ESRIx86" Name="x86" />
+                </Directory>
+              </Directory>
+            </Directory>
+            <Directory Id="eidss.openapi" Name="eidss.openapi">
+              <Directory Id="eidss.openapi.bin" Name="bin">
+                <Directory Id="eidss.openapi.ESRI" Name="ESRI">
+                  <Directory Id="eidss.openapi.ESRIx64" Name="x64" />
+                  <Directory Id="eidss.openapi.ESRIx86" Name="x86" />
+                </Directory>
+              </Directory>
+            </Directory>
+            <Directory Id="eidss.smartphone" Name="eidss.smartphone">
+              <Directory Id="eidss.smartphone.bin" Name="bin">
+                <Directory Id="eidss.smartphone.ESRI" Name="ESRI">
+                  <Directory Id="eidss.smartphone.ESRIx64" Name="x64" />
+                  <Directory Id="eidss.smartphone.ESRIx86" Name="x86" />
+                </Directory>
+              </Directory>
+              <Directory Id="eidss.smartphone.app_data" Name="App_Data">
+                <Directory Id="ANDROID" Name="Android" />
+              </Directory>
+            </Directory>
+            <Directory Id="eidss.web" Name="eidss.web">
+              <Directory Id="eidss.web.bin" Name="bin">
+                <Directory Id="eidss.web.ESRI" Name="ESRI">
+                  <Directory Id="eidss.web.ESRIx64" Name="x64" />
+                  <Directory Id="eidss.web.ESRIx86" Name="x86" />
+                </Directory>
+              </Directory>
+              <Directory Id="eidss.web.app_data" Name="App_Data" />
+            </Directory>
+            <Directory Id="Help" Name="Help">
+              <Directory Id="Help.en" Name="en" />
+              <Directory Id="Help.ru_RU" Name="ru" />
+              <Directory Id="Help.az_Latn_AZ" Name="az" />
+              <Directory Id="Help.ka_GE" Name="gg" />
+              <Directory Id="Help.uk_UA" Name="uk-UA" />
+              <Directory Id="Help.kk_KZ" Name="kk-KZ" />
+              <Directory Id="Help.hy_AM" Name="hy-AM" />
+              <Directory Id="Help.ar_IQ" Name="ar-IQ" />
+              <Directory Id="Help.lo_LA" Name="lo-LA" />
+              <Directory Id="Help.vi_VN" Name="vi-VN" />
+              <Directory Id="Help.th_TH" Name="th-TH" />
+            </Directory>
+            <Directory Id="ReportsService" Name="Reports Service">
+              <Directory Id="gis">
+                <Directory Id="MapProjects" Name="MapProjects" />
+              </Directory>
+            </Directory>
+            <Directory Id="ERRORLOGS" Name="ErrorLogs" />
+          </Directory>
+        </Directory>
+      </Directory>
+    </DirectoryRef>
+
+    <Property Id="APPLICATIONFOLDER" Secure="yes">
+      <RegistrySearch Id="APPLICATIONFOLDER.RS" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="InstallPath" Type="raw" />
+    </Property>
+    <SetProperty Id="APPLICATIONFOLDER_IsSet" After="AppSearch" Value="1" Sequence="execute">APPLICATIONFOLDER</SetProperty>
+    <CustomAction Id="SetAPPLICATIONFOLDER" Directory="APPLICATIONFOLDER" Value="[PRODUCTFOLDER][COUNTRY]([INSTANCEID])" />
+    <InstallExecuteSequence>
+      <Custom Action="SetAPPLICATIONFOLDER" After="CostFinalize">Not APPLICATIONFOLDER_IsSet Or Not (Installed Or WIX_UPGRADE_DETECTED)</Custom>
+    </InstallExecuteSequence>
+  </Fragment>
+</Wix>

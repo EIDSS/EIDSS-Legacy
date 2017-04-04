@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <title>@Translator.GetMessageString("TranslationToolTitle")</title>
+</head>
+
+@model bv.common.Resources.TranslationTool.TranslatorContainer
+@{
+    ViewBag.Title = Translator.GetMessageString("TranslationToolTitle");
+    Layout = null;
+}
+@using Kendo.Mvc.UI
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+    
+    <body class='@(Cultures.IsRtl ? "k-rtl" : "")'>
+        
+<div class="popupContent">
+        @using (Html.BeginForm())
+        {
+        <div class="windowButtonsPn">
+            <input id="idButtonClose" type="button" class="windowButton" onclick="bvPopup.closeById('TranslationWindow')" value="@Translator.GetMessageString("Close")"/>
+        </div>   
+        <div class="windowSeparator"></div>  
+            
+        @(Html.Kendo().Grid(Model)
+            .Name("TranslationGrid")
+            .DataSource(s => s.Ajax()
+                .Read("_SelectTranslationAjaxEditing", "Account", new { classname = ViewBag.AspClassname })
+                .Update("_SaveTranslationAjaxEditing", "Account", new { classname = ViewBag.AspClassname })
+                        .Model(m => { 
+                            m.Id(c => c.Key);
+                            m.Field(c => c.Lang1).Editable(false);
+                            m.Field(c => c.Lang2).Editable(false);
+                            m.Field(c => c.Val).Editable(true);
+                            m.Field(c => c.Split).Editable(false);
+                        })
+                )
+            .Columns(columns =>
+                {
+                    columns.Bound(p => p.Key).Visible(false);
+                    columns.Bound(p => p.Lang1).Title("1st language");
+                    columns.Bound(p => p.Lang2).Title("2nd language").Visible(Config.GetSetting("TranslationModeLanguages", "en").Split(',').Length > 1);
+                    columns.Bound(p => p.Val).Title("Translation");
+                    columns.Command(c => c.Edit()).Width(172);
+                    columns.Bound(p => p.Split).Visible(false);
+                }
+            )
+            .Scrollable(c => c.Height(420))
+            .Editable(editing => editing.Mode(GridEditMode.InLine))
+            .Resizable(resizing => resizing.Columns(true))
+            .Events(c => c.Save("bvTranslation.onSaveTranslation"))
+            .Sortable()
+            )
+        }
+</div>   
+</body>
+</html>
+

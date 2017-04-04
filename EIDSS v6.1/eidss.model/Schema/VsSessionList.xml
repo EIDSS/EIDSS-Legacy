@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="VsSessionListItem"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="fn_VsSession_SelectList" type="fnlist" filter-object="VectorSurveillanceSession" />
+    <count name="spVsSession_SelectCount"/>
+  </storage>
+
+  <tables>
+    <table name="VsSessionListItem">
+      <properties auditObject="daoVectorSurveillanceSession" auditTable="tlbVectorSurveillanceSession" permissionObject="VsSession"/>
+      <help win="vss_list" web="VS_W01"/>
+      <extfilters>
+        <filter>
+          <join>
+            left outer join
+            (
+            select distinct idfVectorSurveillanceSession, idfsVectorSubType from tlbVector as vi
+            where vi.intRowStatus = 0
+            union
+            select distinct idfsVectorSubType from dbo.tlbVectorSurveillanceSessionSummary Vss
+            where Vss.intRowStatus = 0
+            ) as v
+            on v.idfVectorSurveillanceSession = fn_VsSession_SelectList.idfVectorSurveillanceSession
+          </join>
+          <where>
+            <expr param="idfsVectorSubType" value="v.idfsVectorSubType {0} @idfsVectorSubType" />
+          </where>
+        </filter>
+        <filter>
+          <join>
+            left outer join
+            (
+            select distinct idfVectorSurveillanceSession, idfsVectorType from tlbVector as vi1
+            where vi1.intRowStatus = 0
+            union
+            select distinct idfVectorSurveillanceSession, idfsVectorType from dbo.tlbVectorSurveillanceSessionSummary Vss
+            Inner Join dbo.trtVectorSubType Vst On Vss.idfsVectorSubType = Vst.idfsVectorSubType And Vst.intRowStatus = 0
+            where Vss.intRowStatus = 0
+            ) as v1
+            on v1.idfVectorSurveillanceSession = fn_VsSession_SelectList.idfVectorSurveillanceSession
+          </join>
+          <where>
+            <expr param="idfsVectorType" value="v1.idfsVectorType {0} @idfsVectorType" />
+          </where>
+        </filter>
+        <filter>
+          <join>
+            left outer join dbo.fnVsSessionDiagnosis() d
+            on d.idfVectorSurveillanceSession = fn_VsSession_SelectList.idfVectorSurveillanceSession
+          </join>
+          <where>
+            <expr param="idfsDiagnosis" value="d.idfsDiagnosis {0} @idfsDiagnosis" />
+          </where>
+        </filter>
+        <filter>
+          <join>
+            INNER JOIN( select distinct idfVectorSurveillanceSession  from dbo.fnVsSessionDiagnosis()
+            ) as d1
+            on d1.idfVectorSurveillanceSession =  fn_VsSession_SelectList.idfVectorSurveillanceSession
+          </join>
+          <where>
+            <expr param="bWithDiagnosisOnly" value="0=0"/>
+          </where>
+        </filter>
+        <filter>
+          <join>
+            left outer join dbo.fnVsSessionDiagnosis() d2
+            on d2.idfVectorSurveillanceSession = fn_VsSession_SelectList.idfVectorSurveillanceSession
+            inner join trtDiagnosisToDiagnosisGroup as dg
+            on dg.idfsDiagnosis = d2.idfsDiagnosis
+            and dg.intRowStatus = 0
+          </join>
+          <where>
+            <expr param="idfsDiagnosisGroup" value="dg.idfsDiagnosisGroup {0} @idfsDiagnosisGroup" />
+          </where>
+        </filter>
+      </extfilters>
+      <searchpanel>
+        <item name="strSessionID" editor="Text" labelId="strSessionID" />
+        <item name="strFieldSessionID" editor="Text" labelId="strFieldSessionID" />
+        <item name="idfsVectorSurveillanceStatus" editor="Lookup" labelId="idfsVectorSurveillanceStatus"
+						lookupName="VsStatusLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+
+        <item name="idfsVectorType" editor="Lookup" labelId="idfsVectorType" dependent="idfsVectorSubType" isParam="true"
+					   lookupName="VsVectorTypeLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+
+        <item name="idfsVectorSubType" editor="Lookup" labelId="idfsSpeciesType" isParam="true"
+					   lookupName="VsVectorSubTypeLookup"  lookupType="VectorSubTypeLookup" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+			
+        <item name="idfsDiagnosis" editor="Lookup" editorWidth="Large" labelId="FT.strDisease" isParam="true"
+					   lookupName="DiagnosisLookup" lookupType="DiagnosisLookup" lookupText="c.name" lookupValue="c.idfsDiagnosis"/>
+
+        <item name="idfsDiagnosisGroup" editor="Lookup" labelId="strDiagnosisGroup" isParam="true"
+          lookupName="DiagnosisGroupLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        
+        <item name="idfsRegion" editor="Lookup" labelId="idfsRegion" dependent="idfsRayon"
+						lookupName="RegionLookup" lookupType="RegionLookup" lookupText="c.strRegionName" lookupValue="c.idfsRegion"/>
+
+        <item name="idfsRayon" editor="Lookup" labelId="idfsRayon" dependent="idfsSettlement"
+					  lookupName="RayonLookup" lookupType="RayonLookup" lookupText="c.strRayonName" lookupValue="c.idfsRayon"/>
+
+        <item name="idfsSettlement" editor="Lookup" labelId="VsSession.idfsSettlement"
+						lookupName="SettlementLookup" lookupType="SettlementLookup" lookupText="c.strSettlementName" lookupValue="c.idfsSettlement"/>
+
+        <item name="dblLongitude" editor="Numeric" labelId="dblLongitude" />
+        <item name="dblLatitude" editor="Numeric" labelId="dblLatitude" />
+
+        <item name="datStartDate" editor="Date" labelId="datStartDate" range="true"
+					  default="c => DateTime.Today.AddDays(-EidssUserContext.User.Options.Prefs.DefaultDays)"/>
+
+        <item name="datCloseDate" editor="Date" labelId="datCloseDate" range="true" />
+
+        <item name="idfOutbreak" editor="Lookup" labelId="idfOutbreak"
+						lookupName="OutbreakLookup" lookupType="OutbreakLookup" lookupText="c.strOutbreakID" lookupValue="c.idfOutbreak"/>
+
+        <item name="idfsSite" editor="Lookup" labelId="lbDataEntrySiteID"
+						lookupName="SiteLookup" lookupType="SiteLookup" lookupText="c.strSiteName" lookupValue="c.idfsSite">
+            <columns>
+              <column name="strSiteName" />
+              <column name="strSiteID"  />
+            </columns>  
+        </item>
+      </searchpanel>
+      <grid>
+        <item name="idfVectorSurveillanceSession" visible="false" key="true"/>
+        <item name="strSessionID"  action="ActionEditVsSession" required="true"/>
+        <item name="strVSStatus" />
+        <item name="strVectors" />
+        <item name="strDiagnoses" />
+        <item name="strRegion" />
+        <item name="strRayon" />
+        <item name="dblLongitude" format="{0:F5}" />
+        <item name="dblLatitude"  format="{0:F5}"/>
+        <item name="datStartDate" />
+        <item name="datCloseDate" />
+      </grid>
+      <labels>
+        <item labelId="idfsCountry" name="strCountry"/>
+        <item labelId="idfsVectorSurveillanceStatus" name="strVSStatus"/>
+        <item labelId="idfSpecies" name="idfsVectorSubType"/>
+        <item labelId="TestDiagnosisName" name="intDiagnosis"/>
+        <item labelId="VsSessionListItem.dblLongitude" name="dblLongitude"/>
+        <item labelId="VsSessionListItem.dblLatitude" name="dblLatitude"/>
+        <item labelId="strDisease" name="strDiagnoses"/>
+      </labels>
+      <fields>
+        <!-- фейковые поля -->
+        <storage name="idfsDiagnosis" type="long?"/>
+        <storage name="idfsVectorType" type="long?"/>
+        <storage name="idfsVectorSubType" type="long?"/>
+        <storage name="idfsDiagnosisGroup" type="long?" />
+      </fields>
+      <readonly>
+        <!--fields name="idfsCountry" predicate="c => true" /-->
+        <fields name="Region,idfsRegion" predicate="c => c.idfsCountry == null" />
+        <fields name="Rayon,idfsRayon" predicate="c => c.idfsRegion == null" />
+        <fields name="Settlement,idfsSettlement" predicate="c => c.idfsRayon == null" />
+        <fields name="VectorSubType,idfsVectorSubType" predicate="c => c.idfsVectorType == null" />
+        <fields name="*" predicate="c => false" />
+      </readonly>
+			<lookups>
+				<lookup name="VsStatus" table="BaseReference" section="rftVectorSurveillanceSessionStatus" source="idfsVectorSurveillanceStatus" target="idfsBaseReference" />
+				<lookup name="Country" table="CountryLookup" source="idfsCountry" target="idfsCountry" />
+				<lookup name="Region" table="RegionLookup" source="idfsRegion" target="idfsRegion">
+					<params>
+						<param name="CountryID" lambda="c => c.idfsCountry ?? 0" type="long" />
+						<param name="ID" const="null" />
+					</params>
+				</lookup>
+				<lookup name="Rayon" table="RayonLookup" source="idfsRayon" target="idfsRayon">
+					<params>
+						<param name="RegionID" lambda="c => c.idfsRegion ?? 0" type="long" />
+						<param name="ID" const="null" />
+					</params>
+				</lookup>
+				<lookup name="Settlement" table="SettlementLookup" source="idfsSettlement" target="idfsSettlement">
+					<params>
+						<param name="RayonID" lambda="c => c.idfsRayon ?? 0" type="long" />
+						<param name="ID" const="null" />
+					</params>
+				</lookup>
+				<lookup name="Diagnosis" table="DiagnosisLookup" source="idfsDiagnosis" target="idfsDiagnosis">
+          <filters>
+            <filter predicate="c => ((c.intHACode &amp; (int)HACode.Vector) != 0) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+            <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+          </filters>
+				</lookup>
+				<lookup name="VsVectorType" table="BaseReference" section="rftVectorType" source="idfsVectorType" target="idfsBaseReference" />
+				<!--<lookup name="VsVectorSubType" table="BaseReference" section="rftVectorSubType" source="idfsVectorSubType" target="idfsBaseReference" />-->
+        <lookup name="VsVectorSubType" table="VectorSubTypeLookup" source="idfsVectorSubType" target="idfsBaseReference">
+          <params>
+            <param name="VectorTypeID" lambda="c => c.idfsVectorType ?? 0" type="long" />
+            <param name="ID" const="null" />
+          </params>
+        </lookup>
+        <lookup name="Outbreak" table="OutbreakLookup" source="idfOutbreak" target="idfOutbreak" />
+        <lookup name="DiagnosisGroup" table="BaseReference" section="rftDiagnosisGroup" source="idfsDiagnosisGroup" target="idfsBaseReference" />
+        <lookup name="Site" table="SiteLookup" source="idfsSite" target="idfsSite">
+          <filters>
+            <filter predicate="c => (c.intHACode.GetValueOrDefault() &amp; (int)HACode.Vector) != 0"/>
+          </filters>
+        </lookup>
+      </lookups>
+      <storage>
+        <delete name="spVsSession_Delete"/>
+        <candelete name="spVsSession_CanDelete"/>
+      </storage>
+      <extenders>
+        <creating>
+          <lambda_extender target="datStartDate" type="DateTime" lambda="c => DateTime.Now" />
+        </creating>
+        <created>
+          <!-- set default country as current country of database -->
+          <lambda_extender target="Country" type="CountryLookup" lambda='c => 
+                                       c.CountryLookup.Where(a => a.idfsCountry == eidss.model.Core.EidssSiteContext.Instance.CountryID)
+                                       .SingleOrDefault()'/>
+          <lambda_extender target="Region" type="RegionLookup" 
+                           lambda='c => EidssUserContext.User.Options.Prefs.DefaultRegion
+                                        ? c.RegionLookup.SingleOrDefault(a => a.idfsRegion == eidss.model.Core.EidssSiteContext.Instance.RegionID)
+                                        : null'/>
+        </created>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <lambda_handler field="idfsCountry" target="Region" type="RegionLookup" lambda="c => null"/>
+          <lambda_handler field="idfsRegion" target="Rayon" type="RayonLookup" lambda="c => null"/>
+          <lambda_handler field="idfsRayon" target="Settlement" type="SettlementLookup" lambda="c => null"/>
+          <lookup_handler lookup="Region" field="idfsCountry" />
+          <lookup_handler lookup="Rayon" field="idfsRegion" />
+          <lookup_handler lookup="Settlement" field="idfsRayon" />
+          <lambda_handler field="idfsVectorType" target="VsVectorSubType" type="VectorSubTypeLookup" lambda="c => null"/>
+          <lookup_handler field="idfsVectorType" lookup="VsVectorSubType" />
+        </fieldhandler>
+      </handlers>
+      <actions child="VsSession">
+        <standard>
+          <remove type="Report"/>
+        </standard>
+        <action name="ActionEditVsSession" type="Action">
+          <run>
+            <preUI webType="JScript"/>
+          </run>
+        </action>
+      </actions>
+    </table>
+  </tables>
+
+</object>

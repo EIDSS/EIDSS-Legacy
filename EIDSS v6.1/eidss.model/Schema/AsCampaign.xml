@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="AsCampaign"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="spASCampaign_SelectDetail" />
+    <validate name="spASCampaign_Validate" />
+  </storage>
+
+	<tables>
+		<table name="AsCampaign">
+      <properties auditObject="daoCampaign" auditTable="tlbCampaign" permissionObject="Campaign">
+        <events>
+          <create name="AsCampaignCreatedLocal"/>
+          <change name="AsCampaignStatusChangedLocal" fields="idfsCampaignStatus"/>
+        </events>
+      </properties>
+      <help web="web_as_campaign_form"/>
+      <labels>
+        <item name="Diseases" labelId="sectionDiseasesList"/>
+        <item name="strComments" labelId="AsCampaign.strComments"/>
+      </labels>
+      
+      <readonly>
+        <fields name="strCampaignID" predicate="c => true"/>
+        <fields name="idfsCampaignStatus,CampaignStatus" predicate="c => false"/>
+        <fields name="Sessions" predicate="c => c.idfsCampaignStatus != (long)AsCampaignStatus.Open"/>
+        <fields name="*" predicate="c => c.idfsCampaignStatus == (long)AsCampaignStatus.Closed"/>
+      </readonly>
+      <relations>
+        <relation name="Diseases" table="AsDisease" internal="true" type="child" lazy="false" source="idfCampaign" target="idfCampaign" />
+        <relation name="Sessions" table="AsMonitoringSession" internal="true" type="child" lazy="false" source="idfCampaign" target="idfCampaign" />
+      </relations>
+      <lookups>
+        <lookup name="CampaignStatus" table="BaseReference" section="rftCampaignStatus" source="idfsCampaignStatus" target="idfsBaseReference" notaddempty="true" />
+        <lookup name="CampaignType" table="BaseReference" section="rftCampaignType" source="idfsCampaignType" target="idfsBaseReference" />
+      </lookups>
+      <storage>
+        <post name="spASCampaign_Post"/>
+        <candelete name="spAsCampaign_CanDelete"/>
+      </storage>
+      <postorder>
+        <item name="this"/>
+        <item name="Diseases"/>
+        <item name="Sessions"/>
+      </postorder>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfCampaign" class="GetNewIDExtender" />          
+          <lambda_extender target="strCampaignID" lambda='c=>"(new campaign)"' type='string'/>
+        </creating>
+        <created>
+          <select_extender class="SelectLookupExtender" target="CampaignStatus" table="BaseReference" source="CampaignStatusLookup" lambda='c => c.idfsBaseReference == (long)AsCampaignStatus.New' />
+        </created>
+        <posting>
+          <lambda_extender target="datModificationForArchiveDate" type="DateTime?" lambda="c => c.HasChanges ? DateTime.Now : c.datModificationForArchiveDate"/>
+          <db_lambda_extender target="strCampaignID" type="string" lambda='(c,m) => 
+                        c.strCampaignID != "(new campaign)" 
+                        ? c.strCampaignID 
+                        : m.SetSpCommand("dbo.spGetNextNumber", (long)NumberingObjectEnum.ASCampaign, DBNull.Value, DBNull.Value)
+                        .ExecuteScalar&lt;string&gt;(ScalarSourceType.OutputParameter, "NextNumberValue")' />
+        </posting>
+      </extenders>
+      <validators>
+        <chains>
+          <!-- Start Date -->
+          <item field="datCampaignDateStart" type="DateTime">
+            <!-- End Date shall be greater than Start Date -->
+            <item field="datCampaignDateEnd" />
+          </item>
+        </chains>
+        <change>
+          <predicate_validator field='idfsCampaignStatus' property='CampaignStatus'
+                               predicate='c=>(c.idfsCampaignStatus == (long)AsCampaignStatus.New &amp;&amp; c.Sessions.Count(s=>!s.IsMarkedToDelete) == 0) || c.idfsCampaignStatus != (long)AsCampaignStatus.New'
+                               message='AsCampaign_CantChangeStatusToNew'/>
+          <!-- Campaign Start Date ≤ Campaign End Date -->
+          <!-- predicate_validator field="datCampaignDateStart" predicate="c => PredicateValidator.CompareDates(c.datCampaignDateStart, c.datCampaignDateEnd)" message="datCampaignDateStart_datCampaignDateEnd_msgId" /-->
+          <!-- predicate_validator field="datCampaignDateEnd" predicate="c => PredicateValidator.CompareDates(c.datCampaignDateStart, c.datCampaignDateEnd)" message="datCampaignDateStart_datCampaignDateEnd_msgId" /-->
+        </change>
+        <childaddlist container="Diseases">
+          <predicate_validator field="Diseases" predicate="(c,i) => NewDiseaseValidation(c,i)" message=""/>
+        </childaddlist>
+        <post>
+          <required_validator target="strCampaignName"/>
+          <required_validator target="idfsCampaignType" property="CampaignType"/>
+          <required_validator target="idfsCampaignStatus" property="CampaignStatus"/> 
+          
+          <custom_mandatory_validator name="datCampaignDateStart" fieldId="ASCampaign_StartDate"/>
+          <custom_mandatory_validator name="datCampaignDateEnd" fieldId="ASCampaign_EndDate"/>
+        </post>
+      </validators>
+      
+      <actions>
+        <standard>
+          <remove type="Create"/>
+        </standard>
+      </actions>
+
+    </table>
+    <table name="AsDisease" >
+      <grid>
+        <item name="idfCampaignToDiagnosis" key="true" visible="false" type="long"/>
+        <item name="strDiagnosis" type="string" required="true"/>
+        <item name="strSpecies" type="string"/>
+        <item name="strSampleName" type="string"/>
+        <item name="intPlannedNumber" type="int?"/>
+        <item name="intOrder" visible="false"/>
+      </grid>
+      <labels>
+        <item name="strDiagnosis" labelId="FT.strDisease"/>
+      </labels>
+      <fields>        
+        <calculated name="strDiagnosis" depends="idfsDiagnosis" type="string" lambda='c=> c.Diagnosis == null ? "" : c.Diagnosis.name'/>
+        <calculated name='strSampleName' depends='idfsSampleType' type='string' lambda='c=> c.SampleType == null ? "" : c.SampleType.name'/>
+        <calculated name='strSpecies' depends='idfsSpeciesType' type='string' lambda='c=> c.SpeciesType == null ? "" : c.SpeciesType.name'/>
+      </fields>
+      <readonly>
+        <fields name='idfsSpeciesType,SpeciesType' predicate='c=>(c.idfsDiagnosis == 0)'/>
+        <fields name='idfsSampleType,SampleType' predicate='c=>(c.idfsDiagnosis == 0)'/>
+        <fields name="*" predicate="c => false"/>
+      </readonly>
+      <lookups>
+        <lookup name="Diagnosis" table="DiagnosisLookup" source="idfsDiagnosis" target="idfsDiagnosis">
+          <filters>
+            <filter predicate="c => ((c.intHACode &amp; (int)HACode.Livestock) != 0) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+            <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+          </filters>
+        </lookup>
+        <lookup name="SpeciesType" table="BaseReference" section="rftSpeciesList" source="idfsSpeciesType" target="idfsBaseReference">
+          <filters>
+            <filter predicate="c => (c.intHACode.GetValueOrDefault() &amp; ((int?)HACode.Livestock).GetValueOrDefault()) != 0 || c.idfsBaseReference == obj.idfsSpeciesType" />
+          </filters>
+        </lookup>
+        <lookup name="SampleType" table="SampleTypeForDiagnosisLookup" source="idfsSampleType" target="idfsReference">
+          <params>
+            <param name="intHACode" const="null"/>
+          </params>
+          <filters>
+            <filter predicate="c => (c.intHACode &amp; (int)HACode.Livestock) != 0"/>
+            <filter predicate="c => c.idfsDiagnosis == (obj.idfsDiagnosis != 0 ? obj.idfsDiagnosis : -1)" />
+            <filter predicate="c => c.idfsReference != (long)SampleTypeEnum.Unknown"/>
+            <filter predicate="c => c.idfsReference != 0"/>
+          </filters>
+        </lookup>
+      </lookups>
+      <storage>
+        <post name="spASCampaignDiagnosis_Post"/>
+      </storage>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfCampaignToDiagnosis" class="GetNewIDExtender"/>
+          <lambda_extender target="intOrder" type="int" lambda="c => ((Parent as AsCampaign).Diseases.Count == 0 ? 0 : (Parent as AsCampaign).Diseases.Max(d => d.intOrder) + 1)"/>
+          <lambda_extender target="idfCampaign" type="long" lambda="c => (Parent as AsCampaign).idfCampaign"/>
+        </creating>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <lookup_handler lookup="SampleType" field="idfsDiagnosis" />
+        </fieldhandler>
+      </handlers>
+      <validators>
+        <post>
+          <required_validator target="idfsDiagnosis" property="Diagnosis"/>
+        </post>
+      </validators>
+      <actions>
+        <action type="Edit" name="Edit" />
+      </actions>
+    </table>
+    <table name="AsMonitoringSession">
+      <grid>
+        <item name="idfMonitoringSession" key="true" visible="false"/>
+        <item name="strMonitoringSessionID" type="string" required="true"/>
+        <item name="strRegion" type="string"/>
+        <item name="strRayon" type="string"/>
+        <item name="strSettlement" type="string"/>        
+        <item name="datStartDate" />
+        <item name="datEndDate" />
+        <item name="strStatus" type="string"/>
+      </grid>
+      <labels>
+        <item name="strRegion" labelId="idfsRegion" />
+        <item name="strRayon" labelId="idfsRayon" />
+        <item name="strSettlement" labelId="AsSession.strSettlement" />
+        <item name="datStartDate" labelId="AsSession.datStartDate"/>
+        <item name="datEndDate" labelId="AsSession.datEndDate"/>
+        <item name="strStatus" labelId="AsSession.Status"/>
+      </labels>
+      <relations>
+        <!--relation name="FullSession" table="AsSession" internal="false" type="link" lazy="true" source="idfMonitoringSession" target="idfMonitoringSession" /-->
+      </relations>
+      <storage>
+        <post name="spAsSession_CampaignPost"/>
+        <delete name="spAsSession_RemoveLinkToCampaign"/>
+      </storage>
+      <postorder>
+        <item name="this"/>
+      </postorder>
+      <deleteorder>
+        <item name="this"/>
+      </deleteorder>
+      <extenders>
+        <creating>
+          <!--lambda_extender target="FullSession" type="AsSession" lambda="c => FullSessionAccessor.CreateNewT(manager, c)" /-->
+          <lambda_extender target="idfCampaign" type="long" lambda="c => (Parent as AsCampaign).idfCampaign"/>
+        </creating>
+      </extenders>
+      <handlers>
+        <childhandler>
+          <!--lambda_handler container="FullSession" field="idfsRegion" target='strRegion' type="string" lambda='c=>c.FullSession.Region == null ? "" : c.FullSession.Region.ToString()'/>
+          <lambda_handler container="FullSession" field="idfsRayon" target="strRayon" type="string" lambda='c=>c.FullSession.Rayon == null ? "" : c.FullSession.Rayon.ToString()'/>
+          <lambda_handler container="FullSession" field="idfsSettlement" target="strSettlement" type="string" lambda='c=>c.FullSession.Settlement == null ? "" : c.FullSession.Settlement.ToString()'/>
+          <lambda_handler container="FullSession" field="strMonitoringSessionID" target="strMonitoringSessionID" type="string" lambda='c=>c.FullSession.strMonitoringSessionID'/-->
+        </childhandler>
+        <!--<childhandler>
+        </childhandler>-->
+      </handlers>
+      <actions child="AsSession">
+        <action name="ActionViewAsSessionFromCampaign" type="Edit">
+          <run>
+            <preUI webType="JScript"/>
+            <params>
+              <param name="key" type="object" />
+              <param name="item" type="IObject" />
+              <param name="listPanel" type="object" />
+            </params>
+          </run>
+        </action>
+      </actions>
+
+
+    </table>
+	</tables>
+
+</object>

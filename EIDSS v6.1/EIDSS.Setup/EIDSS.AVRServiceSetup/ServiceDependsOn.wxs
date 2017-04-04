@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="AVR.Service.DepednsOn">
+    <ComponentGroup Id="AVR.Service.DepednsOn" Directory="APPLICATIONFOLDER" Source="$(var.BinariesPaths)">
+      <Component Id="BLToolkit.4.dll" MultiInstance="yes">
+        <File Name="BLToolkit.4.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="bv.common.dll" MultiInstance="yes">
+        <File Name="bv.common.dll" KeyPath="yes" Checksum="yes" Source="$(var.bv.common.TargetPath)" />
+      </Component>
+      <Component Id="bv_common.dll" MultiInstance="yes">
+        <File Name="bv_common.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="bvwin_common.dll" MultiInstance="yes">
+        <File Name="bvwin_common.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="bv.model.dll" MultiInstance="yes">
+        <File Name="bv.model.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="bvdb_common.dll" MultiInstance="yes">
+        <File Name="bvdb_common.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="bv.winclient.dll" MultiInstance="yes">
+        <File Name="bv.winclient.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="eidss.avr.dll" MultiInstance="yes">
+        <File Name="eidss.avr.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="eidss.avr_db.dll" MultiInstance="yes">
+        <File Name="eidss.avr_db.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="eidss.core.dll" MultiInstance="yes">
+        <File Name="eidss.core.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="EIDSS.FlexibleForms.dll" MultiInstance="yes">
+        <File Name="EIDSS.FlexibleForms.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="eidss.model.dll" MultiInstance="yes">
+        <File Name="eidss.model.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="eidss.winclient.dll" MultiInstance="yes">
+        <File Name="eidss.winclient.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="eidss_common.dll" MultiInstance="yes">
+        <File Name="eidss_common.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="eidss_db.dll" MultiInstance="yes">
+        <File Name="eidss_db.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="eidss_forms.dll" MultiInstance="yes">
+        <File Name="eidss_forms.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Ionic.Zip.dll" MultiInstance="yes">
+        <File Name="Ionic.Zip.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Ionic.Zlib.dll" MultiInstance="yes">
+        <File Name="Ionic.Zlib.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="AVRLoggingConfiguration.config" MultiInstance="yes">
+        <File Name="AVRLoggingConfiguration.config" />
+      </Component>
+
+      <ComponentGroupRef Id="eidss.core.EnterpriseLibrary.DependsOn" />
+      <ComponentGroupRef Id="AVR.Service.DevExpress.DepednsOn" />
+      <ComponentGroupRef Id="AVR.Service.StructureMap" />
+      
+      <ComponentGroupRef Id="Resources" />
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment Id="eidss.core.EnterpriseLibrary.DependsOn">
+    <ComponentGroup Id="eidss.core.EnterpriseLibrary.DependsOn" Directory="APPLICATIONFOLDER" Source="$(var.BinariesPaths)">
+      <Component Id="Microsoft.Practices.EnterpriseLibrary.Common.dll" MultiInstance="yes">
+        <File Name="Microsoft.Practices.EnterpriseLibrary.Common.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Microsoft.Practices.EnterpriseLibrary.Data.dll" MultiInstance="yes">
+        <File Name="Microsoft.Practices.EnterpriseLibrary.Data.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll" MultiInstance="yes">
+        <File Name="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Microsoft.Practices.EnterpriseLibrary.Logging.dll" MultiInstance="yes">
+        <File Name="Microsoft.Practices.EnterpriseLibrary.Logging.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Microsoft.Practices.ServiceLocation.dll" MultiInstance="yes">
+        <File Name="Microsoft.Practices.ServiceLocation.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Microsoft.Practices.Unity.dll" MultiInstance="yes">
+        <File Name="Microsoft.Practices.Unity.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Microsoft.Practices.Unity.Interception.dll" MultiInstance="yes">
+        <File Name="Microsoft.Practices.Unity.Interception.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment Id="AVR.Service.DevExpress.DepednsOn">
+    <ComponentGroup Id="AVR.Service.DevExpress.DepednsOn" Directory="APPLICATIONFOLDER" Source="$(var.BinariesPaths)">
+      <Component Id="DevExpress.Charts.v15.1.Core.dll" MultiInstance="yes">
+        <File Name="DevExpress.Charts.v15.1.Core.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.Data.v15.1.dll" MultiInstance="yes">
+        <File Name="DevExpress.Data.v15.1.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.PivotGrid.v15.1.Core.dll" MultiInstance="yes">
+        <File Name="DevExpress.PivotGrid.v15.1.Core.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.Printing.v15.1.Core.dll" MultiInstance="yes">
+        <File Name="DevExpress.Printing.v15.1.Core.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.Utils.v15.1.dll" MultiInstance="yes">
+        <File Name="DevExpress.Utils.v15.1.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraBars.v15.1.dll" MultiInstance="yes">
+        <File Name="DevExpress.XtraBars.v15.1.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraCharts.v15.1.dll" MultiInstance="yes">
+        <File Name="DevExpress.XtraCharts.v15.1.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraCharts.v15.1.UI.dll" MultiInstance="yes">
+        <File Name="DevExpress.XtraCharts.v15.1.UI.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraCharts.v15.1.Wizard.dll" MultiInstance="yes">
+        <File Name="DevExpress.XtraCharts.v15.1.Wizard.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraEditors.v15.1.dll" MultiInstance="yes">
+        <File Name="DevExpress.XtraEditors.v15.1.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraGrid.v15.1.dll" MultiInstance="yes">
+        <File Name="DevExpress.XtraGrid.v15.1.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraNavBar.v15.1.dll" MultiInstance="yes">
+        <File Name="DevExpress.XtraNavBar.v15.1.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraPivotGrid.v15.1.dll" MultiInstance="yes">
+        <File Name="DevExpress.XtraPivotGrid.v15.1.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraPrinting.v15.1.dll" MultiInstance="yes">
+        <File Name="DevExpress.XtraPrinting.v15.1.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraReports.v15.1.dll" MultiInstance="yes">
+        <File Name="DevExpress.XtraReports.v15.1.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraTreeList.v15.1.dll" MultiInstance="yes">
+        <File Name="DevExpress.XtraTreeList.v15.1.dll" KeyPath="yes" Checksum="yes" />
+      </Component>     
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment Id="AVR.Service.StructureMap.DI">
+    <?define directory = APPLICATIONFOLDER?>
+    <?define prefix = AVR.Service?>
+    <?include $(var.SolutionDir)StructureMap.wxi?>
+  </Fragment>
+</Wix>

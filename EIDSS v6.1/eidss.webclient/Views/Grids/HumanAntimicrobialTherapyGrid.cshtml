@@ -1,0 +1,7 @@
+﻿@model AntimicrobialTherapy.AntimicrobialTherapyGridModelList
+@using eidss.model.Schema
+@using eidss.webclient.Utils;
+@using eidss.web.common.Utils;
+
+@(Html.BvDetailsFormGrid<AntimicrobialTherapy.AntimicrobialTherapyGridModel, AntimicrobialTherapy.AntimicrobialTherapyGridModelList>((string)ViewBag.AntimicrobialTherapyName, 
+Model, "detailsGrid", "humanAntimicrobialTherapy.showGridEditWindow", null, (bool)ViewBag.IsReadOnly))

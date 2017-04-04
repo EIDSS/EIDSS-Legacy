@@ -1,0 +1,570 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="VetCase"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+      <get name="spVetCase_SelectDetail" />
+      <validate name="spVetCase_Validate" />
+    </storage>
+
+    <tables>
+        <table name="VetCase" hacodable="true">
+          <properties auditObject="daoVetCase" auditTable="tlbVetCase" permissionObject="VetCase">
+            <events>
+              <create name="VetCaseCreatedLocal" />
+              <change name="VetCaseDiagnosisChangedLocal" fields="idfsFinalDiagnosis,idfsTentativeDiagnosis2,idfsTentativeDiagnosis1,idfsTentativeDiagnosis" />
+              <change name="VetCaseClassificationChangedLocal" fields="idfsCaseClassification" />
+              <change name="ClosedVetCaseReopenedLocal" predicate="c => c.idfsCaseProgressStatus == (long)CaseStatusEnum.InProgress &amp;&amp; c.idfsCaseProgressStatus_Original == (long)CaseStatusEnum.Closed" />
+              <change name="VetCaseFieldTestResultRegistrationLocal" predicate="c => c.PensideTests.Count(i => i.IsNew &amp;&amp; !i.IsMarkedToDelete) > 0" />
+              <change name="VetCaseTestResultRegistrationLocal" predicate="c => c.CaseTests.Count(i => i.IsNew &amp;&amp; !i.IsMarkedToDelete) > 0" />
+            </events>
+          </properties>
+          <help web="web_vetcaselivestockdetailform"/>
+          <labels>
+            <item name="idfsTentativeDiagnosis" labelId="VetCase.TentativeDiagnosis1"/>
+            <item name="idfsTentativeDiagnosis1" labelId="VetCase.TentativeDiagnosis2"/>
+            <item name="idfsTentativeDiagnosis2" labelId="VetCase.TentativeDiagnosis3"/>
+            <item name="idfsFinalDiagnosis" labelId="VetCase.FinalDiagnogis"/>
+            <item name="strDiagnosis" labelId="TentativeDiagnoses"/>
+            <item name="strSampleNotes" labelId="VetCase.strSampleNotes"/>
+            <item name="datReportDate" labelId="datInitialReportDate"/>
+            <item name="datTentativeDiagnosisDate" labelId="datTentativeDiagnosisDateLbl"/>
+            <item name="datTentativeDiagnosis1Date" labelId="datTentativeDiagnosis1DateLbl"/>
+            <item name="datTentativeDiagnosis2Date" labelId="datTentativeDiagnosis2DateLbl"/>
+          </labels>
+            <fields>
+              <calculated name="strFinalDiagnosis" type="string" depends="idfsFinalDiagnosis" lambda='c => (c.FinalDiagnosis == null) ? "" : c.FinalDiagnosis.name' />
+              <calculated name="strDiagnosis" type="string" depends="idfsTentativeDiagnosis2,idfsTentativeDiagnosis1,idfsTentativeDiagnosis"
+                            lambda='c => String.Format("{0}{1}{2}", 
+                              (c.TentativeDiagnosis2 == null) ? "" : c.TentativeDiagnosis2.name,
+                              (c.TentativeDiagnosis1 == null) ? "" : ((c.TentativeDiagnosis2 == null) ? "" : ", ")  + c.TentativeDiagnosis1.name,
+                              (c.TentativeDiagnosis == null) ? "" : ((c.TentativeDiagnosis2 == null &amp;&amp; c.TentativeDiagnosis1 == null) ? "" : ", ")  + c.TentativeDiagnosis.name
+                               )' />
+               
+              <calculated name="DiagnosisAll" type="List&lt;DiagnosisLookup&gt;" 
+                            depends="idfsFinalDiagnosis,idfsTentativeDiagnosis2,idfsTentativeDiagnosis1,idfsTentativeDiagnosis"
+                            lambda='c => new List&lt;DiagnosisLookup&gt;(new []
+                                    { c.FinalDiagnosis, c.TentativeDiagnosis2, c.TentativeDiagnosis1, c.TentativeDiagnosis }
+                                    .Where(d => d != null).Distinct())'/>
+              <calculated name="strDiseaseNames" type="string" 
+                            depends="DiagnosisAll"
+                            lambda='c => c.DiagnosisAll.Aggregate("", 
+                                    (a,b) => (a == "" ? "" : a + ", ") 
+                                    + b.name + (String.IsNullOrEmpty(b.strOIECode) ? "" : "(" + b.strOIECode + ")"))' />
+              <calculated name="IsClosed" type="bool" depends="idfsCaseProgressStatus" dependonpost="yes"
+                            lambda="c => (c.idfsCaseProgressStatus == (long)CaseStatusEnum.Closed) &amp;&amp; !c.IsDirty" />
+              <calculated name="IsEnabledCaseProgressStatus" type="bool" depends="idfsCaseProgressStatus" dependonpost="yes"
+                            lambda='c => (!c.idfsCaseProgressStatus.HasValue) || (c.idfsCaseProgressStatus == (long)CaseStatusEnum.InProgress) || (c.idfsCaseProgressStatus == (long)CaseStatusEnum.Closed &amp;&amp; c.IsDirty) || (c.idfsCaseProgressStatus == (long)CaseStatusEnum.Closed &amp;&amp; !c.IsDirty &amp;&amp; c.GetPermissions().CanExecute("CanReopenClosedCase"))' />
+              <calculated name="idfsDiagnosis" type="long?" depends="idfsFinalDiagnosis,idfsTentativeDiagnosis2,idfsTentativeDiagnosis1,idfsTentativeDiagnosis"
+                          lambda="c=>
+                                  c.idfsFinalDiagnosis.HasValue ? c.idfsFinalDiagnosis :
+                                    c.idfsTentativeDiagnosis2.HasValue ? c.idfsTentativeDiagnosis2 :
+                                      c.idfsTentativeDiagnosis1.HasValue ? c.idfsTentativeDiagnosis1 :
+                                        c.idfsTentativeDiagnosis.HasValue ? c.idfsTentativeDiagnosis : null"/>
+              <calculated name="strSiteCode" type="string" depends="idfsSite" lambda='c => c.Site == null ? "" : c.Site.strSiteName' />
+              <calculated name="strIdfsDiagnosis" type="string" depends="idfsFinalDiagnosis,idfsTentativeDiagnosis"
+                          lambda="c=> c.idfsFinalDiagnosis.HasValue ? c.idfsFinalDiagnosis.ToString() :                                    
+                                        c.idfsTentativeDiagnosis.HasValue ? c.idfsTentativeDiagnosis.ToString() : null"/>
+              <calculated name="strReadOnlyEnteredDate" type="string" depends="datEnteredDate" lambda='c => c.datEnteredDate == null ? (string)null : c.datEnteredDate.Value.ToString()'/>
+              <calculated name="buttonSelectFarm" type="string" depends="Farm" lambda='c=> ""'/>
+              <calculated name="buttonCoordinatesPicker" type="string" depends="Farm" lambda='c => ""'/>
+              <calculated name="blnEnableTestsConductedCalc" type="bool" depends=""
+                            lambda="c => c.CaseTests == null || c.CaseTests.Where(i => !i.IsMarkedToDelete &amp;&amp; i.idfsTestStatus == (long)TestStatus.Finalized).Count() == 0"/>
+              <calculated name="idfObservationFarm" type="long" depends="Farm" lambda='c => c.Farm != null &amp;&amp; c.Farm.idfObservation.HasValue ? c.Farm.idfObservation.Value : 0'/>
+              <calculated name="IsLiveStock" type="bool" depends="idfsCaseType" lambda='c => c.idfsCaseType == (long)CaseTypeEnum.Livestock'/>
+              
+          
+            </fields>
+          
+            <readonly>
+              <fields name="idfsCaseProgressStatus,CaseProgressStatus" predicate="c => c.ReadOnly || !c.IsEnabledCaseProgressStatus" />
+              <fields name="strOutbreakID" predicate="c => true" />
+              <fields name="idfOutbreak" predicate='c => c.IsClosed || c.ReadOnly'/>
+              <fields name="strReadOnlyLocalIdentifier,strReadOnlyEnteredDate" predicate="c => true" />
+              <fields name="strSiteCode,strMonitoringSessionID,idfParentMonitoringSession" predicate="c => true" />
+              <fields name="idfsCaseType,CaseType,datEnteredDate,strCaseID,strDiseaseNames,strFinalDiagnosis,strDiagnosis,idfPersonEnteredBy,idfsSite,strPersonEnteredByName,strTentativeDiagnosisOIECode, strTentativeDiagnosis1OIECode,strTentativeDiagnosis2OIECode,strFinalDiagnosisOIECode" predicate="c => true" />
+              <fields name="strInvestigatedByOffice,strReportedByOffice,strPersonInvestigatedBy,strPersonReportedBy" predicate="c => true" />
+              <fields name="PersonInvestigatedBy,idfPersonInvestigatedBy" predicate="c => c.IsClosed || c.ReadOnly || c.idfInvestigatedByOffice == null" />
+              <fields name="TestsConducted,idfsYNTestsConducted" predicate="c => c.IsClosed || c.ReadOnly || (c.blnEnableTestsConducted != null &amp;&amp; !c.blnEnableTestsConducted.Value) || !c.blnEnableTestsConductedCalc" />
+              <fields name="CaseTests,CaseTestValidations" predicate='c => c.IsClosed || c.ReadOnly'/>
+              <fields name='idfsCaseReportType, CaseReportType' predicate='c => c.IsClosed || c.ReadOnly || c.idfParentMonitoringSession.HasValue'/>
+              <fields name='buttonSelectFarm,buttonCoordinatesPicker' predicate='c => c.IsClosed || c.ReadOnly'/>
+              <fields name='datTentativeDiagnosisDate' predicate='c => c.IsClosed || c.ReadOnly || !c.idfsTentativeDiagnosis.HasValue'/>
+              <fields name='datTentativeDiagnosis1Date' predicate='c => c.IsClosed || c.ReadOnly || !c.idfsTentativeDiagnosis1.HasValue'/>
+              <fields name='datTentativeDiagnosis2Date' predicate='c => c.IsClosed || c.ReadOnly || !c.idfsTentativeDiagnosis2.HasValue'/>
+              <fields name='datFinalDiagnosisDate' predicate='c => c.IsClosed || c.ReadOnly || !c.idfsFinalDiagnosis.HasValue'/>
+              <fields name="*" predicate="c => c.ReadOnly || c.IsClosed" />
+            </readonly>
+          <personaldata>
+            <group name="Vet_Farm_Settlement" predicate="c => !(obj.IsNew || (ModelUserContext.Instance.CurrentUser != null &amp;&amp; obj.idfPersonEnteredBy == (long)ModelUserContext.Instance.CurrentUser.EmployeeID))">
+              <item name="Vet_Farm"/>
+              <item name="Farm.strOwnerLastName"/>
+              <item name="Farm.strOwnerFirstName"/>
+              <item name="Farm.strOwnerMiddleName"/>
+              <item name="Farm.strFarmCode"/>
+              <item name="Farm.strNationalName"/>
+              <item name="Farm.Address.Settlement"/>
+              <item name="Farm.Address.idfsSettlement"/>
+              <item name="Farm.Address.PostCode"/>
+              <item name="Farm.Address.Street"/>
+              <item name="Farm.Address.strPostCode"/>
+              <item name="Farm.Address.strStreetName"/>
+              <item name="Farm.Address.strApartment"/>
+              <item name="Farm.Address.strHouse"/>
+              <item name="Farm.Address.strBuilding"/>
+              <item name="Farm.strFax"/>
+              <item name="Farm.strEmail"/>
+              <item name="Farm.strContactPhone"/>              
+            </group>
+            <group name="Vet_Farm_Details" predicate="c => !(obj.IsNew || (ModelUserContext.Instance.CurrentUser != null &amp;&amp; obj.idfPersonEnteredBy == (long)ModelUserContext.Instance.CurrentUser.EmployeeID))">
+              <item name="Vet_Farm"/>
+              <item name="Farm.strOwnerLastName"/>
+              <item name="Farm.strOwnerFirstName"/>
+              <item name="Farm.strOwnerMiddleName"/>
+              <item name="Farm.strFarmCode"/>
+              <item name="Farm.strNationalName"/>
+              <item name="Farm.Address.PostCode"/>
+              <item name="Farm.Address.Street"/>
+              <item name="Farm.Address.strPostCode"/>
+              <item name="Farm.Address.strStreetName"/>
+              <item name="Farm.Address.strApartment"/>
+              <item name="Farm.Address.strHouse"/>
+              <item name="Farm.Address.strBuilding"/>
+              <item name="Farm.strFax"/>
+              <item name="Farm.strEmail"/>
+              <item name="Farm.strContactPhone"/>
+            </group>
+            <group name="Vet_Farm_Coordinates" predicate="c => !(obj.IsNew || (ModelUserContext.Instance.CurrentUser != null &amp;&amp; obj.idfPersonEnteredBy == (long)ModelUserContext.Instance.CurrentUser.EmployeeID))">
+              <item name="Farm.Address.dblLatitude"/>
+              <item name="Farm.Address.dblLongitude"/>              
+            </group>
+          </personaldata>
+            <relations>
+              <relation name="FFPresenterControlMeasures" table="FFPresenterModel" internal="false" type="link" source="idfObservation" target="CurrentObservation" lazy="false" />              
+              <relation name="Farm" table="FarmPanel" internal="false" type="link" source="idfFarm" target="idfFarm" hacodable="true" />
+              <relation name="Vaccination" table="VaccinationListItem" internal="false" type="child" lazy="false" source="idfCase" target="" hacodable="true" />
+              <relation name="CaseTests" table="CaseTest" internal="false" type="child" lazy="false" source="idfCase" target="" />
+              <relation name="CaseTestValidations" table="CaseTestValidation" internal="false" type="child" lazy="false" source="idfCase" target="" />
+              <relation name="PensideTests" table="PensideTest" internal="false" type="child" lazy="false" source="idfCase" target="" />
+              <relation name="AnimalList" table="AnimalListItem" internal="false" type="child" lazy="false" source="idfCase" target="idfCase" hacodable="true"/>
+              <relation name="Samples" table="VetCaseSample" internal="false" type="child" lazy="false" source="idfCase" target="idfCase" />
+              <relation name="Logs" table="VetCaseLog" internal="false" type="child" lazy="false" source="idfCase" target="idfVetCase" />
+            </relations>
+            <lookups>
+              <lookup name="Site" table="SiteLookup" source="idfsSite" target="idfsSite" />
+              <lookup name="CaseReportType" table="BaseReference" section="rftCaseReportType" source="idfsCaseReportType" target="idfsBaseReference">
+                 <filters>
+                  <filter predicate="c => c.idfsBaseReference != (long)eidss.model.Enums.CaseReportType.Both"/>
+                </filters>
+             </lookup>
+              <lookup name="CaseType" table="BaseReference" section="rftCaseType" source="idfsCaseType" target="idfsBaseReference" />
+              <lookup name="CaseClassification" table="BaseReference" section="rftCaseClassification" source="idfsCaseClassification" target="idfsBaseReference" >
+                <filters>
+                  <filter predicate="c => ((c.intHACode &amp; (int)obj._HACode) != 0)"/>
+                </filters>
+              </lookup>                         
+              <lookup name="CaseProgressStatus" table="BaseReference" section="rftCaseProgressStatus" source="idfsCaseProgressStatus" target="idfsBaseReference" notaddempty="true" />
+              <lookup name="TestsConducted" table="BaseReference" section="rftYesNoValue" source="idfsYNTestsConducted" target="idfsBaseReference" />
+              <lookup name="TentativeDiagnosis" table="DiagnosisLookup" source="idfsTentativeDiagnosis" target="idfsDiagnosis">
+                <filters>
+                  <filter predicate="c => ((c.intHACode &amp; (int)obj._HACode) != 0) || c.idfsDiagnosis == obj.idfsTentativeDiagnosis" />
+                  <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsTentativeDiagnosis" />
+                </filters>
+              </lookup>
+              <lookup name="TentativeDiagnosis1" table="DiagnosisLookup" source="idfsTentativeDiagnosis1" target="idfsDiagnosis">
+                <filters>
+                  <filter predicate="c => ((c.intHACode &amp; (int)obj._HACode) != 0) || c.idfsDiagnosis == obj.idfsTentativeDiagnosis1" />
+                  <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsTentativeDiagnosis1" />
+                </filters>
+              </lookup>
+              <lookup name="TentativeDiagnosis2" table="DiagnosisLookup" source="idfsTentativeDiagnosis2" target="idfsDiagnosis">
+                <filters>
+                  <filter predicate="c => ((c.intHACode &amp; (int)obj._HACode) != 0) || c.idfsDiagnosis == obj.idfsTentativeDiagnosis2" />
+                  <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsTentativeDiagnosis2" />
+                </filters>
+              </lookup>              
+              <lookup name="FinalDiagnosis" table="DiagnosisLookup" source="idfsFinalDiagnosis" target="idfsDiagnosis">
+                <filters>
+                  <filter predicate="c => ((c.intHACode &amp; (int)obj._HACode) != 0) || c.idfsDiagnosis == obj.idfsFinalDiagnosis" />
+                  <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsFinalDiagnosis" />
+                </filters>
+              </lookup>
+              <lookup name="ShowDiagnosis" table="DiagnosisLookup" source="idfsShowDiagnosis" target="idfsDiagnosis">
+                <filters>
+                  <filter predicate="c => ((c.intHACode &amp; (int)obj._HACode) != 0) || c.idfsDiagnosis == obj.idfsShowDiagnosis" />
+                  <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsShowDiagnosis" />
+                </filters>
+              </lookup>
+              <lookup name="PersonInvestigatedBy" table="WiderPersonLookup" source="idfPersonInvestigatedBy" target="idfPerson">
+                  <params>
+                      <param name="OfficeID" lambda="c => c.idfInvestigatedByOffice ?? 0" type="long" />
+                      <param name="ID" const="null" />
+                      <param name="ShowUsersOnly" const="false"/>
+                      <param name="intHACode" const="null"/>
+                  </params>
+              </lookup>
+            </lookups>
+            <storage>
+                <post />
+                <delete />
+                <candelete />
+            </storage>
+            <postorder>
+              <item name="Farm" />
+              <item name="this" />
+              <item name="Vaccination"/>
+              <item name="AnimalList"/>
+              <item name="Samples"/>
+              <item name="CaseTests"/>
+              <item name="PensideTests"/>
+              <item name="CaseTestValidations"/>
+              <item name="Logs"/>
+              <item name="FFPresenterControlMeasures" />
+            </postorder>
+            <deleteorder>
+              <!--item name="Farm" /-->              
+              <item name="FFPresenterControlMeasures" />
+              <item name="Logs"/>
+              <item name="CaseTests"/>
+              <item name="this" />
+            </deleteorder>
+            <extenders>
+              <creating>
+                <lambda_extender target="idfsCaseType" type="long" lambda='c => (HACode == (int)eidss.model.Enums.HACode.Livestock ? (long)CaseTypeEnum.Livestock : (long)CaseTypeEnum.Avian)' />
+                <scalar_extender target="idfCase" class="GetNewIDExtender" />
+                <lambda_extender target="strCaseID" type="string" lambda='c => "(new)"' />
+                <scalar_extender target="idfObservation" class="GetNewIDExtender" />
+                <scalar_extender target="idfsSite" class="GetSiteIDExtender" />
+                <lambda_extender target="datEnteredDate" type="DateTime" lambda="c => DateTime.Now" />
+                <lambda_extender target="Farm" type="FarmPanel" lambda="c => FarmAccessor.CreateByCase(manager, c, c)" />
+                <lambda_extender target="idfFarm" type="long" lambda="c => c.Farm.idfFarm"/>
+                <custom_extender>
+                  <text>
+                    obj.Farm._HACode = obj.Farm.intHACode = obj._HACode;
+                    if (EidssUserContext.Instance != null)
+                    {
+                      if (EidssUserContext.User != null)
+                      {
+                        obj.strPersonEnteredByName = EidssUserContext.User.FullName;
+                        if (EidssUserContext.User.EmployeeID != null)
+                        {
+                          long em;
+                          if (long.TryParse(EidssUserContext.User.EmployeeID.ToString(), out em))
+                          obj.idfPersonEnteredBy = em;
+                        }
+                      }
+                      if (HACode.Value == (int)eidss.model.Enums.HACode.Livestock)
+                      {
+                        obj.FFPresenterControlMeasures = FFPresenterModel.Accessor.Instance(null).SelectByKey(manager, obj.idfObservation);
+                        obj.FFPresenterControlMeasures.SetProperties(EidssSiteContext.Instance.CountryID, null, FFTypeEnum.LivestockControlMeasures, obj.idfObservation.Value, obj.idfCase);
+                        if (obj.FFPresenterControlMeasures.CurrentTemplate != null)
+                        {
+                          obj.idfsFormTemplate = obj.FFPresenterControlMeasures.CurrentTemplate.idfsFormTemplate;
+                        }
+                      }
+                    }
+                  </text>
+                </custom_extender>
+              </creating>
+              <created>
+                  <select_extender class="SelectLookupExtender" target="CaseProgressStatus" table="BaseReference" source="CaseProgressStatusLookup" lambda='c => c.idfsBaseReference == (long)CaseStatusEnum.InProgress' />                    
+              </created>
+              <loading>
+                <lambda_extender target="_HACode" type="int?" lambda='c => (c.idfsCaseType == (long)CaseTypeEnum.Livestock ? 32 : 64)' />
+                <lambda_extender target="Farm" type="FarmPanel" lambda="c=> c.Farm ?? FarmAccessor.CreateByCase(manager, c, c)"/>
+                <lambda_extender target="Farm.Case" type="WeakReference" lambda="c => new WeakReference(c)"/>
+                <lambda_list_extender list="Farm.FarmTree" type="WeakReference" target="Case" lambda="c => c.Farm.Case"/>
+                <lambda_extender target="idfFarm" type="long" lambda="c => c.Farm.idfFarm"/>
+              </loading>
+              <loaded>
+                <lambda_extender target="TestsConducted" type="BaseReference"
+                                   lambda="c => (c.blnEnableTestsConducted == null || c.blnEnableTestsConducted.Value || c.TestsConductedLookup == null || c.blnEnableTestsConductedCalc) ? c.TestsConducted : c.TestsConductedLookup.Where(i => i.idfsBaseReference == (long)YesNoUnknownValuesEnum.Yes).SingleOrDefault()"/>
+                <lambda_list_extender list="Samples" type="int?" target="_HACode" lambda="c => c._HACode"/>
+                <lambda_list_extender list="CaseTests" type="long" target="idfTesting" lambda="c => { (t.GetAccessor() as CaseTest.Accessor).LoadLookup_TestNameRef(manager, t); return t.idfTesting; }"/>
+                <lambda_list_extender list="CaseTests" type="DiagnosisLookup" target="Diagnosis" lambda="c => t.DiagnosisLookup.FirstOrDefault(i => i.idfsDiagnosis == t.idfsDiagnosis)"/>
+                <lambda_list_extender list="PensideTests" type="int?" target="_HACode" lambda="c => c._HACode"/>
+                <lambda_list_extender list="PensideTests" type="string" target="strDummy" lambda='c => ""'/>
+                <!--custom_extender>
+                  <text>
+                    if (obj.Vaccination.Count() > 0)
+                    {
+                        foreach (var ft in obj.Farm.FarmTree.Where(c => c.idfsPartyType == (long)PartyTypeEnum.Species))
+                        {
+                            foreach(var vac in obj.Vaccination.Where(v=>v.idfSpecies == ft.idfParty))
+                            vac.strSpecies = String.Format("{0}/{1}", ft.strHerdName, ft.strSpeciesName );
+                        }
+                    }
+                  </text>                  
+                </custom_extender-->
+                <custom_extender>
+                  <text>
+                    if (obj.idfsFormTemplate.HasValue)
+                    {
+                      obj.FFPresenterControlMeasures.SetProperties(obj.idfsFormTemplate.Value, obj.idfCase);
+                      obj.FFPresenterControlMeasures.ReadOnly = obj.IsClosed;
+                    }
+                    else
+                    {
+                      if (obj._HACode.Value == (int)eidss.model.Enums.HACode.Livestock)
+                      {
+                        if (obj.idfObservation == null)
+                        obj.idfObservation = (new GetNewIDExtender&lt;VetCase&gt;()).GetScalar(manager, obj);
+                        obj.FFPresenterControlMeasures = FFPresenterModel.Accessor.Instance(null).SelectByKey(manager, obj.idfObservation);
+                        obj.FFPresenterControlMeasures.SetProperties(EidssSiteContext.Instance.CountryID, null, FFTypeEnum.LivestockControlMeasures, obj.idfObservation.Value, obj.idfCase);
+                        if (obj.FFPresenterControlMeasures.CurrentTemplate != null) obj.idfsFormTemplate = obj.FFPresenterControlMeasures.CurrentTemplate.idfsFormTemplate;
+                      }
+                    }
+
+                  </text>
+                </custom_extender>
+              </loaded>
+              <posting>
+                <lambda_extender target="datModificationForArchiveDate" type="DateTime?" lambda="c => c.HasChanges ? DateTime.Now : c.datModificationForArchiveDate"/>
+                <db_lambda_extender target="strCaseID" type="string" lambda='(c,m) => 
+                        c.strCaseID != "(new)" 
+                        ? c.strCaseID 
+                        : m.SetSpCommand("dbo.spGetNextNumber", (long)NumberingObjectEnum.VetCase, DBNull.Value, DBNull.Value)                        
+                        .ExecuteScalar&lt;string&gt;(ScalarSourceType.OutputParameter, "NextNumberValue")' />
+                    <lambda_extender target='idfsShowDiagnosis' lambda='c=>c.idfsDiagnosis' type='long?'/>
+                </posting>
+              <posted>
+                <custom_extender>
+                  <text>
+                    if (obj.AnimalList.Count() > 0)
+                    {
+                      obj.AnimalList.ForEach(animal => animal.CopyMainProperties(obj.Farm.FarmTree.Single(species=>species.idfParty == animal.idfSpecies)));
+                    }
+                  </text>
+                </custom_extender>
+              </posted>
+            </extenders>
+            <handlers>
+                <fieldhandler>
+                  <lambda_handler field='idfsTentativeDiagnosis' target='datTentativeDiagnosisDate' type='DateTime?' lambda='c => c.idfsTentativeDiagnosis.HasValue ? (c.datTentativeDiagnosisDate.HasValue ? c.datTentativeDiagnosisDate : DateTime.Today) : null'/>
+                  <lambda_handler field='idfsTentativeDiagnosis1' target='datTentativeDiagnosis1Date' type='DateTime?' lambda='c => c.idfsTentativeDiagnosis1.HasValue ? (c.datTentativeDiagnosis1Date.HasValue ? c.datTentativeDiagnosis1Date : DateTime.Today) : null'/>
+                  <lambda_handler field='idfsTentativeDiagnosis2' target='datTentativeDiagnosis2Date' type='DateTime?' lambda='c => c.idfsTentativeDiagnosis2.HasValue ? (c.datTentativeDiagnosis2Date.HasValue ? c.datTentativeDiagnosis2Date : DateTime.Today) : null'/>
+                  <lambda_handler field='idfsFinalDiagnosis' target='datFinalDiagnosisDate' type='DateTime?' lambda='c => c.idfsFinalDiagnosis.HasValue ? (c.datFinalDiagnosisDate.HasValue ? c.datFinalDiagnosisDate : DateTime.Today) : null'/>
+                  <scalar_handler class="SetScalarHandler" target="PersonInvestigatedBy" field="idfInvestigatedByOffice" lambda="(o, fld, prev_fld) => null" />
+                  <value_handler field="idfsTentativeDiagnosis" target="strTentativeDiagnosisOIECode" value='(obj.TentativeDiagnosis == null) ? "" : obj.TentativeDiagnosis.strOIECode'/>
+                  <value_handler field="idfsTentativeDiagnosis1" target="strTentativeDiagnosis1OIECode" value='(obj.TentativeDiagnosis1 == null) ? "" : obj.TentativeDiagnosis1.strOIECode'/>
+                  <value_handler field="idfsTentativeDiagnosis2" target="strTentativeDiagnosis2OIECode" value='(obj.TentativeDiagnosis2 == null) ? "" : obj.TentativeDiagnosis2.strOIECode'/>
+                  <value_handler field="idfsFinalDiagnosis" target="strFinalDiagnosisOIECode" value='(obj.FinalDiagnosis == null) ? "" : obj.FinalDiagnosis.strOIECode'/>
+                  <custom_handler field='idfsDiagnosis'>
+                     <text>
+                       if (obj.idfsDiagnosis.HasValue)
+                       {
+                          obj.SetNewFFTemplatesValues();
+                       }
+                     </text>
+                  </custom_handler>                  
+                  <lookup_handler lookup="PersonInvestigatedBy" field="idfInvestigatedByOffice" />
+                </fieldhandler>
+              <childaddlist>
+                <lambda_handler container="CaseTests" field="" filter="c => true" target="TestsConducted" type="BaseReference"
+                                  lambda="c => (c.CaseTests.Count(i => !i.IsMarkedToDelete) == 0) ? c.TestsConducted : c.TestsConductedLookup.Where(i => i.idfsBaseReference == (long)YesNoUnknownValuesEnum.Yes).SingleOrDefault()"/>
+                <lambda_handler container="AnimalList" field="" filter="c => true" target="_HACode" type="int?"
+                                lambda="c => 
+                                { 
+                                  if (e.ListChangedType == ListChangedType.ItemAdded)
+                                  {
+                                      var a = obj.AnimalList[e.NewIndex];
+                                      var sp = obj.Farm.FarmTree.FirstOrDefault(s => s.idfParty == a.idfSpecies);
+                                      if (sp != null)
+                                          a.CopyMainProperties(sp);
+                                  }
+                                  return c._HACode;
+                                }"/>
+              </childaddlist>
+            </handlers>
+            <validators>
+              <chains>
+                <item field="datInvestigationDate" type="DateTime">
+                  <item field="CurrentDate" value="DateTime.Now" />
+                </item>
+                <item field="datReportDate" type="DateTime">
+                  <item field="datInvestigationDate">
+                    <item field="datInterpretationDate" collection="CaseTestValidations" filter="c => !c.IsMarkedToDelete">
+                      <item field="CurrentDate" value="DateTime.Now" />
+                    </item>
+                    <item field="datValidationDate" collection="CaseTestValidations" filter="c => !c.IsMarkedToDelete">
+                      <item field="CurrentDate" value="DateTime.Now" />
+                    </item>
+                  </item>
+                  <item field="datAssignedDate">
+                    <item field="datTentativeDiagnosisDate">
+                      <item field="datTentativeDiagnosis1Date">
+                        <item field="datTentativeDiagnosis2Date">
+                          <item field="CurrentDate" value="DateTime.Now" />
+                        </item>
+                      </item>
+                    </item>
+                  </item>
+                  <item field="datFieldCollectionDate" collection="Samples" filter="c => !c.IsMarkedToDelete">
+                    <item field="CurrentDate" value="DateTime.Now" />
+                  </item>
+                </item>
+                <item field="datFinalDiagnosisDate" type="DateTime">
+                  <item field="CurrentDate" value="DateTime.Now" />
+                </item>
+                <item field="datConcludedDate" type="DateTime" collection="CaseTests">
+                  <item field="CurrentDate" value="DateTime.Now" />
+                </item>
+              
+              </chains>
+              <change>
+                <predicate_validator field="idfsYNTestsConducted" message="msgSampleWasNotEnteredForVet" type="Warning"
+                                     predicate='c => 
+                                              c.idfsYNTestsConducted != (long)YesNoUnknownValuesEnum.Yes || 
+                                             (c.idfsYNTestsConducted == (long)YesNoUnknownValuesEnum.Yes &amp;&amp; (c.Samples.Where(s => !s.IsMarkedToDelete &amp;&amp; s.idfsSampleType != (long)SampleTypeEnum.Unknown).Count() &gt; 0))' />
+
+                <custom_validator field="idfOutbreak" method="CheckOutbreak" onYesAsk="c => c.ChangeOutbreakDiagnosis()" />
+              </change>
+                <post>
+                  <!--base location is mandatory-->
+                  <required_validator target="Farm.Address.idfsCountry" property="Farm.Address.Country" />
+                  <required_validator target="Farm.Address.idfsRegion" property="Farm.Address.Region"/>
+                  <required_validator target="Farm.Address.idfsRayon" property="Farm.Address.Rayon"/>
+                  <required_validator target="idfsCaseReportType" property="CaseReportType"/>
+                  <required_validator target="idfsCaseProgressStatus" property="CaseProgressStatus"/>
+
+                  <custom_mandatory_validator name="CaseClassification" fieldId="VetCase_CaseClassification" label="idfsCaseClassification" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="Farm.Address.Settlement" fieldId="VetCase_Farm_Address_Settlement" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="TentativeDiagnosis" label="VetCase.TentativeDiagnosis1" fieldId="VetCase_TentativeDiagnosis" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="TentativeDiagnosis1" label="VetCase.TentativeDiagnosis2" fieldId="VetCase_Tentative1Diagnosis" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="TentativeDiagnosis2" label="VetCase.TentativeDiagnosis3" fieldId="VetCase_Tentative2Diagnosis" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="FinalDiagnosis" label="VetCase.FinalDiagnogis" fieldId="VetCase_FinalDiagnosis" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="datTentativeDiagnosisDate" fieldId="VetCase_TentativeDiagnosisDate" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="datTentativeDiagnosis1Date" fieldId="VetCase_TentativeDiagnosis1Date" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="datTentativeDiagnosis2Date" fieldId="VetCase_TentativeDiagnosis2Date" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="datFinalDiagnosisDate" fieldId="VetCase_FinalDiagnosisDate" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="Farm.strOwnerLastName" fieldId="VetCase_Farm_FarmOwnerLastName" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="Farm.strOwnerFirstName" fieldId="VetCase_Farm_FarmOwnerFirstName" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="Farm.strNationalName" fieldId="VetCase_Farm_FarmName" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="idfReportedByOffice" fieldId="VetCase_ReportedByOffice" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                  <custom_mandatory_validator name="idfPersonReportedBy" fieldId="VetCase_PersonReportedBy" predicate="c => !eidss.model.Core.EidssUserContext.SmartphoneContext"/>
+                   
+                  <!-- current dates rules-->                  
+                  <!--
+                  <predicate_validator field="datTentativeDiagnosisDate"   message="datTentativeDiagnosisDate_CurrentDate_msgId"
+                                       predicate="c => c.datTentativeDiagnosisDate == null 
+                                            || c.datTentativeDiagnosisDate &lt;= DateTime.Now"
+                    />
+                  <predicate_validator field="datTentativeDiagnosis1Date" message="datTentativeDiagnosis1Date_CurrentDate_msgId"
+                                       predicate="c => c.datTentativeDiagnosis1Date == null 
+                                            || c.datTentativeDiagnosis1Date &lt;= DateTime.Now"
+                      />
+                  <predicate_validator field="datTentativeDiagnosis2Date" message="datTentativeDiagnosis2Date_CurrentDate_msgId"
+                                       predicate="c => c.datTentativeDiagnosis2Date == null 
+                                            || c.datTentativeDiagnosis2Date &lt;= DateTime.Now"
+                      />
+                  <predicate_validator field="datInvestigationDate" message="datInvestigationDate_CurrentDate_msgId"
+                                       predicate="c => c.datInvestigationDate == null 
+                                            || c.datInvestigationDate &lt;= DateTime.Now"
+                      />
+                  <predicate_validator field="datAssignedDate" message="datAssignedDate_CurrentDate_msgId"
+                                       predicate="c => c.datAssignedDate == null 
+                                            || c.datAssignedDate &lt;= DateTime.Now"
+                      />
+                  <predicate_validator field="datReportDate" message="datReportDate_CurrentDate_msgId"
+                                       predicate="c => c.datReportDate == null 
+                                            || c.datReportDate &lt;= DateTime.Now"
+                      />                  
+                  -->
+                  <!-- interdendence of dates -->
+                  <!--
+                  <predicate_validator field="datTentativeDiagnosis2Date" message="datTentativeDiagnosis2Date_datTentativeDiagnosis1Date_msgId"
+                     predicate="c => c.datTentativeDiagnosis2Date == null || c.datTentativeDiagnosis1Date == null
+                                            || c.datTentativeDiagnosis2Date &gt;= c.datTentativeDiagnosis1Date "
+                      />
+                  <predicate_validator field="datTentativeDiagnosis2Date" message="datTentativeDiagnosis2Date_datTentativeDiagnosisDate_msgId"
+                     predicate="c => c.datTentativeDiagnosis2Date == null || c.datTentativeDiagnosisDate == null
+                                            || c.datTentativeDiagnosis2Date &gt;= c.datTentativeDiagnosisDate"
+                      />
+                  <predicate_validator field="datTentativeDiagnosis2Date" message="datAssignedDate_TentantiveDiagnosis2Date_msgId"
+                     predicate="c => c.datTentativeDiagnosis2Date == null || c.datAssignedDate == null
+                                            || c.datTentativeDiagnosis2Date &gt;= c.datAssignedDate"
+                      />
+                  <predicate_validator field="datTentativeDiagnosis2Date" message="datReportedDate_TentantiveDiagnosis2Date_msgId"
+                     predicate="c => c.datTentativeDiagnosis2Date == null || c.datReportDate == null
+                                            || c.datTentativeDiagnosis2Date &gt;= c.datReportDate"
+                      />
+
+                  <predicate_validator field="datTentativeDiagnosis1Date" message="datTentativeDiagnosisDate_datTentativeDiagnosis2Date_msgId"
+                     predicate="c => c.datTentativeDiagnosis1Date == null || c.datTentativeDiagnosisDate == null
+                                            || c.datTentativeDiagnosis1Date &gt;= c.datTentativeDiagnosisDate"
+                      />
+                  <predicate_validator field="datTentativeDiagnosis1Date" message="datAssignedDate_TentantiveDiagnosis1Date_msgId"
+                     predicate="c => c.datTentativeDiagnosis1Date == null  || c.datAssignedDate == null
+                                            || c.datTentativeDiagnosis1Date &gt;= c.datAssignedDate"
+                      />
+                  <predicate_validator field="datTentativeDiagnosis1Date" message="datReportedDate_TentantiveDiagnosis1Date_msgId"
+                     predicate="c => c.datTentativeDiagnosis1Date == null  || c.datReportDate == null
+                                            || c.datTentativeDiagnosis1Date &gt;= c.datReportDate"
+                      />
+                  
+                  <predicate_validator field="datTentativeDiagnosisDate"   message="datAssignedDate_TentantiveDiagnosisDate_msgId"
+                     predicate="c => c.datTentativeDiagnosisDate == null || c.datAssignedDate == null
+                                            || c.datTentativeDiagnosisDate &gt;= c.datAssignedDate"
+                    />
+
+                  <predicate_validator field="datTentativeDiagnosisDate"   message="datReportedDate_TentantiveDiagnosisDate_msgId"
+                      predicate="c => c.datTentativeDiagnosisDate == null  || c.datReportDate == null
+                                            || c.datTentativeDiagnosisDate &gt;= c.datReportDate"
+                    />
+                  
+                  <predicate_validator field="datAssignedDate" message="datAssignedDate_VetCaseDatesRule_msgId"
+                                       predicate="c => c.datAssignedDate == null  || c.datReportDate == null
+                                            || c.datAssignedDate &gt;= c.datReportDate"
+                      />
+                  -->
+                  <!--<custom_validator method="CustomSampleValidator" />-->
+                  <custom_validator method="CustomValidations" />
+                </post>
+            </validators>
+            <actions>
+              <standard>
+                <remove type="Create"/>
+              </standard>
+
+              <action name="ReportContextMenu" type="Action">
+                <visual panel="Main" alignment="Left">
+                  <regular caption="strReport_Id" icon="Report" tooltip="strReport_Id"/>
+                </visual>
+                <run>
+                  <preUI webType="JScript"/>
+                </run>
+              </action>
+
+              <action name="LivestockInvestigationReport" type="Action">
+                <visual panel="ContextMenu" alignment="Left"  visiblePredicate="(o1, o2, p, r) => (o1 as VetCase).IsLiveStock &amp;&amp; eidss.model.Reports.BaseMenuReportRegistrator.IsPaperFormAllowed(&quot;VetLivestockInvestigation&quot;)">
+                  <regular caption="titleLivestockInvestigationReport" icon="" tooltip=""/>
+                </visual>
+                <run>
+                  <preUI webType="JScript" methodName="VetInvestigationReport"/>
+                </run>
+              </action>
+              <action name="AvianInvestigationReport" type="Action">
+                <visual panel="ContextMenu" alignment="Left"  visiblePredicate="(o1, o2, p, r) => !(o1 as VetCase).IsLiveStock &amp;&amp; eidss.model.Reports.BaseMenuReportRegistrator.IsPaperFormAllowed(&quot;VetAvianInvestigation&quot;)">
+                  <regular caption="titleAvianInvestigationReport" icon="" tooltip=""/>
+                </visual>
+                <run>
+                  <preUI webType="JScript" methodName="VetInvestigationReport"/>
+                </run>
+              </action>
+
+            <action name="TestsReport" type="Action">
+              <visual panel="ContextMenuAdditional">
+                <regular caption="titleLabTestReport" icon="" tooltip=""/>
+              </visual>
+              <run>
+                <preUI webType="JScript" methodName="vetCase.TestsReportRun"/>
+              </run>
+            </action>
+              
+            </actions>
+        </table>
+    </tables>
+
+</object>

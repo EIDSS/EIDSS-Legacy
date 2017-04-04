@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Target Name="PreparePackage" DependsOnTargets="$(PreparePackageDependsOn)" AfterTargets="ResolveReferences" />
+
+  <Import Project="$(SolutionDir)Common.targets" />
+  <Import Project="$(SolutionDir)..\BuildTools\Zip.targets" />
+  <PropertyGroup>
+    <PackedFileName>setup.zip</PackedFileName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\dlls\Ionic.Zip.dll">
+      <Link>EmbeddedResources\Ionic.Zip.dll</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(IntermediateOutputPath)$(PackedFileName)">
+      <Link>EmbeddedResources\$(PackedFileName)</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <PropertyGroup Label="PreparePackageDependsOn">
+    <PreparePackageDependsOn>
+      ResolveReferences;
+      EnumerateFilesToPack;
+      CollectFilesToPack;
+      ParseVersionFile;
+      ZipFolder
+    </PreparePackageDependsOn>
+  </PropertyGroup>
+  <Target Name="EnumerateFilesToPack" Outputs="@(FoldersToPack)">
+    <MSBuild
+      Condition=" 'true' == '%(SetupProjectReference.PackToResources)' And '' == '%(SetupProjectReference.Platform)' "
+      Projects="@(SetupProjectReference)"
+      Targets="GetProjectOutputs"
+      BuildInParallel="true"
+      RunEachTargetSeparately="true">
+
+      <Output TaskParameter="TargetOutputs" ItemName="FoldersToPack" />
+    </MSBuild>
+    <MSBuild
+      Condition=" 'true' == '%(SetupProjectReference.PackToResources)' And '' != '%(SetupProjectReference.Platform)' "
+      Projects="@(SetupProjectReference)"
+      Targets="GetProjectOutputs"
+      Properties="Platform=%(SetupProjectReference.Platform)"
+      BuildInParallel="true"
+      RunEachTargetSeparately="true">
+
+      <Output TaskParameter="TargetOutputs" ItemName="FoldersToPack" />
+    </MSBuild>
+    <Message Importance="low" Text="%0d%0a%09FilesToPack:%0d%0a%09@(FoldersToPack->'%(Identity)%0d%0a%09%09%(Satellites)', '%0d%0a%09')" />
+  </Target>
+  <Target Name="CollectFilesToPack" Outputs="$(FolderToZip);$(ZipPath)">
+    <PropertyGroup>
+      <FolderToZip>$(IntermediateOutputPath)Setup\</FolderToZip>
+      <ZipPath>$(IntermediateOutputPath)$(PackedFileName)</ZipPath>
+    </PropertyGroup>
+    <Copy SourceFiles="@(FoldersToPack)" DestinationFiles="@(FoldersToPack->'$(FolderToZip)%(RecursiveDir)%(Filename)%(Extension)')">
+      <Output TaskParameter="CopiedFiles" ItemName="FileWrites" />
+    </Copy>
+  </Target>
+</Project>

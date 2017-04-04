@@ -1,0 +1,61 @@
+﻿@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+@using Kendo.Mvc.UI
+@model eidss.model.Reports.AZ.AssignmentLabDiagnosticModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/ExportButtons", Model)
+    <div class="bluelayout">
+        <div class="tabPanelContent">
+        
+            @Html.Partial("Common/BaseFilter", Model)
+
+            <table id="DiagnosisTable" >
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.CaseId)
+                    </td>
+                    <td class="mlarge">
+                        <span class='tdContainer'>
+                            @Html.TextBoxFor(m => m.CaseId, new Dictionary<string, object> {{"class", "requiredField"},{"onchange", "paperForm.assignmentLabDiagnosticCaseIdChanged()" },{"oninput", "paperForm.assignmentLabDiagnosticCaseIdChanged()" }})
+                        </span>
+                    </td>
+                    <td class ="rightbuttons">
+                        <button id="btValidate" name="btValidate" type="button" class="button" onclick="paperForm.assignmentLabDiagnosticValidate()" disabled="disabled">
+                            @Translator.GetMessageString("btnValidate")
+                        </button> 
+                    </td>
+                    <td colspan="2">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.SentTo)
+                    </td>
+                    <td class="mlarge">
+                        @{
+                            @(Html.Kendo().ComboBox()
+                                  .BindTo(Model.SentToList.ConvertToSelectListItem())
+                                  .Name("SentTo")
+                                  .HtmlAttributes(new {@class = "requiredField"})
+                                  .Enable(false)
+                                  )
+                        }
+                    </td>
+                    <td colspan="3">
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+}

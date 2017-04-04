@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="LabBatchListItem"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="fn_BatchTest_SelectList" type="fnlist" filter-object="AllBatchTest" />
+		<count name="spLabBatch_SelectCount"/>
+	</storage>
+
+	<tables>
+		<table name="LabBatchListItem">
+      <properties auditObject="daoBatchTest" auditTable="tlbBatchTest" permissionObject="Test"/>
+      <help win="lab_l21"/>
+      <extfilters> 
+				<filter>
+					<join>
+						INNER JOIN 
+						(
+								select distinct idfBatchTest
+								from			fn_LabTest_SelectList(null) InnerTests
+								where			(ISNULL(InnerTests.CaseID,N'') LIKE '%' + @strCaseID + '%')
+						)		as TestsForCase
+						ON  	TestsForCase.idfBatchTest=fn_BatchTest_SelectList.idfBatchTest
+					</join>
+					<where>
+						<expr param="strCaseID" value="1=1"/>
+					</where>
+				</filter>
+				<filter>
+					<join>
+						INNER JOIN
+						(
+								select distinct idfBatchTest
+								from			fn_LabTest_SelectList(null) InnerTests
+								where			(ISNULL(InnerTests.strBarcode,N'') LIKE '%' + @strLabSampleID + '%')
+						)		as TestsForSample
+						ON  	TestsForSample.idfBatchTest=fn_BatchTest_SelectList.idfBatchTest
+					</join>
+					<where>
+						<expr param="strLabSampleID" value="1=1"/>
+					</where>
+				</filter>
+			</extfilters>
+			<searchpanel> 
+				<item name="strBarcode" editor="Text" labelId="strBarcode" />
+				<item name="strCaseID" editor="Text" labelId="strCaseIDSessionID" isParam="true" />
+				<item name="idfsTestName" editor="Lookup" labelId="TestName"
+					  lookupName="TestNameRefLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+				<item name="strLabSampleID" editor="Text" labelId="strLabBarcode" isParam="true" />
+				<item name="idfsBatchStatus" editor="Lookup" labelId="StatusName" 
+					  lookupName="BatchStatusNameLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+				<item name="datPerformedDate" editor="Date" labelId="datPerformedDate" range="true" 
+					  default="c => DateTime.Today.AddDays(-EidssUserContext.User.Options.Prefs.DefaultDays)" />
+				<item name="datValidatedDate" editor="Date" labelId="datValidatedDate" range="true" />
+
+			</searchpanel>
+			<grid>
+				<item name="idfBatchTest" visible="false" key="true" />
+				<item name="strBarcode" defaultSort="Descending"/>
+				<item name="TestName"   />
+				<item name="datPerformedDate" />
+				<item name="datValidatedDate" />
+				<item name="TestsInBatchCount" />
+				<item name="StatusName" />
+			</grid>
+			<labels>
+				<item name="TestsInBatchCount" labelId="TestsCount"/>
+			</labels>
+
+			<lookups>
+        <lookup name="BatchStatusName" table="BaseReference"  section="rftTestStatus" source="idfsBatchStatus" target="idfsBaseReference">
+          <filters>
+            <filter predicate="c => c.idfsBaseReference == (long)BatchStatusEnum.Completed || c.idfsBaseReference == (long)BatchStatusEnum.InProcess"/>
+          </filters>
+        </lookup>
+				<lookup name="TestNameRef" table="BaseReference" section="rftTestName" source="idfsTestName" target="idfsBaseReference" />
+			</lookups>
+
+			<storage>
+				<delete name="spLabBatch_Delete"/>
+				<candelete name="spLabBatch_CanDelete"/>
+			</storage>
+      <actions child="LabBatch">
+      </actions>
+
+
+    </table>
+	</tables>
+
+</object>
+ 

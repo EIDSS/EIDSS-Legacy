@@ -1,0 +1,68 @@
+﻿@model eidss.model.Schema.VetCase
+           
+@using bv.model.Model.Core
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+
+<div class="sectionTitle">
+    @Translator.GetMessageString("tabSectionClinicalDiagnosis")  
+</div>
+
+<table class="level1">
+    <tr>
+        <td class="xlarge firstLabel">
+            @Html.BvLabel(Model, m=>m.idfsTentativeDiagnosis)
+        </td>
+        <td class="xlarge">
+            @Html.BvCombobox(Model, m => m.TentativeDiagnosis, width: EditorControlWidth.Large)
+        </td>
+        <td class="xlarge">
+            @Html.BvEditbox(Model, m => m.strTentativeDiagnosisOIECode) 
+        </td>
+        <td class="xlarge">
+            @Html.BvDatebox(Model, m => m.datTentativeDiagnosisDate)
+        </td>
+    </tr>
+    <tr>
+        <td class="firstLabel">
+            @Html.BvLabel(Model, m => m.idfsTentativeDiagnosis1)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, m => m.TentativeDiagnosis1, width: EditorControlWidth.Large)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strTentativeDiagnosis1OIECode) 
+        </td>
+        <td>
+            @Html.BvDatebox(Model, m => m.datTentativeDiagnosis1Date)
+        </td>
+    </tr>
+    <tr>
+        <td class="firstLabel">
+            @Html.BvLabel(Model, m => m.idfsTentativeDiagnosis2)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, m => m.TentativeDiagnosis2, width: EditorControlWidth.Large)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strTentativeDiagnosis2OIECode) 
+        </td>
+        <td>
+            @Html.BvDatebox(Model, m => m.datTentativeDiagnosis2Date)
+        </td>
+    </tr>
+    <tr>
+        <td class="firstLabel">
+            @Html.BvLabel(Model, m=>m.idfsFinalDiagnosis)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, m => m.FinalDiagnosis, width: EditorControlWidth.Large)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strFinalDiagnosisOIECode) 
+        </td>
+        <td>
+            @Html.BvDatebox(Model, m => m.datFinalDiagnosisDate)
+        </td>
+    </tr>
+</table>

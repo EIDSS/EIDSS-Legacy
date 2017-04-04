@@ -1,0 +1,1 @@
+cmd /C "EIDSS.AVR.Service\bin\Debug\EIDSS.AVR.Service.exe /c"

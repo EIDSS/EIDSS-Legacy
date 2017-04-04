@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="WhoExportMaster"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spWhoExportMaster_SelectDetail" type="detailone" />
+  </storage>
+
+  <tables>
+    <table name="WhoExportMaster">
+      <fields>
+        <storage name="datStartDate" type="DateTime"/>
+        <storage name="datEndDate" type="DateTime"/>
+        <storage name="idfsDiagnosis" type="long?"/>
+        <storage name="DiagnosisList" type="List&lt;long&gt;"/>
+      </fields>
+      <relations>
+        <relation name="WhoExportItems" table="WhoExport" internal="false" type="child" lazy="false" source="idfsReferenceType" target="idfCase" paramsonly="true" function="SelectList">
+          <params>
+            <param name="StartDate" type="DateTime?" lambda="c => c.datStartDate"/>
+            <param name="EndDate" type="DateTime?" lambda="c => c.datEndDate"/>
+            <param name="idfsDiagnosis" type="long?" lambda="c => c.idfsDiagnosis"/>
+          </params>
+        </relation>
+      </relations>
+      <lookups>
+        <lookup name="Diagnosis" table="DiagnosisLookup" source="idfsDiagnosis" target="idfsDiagnosis" notaddempty="true">
+          <filters>
+            <filter predicate='c => obj.DiagnosisList.Contains(c.idfsDiagnosis)' />
+          </filters>
+        </lookup>
+      </lookups>
+      <extenders>
+        <loading>
+          <lambda_extender target="datEndDate" type="DateTime" lambda="c => DateTime.Today.AddDays(-DateTime.Today.Day+1).AddMonths(1)"/>
+          <lambda_extender target="datStartDate" type="DateTime" lambda='c => c.datEndDate.AddMonths(-1-EidssSiteContext.Instance.GetGlobalSiteOptionAsInt("WhoReportPeriod", 6))'/>
+          <custom_extender>
+            <text>
+              obj.DiagnosisList = manager.SetCommand(@"
+              select d.idfsDiagnosis
+              from trtDiagnosis d
+              inner join dbo.trtDiagnosisToGroupForReportType dgrt
+              on dgrt.idfsDiagnosis = d.idfsDiagnosis
+              and dgrt.idfsCustomReportType = 10290027
+
+              inner join dbo.trtReportDiagnosisGroup dg
+              on dgrt.idfsReportDiagnosisGroup = dg.idfsReportDiagnosisGroup
+              and dg.intRowStatus = 0 and dg.strDiagnosisGroupAlias in ('DG_Measles', 'DG_Rubella')
+              where d.intRowStatus = 0"
+              ).ExecuteScalarList&lt;long&gt;();
+              LoadLookup_Diagnosis(manager, obj);
+            </text>
+          </custom_extender>
+          <lambda_extender target="Diagnosis" type="DiagnosisLookup" lambda="c => c.DiagnosisLookup.FirstOrDefault()"/>
+        </loading>
+      </extenders>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <remove type="Delete"/>
+          <remove type="Save"/>
+        </standard>
+        <action name="Export" type="Action">
+          <visual alignment="Left" panel="Main">
+            <regular caption="titleExport" icon="Save" tooltip="titleExport"/>
+          </visual>
+        </action>
+        <action name="Edit" type="Action">
+          <visual alignment="Right" panel="Main">
+            <regular caption="strEdit_Id" icon="edit" tooltip="tooltipEdit_Id"/>
+          </visual>
+        </action>
+        <action name="Refresh" type="Action">
+          <visual alignment="Right" panel="Main">
+            <regular caption="strRefresh_Id" icon="iconRefresh_Id" tooltip="tooltipRefresh_Id"/>
+          </visual>
+          <run>
+            <preText>
+              _LoadWhoExportItems(manager, obj);
+              return true;
+            </preText>
+          </run>
+        </action>
+      </actions>
+    </table>
+  </tables>
+
+</object>

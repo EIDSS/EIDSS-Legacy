@@ -1,0 +1,31 @@
+﻿@model eidss.model.Schema.HumanCaseDeduplicationListItem.Accessor
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Configurations
+@using eidss.webclient.Utils
+@using eidss.model.Schema
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+
+
+<div class="popupContent searchPopupContent withoutSearchPanel">
+    @using (Html.BeginForm())
+    {                               
+        <div class="windowButtonsPn">    
+            <input id="idButtonView" type="button" class="windowButton" onclick="humanCase.viewFromDuplicates()" value="@Translator.GetMessageString("View")"/>     
+            <input id="idButtonClose" type="button" class="windowButton" onclick="bvPopup.closeDefaultPopup();" value="@Translator.GetMessageString("Close")"/>                                                  
+        </div>                     
+            @(Html.DetailsPopupSearchGrid<HumanCaseDeduplicationListItem.HumanCaseDeduplicationListItemGridModel, HumanCaseDeduplicationListItem.HumanCaseDeduplicationListItemGridModelList>(
+                          new HumanCaseDeduplicationListItem.HumanCaseDeduplicationListItemGridModelList((long)AutoGridRoots.HumanCaseDeduplicationList), "HumanCase",
+                          readActionName: "GetDeduplicates",
+                          gridName: "Grid",
+                          selectionType: GridRowSelectionType.Single,
+                          getFilterFuncName: "humanCase.getDuplicatesFilter"))   
+    }
+</div>  

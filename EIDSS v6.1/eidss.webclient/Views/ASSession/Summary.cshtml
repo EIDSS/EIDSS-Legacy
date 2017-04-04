@@ -1,0 +1,84 @@
+﻿@model eidss.model.Schema.AsSession
+@using eidss.web.common.Utils
+@using eidss.model.Resources
+@using eidss.webclient.Utils
+
+@*Html.BvHidden(Model, m => m.idfCampaign)*@
+@*Html.BvHidden(Model, m => m.blnForceCampaignAssignment)*@
+<input type="hidden" id="hdnIsReadOnly" value="@Model.IsReadOnly("buttonSearchCampaign")"/>
+<table class="level1">
+    <tr>
+        <td class="xmedium firstLabel">
+            @Html.BvLabel(Model, m => m.strMonitoringSessionID)
+        </td>
+        <td class="medium">
+            @Html.BvEditbox(Model, m => m.strMonitoringSessionID)
+        </td>
+        <td class="xmedium label">
+            @Html.BvLabel(Model, m => m.strCampaignID)
+        </td>
+        <td>
+            @if(ViewBag.FromCampaign || Model.blnOnlyView){
+                @Html.BvEditbox(Model, m => m.strCampaignID)
+            }
+            else{
+                @Html.Action("InlineASCampaignPicker", "ASCampaign", new { obj = Model, objectId = Model.idfMonitoringSession, idfsASCampaignPropertyName = "idfCampaign", 
+                    strASCampaignPropertyName = "strCampaignName", strASCampaignIdPropertyName = "strCampaignID"})
+            }
+        </td>
+        <td class="small label">
+            @Html.BvLabel(Model, m=>m.idfsSite)
+        </td>
+        <td class="medium">
+            @Html.BvEditbox(Model, m => m.strSiteCode)
+        </td>
+    </tr>
+    <tr>
+        <td class="firstLabel">
+            @Html.BvLabel(Model, m => m.idfsMonitoringSessionStatus)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, m => m.MonitoringSessionStatus)
+        </td>
+        <td class="label">
+            @Html.BvLabel(Model, m => m.strCampaignName)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strCampaignName)
+        </td>
+        <td class="label">
+            @Translator.GetString("AsSession.idfPersonEnteredBy")
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strPersonEnteredBy)
+        </td>
+    </tr>
+    <tr>
+        <td class="firstLabel">
+            @Html.BvLabel(Model, m => m.datStartDate)
+        </td>
+        <td>
+            @Html.BvDatebox(Model, m => m.datStartDate)
+        </td>
+        <td class="label">
+            @Translator.GetString("idfsCampaignType")
+        </td>
+        <td>
+            @Html.BvCombobox(Model, m => m.CampaignType)
+        </td>
+        <td class="label">
+            @Translator.GetString("datDate")
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strReadOnlyEnteredDate)
+        </td>
+    </tr>
+    <tr>
+        <td class="firstLabel">
+            @Html.BvLabel(Model, m => m.datEndDate)
+        </td>
+        <td colspan="5">
+            @Html.BvDatebox(Model, m => m.datEndDate)
+        </td>
+    </tr>
+</table>

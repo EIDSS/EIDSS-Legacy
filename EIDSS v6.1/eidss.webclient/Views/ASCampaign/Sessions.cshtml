@@ -1,0 +1,17 @@
+﻿@model eidss.model.Schema.AsCampaign
+           
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+
+<div class="tabPanelContent">
+    @Html.Action("AsCampaignSessionsGrid", "Grids",
+            new
+            {
+                root = Model.idfCampaign,
+                name = Model.ObjectIdent + "Sessions",
+                sessionslist = Model.Sessions,
+                isReadOnly = Model.IsReadOnly("Sessions") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit)
+            })
+</div>
+

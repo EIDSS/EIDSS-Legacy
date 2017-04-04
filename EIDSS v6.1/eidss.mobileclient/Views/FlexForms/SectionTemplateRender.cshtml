@@ -1,0 +1,22 @@
+﻿@model eidss.model.Model.FlexibleForms.FlexNodes.FlexNode
+
+@if (Model.ChildListCount > 0 && (Model.HasSectionChildren || Model.IsSectionTable()))
+{    
+    @Model.GetSectionTemplate().NationalName
+    
+    foreach (var childNode in Model.ChildList)
+    {      
+        @Html.Action("FlexNodeRender", "FFPresenter", new { node = childNode })              
+    }
+}
+else if (Model.ChildListCount > 0 && !Model.HasSectionChildren)
+{
+    <h3><a href="#">@Model.GetSectionTemplate().NationalName</a></h3> 
+    <div>
+        @foreach (var childNode in Model.ChildList)
+        {      
+            @Html.Action("FlexNodeRender", "FFPresenter", new { node = childNode })              
+        }        
+    </div>	
+}
+  

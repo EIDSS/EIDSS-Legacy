@@ -1,0 +1,84 @@
+﻿@model eidss.model.Schema.GeoLocation           
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+        address.toggleMapButton(@Model.idfsGeoLocationType);
+    });  
+</script>
+
+<input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        <div class="windowButtonsPn">
+            <input id="idButtonOk" type="button" class="windowButton" onclick="geoLocation.onPickerChanged(@Model.idfGeoLocation);" value="@Translator.GetMessageString("Ok")"/>     
+            <input id="idButtonCancel" type="button" class="windowButton" onclick="bvPopup.closeDefaultPopup();" value="@Translator.GetMessageString("Cancel")"/>                                     
+        </div>
+        <div class="windowSeparator"></div>
+        @Html.Hidden("idfGeoLocation")
+        <table class="level1">
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Html.BvLabel(Model, m => m.GeoLocationType)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.GeoLocationType, true, "address.onGeoLocationTypeChanged")
+                </td> 
+            </tr>
+        </table>
+        var panelDescriptionClass = Model.IsInvisible("panelDescription") ? "level1 invisible" : "level1";
+        <table class="@panelDescriptionClass" id="panelDescription">
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Html.BvLabel(Model, m => m.strDescription)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strDescription, true)
+                </td>
+            </tr> 
+        </table>
+        @Html.Action("Details", "GeoLocation", new {root = ViewData["Root"], location = Model})
+
+        var panelGroundClass = Model.IsInvisible("panelGround") ? "level1 invisible" : "level1";
+        <table class="@panelGroundClass" id="panelGround">
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Html.BvLabel(Model, m => m.GroundType)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.GroundType)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.dblDistance)
+                </td>
+                <td>
+                    @Html.BvNumeric(Model, m => m.dblDistance, refreshOnLostFocus: true)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.dblAlignment)
+                </td>
+                <td>
+                    @Html.BvNumeric(Model, m => m.dblAlignment, refreshOnLostFocus: true)
+                </td>
+            </tr>
+        </table>
+
+        @Html.Action("Coordinates", "GeoLocation", new {root = ViewData["Root"], location = Model})
+    }
+</div>        

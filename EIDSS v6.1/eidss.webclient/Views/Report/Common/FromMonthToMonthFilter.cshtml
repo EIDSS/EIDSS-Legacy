@@ -1,0 +1,37 @@
+﻿@using eidss.webclient.Utils
+@using Kendo.Mvc.UI
+@model eidss.model.Reports.Common.FromMonthToMonthModel
+
+<table id="FromMonthToMonthTable">
+    <tr>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.StartMonth)
+        </td>
+        <td class="largereport">
+
+            @{
+                @(Html.Kendo().ComboBox()
+                      .BindTo(Model.SelectedMonthList.ConvertToSelectListItem())
+                      .Name("StartMonth")
+                      .Events(c => c.Change("paperForm.OnMonthChangedAZ"))
+                      )
+            }
+
+        </td>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.EndMonth)
+        </td>
+        <td class="largereport">
+
+            @{
+                @(Html.Kendo().ComboBox()
+                      .BindTo(Model.UnselectedMonthList.ConvertToSelectListItem())
+                      .Name("EndMonth")
+                      .Events(c => c.Change("paperForm.OnMonthChangedAZ"))
+                      )
+            }
+        </td>
+        <td></td>
+
+    </tr>
+</table>

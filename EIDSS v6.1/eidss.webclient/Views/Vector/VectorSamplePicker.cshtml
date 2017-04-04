@@ -1,0 +1,148 @@
+﻿@model eidss.model.Schema.VectorSample
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+<script type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+<input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        <div class="windowButtonsPn">
+            <input id="idButtonOk" type="button" class="windowButton" onclick="vectorsample.saveAndCloseVectorSampleGridEditWindow('@(Model.CaseObjectIdent)');" value="@Translator.GetMessageString("Ok")"/>                        
+            <input id="idButtonCancel" type="button" class="windowButton" onclick="bvPopup.closeDefaultPopup()" value="@Translator.GetMessageString("Cancel")"/>        
+        </div>   
+        <div class="windowSeparator"></div>  
+        
+        @Html.Hidden("idfMaterial", Model.idfMaterial)  
+                                                     
+        <table class="level1"> 
+        @*
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Html.BvLabel(Model, m => m.strVectorID)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strVectorID)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.idfsVectorType)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.VectorType)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.idfsVectorSubType)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strVectorSubTypeName)
+                </td> 
+            </tr>
+            *@
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strBarcode)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strBarcode)
+                </td> 
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strFieldBarcode)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strFieldBarcode, true)
+                </td> 
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.idfsSampleType)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.VectorType2SampleTypeFiltered)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.datFieldCollectionDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datFieldCollectionDate)
+                </td> 
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.idfSendToOffice)
+                </td>
+                <td>                     
+                    @Html.Action("InlineOrganizationPicker", "Organization", new { obj = Model, objectId = Model.idfMaterial, idfsOrganizationPropertyName = "idfSendToOffice",
+                        strOrganizationPropertyName = "strSendToOffice"
+                        , showInInternalWindow = true, HACode = (int)eidss.model.Enums.HACode.Vector })     
+                </td>                            
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="collapseEditWindowPanel" id="idfSendToOffice_InternalPicker">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.idfFieldCollectedByOffice)
+                </td>
+                <td>                     
+                    @Html.Action("InlineOrganizationPicker", "Organization", new { obj = Model, objectId = Model.idfMaterial, idfsOrganizationPropertyName = "idfFieldCollectedByOffice",
+                        strOrganizationPropertyName = "strFieldCollectedByOffice", idfsEmployeePropertyName = "idfFieldCollectedByPerson",
+                        strEmployeePropertyName = "strFieldCollectedByPerson", showInInternalWindow = true, HACode = (int)eidss.model.Enums.HACode.Vector })     
+                </td>                            
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="collapseEditWindowPanel" id="idfFieldCollectedByOffice_InternalPicker">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strNote)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strNote)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.datAccession)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datAccession)
+                </td> 
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.idfsAccessionCondition)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.AccessionCondition)
+                </td>                            
+            </tr>
+        </table>            
+    }           
+</div>

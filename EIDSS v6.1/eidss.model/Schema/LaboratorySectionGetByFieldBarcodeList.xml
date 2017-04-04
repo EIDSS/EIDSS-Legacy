@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="LaboratorySectionGetByFieldBarcodeListItem"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="fn_LaboratorySectionGetByFieldBarcode_SelectList" type="fnlist" />
+    </storage>
+
+    <tables>
+      <table name="LaboratorySectionGetByFieldBarcodeListItem">
+        <searchpanel>
+          <item name="strFieldBarcode" editor="Text" labelId="" />
+          <!--item name="idfSendToOffice" editor="Lookup" labelId="" defaultoper="="/-->
+        </searchpanel>
+        <grid>
+          <item name="idfMaterial" visible="false" key="true" />
+          <item name="strSampleName" />
+          <item name="datFieldCollectionDate" />
+          <item name="strCalculatedCaseID" />
+          <item name="strSendToOrganization" />
+          <item name="strCalculatedHumanName" />
+        </grid>
+        <labels>
+          <item name="strSampleName" labelId="idfsSampleType"/>
+          <item name="strCalculatedCaseID" labelId="strCaseIDSessionID"/>
+          <item name="strCalculatedHumanName" labelId="HumanName"/>
+        </labels>
+        <actions child="LaboratorySectionItem">
+          <standard>
+            <remove type="Report"/>
+          </standard>
+        </actions>
+      </table>
+    </tables>
+
+</object>

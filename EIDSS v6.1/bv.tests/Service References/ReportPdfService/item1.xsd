@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/eidss.model.Reports" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/eidss.model.Reports" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8097/?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://localhost:8097/?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/EIDSS.Reports.Parameterized.Human.GG.Report" />
+  <xs:complexType name="InfectiousDiseasesProcessor">
+    <xs:sequence>
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" name="m_AllMonthes" nillable="true" type="q1:ArrayOfint" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/EIDSS.Reports.Parameterized.Human.GG.Report" name="m_Version" type="q2:ReportVersion" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="InfectiousDiseasesProcessor" nillable="true" type="tns:InfectiousDiseasesProcessor" />
+</xs:schema>

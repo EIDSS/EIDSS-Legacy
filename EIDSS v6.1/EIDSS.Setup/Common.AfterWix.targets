@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <Import Project="Common.targets" />
+  <Import Project="$(ProjectDir)*.harvest" />
+
+
+  <PropertyGroup Label="BuildDependsOn">
+    <BuildDependsOn>
+      PrepareIntermediateOutputPath;
+      $(BuildDependsOn);
+      CustomAfterBuild
+    </BuildDependsOn>
+  </PropertyGroup>
+
+
+  <Target Name="PrepareIntermediateOutputPath" Condition=" !Exists( '$(IntermediateOutputPath)' ) ">
+    <MakeDir Directories="$(IntermediateOutputPath)" />
+  </Target>
+
+
+  <!-- Prepare the prerequisites for building. -->
+  <!-- See target "PrepareForBuild" in %ProgramFiles(x86)%\MSBuild\Microsoft\WiX\v3.x\wix2010.targets" for details -->
+  <PropertyGroup Label="PrepareForBuildDependsOn">
+    <PrepareForBuildDependsOn>
+      ParseVersionFile;
+      DefineCustomConstants;
+      $(PrepareForBuildDependsOn);
+    </PrepareForBuildDependsOn>
+  </PropertyGroup>
+
+  <Target Name="DefineCustomConstants">
+    <PropertyGroup>
+      <DefineConstants Condition=" '' != '$(ProductName)' ">
+        ProductName=$(PrivatePrefix)$(ProductName);
+        $(DefineConstants);
+      </DefineConstants>
+      <DefineConstants Condition=" '' == '$(ProductName)' ">
+        ProductName=$(PrivatePrefix)$(OutputName);
+        $(DefineConstants);
+      </DefineConstants>
+      <DefineConstants>
+        $(DefineConstants);
+        SourceDir=$(SourceDir)EIDSS\;
+        BinariesPaths=$(BinariesPaths);
+        BuildDate=$([System.DateTime]::Now.ToString('dd.MM.yyyy HH:mm'));
+        ProductVersion.wxi=$(VersionWixFile);
+        GlobalProductInfo.wxi=$(SolutionDir)GlobalProductInfo.wxi
+      </DefineConstants>
+    </PropertyGroup>
+
+    <Message Importance="low" Text="DefineConstants:%0d%0a%09'$(DefineConstants)'" />
+  </Target>
+
+
+  <!-- Actions just after Build. -->
+  <PropertyGroup Label="CustomAfterBuildDependsOn">
+    <CustomAfterBuildDependsOn>
+      PopulateInstallerDirectory
+    </CustomAfterBuildDependsOn>
+  </PropertyGroup>
+  <Target Name="CustomAfterBuild" DependsOnTargets="$(CustomAfterBuildDependsOn)">
+    <Message Importance="low" Text="CustomAfterBuild..." />
+  </Target>
+</Project>

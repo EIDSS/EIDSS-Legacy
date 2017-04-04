@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/eidss.model.AVR.ServiceData" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/eidss.model.AVR.ServiceData" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8071/?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/eidss.model.Avr.Chart" />
+  <xs:complexType name="ChartTableDTO">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseTableDTO">
+        <xs:sequence>
+          <xs:element name="_x003C_ChartSettings_x003E_k__BackingField" nillable="true" type="xs:base64Binary" />
+          <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/eidss.model.Avr.Chart" name="_x003C_ChartType_x003E_k__BackingField" nillable="true" type="q1:DBChartType" />
+          <xs:element name="_x003C_Height_x003E_k__BackingField" type="xs:int" />
+          <xs:element name="_x003C_Lang_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_ViewId_x003E_k__BackingField" type="xs:long" />
+          <xs:element name="_x003C_Width_x003E_k__BackingField" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ChartTableDTO" nillable="true" type="tns:ChartTableDTO" />
+  <xs:complexType name="BaseTableDTO">
+    <xs:sequence>
+      <xs:element name="_x003C_BodyPackets_x003E_k__BackingField" nillable="true" type="tns:ArrayOfBaseTablePacketDTO" />
+      <xs:element name="_x003C_Header_x003E_k__BackingField" nillable="true" type="tns:BaseTablePacketDTO" />
+      <xs:element name="_x003C_TableName_x003E_k__BackingField" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BaseTableDTO" nillable="true" type="tns:BaseTableDTO" />
+  <xs:complexType name="ArrayOfBaseTablePacketDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BaseTablePacketDTO" nillable="true" type="tns:BaseTablePacketDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBaseTablePacketDTO" nillable="true" type="tns:ArrayOfBaseTablePacketDTO" />
+  <xs:complexType name="BaseTablePacketDTO">
+    <xs:sequence>
+      <xs:element name="_x003C_BinaryBody_x003E_k__BackingField" nillable="true" type="xs:base64Binary" />
+      <xs:element name="_x003C_RowCount_x003E_k__BackingField" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BaseTablePacketDTO" nillable="true" type="tns:BaseTablePacketDTO" />
+  <xs:complexType name="ChartExportDTO">
+    <xs:sequence>
+      <xs:element name="_x003C_ChartSettings_x003E_k__BackingField" nillable="true" type="xs:base64Binary" />
+      <xs:element name="_x003C_JpgBytes_x003E_k__BackingField" nillable="true" type="xs:base64Binary" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ChartExportDTO" nillable="true" type="tns:ChartExportDTO" />
+  <xs:complexType name="ViewDTO">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseTableDTO">
+        <xs:sequence>
+          <xs:element name="_x003C_BinaryViewStructure_x003E_k__BackingField" nillable="true" type="xs:base64Binary" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ViewDTO" nillable="true" type="tns:ViewDTO" />
+  <xs:complexType name="QueryTableHeaderDTO">
+    <xs:sequence>
+      <xs:element name="_x003C_BinaryHeader_x003E_k__BackingField" nillable="true" type="tns:QueryTablePacketDTO" />
+      <xs:element name="_x003C_PacketCount_x003E_k__BackingField" type="xs:int" />
+      <xs:element name="_x003C_QueryCacheId_x003E_k__BackingField" type="xs:long" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="QueryTableHeaderDTO" nillable="true" type="tns:QueryTableHeaderDTO" />
+  <xs:complexType name="QueryTablePacketDTO">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseTablePacketDTO">
+        <xs:sequence>
+          <xs:element name="_x003C_IsArchive_x003E_k__BackingField" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="QueryTablePacketDTO" nillable="true" type="tns:QueryTablePacketDTO" />
+</xs:schema>

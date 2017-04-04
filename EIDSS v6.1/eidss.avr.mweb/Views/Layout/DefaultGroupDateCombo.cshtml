@@ -1,0 +1,17 @@
+﻿@using eidss.avr.mweb.Utils
+@model eidss.avr.mweb.Models.AvrPivotGridModel
+
+@Html.DevExpress().ComboBox(settings => {
+    settings.Name = "cbDefaultGroupDate";
+    settings.Width = 200;
+    settings.Height = 10;
+    settings.CallbackRouteValues = new { Controller = "Layout", Action = "DefaultGroupDateChanged" };
+    settings.ControlStyle.CssClass = "xlarge";
+    settings.Properties.ValueType = typeof(long);
+    settings.Properties.TextField = "Value";
+    settings.Properties.ValueField = "Key";
+    settings.Properties.CallbackPageSize = 20;
+    settings.Enabled = !Model.PivotSettings.IsPublished && eidss.model.Core.AvrPermissions.UpdatePermission;
+    settings.Properties.ClientSideEvents.ValueChanged = "layoutPivotGrid.onDefaultGroupDateChanged";
+    settings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+}).BindList(Model.PivotSettings.Intervals).Bind(Model.PivotSettings.DefaultGroupInterval).GetHtml()

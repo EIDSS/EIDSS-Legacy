@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="AnimalList"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spVetCaseAnimals_SelectDetail" type="detaillist" />
+  </storage>
+
+  <tables>
+    <table name="AnimalListItem" tostring='c => (string.IsNullOrEmpty(c.strAnimalCode) || string.IsNullOrEmpty(c.strSpecies)) ? "" : c.strAnimalCode + " / " + c.strSpecies + " / " + c.strAnimalGender'>
+      <grid>
+        <item name="idfAnimal" key="true" visible="false"/>
+        <item name="strHerdSpecies" type="string" required="true"/>
+        <item name="strAnimalCode" required="true"/>
+        <item name="strAnimalAge" type="string"/>
+        <item name="strAnimalGender" type="string" />
+        <item name="strClinicalSigns" type="string"/>
+        <item name="strAnimalCondition" type="string" />        
+      </grid>
+      <labels>
+        <item labelId="Animal.idfParty" name="idfParty"/>
+        <item labelId="strHerdSpecies" name="idfSpecies"/>
+      </labels>
+      <fields>
+        <!--storage name="_HACode" type="int?"/-->
+        <storage name="idfsDiagnosisForCs" type="long?"/>
+        <storage name="strClinicalSigns" type="string"/>
+        <calculated name="CaseObjectIdent" type="string" depends="idfCase" lambda='c => "VetCase_" + c.idfCase + "_"' />
+        <calculated name="strHerdSpecies" type="string" depends="idfSpecies" lambda='c=>String.Format("{0}/{1}", c.strHerdCode, c.strSpecies)'/>
+        <calculated name="strAnimalGender" type="string" depends="idfsAnimalGender" lambda='c => c.AnimalGender == null ? "" : c.AnimalGender.name'/>
+        <calculated name="strAnimalAge" type="string" depends="idfsAnimalAge" lambda='c => c.AnimalAge == null ? "" : c.AnimalAge.name'/>
+        <calculated name="strAnimalCondition" type="string" depends="idfsAnimalCondition" lambda='c => c.AnimalCondition == null ? "" : c.AnimalCondition.name'/>
+      </fields>
+      <relations>
+        <relation name="FFPresenterCs" table="FFPresenterModel" internal="false" type="link" source="idfObservation" target="CurrentObservation" lazy="false" />       
+      </relations>
+      <lookups>
+        <lookup name="AnimalGender" table="BaseReference" section="rftAnimalSex" source="idfsAnimalGender" target="idfsBaseReference" >
+          <filters>
+            <filter predicate="c => ((c.intHACode.GetValueOrDefault() &amp; (int)HACode.Livestock) != 0) || !c.intHACode.HasValue || c.idfsBaseReference == obj.idfsAnimalGender" />
+          </filters>
+        </lookup>
+        <lookup name="AnimalAge" table="AnimalAgeLookup" source="idfsAnimalAge" target="idfsReference"  >
+          <params>
+            <param name="idfsSpeciesType" lambda='c => c.idfsSpeciesType.ToString()' type="string" />
+          </params>
+        </lookup>
+        <lookup name="AnimalCondition" table="BaseReference" section="rftAnimalCondition" source="idfsAnimalCondition" target="idfsBaseReference" />
+        <!--<lookup name="SpeciesType" table="SpeciesTypeLookup" source="idfsSpeciesType" target="idfsBaseReference">
+          <filters>
+            <filter predicate="c => (c.intHACode.GetValueOrDefault() &amp; obj._HACode.GetValueOrDefault()) != 0" />            
+          </filters>
+        </lookup>-->
+      </lookups>
+      <storage>
+        <post name="spVetCaseAnimals_Post"/>
+        <!--<insert name="spVetCaseAnimals_Post"/>
+        <update name="spVetCaseAnimals_Post"/>-->
+      </storage>
+      <postorder>
+        <item name="this"/>
+        <item name="FFPresenterCs"/>
+      </postorder>
+      <deleteorder>
+        <item name="FFPresenterCs"/>
+        <item name="this"/>
+      </deleteorder>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfAnimal" class="GetNewIDExtender" />
+          <lambda_extender target="strAnimalCode" type="string" lambda='c => c.Parent as VetCase == null ? "" : String.Format("(new {0})", (c.Parent as VetCase).AnimalList.Count(a=>!a.IsMarkedToDelete)+1)'/>
+
+          <!--<db_lambda_extender target="strAnimalCode" type="string" lambda='(c,m) => 
+                        m.SetSpCommand("dbo.spGetNextNumber", (long)NumberingObjectEnum.Animal, DBNull.Value, DBNull.Value)
+                        .ExecuteScalar&lt;string&gt;(ScalarSourceType.OutputParameter, "NextNumberValue")' />-->
+          <scalar_extender target="idfObservation" class="GetNewIDExtender" />
+          <lambda_extender target="FFPresenterCs" type="FFPresenterModel" lambda="c => FFPresenterModel.Accessor.Instance(null).SelectByKey(manager, obj.idfObservation)" />
+          <custom_extender>
+            <text>
+              obj.FFPresenterCs = FFPresenterModel.Accessor.Instance(null).SelectByKey(manager, obj.idfObservation);
+              obj.FFPresenterCs.SetProperties(EidssSiteContext.Instance.CountryID, obj.idfsDiagnosisForCs, FFTypeEnum.LivestockAnimalCS, obj.idfObservation.Value, obj.idfCase); //obj.idfAnimal
+              if (obj.FFPresenterCs.CurrentTemplate != null) obj.idfsFormTemplate = obj.FFPresenterCs.CurrentTemplate.idfsFormTemplate;
+            </text>
+          </custom_extender>
+        </creating>
+        <loading>
+        </loading>
+        <loaded>
+          <custom_extender>
+            <text>
+              if (obj.idfsFormTemplate.HasValue)
+              {
+                obj.FFPresenterCs.SetProperties(obj.idfsFormTemplate.Value, obj.idfCase); //obj.idfAnimal
+                obj.strClinicalSigns = AnimalListItem.GetClinicalSigns(obj.FFPresenterCs);
+              }
+              else
+              {
+                if (obj.idfObservation == null)
+                  obj.idfObservation = (new GetNewIDExtender&lt;AnimalListItem&gt;()).GetScalar(manager, obj);
+                obj.FFPresenterCs = FFPresenterModel.Accessor.Instance(null).SelectByKey(manager, obj.idfObservation);
+                obj.FFPresenterCs.SetProperties(EidssSiteContext.Instance.CountryID, obj.idfsDiagnosisForCs, FFTypeEnum.LivestockAnimalCS, obj.idfObservation.Value, obj.idfCase); //obj.idfAnimal
+                if (obj.FFPresenterCs.CurrentTemplate != null)
+                  obj.idfsFormTemplate = obj.FFPresenterCs.CurrentTemplate.idfsFormTemplate;
+              }
+            </text>
+          </custom_extender>
+        </loaded>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <lookup_handler lookup="AnimalAge" field="idfsSpeciesType" />
+          <lambda_handler field="idfSpecies" target="idfsSpeciesType" type="long" lambda="c=>c.idfSpecies.HasValue &amp;&amp; (c.Parent as VetCase != null) &amp;&amp; (c.Parent as VetCase).Farm.FarmTree.Single(i=>i.idfParty == c.idfSpecies).idfsSpeciesTypeReference.HasValue ? (c.Parent as VetCase).Farm.FarmTree.Single(i=>i.idfParty == c.idfSpecies).idfsSpeciesTypeReference.Value : default(long)"/>
+          <custom_handler field='idfsDiagnosisForCs'>
+            <text>
+              UpdateTemplate(obj);
+            </text>
+          </custom_handler>
+        </fieldhandler>
+        <childhandler>
+          <lambda_handler field="ActivityParameters" container="FFPresenterCs" target="strClinicalSigns" lambda="c=>AnimalListItem.GetClinicalSigns(c.FFPresenterCs)" type="string"/>
+        </childhandler>
+      </handlers>
+      <validators>
+        <change>
+        </change>
+        <post>
+          <required_validator target='idfSpecies' message='ErrMandatoryFieldRequired' />
+          <custom_validator method="CustomValidations" />
+        </post>
+        <delete>
+          <predicate_validator predicate='c => (c.Parent as VetCase).Samples.Count(s => s.idfParty == c.idfAnimal &amp;&amp; !s.IsMarkedToDelete) == 0' message='msgCantDeleteAnimal'/>
+        </delete>
+      </validators>
+
+      <actions>
+        <action name="CreateAnimal" type="Create">
+          <run>
+            <params>
+              <param name="diagnosis" type="long?" />
+            </params>
+            <creating>
+              <lambda_extender target="idfsDiagnosisForCs" type="long?" lambda='c => diagnosis' />
+              <lambda_extender target="idfCase" type="long" lambda="c => (Parent as VetCase).idfCase"/>
+            </creating>
+          </run>
+        </action>
+      </actions>
+    </table>
+  </tables>
+
+</object>

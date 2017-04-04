@@ -1,0 +1,475 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BuildAssemblerLibrary</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.Ddue.Tools.BuildAssembler">
+            <summary>
+            This class contains the build context and the build components
+            </summary>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildAssembler.#ctor(System.Action{System.String})">
+            <summary>
+            Constructor
+            </summary>
+            <param name="messageLogger">The message logger action</param>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildAssembler.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildAssembler.Dispose(System.Boolean)">
+            <summary>
+            Dispose of all components when being disposed
+            </summary>
+            <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
+            dispose of the unmanaged resources.</param>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildAssembler.OnComponentEvent(System.Object,System.EventArgs)">
+            <summary>
+            This raises the <see cref="E:Microsoft.Ddue.Tools.BuildAssembler.ComponentEvent"/> event
+            </summary>
+            <param name="sender">The sender of the event</param>
+            <param name="e">The event arguments.  This may be <see cref="F:System.EventArgs.Empty"/> or a derived event
+            arguments class containing information for the event handlers.</param>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildAssembler.Execute(System.Xml.XPath.XPathDocument,System.String)">
+            <summary>
+            This is used to execute the build assembler instance using the specified configuration file and
+            manifest file.
+            </summary>
+            <param name="configuration">The build assembler configuration</param>
+            <param name="manifest">The manifest file</param>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildAssembler.ReadManifest(System.String)">
+            <summary>
+            This is used to read a manifest file to extract topic IDs for processing
+            </summary>
+            <param name="manifest">The manifest file to read</param>
+            <returns>An enumerable list of topic IDs</returns>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildAssembler.Apply(System.String)">
+            <summary>
+            Apply the current set of components to the topics defined in the given manifest file
+            </summary>
+            <param name="manifestFile">The manifest file containing the topics to generate</param>
+            <returns>A count of the number of topics processed</returns>
+            <overloads>There are two overloads for this method</overloads>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildAssembler.Apply(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Apply the current set of components to the given list of topics
+            </summary>
+            <param name="topics">The enumerable list of topic IDs</param>
+            <returns>A count of the number of topics processed</returns>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildAssembler.LoadComponent(System.Xml.XPath.XPathNavigator)">
+            <summary>
+            This is used to create a component based on the given configuration
+            </summary>
+            <param name="configuration">The component configuration</param>
+            <returns>A component created using the given definition</returns>
+            <exception cref="T:System.ArgumentNullException">This is thrown if <paramref name="configuration"/> is null</exception>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildAssembler.LoadComponents(System.Xml.XPath.XPathNavigator)">
+            <summary>
+            This is used to load a set of components in a configuration and return them as an enumerable list
+            </summary>
+            <param name="configuration">The con</param>
+            <returns>An enumerable list of components created based on the configuration information</returns>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildAssembler.AddComponents(System.Xml.XPath.XPathNavigator)">
+            <summary>
+            Add a set of components based on the given configuration
+            </summary>
+            <param name="configuration">The configuration containing the component definitions</param>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildAssembler.ClearComponents">
+            <summary>
+            Dispose of all components and clear them from the collection
+            </summary>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildAssembler.WriteMessage(Microsoft.Ddue.Tools.MessageLevel,System.String,System.Object[])">
+            <summary>
+            Write a message to the message log
+            </summary>
+            <param name="level">The message level</param>
+            <param name="message">The message to write</param>
+            <param name="args">An optional list of arguments to format into the message</param>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildAssembler.WriteMessage(System.Type,Microsoft.Ddue.Tools.MessageLevel,System.String,System.String)">
+            <summary>
+            Write a component message to the message log
+            </summary>
+            <param name="type">The component type making the request</param>
+            <param name="level">The message level</param>
+            <param name="key">An optional topic key related to the message or null if there isn't one</param>
+            <param name="message">The message to write to the console</param>
+            <remarks>If the message level is below the current verbosity level setting, the message is ignored</remarks>
+        </member>
+        <member name="P:Microsoft.Ddue.Tools.BuildAssembler.Context">
+            <summary>
+            This read-only property returns the current build context
+            </summary>
+        </member>
+        <member name="P:Microsoft.Ddue.Tools.BuildAssembler.BuildComponents">
+            <summary>
+            This read-only property returns the current list of build components
+            </summary>
+        </member>
+        <member name="P:Microsoft.Ddue.Tools.BuildAssembler.VerbosityLevel">
+            <summary>
+            The verbosity level for the message handlers
+            </summary>
+            <value>The value can be set to <c>Info</c>, <c>Warn</c>, or <c>Error</c>.  The default level
+            is <see cref="F:Microsoft.Ddue.Tools.MessageLevel.Info"/> so that all messages are displayed.  Setting it to a higher
+            level will suppress messages below the given level.</value>
+            <remarks>It is up to the message handler to make use of this property</remarks>
+        </member>
+        <member name="E:Microsoft.Ddue.Tools.BuildAssembler.ComponentEvent">
+            <summary>
+            This event is raised when a component wants to signal that something of interest has happened
+            </summary>
+        </member>
+        <member name="T:Microsoft.Ddue.Tools.BuildComponent">
+            <summary>
+            This is the base class for all build components
+            </summary>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildComponent.#ctor(Microsoft.Ddue.Tools.BuildAssembler,System.Xml.XPath.XPathNavigator)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="assembler">The build assembler instance using this component</param>
+            <param name="configuration">The component configuration</param>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildComponent.Finalize">
+            <summary>
+            This handles garbage collection to ensure proper disposal of the build component if not done
+            explicity with <see cref="M:Microsoft.Ddue.Tools.BuildComponent.Dispose"/>.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildComponent.Dispose">
+            <summary>
+            This implements the Dispose() interface to properly dispose of the build component.
+            </summary>
+            <overloads>There are two overloads for this method.</overloads>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildComponent.Dispose(System.Boolean)">
+            <summary>
+            This can be overridden by derived classes to add their own disposal code if necessary.
+            </summary>
+            <param name="disposing">Pass true to dispose of the managed and unmanaged resources or false to just
+            dispose of the unmanaged resources.</param>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildComponent.Apply(System.Xml.XmlDocument,System.String)">
+            <summary>
+            This abstract method must be overridden to apply the build component's changes to the specified
+            document.
+            </summary>
+            <param name="document">The document that the build component can modify</param>
+            <param name="key">The key that uniquely identifies the document</param>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildComponent.OnComponentEvent(System.EventArgs)">
+            <summary>
+            This can be used to raise the <see cref="E:Microsoft.Ddue.Tools.BuildAssembler.ComponentEvent"/> event
+            with the specified event arguments.
+            </summary>
+            <param name="e">The event arguments.  This can be <see cref="F:System.EventArgs.Empty"/> or a derived event
+            arguments class containing information to pass to the event handlers.</param>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildComponent.WriteMessage(Microsoft.Ddue.Tools.MessageLevel,System.String,System.Object[])">
+            <summary>
+            This can be used to report a message
+            </summary>
+            <param name="level">The message level</param>
+            <param name="message">The message to report</param>
+            <param name="args">An optional list of arguments to format into the message</param>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildComponent.WriteMessage(System.String,Microsoft.Ddue.Tools.MessageLevel,System.String,System.Object[])">
+            <summary>
+            This can be used to report a message for a specific topic ID
+            </summary>
+            <param name="key">The topic key related to the message</param>
+            <param name="level">The message level</param>
+            <param name="message">The message to report</param>
+            <param name="args">An optional list of arguments to format into the message</param>
+            <remarks>This is useful for warning and error messages as the topic ID will be included even when
+            the message level is set to warnings or higher.  In such cases, the informational messages containing
+            the "building topic X" messages are suppressed.</remarks>
+        </member>
+        <member name="P:Microsoft.Ddue.Tools.BuildComponent.BuildAssembler">
+            <summary>
+            This read-only property returns a reference to the build assembler instance using the component
+            </summary>
+        </member>
+        <member name="P:Microsoft.Ddue.Tools.BuildComponent.Data">
+            <summary>
+            This read-only property returns a static dictionary that can be used to store information shared
+            between build components.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Ddue.Tools.BuildComponentUtilities">
+            <summary>
+            This class contains a set of utility extension methods that can be used by build components
+            </summary>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildComponentUtilities.GetExceptionMessage(System.Exception)">
+            <summary>
+            This is used to get the message strings from an exception and any of its inner exceptions
+            </summary>
+            <param name="exception">The exception from which to get the message</param>
+            <returns>The exception message along with any inner exception messages</returns>
+            <remarks><see cref="T:System.Xml.XmlException"/> and <see cref="T:System.Xml.Xsl.XsltException"/> messages will be returned with
+            line number, line position, and source URI information.</remarks>
+            <exception cref="T:System.ArgumentNullException">This is thrown if the <paramref name="exception"/> argument
+            is null</exception>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildComponentUtilities.GetInnerXml(System.Xml.XPath.XPathNavigator)">
+            <summary>
+            This is used to get the inner XML of a node without changing the spacing
+            </summary>
+            <param name="node">The node from which to get the inner XML</param>
+            <returns>The inner XML as a string with its spacing preserved</returns>
+            <exception cref="T:System.ArgumentNullException">This is thrown if the <paramref name="node"/> parameter
+            is null.</exception>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildComponentUtilities.ConvertNodeIteratorToArray(System.Xml.XPath.XPathNodeIterator)">
+            <summary>
+            This method is obsolete and has been replaced by <see cref="M:Microsoft.Ddue.Tools.BuildComponentUtilities.ToArray(System.Xml.XPath.XPathNodeIterator)"/>
+            </summary>
+            <param name="iterator">The XPath iterator to convert to an array</param>
+            <returns>An array with the cloned nodes from the iterator</returns>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildComponentUtilities.ToArray(System.Xml.XPath.XPathNodeIterator)">
+            <summary>
+            Convert an XPath node iterator to an array
+            </summary>
+            <param name="iterator">The XPath iterator to convert to an array</param>
+            <returns>An array with the cloned nodes from the iterator</returns>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildComponentUtilities.EvalXPathExpr(System.Xml.XPath.IXPathNavigable,System.Xml.XPath.XPathExpression,Microsoft.Ddue.Tools.CustomContext)">
+            <summary>
+            This is used to get the string result from evaluating an XPath expression against the given
+            document and context.
+            </summary>
+            <param name="document">The document to use</param>
+            <param name="expression">The XPath expression to evaluate</param>
+            <param name="context">The context to use</param>
+            <overloads>There are two overloads for this method</overloads>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildComponentUtilities.EvalXPathExpr(System.Xml.XPath.IXPathNavigable,System.Xml.XPath.XPathExpression,System.String[])">
+            <summary>
+            This is used to get the string result from evaluating an XPath expression against the given document
+            and a context created from a set of key/value pairs.
+            </summary>
+            <param name="document">The document to use</param>
+            <param name="expression">The XPath expression to evaluate</param>
+            <param name="keyValuePairs">A set of key/value pairs to use when creating the context</param>
+            <example>
+            <code language="cs">
+            string result = document.EvalXPathExpr("concat($key, '.htm')", "key", "filename");
+            </code>
+            </example>
+            <exception cref="T:System.ArgumentException">This is thrown if the <paramref name="keyValuePairs"/>
+            parameter contains an odd number of parameters.</exception>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildComponentUtilities.GetRelativePath(System.String,System.String)">
+            <summary>
+            This returns the path argument adjusted to be relative to the base path. Absolute path names will
+            be returned unchanged.
+            </summary>
+            <param name="path">The path to adjust including the filename</param>
+            <param name="basePath">The base path to use including the filename</param>
+            <example>
+            <code language="none" title=" ">
+            path:     "xxx/aaa/target.html"
+            basePath: "xxx/bbb/source.html"
+            result:   "../aaa/target.html"
+            </code>
+            </example>
+            <remarks>This assumes that the path separator is "/" and that both paths include a filename</remarks>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildComponentUtilities.IsLegalXmlText(System.String)">
+            <summary>
+            This is used to confirm that the specified text only contains legal XML characters
+            </summary>
+            <param name="text">The text to check</param>
+            <returns>True if all characters are legal XML characters, false if not</returns>
+        </member>
+        <member name="T:Microsoft.Ddue.Tools.BuildContext">
+            <summary>
+            This represents the build context used by BuildAssembler
+            </summary>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildContext.AddNamespace(System.String,System.String)">
+            <summary>
+            This adds an XML namespace to the context
+            </summary>
+            <param name="prefix">The namespace prefix</param>
+            <param name="uri">The namespace URI</param>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildContext.LookupNamespace(System.String)">
+            <summary>
+            This looks up a namespace by prefix
+            </summary>
+            <param name="prefix">The namespace prefix to look up</param>
+            <returns>The URI if found or null if not found</returns>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildContext.RemoveNamespace(System.String)">
+            <summary>
+            This removes a namespace from the context
+            </summary>
+            <param name="prefix">The namespace prefix to remove</param>
+            <returns>True if found and removed or false if not found</returns>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildContext.AddVariable(System.String,System.String)">
+            <summary>
+            Add a variable to the context with the specified value
+            </summary>
+            <param name="name">The variable to add</param>
+            <param name="value">The value to assign the variable</param>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildContext.LookupVariable(System.String)">
+            <summary>
+            Look up the named variable
+            </summary>
+            <param name="name">The variable to look up</param>
+            <returns>The variable value if found or null if not found</returns>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildContext.RemoveVariable(System.String)">
+            <summary>
+            Remove the named variable from the context
+            </summary>
+            <param name="name">The variable to remove</param>
+            <returns>True if found and removed or false if not found</returns>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildContext.ClearVariables">
+            <summary>
+            Remove all variables from the context
+            </summary>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.BuildContext.Load(System.Xml.XPath.XPathNavigator)">
+            <summary>
+            This is used to load the context settings from the given configuration information
+            </summary>
+            <param name="configuration">The configuration information from which to load the context
+            settings.</param>
+            <remarks>There should be one ore more <c>namespace</c> elements with a <c>prefix</c> and a
+            <c>uri</c> attribute that identify the namespace to add to the context.</remarks>
+        </member>
+        <member name="P:Microsoft.Ddue.Tools.BuildContext.Item(System.String)">
+            <summary>
+            Indexer
+            </summary>
+            <param name="name">The variable for which to get or set the value</param>
+            <returns>The variable value if found or null if the named variable was not found</returns>
+        </member>
+        <member name="P:Microsoft.Ddue.Tools.BuildContext.XsltContext">
+            <summary>
+            This read-only property returns the context used for XPath queries
+            </summary>
+        </member>
+        <member name="T:Microsoft.Ddue.Tools.CustomContext">
+            <summary>
+            This represents a custom XSLT context used by BuildAssembler
+            </summary>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.CustomContext.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.CustomContext.ClearVariable(System.String)">
+            <summary>
+            Clear the named variable
+            </summary>
+            <param name="name">The variable to clear</param>
+            <returns>True if successful, false if not found</returns>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.CustomContext.ClearVariables">
+            <summary>
+            Clear all variables
+            </summary>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.CustomContext.ResolveVariable(System.String,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.CustomContext.ResolveFunction(System.String,System.String,System.Xml.XPath.XPathResultType[])">
+            <summary>
+            This method is not implemented
+            </summary>
+            <param name="prefix">Not used</param>
+            <param name="name">Not used</param>
+            <param name="argumentTypes">Not used</param>
+            <returns>Not implemented</returns>
+            <exception cref="T:System.NotImplementedException">This method is not implemented</exception>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.CustomContext.CompareDocument(System.String,System.String)">
+            <inheritdoc />
+            <remarks>This implementation always returns zero</remarks>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.CustomContext.PreserveWhitespace(System.Xml.XPath.XPathNavigator)">
+            <inheritdoc />
+            <remarks>This implementation always returns true</remarks>
+        </member>
+        <member name="P:Microsoft.Ddue.Tools.CustomContext.Item(System.String)">
+            <summary>
+            Indexer
+            </summary>
+            <param name="variable">The variable value to get or set</param>
+            <returns>The variable value as a string</returns>
+        </member>
+        <member name="P:Microsoft.Ddue.Tools.CustomContext.Whitespace">
+            <inheritdoc />
+            <value>This implementation always returns true</value>
+        </member>
+        <member name="T:Microsoft.Ddue.Tools.CustomVariable">
+            <summary>
+            This represents a custom XSLT variable used by a BuildAssembler <see cref="T:Microsoft.Ddue.Tools.CustomContext"/>
+            </summary>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.CustomVariable.#ctor(System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="value">The variable's value</param>
+        </member>
+        <member name="M:Microsoft.Ddue.Tools.CustomVariable.Evaluate(System.Xml.Xsl.XsltContext)">
+            <inheritdoc />
+            <remarks>This always returns the value of the variable assigned in the constructor</remarks>
+        </member>
+        <member name="P:Microsoft.Ddue.Tools.CustomVariable.IsLocal">
+            <inheritdoc />
+            <value>This implementation always returns false</value>
+        </member>
+        <member name="P:Microsoft.Ddue.Tools.CustomVariable.IsParam">
+            <inheritdoc />
+            <value>This implementation always returns false</value>
+        </member>
+        <member name="P:Microsoft.Ddue.Tools.CustomVariable.VariableType">
+            <inheritdoc/>
+            <value>This implementation always returns <see cref="F:System.Xml.XPath.XPathResultType.String"/></value>
+        </member>
+        <member name="T:Microsoft.Ddue.Tools.MessageLevel">
+            <summary>
+            This enumerated type defines the message logging levels
+            </summary>
+        </member>
+        <member name="F:Microsoft.Ddue.Tools.MessageLevel.Ignore">
+            <summary>Do not show at all</summary>
+        </member>
+        <member name="F:Microsoft.Ddue.Tools.MessageLevel.Info">
+            <summary>Informational message</summary>
+        </member>
+        <member name="F:Microsoft.Ddue.Tools.MessageLevel.Warn">
+            <summary>A warning message (a minor problem)</summary>
+        </member>
+        <member name="F:Microsoft.Ddue.Tools.MessageLevel.Error">
+            <summary>An error message (a major problem that will stop the build)</summary>
+        </member>
+        <member name="F:Microsoft.Ddue.Tools.MessageLevel.Diagnostic">
+            <summary>A diagnostic message, useful for debugging</summary>
+        </member>
+    </members>
+</doc>

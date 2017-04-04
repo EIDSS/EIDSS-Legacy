@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="BasicSyndromicSurveillanceAggregateDetail"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spBasicSyndromicSurveillanceAggregateDetail_SelectDetail" type="detaillist" />
+  </storage>
+
+  <tables>
+    <table name="BasicSyndromicSurveillanceAggregateDetail">
+      <grid>
+        <item name="idfAggregateDetail" visible="false" key="true"/>
+        <item name="idfHospital"/>
+        <item name="intAge0_4" />
+        <item name="intAge5_14" />
+        <item name="intAge15_29" />
+        <item name="intAge30_64" />
+        <item name="intAge65" />
+        <item name="inTotalILI" />
+        <item name="intTotalAdmissions" />
+        <item name="intILISamples" />
+      </grid>
+      <labels>
+        <item labelId="strHospital" name="idfHospital"/>
+      </labels>
+      <fields>
+      </fields>
+      <readonly>
+        <fields name="*" predicate="c => c.ReadOnly" />
+      </readonly>
+      <relations>
+      </relations>
+      <lookups>
+        <lookup name="Hospital" table="OrganizationLookup" source="idfHospital" target="idfInstitution">
+          <params>
+            <param name="ID" const="null" />
+            <param name="intHACode" const="null" />
+          </params>
+          <filters>
+            <filter predicate="c => (((c.intHACode??0) &amp; (int)HACode.Syndromic) != 0) || c.idfInstitution == obj.idfHospital" />
+          </filters>
+        </lookup>
+      </lookups>
+      <storage>
+        <post name="spBasicSyndromicSurveillanceAggregateDetail_Post"/>
+        <delete name="spBasicSyndromicSurveillanceAggregateDetail_Delete"/>
+      </storage>
+      <postorder>
+        <item name="this"/>
+      </postorder>
+      <deleteorder>
+        <item name="this"/>
+      </deleteorder>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfAggregateDetail" class="GetNewIDExtender" />
+        </creating>
+        <created>
+          <lambda_extender target="idfAggregateHeader" type="long" lambda="c => c.Parent != null ? (c.Parent as BasicSyndromicSurveillanceAggregateHeader).idfAggregateHeader : 0"/>
+        </created>
+        <loading>
+        </loading>
+        <loaded>
+        </loaded>
+        <posting>
+        </posting>
+        <posted>
+        </posted>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+        </fieldhandler>
+        <childhandler>
+        </childhandler>
+      </handlers>
+      <validators>
+        <chains>
+          <item field="MinValue" type="NullableInt" value="1">
+            <item field="intAge0_4"/>
+            <item field="intAge5_14"/>
+            <item field="intAge15_29"/>
+            <item field="intAge30_64"/>
+            <item field="intAge65"/>
+            <item field="inTotalILI"/>
+            <item field="intTotalAdmissions"/>
+            <item field="intILISamples"/>
+          </item>
+        </chains>
+        <post>
+          <required_validator target="idfHospital" property="Hospital" label="BSS.Hospital"/>
+        </post>
+        <delete>
+        </delete>
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <remove type="Edit"/>
+          <remove type="Report"/>
+        </standard>
+        <action name="Create" type="Create">
+          <visual panel="Group" visiblePredicate="(c, a, b, p) => false" />
+        </action>
+        <action name="Edit" type="Edit">
+          <visual panel="Group" visiblePredicate="(c, a, b, p) => false" />
+        </action>
+      </actions>
+    </table>
+  </tables>
+
+</object>

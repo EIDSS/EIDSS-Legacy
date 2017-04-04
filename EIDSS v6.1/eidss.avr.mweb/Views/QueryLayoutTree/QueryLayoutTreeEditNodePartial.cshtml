@@ -1,0 +1,195 @@
+﻿@using bv.model.Model.Core
+@using eidss.avr.mweb.Utils
+@using eidss.model.Avr.Tree
+@using eidss.web.common.Utils
+@model AvrTreeElement
+
+<div class="edit_form">
+    @{
+        long cQueryId = 0;
+
+        if (Request.Cookies["queryId"] != null)
+        {
+            cQueryId = Convert.ToInt64(Request.Cookies["queryId"].Value);
+            if (Model.QueryID == 0)
+            {
+                var tree = Session["QueryTree"] as List<AvrTreeElement>;
+                if (tree != null)
+                {
+                    var parent = tree.FirstOrDefault(c => c.ID == cQueryId);
+                    if (parent != null)
+                    {
+                        cQueryId = parent.QueryID;
+                    }
+                }
+            }
+        }
+        var queryId = Model.QueryID > 0 ? Model.QueryID : cQueryId;
+        var globalId = Model.GlobalID.HasValue ? Model.GlobalID.Value : 0;
+
+        var isLayout = Model.IsLayout || (Request.Cookies["newElementType"] != null && "layout".Equals(Request.Cookies["newElementType"].Value)) ;
+        var isQuery = Model.IsQuery;
+        var canUpdate = !isQuery && eidss.model.Core.AvrPermissions.UpdatePermission && !Model.IsPublished;
+        var isEnglish = ModelUserContext.CurrentLanguage == "en";
+    }
+
+    @Html.HiddenFor(m => m.ID)
+    @Html.HiddenFor(m => m.ElementType)
+    @Html.Hidden("QueryID", queryId)
+    @Html.HiddenFor(m => m.ReadOnly)
+    @Html.Hidden("GlobalID", globalId)
+    @Html.HiddenFor(m => m.DescriptionID)
+    @Html.Hidden("IsLayout", isLayout)
+    @Html.Hidden("IsEnglish", isEnglish)
+
+    @{
+        var defaultName = isQuery ? Translator.GetMessageString("QueryNameEnglish") :
+                            isLayout ? Translator.GetString("LayoutNameEnglish") :
+                            Translator.GetString("FolderNameEnglish");
+        var nationalName = isQuery ? Translator.GetMessageString("QueryNameNational") :
+                            isLayout ? Translator.GetString("LayoutNameNational") :
+                            Translator.GetString("FolderNameNational");
+        var descrDef = Translator.GetString("DescriptionEnglish");
+        var descrNat = Translator.GetString("DescriptionNational");
+        var shareName = Translator.GetString("ShareLayout");
+        var publishName = isLayout ? Translator.GetString("PublishLayout") : Translator.GetString("PublishFolder");
+    }
+
+    <table class="level1" style="width: 100%">
+        <tr>
+            <td class="firstLabel large">@defaultName</td>
+            @if (canUpdate)
+            {
+                <td class="wide">@Html.TextBoxFor(m => m.DefaultName, new Dictionary<string, object> { { "class", "requiredField wide" } })</td>
+            }
+            else
+            {
+                <td class="wide">@Html.TextBoxFor(m => m.DefaultName, new Dictionary<string, object> { { "class", "readonlyField wide" }, { "readonly", "readonly" } })</td>
+            }
+            <td></td>
+        </tr>
+        @if (!isEnglish)
+        {
+            <tr>
+                <td class="firstLabel large">@nationalName</td>
+                @if (canUpdate)
+                {
+                    <td class="wide">@Html.TextBoxFor(m => m.NationalName, new Dictionary<string, object> { { "class", "requiredField wide" } })</td>
+                }
+                else
+                {
+                    <td class="wide">@Html.TextBoxFor(m => m.NationalName, new Dictionary<string, object> { { "class", "readonlyField wide" }, { "readonly", "readonly" } })</td>
+                }
+                <td></td>
+            </tr>
+        }
+
+        @if (isLayout || isQuery)
+        {
+            <tr>
+                <td class="firstLabel large">@descrDef</td>
+                @if (canUpdate)
+                {
+                    <td class="wide">@Html.TextAreaFor(m => m.DescriptionEnglish, new { @class = "wide memo" })</td>
+                }
+                else
+                {
+                    <td class="wide">@Html.TextAreaFor(m => m.DescriptionEnglish, new Dictionary<string, object> { { "class", "readonlyField wide memo" }, { "readonly", "readonly" }})</td>
+                }
+                <td></td>
+            </tr>
+                if (ModelUserContext.CurrentLanguage != "en")
+                {
+            <tr>
+                <td class="firstLabel large">@descrNat</td>
+                @if (canUpdate)
+                {
+                    <td class="wide">@Html.TextAreaFor(m => m.Description, new { @class = "wide" })</td>
+                }
+                else
+                {
+                    <td class="wide">@Html.TextAreaFor(m => m.Description, new Dictionary<string, object> { { "class", "readonlyField wide" }, { "readonly", "readonly" } })</td>
+                }
+                <td></td>
+            </tr>
+                }
+        }
+
+        <tr>
+            @if (isLayout)
+            {
+                if (canUpdate)
+                {
+                <td class="firstLabel large">@Html.EditorFor(m => m.IsShared)&nbsp;@shareName</td>
+                }
+                else
+                {
+                <td class="firstLabel large">@Html.DisplayFor(m => m.IsShared)&nbsp;@shareName</td>
+                }
+            }
+            else
+            {
+                <td class="firstLabel large"></td>
+            }
+            
+            @if (!isQuery && eidss.model.Core.AvrPermissions.UpdatePermission && eidss.model.Core.AvrPermissions.AccessToAVRAdministrationPermission)
+            {
+                <td class="wide">@Html.EditorFor(m => m.IsPublished)&nbsp;@publishName</td>
+            }
+            else if(!isQuery)
+            {
+                <td class="wide">@Html.DisplayFor(m => m.IsPublished)&nbsp;@publishName</td>
+            }
+            else
+            {
+                <td class="wide"></td>
+            }
+            
+            <td></td>
+        </tr>
+        <tr>
+            @*        <td class="firstLabel"></td>
+        <td class="wide"></td>*@
+            <td colspan="3" class="actionButtons">
+                @if (eidss.model.Core.AvrPermissions.UpdatePermission && !isQuery)
+                {
+                    @Html.DevExpress().Button(
+        edtSettings =>
+        {
+            edtSettings.Name = "hlUpdate";
+            edtSettings.Text = Translator.GetBvMessageString("strSave_Id");
+            edtSettings.Styles.Style.CssClass = "button";
+            edtSettings.ClientSideEvents.Click = "function(s, e) { queryTreeList.EditNode(s, e); }";
+            edtSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+        }
+         ).GetHtml()
+                    @Html.DevExpress().Button(
+        edtSettings =>
+        {
+            edtSettings.Name = "hlCancel";
+            edtSettings.Text = Translator.GetBvMessageString("strCancel_Id");
+            edtSettings.Styles.Style.CssClass = "button";
+            edtSettings.ClientSideEvents.Click = "function(s, e) { treeList.CancelEdit(); }";
+            edtSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+        }
+         ).GetHtml()
+                }
+                else
+                {
+                    @Html.DevExpress().Button(
+        edtSettings =>
+        {
+            edtSettings.Name = "hlCancel";
+            edtSettings.Text = Translator.GetBvMessageString("strOK_Id");
+            edtSettings.Styles.Style.CssClass = "button";
+            edtSettings.ClientSideEvents.Click = "function(s, e) { treeList.CancelEdit(); }";
+            edtSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+        }
+         ).GetHtml()
+                }
+
+            </td>
+        </tr>
+
+    </table>
+</div>

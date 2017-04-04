@@ -1,0 +1,13 @@
+﻿@using eidss.model.Schema
+@model VsSession
+           
+<div class="tabPanelContent">
+    @Html.Action("VectorGrid", "Grids",
+             new
+                 {
+                     root = Model.idfVectorSurveillanceSession,
+                     name = Model.ObjectIdent + "Vectors",
+                     vectors = Model.Vectors,
+                     isReadOnly = Model.IsReadOnly("Vectors") || (Model.GetPermissions() != null && Model.GetPermissions().IsReadOnlyForEdit)
+                 })
+</div>

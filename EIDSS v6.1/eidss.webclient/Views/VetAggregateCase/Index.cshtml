@@ -1,0 +1,40 @@
+﻿@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+@using eidss.model.Schema
+@using bv.model.Model.Core
+@model eidss.model.Schema.VetAggregateCaseListItem.Accessor
+@{
+    ViewBag.Title = Translator.GetMessageString("titleVetAggregateCasesList");
+    ViewBag.FormCode = "V09";
+    ViewBag.HelpIndex = Model.HelpIdWeb;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<input type="hidden" id="grid_selecteditem" />
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+@Html.Heartbeat()
+
+<div class="listForm">
+    <div id="searchpanel" class="customSearchPanel">
+        @Html.SearchPanel(Model, (bv.model.Model.Core.FilterParams)ViewBag.Filter, (bv.model.Model.Core.IObject)ViewBag.InitObject)
+    </div>
+    <table class="lfSearchPanelTable">
+        <tr>
+            <td class="lfSearchPanelTd">
+                @Html.SearchPanelOperator()
+            </td>
+            <td class="lfGridTd">
+                @using (var manager = bv.model.BLToolkit.DbManagerFactory.Factory.Create(eidss.model.Core.EidssUserContext.Instance))
+                {
+                    Html.ListFormGrid<VetAggregateCaseListItem.VetAggregateCaseListItemGridModel, VetAggregateCaseListItem.VetAggregateCaseListItemGridModelList>(
+                        new VetAggregateCaseListItem.VetAggregateCaseListItemGridModelList((long)AutoGridRoots.VetAggregateCaseList),
+                        Model, "VetAggregateCase")
+                        .Render();                                                                 
+                }
+            </td>
+        </tr>
+    </table>
+</div>
+

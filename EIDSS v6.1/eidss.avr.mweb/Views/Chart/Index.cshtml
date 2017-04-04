@@ -1,0 +1,63 @@
+﻿@using eidss.web.common.Utils
+@using eidss.avr.mweb.Utils
+@using bv.common.Configuration
+@model ChartMapHelper.ChartModel
+@{
+    Layout = "../Shared/_Layout.cshtml";
+}
+@Html.IncludeVersionedJs("~/Scripts/EIDSS/Chart.js")       
+<link rel="stylesheet" href="/Content/mapprint.css" />
+
+@using (Html.BeginForm())
+{
+    <input type="hidden" name="LayoutId" value="@ViewBag.LayoutId" />
+    if (BaseSettings.TranslationMode)
+    {
+        <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+    }
+    
+    <div>
+        <div id='map_toolbar'>
+            <div class="topButtonPanel">
+                <table class="actionPanel">
+                    <tbody>
+                        <tr>
+                            <td class="reportButtons one">
+
+                                <input id="btnExport" type="button" class="button" value='@Translator.GetMessageString("ExporttoJPG")' onclick='@String.Format("document.location.href='{0}';", Url.Action("SaveImage", "Chart", new { layoutId = ViewBag.LayoutId }))' />
+                                <input id="btnPrint" type="button" class="button" value='@Translator.GetMessageString("Print")' onclick='chartForm.chartPrint();' />
+                            </td>
+                            <td class="actionButtons">
+                                <input id="btnClose" class="button" type="button" value='@Translator.GetMessageString("Close")' onclick="window.close();" />
+                        @if (BaseSettings.TranslationMode)
+                        {
+                                <input id="btnTranslationTool" class="button" type="button" value="@Translator.GetMessageString("btTranslationTool")" onclick="avrTranslation.OpenTranslationWindow();" />
+                        }
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="topPanel">
+                <table>
+                    <tr>
+                        <td class="firstLabel">
+                            <label>@Translator.GetMessageString("ChartType"):</label>
+                        </td>
+                        <td class="large">
+                            @Html.Partial("ChartTypeCombo", Model.ChartType)
+                        </td>
+                    </tr>
+                </table>
+           </div>
+            <div class="splitter"></div>
+        </div>
+        <div class="tabPanelContent bordered" id="imgPlace">
+           <div class="empty" >
+                <img src="data:image/jpg;base64,@Model.Data" id="chart" class="@Model.Class" />
+            </div>
+       </div>
+
+    </div>
+}

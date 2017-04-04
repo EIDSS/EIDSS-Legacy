@@ -1,0 +1,20 @@
+﻿@model eidss.model.Schema.VetCase
+@{
+    Layout = "~/Views/Shared/_VetCaseDetailsLayout.cshtml";
+}
+
+<script src="@Url.Content("~/Scripts/EIDSS.Address.js")" type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript">
+    $(function () {
+        var tabs = [1, 4];
+        SelectTabs(tabs);        
+    });         
+</script>
+
+@using eidss.mobileclient.Utils
+
+@using (Html.BeginForm())
+{
+    @Html.Action("FarmDetails", "Farm", new { farm = Model.Farm, caseType = Model._HACode })    
+}

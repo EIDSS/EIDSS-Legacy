@@ -1,0 +1,57 @@
+﻿@model eidss.model.Schema.VetCaseListItem.Accessor
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Configurations
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+
+
+<input type='hidden' id='useSelectedItems' value='true' />
+<script language="javascript" type="text/javascript">
+    $(window).load(function () {           
+    });
+    $(document).ready(function () {
+        gridFacade.clearSelectedItems();
+    });
+</script>
+
+<div class="popupContent searchPopupContent">
+    <div class="windowButtonsPn">                  
+        <div style="text-align:left">@if (ViewBag.SearchHint != null)
+                                     {
+                                         @Html.Label((string)ViewBag.SearchHint)
+                                     }</div>
+        <input id="idButtonSelect" type="button" class="windowButton" onclick="@ViewBag.FunctionName ('@ViewBag.ObjectId', '@ViewBag.ShowInInternalWindow');" value="@Translator.GetMessageString("Select")"/>     
+        <input id="idButtonClose" type="button" class="windowButton" onclick="searchPicker.closePicker('@ViewBag.ShowInInternalWindow')" value="@Translator.GetMessageString("Close")"/>  
+    </div>
+    <div class="windowSeparator"></div>  
+    <div class="listForm">
+        <div id="searchpanel" class="customSearchPanel">
+            @Html.SearchPanel(Model, (bv.model.Model.Core.FilterParams)ViewBag.Filter, (bv.model.Model.Core.IObject)ViewBag.InitObject, (bv.model.Model.Core.FilterParams)ViewBag.StaticFilter)
+        </div>
+        <table class="lfSearchPanelTable">
+            <tr>
+                <td class="lfSearchPanelTd">
+                    @Html.SearchPanelOperator()
+                </td>
+                <td class="lfGridTd">
+                    @(Html.DetailsPopupSearchGrid<VetCaseListItem.VetCaseListItemGridModel, VetCaseListItem.VetCaseListItemGridModelList>(
+                          new VetCaseListItem.VetCaseListItemGridModelList((long)AutoGridRoots.VetCaseList), "VetCase",
+                          gridName: "Grid", selectionType: (bool)ViewBag.IsMultiSelection ? GridRowSelectionType.Multi : GridRowSelectionType.Single)
+                          .DataSource(dataSource => dataSource
+                                                        .Ajax()
+                                                        .Sort(sort => sort.Add("strCaseID").Ascending()))
+                          )   
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+

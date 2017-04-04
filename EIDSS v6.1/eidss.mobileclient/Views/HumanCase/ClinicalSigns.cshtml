@@ -1,0 +1,22 @@
+﻿@model eidss.model.Schema.HumanCase
+@{
+    ViewBag.Title = Translator.GetMessageString("titleClinicalSigns"); 
+    Layout = "~/Views/Shared/_HumanCaseDetailsLayout.cshtml";
+}
+
+@using eidss.mobileclient.Utils
+
+<script language="javascript" type="text/javascript">
+    $(function () {
+        var tabs = [3, 7];
+        SelectTabs(tabs);
+    });    
+</script>
+
+@using (Html.BeginForm())
+{
+    <input type="hidden" id="hdnControllerName" value="HumanCase"/>
+    <div id="accordion">  
+        @Html.Action("ShowFlexibleForm", "FFPresenter", new { root = Model.idfCase, key = Model.idfCase, ffpresenterId = Model.idfCSObservation.Value, canUpdate = (bool)ViewBag.CanUpdate })   
+    </div>
+}

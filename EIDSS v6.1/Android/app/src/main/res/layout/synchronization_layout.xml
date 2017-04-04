@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/CommonLayout">
+
+    <ScrollView android:id="@+id/Scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            style="@style/UnderScrollLayout">
+
+            <View
+                style="@style/ButtonSpaceItem"/>
+
+            <!--Synchronization-->
+            <LinearLayout
+                style="@style/DetailLayout.Port"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/OnlineSynchronization"
+                    style="@style/CommonButton.Port"
+                    android:text="@string/OnlineSynchronization" />
+
+                <TextView
+                    style="@style/Separator"/>
+                <View
+                    style="@style/ButtonSpaceItem"/>
+
+                <Button
+                    android:id="@+id/UnloadCasesFile"
+                    style="@style/CommonButton.Port"
+                    android:text="@string/UnloadCasesFile" />
+
+                <TextView
+                    style="@style/Separator"/>
+                <View
+                    style="@style/ButtonSpaceItem"/>
+
+                <Button
+                    android:id="@+id/DeleteSynchronizedCases"
+                    style="@style/CommonButton.Port"
+                    android:text="@string/DeleteSynchronizedCases" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

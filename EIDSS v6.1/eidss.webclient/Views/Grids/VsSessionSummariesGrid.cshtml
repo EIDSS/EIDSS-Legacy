@@ -1,0 +1,19 @@
+﻿@model VsSessionSummary.VsSessionSummaryGridModelList
+@using eidss.model.Schema
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+@(Html.BvDetailsFormGrid<VsSessionSummary.VsSessionSummaryGridModel, VsSessionSummary.VsSessionSummaryGridModelList>(
+        (string) ViewBag.SummariesName
+        , Model, "detailsGrid", "vssessionsummary.RedirectToSummary", null, (bool)ViewBag.IsReadOnly, strExcludeColumns: (string)ViewBag.ExcludeColumns).ToolBar(toolBar =>
+                 toolBar.Template(
+                     @<text>
+                          <input type='button' class='button'  data-role='grid-add-button' value='@Translator.GetMessageString("strNew")' 
+                                 onclick='bvGrid.addRow("@Model.ListKey", "@ViewBag.SummariesName", vssessionsummary.RedirectToSummary)'/>
+                          
+                          @*
+                          <input type='button' class='button' data-role='grid-common-button' value='@Translator.GetBvMessageString("strCopy_Id")' 
+                                 onclick="@string.Format("patient.showSearchPicker('patient.onPickerSelect', '{0}', '{1}');", ViewBag.VectorsName, Model.ListKey)"/>
+                          *@
+                      </text>)
+            ))

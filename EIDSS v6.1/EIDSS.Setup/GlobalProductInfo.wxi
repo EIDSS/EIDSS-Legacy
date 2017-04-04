@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Include>
+  <?ifdef ProductVersion.wxi?>
+  <?include $(var.ProductVersion.wxi)?>
+  <?endif?>
+
+  <?define ProductVersion = $(var.MajorVersion).$(var.MinorVersion).$(var.Build).$(var.Revision)?>
+
+  <?if $(var.Platform) = x86?>
+  <?define Win64 = no?>
+  <?elseif $(var.Platform) = x64?>
+  <?define Win64 = yes?>
+  <?endif?>
+
+  <?define ManufacturerAbbreviation = B&V?>
+  <?define Manufacturer = "Black & Veatch"?>
+  <?define ManufacturerFullName = "$(var.Manufacturer) Special Projects Corp"?>
+  <?define ProductFamilyAbbreviation = EIDSS?>
+  <?define ProductFamilyName = "Electronic Integrated Disease Surveillance System"?>
+
+  <?define ProductFamilyRegistryKey = SOFTWARE\$(var.ManufacturerAbbreviation)\$(var.ProductFamilyAbbreviation)\$(var.MajorVersion).$(var.MinorVersion) ?>
+
+  <?define SetupSources = $(var.SolutionDir)Source_Files\?>
+</Include>

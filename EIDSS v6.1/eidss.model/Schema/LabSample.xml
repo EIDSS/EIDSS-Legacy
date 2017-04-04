@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="LabSample"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="spLabSample_SelectDetail" />
+	</storage>
+	<tables>
+		<table name="LabSample" formsize="Small">
+      <properties auditObject="daoSample" auditTable="tlbMaterial" permissionObject="Sample" />
+      <labels>
+        <item name="strBarcode" labelId="strLabBarcode"/>
+        <item name="idfInDepartment" labelId="DepartmentName"/>
+        <item name="HumanName" labelId="strPatientInfo"/>
+        <item name="strNote" labelId="strNotes"/>
+        <item name="CaseType" labelId="strCaseType"/>
+      </labels>
+            <fields>
+                <calculated name="strFreezer" type="string" depends="Freezer,idfSubdivision" lambda='c => c.Freezer == null ? "" : c.Freezer.Path'/>
+                <calculated name="strCaseInfo" type="string" depends="strCaseID,DiagnosisName" lambda='c => c.strCaseID + ", " + c.DiagnosisName'/>
+                <calculated name="strMonitoringSessionInfo" type="string" depends="strMonitoringSessionID,SessionDiagnosisName" lambda='c => c.strMonitoringSessionID + ", " + c.SessionDiagnosisName'/>
+            </fields>
+            <readonly>
+                <fields name="strNote" predicate="c => false" />
+                <fields name="Department,idfInDepartment" predicate="c => string.IsNullOrEmpty(c.strBarcode)" />
+                <fields name="strFieldCollectedByOffice,strFieldCollectedByPerson" predicate="c => true" />
+                <fields name="strFreezer,Freezer,idfSubdivision" predicate="c => true" />
+                <fields name="*" predicate="c => true" />
+            </readonly>
+            <personaldata>
+              <group name="Human_PersonName">
+                <item name="HumanName"/>
+              </group>
+            </personaldata>
+            <lookups>                
+                <lookup name="Department" table="DepartmentLookup" source="idfInDepartment" target="idfDepartment" >
+                    <params>
+                        <param name="OrganizationID" type="long" lambda="c => eidss.model.Core.EidssSiteContext.Instance.OrganizationID"/>
+                        <param name="ID" const="null" />
+                    </params>
+                </lookup>
+                <lookup name="Freezer" table="FreezerTreeLookup" source="idfSubdivision" target="ID" />
+            </lookups>
+            <storage>
+                <post name="spLabSample_Post"/>
+            </storage>
+            <actions>
+              <standard>
+                <remove type="Create"/>
+                <remove type="Delete"/>
+              </standard>
+            </actions>
+		</table>
+	</tables>
+
+</object>

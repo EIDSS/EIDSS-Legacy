@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="MasterObject"
+        connection="TestConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="spMasterObject_SelectDetail" />
+    </storage>
+
+    <tables>
+        <table name="MasterTable">
+            <keys>
+                <key name="MasterID" />
+            </keys>
+            <fields>
+                <storage name="InnerDate" type="DateTime?" />
+                <storage name="ChildrenCount" type="int" />
+                <storage name="TestString" type="string" />
+            </fields>
+            <relations>
+                <relation name="Children" table="ChildObject" internal="false" type="child" source="MasterID" target="ParentID" />
+                <relation name="Sibling" table="SiblingObject" internal="false" type="sibling" source="MasterID" target="MasterSiblingID" />
+                <relation name="Link" table="LinkObject" internal="false" type="link" source="LinkField1" target="LinkID" lazy="false" />
+            </relations>
+            <lookups>
+                <lookup name="Lookup1" table="Lookup1Table" source="LookupField1" target="Lookup1ID" />
+                <lookup name="Lookup2" table="Lookup2Table" source="LookupField2" target="Lookup2ID">
+                    <filters>
+                        <filter name="LookupField1" target="Lookup2ParentID" />
+                    </filters>
+                </lookup>
+                <lookup name="Lookup2Param" table="Lookup2ParamTable" source="LookupField2" target="Lookup2ID">
+                    <params>
+                        <param name="ParentID" type="int" lambda="c => (int?)c.LookupField1 ?? 0" />
+                    </params>
+                </lookup>
+            </lookups>
+            <storage>
+                <post name="spMasterObject_Post" predicate="c => true" />
+                <candelete name="spMasterObject_CanDelete" message="msgCantDelete"  />
+            </storage>
+            <postorder>
+                <!--item name="Children" />
+                <item name="Link" /-->
+                <item name="this" />
+                <item name="Sibling" />
+            </postorder>
+            <deleteorder>
+                <!--item name="Children" />
+                <item name="Sibling" />
+                <item name="Link" /-->
+                <item name="this" />
+            </deleteorder>
+            <extenders>
+                <creating>
+                    <value_extender target="MasterID" value="1000001" />
+                    <lambda_extender target="Sibling" type="SiblingObject" lambda="c => SiblingAccessor.Create(manager, c, c.MasterID)" />
+                    <create_extender target="Link" table="LinkObject" class="ObjectCreateExtender" />
+                    <scalar_extender target="InnerDate" class="GetDateTimeNowExtender" />
+                    <add_extender target="Children" type="ChildObject" lambda="c => ChildrenAccessor.Create(manager, c, c.MasterID)" />
+                </creating>
+                <created>
+                    <custom_extender>
+                        <text>
+                obj.Children.Add(ChildrenAccessor.Create(manager, obj, obj.MasterID));</text>
+                    </custom_extender>
+                    <lambda_list_extender list="Children" target="TextFieldFromMaster" type="string" lambda='c => c.TextField + "0"' />
+                    <copy_extender target="Children[0].TextFieldFromMaster" source="TextField" />
+                </created>
+                <loading>
+                  <scalar_extender_external target="InnerDate" class="GetDateTimeNowExtender" />
+                </loading>
+                <loaded>
+                    <add_extender target="Children" type="ChildObject" lambda="c => ChildrenAccessor.Create(manager, c, c.MasterID)" />
+                    <lambda_list_extender list="Children" target="TextFieldFromMaster" type="string" lambda='c => c.TextField + "0"' />
+                    <copy_extender target="Children[0].TextFieldFromMaster" source="TextField" />
+                </loaded>
+                <posting>
+                    <lambda_extender target="TextField" type="string" lambda='c => c.TextField == "RAISERROR" ? c.TextField : "post"'/>
+                </posting>
+                <posted>
+                    <add_extender target="Children" type="ChildObject" lambda="c => ChildrenAccessor.Create(manager, c, c.MasterID)" />
+                    <lambda_extender target="ChildrenCount" type="int" lambda="c => c.Children.Where(i => !i.IsMarkedToDelete).Count()" />
+                    <lambda_list_extender list="Children" target="TextFieldFromMaster" type="string" lambda='c => c.TextField + "0"' />
+                    <lambda_extender target="Children[0].TextFieldFromMaster" type="string" lambda="c => c.TextField" />
+                </posted>
+            </extenders>
+            <handlers>
+                <fieldhandler>
+                    <value_handler field="LookupField1" target="Lookup2" value="null" />
+                    <lambda_handler field="LookupField1" target="Lookup2Param" type="Lookup2ParamTable" lambda="c => null" />
+                    <lookup_handler field="LookupField1" lookup="Lookup2" />
+                    <lookup_handler field="LookupField1" lookup="Lookup2Param" />
+                </fieldhandler>
+            </handlers>
+            <validators>
+                <delete>
+                    <required_validator target="TestString" message="Message" />
+                </delete>
+            </validators>
+          <actions>
+            <action name="Create" type="Create">
+              <run>
+                <params>
+                  <param name="HACode" type="int?" />
+                </params>
+                <creating>
+                  <lambda_extender target="TextField" type="string" lambda='c => "create"' />
+                </creating>
+                <created>
+                  <lambda_extender target="ChildrenCount" type="int" lambda="c => c.Children.Count" />
+                </created>
+              </run>
+            </action>
+            <action name="Get" type="Load">
+              <run>
+                <loading>
+                  <lambda_extender target="TextField" type="string" lambda='c => "load"' />
+                </loading>
+                <loaded>
+                  <lambda_extender target="ChildrenCount" type="int" lambda="c => c.Children.Count" />
+                </loaded>
+              </run>
+            </action>
+          </actions>
+        </table>
+    </tables>
+
+</object>

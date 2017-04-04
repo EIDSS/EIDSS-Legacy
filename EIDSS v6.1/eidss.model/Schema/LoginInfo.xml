@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="LoginInfo"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+  
+  <storage>
+    <get name="spLoginInfo_SelectDetail" type="detaillist" />
+  </storage>
+
+  <tables>
+    <table name="LoginInfo">
+      <!--TODO какие реквизиты здесь?-->
+      <properties auditObject="daoUser" auditTable="tlbEmployee" permissionObject="User"/>
+      <help win="UserGroupForm"/>      
+      <grid>
+        <item name="idfUserID" visible="false" key="true"/>
+        <item name="strAccountName"/>       
+      </grid>
+      <fields>
+        <storage name="strPasswordDecrypted" type="string"/>
+        <storage name="strConfirmPassword" type="string"/>
+      </fields>      
+      <storage>
+        <post />
+        <delete />
+      </storage>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfUserID" class="GetNewIDExtender" />
+          <value_extender target="strPasswordDecrypted" value="null"/>
+          <value_extender target="strConfirmPassword" value="null"/>
+          <lambda_extender target="datPasswordSet" lambda="c => DateTime.Now" type="DateTime"/>
+        </creating>
+        <loading>
+          <value_extender target="strPasswordDecrypted" value="null"/>
+          <value_extender target="strConfirmPassword" value="null"/>          
+        </loading>
+        <posting>
+          <custom_extender>
+            <text>
+              //если меняли пароль
+              if (obj.strPasswordDecrypted != null) obj.binPassword = SecurityHelper.GetPasswordHash(obj.strPasswordDecrypted);
+            </text>
+          </custom_extender>
+        </posting>
+      </extenders>
+      <handlers>
+      </handlers>
+      <validators>
+        <post>
+          <required_validator target="strConfirmPassword" field="ConfirmPassword" />
+          <required_validator target="strAccountName" field="strAccountName" />
+          <custom_validator field="strPasswordDecrypted" method="CheckPasswords" required="true"/>
+          <custom_validator_manager  method="ValidateLogin"/>
+        </post>
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <remove type="Ok"/>
+        </standard>        
+        <action name="LoginInfoOk" type="Action"  forceClose="true">
+          <visual panel="Main" alignment="Right" visiblePredicate ="(c, a, p, b) => c!=null &amp;&amp; !c.ReadOnly">
+            <regular caption="strOK_Id" tooltip="tooltipOK_Id" icon=""/>
+          </visual>
+          <run>
+            <preText>
+              return (obj.GetAccessor() as IObjectValidator).Validate(manager, obj, true, true, true);
+            </preText>
+          </run>
+        </action>
+        <action name="Create" type="Create">
+          <visual panel="Group" alignment="Right" enablePredicate="(c, p, b) => eidss.model.Core.EidssUserContext.User.HasPermission(bv.common.Core.PermissionHelper.InsertPermission(eidss.model.Enums.EIDSSPermissionObject.User))">
+            <regular caption="strCreate_Id" tooltip="tooltipCreate_Id" icon="add"/>
+          </visual>
+          <run>
+            <params>
+              <param name="idfPerson" type="long"/>
+            </params>
+            <creating>
+              <lambda_extender target="idfPerson" type="long" lambda="c => idfPerson"/>
+            </creating>
+          </run>
+        </action>
+      </actions>
+    </table>
+  </tables>
+
+</object>

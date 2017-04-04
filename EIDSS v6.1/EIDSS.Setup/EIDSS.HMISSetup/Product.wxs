@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "ProductInfo.wxi" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product
+    Id="*"
+    Name="$(var.ProductFullName)"
+    Language="!(loc.ProductLanguage)"
+    Version="$(var.ProductVersion)"
+    Manufacturer="$(var.Manufacturer)"
+    UpgradeCode="$(var.UpgradeCode)">
+
+    <Package
+      Manufacturer="$(var.Manufacturer)"
+      Description="$(var.ProductName)"
+      Comments="$(var.ProductName)"
+      SummaryCodepage="!(loc.SummaryCodepage)"
+      InstallerVersion="300"
+      Compressed="yes"
+      InstallScope="perMachine" />
+
+    <MajorUpgrade AllowDowngrades="yes" Schedule="afterInstallValidate" />
+    <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
+
+
+    <Condition Message="!(loc.ConditionElevationPrivileges)">Installed OR Privileged</Condition>
+    <Condition Message="!(loc.ConditionOperatingSystem)"><![CDATA[VersionNT >= 600]]></Condition>
+
+    <PropertyRef Id="NETFRAMEWORK40FULL" />
+    <Condition Message="!(loc.ConditionNetFramework4)"><![CDATA[Installed OR NETFRAMEWORK40FULL]]></Condition>
+
+    <PropertyRef Id="WEB.DEFAULT" />
+    <Condition Message="!(loc.ConditionNoWebFound)">
+      WEB.DEFAULT_FOUND Or WEB.I01_FOUND Or WEB.I02_FOUND Or WEB.I03_FOUND Or WEB.I04_FOUND Or WEB.I05_FOUND Or WEB.I06_FOUND Or WEB.I07_FOUND Or WEB.I08_FOUND Or WEB.I09_FOUND Or WEB.I10_FOUND Or WEB.I11_FOUND Or WEB.I12_FOUND Or WEB.I13_FOUND Or WEB.I14_FOUND Or WEB.I15_FOUND Or WEB.I16_FOUND Or WEB.I17_FOUND Or WEB.I18_FOUND Or WEB.I19_FOUND Or WEB.I20_FOUND
+    </Condition>
+
+    <Icon Id="Icon.ProductIcon" SourceFile="$(var.SetupSources)Bitmaps\eidss.ico" />
+
+    <Property Id="ARPNOREPAIR" Value="1" />
+    <Property Id="ARPPRODUCTICON" Value="Icon.ProductIcon" />
+    <SetProperty Id="ARPINSTALLLOCATION" Value="[APPLICATIONFOLDER]" After="InstallValidate" Sequence="execute" />
+    <Property Id="MajorVersion" Value="$(var.MajorVersion)" />
+    <Property Id="MinorVersion" Value="$(var.MinorVersion)" />
+    <Property Id="Build" Value="$(var.Build)" />
+    <Property Id="Revision" Value="$(var.Revision)" />
+
+    <Feature Id="ProductFeature" Title="Setup.HMIS" Level="1">
+      <ComponentRef Id="ProductRegistryKey" />
+    </Feature>
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFiles64Folder">
+        <Directory Id="APPLICATIONFOLDER" Name="Setup.HMIS" />
+      </Directory>
+    </Directory>
+  </Fragment>
+
+  <Fragment Id="ProductRegistryKey">
+    <DirectoryRef Id="APPLICATIONFOLDER">
+      <Component Id="ProductRegistryKey">
+        <RegistryKey Root="HKLM" Key="$(var.ProductRegistryKey)">
+          <RegistryValue Name="InstallPath" Value="[APPLICATIONFOLDER]" Type="string" KeyPath="yes" />
+          <RegistryValue Name="Version" Value="$(var.ProductVersion)" Type="string" />
+        </RegistryKey>
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+</Wix>

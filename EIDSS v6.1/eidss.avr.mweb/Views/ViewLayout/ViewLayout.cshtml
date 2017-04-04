@@ -1,0 +1,113 @@
+﻿@model eidss.model.Avr.View.AvrPivotViewModel
+@using eidss.web.common.Utils
+@using eidss.avr.mweb.Utils
+@using bv.common.Configuration
+
+@{
+    Layout = "../Shared/_Layout.cshtml";
+    var CanUpdate = !Model.ViewHeader.IsReadOnly && eidss.model.Core.AvrPermissions.UpdatePermission;
+    var CanInsert = eidss.model.Core.AvrPermissions.InsertPermission;
+}
+    
+@Html.IncludeVersionedCss("~/Content/Styles/columnPopup.css")
+
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        viewGridForm.InitForm();
+    });
+</script>
+
+@if (BaseSettings.TranslationMode)
+{
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+
+@using(Html.BeginForm("ExportTo", "ViewLayout"))
+{
+    <input type="hidden" name="LayoutId" value="@ViewBag.LayoutId" />      
+    <input type="hidden" name="typeName" value="" />
+    
+    <div>
+        <div class="topButtonPanel">
+            <table class="actionPanel">
+                <tbody>
+                    <tr>
+                        <td class="reportButtons one">
+                            <input id="btnPivot" type="button" class="button first" value='@Translator.GetMessageString("SwitchToPivot")'  onclick="viewGridForm.OnToPivot();" />
+                            <input id="btnRefresh" type="button" class="button" value='@Translator.GetMessageString("RefreshData")' onclick="viewGridForm.OnRefreshData();" />
+                        </td>
+                        <td class="reportButtons one second">
+                            @Html.DevExpress().Menu(
+                                settings =>
+                                    {
+                                        settings.Name = "viewExportMenu";
+                                        settings.AllowSelectItem = true;
+                                        settings.EnableClientSideAPI = true;
+                                        settings.EnableHotTrack = true;
+                                        settings.EnableAnimation = true;
+                                        settings.AppearAfter = 300;
+                                        settings.DisappearAfter = 500;
+                                        settings.MaximumDisplayLevels = 0;
+                                        settings.ShowPopOutImages = DefaultBoolean.True;
+                                        settings.Items.Add(item => {
+                                            item.Text = Translator.GetMessageString("titleExport");
+                                            foreach (string typeName in LayoutViewHelper.ExportTypes.Keys)
+                                            {
+                                                MVCxMenuItem it = new MVCxMenuItem(LayoutViewHelper.ExportTypes[typeName].Title, typeName);
+                                                //it.NavigateUrl = Url.Action("ExportTo", "ViewLayout", new { layoutId = ViewBag.LayoutId, typeName = typeName });
+                                                item.Items.Add(it);
+                                            }
+                                        });
+                                        settings.ClientSideEvents.ItemClick = "viewGridForm.OnExport";
+                                        settings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                                                            
+                                    }).GetHtml()
+                        </td>
+                        <td class="reportButtons one">
+                            <input id="btnPrint" type="button" class="button" value='@Translator.GetMessageString("Print")' onclick='@String.Format("document.location.href='{0}'", Url.Action("Print", "ViewLayout", new { layoutId = ViewBag.LayoutId }))' />
+                            @if (CanUpdate)
+                            {
+                            <input id="btnReset" type="button" class="button" value='@Translator.GetMessageString("ResetView")' onclick="viewGridForm.OnResetView();" />
+                            }
+                        </td>
+                        <td class="actionButtons">
+                            <input id="btnClose" class="button" type="button" value='@Translator.GetMessageString("Close")' onclick="viewGridForm.OnClose();" />
+                            @if (CanUpdate)
+                            {
+                            <input id="btnCancel" class="button" type="button" value='@Translator.GetMessageString("CancelChanges")' onclick="viewGridForm.OnCancelChanges();" />
+                            <input id="btnSave" class="button" type="button" value='@Translator.GetMessageString("Save")' onclick="viewGridForm.OnSave();" />
+                            }
+                    @if (BaseSettings.TranslationMode)
+                    {
+                            <input id="btnTranslationTool" class="button" type="button" value="@Translator.GetMessageString("btTranslationTool")" onclick="avrTranslation.OpenTranslationWindow();" />
+                    }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="topPanel">
+            @Html.Partial("ViewLayoutFilterAreaPartial", Model.ViewHeader)
+        </div>
+        <div class="splitter">
+        </div>
+        <div class="tabPanelContent bordered">
+            <div class="reportButtons">
+                            @if (CanUpdate)
+                            {
+                <input type="button" id="btShowCustomizationWindow" class="button topBot" onclick="viewGridForm.UpdateCustomizationWindowVisibility();" value='@Translator.GetMessageString("btShowCustomizationWindow")' />
+                            }
+           </div>
+           <div class="actionButtons">
+           </div>
+            @Html.Partial("ViewGridView", Model)
+        </div>
+    </div>
+}
+
+@Html.Partial("AggregateColumnDlg", Model.ViewHeader)
+
+
+
+

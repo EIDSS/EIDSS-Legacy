@@ -1,0 +1,24 @@
+﻿@model eidss.model.Schema.FFPresenterModel
+
+<script src="@Url.Content("~/Scripts/EIDSS.Grid.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/EIDSS.FFGrid.js")" type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript">
+    $(function () {
+        if ($("#hdnHasGrid").val() != "True") {
+            InitAccordion();
+        }
+    });    
+</script>
+
+<input type="hidden" id="hdnHasGrid" value="@Model.HasSectionTable()"/>
+
+@if ((Model != null) && (Model.TemplateFlexNode != null))
+{
+    <input type="hidden" id="hdnFFKey" value="@ViewBag.FFKey"/>
+    <input type="hidden" id="hdnFFpresenterId" value="@ViewBag.FFpresenterId"/>
+    foreach (var childNode in Model.TemplateFlexNode.ChildList)
+    {
+        @Html.Action("FlexNodeRender", "FFPresenter", new { node = childNode, canUpdate = (bool)ViewBag.CanUpdate })
+    }
+}          

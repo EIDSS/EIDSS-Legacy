@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Fragment Id="Autotester">
+    <ComponentGroup Id="Autotester" Directory="APPLICATIONFOLDER" Source="$(var.BinariesPaths)ThirdPartyComponents\">
+      <Component Id="Eidss.Avr.Autotester.exe" MultiInstance="yes">
+        <File Name="Eidss.Avr.Autotester.exe" KeyPath="yes" Checksum="yes" />
+        </Component>
+      <Component Id="Eidss.Avr.Autotester.exe.config" MultiInstance="yes">
+        <File Id="AutotesterConfig" Name="Eidss.Avr.Autotester.exe.config" KeyPath="yes" Source="$(var.Eidss.Avr.Autotester.exe.config)" />
+
+        <util:XmlConfig
+          Id="AutotesterConfig.appSettings"
+          File="[#AutotesterConfig]"
+          Action="create"
+          ElementPath="/configuration"
+          VerifyPath="/configuration/appSettings"
+          Name="appSettings"
+          Node="element"
+          On="install"
+          Sequence="1" />
+
+          <?define key = AVRServiceHostURL ?>
+          <?define value = "http://localhost:[AVR_SERVICE_PORT]" ?>
+          <?define order = 2 ?>
+          <?define file = AutotesterConfig ?>
+          <?include $(var.ProjectDir)AddConfigKey.wxi?>
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>

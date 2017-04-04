@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="BasicSyndromicSurveillanceItem"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spBasicSyndromicSurveillance_SelectDetail" />
+    <validate name="spBasicSyndromicSurveillance_Validate" />
+  </storage>
+
+  <tables>
+    <table name="BasicSyndromicSurveillanceItem">
+      <properties auditObject="daoBssForm" auditTable="tlbBasicSyndromicSurveillance" permissionObject="AccessToBssModule">
+        <events>
+          <create name="BssFormLocal" />
+        </events>
+      </properties>
+      <!--help-->
+      <help win="SS_form"/>
+      <fields>
+        <storage name="strSite" type="string"/>
+        <storage name="strEnteredBy" type="string"/>
+        <calculated name="IsILI" depends="idfsBasicSyndromicSurveillanceType" type="bool" lambda="c => c.idfsBasicSyndromicSurveillanceType == 50791920000000"/>
+      </fields>
+      <readonly>
+        <fields name="intAgeYear,intAgeMonth" predicate="c => c.Patient.datDateofBirth != null" />
+        <fields name="Pregnant" predicate="c => c.Patient != null ? c.Patient.Gender != null ? c.Patient.Gender.idfsBaseReference == (long)GenderType.Male : true : true" />
+        <fields name="PostpartumPeriod" predicate="c => (c.Patient.Gender != null &amp;&amp; c.Patient.Gender.idfsBaseReference == (long)GenderType.Female) ? (c.Pregnant != null &amp;&amp; c.Pregnant.idfsBaseReference == (long)YesNoUnknownValuesEnum.Yes) ? true : false : true" />
+        <fields name="strFormID,datDateEntered,datDateLastSaved,idfEnteredBy,idfsSite,strSite,strEnteredBy" predicate="c => true" />
+        <fields name="MethodMeasurement" predicate="c => c.Fever != null ? c.Fever.idfsBaseReference != (long)YesNoUnknownValuesEnum.Yes : true" />
+        <fields name="strMethod" predicate="c => c.MethodMeasurement != null ? c.MethodMeasurement.idfsBaseReference != (long)MethodOfMeasurement.Other : true" />
+        <fields name="strNameOfMedication,datDateReceivedAntiviralMedication" predicate="c => c.AdministratedAntiviralMedication != null ? c.AdministratedAntiviralMedication.idfsBaseReference != (long)YesNoUnknownValuesEnum.Yes : true" />
+        <fields name="Outcome" predicate="c => c.PatientWasHospitalized != null ? c.PatientWasHospitalized.idfsBaseReference != (long)YesNoUnknownValuesEnum.Yes : true" />
+        <fields name="datDateOfCare,PatientWasHospitalized,Outcome,PatientWasInER,Treatment" predicate="c => c.IsILI" /> 
+        <fields name="*" predicate="c => c.ReadOnly" />
+      </readonly>
+      <relations>
+        <relation name="Patient" table="Patient" internal="false" type="link" lazy="false" source="idfHuman" target="idfHuman" />
+      </relations>
+      <lookups>
+        <lookup name="BSSType" table="BaseReference" section="rftBssType" source="idfsBasicSyndromicSurveillanceType" target="idfsBaseReference" notaddempty="true" />
+        <lookup name="BSSMethodOfMeasurement" table="BaseReference" section="rftBssMethodOfMeasurement" source="idfsMethodOfMeasurement" target="idfsBaseReference" />
+        <lookup name="BSSOutcome" table="BaseReference" section="rftBssOutcome" source="idfsOutcome" target="idfsBaseReference" />
+        <lookup name="BSSTestResult" table="BaseReference" section="rftBssTestResult" source="idfsTestResult" target="idfsBaseReference" />
+        
+        <lookup name="Hospital" table="OrganizationLookup" source="idfHospital" target="idfInstitution">
+          <params>
+            <param name="ID" const="null" />
+            <param name="intHACode" const="null" />
+          </params>
+          <filters>
+            <filter predicate="c => (((c.intHACode??0) &amp; (int)HACode.Syndromic) != 0) || c.idfInstitution == obj.idfHospital" />
+          </filters>
+        </lookup>
+        
+        <lookup name="Pregnant" table="BaseReference" section="rftYesNoValue" source="idfsYNPregnant" target="idfsBaseReference" />
+        <lookup name="PostpartumPeriod" table="BaseReference" section="rftYesNoValue" source="idfsYNPostpartumPeriod" target="idfsBaseReference" />
+        <lookup name="Fever" table="BaseReference" section="rftYesNoValue" source="idfsYNFever" target="idfsBaseReference" />
+        <lookup name="MethodMeasurement" table="BaseReference" section="rftBssMethodOfMeasurement" source="idfsMethodOfMeasurement" target="idfsBaseReference" />
+        <lookup name="Cough" table="BaseReference" section="rftYesNoValue" source="idfsYNCough" target="idfsBaseReference" />
+        <lookup name="ShortnessBreath" table="BaseReference" section="rftYesNoValue" source="idfsYNShortnessOfBreath" target="idfsBaseReference" />
+        <lookup name="SeasonalFluVaccine" table="BaseReference" section="rftYesNoValue" source="idfsYNSeasonalFluVaccine" target="idfsBaseReference" />
+        <lookup name="PatientWasHospitalized" table="BaseReference" section="rftYesNoValue" source="idfsYNPatientWasHospitalized" target="idfsBaseReference" />
+        <lookup name="Outcome" table="BaseReference" section="rftBssOutcome" source="idfsOutcome" target="idfsBaseReference" />
+        <lookup name="PatientWasInER" table="BaseReference" section="rftYesNoValue" source="idfsYNPatientWasInER" target="idfsBaseReference" />
+        <lookup name="Treatment" table="BaseReference" section="rftYesNoValue" source="idfsYNTreatment" target="idfsBaseReference" />
+        <lookup name="AdministratedAntiviralMedication" table="BaseReference" section="rftYesNoValue" source="idfsYNAdministratedAntiviralMedication" target="idfsBaseReference" />
+        <lookup name="TestResult" table="BaseReference" section="rftBssTestResult" source="idfsTestResult" target="idfsBaseReference" />
+      
+      </lookups>
+      <storage>
+        <post name="spBasicSyndromicSurveillance_Post"/>
+        <delete name="spBasicSyndromicSurveillance_Delete"/>
+        <candelete name="spBasicSyndromicSurveillance_CanDelete"/>
+      </storage>
+      <postorder>
+        <item name="Patient"/>
+        <item name="this"/>
+      </postorder>
+      <deleteorder>
+        <item name="Patient"/>
+        <item name="this"/>
+      </deleteorder>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfBasicSyndromicSurveillance" class="GetNewIDExtender" />
+          <lambda_extender target="strFormID" type="string" lambda='c => "(new)"' />
+          <lambda_extender target="datDateEntered" type="DateTime" lambda="c => DateTime.Now" />
+          <lambda_extender target="datDateLastSaved" type="DateTime?" lambda="c => null" />
+          <lambda_extender target="idfEnteredBy" type="long" lambda="c => (long)EidssUserContext.User.EmployeeID" />
+          <lambda_extender target="strEnteredBy" type="string" lambda="c => EidssUserContext.User.FullName" />
+          <lambda_extender target="idfsSite" type="long" lambda="c => EidssSiteContext.Instance.SiteID" />
+          <lambda_extender target="strSite" type="string" lambda="c => EidssSiteContext.Instance.OrganizationName" />
+          <!--Patient creating-->
+          <lambda_extender target="Patient" type="Patient" lambda="c => (Patient)PatientAccessor.Create(manager, c, 0)" />
+          <scalar_extender target="Patient.idfRootHuman" class="GetNewIDExtender" />
+          <lambda_extender target="Patient.CurrentResidenceAddress.Region" type="RegionLookup" lambda="c => null" />
+
+          <!---->
+          <lambda_extender target="idfHuman" type="long" lambda='c => c.Patient.idfHuman' />
+          <lambda_extender target="intAgeFullYear" type="int" lambda='c => 0' />
+          <lambda_extender target="intAgeFullMonth" type="int" lambda='c => 0' />
+
+          <lambda_extender target="idfsBasicSyndromicSurveillanceType" type="long" lambda='c => 50791920000000' />
+        </creating>
+        <created>
+        </created>
+        <loading>
+          <lambda_extender target="strSite" type="string" lambda="c => EidssSiteContext.Instance.SiteABR"/>
+          <lambda_extender target="strEnteredBy" type="string" lambda="c => EidssUserContext.User.FullName" />
+        </loading>
+        <loaded>
+          <lambda_extender target="intAgeYear" type="int?" lambda="c => c.GetYears()" />
+          <lambda_extender target="intAgeMonth" type="int?" lambda="c => c.GetMonths()" />
+        </loaded>
+        <posting>
+          <lambda_extender target="datModificationForArchiveDate" type="DateTime?" lambda="c => c.HasChanges ? DateTime.Now : c.datModificationForArchiveDate"/>
+        </posting>
+        <posted>
+          <lambda_extender target="datDateLastSaved" type="DateTime" lambda="c => DateTime.Now"/>
+        </posted>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <lambda_handler target="strSite" field="idfsSite" type="string" lambda="c => EidssSiteContext.Instance.SiteABR" />
+          <lambda_handler target="strEnteredBy" field="idfEnteredBy" type="string" lambda="c => EidssUserContext.User.FullName" />
+          <lambda_handler target="strMethod" field="idfsMethodOfMeasurement" type="string" lambda="c => c.MethodMeasurement != null ? c.MethodMeasurement.idfsBaseReference == (long)MethodOfMeasurement.Other ? c.strMethod : String.Empty : String.Empty" />
+          <lambda_handler target="MethodMeasurement" field="idfsYNFever" type="BaseReference" lambda="c => c.Fever.idfsBaseReference == (long)YesNoUnknownValuesEnum.Yes ? c.MethodMeasurement : null" />
+          <lambda_handler target="Outcome" field="idfsYNPatientWasHospitalized" type="BaseReference" lambda="c => (c.PatientWasHospitalized != null) &amp;&amp; (c.PatientWasHospitalized.idfsBaseReference == (long)YesNoUnknownValuesEnum.Yes) ? c.Outcome : null" />
+          <lambda_handler target="strNameOfMedication" field="idfsYNAdministratedAntiviralMedication" type="string" lambda="c => c.AdministratedAntiviralMedication.idfsBaseReference == (long)YesNoUnknownValuesEnum.Yes ? c.strNameOfMedication : String.Empty" />
+          <lambda_handler target="datDateReceivedAntiviralMedication" field="idfsYNAdministratedAntiviralMedication" type="DateTime?" lambda="c => c.AdministratedAntiviralMedication.idfsBaseReference == (long)YesNoUnknownValuesEnum.Yes ? c.datDateReceivedAntiviralMedication : null" />
+          
+          <lambda_handler target="datDateOfCare" field="IsILI" type="DateTime?" lambda="c => c.IsILI ? null : c.datDateOfCare" />
+          <lambda_handler target="PatientWasHospitalized" field="IsILI" type="BaseReference" lambda="c => c.IsILI ? null : c.PatientWasHospitalized" />
+          <lambda_handler target="Outcome" field="IsILI" type="BaseReference" lambda="c => c.IsILI ? null : c.Outcome" />
+          <lambda_handler target="PatientWasInER" field="IsILI" type="BaseReference" lambda="c => c.IsILI ? null : c.PatientWasInER" />
+          <lambda_handler target="Treatment" field="IsILI" type="BaseReference" lambda="c => c.IsILI ? null : c.Treatment" />
+          <lambda_handler target="PostpartumPeriod" field="idfsYNPregnant" type="BaseReference" lambda="c => c.Pregnant != null ? c.Pregnant.idfsBaseReference == (long)YesNoUnknownValuesEnum.Yes ? null : c.PostpartumPeriod : c.PostpartumPeriod" />
+        </fieldhandler>
+        <childhandler>
+          <lambda_handler target="intAgeYear" container="Patient" field="datDateofBirth" type="int?" lambda="c => c.GetYears()" />
+          <lambda_handler target="intAgeMonth" container="Patient" field="datDateofBirth" type="int?" lambda="c => c.GetMonths()" />
+          <lambda_handler target="Pregnant" container="Patient" field="Gender" type="BaseReference" lambda="c => (c.Patient.Gender != null &amp;&amp; c.Patient.Gender.idfsBaseReference == (long)GenderType.Male) ? null : c.Pregnant" />
+          <lambda_handler target="PostpartumPeriod" container="Patient" field="Gender" type="BaseReference" lambda="c => (c.Patient.Gender != null &amp;&amp; c.Patient.Gender.idfsBaseReference == (long)GenderType.Male) ? null : c.PostpartumPeriod" />
+        </childhandler>
+      </handlers>
+      <validators>
+        <chains>
+          <item field="datDateofBirth" type="DateTime" container="Patient"> 
+            <item field="datDateOfSymptomsOnset"> 
+              <item field="datReportDate"> 
+                <item field="CurrentDate" value="DateTime.Now" />
+              </item>
+            </item>
+            <item field="datDateOfCare"> 
+              <item field="datReportDate"> 
+                <item field="CurrentDate" value="DateTime.Now" />
+              </item>
+              <item field="datDateReceivedAntiviralMedication">
+                <item field="CurrentDate" value="DateTime.Now" />
+              </item>
+              <item field="datSampleCollectionDate">
+                <item field="datTestResultDate">
+                   <item field="CurrentDate" value="DateTime.Now" />
+                </item>
+              </item>
+            </item>
+          </item>
+          <item field="MinValue" type="NullableInt" value="0">
+            <item field="intAgeYear">
+              <item field="MaxValue" value="200" />
+            </item>
+          </item>
+          <item field="MinValue" type="NullableInt" value="0">
+            <item field="intAgeMonth">
+              <item field="MaxValue" value="11" />
+            </item>
+          </item>
+         </chains>
+        <post>
+          <!--<required_validator target="strFormID"/>-->
+          <!--<required_validator target="datDateEntered"/>-->
+          <required_validator target="idfsSite"/>
+          <!--<required_validator target="strSite"/>-->
+          <required_validator target="idfsBasicSyndromicSurveillanceType" property="BSSType" label="BSSType" />
+          <required_validator target="idfHospital" property="Hospital" label="BSS.Hospital" />
+          <required_validator target="datReportDate"/>
+          <required_validator target="idfEnteredBy"/>
+          <!--<required_validator target="strEnteredBy"/>-->
+          <predicate_validator predicate="c => c.datReportDate &lt;= c.datDateEntered" message="msgReportDateEnteredDate"/>
+          <required_validator target="Patient.strLastName" property="strLastName" label="Person.strLastName"/>
+          <required_validator target="Patient.CurrentResidenceAddress.idfsCountry" property="Patient.CurrentResidenceAddress.Country" />
+          <required_validator target="Patient.CurrentResidenceAddress.idfsRegion" property="Patient.CurrentResidenceAddress.Region"/>
+          <required_validator target="Patient.CurrentResidenceAddress.idfsRayon" property="Patient.CurrentResidenceAddress.Rayon"/>
+        </post>
+        <delete>
+        </delete>
+      </validators>
+      <actions>
+        <standard>
+          <!--remove type="Create"/-->
+          <remove type="Report"/>
+        </standard>
+      </actions>
+    </table>
+  </tables>
+
+</object>

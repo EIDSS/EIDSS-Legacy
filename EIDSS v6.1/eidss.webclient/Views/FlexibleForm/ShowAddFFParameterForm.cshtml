@@ -1,0 +1,34 @@
+﻿@model eidss.model.Schema.FFPresenterModel
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+
+<script type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        <div class="windowButtonsPn">
+            <input id="idButtonSelect" type="button" class="windowButton" onclick="flexForms.ParameterSelected()" value="@Translator.GetMessageString("Select")"/>                        
+            <input id="idButtonCancel" type="button" class="windowButton" onclick="bvPopup.closeDefaultPopup()" value="@Translator.GetMessageString("Cancel")"/>        
+        </div>
+        <div class="windowSeparator"></div>
+
+        <div class="level1">
+            @(Html.TreeFFParameters("treeParameters", Model))
+        </div>
+
+    }         
+</div>

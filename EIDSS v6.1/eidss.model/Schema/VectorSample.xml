@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="VectorSample"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="spVectorSamples_SelectDetail" type="detaillist" />
+    </storage>
+
+    <tables>
+        <table name="VectorSample">              
+          <grid>
+            <item name="idfMaterial" visible="false" key="true"/>
+            <item name="strVectorID" required="true" />
+            <item name="idfsVectorType" type="long?"/>
+            <item name="strVectorType" type="string" />
+            <item name="strVectorSubTypeName"/>
+            <item name="strBarcode" />
+            <item name="strFieldBarcode" required="true" />
+            <item name="idfsSampleType" required="true" />
+            <item name="strSampleType" type="string" required="true"/>
+            <item name="datFieldCollectionDate"  />
+            <item name="idfSendToOffice" required="true"/>
+            <item name="strSendToOffice" type="string" required="true" />
+            <item name="idfFieldCollectedByOffice" required="true"/>
+            <item name="strFieldCollectedByOffice" type="string" required="true"/>
+            <item name="strNote" type="string" />
+            <item name="datAccession" />
+            <item name="idfsAccessionCondition" />
+            <item name="strAccessionCondition" type="string"/>
+          </grid>          
+          <labels>
+            <item labelId="VectorSample.strNote" name="strNote"/>
+            <item labelId="Vector.strVectorID" name="strVectorID"/>
+            <item labelId="idfsVectorType" name="strVectorType"/>
+            <item labelId="idfsSampleType" name="strSampleType"/>
+            <item labelId="VectorSample.strBarcode" name="strBarcode"/>
+            <item labelId="VectorSample.strFieldBarcode" name="strFieldBarcode"/>
+            <item labelId="VectorSample.idfFieldCollectedByOffice" name="idfFieldCollectedByOffice"/>
+            <item labelId="VectorSample.idfFieldCollectedByOffice" name="strFieldCollectedByOffice"/>
+            <item labelId="idfsVectorSubType" name="strVectorSubTypeName"/>
+            <item labelId="idfsAccessionCondition" name="strAccessionCondition"/>
+            <item labelId="strSendToOrganization" name="idfSendToOffice" />
+          </labels>
+          <keys>
+            <key name="idfMaterial"/>
+          </keys>
+          <fields>
+            <calculated name="strFieldCollectedByOffice" type="string" depends="idfFieldCollectedByOffice"
+                        lambda='c => (c.FieldCollectedByOfficeLookup == null) || Utils.IsEmpty(c.idfFieldCollectedByOffice) || (c.FieldCollectedByOfficeLookup.Count == 0) ? String.Empty : c.FieldCollectedByOfficeLookup.FirstOrDefault(x => x.idfInstitution == c.idfFieldCollectedByOffice).name' />
+
+            <calculated name="ParentVector" type="Vector" lambda="c => Parent as Vector" depends="Parent"/>
+            <!-- ссылка на полный перечень семплов в сессии -->
+            <calculated name="Samples" type="EditableList&lt;VectorSample&gt;" depends="ParentVector" lambda="c => c.ParentVector == null ? new EditableList&lt;VectorSample&gt;() : c.ParentVector.SamplesAll"/>
+            <!-- ссылка на полный перечень полевых тестов в сессии -->
+            <calculated name="FieldTests" type="EditableList&lt;VectorFieldTest&gt;" depends="ParentVector" lambda="c => c.ParentVector == null ? new EditableList&lt;VectorFieldTest&gt;() : c.ParentVector.FieldTests"/>
+            <!-- ссылка на полный перечень векторов в сессии -->
+            <calculated name="Vectors" type="EditableList&lt;Vector&gt;" depends="ParentVector" lambda="c => c.ParentVector == null ? new EditableList&lt;Vector&gt;() : c.ParentVector.Vectors"/>
+            <!-- ссылка на полный перечень лабораторных тестов в сессии -->
+            <calculated name="LabTests" type="EditableList&lt;VectorLabTest&gt;" depends="ParentVector" lambda="c => c.ParentVector == null ? new EditableList&lt;VectorLabTest&gt;() : c.ParentVector.LabTests"/>
+           
+            <calculated name="isPool" type="bool" depends="ParentVector" lambda="c => c.ParentVector == null ? false : c.ParentVector.IsPoolVectorType"/>
+            <calculated name="CaseObjectIdent" type="string" depends="idfVectorSurveillanceSession" lambda='c => "Vectors_" + c.idfVectorSurveillanceSession + "_"' />
+            <calculated name="strVectorType" type="string" depends="ParentVector" lambda="c => c.ParentVector == null ? String.Empty : c.ParentVector.strVectorType"/>
+            <calculated name="strSampleType" type="string" depends="idfsSampleType"
+                        lambda='c => { if (c.VectorType2SampleTypeLookup == null) return String.Empty; else { var sn = c.VectorType2SampleTypeLookup.FirstOrDefault(s => s.idfsSampleType == c.idfsSampleType); return sn == null ? String.Empty : sn.SampleName; } }' />
+            <calculated name="strAccessionCondition" type="string" depends="idfsAccessionCondition"
+                                    lambda='c => c.AccessionCondition == null ? String.Empty : c.AccessionCondition.name' />
+            <calculated name="SampleLongName" type="string" depends="strSampleType,strFieldBarcode" lambda='c => String.Format("{0}/{1}", strFieldBarcode, strSampleType)' />
+          </fields>            
+          <readonly>            
+            <fields name="datFieldCollectionDate,idfFieldCollectedByOffice" predicate="c => c.isPool || c.Used == 1"/>
+            <fields name="strFieldBarcode,idfVector,idfsVectorType,strVectorSubTypeName,idfSendToOffice,strSendToOffice" predicate="c => false || c.Used == 1"/>  
+            <!-- дополнительная логика есть в панели VectorSampleListPanel-->
+            <fields name="idfsSampleType,VectorType2SampleTypeFiltered" predicate="c => c.Used == 1 ? true : (c.isPool &amp;&amp; (c.VectorType2SampleTypeLookup.Count(s => s.idfsVectorType == c.idfsVectorType) &lt;= 1))"/>
+            <fields name="*" predicate="c => true" />
+          </readonly>
+          <relations>
+          </relations>
+          <lookups>
+            <lookup name="VectorType2SampleType" table="VectorType2SampleTypeLookup" source="idfsSampleType" target="idfsSampleType">
+              <filters>
+                <filter predicate="c => c.idfsVectorType == (obj.idfsVectorType != 0 ? obj.idfsVectorType : c.idfsVectorType)"/>
+              </filters>
+            </lookup>
+            <lookup name="VectorType2SampleTypeFiltered" table="VectorType2SampleTypeLookup" source="idfsSampleType" target="idfsSampleType">
+              <filters>
+                <filter predicate="c => c.idfsVectorType == (obj.idfsVectorType != 0 ? obj.idfsVectorType : -1)"/>
+              </filters>
+            </lookup>
+            <lookup name="FieldCollectedByOffice" table="OrganizationLookup" source="idfFieldCollectedByOffice" target="idfInstitution">
+                <params>
+                  <param name="ID" const="null" />
+                  <param name="intHACode" const="null" />
+                </params>
+              <filters>
+                <filter predicate="c => (((c.intHACode??0) &amp; (int)HACode.Vector) != 0) || c.idfInstitution == obj.idfFieldCollectedByOffice" />
+              </filters>
+            </lookup>
+            <lookup name="SendToOffice" table="OrganizationLookup" source="idfSendToOffice" target="idfInstitution" >
+              <params>
+                <param name="ID" const="null" />
+                <param name="intHACode" const="null" />
+              </params>
+              <filters>
+                <filter predicate="c => (((c.intHACode??0) &amp; (int)HACode.Vector) != 0) || c.idfInstitution == obj.idfSendToOffice" />
+              </filters>
+            </lookup>
+            <lookup name="AccessionCondition" table="BaseReference" section="rftAccessionCondition" source="idfsAccessionCondition" target="idfsBaseReference" />
+            <lookup name="VectorType" table="BaseReference" section="rftVectorType" source="idfsVectorType" target="idfsBaseReference" />
+            <lookup name="VectorSubType" table="BaseReference" section="rftVectorSubType" source="idfsVectorSubType" target="idfsBaseReference" />
+            <lookup name="Region" table="RegionLookup" source="idfsRegion" target="idfsRegion">
+              <params>
+                <param name="CountryID" lambda="c => eidss.model.Core.EidssSiteContext.Instance.CountryID" type="long" />
+                <param name="ID" const="null" />
+              </params>
+            </lookup>
+            <lookup name="Rayon" table="RayonLookup" source="idfsRayon" target="idfsRayon">
+              <params>
+                <param name="RegionID" lambda="c => c.idfsRegion ?? 0" type="long" />
+                <param name="ID" const="null" />
+              </params>
+            </lookup>
+          </lookups>
+          <storage>            
+            <insert name="spLabSample_Create" />
+            <update name="spLabSample_Update" />
+            <delete name="spLabSample_Delete" />
+            <candelete name="spVectorSample_CanDelete"/>
+          </storage>
+          <extenders>
+            <creating>                    
+              <scalar_extender target="idfMaterial" class="GetNewIDExtender" />
+              <lambda_extender target="idfsVectorType" type="long" lambda='c => c.ParentVector == null ? c.idfsVectorType : c.ParentVector.idfsVectorType' />
+              <lambda_extender target="idfParty" type="long?" lambda='c => c.ParentVector == null ? c.idfParty : c.ParentVector.idfVector' />
+              <lambda_extender target="idfVectorSurveillanceSession" type="long?" lambda='c => c.ParentVector == null ? c.idfVectorSurveillanceSession : c.ParentVector.idfVectorSurveillanceSession' />
+              <lambda_extender target="idfsVectorSubType" type="long" lambda='c => c.ParentVector == null ? c.idfsVectorSubType : c.ParentVector.idfsVectorSubType' />
+              <lambda_extender target="datFieldCollectionDate" type="DateTime?" lambda='c => (c.ParentVector != null) &amp;&amp; c.isPool  ? c.ParentVector.datCollectionDateTime : DateTime.Now.Date' />
+              <!--<lambda_extender target="idfFieldCollectedByOffice" type="long?" lambda='c => (c.ParentVector != null) &amp;&amp; c.isPool ? c.ParentVector.idfCollectedByOffice : c.idfFieldCollectedByOffice' />-->
+              <lambda_extender target="FieldCollectedByOffice" type="OrganizationLookup" lambda='c => (c.ParentVector != null) ? c.ParentVector.CollectedByOffice : c.FieldCollectedByOffice' />
+              <lambda_extender target="idfFieldCollectedByOffice" type="long?" lambda='c => (c.ParentVector != null) ? c.ParentVector.idfCollectedByOffice : c.idfFieldCollectedByOffice' />
+              <!--<lambda_extender target="strFieldCollectedByOffice" type="string" lambda='c => (c.FieldCollectedByOffice != null) ? c.FieldCollectedByOffice.name : c.strFieldCollectedByOffice' />-->
+              <lambda_extender target="strVectorSubTypeName" type="string" lambda="c => c.ParentVector == null ? c.strVectorSubTypeName : c.ParentVector.strSpecies"/>
+              <lambda_extender target="strVectorID" type="string" lambda="c => c.ParentVector == null ? c.strVectorID : c.ParentVector.strVectorID"/>
+              <lambda_extender target="idfVector" type="long?" lambda="c => c.ParentVector == null ? c.idfVector : c.ParentVector.idfVector"/>
+              <lambda_extender target="Used" type="int" lambda='c => 0' />
+            </creating>
+            <created>
+              <custom_extender>
+                <text>
+                  if ((obj.ParentVector != null) &amp;&amp; (obj.ParentVector.IsPoolVectorType) &amp;&amp; (obj.VectorType2SampleTypeLookup != null) &amp;&amp; (obj.VectorType2SampleTypeLookup.Count > 1)) obj.VectorType2SampleType = obj.VectorType2SampleTypeLookup[1];
+                </text>
+              </custom_extender>
+            </created>
+            <loading>
+            </loading>
+            <loaded>
+            </loaded>
+            <deleting>
+            </deleting>
+          </extenders>
+          <handlers>
+            <fieldhandler>
+              <lambda_handler target="strSampleName" field="idfsSampleType" type="string" lambda='c => { var st = c.VectorType2SampleTypeLookup.FirstOrDefault(s => s.idfsSampleType == c.idfsSampleType); return st != null ? st.SampleName : String.Empty;}' />
+              <lambda_handler target="VectorType2SampleTypeFiltered" field="idfsSampleType" type="VectorType2SampleTypeLookup" lambda='c => c.VectorType2SampleTypeLookup.Where(x => x.idfsSampleType == c.idfsSampleType).FirstOrDefault()'/>
+              <lambda_handler target="idfParty" field="idfVector" type="long?" lambda='c => c.idfVector.HasValue ? c.idfVector : c.idfParty' />
+              <lambda_handler target="strVectorTypeName" field="idfsVectorType" type="string" lambda='c => c.VectorType == null ? "" : c.VectorType.name'/>
+              <lambda_handler target="strVectorSubTypeName" field="idfsVectorSubType" type="string" lambda='c => c.VectorSubType == null ? "" : c.VectorSubType.name'/>
+              <lambda_handler target="strRegionName" field="idfsRegion" type="string" lambda='c => c.Region == null ? "" : c.Region.strRegionName'/>
+              <lambda_handler target="strRayonName" field="idfsRayon" type="string" lambda='c => c.Rayon == null ? "" : c.Rayon.strRayonName'/>
+              <lambda_handler target="FieldCollectedByOffice" field="idfFieldCollectedByOffice" type="OrganizationLookup" lambda='c => c.FieldCollectedByOfficeLookup.Where(x => x.idfInstitution == c.idfFieldCollectedByOffice).FirstOrDefault()'/>
+              <lambda_handler target="strSendToOffice" field="idfSendToOffice" type="string" lambda='c => { var st = c.SendToOfficeLookup.FirstOrDefault(s => s.idfInstitution == c.idfSendToOffice); return st != null ? st.name : String.Empty;}'/>
+              
+              <lambda_list_handler target="datFieldCollectionDate" field="datFieldCollectionDate"  list="FieldTests" type="DateTime?" lambda="c => c.idfMaterial == t.idfMaterial ? c.datFieldCollectionDate : t.datFieldCollectionDate" />
+              <lambda_list_handler target="strSampleName" field="idfsSampleType"  list="FieldTests" type="string" lambda="c => c.idfMaterial == t.idfMaterial ? c.strSampleName : t.strSampleName" />
+           </fieldhandler>
+          </handlers>
+          <validators>
+            <chains>
+              <item field="datFieldCollectionDate" type="DateTime">
+                <item field="datFieldSentDate">
+                  <item field="datAccession">
+                    <item field="CurrentDate" value="DateTime.Now" />
+                  </item>
+                </item>
+              </item>
+            </chains>
+            <post>
+              <required_validator target="strFieldBarcode" label="VectorSample.strFieldBarcode" />
+              <required_validator target="idfsSampleType" />
+              <required_validator target="idfParty" />
+              <required_validator target="VectorType2SampleTypeFiltered" />
+              <required_validator target="idfFieldCollectedByOffice" label="VectorSample.idfFieldCollectedByOffice" />
+              <required_validator target="strFieldCollectedByOffice" label="VectorSample.idfFieldCollectedByOffice" />
+              <custom_validator method="CustomValidations" />
+
+              <custom_mandatory_validator name="idfSendToOffice" fieldId="VsSessionSample_SentTo" label="VetCaseSample.idfSendToOffice"/>
+              <custom_mandatory_validator name="strSendToOffice" fieldId="VsSessionSample_SentTo" label="VetCaseSample.idfSendToOffice"/>
+            </post>
+            <delete>
+            </delete>
+          </validators>
+          <actions>
+            <standard>
+              <remove type="Create"/>
+              <remove type="Edit"/>
+            </standard>
+            <action name="Create" type="Create">
+              <visual panel="Group" visiblePredicate="(c, a, b, p) => false" />
+            </action>
+            <action name="Edit" type="Edit">
+              <visual panel="Group" visiblePredicate="(c, a, b, p) => false" />
+            </action>
+            <action name="ViewOnDetailForm" type="Action">
+              <visual panel="Group" alignment ="Right" enablePredicate='(c, p, b) => c != null &amp;&amp; !c.Key.Equals(PredefinedObjectId.FakeListObject)'>
+                <regular caption ="strViewOnDetailForm_Id" tooltip ="tooltipViewOnDetailForm_Id" icon =""/>
+              </visual>
+              <run>
+                <preUI webType="JScript"/>
+              </run>
+            </action>
+          </actions>
+        </table>       
+    </tables>
+
+</object>

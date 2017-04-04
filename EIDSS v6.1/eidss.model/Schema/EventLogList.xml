@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="EventLogListItem"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="fn_Event_SelectList" type="fnlist" />
+		<count name="spEvent_SelectCount"/>
+	</storage>
+
+	<tables>
+		<table name="EventLogListItem">
+      <properties permissionObject="EventLog"/>
+      <help win="System_Event_Log"/>
+			<searchpanel>
+				<item name="datEventDatatime" editor="Date" labelId="datEventDatatime" mandatory="true" range="true"
+					  default="c => DateTime.Today.AddDays(-EidssUserContext.User.Options.Prefs.DefaultDays)" />
+				<!--<item name="PersonName" editor="Text" labelId="PersonName"/>-->
+        <item name="idfPerson" editor="Lookup" labelId="strPersonName"
+					  lookupName="PersonEnteredByLookup" lookupType="PersonLookup" lookupText="c.FullName" lookupValue="c.idfPerson" />
+				<item name="idfsEventTypeID" editor="Lookup" labelId="strEventTypeName"	lookupName="EventTypeLookup"
+					  lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+      </searchpanel>
+			 
+			<grid>
+				<item name="idfEventID" key="true" visible="false" />
+				<item name="datEventDatatime" format="G" />
+				<item name="strPersonName"  />
+				<item name="strEventTypeName"/>
+			</grid>
+			<labels>
+				<item name="strNote" labelId="EventLog.strNote"/>
+			</labels>
+
+
+			<lookups>
+				<lookup name="EventType" table="BaseReference"  section="rftEventType" source="idfsEventTypeID" target="idfsBaseReference" />
+        <lookup name="PersonEnteredBy" table="PersonLookup" source="idfPerson" target="idfPerson">
+          <params>
+            <param name="OfficeID" const="null" />
+            <param name="ID" const="null" />
+            <param name="ShowUsersOnly" const="true"/>
+            <param name="intHACode" const="null"/>
+          </params>
+        </lookup>
+      </lookups>
+
+			<storage>
+				<delete name="spReadOnlyObject_Delete"/>
+				<candelete name="spReadOnlyObject_CanDelete"/>
+			</storage>
+
+      <actions child="EventLog">
+        <standard>
+          <remove type="Create"/>
+          <remove type="Delete"/>
+          <remove type="Edit"/>
+          <remove type="Report"/>
+        </standard>
+        <action name="View" type="Edit">
+          <visual alignment="Right" panel="Top">
+            <regular caption="strView_Id" tooltip="strView_Id"  icon="View1"/>
+          </visual>
+          <run>
+            <params>
+              <param name="key" type="object" />
+              <param name="item" type="IObject" />
+              <param name="listPanel" type="object" />
+            </params>
+          </run>
+        </action>
+      </actions>
+      <!--actions child="EventLog">
+				<action name="Create" type="Create" visible="false" panel="Top" />
+				<action name="Delete" type="Delete" visible="false" panel="Top" />
+				<action name="Edit" type="Edit" visible="false" panel="Top" />
+				<action name="View" type="Edit" caption="strView_Id" tooltip="strView_Id"  icon="View1"
+						alignment="Right" panel="Top" close="false" visible="true" >
+					<params>
+						<param name="key" type="object" />
+						<param name="item" type="IObject" />
+						<param name="listPanel" type="object" />
+					</params>
+					<text>
+					</text>
+				</action>
+				<action name="Report" type="Report" visible="false" />
+			</actions-->
+		</table>
+	</tables>
+
+</object>

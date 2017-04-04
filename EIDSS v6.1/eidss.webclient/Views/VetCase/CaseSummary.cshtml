@@ -1,0 +1,101 @@
+﻿@model eidss.model.Schema.VetCase
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+<div class="summary">
+    <table class="level1">
+        <tr>
+            <td class="xlarge label">
+                @Html.BvLabel(Model, m => m.strCaseID)
+            </td>
+            <td class="xlarge">
+                @Html.BvEditbox(Model, m => m.strCaseID)
+            </td>
+            <td class="xlarge label">
+                @Html.BvLabel(Model, m => m.strFieldAccessionID)
+            </td>
+            <td class="xlarge">
+                @Html.BvEditbox(Model, m => m.strFieldAccessionID, false)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="label"> 
+                @Html.BvLabel(Model, m => m.idfsCaseProgressStatus)
+            </td>
+           <td>
+                @Html.BvCombobox(Model, m => m.CaseProgressStatus)
+            </td>
+            <td class="label">
+                @Html.BvLabel(Model, m => m.idfsCaseClassification)
+            </td>
+           <td>
+                @Html.BvCombobox(Model, m => m.CaseClassification)
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                @Html.BvLabel(Model, m => m.idfsFinalDiagnosis)
+            </td>
+            <td colspan="3" class="vetCaseDiagnosis">
+                @Html.BvTextArea(Model, m => m.strFinalDiagnosis)
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                @Html.BvLabel(Model, m => m.strDiagnosis)
+            </td>
+            <td colspan="3" class="vetCaseDiagnosis">
+                @Html.BvTextArea(Model, m => m.strDiagnosis)
+            </td>
+        </tr>
+        <tr>
+            @if (Model._HACode == (int)eidss.model.Enums.HACode.Livestock)
+            {    
+                <td class="label">
+                    @Html.BvLabel(Model, m => m.idfParentMonitoringSession)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strMonitoringSessionID)
+                    @if (Model.idfParentMonitoringSession.HasValue)
+                    {   
+                        <button id="idButtonViewSession" class="button smallImageButton" onclick="bvWindow.show('@String.Format("{0}/{1}", Url.Action("Details", "ASSession"), Model.idfParentMonitoringSession.ToString())', '')" type="button" alt="View">
+                            <img alt="View" src="/Content/Images/view_icon.png">
+                        </button>                
+                    }
+                </td>               
+            }
+            <td class="label">
+                @Html.BvLabel(Model, m => m.idfsCaseReportType)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, m => m.CaseReportType)
+            </td>
+            @if (Model._HACode == (int) eidss.model.Enums.HACode.Avian)
+            {
+                <td class="label"> 
+                    @Html.BvLabel(Model, m => m.idfOutbreak)
+                </td>
+               <td>
+                    @Html.Action("InlineOutbreakPicker", "Outbreak", new { obj = Model, objectId = Model.idfCase, idfsOutbreakPropertyName = "idfOutbreak", strOutbreakPropertyName = "strOutbreakID"})
+                </td>
+            }
+        </tr>
+        
+        @if (Model._HACode == (int) eidss.model.Enums.HACode.Livestock)
+        {
+        <tr>
+            <td class="label"> 
+                @Html.BvLabel(Model, m => m.idfOutbreak)
+            </td>
+           <td>
+                @Html.Action("InlineOutbreakPicker", "Outbreak", new { obj = Model, objectId = Model.idfCase, idfsOutbreakPropertyName = "idfOutbreak", strOutbreakPropertyName = "strOutbreakID"})
+            </td>
+            <td class="label">
+            </td>
+           <td>
+            </td>
+        </tr>
+        }
+    </table>
+</div>

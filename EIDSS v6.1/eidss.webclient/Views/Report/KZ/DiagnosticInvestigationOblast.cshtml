@@ -1,0 +1,26 @@
+﻿@using bv.common.Configuration
+@model eidss.model.Reports.KZ.DiagnosticInvestigationModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/ExportButtons", Model)
+    <div class="bluelayout">
+        <div class="tabPanelContent">
+        
+            @Html.Partial("Common/BaseFilter", Model)
+
+            @Html.Partial("Common/BaseIntervalFilter", Model)
+
+            @Html.Partial("KZ/RegionFilter", Model.RegionFilter)
+
+            @Html.Partial("KZ/DiagnosticInvestigationFilter", Model)
+        </div>
+    </div>
+}

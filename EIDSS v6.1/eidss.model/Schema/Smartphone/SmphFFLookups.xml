@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="SmphFFLookups"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spSmphFF_SelectLookups" type="detailone"/>
+  </storage>
+
+  <tables>
+    <table name="SmphFFLookups">
+      <relations>
+        <relation name="FFTemplate" table="FFTemplate" type="child" internal="true" lazy="false" source="idfsDummy" target="idfsDummy" dummy="true" />
+        <relation name="FFDeterminant" table="FFDeterminant" type="child" internal="true" lazy="false" source="idfsDummy" target="idfsDummy" dummy="true" />
+        <relation name="FFRule" table="FFRule" type="child" internal="true" lazy="false" source="idfsDummy" target="idfsDummy" dummy="true" />
+        <relation name="FFRuleConstant" table="FFRuleConstant" type="child" internal="true" lazy="false" source="idfsDummy" target="idfsDummy" dummy="true" />
+        <relation name="FFParameterForFunction" table="FFParameterForFunction" type="child" internal="true" lazy="false" source="idfsDummy" target="idfsDummy" dummy="true" />
+        <relation name="FFParameterForAction" table="FFParameterForAction" type="child" internal="true" lazy="false" source="idfsDummy" target="idfsDummy" dummy="true" />
+        <relation name="FFTemplatesList" table="FFTemplatesList" type="child" internal="true" lazy="false" source="idfsDummy" target="idfsDummy" dummy="true" />
+        <relation name="FFParameterFixedPresetValue" table="FFParameterFixedPresetValue" type="child" internal="true" lazy="false" source="idfsDummy" target="idfsDummy" dummy="true" />
+        <relation name="FFLookupReferenceType" table="FFLookupReferenceType" type="child" internal="true" lazy="false" source="idfsDummy" target="idfsDummy" dummy="true" />
+      </relations>
+    </table>
+    <table name="FFTemplate">
+      <keys>
+        <key name="idfsBaseReference"/>
+        <key name="idfsFormTemplate"/>
+      </keys>
+    </table>
+    <table name="FFDeterminant">
+      <keys>
+        <key name="idfDeterminantValue"/>
+      </keys>
+    </table>
+    <table name="FFRule">
+      <keys>
+        <key name="idfsRule"/>
+      </keys>
+    </table>
+    <table name="FFRuleConstant">
+      <keys>
+        <key name="idfsRule"/>
+      </keys>
+    </table>
+    <table name="FFParameterForFunction">
+      <keys>
+        <key name="idfsParameter"/>
+        <key name="idfsRule"/>
+      </keys>
+    </table>
+    <table name="FFParameterForAction">
+      <keys>
+        <key name="idfsParameter"/>
+        <key name="idfsRule"/>
+      </keys>
+    </table>
+    <table name="FFTemplatesList">
+      <keys>
+        <key name="idfsFormTemplate"/>
+      </keys>
+    </table>
+    <table name="FFParameterFixedPresetValue">
+      <keys>
+        <key name="idfsParameterFixedPresetValue"/>
+        <key name="idfsParameterType"/>
+      </keys>
+    </table>
+    <table name="FFLookupReferenceType">
+      <keys>
+        <key name="idfsReferenceType"/>
+      </keys>
+    </table>
+  </tables>
+
+</object>
+

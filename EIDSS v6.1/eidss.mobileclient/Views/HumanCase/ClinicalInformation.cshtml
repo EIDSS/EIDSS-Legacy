@@ -1,0 +1,70 @@
+﻿@model eidss.model.Schema.HumanCase
+           
+@using eidss.mobileclient.Utils
+
+<table> 
+    <tr>                                                               
+        <td>
+            @Html.LabelFor(m => m.datOnSetDate)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvDateBox(Model, "datOnSetDate")
+        </td>
+    </tr>
+    <tr>                                                               
+        <td>
+            @Html.LabelFor(m => m.idfsFinalState)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvDropDownList(Model, "PatientState")
+        </td>
+    </tr>
+    
+    <tr>                                                               
+        <td>
+            @Html.LabelFor(m => m.idfsHospitalizationStatus)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvDropDownList(Model, "PatientLocationType")
+        </td>
+    </tr>
+
+    <tr>                                                               
+        <td>
+            @Html.LabelFor(m => m.strCurrentLocation)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvEditBox(Model, "strCurrentLocation")
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.idfsYNHospitalization)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvDropDownList(Model, "Hospitalization")
+        </td>
+    </tr>
+
+    <tr>                                                               
+        <td>
+            @Translator.GetString("strAdditionalInformation")
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvEditBox(Model, "strNote")
+        </td>
+    </tr>   
+</table>

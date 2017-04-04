@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Include>
+  <?ifdef GlobalProductInfo.wxi?>
+  <?include $(var.GlobalProductInfo.wxi)?>
+  <?endif?>
+
+  <?if $(var.Platform) = x86?>
+  <?define UpgradeCode = {96C552C1-BE9A-4166-9B2B-C854D3FEAD99}?>
+  <?endif?>
+
+  <?ifndef ProductName?>
+  <?Error ProductName is not defined!?>
+  <?endif?>
+
+  <?define ActualVersion = $(var.MajorVersion).$(var.MinorVersion)?>
+  <?define ProductFullName = $(var.ProductName) $(var.ActualVersion)?>
+
+  <!-- Important! Use property [UpgradeCode] and not macro $(var.UpgradeCode). Otherwise it won't be transformed in another instance -->
+  <?define ProductRegistryKey = $(var.ProductFamilyRegistryKey)\[UpgradeCode]?>
+</Include>

@@ -1,0 +1,18 @@
+﻿@using eidss.avr.mweb.Utils
+@model string
+
+@Html.DevExpress().ComboBox(settings => {
+    settings.Name = "cbChartType";
+    settings.Width = 200;
+    settings.Height = 10;
+    settings.CallbackRouteValues = new { Controller = "Chart", Action = "ChartTypeCombo", layoutId = ViewBag.LayoutId };
+    settings.ControlStyle.CssClass = "xlarge";
+    settings.Enabled = eidss.model.Core.AvrPermissions.UpdatePermission;
+    settings.Properties.ValueType = typeof(string);
+    settings.Properties.TextField = "Text";
+    settings.Properties.ValueField = "Value";
+    settings.Properties.CallbackPageSize = 20;
+    settings.Properties.ClientSideEvents.ValueChanged = "chartForm.onChartTypeChanged";
+    settings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+}).BindList(ChartMapHelper.GetBarViews2()).Bind(Model).GetHtml()
+

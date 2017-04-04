@@ -1,0 +1,21 @@
+﻿@using Kendo.Mvc.UI
+@using eidss.webclient.Utils
+@model eidss.model.Reports.IQ.RegionModel
+
+
+<table id="RegionTable" >
+    <tr>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.RegionId)
+        </td>
+        <td class="largereport">
+            @{
+                @(Html.Kendo().ComboBox()
+                    .BindTo(Model.RegionList.ConvertToSelectListItem())
+                    .HtmlAttributes(new {@class = "requiredField"})
+                    .Name("RegionId"))
+            }
+        </td>
+        <td></td>
+    </tr>
+</table>

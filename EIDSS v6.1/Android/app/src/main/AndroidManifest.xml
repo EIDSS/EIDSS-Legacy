@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest package="com.bv.eidss"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- ACCESS_FINE_LOCATION is already have this permission <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />-->
+    <!-- <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" /> --> 
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:logo="@drawable/ic_launcher"
+        android:label="@string/ApplicationName"
+        android:theme="@style/CustomActionBarTheme"
+        android:name=".App"
+        >
+        <activity
+            android:name="com.bv.eidss.StartActivity"
+            android:label="@string/ApplicationName" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.bv.eidss.SetLocalPasswordActivity" />
+        <activity android:name="com.bv.eidss.ChangeLocalPasswordActivity">
+            android:parentActivityName="com.bv.eidss.SettingsActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bv.eidss.SettingsActivity" />
+        </activity>
+        <activity android:name="com.bv.eidss.LocalLoginActivity" />
+        <activity android:name="com.bv.eidss.SettingsActivity" />
+        <activity android:name="com.bv.eidss.HumanCaseActivity">
+            android:parentActivityName="com.bv.eidss.HumanCaseListActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bv.eidss.HumanCaseListActivity" />
+        </activity>
+        <activity android:name="com.bv.eidss.HumanCaseListActivity" />
+        <activity android:name="com.bv.eidss.VetCaseListActivity">
+        </activity>
+        <activity android:name="com.bv.eidss.ASSessionListActivity">
+        </activity>
+        <activity android:name="com.bv.eidss.VetCaseActivity" android:windowSoftInputMode="adjustPan">
+            android:parentActivityName="com.bv.eidss.VetCaseListActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bv.eidss.VetCaseListActivity" />
+        </activity>
+        <activity android:name="com.bv.eidss.AnimalActivity" android:windowSoftInputMode="adjustPan">
+            android:parentActivityName="com.bv.eidss.VetCaseActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bv.eidss.VetCaseActivity" />
+        </activity>
+        <activity android:name="com.bv.eidss.ASSessionActivity" android:windowSoftInputMode="adjustPan">
+            android:parentActivityName="com.bv.eidss.ASSessionListActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bv.eidss.ASSessionListActivity" />
+        </activity>
+        <activity android:name="com.bv.eidss.ASDiseaseActivity" android:windowSoftInputMode="adjustPan">
+            android:parentActivityName="com.bv.eidss.ASSessionActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bv.eidss.ASSessionActivity" />
+        </activity>
+        <activity android:name="com.bv.eidss.ASSampleActivity" android:windowSoftInputMode="adjustPan">
+            android:parentActivityName="com.bv.eidss.ASSessionActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bv.eidss.ASSessionActivity" />
+        </activity>
+        <activity android:name="com.bv.eidss.FarmActivity" android:windowSoftInputMode="adjustPan">
+            android:parentActivityName="com.bv.eidss.ASSessionActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bv.eidss.ASSessionActivity" />
+        </activity>
+        <activity android:name="com.bv.eidss.VetCaseSampleActivity" android:windowSoftInputMode="adjustPan">
+            android:parentActivityName="com.bv.eidss.VetCaseActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bv.eidss.VetCaseActivity" />
+        </activity>
+        <activity android:name="com.bv.eidss.HumanCaseSampleActivity" android:windowSoftInputMode="adjustPan">
+            android:parentActivityName="com.bv.eidss.HumanCaseActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bv.eidss.HumanCaseActivity" />
+        </activity>
+        <activity android:name="com.bv.eidss.SpeciesActivity" android:windowSoftInputMode="adjustPan" />
+        <activity android:name="com.bv.eidss.SpeciesFromVetCaseActivity" android:windowSoftInputMode="adjustPan">
+            android:parentActivityName="com.bv.eidss.VetCaseActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bv.eidss.VetCaseActivity" />
+        </activity>
+        <activity android:name="com.bv.eidss.SpeciesFromFarmActivity" android:windowSoftInputMode="adjustPan">
+            android:parentActivityName="com.bv.eidss.FarmActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bv.eidss.FarmActivity" />
+        </activity>
+        <activity android:name="com.bv.eidss.UpdateReferencesActivity" />
+        <activity android:name="com.bv.eidss.LoadReferencesActivity">
+            android:parentActivityName="com.bv.eidss.UpdateReferencesActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bv.eidss.UpdateReferencesActivity" />
+        </activity>
+        <activity android:name="com.bv.eidss.LoadListsActivity">
+            android:parentActivityName="com.bv.eidss.UpdateReferencesActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bv.eidss.UpdateReferencesActivity" />
+        </activity>
+
+        <activity android:name="com.bv.eidss.SynchronizationActivity" />
+        <activity android:name="com.bv.eidss.SynchronizeCasesActivity" />
+        <activity android:name="com.bv.eidss.FileBrowser" />
+        <activity android:name="com.bv.eidss.FFActivity" />
+        <activity android:name="com.bv.eidss.SystemInfoActivity" />
+
+
+        <activity android:name="com.bv.eidss.barcode.BarcodeTestActivity"/>
+        <activity android:name="com.bv.eidss.barcode.BarcodeScannerActivity"
+                android:theme="@style/AppOverlayTheme"
+                android:label="@string/BarcodeScannerActivityName">
+        </activity>
+
+
+        <provider android:name="FarmsProvider"
+            android:authorities="com.bv.eidss.farmsprovider" android:exported="false">
+        </provider>
+        <provider android:name="CampaignsProvider"
+            android:authorities="com.bv.eidss.campaignsprovider" android:exported="false">
+        </provider>
+        <provider android:name="ASCampaignDiseasesProvider"
+            android:authorities="com.bv.eidss.ascampaigndeseasesprovider" android:exported="false">
+        </provider>
+        <provider android:name="ASCampaignSampleTypesProvider"
+            android:authorities="com.bv.eidss.ascampaignsamplestypesprovider" android:exported="false">
+        </provider>
+        <provider android:name="ASCampaignSpeciesTypesProvider"
+            android:authorities="com.bv.eidss.ascampaignspeciestypesprovider" android:exported="false">
+        </provider>
+        <provider android:name="RegionsProvider"
+            android:authorities="com.bv.eidss.regionsprovider" android:exported="false">
+        </provider>
+        <provider android:name="RayonsProvider"
+            android:authorities="com.bv.eidss.rayonsprovider" android:exported="false">
+        </provider>
+        <provider android:name="SettlementsProvider"
+            android:authorities="com.bv.eidss.settlementsprovider" android:exported="false">
+        </provider>
+        <provider android:name="ReferenciesProvider"
+            android:authorities="com.bv.eidss.referenciesprovider" android:exported="false">
+        </provider>
+
+    </application>
+</manifest>

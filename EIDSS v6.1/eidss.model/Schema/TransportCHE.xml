@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="TransportCHE"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spTransportCHE_SelectDetail" />
+  </storage>
+  <tables>
+    <table name="TransportCHE">
+      <fields>
+      </fields>
+      <readonly>
+        <fields name="Rayon,idfsRayon" predicate="c => c.idfsRegion == null" />
+      </readonly>
+      <invisible>
+      </invisible>
+      <lookups>
+        <lookup name="Country" table="CountryLookup" source="idfsCountry" target="idfsCountry" notaddempty="true" />
+        <lookup name="Region" table="RegionForAzReportLookup" source="idfsRegion" target="idfsRegion">
+          <params>
+            <param name="CountryID" lambda="c => c.idfsCountry ?? 0" type="long" />
+            <param name="ID" const="null" />
+          </params>
+        </lookup>
+        <lookup name="Rayon" table="RayonAggrLookup" source="idfsRayon" target="idfsRayon">
+          <params>
+            <param name="RegionID" lambda="c => c.idfsRegion ?? 0" type="long" />
+            <param name="ID" const="null" />
+            <param name="idfsAggrCaseType" lambda="c => (long)AggregateCaseType.HumanAggregateCase" type="long?" />
+          </params>
+        </lookup>
+      </lookups>
+      <storage>
+        <post />
+      </storage>
+      <extenders>
+        <creating>
+          <custom_extender>
+            <text>
+              obj.m_IsNew = false;
+              obj.idfGeoLocation = 1L;
+            </text>
+          </custom_extender>
+        </creating>
+        <created>
+          <!-- set default country as current country of database -->
+          <lambda_extender target="Country" type="CountryLookup" lambda='c => 
+                                     c.CountryLookup.Where(a => a.idfsCountry == eidss.model.Core.EidssSiteContext.Instance.CountryID)
+                                     .SingleOrDefault()'/>
+        </created>
+        <posting>
+        </posting>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <!-- If the Region has been changed or cleared, the Rayon, Town or Village, Street, Postal Code and Building/House/Apt. 
+                         become blank and Street, Postal Code and Building/House/Apt. become disabled.
+                         If the Rayon has been changed or cleared, the Rayon, Town or Village, Street, Postal Code and Building/House/Apt. 
+                         become blank and Street, Postal Code and Building/House/Apt. become disabled. 
+                         After the Town or Village is specified, the Street, Postal Code and Building/House/Apt. become enabled. 
+                         Each time the Town or Village is changed with not blank value, the Street, Postal Code and Building/House/Apt. become blank. 
+                         If the Town or Village has been cleared, the Street, Postal Code and Building/House/Apt. become blank and disabled.
+                    -->
+          <scalar_handler class="SetScalarHandler" target="Region" field="idfsCountry" lambda="(o, fld, prev_fld) => null" />
+          <scalar_handler class="SetScalarHandler" target="Rayon" field="idfsRegion" lambda="(o, fld, prev_fld) => null" />
+
+          <lookup_handler lookup="Region" field="idfsCountry" />
+          <lookup_handler lookup="Rayon" field="idfsRegion" />
+        </fieldhandler>
+      </handlers>
+    </table>
+  </tables>
+</object>

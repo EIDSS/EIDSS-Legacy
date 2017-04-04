@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "$(var.ProjectDir)ProductInfo.wxi" ?>
+
+<Wix
+  xmlns="http://schemas.microsoft.com/wix/2006/wi"
+  xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension"
+  xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+
+  <Fragment Id="EIDSS Web Components">
+    <ComponentGroup Id="eidss.web">
+      <ComponentGroupRef Id="WebSite" />
+      <ComponentRef Id="FullWebRedirect" />
+      <ComponentRef Id="Help.VirtualDirectory" />
+      <ComponentRef Id="GISMAPS.VirtualDirectory" />
+      <ComponentGroupRef Id="Web.AppPoolSettings" />
+      <ComponentGroupRef Id="eidss.web.Harvested" />
+      <ComponentGroupRef Id="Help.Harvested" />
+      <ComponentGroupRef Id="GISMaps" />
+      <ComponentGroupRef Id="Web.App_Data.Folders" />
+      <ComponentGroupRef Id="AvrSettings" />
+      <ComponentGroupRef Id="WebAppSettings" />
+      <ComponentGroupRef Id="PinService" />
+      <ComponentGroupRef Id="web.ThirdParty.GIS.GDBAPI" />
+      <ComponentRef Id="CommonAppData.Translations.Folder" Primary="yes" />
+    </ComponentGroup>
+  </Fragment>
+
+
+  <Fragment Id="EIDSS.Web APP Pool">
+    <Property Id="WEB_APPPOOL" Secure="yes">
+      <RegistrySearch Id="WEB_APPPOOL.RS" Root="HKLM" Key="$(var.WebRegistryKey)" Name="AppPool" Type="raw" />
+    </Property>
+    <SetProperty Id="WEB_APPPOOL" After="SetWEBSITE_NAME" Value="[WEBSITE_NAME]" Sequence="execute">Not WEB_APPPOOL</SetProperty>
+
+    <?define website = Web?>
+    <?define webconfigSource = $(var.WebPath)web.config?>
+    <?define websiteDirectory = eidss.web?>
+    <?define no_sessionState?>
+    <ComponentGroup Id="$(var.website).AppPoolSettings" Directory="$(var.websiteDirectory)">
+      <Component Id="$(var.website).AppPool" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.WebRegistryKey)">
+          <RegistryValue Name="AppPool" Value="[WEB_APPPOOL]" Type="string" KeyPath="yes" />
+        </RegistryKey>
+        <iis:WebAppPool
+          Id="$(var.website).AppPool"
+          Name="[WEB_APPPOOL]"
+          ManagedRuntimeVersion="v4.0"
+          ManagedPipelineMode="Integrated"
+          Identity="other"
+          User="ServiceAccount" />
+        <!--IdleTimeout="[APP_POOL_IDLE_TIMEOUT_IN_MINUTES]" /> see custom action - IIsAppPool table doesn't allow formatted values -->
+      </Component>
+
+      <ComponentGroupRef Id="$(var.website).web.config_idleTimeout" />
+    </ComponentGroup>
+
+    <?include SetAppPoolIdleTimeout.wxi?>
+  </Fragment>
+
+  <Fragment Id="WebSite">
+    <Property Id="WEBSITE_NAME" Secure="yes">
+      <RegistrySearch Id="WEBSITE_NAME.RS" Root="HKLM" Key="$(var.WebRegistryKey)" Name="WebSite" Type="raw" />
+    </Property>
+    <SetProperty
+      Action="SetWEBSITE_NAME"
+      Id="WEBSITE_NAME"
+      After="AppSearch"
+      Value="$(var.ProductFamilyAbbreviation)_v$(var.MajorVersion)_[COUNTRY]([INSTANCEID])"
+      Sequence="execute">
+      Not WEBSITE_NAME
+    </SetProperty>
+
+    <Property Id="WEBSITE_IP" Value="*" Secure="yes">
+      <RegistrySearch Id="WEBSITE_IP.RS" Root="HKLM" Key="$(var.WebRegistryKey)" Name="IP" Type="raw" />
+    </Property>
+    <Property Id="WEBSITE_HEADER" Value="web.DOMAIN.com" Secure="yes">
+      <RegistrySearch Id="WEBSITE_HEADER.RS" Root="HKLM" Key="$(var.WebRegistryKey)" Name="Header" Type="raw" />
+    </Property>
+    <Property Id="WEBSITE_PORT" Secure="yes">
+      <RegistrySearch Id="WEBSITE_PORT.RS" Root="HKLM" Key="$(var.WebRegistryKey)" Name="Port" Type="raw" />
+    </Property>
+
+    <ComponentGroup Id="WebSite" Directory="eidss.web">
+      <Component Id="WebSite" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.WebRegistryKey)">
+          <RegistryValue Name="WebSite" Value="[WEBSITE_NAME]" Type="string" KeyPath="yes" />
+          <RegistryValue Name="IP" Value="[WEBSITE_IP]" Type="string" />
+          <RegistryValue Name="Header" Value="[WEBSITE_HEADER]" Type="string" />
+          <RegistryValue Name="Port" Value="[WEBSITE_PORT]" Type="string" />
+        </RegistryKey>
+        <iis:WebSite Id="WebSite" Description="[WEBSITE_NAME]" StartOnInstall="yes" Directory="eidss.web" AutoStart="yes" ConfigureIfExists="yes">
+          <iis:WebAddress Id="WebAddress" Port="[WEBSITE_PORT]" Header="[WEBSITE_HEADER]" IP="[WEBSITE_IP]" />
+          <iis:WebApplication Id="Web.WebApplication" Name="Web" WebAppPool="Web.AppPool" />
+          <iis:WebDirProperties
+            Id="Web.WebDirProperties"
+            AnonymousAccess="yes"
+            AnonymousUser="ServiceAccount" />
+        </iis:WebSite>
+      </Component>
+
+      <?define website = Web?>
+      <Component Id="$(var.website).web.config" Guid="{E43BA9D6-9A57-48F3-9DEB-935E1CA58143}" KeyPath="yes" MultiInstance="yes">
+        <File Id="$(var.website).web.config" Name="web.config" Checksum="yes" Source="$(var.WebPath)web.config" CompanionFile="eidss.webclient.dll" />
+      </Component>
+      <?include TurnOffDebug.wxi?>
+      <ComponentRef Id="eidss.webclient.dll" />
+    </ComponentGroup>
+    <DirectoryRef Id="eidss.web.bin">
+      <Component Id="eidss.webclient.dll" MultiInstance="yes">
+        <File Id="eidss.webclient.dll" KeyPath="yes" Checksum="yes" Source="$(var.WebPath)bin\eidss.webclient.dll" />
+      </Component>
+    </DirectoryRef>
+
+    <CustomActionRef Id="SetEnableFormsAuthentication" />
+  </Fragment>
+
+  <Fragment Id="EIDSS Web elements">
+    <iis:WebDirProperties Id="Help.VirtualDirectory.Propertiess" DefaultDocuments="index.html" />
+
+    <DirectoryRef Id="Help">
+      <Component Id="Help.VirtualDirectory" Guid="{78183DD7-0EB9-421C-BFEC-F37D80EB1C45}" KeyPath="yes" MultiInstance="yes">
+        <iis:WebVirtualDir Id="Help.VirtualDirectory" Alias="Help" Directory="Help" WebSite="WebSite" DirProperties="Help.VirtualDirectory.Propertiess">
+          <iis:WebVirtualDir Id="Help.en.VirtualDirectory" Alias="en-US" Directory="Help.en" DirProperties="Help.VirtualDirectory.Propertiess" />
+          <iis:WebVirtualDir Id="Help.ru_RU.VirtualDirectory" Alias="ru-RU" Directory="Help.ru_RU" DirProperties="Help.VirtualDirectory.Propertiess" />
+          <iis:WebVirtualDir Id="Help.az_Latn_AZ.VirtualDirectory" Alias="az-Latn-AZ" Directory="Help.az_Latn_AZ" DirProperties="Help.VirtualDirectory.Propertiess" />
+          <iis:WebVirtualDir Id="Help.ka_GE.VirtualDirectory" Alias="ka-GE" Directory="Help.ka_GE" DirProperties="Help.VirtualDirectory.Propertiess" />
+          <iis:WebVirtualDir Id="Help.uk_UA.VirtualDirectory" Alias="uk-UA" Directory="Help.en" DirProperties="Help.VirtualDirectory.Propertiess" />
+          <iis:WebVirtualDir Id="Help.kk_KZ.VirtualDirectory" Alias="kk-KZ" Directory="Help.kk_KZ" DirProperties="Help.VirtualDirectory.Propertiess" />
+          <iis:WebVirtualDir Id="Help.hy_AM.VirtualDirectory" Alias="hy-AM" Directory="Help.hy_AM" DirProperties="Help.VirtualDirectory.Propertiess" />
+          <iis:WebVirtualDir Id="Help.ar_IQ.VirtualDirectory" Alias="ar-IQ" Directory="Help.en" DirProperties="Help.VirtualDirectory.Propertiess" />
+          <iis:WebVirtualDir Id="Help.lo_LA.VirtualDirectory" Alias="lo-LA" Directory="Help.en" DirProperties="Help.VirtualDirectory.Propertiess" />
+          <iis:WebVirtualDir Id="Help.vi_VN.VirtualDirectory" Alias="vi-VN" Directory="Help.en" DirProperties="Help.VirtualDirectory.Propertiess" />
+          <iis:WebVirtualDir Id="Help.th_TH.VirtualDirectory" Alias="th-TH" Directory="Help.en" DirProperties="Help.VirtualDirectory.Propertiess" />
+
+          <iis:WebVirtualDir Id="Help.en_AZ_Eidss.VirtualDirectory" Alias="en-AZ-Eidss" Directory="Help.en" DirProperties="Help.VirtualDirectory.Propertiess" />
+          <iis:WebVirtualDir Id="Help.en_HY_Eidss.VirtualDirectory" Alias="en-HY-Eidss" Directory="Help.en" DirProperties="Help.VirtualDirectory.Propertiess" />
+          <iis:WebVirtualDir Id="Help.en_IQ_Eidss.VirtualDirectory" Alias="en-IQ-Eidss" Directory="Help.en" DirProperties="Help.VirtualDirectory.Propertiess" />
+          <iis:WebVirtualDir Id="Help.en_KA_Eidss.VirtualDirectory" Alias="en-KA-Eidss" Directory="Help.en" DirProperties="Help.VirtualDirectory.Propertiess" />
+          <iis:WebVirtualDir Id="Help.en_KZ_Eidss.VirtualDirectory" Alias="en-KZ-Eidss" Directory="Help.en" DirProperties="Help.VirtualDirectory.Propertiess" />
+          <iis:WebVirtualDir Id="Help.en_TZ_Eidss.VirtualDirectory" Alias="en-TZ-Eidss" Directory="Help.en" DirProperties="Help.VirtualDirectory.Propertiess" />
+          <iis:WebVirtualDir Id="Help.en_UA_Eidss.VirtualDirectory" Alias="en-UA-Eidss" Directory="Help.en" DirProperties="Help.VirtualDirectory.Propertiess" />
+          <iis:WebVirtualDir Id="Help.en_TH_Eidss.VirtualDirectory" Alias="en-TH-Eidss" Directory="Help.en" DirProperties="Help.VirtualDirectory.Propertiess" />
+          <iis:WebVirtualDir Id="Help.ru_KZ_Eidss.VirtualDirectory" Alias="ru-KZ-Eidss" Directory="Help.ru_RU" DirProperties="Help.VirtualDirectory.Propertiess" />
+        </iis:WebVirtualDir>
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+
+  <Fragment Id="GIS Maps Virtual Directory">
+    <DirectoryRef Id="GISMAPS">
+      <Component Id="GISMAPS.VirtualDirectory" Guid="{CF74CDA8-E682-4D64-8C20-089B9AA9F558}" KeyPath="yes" MultiInstance="yes">
+        <iis:WebVirtualDir Id="GISMAPS.VirtualDirectory" Alias="Maps" Directory="GISMAPS" WebSite="WebSite">
+          <!-- Task 9529: 30 days equal 2592000 seconds -->
+          <iis:WebDirProperties Id="GISMAPS.VirtualDirectory.Propertiess" CacheControlMaxAge="2592000" />
+        </iis:WebVirtualDir>
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+
+  <Fragment Id="Configure IIS">
+    <PropertyRef Id="APPCMD" />
+    <CustomAction
+      Id="SetEnableFormsAuthentication_Cmd"
+      Property="SetEnableFormsAuthentication"
+      Value='"[APPCMD]" set config "[WEBSITE_NAME]" /section:system.web/authentication /mode:Forms /forms.cookieless:UseCookies' />
+
+    <CustomAction
+      Id="SetEnableFormsAuthentication"
+      BinaryKey="WixCA"
+      DllEntry="CAQuietExec"
+      Execute="deferred"
+      Return="check"
+      Impersonate="no" />
+
+    <InstallExecuteSequence>
+      <Custom Action="SetEnableFormsAuthentication_Cmd" After="ConfigureIIs"><![CDATA[$WebSite > 2]]></Custom>
+      <Custom Action="SetEnableFormsAuthentication" After="SetEnableFormsAuthentication_Cmd"><![CDATA[$WebSite > 2]]></Custom>
+    </InstallExecuteSequence>
+
+    <UI>
+      <ProgressText Action="SetEnableFormsAuthentication_Cmd">!(loc.EnableFormsAuthentication)</ProgressText>
+      <ProgressText Action="SetEnableFormsAuthentication">!(loc.EnableFormsAuthentication)</ProgressText>
+    </UI>
+
+  </Fragment>
+
+  <Fragment Id="Web. App_Data">
+    <ComponentGroup Id="Web.App_Data.Folders">
+      <Component
+        Id="Web.App_Data.Folder"
+        Guid="{E72B1EB4-2340-461C-98DC-DBCB20391ECD}"
+        Directory="eidss.web.app_data"
+        KeyPath="yes"
+        MultiInstance="yes">
+
+        <CreateFolder>
+          <util:PermissionEx
+            Domain="[SERVICE_ACCOUNT_DOMAIN]"
+            User="[SERVICE_ACCOUNT_NAME]"
+            CreateFile="yes"
+            GenericExecute="yes"
+            GenericRead="yes"
+            GenericWrite="yes"
+            Read="yes" />
+        </CreateFolder>
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment Id="Web Application Settings">
+    <Property Id="DEFAULT_REGION_IN_SEARCH" Value="true" Secure="yes">
+      <RegistrySearch Id="DEFAULT_REGION_IN_SEARCH.RS" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="DefaultRegionInSearch" Type="raw" />
+    </Property>
+    <Property Id="DEFAULT_DATE_FILTER" Value="14" Secure="yes">
+      <RegistrySearch Id="DEFAULT_DATE_FILTER.rs" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="DefaultDateFilter" Type="raw" />
+    </Property>
+    <Property Id="LIST_GRID_PAGE_SIZE" Value="50" Secure="yes">
+      <RegistrySearch Id="LIST_GRID_PAGE_SIZE.rs" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="ListGridPageSize" Type="raw" />
+    </Property>
+    <Property Id="POPUP_GRID_PAGE_SIZE" Value="50" Secure="yes">
+      <RegistrySearch Id="POPUP_GRID_PAGE_SIZE.rs" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="PopupGridPageSize" Type="raw" />
+    </Property>
+    <Property Id="DETAIL_GRID_PAGE_SIZE" Value="10" Secure="yes">
+      <RegistrySearch Id="DETAIL_GRID_PAGE_SIZE.rs" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="DetailGridPageSize" Type="raw" />
+    </Property>
+    <Property Id="LAB_SECTION_PAGE_SIZE" Value="50" Secure="yes">
+      <RegistrySearch Id="LAB_SECTION_PAGE_SIZE.rs" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="LabSectionPageSize" Type="raw" />
+    </Property>
+    <Property Id="LabSectionPageSizeLowerBound" Value="10" />
+    <Property Id="LabSectionPageSizeUpperBound" Value="200" />
+
+
+    <ComponentGroup Id="WebAppSettings" Directory="eidss.web">
+      <Component Id="DefaultRegionInSearch" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.ProductRegistryKey)">
+          <RegistryValue Name="DefaultRegionInSearch" Value="[DEFAULT_REGION_IN_SEARCH]" Type="string" KeyPath="yes" />
+        </RegistryKey>
+
+        <?define key = DefaultRegionInSearch ?>
+        <?define value = [DEFAULT_REGION_IN_SEARCH] ?>
+        <?define order = 81 ?>
+        <?include $(var.ProjectDir)AddConfigKey.wxi?>
+      </Component>
+      
+      <Component Id="DefaultDateFilter" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.ProductRegistryKey)">
+          <RegistryValue Name="DefaultDateFilter" Value="[DEFAULT_DATE_FILTER]" Type="string" KeyPath="yes" />
+        </RegistryKey>
+
+        <?define key = DefaultDateFilter ?>
+        <?define value = [DEFAULT_DATE_FILTER] ?>
+        <?define order = 82 ?>
+        <?include $(var.ProjectDir)AddConfigKey.wxi?>
+      </Component>
+
+      <Component Id="ListGridPageSize" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.ProductRegistryKey)">
+          <RegistryValue Name="ListGridPageSize" Value="[LIST_GRID_PAGE_SIZE]" Type="string" KeyPath="yes" />
+        </RegistryKey>
+
+        <?define key = ListGridPageSize ?>
+        <?define value = [LIST_GRID_PAGE_SIZE] ?>
+        <?define order = 83 ?>
+        <?include $(var.ProjectDir)AddConfigKey.wxi?>
+      </Component>
+
+      <Component Id="PopupGridPageSize" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.ProductRegistryKey)">
+          <RegistryValue Name="PopupGridPageSize" Value="[POPUP_GRID_PAGE_SIZE]" Type="string" KeyPath="yes" />
+        </RegistryKey>
+
+        <?define key = PopupGridPageSize ?>
+        <?define value = [POPUP_GRID_PAGE_SIZE] ?>
+        <?define order = 84 ?>
+        <?include $(var.ProjectDir)AddConfigKey.wxi?>
+      </Component>
+
+      <Component Id="DetailGridPageSize" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.ProductRegistryKey)">
+          <RegistryValue Name="DetailGridPageSize" Value="[DETAIL_GRID_PAGE_SIZE]" Type="string" KeyPath="yes" />
+        </RegistryKey>
+
+        <?define key = DetailGridPageSize ?>
+        <?define value = [DETAIL_GRID_PAGE_SIZE] ?>
+        <?define order = 84 ?>
+        <?include $(var.ProjectDir)AddConfigKey.wxi?>
+      </Component>
+
+      <Component Id="LabSectionPageSize" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.ProductRegistryKey)">
+          <RegistryValue Name="LabSectionPageSize" Value="[LAB_SECTION_PAGE_SIZE]" Type="string" KeyPath="yes" />
+        </RegistryKey>
+
+        <?define key = LabSectionPageSize ?>
+        <?define value = [LAB_SECTION_PAGE_SIZE] ?>
+        <?define order = 85 ?>
+        <?include $(var.ProjectDir)AddConfigKey.wxi?>
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment Id="Full Web redirect">
+    <PropertyRef Id="WEBSITE_HEADER" />
+    <PropertyRef Id="WEBSITE_IP" />
+    <PropertyRef Id="WEBSITE_PORT" />
+
+    <Property Id="WEB_EIDSS_PATH" Secure="yes">
+      <RegistrySearch Id="WEB_EIDSS_PATH.rs" Root="HKLM" Key="$(var.WebRegistryKey)" Name="FullWebEidssPath" Type="raw" />
+    </Property>
+    <SetProperty
+      Action="SetRedirectToHost"
+      Id="WEB_EIDSS_PATH"
+      Value="{[WEBSITE_HEADER]:[WEBSITE_PORT]}"
+      Before="SetRedirectPrefix"
+      Sequence="execute">
+      <![CDATA[Not WEB_EIDSS_PATH And WEBSITE_HEADER And WEBSITE_HEADER <> ""]]>
+    </SetProperty>
+    <SetProperty
+      Action="SetRedirectToIP"
+      Id="WEB_EIDSS_PATH"
+      Value="{[WEBSITE_IP]:[WEBSITE_PORT]}"
+      Before="SetRedirectPrefix"
+      Sequence="execute">
+      <![CDATA[Not WEB_EIDSS_PATH And (Not WEBSITE_HEADER Or WEBSITE_HEADER = "")]]>
+    </SetProperty>
+    <SetProperty
+      Action="SetRedirectPrefix"
+      Id="WEB_EIDSS_PATH"
+      Value="{http://[WEB_EIDSS_PATH]}"
+      After="AppSearch"
+      Sequence="execute">
+      <![CDATA[WEB_EIDSS_PATH And WEB_EIDSS_PATH <> "" And Not WEB_EIDSS_PATH << "http://" And Not WEB_EIDSS_PATH << "https://"]]>
+    </SetProperty>
+
+    <DirectoryRef Id="eidss.web">
+      <Component Id="FullWebRedirect" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.WebRegistryKey)">
+          <RegistryValue Name="FullWebEidssPath" Value="[WEB_EIDSS_PATH]" Type="string" KeyPath="yes" />
+        </RegistryKey>
+
+        <?define key = FullWebEidssPath ?>
+        <?define value = [WEB_EIDSS_PATH] ?>
+        <?define order = 86 ?>
+        <?include $(var.ProjectDir)AddConfigKey.wxi?>
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+
+  <Fragment Id="PinService">
+    <ComponentGroup Id="PinService" Directory="eidss.web">
+        <Component Id="AzPinService" Guid="{6DA58227-EF4D-4B1F-926F-2E8C5F33B0B1}" MultiInstance="yes" KeyPath="yes">
+          <Condition><![CDATA[COUNTRY = "!(loc.Azerbaijan)"]]></Condition>
+
+          <?define key = AzPinServiceUsr ?>
+          <?define value = ?>
+          <?define order = 87 ?>
+          <?include $(var.ProjectDir)AddConfigKey.wxi?>
+
+          <?define key = AzPinServicePwd ?>
+          <?define value = ?>
+          <?define order = 88 ?>
+          <?include $(var.ProjectDir)AddConfigKey.wxi?>
+        </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <?define website = web?>
+  <Fragment Id="$(var.website).ThirdParty.GIS.GDBAPI">  
+    <ComponentGroup Id="$(var.website).ThirdParty.GIS.GDBAPI" Directory="eidss.$(var.website).bin">
+      <ComponentGroupRef Id="$(var.website).ThirdParty.GIS.GDBAPI.x86" />
+      <ComponentGroupRef Id="$(var.website).ThirdParty.GIS.GDBAPI.x64" />
+    </ComponentGroup>
+    
+    <?include GDBAPI.wxi?>
+  </Fragment>
+</Wix>

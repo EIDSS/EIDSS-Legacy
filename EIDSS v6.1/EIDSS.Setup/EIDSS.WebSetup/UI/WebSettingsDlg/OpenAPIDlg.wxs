@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?include $(var.ProjectDir)UI\FeatureConditions.wxi?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <UI>
+      <Dialog Id="OpenAPIDlg" Width="370" Height="270" Title="!(loc.OpenAPIDlg_Title)">
+        <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)">
+          <Publish Event="DoAction" Value="TestOpenAPIPort" Order="5">1</Publish>
+          <Publish Event="SpawnDialog" Value="BadPortDlg" Order="8">
+            <![CDATA[OPEN_API_WEBSITE_PORT_VALID <> "1"]]>
+          </Publish>
+        </Control>
+        <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" />
+        <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+          <Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+        </Control>
+
+        <Control Id="Description" Type="Text" X="25" Y="23" Width="280" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.OpenAPIDlgDescription)" />
+        <Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.OpenAPIDlgTitle)" />
+        <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="!(loc.OpenAPIDlgBannerBitmap)" />
+        <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+        <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+
+        <Control Id="WebSiteName" Type="Text" NoPrefix="yes" Width="60" Height="17" X="70" Y="80" Text="!(loc.OpenAPIDlgWebSiteName)" />
+        <Control Id="IP" Type="Text" NoPrefix="yes" Width="60" Height="17" X="200" Y="80" Text="!(loc.OpenAPIDlgIP)" />
+        <Control Id="Port" Type="Text" NoPrefix="yes" Width="60" Height="17" X="254" Y="80" Text="!(loc.OpenAPIDlgPort)">
+          <Condition Action="show">Not SharePorts</Condition>
+          <Condition Action="hide">SharePorts</Condition>
+        </Control>
+
+        <Control Id="OpenAPI.Site" Type="Edit" Width="130" Height="18" X="30" Y="120" Property="OPEN_API_WEBSITE_HEADER" />
+        <Control Id="OpenAPI.IP" Type="Edit" Width="80" Height="18" X="165" Y="120" Property="OPEN_API_WEBSITE_IP" />
+        <Control Id="OpenAPI.Port" Type="Edit" Width="30" Height="18" X="250" Y="120" Property="OPEN_API_WEBSITE_PORT">
+          <Condition Action="enable">Not SharePorts</Condition>
+          <Condition Action="disable">SharePorts</Condition>
+          <Condition Action="show">Not SharePorts</Condition>
+          <Condition Action="hide">SharePorts</Condition>
+        </Control>
+
+        <Control Id="TestOpenAPIPort" Type="PushButton" Width="25" Height="18" X="285" Y="120" Text="!(loc.OpenAPIDlgTestPort)">
+          <Publish Event="DoAction" Value="TestOpenAPIPort" Order="1">Not SharePorts</Publish>
+          <Publish Event="NewDialog" Value="OpenAPIDlg2" Order="2">1</Publish>
+          <Condition Action="enable">Not SharePorts</Condition>
+          <Condition Action="disable">SharePorts</Condition>
+          <Condition Action="show">Not SharePorts</Condition>
+          <Condition Action="hide">SharePorts</Condition>
+        </Control>
+        <Control Id="TestResult_OpenAPIPort_Success" Type="Icon" Width="32" Height="32" X="315" Y="113" IconSize="32" Text="SuccessImg" FixedSize="yes" Hidden="yes">
+          <Condition Action="hide"><![CDATA[OPEN_API_WEBSITE_PORT_VALID <> "1" Or SharePorts]]></Condition>
+          <Condition Action="show"><![CDATA[OPEN_API_WEBSITE_PORT_VALID = "1"]]></Condition>
+        </Control>
+        <Control Id="TestResult_OpenAPIPort_Failure" Type="Icon" Width="32" Height="32" X="315" Y="113" IconSize="32" Text="FailureImg" FixedSize="yes" Hidden="yes">
+          <Condition Action="hide"><![CDATA[OPEN_API_WEBSITE_PORT_VALID = "1" Or SharePorts]]></Condition>
+          <Condition Action="show"><![CDATA[OPEN_API_WEBSITE_PORT_VALID And OPEN_API_WEBSITE_PORT_VALID <> "1"]]></Condition>
+        </Control>
+      </Dialog>
+    </UI>
+  </Fragment>
+</Wix>

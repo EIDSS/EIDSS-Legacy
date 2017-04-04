@@ -1,0 +1,232 @@
+@using System.Web.Optimization
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title> 
+    
+    <link href="@Url.Content("~/Content/Kendo/kendo.common.min.css")" rel="stylesheet" />
+    @if (Cultures.IsRtl)
+    {
+        <link href="@Url.Content("~/Content/Kendo/kendo.rtl.min.css")" rel="stylesheet" />
+    }
+    <link href="@Url.Content("~/Content/Kendo/kendo.uniform.min.css")" rel="stylesheet" />
+
+    @Html.IncludeVersionedCss("~/Content/Styles/Common.css")
+    @Html.IncludeVersionedCss("~/Content/Styles/ListForm.css")
+    @Html.IncludeVersionedCss("~/Content/Styles/ErrorPage.css")
+    @Html.IncludeVersionedCss("~/Content/Styles/DetailsPageRestrictions.css")
+    @Html.IncludeVersionedCss("~/Content/Styles/Details.css")
+    @Html.IncludeVersionedCss("~/Content/Styles/SearchPanel.css")
+    @Html.IncludeVersionedCss("~/Content/Styles/AggregateSummary.css")
+    @Html.IncludeVersionedCss("~/Content/Styles/CountrySpecific.css")
+    
+    <!-- Translations -->
+    @*Html.IncludeVersionedJs(String.Format("~/Scripts/Messages/EIDSS.BvMessages.{0}.js", Cultures.GetCulture(ModelUserContext.CurrentLanguage)))*@
+    <script src="@Url.Content(String.Format("~/Scripts/Kendo/min/cultures/kendo.culture.{0}.min.js", Cultures.GetCulture(ModelUserContext.CurrentLanguage)))" type="text/javascript"></script>
+    <script src="@Url.Action("MessagesScript", "Account", new { version = Extenders.VersionCode() })"></script>
+    <!-- Common -->
+    @Scripts.Render("~/bundles/system")
+    @Extenders.RenderEidss("~/bundles/EIDSS")
+
+
+    <script type="text/javascript">
+        //$(window).load(function () {           
+            //aggregateCase.onCaseSummaryLoad();
+            //aggregateCase.showSummaryInfo(false);
+        //});
+        document.onkeypress = function (e) {
+            var e = window.event || e;
+            if (e.keyCode == 13) {
+                return false;
+            }
+        }       
+    </script>
+    
+    <script type="text/javascript">
+        $(document).ready(function () {
+            kendo.culture('@Cultures.GetCulture(ModelUserContext.CurrentLanguage)');
+            changeFont();
+        });
+    </script>
+
+</head>
+ 
+@using Kendo.Mvc.UI
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using System.Threading
+@using bv.common.Enums;
+@using bv.model.Model.Core;
+@using eidss.webclient.Utils
+
+@functions
+{
+    IObjectAccessor GetAccessor()
+    {
+        var result = Model as IObjectAccessor;
+        if (result == null)
+        {
+            if (Model is IObject)
+            {
+                result = ((IObject)Model).GetAccessor();
+            }
+        }
+        return result;
+    }
+            
+    string GetPopup(eidss.webclient.Utils.MenuItem item)
+    {
+        if (item.IsHelp)
+        {
+            return String.Format("return OpenPopup('{0}', '{1}');", GetHelpUrl(item.Url), item.Name.Replace(" ", ""));
+        }
+        
+        return String.Format("return OpenPopup('{0}', 'CreateObject');", item.Url);
+    }
+
+    string GetHelpUrl(string basicUrl)
+    {
+        if (ViewBag.HelpUrl == null)
+        {
+            return basicUrl;
+        }
+
+        return String.Format("{0}?{1}.htm", basicUrl, ViewBag.HelpUrl);
+    }
+
+}
+
+    <body class='@(Cultures.IsRtl ? "k-rtl" : "")'>  
+        <div class='page'>
+            <div class="header">
+                <table class="headerPanel">
+                    <tr>
+                        <td class="logo">
+                            <a href="@Url.Action("Home", "Account")">@Translator.GetMessageString("EIDSS_Short_Caption")</a> 
+                        </td>
+                        <td class="infoTd">
+                            <div class="infoPanel">
+    @if (BaseSettings.TranslationMode)
+    {
+                                <a href='javascript:bvTranslation.OpenTranslationWindow();'>@Translator.GetMessageString("btTranslationTool")</a> <text> |</text>
+    }
+                                @if (BaseSettings.ShowCBT)
+                                {
+                                    <a href='javascript:listForm.openCbt();'>@Translator.GetMessageString("strCBT")</a> <text> |</text>
+                                }
+                                <a href='javascript:listForm.openHelp("@ViewBag.HelpIndex");'>@Translator.GetMessageString("strHelp")</a> |
+                                <a href="javascript:listForm.showInfoWindow();">@Translator.GetMessageString("strInfo")</a> |
+                                <a href='@Url.Action("Logout", "Account")'>@Translator.GetMessageString("Logout")</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="name">
+                            @Translator.GetMessageString("EIDSS_Caption")
+                        </td>
+                    </tr>
+                </table>
+                @(Html.Kendo().Menu()
+                    .Name("Menu")
+                    .CloseOnClick(false)
+                    .OpenOnClick(false)
+                    .HoverDelay(500)
+                    .Events(a => a.Open("function() { searchPanel.hide(); }"))
+                    .BindTo(MenuHelper.GetMenu(), mappings =>
+                        {
+                            mappings.For<MenuCategory>(binding => binding
+                                .ItemDataBound((item, category) =>
+                                    {
+                                        item.Text = category.Name;
+                                        item.Visible = category.IsActive;
+                                        if (!string.IsNullOrEmpty(category.Url))
+                                        {
+                                            item.Url = category.Url;
+                                            if (category.IsPopup)
+                                            {
+                                                item.LinkHtmlAttributes.Add("onclick", String.Format("return OpenPopup('{0}', 'CreateObject');", category.Url));
+                                            }
+                                            else if (category.IsModal)
+                                            {
+                                                item.LinkHtmlAttributes.Add("onclick", String.Format("return OpenModal('{0}', '{1}');", category.Url, category.Name.Replace(" ", "")));
+                                            }
+                                        }
+                                    })
+                                .Children(category => category.Items));
+                                                    mappings.For<eidss.webclient.Utils.MenuItem>(binding => binding
+                                                    .ItemDataBound((item, menuitem) =>
+                                                        {
+                                                            item.Text = menuitem.Name;
+                                                            item.Visible = menuitem.IsActive;
+
+                                                            if (!menuitem.IsFolder)
+                                                            {
+                                                                item.Url = menuitem.Url;
+
+                                                                if (menuitem.IsPopup)
+                                                                {
+                                                                    item.LinkHtmlAttributes.Add("onclick", GetPopup(menuitem));
+                                                                }
+                                                                else if (menuitem.IsModal)
+                                                                {
+                                                                    item.LinkHtmlAttributes.Add("onclick", String.Format("return OpenModal('{0}', '{1}');", menuitem.Url, menuitem.Name.Replace(" ", "")));
+                                                                }
+                                                            }
+                                    })
+                                .Children(item => item.Items));
+                        })
+                        )
+                <div class="showMenuArrow" id="ShowMenuArrow">
+                    <span class="k-icon k-i-arrow-s" onclick="listForm.showIconMenu()"></span>
+                </div>
+                <div class="navigationMenuPanel" id="IconMenu">
+                    <ul class="navigationMenu">
+                        @foreach (var item in MenuHelper.GetIconMenu())
+                        {
+                            if (item.IsActive)
+                            {
+                                var className = item.IsLastInSection ? "lastInSection" : "";
+                                <li class="@className">
+                                    @{ var onclick = item.IsPopup ? GetPopup(item) : "";
+                                        var href = item.IsPopup ? "#" : item.Url;  }
+                                    <a href="@href" onclick='@onclick' >
+                                        @if (item.IconName == null)
+                                        {
+                                            @item.Name
+                                        }
+                                        else
+                                        {
+                                            <img src='/Content/Images/@item.IconName' alt='@item.Name' title='@item.Name' />
+                                        }
+                                    </a>
+                                </li>
+                            }
+                        }  
+                        <li class="menuArrow">
+                            <span class="k-icon k-i-arrow-n" onclick="listForm.hideIconMenu()"></span>
+                        </li>                  
+                    </ul>
+                </div>
+            </div>
+            <div class="content">
+                <div class="customTitle">@ViewBag.Title</div>
+                <div class="customTitle customTitleFormCode">@ViewBag.FormCode</div>
+                <div class="topButtonPanel">                
+                </div>
+                <div class="detailsPage">
+                    @RenderBody()                 
+                </div>            
+            </div>
+        </div>
+
+    @if (BaseSettings.TranslationMode)
+    {
+        <div id="TranslationWindow"></div>       
+        <div id="SplitWindow"></div>       
+    }
+        <div id="loading" class="loader">
+            <img id="loadingImg" class="loaderImg" src='@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/ajax-loader.gif"))' alt="" />
+        </div>   
+    </body>
+</html>

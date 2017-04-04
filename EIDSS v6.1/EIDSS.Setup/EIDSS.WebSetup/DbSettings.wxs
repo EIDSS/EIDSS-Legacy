@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "ProductInfo.wxi" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Fragment Id="DB Settings">
+    <Property Id="DBUSER" Secure="yes" Hidden="yes" />
+    <Property Id="DBPASSWORD" Secure="yes" Hidden="yes" />
+    <Property Id="EncryptedDBUSER" Hidden="yes" />
+    <Property Id="EncryptedDBPASSWORD" Hidden="yes" />
+
+    <Property Id="ARCHUSER" Secure="yes" Hidden="yes" />
+    <Property Id="ARCHPASSWORD" Secure="yes" Hidden="yes" />
+    <Property Id="EncryptedARCHUSER" Hidden="yes" />
+    <Property Id="EncryptedARCHPASSWORD" Hidden="yes" />
+
+    <CustomAction Id="EncryptDbAccountDetails" DllEntry="EncryptDbAccountDetails" BinaryKey="CustomActions" />
+    <CustomAction Id="EncryptArchiveDbAccountDetails" DllEntry="EncryptArchiveDbAccountDetails" BinaryKey="CustomActions" />
+
+    <InstallExecuteSequence>
+      <Custom Action="EncryptDbAccountDetails" After="AppSearch">Not REMOVE~="ALL" And DBUSER And DBPASSWORD</Custom>
+      <Custom Action="EncryptArchiveDbAccountDetails" Before="ProcessComponents">Not REMOVE~="ALL" And ARCHUSER And ARCHPASSWORD</Custom>
+    </InstallExecuteSequence>
+
+    <ComponentGroup Id="DbSettings" Directory="APPLICATIONFOLDER">
+      <Component Id="ConfigConnectionSource" Guid="{69A2DE38-EC6A-477E-B30E-DE42FE79FCFA}" KeyPath="yes" MultiInstance="yes">
+        <Condition>Not SKIP_VALIDATE_CONNECTION</Condition>
+
+        <?define key = ConnectionSource ?>
+        <?define value = 1 ?>
+        <?define order = 61 ?>
+        <?include AddConfigKey.wxi?>
+      </Component>
+      
+      <Component Id="SQLDbSettings" Guid="{E6A4D12B-8578-48C8-A8F2-904619CA363F}" KeyPath="yes" MultiInstance="yes">
+        <Condition>Not SKIP_VALIDATE_CONNECTION</Condition>
+
+        <?define key = SQLDatabase ?>
+        <?define value = [SQLDATABASE] ?>
+        <?define order = 62 ?>
+        <?include AddConfigKey.wxi?>
+
+        <?define key = SQLServer ?>
+        <?define value = [DBSERVER] ?>
+        <?define order = 63 ?>
+        <?include AddConfigKey.wxi?>
+
+        <?define key = SQLUser ?>
+        <?define value = [EncryptedDBUSER] ?>
+        <?define order = 64 ?>
+        <?include AddConfigKey.wxi?>
+
+        <?define key = SQLPassword ?>
+        <?define value = [EncryptedDBPASSWORD] ?>
+        <?define order = 65 ?>
+        <?include AddConfigKey.wxi?>
+      </Component>
+
+      <Component Id="ArchiveDbSetings" Guid="{5C6A6113-01E3-4507-84B4-B9C31E227B35}" KeyPath="yes" MultiInstance="yes">
+        <Condition><![CDATA[Not SKIP_VALIDATE_CONNECTION And ARCHDB_CONNECTION_REQUIRED = "1"]]></Condition>
+
+        <?define key = ArchiveServer ?>
+        <?define value = [ARCHDBSERVER] ?>
+        <?define order = 66 ?>
+        <?include AddConfigKey.wxi?>
+
+        <?define key = ArchiveDatabase ?>
+        <?define value = [ARCHDATABASE] ?>
+        <?define order = 67 ?>
+        <?include AddConfigKey.wxi?>
+
+        <?define key = ArchiveUser ?>
+        <?define value = [EncryptedARCHUSER] ?>
+        <?define order = 68 ?>
+        <?include AddConfigKey.wxi?>
+
+        <?define key = ArchivePassword ?>
+        <?define value = [EncryptedARCHPASSWORD] ?>
+        <?define order = 69 ?>
+        <?include AddConfigKey.wxi?>
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>

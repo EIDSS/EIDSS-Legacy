@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="GeoLocation"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get />
+  </storage>
+
+  <tables>
+    <table name="GeoLocation">
+      <labels>
+        <item name="idfsSettlement" labelId="GeoLocation.idfsSettlement"/>
+      </labels>
+      <fields>
+        <calculated name="VCase" type="VetCase" depends="Parent" lambda="c => c.Parent is FarmPanel ? (c.Parent as FarmPanel).Parent as VetCase : null" />
+        <calculated name="VSession" type="VsSession" depends="Parent" lambda="c => c.Parent as VsSession" />
+        <calculated name="IsReadOnlyParent" depends="VCase" type="bool" 
+                    lambda="c => c.VCase == null ? false : c.VCase.IsClosed || c.VCase.ReadOnly"/>
+        <storage name="blnGeoLocationShared" type="bool"/>
+        <storage name="bNeedCreateGeoLocationString" type="bool"/>
+        <storage name="bNeedChangeContryOnTypeChange" type="bool"/>
+        <storage name="bCancelCoordinationValidation" type="bool"/>
+        <calculated name="FullName" type="string" depends="" lambda="c => c.strAddressStringTranslate"/>
+        <calculated name="IsNull" type="bool" depends="idfsCountry" lambda="c => (c.IsWinClient &amp;&amp; c.VSession == null) ? false : (c.idfsCountry == null) || (c.blnForeignAddress != true  &amp;&amp; c.idfsRegion == null &amp;&amp; !c.HasChanges)"/>
+        <!--calculated name="IsNull" type="bool" depends="idfsCountry" lambda="c => c.IsWinClient? false : (c.idfsCountry == null) || (c.blnForeignAddress != true  &amp;&amp; c.idfsRegion == null &amp;&amp; !c.HasChanges)"/-->
+        <!--calculated name="IsNull" type="bool" depends="idfsCountry" lambda="c => c.IsNew? false : (c.idfsCountry == null) || (c.idfsGeoLocationType != (long)GeoLocationTypeEnum.Address  &amp;&amp; c.idfsRegion == null &amp;&amp; !c.HasChanges)"/-->
+        <calculated name="strReadOnlyFullName" type="string" depends="" lambda="c => c.strAddressStringTranslate"/>
+        <calculated name="strReadOnlyAdaptiveFullName" type="string" depends="" lambda="c => c.CreateGeoLocationString()"/>
+        <calculated name="strReadOnlyCountry" type="string" depends="idfsCountry" lambda='c => c.idfsCountry == null ? (string)null : c.Country.strCountryName' />
+        <calculated name="panelForeignAddress" type="string" depends="idfsGeoLocationType" lambda='c => ""'/>
+        <calculated name="panelExactPoint" type="string" depends="idfsGeoLocationType" lambda='c => ""'/>
+        <calculated name="panelCoordinates" type="string" depends="idfsGeoLocationType" lambda='c => ""'/>
+        <calculated name="panelDescription" type="string" depends="idfsGeoLocationType" lambda='c => ""'/>
+        <calculated name="panelGround" type="string" depends="idfsGeoLocationType" lambda='c => ""'/>
+      </fields>
+      <readonly>
+        <fields name="strReadOnlyFullName, strReadOnlyAdaptiveFullName" predicate="c => true" />
+        <fields name="Region,idfsRegion" predicate="c => c.IsReadOnlyParent || c.idfsCountry == null" />
+        <fields name="Rayon,idfsRayon" predicate="c => c.IsReadOnlyParent || c.idfsRegion == null" />
+        <fields name="Settlement,idfsSettlement" predicate="c => c.IsReadOnlyParent || c.idfsRayon == null" />
+        <fields name="Street,strStreetName,PostCode,strPostCode,strHouse,strBuilding,strApartment" predicate="c => c.IsReadOnlyParent || c.idfsSettlement == null" />
+        <fields name="dblLatitude,dblLongitude" predicate="c => c.IsReadOnlyParent || idfsGeoLocationType != (long)GeoLocationTypeEnum.ExactPoint" />
+        <fields name="dblRelLatitude,dblRelLongitude" predicate="c => true" />
+        <fields name="*" predicate="c => c.IsReadOnlyParent" />
+      </readonly>
+      <invisible>
+        <fields name="dblLatitude,dblLongitude" predicate="c => c.idfsGeoLocationType == (long)GeoLocationTypeEnum.RelativePoint"/>
+        <fields name="dblRelLatitude,dblRelLongitude,dblAlignment,dblDistance,GroundType,idfsGroundType,panelGround" predicate="c => c.idfsGeoLocationType != (long)GeoLocationTypeEnum.RelativePoint"/>
+        <fields name="panelExactPoint,panelCoordinates,panelDescription,strDescription" predicate="c => c.idfsGeoLocationType == (long)GeoLocationTypeEnum.Address"/>
+        <fields name="panelForeignAddress" predicate="c => c.idfsGeoLocationType != (long)GeoLocationTypeEnum.Address"/>
+      </invisible>
+      <lookups>
+        <lookup name="Country" table="CountryLookup" source="idfsCountry" target="idfsCountry" />
+        <lookup name="Region" table="RegionLookup" source="idfsRegion" target="idfsRegion">
+          <params>
+            <param name="CountryID" lambda="c => c.idfsCountry ?? 0" type="long" />
+            <param name="ID" const="null" />
+          </params>
+        </lookup>
+        <lookup name="Rayon" table="RayonLookup" source="idfsRayon" target="idfsRayon">
+          <params>
+            <param name="RegionID" lambda="c => c.idfsRegion ?? 0" type="long" />
+            <param name="ID" const="null" />
+          </params>
+        </lookup>
+        <lookup name="Settlement" table="SettlementLookup" source="idfsSettlement" target="idfsSettlement">
+          <params>
+            <param name="RayonID" lambda="c => c.idfsRayon ?? 0" type="long" />
+            <param name="ID" const="null" />
+          </params>
+        </lookup>
+        <lookup name="Street" table="StreetLookup" source="strStreetName" target="strStreetName" hintonly="true">
+          <params>
+            <param name="idfsSettlement" lambda="c => c.idfsSettlement ?? 0" type="long" />
+          </params>
+        </lookup>
+        <lookup name="PostCode" table="PostalCodeLookup" source="strPostCode" target="strPostCode" hintonly="true">
+          <params>
+            <param name="idfsSettlement" lambda="c => c.idfsSettlement ?? 0" type="long" />
+          </params>
+        </lookup>
+        <lookup name="GroundType" table="BaseReference" section="rftGroundType" source="idfsGroundType" target="idfsBaseReference" />
+        <lookup name="GeoLocationType" table="BaseReference" section="rftGeoLocType" source="idfsGeoLocationType" target="idfsBaseReference" notaddempty="true">
+          <filters>
+            <filter predicate="c => c.idfsBaseReference != (long)GeoLocationTypeEnum.Default"/>
+          </filters>
+        </lookup>
+      </lookups>
+
+      <storage>
+        <post name="spGeoLocation_Post" />
+      </storage>
+      <extenders>
+        <creating>
+          <scalar_extender class="GetNewIDExtender" target="idfGeoLocation" />
+          <value_extender target="bCancelCoordinationValidation" value="false"/>
+        </creating>
+        <created>
+          <lambda_extender target="GeoLocationType" type="BaseReference"
+                           lambda='c => c.GeoLocationTypeLookup.SingleOrDefault(a => a.idfsBaseReference == (long)GeoLocationTypeEnum.ExactPoint)'/>
+        </created>
+        <loading>
+          <lambda_extender target="idfsGeoLocationType" type="long?" lambda="c => c.idfsGeoLocationType == (long)GeoLocationTypeEnum.Address &amp;&amp; !c.blnForeignAddress ? (long)GeoLocationTypeEnum.ExactPoint : c.idfsGeoLocationType"/>
+        </loading>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+            <value_handler field="idfsGeoLocationType" target="bNeedCreateGeoLocationString" value="true"/>
+            <value_handler field="idfsCountry" target="bNeedCreateGeoLocationString" value="true"/>
+            <value_handler field="idfsRegion" target="bNeedCreateGeoLocationString" value="true"/>
+            <value_handler field="idfsRayon" target="bNeedCreateGeoLocationString" value="true"/>
+            <value_handler field="idfsSettlement" target="bNeedCreateGeoLocationString" value="true"/>
+            <value_handler field="dblLatitude" target="bNeedCreateGeoLocationString" value="true"/>
+            <value_handler field="dblLongitude" target="bNeedCreateGeoLocationString" value="true"/>
+            <value_handler field="dblAlignment" target="bNeedCreateGeoLocationString" value="true"/>
+            <value_handler field="dblDistance" target="bNeedCreateGeoLocationString" value="true"/>
+            <value_handler field="strForeignAddress" target="bNeedCreateGeoLocationString" value="true"/>
+            
+            <!-- If the Region has been changed or cleared, the Rayon, Town or Village, Street, Postal Code and Building/House/Apt. 
+                become blank and Street, Postal Code and Building/House/Apt. become disabled.
+                If the Rayon has been changed or cleared, the Rayon, Town or Village, Street, Postal Code and Building/House/Apt. 
+                become blank and Street, Postal Code and Building/House/Apt. become disabled. 
+                After the Town or Village is specified, the Street, Postal Code and Building/House/Apt. become enabled. 
+                Each time the Town or Village is changed with not blank value, the Street, Postal Code and Building/House/Apt. become blank. 
+                If the Town or Village has been cleared, the Street, Postal Code and Building/House/Apt. become blank and disabled.
+          -->
+
+          <lambda_handler field="idfsGeoLocationType" target="Country" type="CountryLookup"
+                                    lambda="c => !c.bNeedChangeContryOnTypeChange ? null : (c.idfsGeoLocationType == (long)GeoLocationTypeEnum.Address 
+                                    ? null : c.CountryLookup.SingleOrDefault(i => i.idfsCountry == eidss.model.Core.EidssSiteContext.Instance.CountryID))"/>
+
+          <lambda_handler field="idfsCountry" target="Region" type="RegionLookup"
+                                    lambda="c => !c.bNeedChangeContryOnTypeChange ? null : (c.idfsGeoLocationType == (long)GeoLocationTypeEnum.Address 
+                                    ? null : c.Region)"/>
+
+          <scalar_handler class="SetScalarHandler" target="Region" field="idfsCountry" lambda="(o, fld, prev_fld) => null" />
+
+          <scalar_handler class="SetScalarHandler" target="Rayon" field="idfsRegion" lambda="(o, fld, prev_fld) => null" />
+
+          <scalar_handler class="SetScalarHandler" target="Settlement" field="idfsRayon" lambda="(o, fld, prev_fld) => null" />
+
+          <scalar_handler class="SetScalarHandler" target="Street" field="idfsSettlement" lambda='(o, fld, prev_fld) => null' />
+          <scalar_handler class="SetScalarHandler" target="PostCode" field="idfsSettlement" lambda='(o, fld, prev_fld) => null' />
+          <scalar_handler class="SetScalarHandler" target="strStreetName" field="idfsSettlement" lambda='(o, fld, prev_fld) => ""' />
+          <scalar_handler class="SetScalarHandler" target="strPostCode" field="idfsSettlement" lambda='(o, fld, prev_fld) => ""' />
+          <scalar_handler class="SetScalarHandler" target="strHouse" field="idfsSettlement" lambda='(o, fld, prev_fld) => ""' />
+          <scalar_handler class="SetScalarHandler" target="strBuilding" field="idfsSettlement" lambda='(o, fld, prev_fld) => ""' />
+          <scalar_handler class="SetScalarHandler" target="strApartment" field="idfsSettlement" lambda='(o, fld, prev_fld) => ""' />
+          
+          <lookup_handler lookup="Region" field="idfsCountry" />
+          <lookup_handler lookup="Rayon" field="idfsRegion" />
+          <lookup_handler lookup="Settlement" field="idfsRayon" />
+          <lookup_handler lookup="Street" field="idfsSettlement" />
+          <lookup_handler lookup="PostCode" field="idfsSettlement" />
+          <custom_handler field="Settlement">
+            <text>
+              obj.CalcCoordinates();
+            </text>
+          </custom_handler>
+          <custom_handler field="dblDistance">
+            <text>
+              obj.CalcCoordinates();
+            </text>
+          </custom_handler>
+          <custom_handler field="dblAlignment">
+            <text>
+              obj.CalcCoordinates();
+            </text>
+          </custom_handler>
+          <custom_handler field="dblLongitude">
+            <text>
+              obj.SetLocationCoordinates();
+            </text>
+          </custom_handler>
+          <custom_handler field="dblLatitude">
+            <text>
+              obj.SetLocationCoordinates();
+            </text>
+          </custom_handler>
+        </fieldhandler>
+      </handlers>
+      <validators>
+        <post>
+          <predicate_validator field="dblLongitude" predicate="c=>!c.dblLongitude.HasValue || (c.dblLongitude >= -180 &amp;&amp; c.dblLongitude &lt;= 180)" message="GeoLocation_LongtitudeExceedsValues"/>
+          <predicate_validator field="dblLatitude" predicate="c=>!c.dblLatitude.HasValue || (c.dblLatitude >= -90 &amp;&amp; c.dblLatitude &lt;= 90)" message="GeoLocation_LatitudeExceedsValues"/>
+          <required_validator target="idfsGeoLocationType" property="GeoLocationType" 
+                              predicate='c => !c.IsNull' />
+          <required_validator target="idfsCountry" property="Country" 
+                               predicate='c => (!c.IsNull || c.idfsGeoLocationType == (long)GeoLocationTypeEnum.Address)' />
+          <required_validator target="idfsRegion" property="Region" 
+                               predicate='c => (!c.IsNull &amp;&amp; c.idfsGeoLocationType != (long)GeoLocationTypeEnum.Address)' />
+          <required_validator target="idfsRayon" property="Rayon" 
+                               predicate='c => (!c.IsNull &amp;&amp; c.idfsGeoLocationType != (long)GeoLocationTypeEnum.Address)' />
+          <required_validator target="idfsSettlement" property="Settlement" 
+                               predicate='c => (!c.IsNull &amp;&amp; c.idfsGeoLocationType == (long)GeoLocationTypeEnum.RelativePoint)' />
+          <custom_validator method='ValidateLocationCoordinates'/>
+
+        </post>
+      </validators>
+      <actions>
+        <action name="CreateWithCountry" type="Create">
+          <run>
+            <created>
+              <!-- set default country as current country of database -->
+              <lambda_extender target="Country" type="CountryLookup" 
+                               lambda='c => c.CountryLookup.SingleOrDefault(a => a.idfsCountry == eidss.model.Core.EidssSiteContext.Instance.CountryID)'/>
+            </created>
+          </run>
+        </action>
+        <action name="CreateWithoutCountry" type="Create">
+          <run>
+            <created>
+              <lambda_extender target="bNeedCreateGeoLocationString" type="bool"
+                               lambda='c => false'/>
+            </created>
+          </run>
+        </action>
+      </actions>
+    </table>
+  </tables>
+
+</object>
+

@@ -1,0 +1,47 @@
+﻿@using System.Drawing
+@using System.Web.UI.WebControls
+@using bv.common.Core
+@using bv.model.Model.Core
+@using eidss.avr.db.Common
+@using eidss.avr.mweb.Utils
+@using eidss.avr.mweb.Models
+@using eidss.web.common.Utils
+
+@model bv.common.Resources.TranslationTool.TranslatorContainer
+
+    @Html.DevExpress().PopupControl(
+    settings =>
+    {
+        settings.Name = "pcTranslationTool";
+        settings.CallbackRouteValues = new { Controller = "Account", Action = "Translation" };
+        settings.ClientSideEvents.BeginCallback = "avrTranslation.OnPopupBeginCallback";
+        settings.LoadContentViaCallback = LoadContentViaCallback.OnFirstShow;
+        settings.Width = 1000;
+        settings.CloseAction = CloseAction.CloseButton;
+        settings.PopupElementID = "btTranslationTool";
+        settings.AllowDragging = true;
+        settings.AllowResize = false;//true;
+        //settings.ResizingMode = ResizingMode.Postponed;
+        //settings.ShowFooter = true; 
+        //settings.FooterText = "";
+        settings.ShowOnPageLoad = false;
+        settings.HeaderText = Translator.GetMessageString("Translations");
+        settings.Modal = true;
+        //settings.AutoUpdatePosition = true;
+        settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+        settings.PopupVerticalAlign = PopupVerticalAlign.Below;
+        //settings.ControlStyle.CssClass = "k-window";
+        //settings.Styles.Header.CssClass = "k-window-titlebar";
+        settings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+    
+        settings.SetContent(() => {
+            ViewContext.Writer.Write("<div class='right'> ");
+            ViewContext.Writer.Write("<input id='btnOk' class='button' type='button' value='" + Translator.GetMessageString("Close") + "' onclick=\"pcTranslationTool.Hide();\"/>");
+            ViewContext.Writer.Write("</div>");
+            
+            Html.RenderPartial("TranslationToolGrid", Model);
+        });
+
+        settings.ClientSideEvents.BeforeResizing = "avrTranslation.TranslationTool_BeforeResizing";
+        settings.ClientSideEvents.AfterResizing = "avrTranslation.TranslationTool_AfterResizing";
+    }).GetHtml()

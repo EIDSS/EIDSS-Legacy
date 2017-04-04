@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2535E379-1E04-4E84-A7AC-72D2F1D1ADFE}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>eidss.avr.export</RootNamespace>
+    <AssemblyName>eidss.avr.export.x86</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ParentProjectReferenceName>eidss.avr.export</ParentProjectReferenceName>
+    <ParentProjectReference>..\eidss.avr.export\eidss.avr.export.csproj</ParentProjectReference>
+    <ParentProjectReferenceProjectId>{82ff0188-898a-43d9-8ece-317e7217d232}</ParentProjectReferenceProjectId>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(ParentProjectReference)">
+      <Project>$(ParentProjectReferenceProjectId)</Project>
+      <Name>$(ParentProjectReferenceName)</Name>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\EIDSSAssemblyInfo.cs">
+      <Link>EIDSSAssemblyInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>-->
+  <Target Name="Compile">
+    <Message Text="IntermediateAssembly = @(IntermediateAssembly)" Importance="low" />
+    <Message Text="ReferencePath:%0d%0a%09@(ReferencePath, '%0d%0a%09')" Importance="low" />
+    <Copy Condition="$([System.String]::new('%(ReferencePath.Filename)').StartsWith('$(ParentProjectReferenceName)'))" SourceFiles="%(ReferencePath.Identity)" DestinationFiles="@(IntermediateAssembly)" SkipUnchangedFiles="yes" />
+    <Copy Condition="$([System.String]::new('%(ReferencePath.Filename)').StartsWith('$(ParentProjectReferenceName)'))" SourceFiles="%(ReferencePath.Identity).config" DestinationFiles="$(TargetPath).config" SkipUnchangedFiles="yes" />
+    <GetFrameworkSdkPath>
+      <Output TaskParameter="Path" PropertyName="SdkPath" />
+    </GetFrameworkSdkPath>
+    <Message Text="SdkPath = $(SdkPath)" Importance="low" />
+    <ItemGroup>
+      <CorFlagsFiles Include="$(SdkPath)Bin\**\CorFlags.exe" />
+    </ItemGroup>
+    <PropertyGroup>
+      <CorFlags Condition=" Exists( '%(CorFlagsFiles.Identity)' ) ">%(CorFlagsFiles.Identity)</CorFlags>
+    </PropertyGroup>
+    <Message Text="CorFlags = $(CorFlags)" Importance="low" />
+    <Exec Command="&quot;$(CorFlags)&quot; &quot;@(IntermediateAssembly)&quot; /32Bit+" IgnoreExitCode="no" />
+    <Copy SourceFiles="@(IntermediateAssembly)" DestinationFiles="$(TargetPath)" SkipUnchangedFiles="yes" />
+  </Target>
+</Project>

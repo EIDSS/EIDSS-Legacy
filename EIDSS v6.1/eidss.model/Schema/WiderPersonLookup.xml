@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="WiderPersonLookup"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="spPerson_SelectLookup" type="lookuplist" cache="true"/>
+    </storage>
+
+    <tables>
+        <table name="WiderPersonLookup" tostring="c => string.IsNullOrEmpty(c.Position) ? c.FullName : string.Format(&#34;{0}, {1}&#34;, c.FullName, c.Position)" lookupcachename="Person">
+        </table>
+    </tables>
+
+</object>
+

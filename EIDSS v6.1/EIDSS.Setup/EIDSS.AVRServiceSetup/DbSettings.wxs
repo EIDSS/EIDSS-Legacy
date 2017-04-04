@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "ProductInfo.wxi" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Fragment Id="DB Settings">
+    <Property Id="DBSERVER" Secure="yes">
+      <RegistrySearch Id="DBSERVER.Rs" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="SQLServer" Type="raw" />
+    </Property>
+    <Property Id="SQLDATABASE" Secure="yes">
+      <RegistrySearch Id="SQLDATABASE.Rs" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="SQLDatabase" Type="raw" />
+    </Property>
+    
+    <Property Id="DBUSER" Secure="yes" Hidden="yes" />
+    <Property Id="DBPASSWORD" Secure="yes" Hidden="yes" />
+    <Property Id="EncryptedDBUSER" Hidden="yes" />
+    <Property Id="EncryptedDBPASSWORD" Hidden="yes" />
+
+    <Property Id="ARCHUSER" Secure="yes" Hidden="yes" />
+    <Property Id="ARCHPASSWORD" Secure="yes" Hidden="yes" />
+    <Property Id="EncryptedARCHUSER" Hidden="yes" />
+    <Property Id="EncryptedARCHPASSWORD" Hidden="yes" />
+
+    <Property Id="AVR_DB_SERVER" Secure="yes">
+      <RegistrySearch Id="AVR_DB_SERVER.rs" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="AvrServiceServer" Type="raw" />
+    </Property>
+    <Property Id="AVR_DATABASE" Secure="yes">
+      <RegistrySearch Id="AVR_DATABASE.Rs" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="AvrServiceDatabase" Type="raw" />
+    </Property>
+    <Property Id="AVRUSER" Value="AVRUser" Secure="yes" Hidden="yes" />
+    <Property Id="AVRPASSWORD" Secure="yes" Hidden="yes" />
+    <Property Id="ENCRYPTED_AVRUSER" Secure="yes" Hidden="yes">
+      <RegistrySearch Id="ENCRYPTED_AVRUSER.Rs" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="AvrServiceUser" Type="raw" />
+    </Property>
+    <Property Id="ENCRYPTED_AVRPASSWORD" Secure="yes" Hidden="yes">
+      <RegistrySearch Id="ENCRYPTED_AVRPASSWORD.Rs" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="AvrServicePassword" Type="raw" />"
+    </Property>
+
+    <PropertyRef Id="DB_MANAGER" />
+    <PropertyRef Id="AVR_BACKUP" />
+
+    <CustomAction Id="EncryptDbAccountDetails" DllEntry="EncryptDbAccountDetails" BinaryKey="CustomActions" />
+    <CustomAction Id="EncryptArchiveDbAccountDetails" DllEntry="EncryptArchiveDbAccountDetails" BinaryKey="CustomActions" />
+    <CustomAction Id="EncryptAvrDbAccountDetails" DllEntry="EncryptAvrDbAccountDetails" BinaryKey="CustomActions" />
+
+    <CustomActionRef Id="PrepareAvrDbDeplymentConfig" />
+    <InstallExecuteSequence>
+      <Custom Action="EncryptDbAccountDetails" Before="PrepareAvrDbDeplymentConfig">Not REMOVE~="ALL" And DBUSER And DBPASSWORD</Custom>
+      <Custom Action="EncryptArchiveDbAccountDetails" Before="PrepareAvrDbDeplymentConfig">Not REMOVE~="ALL" And ARCHUSER And ARCHPASSWORD</Custom>
+      <Custom Action="EncryptAvrDbAccountDetails" Before="PrepareAvrDbDeplymentConfig">Not REMOVE~="ALL" And AVRUSER And AVRPASSWORD</Custom>
+    </InstallExecuteSequence>
+
+    <ComponentGroup Id="DbSettings" Directory="APPLICATIONFOLDER">
+      <Component Id="ConfigConnectionSource" Guid="{B9B51B95-810D-4D76-84BC-B9B838ABA499}" KeyPath="yes" MultiInstance="yes">
+        <Condition>Not SKIP_VALIDATE_CONNECTION</Condition>
+
+        <?define key = ConnectionSource ?>
+        <?define value = 1 ?>
+        <?define order = 61 ?>
+        <?include AddServiceConfigKey.wxi?>
+      </Component>
+      
+      <Component Id="SQLDbSettings" Guid="{1E182FDF-8E5D-4155-BBA5-038662CF910D}" MultiInstance="yes">
+        <Condition>Not SKIP_VALIDATE_CONNECTION</Condition>
+
+        <RegistryKey Root="HKLM" Key="$(var.ProductRegistryKey)">
+          <RegistryValue Name="SQLDatabase" Value="[SQLDATABASE]" Type="string" KeyPath="yes" />
+          <RegistryValue Name="SQLServer" Value="[DBSERVER]" Type="string" />
+          <RegistryValue Name="SQLUser" Value="[EncryptedDBUSER]" Type="string" />
+          <RegistryValue Name="SQLPassword" Value="[EncryptedDBPASSWORD]" Type="string" />
+        </RegistryKey>
+
+        <?define key = SQLConnectionString ?>
+        <?define value = "Persist Security Info=False;User ID={0};Password={1};Initial Catalog={2};server={3};Asynchronous Processing=True;" ?>
+        <?define order = 62 ?>
+        <?include AddServiceConfigKey.wxi?>
+
+        <?define key = SQLDatabase ?>
+        <?define value = [SQLDATABASE] ?>
+        <?define order = 63 ?>
+        <?include AddServiceConfigKey.wxi?>
+
+        <?define key = SQLServer ?>
+        <?define value = [DBSERVER] ?>
+        <?define order = 64 ?>
+        <?include AddServiceConfigKey.wxi?>
+
+        <?define key = SQLUser ?>
+        <?define value = [EncryptedDBUSER] ?>
+        <?define order = 65 ?>
+        <?include AddServiceConfigKey.wxi?>
+
+        <?define key = SQLPassword ?>
+        <?define value = [EncryptedDBPASSWORD] ?>
+        <?define order = 66 ?>
+        <?include AddServiceConfigKey.wxi?>
+      </Component>
+
+      <Component Id="ArchiveDbSetings" Guid="{456B786A-EF68-4DB5-A673-77FC61BDED84}" MultiInstance="yes">
+        <Condition>Not SKIP_VALIDATE_CONNECTION And ALLOWCONNECTION = "1"</Condition>
+
+        <RegistryKey Root="HKLM" Key="$(var.ProductRegistryKey)">
+          <RegistryValue Name="ArchiveDatabase" Value="[ARCHDATABASE]" Type="string" KeyPath="yes" />
+          <RegistryValue Name="ArchiveServer" Value="[ARCHDBSERVER]" Type="string" />
+          <RegistryValue Name="ArchiveUser" Value="[EncryptedARCHUSER]" Type="string" />
+          <RegistryValue Name="ArchivePassword" Value="[EncryptedARCHPASSWORD]" Type="string" />
+        </RegistryKey>
+
+        <?define key = ArchiveConnectionString ?>
+        <?define value = "Persist Security Info=False;User ID={0};Password={1};Initial Catalog={2};Data Source={3};Asynchronous Processing=True;" ?>
+        <?define order = 67 ?>
+        <?include AddServiceConfigKey.wxi?>
+
+        <?define key = ArchiveDatabase ?>
+        <?define value = [ARCHDATABASE] ?>
+        <?define order = 68 ?>
+        <?include AddServiceConfigKey.wxi?>
+
+        <?define key = ArchiveServer ?>
+        <?define value = [ARCHDBSERVER] ?>
+        <?define order = 69 ?>
+        <?include AddServiceConfigKey.wxi?>
+
+        <?define key = ArchiveUser ?>
+        <?define value = [EncryptedARCHUSER] ?>
+        <?define order = 70 ?>
+        <?include AddServiceConfigKey.wxi?>
+
+        <?define key = ArchivePassword ?>
+        <?define value = [EncryptedARCHPASSWORD] ?>
+        <?define order = 71 ?>
+        <?include AddServiceConfigKey.wxi?>
+      </Component>
+
+      <Component Id="AvrDbSetings" Guid="{C99BF369-9882-4EDC-AB65-7BBD38705FA0}" MultiInstance="yes">
+        <Condition>Not SKIP_VALIDATE_CONNECTION</Condition>
+
+        <RegistryKey Root="HKLM" Key="$(var.ProductRegistryKey)">
+          <RegistryValue Name="AvrServiceDatabase" Value="[AVR_DATABASE]" Type="string" KeyPath="yes" />
+          <RegistryValue Name="AvrServiceServer" Value="[AVR_DB_SERVER]" Type="string" />
+          <RegistryValue Name="AvrServiceUser" Value="[ENCRYPTED_AVRUSER]" Type="string" />
+          <RegistryValue Name="AvrServicePassword" Value="[ENCRYPTED_AVRPASSWORD]" Type="string" />
+        </RegistryKey>
+
+        <?define key = AvrServiceConnectionString ?>
+        <?define value = "Persist Security Info=False;User ID={0};Password={1};Initial Catalog={2};Data Source={3};Asynchronous Processing=True;" ?>
+        <?define order = 72 ?>
+        <?include AddServiceConfigKey.wxi?>
+
+        <?define key = AvrServiceDatabase ?>
+        <?define value = [AVR_DATABASE] ?>
+        <?define order = 73 ?>
+        <?include AddServiceConfigKey.wxi?>
+
+        <?define key = AvrServiceServer ?>
+        <?define value = [AVR_DB_SERVER] ?>
+        <?define order = 74 ?>
+        <?include AddServiceConfigKey.wxi?>
+
+        <?define key = AvrServiceUser ?>
+        <?define value = [ENCRYPTED_AVRUSER] ?>
+        <?define order = 75 ?>
+        <?include AddServiceConfigKey.wxi?>
+
+        <?define key = AvrServicePassword ?>
+        <?define value = [ENCRYPTED_AVRPASSWORD] ?>
+        <?define order = 76 ?>
+        <?include AddServiceConfigKey.wxi?>
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>

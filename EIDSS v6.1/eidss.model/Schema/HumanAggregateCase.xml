@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="HumanAggregateCase"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="spAggregateCaseDummy_SelectDetail" />
+    <validate name="spHumanAggregateCase_Validate" />
+  </storage>
+
+	<tables>
+		<table name="HumanAggregateCase">
+      <properties auditObject="daoAgregateHumanCase" auditTable="tlbAggrCase" permissionObject="AccessToHumanAggregateCase">
+      </properties>
+      <help web="HC_H06"/>
+            <relations>
+                <relation name="Header" table="AggregateCaseHeader" type="link" internal="false" lazy="false" source="idfAggrCase" target="idfAggrCase">
+                    <params>
+                        <param name="idfsAggrCaseType" type="long" lambda="c => (long)AggregateCaseType.HumanAggregateCase" />
+                    </params>
+                </relation>
+                <relation name="Detailed" table="HumanAggregateCaseDetailed" type="sibling" internal="false" lazy="false" source="idfAggrCase" target="" />
+            </relations>
+      <!--storage>
+        <delete name="spHumanAggregateCase_Delete"/>
+        <candelete name="spHumanAggregateCase_CanDelete"/>
+      </storage-->
+            <postorder>
+                <item name="Header"/>
+            </postorder>
+            <deleteorder>
+                <item name="Header"/>
+            </deleteorder>
+            <extenders>
+                <created>
+                  <lambda_extender target="Detailed" type="HumanAggregateCaseDetailed" lambda="c => DetailedAccessor.SelectByKey(manager, c.idfAggrCase)" />
+                  <lambda_extender target="Header" type="AggregateCaseHeader" lambda="c => HeaderAccessor.Create(manager, c, (long)AggregateCaseType.HumanAggregateCase, obj.Detailed != null ? obj.Detailed.idfVersion : new long?())" />                  
+                </created>
+            </extenders>
+            <actions>
+              <standard>
+                <remove type="Create"/>
+                <remove type="Delete"/>
+              </standard>
+
+              <action name="ReportContextMenu" type="Action">
+                <visual panel="Main" alignment="Left">
+                  <regular caption="strReport_Id" icon="Report" tooltip="strReport_Id"/>
+                </visual>
+                <run>
+                  <preUI webType="JScript"/>
+                </run>
+              </action>
+
+              <action name="HumanAggregateCaseReport" type="Action">
+                <visual panel="ContextMenu" visiblePredicate="(o1, o2, p, r) => eidss.model.Reports.BaseMenuReportRegistrator.IsPaperFormAllowed(&quot;HumAggregateCase&quot;)">
+                  <regular caption="titleHumanAggrCaseReport" icon="" tooltip=""/>
+                </visual>
+                <run>
+                  <preUI webType="JScript"/>
+                </run>
+              </action>
+            </actions>
+        </table>
+	</tables>
+
+</object>

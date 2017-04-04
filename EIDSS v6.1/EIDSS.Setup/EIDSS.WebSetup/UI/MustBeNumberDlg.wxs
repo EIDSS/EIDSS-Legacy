@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <UI>
+      <Dialog Id="MustBeNumberDlg" Width="240" Height="100" Title="!(loc.ErrorDlg_Title)">
+        <Control Id="BadNumber" Type="Icon" IconSize="48" X="5" Y="5" Width="50" Height="50" Text="FailureImg" FixedSize="yes" />
+        <Control Id="ErrorText" Type="Text" X="60" Y="15" Width="160" Height="56" TabSkip="no" Text="[BadNumberText]" />
+        <Control Id="O" Type="PushButton" X="100" Y="80" Width="56" Height="17" TabSkip="yes" Text="!(loc.WixUIOK)">
+          <Publish Event="EndDialog" Value="Return">1</Publish>
+        </Control>
+      </Dialog>
+    </UI>
+
+    <Property Id="BadNumberText_Empty" Value="!(loc.BadNumberText_Empty)" />
+    <Property Id="BadNumberText_NotNumber" Value="!(loc.BadNumberText_NotNumber)" />
+    <Property Id="BadNumberText_OutsideBounds" Value="!(loc.BadNumberText_OutsideBounds)" />
+  </Fragment>
+</Wix>

@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="Organization"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="spOrganization_SelectDetail" />
+    <validate name="spOrganization_Validate" />
+  </storage>
+	<tables>
+		<table name="Organization">
+      <properties auditObject="daoOrganization" auditTable="tlbOffice" permissionObject="Organization">
+        <lookupcache>
+          <item name="Organization"/>
+        </lookupcache>
+      </properties>
+      <relations>
+        <relation name="Address" table="Address" internal="false" type="link" lazy="false" source="idfLocation" target="idfGeoLocation" />
+        <relation name="Departments" table="OrganizationsDepartment" internal="true" type="child" lazy="false" source="idfOffice" target="idfOrganization" />
+        <relation name="Persons" table="OrganizationsPerson" internal="true" type="child" lazy="false" source="idfOffice" target="idfInstitution" />
+      </relations>
+      <lookups>
+      </lookups>
+      <storage>
+        <post name="spOrganization_Post" />
+        <delete name="spOrganization_Delete" />
+        <candelete name="spOrganization_CanDelete"/>
+      </storage>
+      <postorder>
+        <item name="Address" />
+        <item name="this" />
+        <item name="Persons" />
+      </postorder>
+      <deleteorder>
+        <item name="Address" />
+        <item name="Persons" />
+        <item name="this" />
+      </deleteorder>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfOffice" class="GetNewIDExtender" />
+        </creating>
+      </extenders>
+    </table>
+
+    <table name="OrganizationsDepartment">
+    </table>
+
+    <table name="OrganizationsPerson">
+      <storage>
+        <post name="spPerson_Post" />
+        <delete name="spPerson_Delete" />
+        <candelete name="spPerson_CanDelete"/>
+      </storage>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfPerson" class="GetNewIDExtender" />
+          <scalar_extender target="idfsSite" class="GetSiteIDExtender" />
+        </creating>
+        <created>
+          <lambda_extender target="idfInstitution" type="long?" lambda="c => (c.Parent as Organization).idfOffice"/>
+        </created>
+      </extenders>
+    </table>
+
+  </tables>
+
+</object>

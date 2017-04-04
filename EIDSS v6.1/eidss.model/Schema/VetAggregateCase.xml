@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="VetAggregateCase"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+    <get name="spAggregateCaseDummy_SelectDetail" />
+    <validate name="spVetAggregateCase_Validate" />
+  </storage>
+
+	<tables>
+		<table name="VetAggregateCase">
+      <properties auditObject="daoAggregateVetCase" auditTable="tlbAggrCase" permissionObject="AccessToVetAggregateCase"/>
+      <help web="web_vetcaseaggregatedetailform"/>
+      <relations>
+                <relation name="Header" table="AggregateCaseHeader" type="link" internal="false" lazy="false" source="idfAggrCase" target="idfAggrCase">
+                    <params>
+                        <param name="idfsAggrCaseType" type="long" lambda="c => (long)AggregateCaseType.VetAggregateCase" />
+                    </params>
+                </relation>
+                <relation name="Detailed" table="VetAggregateCaseDetailed" type="sibling" internal="false" lazy="false" source="idfAggrCase" target="" />
+            </relations>
+      <!--storage>
+        <delete name="spVetAggregateCase_Delete"/>
+        <candelete name="spVetAggregateCase_CanDelete"/>
+      </storage-->
+      <postorder>
+                <item name="Header"/>
+            </postorder>
+            <deleteorder>
+                <item name="Header"/>
+            </deleteorder>
+            <extenders>
+                <created>
+                  <lambda_extender target="Detailed" type="VetAggregateCaseDetailed" lambda="c => DetailedAccessor.SelectByKey(manager, c.idfAggrCase)" />
+                  <lambda_extender target="Header" type="AggregateCaseHeader" lambda="c => HeaderAccessor.Create(manager, c, (long)AggregateCaseType.VetAggregateCase, obj.Detailed != null ? obj.Detailed.idfVersion : new long?())" />
+                </created>
+            </extenders>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <remove type="Delete"/>
+        </standard>
+
+        <action name="ReportContextMenu" type="Action">
+          <visual panel="Main" alignment="Left">
+            <regular caption="strReport_Id" icon="Report" tooltip="strReport_Id"/>
+          </visual>
+          <run>
+            <preUI webType="JScript"/>
+          </run>
+        </action>
+
+        <action name="VetAggregateCaseReport" type="Action">
+          <visual panel="ContextMenu" alignment="Left"  visiblePredicate="(o1, o2, p, r) => eidss.model.Reports.BaseMenuReportRegistrator.IsPaperFormAllowed(&quot;VetAggregateCase&quot;)">
+            <regular caption="titleVetAggrCaseReport" icon="" tooltip=""/>
+          </visual>
+          <run>
+            <preUI webType="JScript"/>
+          </run>
+        </action>
+      </actions>
+    </table>
+	</tables>
+
+</object>

@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="Diagnosis2DiagnosisGroupMaster"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <!--фейковая хранимка-->
+    <get name="spDiagnosisMaster_SelectDetail" type= "detailone" />
+  </storage>
+
+  <tables>
+    <table name="Diagnosis2DiagnosisGroupMaster">
+      <properties permissionObject="Reference" />
+      <!--TODO проставить везде актуальные реквизиты
+      <properties auditObject="daoReference" auditTable="trtDiagnosisAgeGroup"  permissionObject="Reference" lookupcachename="DiagnosisAgeGroup">
+        <events>
+          <create name="MatrixChanged" predicate="c => c.HasChanges" addinfo="DiagnosisAgeGroupMasterDetail"/>
+          <change name="MatrixChanged" predicate="c => c.HasChanges" addinfo="DiagnosisAgeGroupMasterDetail"/>
+        </events>
+      </properties>      
+      -->
+      <help win="EIDSS_Configuration"/>
+      <fields>
+        <storage name="idfsDiagnosisGroup" type="long?"/>
+        <storage name="idfDiagnosisToDiagnosisGroup" type="long?"/>
+      </fields>
+      <relations>
+        <relation name="Diagnosis2DiagnosisGroups" table="Diagnosis2DiagnosisGroup" internal="false" type="child" lazy="false" source="idfDiagnosisToDiagnosisGroup" target="idfDiagnosisToDiagnosisGroup" />
+      </relations>
+      <lookups>
+        <lookup name="DiagnosisGroup" table="BaseReference" section="rftDiagnosisGroup" source="idfsDiagnosisGroup" target="idfsBaseReference" />
+      </lookups>
+      <storage>
+        <post  name="spDummy_Post"/>
+        <delete />
+        <candelete  name=''/>
+      </storage>
+      <postorder>
+        <item name="Diagnosis2DiagnosisGroups" />
+      </postorder>
+      <deleteorder>
+        <item name="Diagnosis2DiagnosisGroups" />
+      </deleteorder>
+      <extenders>
+        <creating>
+          <custom_extender>
+            <text>
+              obj.m_IsNew = false;
+              var accMaster = Diagnosis2DiagnosisGroupMaster.Accessor.Instance(null);
+              accMaster._LoadDiagnosis2DiagnosisGroups(manager, obj);
+            </text>
+          </custom_extender>
+        </creating>
+        <created>     
+        </created>
+        <loading>
+        </loading>
+        <posting>
+        </posting>
+        <posted>
+        </posted>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+        </fieldhandler>
+      </handlers>
+      <validators>
+        <childchange>
+        </childchange>
+        <post>
+          <duplicate_list_validator collection="Diagnosis2DiagnosisGroups" type="Diagnosis2DiagnosisGroup" filter="c => !c.IsMarkedToDelete">
+            <item field="idfsDiagnosis" lookup="Diagnosis" inMsg="true" />
+            <item field="idfsDiagnosisGroup"  lookup="DiagnosisGroup" inMsg="true" />
+          </duplicate_list_validator>
+          <container name="Diagnosis2DiagnosisGroups" filter="c => true">
+            <required_validator target="idfDiagnosisToDiagnosisGroup" child="true"/>
+            <required_validator target="idfsDiagnosisGroup" child="true"/>
+            <required_validator target="idfsDiagnosis" child="true"/>
+          </container>
+        </post>
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <remove type="Delete"/>
+        </standard>
+        <action name="DeleteDiagnosis" type="Action">
+          <visual panel="Main" alignment ="Right"  visiblePredicate = "ActionMetaItem.DefaultDeleteGroupItemVisiblePredicate">
+            <regular caption ="strDelete_Id" tooltip ="tooltipDelete_Id" icon ="Delete_Remove"/>
+          </visual>
+        </action>
+      </actions>
+    </table>
+
+  </tables>
+</object>

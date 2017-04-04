@@ -1,0 +1,54 @@
+﻿
+@using Kendo.Mvc.UI
+@model eidss.model.Reports.AZ.FromYearToYearModel
+
+<table id="FromYearToYearTable" >
+    <tr>
+        <td class="mediumreport">
+            @Model.GetYearFromCaption()
+            @*@Html.LabelFor(m => m.Year1)*@
+        </td>
+        <td class="largereport">
+                    <div class="tdContainer">
+                        @{
+                            @(
+                            Html.Kendo().NumericTextBox()
+                                .Name("YearModel.Year1")
+                                  .Value(Model.Year1)
+                                  .Min(Model.MinYearFrom)
+                                  .Max(Model.MaxYearFrom)
+                                  .Decimals(0)
+                                  .HtmlAttributes(new {@class = "requiredField", @reverse=Model.IsYear1GreaterYear2?"1":"0", @validationMessage=Model.ValidationMessage})
+                                  .Placeholder("")
+                                  .Events(c => c.Change("paperForm.ValidateYears"))
+                                  .Format("g")
+                                  )
+                        }
+            </div>
+
+        </td>
+        <td class="mediumreport">
+            @Model.GetYearToCaption()
+            @*@Html.LabelFor(m => m.Year2)*@
+        </td>
+        <td class="largereport">
+                        <div class="tdContainer">
+                            @{
+                                @(
+                                    Html.Kendo().NumericTextBox()
+                                        .Name("YearModel.Year2")
+                                          .Value(Model.Year2)
+                                          .Min(Model.MinYearTo)
+                                          .Max(Model.MaxYearTo)
+                                          .Decimals(0)
+                                          .HtmlAttributes(new {@class = "requiredField"})
+                                          .Placeholder("")
+                                          .Events(c => c.Change("paperForm.ValidateYears"))
+                                          .Format("g")
+                                          )
+                            }
+            </div>
+        </td>
+        <td ></td>
+    </tr>
+</table>

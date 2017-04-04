@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="DiagnosisAgeGroup2StatisticalAgeGroup"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spDiagnosisAgeGroupToStatisticalAgeGroup_SelectDetail" type= "detaillist" />
+  </storage>
+
+  <tables>
+    <table name="DiagnosisAgeGroup2StatisticalAgeGroup">
+      <grid>
+        <item name="idfDiagnosisAgeGroupToStatisticalAgeGroup" visible ="false" key="true"/>
+        <item name="idfsStatisticalAgeGroup" required="true"/>
+      </grid>
+      <labels>
+        <item labelId="strStatisticalAgeGroup" name="idfsStatisticalAgeGroup"/>
+      </labels>
+      <fields>
+      </fields>
+      <lookups>
+        <lookup name="StatisticalAgeGroup" table="BaseReference" section="rftStatisticalAgeGroup" source="idfsStatisticalAgeGroup" target="idfsBaseReference" />
+      </lookups>
+      <storage>
+        <post name="spDiagnosisAgeGroupToStatisticalAgeGroup_Post" />        
+      </storage>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfDiagnosisAgeGroupToStatisticalAgeGroup" class="GetNewIDExtender" />        
+        </creating>
+        <loading>
+        </loading>
+        <posting>
+        </posting>
+        <posted>
+        </posted>
+      </extenders>
+      <validators>
+        <change>
+        </change>
+        <post>
+          <required_validator target="idfsStatisticalAgeGroup" label ="strStatisticalAgeGroup" />
+        </post>
+      </validators>
+    </table>
+
+  </tables>
+</object>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/CommonLayout">
+
+    <include layout="@layout/activity_toolbar"/>
+
+    <LinearLayout
+        style="@style/DetailLayout.Port"
+        android:paddingLeft="@dimen/Padding.M"
+        android:paddingRight="@dimen/Padding.M">
+        <TextView
+            android:id="@+id/idCurrentDir"
+            style="@style/SelectedDirectoryItem" />
+        <EditText
+            android:id="@+id/idSelectedFile"
+            style="@style/SelectedFileItem"/>
+        <TextView
+            style="@style/Separator"/>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lstExplorer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/Padding.M"
+        android:paddingRight="@dimen/Padding.M"
+        >
+    </ListView>
+
+</LinearLayout>
+		

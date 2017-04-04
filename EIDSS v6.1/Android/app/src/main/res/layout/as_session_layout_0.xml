@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/Scroll"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <LinearLayout
+        style="@style/UnderScrollLayout">
+
+        <!--section to paste begin-->
+        
+      <!--Page 0-->
+
+<!--MonitoringSessionID-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+          style="@style/DetailItem.Header"
+          android:text="@string/ASSession_strMonitoringSessionID" />
+    <EditText
+          android:id="@+id/strMonitoringSessionID"
+          style="@style/DetailItem.Text"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--MonitoringSessionStatus-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+          android:text="@string/ASSession_idfsMonitoringSessionStatus" />
+    <Spinner
+          android:id="@+id/idfsMonitoringSessionStatus"
+        style="@style/DetailItem.Spinner"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--StartDate-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+          android:text="@string/ASSession_datStartDate" />
+    <LinearLayout
+        style="@style/DetailLayout.Date">
+    <TextView
+        android:id="@+id/datStartDate"
+        style="@style/DetailItem.Date"
+        android:enabled="true"
+        />
+    <Button
+        android:id="@+id/datStartDateClearButton"
+        style="@style/DetailItem.Date.Button.Clear"/>
+    </LinearLayout>
+    <TextView
+        style="@style/Separator"/>
+</LinearLayout>
+
+<!--EndDate-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+          android:text="@string/ASSession_datEndDate" />
+    <LinearLayout
+        style="@style/DetailLayout.Date">
+    <TextView
+        android:id="@+id/datEndDate"
+        style="@style/DetailItem.Date"
+        android:enabled="true"
+        />
+    <Button
+        android:id="@+id/datEndDateClearButton"
+        style="@style/DetailItem.Date.Button.Clear"/>
+    </LinearLayout>
+    <TextView
+        style="@style/Separator"/>
+</LinearLayout>
+
+<!--Campaign-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+          android:text="@string/ASSession_idfCampaign" />
+    <Spinner
+          android:id="@+id/idfCampaign"
+        style="@style/DetailItem.Spinner"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--CampaignType-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+          android:text="@string/ASSession_idfsCampaignType" />
+    <TextView
+          android:id="@+id/idfsCampaignType"
+        style="@style/DetailItem.Text"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+
+        
+            <!--section to paste end-->
+            <!--CreatedDate-->
+            <LinearLayout
+                style="@style/DetailLayout.Port">
+                <TextView
+                    style="@style/DetailItem.Header.Readonly"
+                    android:text="@string/Created" />
+                <LinearLayout
+                    style="@style/DetailLayout.Date">
+                    <TextView
+                        android:id="@+id/datCreateDate"
+                        style="@style/DetailItem.Date.Readonly"
+                        />
+                </LinearLayout>
+                <TextView
+                    style="@style/Separator"/>
+            </LinearLayout>
+    </LinearLayout>
+</ScrollView>

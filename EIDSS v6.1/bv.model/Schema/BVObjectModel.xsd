@@ -1,0 +1,1811 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema 
+    attributeFormDefault="unqualified" 
+    elementFormDefault="qualified" 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="urn:schemas-bv:objectmodel"
+    targetNamespace="urn:schemas-bv:objectmodel">
+    
+    <xs:simpleType name="bv-bool">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="true" />
+            <xs:enumeration value="false" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="bv-validationType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Error" />
+          <xs:enumeration value="Question" />
+          <xs:enumeration value="Warning" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="bv-yesno">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="yes" />
+            <xs:enumeration value="no" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="bv-fieldtag">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="en" />
+            <xs:enumeration value="def" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="bv-formsize">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Undefined" />
+            <xs:enumeration value="Small" />
+            <xs:enumeration value="Large" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="bv-sort-direction">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Ascending" />
+            <xs:enumeration value="Descending" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="bv-get-type">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="detailone" />
+            <xs:enumeration value="detaillist" />
+            <xs:enumeration value="lookuplist" />
+            <xs:enumeration value="fnlist" />
+            <xs:enumeration value="simplelist" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="bv-rel-type">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="child" />
+            <xs:enumeration value="sibling" />
+            <xs:enumeration value="link" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="bv-action-type">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Action" />
+          <xs:enumeration value="Create" />
+          <xs:enumeration value="Ok" />
+          <xs:enumeration value="Cancel" />
+          <xs:enumeration value="Delete" />
+          <xs:enumeration value="Refresh" />
+          <xs:enumeration value="Edit" />
+          <xs:enumeration value="Save" />
+          <xs:enumeration value="Report" />
+          <xs:enumeration value="Close" />
+          <xs:enumeration value="Select" />
+          <xs:enumeration value="SelectAll" />
+          <xs:enumeration value="View" />
+
+          <xs:enumeration value="Load" />
+          <xs:enumeration value="Loadlist" />
+          <xs:enumeration value="Container" />
+
+          <!--xs:enumeration value="Create" />
+          <xs:enumeration value="Load" />
+          <xs:enumeration value="Loadlist" />
+          <xs:enumeration value="Action" />
+          <xs:enumeration value="Custom" />
+          <xs:enumeration value="ShowForm" />
+          <xs:enumeration value="Ok" />
+          <xs:enumeration value="Cancel" />
+          <xs:enumeration value="Delete" />
+          <xs:enumeration value="Refresh" />
+          <xs:enumeration value="Edit" />
+          <xs:enumeration value="Save" />
+          <xs:enumeration value="Report" />
+          <xs:enumeration value="Close" />
+          <xs:enumeration value="Search" />
+          <xs:enumeration value="Group" />
+          <xs:enumeration value="View" />
+          <xs:enumeration value="Select" />
+          <xs:enumeration value="SelectAll" /-->
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="bv-editor-type">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Text" />
+            <xs:enumeration value="Numeric" />
+            <xs:enumeration value="Date" />
+            <xs:enumeration value="Datetime" />
+            <xs:enumeration value="Lookup" />
+            <xs:enumeration value="Flag" />
+            <xs:enumeration value="Separator" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="bv-editor-width">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Normal" />
+            <xs:enumeration value="Large" />
+            <xs:enumeration value="XLarge" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="bv-search-location">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Main" />
+          <xs:enumeration value="Additional" />
+          <xs:enumeration value="Combobox" />
+          <xs:enumeration value="Toolbox" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="bv-action-panel">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Main" />
+          <xs:enumeration value="Top" />
+          <xs:enumeration value="Group" />
+          <xs:enumeration value="ContextMenu" />
+          <xs:enumeration value="ContextMenuAdditional" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="bv-action-alignment">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Left" />
+            <xs:enumeration value="Right" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="bv-action-app">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="All" />
+            <xs:enumeration value="Win" />
+            <xs:enumeration value="Web" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="bv-action-web-type">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Controller" />
+            <xs:enumeration value="JScript" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="bv-audit-object">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="daoAccessionIn2" />
+            <xs:enumeration value="daoAccessionOut" />
+            <xs:enumeration value="daoAggregateMTX" />
+            <xs:enumeration value="daoAggregateVetAction" />
+            <xs:enumeration value="daoAggregateVetCase" />
+            <xs:enumeration value="daoAgregateHumanCase" />
+            <xs:enumeration value="daoAgregateHumanSettings" />
+            <xs:enumeration value="daoAliquote" />
+            <xs:enumeration value="daoAnimalSpieces" />
+            <xs:enumeration value="daoBarcode" />
+            <xs:enumeration value="daoBarcodeDesigner" />
+            <xs:enumeration value="daoBatchTest" />
+            <xs:enumeration value="daoCheckIn" />
+            <xs:enumeration value="daoDataAccess" />
+            <xs:enumeration value="daoDepartment" />
+            <xs:enumeration value="daoDerivative" />
+            <xs:enumeration value="daoDiagnosis" />
+            <xs:enumeration value="daoDocumentNumbering" />
+            <xs:enumeration value="daoFarm" />
+            <xs:enumeration value="daoFlexibleFormDesigner" />
+            <xs:enumeration value="daoGeoLocation" />
+            <xs:enumeration value="daoHumanCase" />
+            <xs:enumeration value="daoHumanCaseDeduplication" />
+            <xs:enumeration value="daoMaterialDiseaseMatrix" />
+            <xs:enumeration value="daoNotificationSubscription" />
+            <xs:enumeration value="daoOrganization" />
+            <xs:enumeration value="daoOutbreak" />
+            <xs:enumeration value="daoPatient" />
+            <xs:enumeration value="daoEmployee" />
+            <xs:enumeration value="daoPlacementTree" />
+            <xs:enumeration value="daoPlantSpieces" />
+            <xs:enumeration value="daoRayon" />
+            <xs:enumeration value="daoReference" />
+            <xs:enumeration value="daoRegion" />
+            <xs:enumeration value="daoRepositoryScheme" />
+            <xs:enumeration value="daoSample" />
+            <xs:enumeration value="daoSettlement" />
+            <xs:enumeration value="daoSite" />
+            <xs:enumeration value="daoStatistic" />
+            <xs:enumeration value="daoStatisticType" />
+            <xs:enumeration value="daoSystemFunction" />
+            <xs:enumeration value="daoTest" />
+            <xs:enumeration value="daoTestDiseaseMatrix" />
+            <xs:enumeration value="daoTestResult2Test" />
+            <xs:enumeration value="daoTransfer" />
+            <xs:enumeration value="daoUser" />
+            <xs:enumeration value="daoUserGroup" />
+            <xs:enumeration value="daoVetCase" />
+            <xs:enumeration value="daoSampleDestruction" />
+            <xs:enumeration value="daoSecurityPolicy" />
+            <xs:enumeration value="daoCampaign" />
+            <xs:enumeration value="daoMonitoringSession" />
+            <xs:enumeration value="daoSpeciesTypeToAnimalAge" />
+            <xs:enumeration value="daoDerivativeForSampleType" />
+            <xs:enumeration value="daoVectorSurveillanceSession" />
+            <xs:enumeration value="daoBssForm" />
+            <xs:enumeration value="daoBssAggregateForm" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="bv-audit-table">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ffDecorElement" />
+            <xs:enumeration value="ffDecorElementLine" />
+            <xs:enumeration value="ffDecorElementText" />
+            <xs:enumeration value="ffDeterminantType" />
+            <xs:enumeration value="ffDeterminantValue" />
+            <xs:enumeration value="ffFormTemplate" />
+            <xs:enumeration value="ffParameter" />
+            <xs:enumeration value="ffParameterDesignOption" />
+            <xs:enumeration value="ffParameterFixedPresetValue" />
+            <xs:enumeration value="ffParameterForAction" />
+            <xs:enumeration value="ffParameterForFunction" />
+            <xs:enumeration value="ffParameterForTemplate" />
+            <xs:enumeration value="ffParameterType" />
+            <xs:enumeration value="ffRule" />
+            <xs:enumeration value="ffRuleConstant" />
+            <xs:enumeration value="ffRuleFunction" />
+            <xs:enumeration value="ffSection" />
+            <xs:enumeration value="ffSectionDesignOption" />
+            <xs:enumeration value="ffSectionForAction" />
+            <xs:enumeration value="ffSectionForTemplate" />
+            <xs:enumeration value="gisBaseReference" />
+            <xs:enumeration value="gisCountry" />
+            <xs:enumeration value="gisMetadata" />
+            <xs:enumeration value="gisNewID" />
+            <xs:enumeration value="gisRayon" />
+            <xs:enumeration value="gisReferenceType" />
+            <xs:enumeration value="gisRegion" />
+            <xs:enumeration value="gisSettlement" />
+            <xs:enumeration value="gisStringNameTranslation" />
+            <xs:enumeration value="gisWKBCountry" />
+            <xs:enumeration value="gisWKBRayon" />
+            <xs:enumeration value="gisWKBRegion" />
+            <xs:enumeration value="gisWKBSettlement" />
+            <xs:enumeration value="repAdmLevel" />
+            <xs:enumeration value="repAreas" />
+            <xs:enumeration value="repMeasures" />
+            <xs:enumeration value="repMeasureToArea" />
+            <xs:enumeration value="tasLayout" />
+            <xs:enumeration value="tasLayoutProperty" />
+            <xs:enumeration value="tasLayoutPropertyType" />
+            <xs:enumeration value="tasLayoutPropertyValue" />
+            <xs:enumeration value="tasLayoutSearchFieldAggregation" />
+            <xs:enumeration value="tasQuery" />
+            <xs:enumeration value="tasQueryConditionGroup" />
+            <xs:enumeration value="tasQuerySearchField" />
+            <xs:enumeration value="tasQuerySearchFieldCondition" />
+            <xs:enumeration value="tasQuerySearchObject" />
+            <xs:enumeration value="tasSearchFieldList" />
+            <xs:enumeration value="tasSearchObjectList" />
+            <xs:enumeration value="tasSearchTable" />
+            <xs:enumeration value="tauColumn" />
+            <xs:enumeration value="tauDataAuditDetailCreate" />
+            <xs:enumeration value="tauDataAuditDetailDelete" />
+            <xs:enumeration value="tauDataAuditDetailUpdate" />
+            <xs:enumeration value="tauDataAuditEvent" />
+            <xs:enumeration value="tauTable" />
+            <xs:enumeration value="tdeDataExport" />
+            <xs:enumeration value="tdeDataExportDetail" />
+            <xs:enumeration value="tdeDataExportDiagnosis" />
+            <xs:enumeration value="tdeDataExportProblem" />
+            <xs:enumeration value="tlbAccessionIN" />
+            <xs:enumeration value="tlbActivityParameters" />
+            <xs:enumeration value="tlbAggrCase" />
+            <xs:enumeration value="tlbAggrDiagnosticActionMTX" />
+            <xs:enumeration value="tlbAggrProphylacticActionMTX" />
+            <xs:enumeration value="tlbAggrVetCaseMTX" />
+            <xs:enumeration value="tlbAnimal" />
+            <xs:enumeration value="tlbAntimicrobialTherapy" />
+            <xs:enumeration value="tlbBatchTest" />
+            <xs:enumeration value="tlbContactedCasePerson" />
+            <xs:enumeration value="tlbContainer" />
+            <xs:enumeration value="tlbEmployee" />
+            <xs:enumeration value="tlbEmployeeGroup" />
+            <xs:enumeration value="tlbEmployeeGroupMember" />
+            <xs:enumeration value="tlbFarm" />
+            <xs:enumeration value="tlbFreezer" />
+            <xs:enumeration value="tlbFreezerSubdivision" />
+            <xs:enumeration value="tlbGeoLocation" />
+            <xs:enumeration value="tlbHerd" />
+            <xs:enumeration value="tlbHuman" />
+            <xs:enumeration value="tlbHumanCase" />
+            <xs:enumeration value="tlbMaterial" />
+            <xs:enumeration value="tlbMaterialOnSite" />
+            <xs:enumeration value="tlbObservation" />
+            <xs:enumeration value="tlbOffice" />
+            <xs:enumeration value="tlbOutbreak" />
+            <xs:enumeration value="tlbParty" />
+            <xs:enumeration value="tlbPensideTest" />
+            <xs:enumeration value="tlbPerson" />
+            <xs:enumeration value="tlbPostalCode" />
+            <xs:enumeration value="tlbSpecies" />
+            <xs:enumeration value="tlbStatistic" />
+            <xs:enumeration value="tlbStreet" />
+            <xs:enumeration value="tlbTesting" />
+            <xs:enumeration value="tlbTestValidation" />
+            <xs:enumeration value="tlbTransferIn" />
+            <xs:enumeration value="tlbTransferOUT" />
+            <xs:enumeration value="tlbTransferOutContainerList" />
+            <xs:enumeration value="tlbVaccination" />
+            <xs:enumeration value="tlbVetCase" />
+            <xs:enumeration value="tlbVetCaseLog" />
+            <xs:enumeration value="trtBaseReference" />
+            <xs:enumeration value="trtBaseReferenceToCountry" />
+            <xs:enumeration value="trtDiagnosis" />
+            <xs:enumeration value="trtEventType" />
+            <xs:enumeration value="trtHACodeList" />
+            <xs:enumeration value="trtLanguageFormat" />
+            <xs:enumeration value="trtMaterialForDisease" />
+            <xs:enumeration value="trtObjectTypeToObjectOperation" />
+            <xs:enumeration value="trtObjectTypeToObjectType" />
+            <xs:enumeration value="trtPensideTestTypeToTestResult" />
+            <xs:enumeration value="trtProphilacticAction" />
+            <xs:enumeration value="trtReferenceType" />
+            <xs:enumeration value="trtSanitaryAction" />
+            <xs:enumeration value="trtSearchObjectToSearchObject" />
+            <xs:enumeration value="trtSpeciesType" />
+            <xs:enumeration value="trtSpeciesTypeToAnimalAge" />
+            <xs:enumeration value="trtStatisticDataType" />
+            <xs:enumeration value="trtStringNameTranslation" />
+            <xs:enumeration value="trtSystemFunction" />
+            <xs:enumeration value="trtTestForDisease" />
+            <xs:enumeration value="trtTestTypeToTestResult" />
+            <xs:enumeration value="trtDiagnosisAgeGroup" />
+            <xs:enumeration value="tstAggrSetting" />
+            <xs:enumeration value="tstEvent" />
+            <xs:enumeration value="tstEventSubscription" />
+            <xs:enumeration value="tstLabelDBFieldList" />
+            <xs:enumeration value="tstLabelRectangle" />
+            <xs:enumeration value="tstLabelType" />
+            <xs:enumeration value="tstLocalClient" />
+            <xs:enumeration value="tstLocalConnectionContext" />
+            <xs:enumeration value="tstLocalSiteOptions" />
+            <xs:enumeration value="tstNewID" />
+            <xs:enumeration value="tstNextNumbers" />
+            <xs:enumeration value="tstNotification" />
+            <xs:enumeration value="tstNotificationStatus" />
+            <xs:enumeration value="tstObjectAccess" />
+            <xs:enumeration value="tstSite" />
+            <xs:enumeration value="tstSiteRelation" />
+            <xs:enumeration value="tstUserTable" />
+            <xs:enumeration value="tstUserTableOldPassword" />
+            <xs:enumeration value="tstVersionCompare" />
+            <xs:enumeration value="tstGlobalSiteOptions" />
+            <xs:enumeration value="tstSecurityConfiguration" />
+            <xs:enumeration value="tstSecurityConfigurationAlphabet" />
+            <xs:enumeration value="tstSecurityConfigurationAlphabetParticipation" />
+            <xs:enumeration value="tlbChangeDiagnosisHistory" />
+            <xs:enumeration value="tlbCampaign" />
+            <xs:enumeration value="tlbCampaignToDiagnosis" />
+            <xs:enumeration value="tlbMonitoringSession" />
+            <xs:enumeration value="tlbMonitoringSessionToDiagnosis" />
+            <xs:enumeration value="tlbOutbreakNote" />
+            <xs:enumeration value="tlbAggrMatrixVersion" />
+            <xs:enumeration value="tlbAggrMatrixVersionHeader" />
+            <xs:enumeration value="tlbMonitoringSessionAction" />
+            <xs:enumeration value="tlbExtBatchTest" />
+            <xs:enumeration value="trtDerivativeForSampleType" />
+            <xs:enumeration value="tlbVectorSurveillanceSession" />
+            <xs:enumeration value="tlbFarmActual" />
+            <xs:enumeration value="tlbHumanActual" />
+            <xs:enumeration value="tlbVectorSurveillanceSessionSummary" />
+            <xs:enumeration value="tlbVectorSurveillanceSessionSummaryDiagnosis" />
+            <xs:enumeration value="tlbBasicSyndromicSurveillance" />
+            <xs:enumeration value="tlbBasicSyndromicSurveillanceAggregateDetail" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="bv-event-new-type">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="VetCaseCreatedLocal" />
+          <xs:enumeration value="HumanCaseCreatedLocal" />
+          <xs:enumeration value="HumanAggregateCaseCreatedLocal" />
+          <xs:enumeration value="VetAggregateCaseCreatedLocal" />
+          <xs:enumeration value="VetAggregateActionCreatedLocal" />
+          <xs:enumeration value="AsCampaignCreatedLocal" />
+          <xs:enumeration value="AsSessionCreatedLocal" />
+          <xs:enumeration value="VsSessionCreatedLocal" />
+          <xs:enumeration value="OutbreakCreatedLocal" />
+          <xs:enumeration value="HumanTestResultRegistrationLocal" />
+          <xs:enumeration value="VetCaseTestResultRegistrationLocal" />
+          <xs:enumeration value="AsSessionTestResultRegistrationLocal" />
+          <xs:enumeration value="VsSessionTestResultRegistrationLocal" />
+          <xs:enumeration value="MatrixChanged" />
+          <xs:enumeration value="ReferenceTableChanged" />
+          <xs:enumeration value="BssFormLocal" />
+          <xs:enumeration value="BssAggregateFormLocal" />
+          <xs:enumeration value="NewSampleTransferInLocal" />
+          <xs:enumeration value="TestResultForSampleTransferredOut" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="bv-event-change-type">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="VetCaseDiagnosisChangedLocal" />
+          <xs:enumeration value="VetCaseClassificationChangedLocal" />
+          <xs:enumeration value="VetCaseFieldTestResultRegistrationLocal" />
+          <xs:enumeration value="VetCaseTestResultRegistrationLocal" />
+          <xs:enumeration value="VetCaseTestResultAmendmentLocal" />
+          <xs:enumeration value="ClosedVetCaseReopenedLocal" />
+          <xs:enumeration value="HumanCaseDiagnosisChangedLocal" />
+          <xs:enumeration value="HumanCaseClassificationChangedLocal" />
+          <xs:enumeration value="HumanTestResultRegistrationLocal" />
+          <xs:enumeration value="HumanTestResultAmendmentLocal" />
+          <xs:enumeration value="ClosedHumanCaseReopenedLocal" />
+          <xs:enumeration value="HumanAggregateCaseChangedLocal" />
+          <xs:enumeration value="VetAggregateCaseChangedLocal" />
+          <xs:enumeration value="VetAggregateActionChangedLocal" />
+          <xs:enumeration value="AsCampaignStatusChangedLocal" />
+          <xs:enumeration value="ClosedAsSessionReopenedLocal" />
+          <xs:enumeration value="AsSessionTestResultRegistrationLocal" />
+          <xs:enumeration value="AsSessionTestResultAmendmentLocal" />
+          <xs:enumeration value="VsSessionNewDiagnosisLocal" />
+          <xs:enumeration value="VsSessionFieldTestResultRegistrationLocal" />
+          <xs:enumeration value="VsSessionTestResultRegistrationLocal" />
+          <xs:enumeration value="VsSessionTestResultAmendmentLocal" />
+          <xs:enumeration value="NewHumanCaseAddedToOutbreakLocal" />
+          <xs:enumeration value="NewVetCaseAddedToOutbreakLocal" />
+          <xs:enumeration value="NewVsSessionAddedToOutbreakLocal" />
+          <xs:enumeration value="OutbreakStatusChangedLocal" />
+          <xs:enumeration value="OutbreakPrimaryCaseChangedLocal" />
+          <xs:enumeration value="MatrixChanged" />
+          <xs:enumeration value="ReferenceTableChanged" />
+          <xs:enumeration value="NewSampleTransferInLocal" />
+          <xs:enumeration value="TestResultForSampleTransferredOut" />
+          <xs:enumeration value="TestResultForSampleTransferredIn" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="bv-permission-object-type">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="AccessToDataAudit" />
+            <xs:enumeration value="AggregateSettings" />
+            <xs:enumeration value="AVRReport" />
+            <xs:enumeration value="HumanCaseDeduplication" />
+            <xs:enumeration value="Patient" />
+            <xs:enumeration value="Statistic" />
+            <xs:enumeration value="SystemFunction" />
+            <xs:enumeration value="User" />
+            <xs:enumeration value="Reference" />
+            <xs:enumeration value="EventLog" />
+            <xs:enumeration value="FlexibleForm" />
+            <xs:enumeration value="GIS" />
+            <xs:enumeration value="Report" />
+            <xs:enumeration value="ReportEventLog" />
+            <xs:enumeration value="Barcode" />
+            <xs:enumeration value="DocumentNumbering" />
+            <xs:enumeration value="Organization" />
+            <xs:enumeration value="Person" />
+            <xs:enumeration value="RepositoryScheme" />
+            <xs:enumeration value="DataAccess" />
+            <xs:enumeration value="UserGroup" />
+            <xs:enumeration value="HumanCase" />
+            <xs:enumeration value="VetCase" />
+            <xs:enumeration value="Sample" />
+            <xs:enumeration value="Test" />
+            <xs:enumeration value="EIDSSSite" />
+            <xs:enumeration value="NotificationSubscription" />
+            <xs:enumeration value="Outbreak" />
+            <xs:enumeration value="DataAudit" />
+            <xs:enumeration value="SecurityLog" />
+            <xs:enumeration value="SecurityPolicy" />
+            <xs:enumeration value="Campaign" />
+            <xs:enumeration value="MonitoringSession" />
+            <xs:enumeration value="VsSession" />
+            <xs:enumeration value="VsSessionSummary" />
+            <xs:enumeration value="GisReference" />
+            <xs:enumeration value="AccessToBssModule" />
+            <xs:enumeration value="AccessToHumanAggregateCase" />
+            <xs:enumeration value="AccessToVetAggregateCase" />
+            <xs:enumeration value="AccessToVetAggregateAction" />
+            <xs:enumeration value="CanReopenClosedCase" />
+            <xs:enumeration value="AccessToFarmData" />
+            <xs:enumeration value="BasicSyndromicSurveillanceItem" />
+            <xs:enumeration value="BasicSyndromicSurveillanceAggregateDetail" />
+          <xs:enumeration value="Dummy" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="bv-permission-action-type">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="SampleTransfer" />
+          <xs:enumeration value="SampleTransfer.Execute" />
+          <xs:enumeration value="CanValidateSampleDestruction" />
+          <xs:enumeration value="CanValidateTestInterpretation" />
+          <xs:enumeration value="CanValidateTestResult" />
+          <xs:enumeration value="CanPublishLayout" />
+          <xs:enumeration value="CanImportExportData" />
+          <xs:enumeration value="CanAmendTest" />
+          <xs:enumeration value="CanAddTestResults" />
+          <xs:enumeration value="CanReadArchivedData" />
+          <xs:enumeration value="CanRestoreDeletedRecords" />
+          <xs:enumeration value="ManageRightsRemotely" />
+          <xs:enumeration value="ReplicateData" />
+          <xs:enumeration value="Test.Select" />
+          <xs:enumeration value="Test.Insert" />
+          <xs:enumeration value="Test.Delete" />
+          <xs:enumeration value="Test.Update" />
+          <xs:enumeration value="Sample.Select" />
+          <xs:enumeration value="Sample.Insert" />
+          <xs:enumeration value="Sample.Delete" />
+          <xs:enumeration value="Sample.Update" />
+          <xs:enumeration value="VetCase.Select" />
+          <xs:enumeration value="VetCase.Insert" />
+          <xs:enumeration value="VetCase.Delete" />
+          <xs:enumeration value="VetCase.Update" />
+          <xs:enumeration value="AccessionIn1.Execute" />
+          <xs:enumeration value="CanSignReport" />
+          <xs:enumeration value="CanFinalizeLabTest" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="bv-lookup-table-cache">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Country" />
+            <xs:enumeration value="Organization" />
+            <xs:enumeration value="CollectionMethod" />
+            <xs:enumeration value="Person" />
+            <xs:enumeration value="Rayon" />
+            <xs:enumeration value="Region" />
+            <xs:enumeration value="Settlement" />
+            <xs:enumeration value="RayonAggr" />
+            <xs:enumeration value="RegionAggr" />
+            <xs:enumeration value="SettlementAggr" />
+            <xs:enumeration value="ParameterFixedPresetValue" />
+            <xs:enumeration value="Outbreak" />
+            <xs:enumeration value="SearchObject" />
+            <xs:enumeration value="SearchObjectToSearchObject" />
+            <xs:enumeration value="SearchTable" />
+            <xs:enumeration value="SearchField" />
+            <xs:enumeration value="Parameter" />
+            <xs:enumeration value="Query" />
+            <xs:enumeration value="QuerySearchField" />
+            <xs:enumeration value="Layout" />
+            <xs:enumeration value="LayoutFolder" />
+            <xs:enumeration value="AggregateFunction" />
+            <xs:enumeration value="Statistic" />
+            <xs:enumeration value="ProphilacticAction" />
+            <xs:enumeration value="SanitaryAction" />
+            <xs:enumeration value="Street" />
+            <xs:enumeration value="PostalCode" />
+            <xs:enumeration value="Site" />
+            <xs:enumeration value="AggrMatrixVersionHeader" />
+            <xs:enumeration value="FormTemplate" />
+            <xs:enumeration value="Freezer" />
+            <xs:enumeration value="AVRGIS" />
+            <xs:enumeration value="SanitaryMeasureTypeName" />
+            <xs:enumeration value="DiagnosticInvestigationDiagnosis" />
+            <xs:enumeration value="DiagnosticInvestigationSpecies" />
+            <xs:enumeration value="DiagnosticInvestigationType" />
+            <xs:enumeration value="ProphylacticDiagnosis" />
+            <xs:enumeration value="ProphylacticSpecies" />
+            <xs:enumeration value="ProphylacticMeasureType" />
+            <xs:enumeration value="DiagnosisAgeGroup" />
+            <xs:enumeration value="DiagnosesAndGroups" />
+            <xs:enumeration value="CustomReportGroupsAndDiagnoses" />
+            <xs:enumeration value="Diagnosis" />
+            <xs:enumeration value="SettlementType" />
+            <xs:enumeration value="District" />
+            <xs:enumeration value="ThaiZones" />
+            <xs:enumeration value="ThaiRegions" />
+            <xs:enumeration value="InitialCaseClassification" />
+            <xs:enumeration value="FinalCaseClassification" />
+            <xs:enumeration value="rftEmpty" />
+            <xs:enumeration value="rftTestStatus" />
+            <xs:enumeration value="rftAdministativeLevel" />
+            <xs:enumeration value="rftAggregateFunction" />
+            <xs:enumeration value="rftAnimalAgeList" />
+            <xs:enumeration value="rftAnimalCondition" />
+            <xs:enumeration value="rftAnimalSex" />
+            <xs:enumeration value="rftAvianFarmType" />
+            <xs:enumeration value="rftAvianProductionType" />
+            <xs:enumeration value="rftCaseHistory" />
+            <xs:enumeration value="rftCaseClassification" />
+            <xs:enumeration value="rftCaseType" />
+            <xs:enumeration value="rftChart" />
+            <xs:enumeration value="rftContact_Type" />
+            <xs:enumeration value="rftSampleStatus" />
+            <xs:enumeration value="rftDataAuditEventType" />
+            <xs:enumeration value="rftDataAuditObjectType" />
+            <xs:enumeration value="rftDataExportDetailStatus" />
+            <xs:enumeration value="rftDestructionMethod" />
+            <xs:enumeration value="rftDiagnosis" />
+            <xs:enumeration value="rftDiagnosisGroup" />
+            <xs:enumeration value="rftDiagnosisUsingType" />
+            <xs:enumeration value="rftDiagnosticActionList" />
+            <xs:enumeration value="rftEmpGroupName" />
+            <xs:enumeration value="rftEmployeeType" />
+            <xs:enumeration value="rftEventInfoString" />
+            <xs:enumeration value="rftEventType" />
+            <xs:enumeration value="rftFarmIntendedUse" />
+            <xs:enumeration value="rftFarmType" />
+            <xs:enumeration value="rftFFCheckPoint" />
+            <xs:enumeration value="rftFFRule" />
+            <xs:enumeration value="rftFFRuleAction" />
+            <xs:enumeration value="rftFFRuleFunction" />
+            <xs:enumeration value="rftFFRuleMessage" />
+            <xs:enumeration value="rftFFTemplate" />
+            <xs:enumeration value="rftFFType" />
+            <xs:enumeration value="rftPatientState" />
+            <xs:enumeration value="rftGeoLocType" />
+            <xs:enumeration value="rftGrazingPattern" />
+            <xs:enumeration value="rftGroundType" />
+            <xs:enumeration value="rftGroupInterval" />
+            <xs:enumeration value="rftHA_Code_List" />
+            <xs:enumeration value="rftHospStatus" />
+            <xs:enumeration value="rftHumanAgeType" />
+            <xs:enumeration value="rftHumanGender" />
+            <xs:enumeration value="rftInformationString" />
+            <xs:enumeration value="rftInstitutionAbbr" />
+            <xs:enumeration value="rftInstitutionName" />
+            <xs:enumeration value="rftLabelDBField" />
+            <xs:enumeration value="rftLabelType" />
+            <xs:enumeration value="rftLanguage" />
+            <xs:enumeration value="rftLayoutName" />
+            <xs:enumeration value="rftLivestockProductionType" />
+            <xs:enumeration value="rftMeasures" />
+            <xs:enumeration value="rftMovementPattern" />
+            <xs:enumeration value="rftNationality" />
+            <xs:enumeration value="rftNotificationObjectType" />
+            <xs:enumeration value="rftNotificationType" />
+            <xs:enumeration value="rftNumberingType" />
+            <xs:enumeration value="rftObjectActorType" />
+            <xs:enumeration value="rftObjectOperation" />
+            <xs:enumeration value="rftObjectType" />
+            <xs:enumeration value="rftOccupationType" />
+            <xs:enumeration value="rftOfficeType" />
+            <xs:enumeration value="rftOutbreakStatus" />
+            <xs:enumeration value="rftOutcome" />
+            <xs:enumeration value="rftOwnershipType" />
+            <xs:enumeration value="rftParameter" />
+            <xs:enumeration value="rftParameterEditorType" />
+            <xs:enumeration value="rftParameterMode" />
+            <xs:enumeration value="rftParametersFixedPresetValue" />
+            <xs:enumeration value="rftParameterToolTip" />
+            <xs:enumeration value="rftParameterType" />
+            <xs:enumeration value="rftPartyType" />
+            <xs:enumeration value="rftPosition" />
+            <xs:enumeration value="rftProphilacticActionList" />
+            <xs:enumeration value="rftQueryName" />
+            <xs:enumeration value="rftReferenceTypeName" />
+            <xs:enumeration value="rftReportValues" />
+            <xs:enumeration value="rftResidentType" />
+            <xs:enumeration value="rftSanitaryActionList" />
+            <xs:enumeration value="rftSearchField" />
+            <xs:enumeration value="rftSearchFieldType" />
+            <xs:enumeration value="rftSearchObject" />
+            <xs:enumeration value="rftSiteRelation_Type" />
+            <xs:enumeration value="rftSiteType" />
+            <xs:enumeration value="rftSpeciesList" />
+            <xs:enumeration value="rftSampleType" />
+            <xs:enumeration value="rftStatisticalAreas" />
+            <xs:enumeration value="rftStatisticAreaType" />
+            <xs:enumeration value="rftStatisticDataType" />
+            <xs:enumeration value="rftStatisticPeriodType" />
+            <xs:enumeration value="rftStorageType" />
+            <xs:enumeration value="rftSubdivisionType" />
+            <xs:enumeration value="rftSystemFunction" />
+            <xs:enumeration value="rftTestCategory" />
+            <xs:enumeration value="rftTestResult" />
+            <xs:enumeration value="rftTestName" />
+            <xs:enumeration value="rftVaccinationRoute" />
+            <xs:enumeration value="rftVaccinationType" />
+            <xs:enumeration value="rftYesNoValue" />
+            <xs:enumeration value="rftSection" />
+            <xs:enumeration value="rftAggregateCaseType" />
+            <xs:enumeration value="rftVetCaseLogStatus" />
+            <xs:enumeration value="rftPensideTestType" />
+            <xs:enumeration value="rftPensideTestResult" />
+            <xs:enumeration value="rftRuleInValue" />
+            <xs:enumeration value="rftDiagnosisConfirmationMethod" />
+            <xs:enumeration value="rftDecorateElementType" />
+            <xs:enumeration value="rftObjectTypeRelation" />
+            <xs:enumeration value="rftAccessionCondition" />
+            <xs:enumeration value="rftCaseProgressStatus" />
+            <xs:enumeration value="rftSecurityAuditAction" />
+            <xs:enumeration value="rftSecurityAuditResult" />
+            <xs:enumeration value="rftSecurityAuditProcessType" />
+            <xs:enumeration value="rftCampaignStatus" />
+            <xs:enumeration value="rftCampaignType" />
+            <xs:enumeration value="rftMonitoringSessionStatus" />
+            <xs:enumeration value="rftSecurityConfigurationAlphabetName" />
+            <xs:enumeration value="rftSecurityLevel" />
+            <xs:enumeration value="rftConfigurationDescription" />
+            <xs:enumeration value="rftQueryDescription" />
+            <xs:enumeration value="rftLayoutDescription" />
+            <xs:enumeration value="rftFolderName" />
+            <xs:enumeration value="rftPivotName" />
+            <xs:enumeration value="rftChartName" />
+            <xs:enumeration value="rftMapName" />
+            <xs:enumeration value="rftMonitoringSessionActionType" />
+            <xs:enumeration value="rftMonitoringSessionActionStatus" />
+            <xs:enumeration value="rftVectorSurveillanceSessionStatus" />
+            <xs:enumeration value="rftVsVectorType" />
+            <xs:enumeration value="rftCollectionMethod" />
+            <xs:enumeration value="rftBasisOfRecord" />
+            <xs:enumeration value="rftIdentificationMethod" />
+            <xs:enumeration value="rftVsSurrounding" />
+            <xs:enumeration value="rftVsVectorSubType" />
+            <xs:enumeration value="rftCollectionTimePeriod" />
+            <xs:enumeration value="rftLayoutFieldName" />
+            <xs:enumeration value="rftCaseReportType" />
+            <xs:enumeration value="rftBirdStatus" />
+            <xs:enumeration value="rftNonNotifiableDiagnosis" />
+            <xs:enumeration value="rftNotCollectedReason" />
+            <xs:enumeration value="rftChangeDiagnosisReason" />
+            <xs:enumeration value="rftSurrounding" />
+            <xs:enumeration value="rftVectorType" />
+            <xs:enumeration value="rftVectorSubType" />
+            <xs:enumeration value="rftStatisticalAgeGroup" />
+            <xs:enumeration value="rftPensideTestCategory" />
+            <xs:enumeration value="rftInitialCaseClassification" />
+            <xs:enumeration value="rftFinalCaseClassification" />
+            <xs:enumeration value="rftBssType" />
+            <xs:enumeration value="rftBssMethodOfMeasurement" />
+            <xs:enumeration value="rftBssOutcome" />
+            <xs:enumeration value="rftBssTestResult" />
+            <xs:enumeration value="rftBssAggregateColumns" />
+            <xs:enumeration value="rftSampleKind" />
+            <xs:enumeration value="rftPersonIDType" />
+            <xs:enumeration value="rftSummaryReportType" />
+            <xs:enumeration value="rftReportDiagnosisGroup" />
+            <xs:enumeration value="rftReportAdditionalText" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="bv-personal-data-group">
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="Human_PersonName"/>
+        <xs:enumeration value="Human_PersonAge"/>
+        <xs:enumeration value="Human_PersonSex"/>
+        <xs:enumeration value="Human_CurrentResidence_Settlement"/>
+        <xs:enumeration value="Human_CurrentResidence_Details"/>
+        <xs:enumeration value="Human_CurrentResidence_Coordinates"/>
+        <xs:enumeration value="Human_Employer_Settlement"/>
+        <xs:enumeration value="Human_Employer_Details"/>
+        <xs:enumeration value="Human_PermanentResidence_Settlement"/>
+        <xs:enumeration value="Human_PermanentResidence_Details"/>
+        <xs:enumeration value="Human_PermanentResidence_Coordinates"/>
+        <xs:enumeration value="Human_Contact_Settlement"/>
+        <xs:enumeration value="Human_Contact_Details"/>
+        <xs:enumeration value="Vet_Farm_Settlement"/>
+        <xs:enumeration value="Vet_Farm_Details"/>
+        <xs:enumeration value="Vet_Farm_Coordinates"/>
+      </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="bv-params-list">
+        <xs:sequence>
+            <xs:element name="param" minOccurs="1" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="name" type="xs:string" use="required" />
+                    <xs:attribute name="lambda" type="xs:string" use="optional" />
+                    <xs:attribute name="type" type="xs:string" use="optional" />
+                    <xs:attribute name="const" type="xs:string" use="optional" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="bv-params-list-without-name">
+        <xs:sequence>
+            <xs:element name="param" minOccurs="1" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="lambda" type="xs:string" use="required" />
+                    <xs:attribute name="type" type="xs:string" use="required" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="bv-filters-list">
+        <xs:sequence>
+            <xs:element name="filter" minOccurs="1" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="name" type="xs:string" use="optional" />
+                    <xs:attribute name="const" type="xs:string" use="optional" />
+                    <xs:attribute name="target" type="xs:string" use="optional" />
+                    <xs:attribute name="predicate" type="xs:string" use="optional" />
+                    <xs:attribute name="distinct" type="xs:string" use="optional" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="bv-items-list">
+        <xs:sequence>
+            <xs:element name="item" minOccurs="1" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="id" type="xs:int" use="required" />
+                    <xs:attribute name="name" type="xs:string" use="required" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="bv-extenders-list">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="scalar_extender" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="target" type="xs:string" use="required" />
+                    <xs:attribute name="class" type="xs:string" use="required" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="scalar_extender_external" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="target" type="xs:string" use="required" />
+                    <xs:attribute name="class" type="xs:string" use="required" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="create_extender" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="target" type="xs:string" use="required" />
+                    <xs:attribute name="table" type="xs:string" use="required" />
+                    <xs:attribute name="class" type="xs:string" use="required" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="add_extender" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="target" type="xs:string" use="required" />
+                    <xs:attribute name="type" type="xs:string" use="required" />
+                    <xs:attribute name="lambda" type="xs:string" use="required" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="insert_extender" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="index" type="xs:int" use="required" />
+                    <xs:attribute name="target" type="xs:string" use="required" />
+                    <xs:attribute name="type" type="xs:string" use="required" />
+                    <xs:attribute name="lambda" type="xs:string" use="required" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="select_extender" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="target" type="xs:string" use="required" />
+                    <xs:attribute name="table" type="xs:string" use="required" />
+                    <xs:attribute name="class" type="xs:string" use="required" />
+                    <xs:attribute name="source" type="xs:string" use="required" />
+                    <xs:attribute name="lambda" type="xs:string" use="required" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="copy_extender" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="target" type="xs:string" use="required" />
+                    <xs:attribute name="source" type="xs:string" use="required" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="value_extender" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="target" type="xs:string" use="required" />
+                    <xs:attribute name="value" type="xs:string" use="required" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="lambda_extender" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="target" type="xs:string" use="required" />
+                    <xs:attribute name="type" type="xs:string" use="required" />
+                    <xs:attribute name="lambda" type="xs:string" use="required" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="lambda_list_extender" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="list" type="xs:string" use="required" />
+                    <xs:attribute name="target" type="xs:string" use="required" />
+                    <xs:attribute name="type" type="xs:string" use="required" />
+                    <xs:attribute name="lambda" type="xs:string" use="required" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="db_lambda_extender" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="target" type="xs:string" use="required" />
+                    <xs:attribute name="type" type="xs:string" use="required" />
+                    <xs:attribute name="lambda" type="xs:string" use="required" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="custom_extender" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="text" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="bv-handlers-list">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="scalar_handler" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="field" type="xs:string" use="required" />
+                    <xs:attribute name="class" type="xs:string" use="required" />
+                    <xs:attribute name="target" type="xs:string" use="required" />
+                    <xs:attribute name="lambda" type="xs:string" use="required" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="value_handler" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="field" type="xs:string" use="required" />
+                    <xs:attribute name="target" type="xs:string" use="required" />
+                    <xs:attribute name="value" type="xs:string" use="required" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="lambda_handler" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="container" type="xs:string" use="optional" />
+                    <xs:attribute name="field" type="xs:string" use="required" />
+                    <xs:attribute name="filter" type="xs:string" use="optional" />
+                    <xs:attribute name="target" type="xs:string" use="required" />
+                    <xs:attribute name="type" type="xs:string" use="required" />
+                    <xs:attribute name="lambda" type="xs:string" use="required" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="copy_list_handler" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="field" type="xs:string" use="required" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="lambda_list_handler" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="list" type="xs:string" use="required" />
+                    <xs:attribute name="field" type="xs:string" use="required" />
+                    <xs:attribute name="target" type="xs:string" use="required" />
+                    <xs:attribute name="type" type="xs:string" use="required" />
+                    <xs:attribute name="lambda" type="xs:string" use="required" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="lookup_handler" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="field" type="xs:string" use="required" />
+                    <xs:attribute name="lookup" type="xs:string" use="required" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="custom_handler" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="text" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    </xs:sequence>
+                    <xs:attribute name="field" type="xs:string" use="required" />
+                    <xs:attribute name="container" type="xs:string" use="optional" />
+                    <xs:attribute name="filter" type="xs:string" use="optional" />
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+
+  <xs:complexType name="bv-chains-item">
+    <xs:sequence>
+      <xs:element name="item" type="tns:bv-chains-item" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="field" type="xs:string" use="required" />
+    <xs:attribute name="type" type="xs:string" use="optional" />
+    <xs:attribute name="value" type="xs:string" use="optional" />
+    <xs:attribute name="container" type="xs:string" use="optional" />
+    <xs:attribute name="collection" type="xs:string" use="optional" />
+    <xs:attribute name="filter" type="xs:string" use="optional" />
+    <xs:attribute name="predicate" type="xs:string" use="optional" />
+    <xs:attribute name="nested" type="tns:bv-bool" use="optional" />
+    <xs:attribute name="strict" type="tns:bv-bool" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="bv-chains-list">
+      <xs:sequence>
+        <xs:element name="item" type="tns:bv-chains-item" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  
+    <xs:complexType name="bv-validators-list">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="custom_mandatory_validator" minOccurs="0" maxOccurs="unbounded">              
+                <xs:complexType>
+                  <xs:attribute name="name" type="xs:string" use="required" />
+                  <xs:attribute name="fieldId" type="xs:string" use="required" />
+                  <xs:attribute name="type" type="tns:bv-validationType" use="optional" />
+                  <xs:attribute name="label" type="xs:string" use="optional" />
+                  <xs:attribute name="predicate" type="xs:string" use="optional" />
+                </xs:complexType>              
+            </xs:element>
+            <xs:element name="required_validator" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="params" type="tns:bv-params-list-without-name" minOccurs="0" maxOccurs="1" />
+                    </xs:sequence>
+                    <xs:attribute name="field" type="xs:string" use="optional" />
+                    <xs:attribute name="label" type="xs:string" use="optional" />
+                    <xs:attribute name="target" type="xs:string" use="required" />
+                    <xs:attribute name="property" type="xs:string" use="optional" />
+                    <xs:attribute name="message" type="xs:string" use="optional" />
+                    <xs:attribute name="predicate" type="xs:string" use="optional" />
+                    <xs:attribute name="type" type="tns:bv-validationType" use="optional" />
+                    <xs:attribute name="child" type="tns:bv-bool" use="optional" />
+                    <xs:attribute name="container" type="xs:string" use="optional" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="predicate_validator" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="params" type="tns:bv-params-list-without-name" minOccurs="0" maxOccurs="1" />
+                    </xs:sequence>
+                    <xs:attribute name="field" type="xs:string" use="optional" />
+                    <xs:attribute name="label" type="xs:string" use="optional" />
+                    <xs:attribute name="container" type="xs:string" use="optional" />
+                    <xs:attribute name="property" type="xs:string" use="optional" />
+                    <xs:attribute name="filter" type="xs:string" use="optional" />
+                    <xs:attribute name="predicate" type="xs:string" use="required" />
+                    <xs:attribute name="message" type="xs:string" use="optional" />
+                    <xs:attribute name="messagePredicate" type="xs:string" use="optional" />
+                    <xs:attribute name="type" type="tns:bv-validationType" use="optional" />
+                </xs:complexType>
+            </xs:element>
+          <!--xs:element name="duplicate_validator" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="params" type="tns:bv-params-list-without-name" minOccurs="0" maxOccurs="1" />
+                    </xs:sequence>
+                    <xs:attribute name="field" type="xs:string" use="optional" />
+                    <xs:attribute name="label" type="xs:string" use="optional" />
+                    <xs:attribute name="container" type="xs:string" use="optional" />
+                    <xs:attribute name="property" type="xs:string" use="optional" />
+                    <xs:attribute name="filter" type="xs:string" use="optional" />
+                    <xs:attribute name="predicate" type="xs:string"  use="optional"/>
+                    <xs:attribute name="shouldAsk" type="tns:bv-bool" use="optional" />
+                </xs:complexType>
+            </xs:element-->
+          <!--xs:element name="duplicate_reference_validator" minOccurs="0" maxOccurs="unbounded">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="params" type="tns:bv-params-list-without-name" minOccurs="0" maxOccurs="1" />
+              </xs:sequence>
+              <xs:attribute name="field" type="xs:string" use="optional" />
+              <xs:attribute name="label" type="xs:string" use="optional" />
+              <xs:attribute name="container" type="xs:string" use="optional" />
+              <xs:attribute name="property" type="xs:string" use="optional" />
+              <xs:attribute name="filter" type="xs:string" use="optional" />
+              <xs:attribute name="predicate" type="xs:string"  use="optional"/>
+              <xs:attribute name="shouldAsk" type="tns:bv-bool" use="optional" />
+            </xs:complexType>
+          </xs:element-->
+          <xs:element name="duplicate_list_validator" minOccurs="0" maxOccurs="unbounded">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+                  <xs:complexType>
+                    <xs:attribute name="field" type="xs:string" use="required" />
+                    <xs:attribute name="lookup" type="xs:string" use="optional" />
+                    <xs:attribute name="inMsg" type="tns:bv-bool" use="optional" />
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+              <xs:attribute name="collection" type="xs:string" use="required" />
+              <xs:attribute name="type" type="xs:string" use="required" />
+              <xs:attribute name="filter" type="xs:string" use="optional" />
+            </xs:complexType>
+          </xs:element>
+
+          <!--xs:element name="required_child_validator" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="params" type="tns:bv-params-list-without-name" minOccurs="0" maxOccurs="1" />
+                    </xs:sequence>
+                    <xs:attribute name="field" type="xs:string" use="optional" />
+                    <xs:attribute name="label" type="xs:string" use="optional" />
+                    <xs:attribute name="container" type="xs:string" use="optional" />
+                    <xs:attribute name="property" type="xs:string" use="optional" />
+                    <xs:attribute name="filter" type="xs:string" use="optional" />
+                    <xs:attribute name="predicate" type="xs:string"  use="optional"/>
+                    <xs:attribute name="shouldAsk" type="tns:bv-bool" use="optional" />
+                </xs:complexType>
+            </xs:element-->
+            <xs:element name="custom_validator" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="params" type="tns:bv-params-list" minOccurs="0" maxOccurs="1" />
+                    </xs:sequence>
+                    <xs:attribute name="field" type="xs:string" use="optional" />
+                    <xs:attribute name="method" type="xs:string" use="optional" />
+                    <xs:attribute name="required" type="tns:bv-bool" use="optional" />
+                    <xs:attribute name="type" type="tns:bv-validationType" use="optional" />
+                    <xs:attribute name="onYesAsk" type="xs:string" use="optional" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="custom_validator_manager" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="params" type="tns:bv-params-list" minOccurs="0" maxOccurs="1" />
+                    </xs:sequence>
+                    <xs:attribute name="field" type="xs:string" use="optional" />
+                    <xs:attribute name="method" type="xs:string" use="optional" />
+                    <xs:attribute name="type" type="tns:bv-validationType" use="optional" />
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+
+  <xs:complexType name="bv-validators-list-child">
+    <xs:complexContent>
+      <xs:extension base="tns:bv-validators-list">
+        <xs:attribute name="container" type="xs:string" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="bv-validators-list-container">
+    <xs:complexContent>
+      <xs:extension base="tns:bv-validators-list">
+        <xs:attribute name="name" type="xs:string" use="required" />
+        <xs:attribute name="field" type="xs:string" use="optional" />
+        <xs:attribute name="filter" type="xs:string" use="optional" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="bv-validators-list-post">
+    <xs:complexContent>
+      <xs:extension base="tns:bv-validators-list">
+        <xs:sequence>
+          <xs:element name="container" type="tns:bv-validators-list-container" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+  <xs:element name="object">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="storage" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="get">
+                                <xs:complexType>
+                                    <xs:attribute name="name" type="xs:string" />
+                                    <xs:attribute name="type" type="tns:bv-get-type" />
+                                    <xs:attribute name="cache" type="tns:bv-bool" />
+                                    <xs:attribute name="filter-object" type="xs:string" use="optional" />
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="count" minOccurs="0" maxOccurs="1">
+                                <xs:complexType>
+                                    <xs:attribute name="name" type="xs:string" />
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="validate" minOccurs="0" maxOccurs="1">
+                                <xs:complexType>
+                                    <xs:attribute name="name" type="xs:string" />
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="tables" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="table" minOccurs="1" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="properties" minOccurs="0" maxOccurs="1">
+                                            <xs:complexType>
+                                              <xs:sequence>
+                                                <xs:element name="lookupcache" minOccurs="0" maxOccurs="1">
+                                                  <xs:complexType>
+                                                    <xs:sequence>
+                                                      <xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                          <xs:attribute name="name" type="tns:bv-lookup-table-cache" use="required" />
+                                                        </xs:complexType>
+                                                      </xs:element>
+                                                    </xs:sequence>
+                                                  </xs:complexType>
+                                                </xs:element>
+                                                <xs:element name="events" minOccurs="0" maxOccurs="1">
+                                                  <xs:complexType>
+                                                    <xs:sequence>
+                                                      <xs:element name="create" minOccurs="0" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                          <xs:attribute name="name" type="tns:bv-event-new-type" use="required" />
+                                                          <xs:attribute name="predicate" type="xs:string" use="optional" />
+                                                          <xs:attribute name="mainobj" type="xs:string" use="optional" />
+                                                          <xs:attribute name="addinfo" type="xs:string" use="optional" />
+                                                          <xs:attribute name="startReplication" type="tns:bv-bool" use="optional" />
+                                                        </xs:complexType>
+                                                      </xs:element>
+                                                      <xs:element name="change" minOccurs="0" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                          <xs:attribute name="name" type="tns:bv-event-change-type" use="required" />
+                                                          <xs:attribute name="fields" type="xs:string" use="optional" />
+                                                          <xs:attribute name="predicate" type="xs:string" use="optional" />
+                                                          <xs:attribute name="mainobj" type="xs:string" use="optional" />
+                                                          <xs:attribute name="addinfo" type="xs:string" use="optional" />
+                                                          <xs:attribute name="startReplication" type="tns:bv-bool" use="optional" />
+                                                        </xs:complexType>
+                                                      </xs:element>
+                                                    </xs:sequence>
+                                                  </xs:complexType>
+                                                </xs:element>
+                                              </xs:sequence>
+                                              <xs:attribute name="auditObject" type="tns:bv-audit-object" use="optional" />
+                                              <xs:attribute name="auditTable" type="tns:bv-audit-table" use="optional" />
+                                              <xs:attribute name="permissionObject" type="tns:bv-permission-object-type" use="optional" />
+                                              <xs:attribute name="permissionAction" type="tns:bv-permission-action-type" use="optional" />
+                                              <!--
+                                              <xs:attribute name="lookupcachename" type="tns:bv-lookup-table-cache" use="optional" />
+                                              <xs:attribute name="newEvent" type="tns:bv-event-new-type" use="optional" />
+                                              <xs:attribute name="changeEvent1" type="xs:string" use="optional" />
+                                              <xs:attribute name="changeEvent2" type="xs:string" use="optional" />
+                                              <xs:attribute name="changeCaseStatusEvent" type="xs:string" use="optional" />
+                                              <xs:attribute name="changeCaseDiseaseEvent" type="xs:string" use="optional" />
+                                              <xs:attribute name="newTestResultEvent" type="tns:bv-bool" use="optional" />
+                                              <xs:attribute name="newTestAmendmentEvent" type="tns:bv-bool" use="optional" />
+                                              -->
+                                            </xs:complexType>
+                                        </xs:element>
+                                      <xs:element name="help" minOccurs="0" maxOccurs="1">
+                                        <xs:complexType>
+                                          <xs:attribute name="win" type="xs:string" use="optional" />
+                                          <xs:attribute name="web" type="xs:string" use="optional" />
+                                          <xs:attribute name="hh" type="xs:string" use="optional" />
+                                        </xs:complexType>
+                                      </xs:element>
+                                        <xs:element name="extfilters" minOccurs="0" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="filter" minOccurs="1" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                              <xs:choice>
+                                                                <xs:element name="join" minOccurs="0" maxOccurs="1" />
+                                                                <xs:element name="join2" minOccurs="0" maxOccurs="unbounded">
+                                                                  <xs:complexType>
+                                                                    <xs:sequence>
+                                                                      <xs:element name="params" minOccurs="1" maxOccurs="1">
+                                                                        <xs:complexType>
+                                                                          <xs:sequence>
+                                                                            <xs:element name="param" minOccurs="1" maxOccurs="unbounded">
+                                                                              <xs:complexType>
+                                                                                <xs:attribute name="name" type="xs:string" use="required" />
+                                                                              </xs:complexType>
+                                                                            </xs:element>
+                                                                          </xs:sequence>
+                                                                        </xs:complexType>
+                                                                      </xs:element>
+                                                                      <xs:element name="text" minOccurs="1" maxOccurs="1" />
+                                                                    </xs:sequence>
+                                                                  </xs:complexType>
+                                                                </xs:element>
+                                                              </xs:choice>
+                                                              <xs:element name="where" minOccurs="1" maxOccurs="1">
+                                                                    <xs:complexType>
+                                                                        <xs:sequence>
+                                                                            <xs:element name="expr" minOccurs="1" maxOccurs="unbounded">
+                                                                                <xs:complexType>
+                                                                                    <xs:attribute name="param" type="xs:string" use="required" />
+                                                                                    <xs:attribute name="value" type="xs:string" use="optional" />
+                                                                                    <xs:attribute name="lambda" type="xs:string" use="optional" />
+                                                                                    <xs:attribute name="range" type="tns:bv-bool" use="optional" default="false" />
+                                                                                </xs:complexType>
+                                                                            </xs:element>
+                                                                        </xs:sequence>
+                                                                    </xs:complexType>
+                                                                </xs:element>
+                                                            </xs:sequence>
+                                                          <xs:attribute name="isDistinct" type="tns:bv-bool" use="optional" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="searchpanel" minOccurs="0" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                          <xs:sequence>
+                                                            <xs:element name="columns" minOccurs="0" maxOccurs="1">
+                                                              <xs:complexType>
+                                                                <xs:sequence>
+                                                                  <xs:element name="column" minOccurs="0" maxOccurs="unbounded">
+                                                                    <xs:complexType>
+                                                                      <xs:attribute name="name" type="xs:string" use="required" />
+                                                                      <xs:attribute name="label" type="xs:string" use="optional" />
+                                                                    </xs:complexType>
+                                                                  </xs:element>
+                                                                </xs:sequence>
+                                                              </xs:complexType>
+                                                            </xs:element>
+                                                          </xs:sequence>
+                                                            <xs:attribute name="name" type="xs:string" use="required" />
+                                                            <xs:attribute name="isParam" type="tns:bv-bool" use="optional" default="false" />
+                                                            <xs:attribute name="editor" type="tns:bv-editor-type" use="required" />
+                                                            <xs:attribute name="editorWidth" type="tns:bv-editor-width" use="optional" />
+                                                            <xs:attribute name="useInWeb" type="tns:bv-bool" use="optional" default="true" />
+                                                            <xs:attribute name="useInWin" type="tns:bv-bool" use="optional" default="true" />
+                                                            <xs:attribute name="range" type="tns:bv-bool" use="optional" default="false" />
+                                                            <xs:attribute name="rangeDefDates" type="tns:bv-bool" use="optional" default="false" />
+                                                            <xs:attribute name="labelId" type="xs:string" use="required" />
+                                                            <xs:attribute name="default" type="xs:string" use="optional" />
+                                                            <xs:attribute name="defaultoper" type="xs:string" use="optional" />
+                                                            <xs:attribute name="mandatory" type="tns:bv-bool" use="optional" default="false" />
+                                                            <xs:attribute name="location" type="tns:bv-search-location" use="optional" default="Main" />
+                                                            <xs:attribute name="lookupName" type="xs:string" use="optional" />
+                                                            <xs:attribute name="lookupType" type="xs:string" use="optional" />
+                                                            <xs:attribute name="lookupValue" type="xs:string" use="optional" />
+                                                            <xs:attribute name="lookupText" type="xs:string" use="optional" />
+                                                            <xs:attribute name="dependent" type="xs:string" use="optional" />
+                                                            <xs:attribute name="multiple" type="tns:bv-bool" use="optional" default="false" />
+                                                            <xs:attribute name="bitmask" type="tns:bv-bool" use="optional" default="false" />
+                                                            <xs:attribute name="predicate" type="xs:string" use="optional" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="grid" minOccurs="0" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="name" type="xs:string" use="required" />
+                                                            <xs:attribute name="key" type="tns:bv-bool" use="optional" default="false" />
+                                                            <xs:attribute name="visible" type="tns:bv-bool" use="optional" default="true" />
+                                                            <xs:attribute name="required" type="tns:bv-bool" use="optional" default="true" />
+                                                            <xs:attribute name="sortable" type="tns:bv-bool" use="optional" default="true" />
+                                                            <xs:attribute name="format" type="xs:string" use="optional" />
+                                                          <!--xs:attribute name="readonly" type="tns:bv-bool" use="optional" default="true" /-->
+                                                          <!--xs:attribute name="uihint" type="xs:string" use="optional" /-->
+                                                            <xs:attribute name="type" type="xs:string" use="optional" />
+                                                          <!--xs:attribute name="datatype" type="xs:string" use="optional" /-->
+                                                            <xs:attribute name="defaultSort" type="tns:bv-sort-direction" use="optional" />
+                                                            <xs:attribute name="predicate" type="xs:string" use="optional" />
+                                                            <xs:attribute name="action" type="xs:string" use="optional" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="orderby" type="xs:string" use="optional" />
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="labels" minOccurs="0" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="name" type="xs:string" use="required" />
+                                                            <xs:attribute name="labelId" type="xs:string" use="required" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="keys" minOccurs="0" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="key" minOccurs="1" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="name" type="xs:string" use="required" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="keyLookup" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="name" type="xs:string" use="required" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="fields" minOccurs="0" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                                                    <xs:choice>
+                                                        <xs:element name="storage" minOccurs="0" maxOccurs="unbounded">
+                                                            <xs:complexType>
+                                                                <xs:attribute name="name" type="xs:string" use="required" />
+                                                                <xs:attribute name="type" type="xs:string" use="required" />
+                                                            </xs:complexType>
+                                                        </xs:element>
+                                                        <xs:element name="calculated" minOccurs="0" maxOccurs="unbounded">
+                                                            <xs:complexType>
+                                                                <xs:attribute name="name" type="xs:string" use="required" />
+                                                                <xs:attribute name="type" type="xs:string" use="required" />
+                                                                <xs:attribute name="depends" type="xs:string" use="required" />
+                                                                <xs:attribute name="lambda" type="xs:string" use="required" />
+                                                                <xs:attribute name="setter" type="xs:string" use="optional" />
+                                                                <xs:attribute name="dependonpost" type="tns:bv-yesno" use="optional" />
+                                                            </xs:complexType>
+                                                        </xs:element>
+                                                    </xs:choice>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                      <xs:element name="fieldtags" minOccurs="0" maxOccurs="1">
+                                        <xs:complexType>
+                                          <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                                            <xs:element name="field" minOccurs="0" maxOccurs="unbounded">
+                                              <xs:complexType>
+                                                <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                                                  <xs:element name="tag" minOccurs="0" maxOccurs="unbounded">
+                                                    <xs:complexType>
+                                                      <xs:attribute name="name" type="tns:bv-fieldtag" use="required" />
+                                                      <xs:attribute name="value" type="xs:string" use="optional" />
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="name" type="xs:string" use="required" />
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element name="readonly" minOccurs="0" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="fields" minOccurs="0" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="name" type="xs:string" use="required" />
+                                                            <xs:attribute name="predicate" type="xs:string" use="required" />
+                                                            <xs:attribute name="ignoreReadOnly" type="xs:boolean" use="optional" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>                                      
+                                      <xs:element name="personaldata" minOccurs="0" maxOccurs="1">
+                                        <xs:complexType>                                          
+                                          <xs:sequence>
+                                            <xs:element name="group" minOccurs="0" maxOccurs="unbounded">                                              
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+                                                    <xs:complexType>
+                                                      <xs:attribute name="name" type="xs:string" use="required" />
+                                                      <xs:attribute name="islist" type="tns:bv-bool" use="optional"/>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="name" type="tns:bv-personal-data-group" use="required"/>
+                                                <xs:attribute name="predicate" type="xs:string" use="optional" />
+                                              </xs:complexType>
+                                            </xs:element>                                            
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                        <xs:element name="invisible" minOccurs="0" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="fields" minOccurs="0" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="name" type="xs:string" use="required" />
+                                                            <xs:attribute name="predicate" type="xs:string" use="required" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+
+                                        <xs:element name="relations" minOccurs="0" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="relation" minOccurs="0" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="params" type="tns:bv-params-list" minOccurs="0" maxOccurs="1" />
+                                                            </xs:sequence>
+                                                            <xs:attribute name="name" type="xs:string" use="required" />
+                                                            <xs:attribute name="accessor" type="xs:string" use="optional" />
+                                                            <xs:attribute name="table" type="xs:string" use="required" />
+                                                            <xs:attribute name="type" type="tns:bv-rel-type" use="required" />
+                                                            <xs:attribute name="source" type="xs:string" use="required" />
+                                                            <xs:attribute name="target" type="xs:string" use="required" />
+                                                            <xs:attribute name="internal" type="tns:bv-bool" use="required" />
+                                                            <xs:attribute name="hacodable" type="tns:bv-bool" use="optional" default="false" />
+                                                            <xs:attribute name="paramsonly" type="tns:bv-bool" use="optional" default="false" />
+                                                            <xs:attribute name="lazy" type="tns:bv-bool" use="optional" default="true" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        
+                                        <xs:element name="lookups" minOccurs="0" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="lookup" minOccurs="0" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                          <xs:all>
+                                                            <xs:element name="params" type="tns:bv-params-list" minOccurs="0" maxOccurs="1" />
+                                                            <xs:element name="filters" type="tns:bv-filters-list" minOccurs="0" maxOccurs="1" />
+                                                            <xs:element name="items" type="tns:bv-items-list" minOccurs="0" maxOccurs="1" />
+                                                          </xs:all>
+                                                            <xs:attribute name="name" type="xs:string" use="required" />
+                                                            <xs:attribute name="table" type="xs:string" use="required" />
+                                                            <xs:attribute name="source" type="xs:string" use="required" />
+                                                            <xs:attribute name="target" type="xs:string" use="required" />
+                                                            <xs:attribute name="section" type="xs:string" use="optional" />
+                                                            <xs:attribute name="hintonly" type="tns:bv-bool" use="optional" default="false"  />
+                                                            <xs:attribute name="existinglookup" type="xs:string" use="optional" />
+                                                            <xs:attribute name="order" type="xs:string" use="optional" />
+                                                            <xs:attribute name="notaddempty" type="tns:bv-bool" use="optional" default="false"  />
+                                                            <xs:attribute name="isshowdeleted" type="tns:bv-bool" use="optional" default="false"  />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+
+                                        <xs:element name="sections" minOccurs="0" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="section" minOccurs="0" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="filters" type="tns:bv-filters-list" minOccurs="0" maxOccurs="1" />
+                                                            </xs:sequence>
+                                                            <xs:attribute name="name" type="xs:string" use="required" />
+                                                            <xs:attribute name="cache" type="tns:bv-bool" use="optional" />
+                                                            <xs:attribute name="lookupcachename" type="tns:bv-lookup-table-cache" use="required" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+
+                                        <xs:element name="storage" minOccurs="0" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="post" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="name" type="xs:string" use="optional" />
+                                                            <xs:attribute name="predicate" type="xs:string" use="optional" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="insert" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="name" type="xs:string" use="required" />
+                                                            <xs:attribute name="predicate" type="xs:string" use="optional" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="update" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="name" type="xs:string" use="required" />
+                                                            <xs:attribute name="predicate" type="xs:string" use="optional" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="delete" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="name" type="xs:string" use="optional" />
+                                                            <xs:attribute name="predicate" type="xs:string" use="optional" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="candelete" minOccurs="0" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="name" type="xs:string" use="optional" />
+                                                            <xs:attribute name="message" type="xs:string" use="optional" />
+                                                            <xs:attribute name="type" type="tns:bv-validationType" use="optional" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+
+                                        <xs:element name="postorder" minOccurs="0" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="name" type="xs:string" use="required" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        
+                                        <xs:element name="deleteorder" minOccurs="0" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="name" type="xs:string" use="required" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        
+                                        <xs:element name="extenders" minOccurs="0" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="creating" type="tns:bv-extenders-list" minOccurs="0" maxOccurs="1" />
+                                                    <xs:element name="created" type="tns:bv-extenders-list" minOccurs="0" maxOccurs="1" />
+                                                    <xs:element name="loading" type="tns:bv-extenders-list" minOccurs="0" maxOccurs="1" />
+                                                    <xs:element name="loaded" type="tns:bv-extenders-list" minOccurs="0" maxOccurs="1" />
+                                                    <xs:element name="posting" type="tns:bv-extenders-list" minOccurs="0" maxOccurs="1" />
+                                                    <xs:element name="posted" type="tns:bv-extenders-list" minOccurs="0" maxOccurs="1" />
+                                                    <xs:element name="deleting" type="tns:bv-extenders-list" minOccurs="0" maxOccurs="1" />
+                                                    <xs:element name="deleted" type="tns:bv-extenders-list" minOccurs="0" maxOccurs="1" />
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        
+                                        <xs:element name="handlers" minOccurs="0" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="fieldhandler" type="tns:bv-handlers-list" minOccurs="0" maxOccurs="1" />
+                                                    <xs:element name="childhandler" type="tns:bv-handlers-list" minOccurs="0" maxOccurs="1" />
+                                                    <xs:element name="childaddlist" type="tns:bv-handlers-list" minOccurs="0" maxOccurs="1" />
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        
+                                        <xs:element name="validators" minOccurs="0" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="chains" type="tns:bv-chains-list" minOccurs="0" maxOccurs="1" />
+                                                  <xs:element name="change" type="tns:bv-validators-list" minOccurs="0" maxOccurs="1" />
+                                                  <xs:element name="childchange" minOccurs="0" maxOccurs="1">
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:element name="container" type="tns:bv-validators-list-container" minOccurs="0" maxOccurs="unbounded" />
+                                                      </xs:sequence>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                  <xs:element name="childchangelist" type="tns:bv-validators-list" minOccurs="0" maxOccurs="1" />
+                                                  <xs:element name="childaddlist" type="tns:bv-validators-list-child" minOccurs="0" maxOccurs="unbounded" />
+                                                  <xs:element name="post" type="tns:bv-validators-list-post" minOccurs="0" maxOccurs="1" />
+                                                  <xs:element name="delete" type="tns:bv-validators-list" minOccurs="0" maxOccurs="1" />
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+
+                                      <xs:element name="actions" minOccurs="0" maxOccurs="1">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="standard" minOccurs="0" maxOccurs="1">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="remove" minOccurs="0" maxOccurs="unbounded">
+                                                    <xs:complexType>
+                                                      <xs:attribute name="type" type="tns:bv-action-type" use="required" />
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                            <xs:element name="action" minOccurs="0" maxOccurs="unbounded">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="visual" minOccurs="0" maxOccurs="1">
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:element name="regular" minOccurs="0" maxOccurs="1">
+                                                          <xs:complexType>
+                                                            <xs:attribute name="caption" type="xs:string" use="required" />
+                                                            <xs:attribute name="icon" type="xs:string" use="required" />
+                                                            <xs:attribute name="tooltip" type="xs:string" use="required" />
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                        <xs:element name="readOnly" minOccurs="0" maxOccurs="1">
+                                                          <xs:complexType>
+                                                            <xs:attribute name="caption" type="xs:string" use="required" />
+                                                            <xs:attribute name="icon" type="xs:string" use="required" />
+                                                            <xs:attribute name="tooltip" type="xs:string" use="required" />
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                      </xs:sequence>
+                                                      <xs:attribute name="alignment" type="tns:bv-action-alignment" use="optional" default="Left"/>
+                                                      <xs:attribute name="panel" type="tns:bv-action-panel" use="optional" default="Main" />
+                                                      <xs:attribute name="app" type="tns:bv-action-app" use="optional" default="All" />
+                                                      <xs:attribute name="enablePredicate" type="xs:string" use="optional" />
+                                                      <xs:attribute name="readOnlyPredicate" type="xs:string" use="optional" />
+                                                      <xs:attribute name="visiblePredicate" type="xs:string" use="optional" />
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                  <xs:element name="permissions" minOccurs="0" maxOccurs="1">
+                                                    <xs:complexType>
+                                                      <xs:attribute name="type" type="tns:bv-permission-action-type" use="optional" />
+                                                      <xs:attribute name="predicate" type="xs:string" use="optional" />
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                  <xs:element name="hierarchy" minOccurs="0" maxOccurs="1">
+                                                    <xs:complexType>
+                                                      <xs:attribute name="container" type="xs:string" use="optional" />
+                                                      <xs:attribute name="relatedList" type="xs:string" use="optional" />
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                  <xs:element name="run" minOccurs="0" maxOccurs="1">
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:element name="preUI" minOccurs="0" maxOccurs="1">
+                                                          <xs:complexType>
+                                                            <xs:attribute name="webType" type="tns:bv-action-web-type" use="required" />
+                                                            <xs:attribute name="methodName" type="xs:string" use="optional" />
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                        <xs:element name="postUI" minOccurs="0" maxOccurs="1">
+                                                          <xs:complexType>
+                                                            <xs:attribute name="methodName" type="xs:string" use="required" />
+                                                            <xs:attribute name="webType" type="tns:bv-action-web-type" use="required" />
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                        <xs:element name="params" minOccurs="0" maxOccurs="1">
+                                                          <xs:complexType>
+                                                            <xs:sequence>
+                                                              <xs:element name="param" minOccurs="1" maxOccurs="unbounded">
+                                                                <xs:complexType>
+                                                                  <xs:attribute name="name" type="xs:string" use="required" />
+                                                                  <xs:attribute name="type" type="xs:string" use="required" />
+                                                                </xs:complexType>
+                                                              </xs:element>
+                                                            </xs:sequence>
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                        <xs:element name="creating" type="tns:bv-extenders-list" minOccurs="0" maxOccurs="1" />
+                                                        <xs:element name="created" type="tns:bv-extenders-list" minOccurs="0" maxOccurs="1" />
+                                                        <xs:element name="loading" type="tns:bv-extenders-list" minOccurs="0" maxOccurs="1" />
+                                                        <xs:element name="loaded" type="tns:bv-extenders-list" minOccurs="0" maxOccurs="1" />
+                                                        <xs:element name="preText" type="xs:string" minOccurs="0" maxOccurs="1" />
+                                                        <xs:element name="postText" type="xs:string" minOccurs="0" maxOccurs="1" />
+                                                      </xs:sequence>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="name" type="xs:string" use="required" />
+                                                <xs:attribute name="type" type="tns:bv-action-type" use="required" />
+                                                <xs:attribute name="forceClose" type="xs:boolean" use="optional" default="false"/>
+                                                <xs:attribute name="onRow" type="xs:boolean" use="optional" default="false"/>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                          <xs:attribute name="child" type="xs:string" use="optional" />
+                                        </xs:complexType>
+                                      </xs:element>
+
+                                      <!--xs:element name="actions" minOccurs="0" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="action" minOccurs="0" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                          <xs:sequence>
+                                                              <xs:element name="params" minOccurs="0" maxOccurs="1">
+                                                                  <xs:complexType>
+                                                                      <xs:sequence>
+                                                                          <xs:element name="param" minOccurs="1" maxOccurs="unbounded">
+                                                                              <xs:complexType>
+                                                                                  <xs:attribute name="name" type="xs:string" use="required" />
+                                                                                  <xs:attribute name="type" type="xs:string" use="required" />
+                                                                              </xs:complexType>
+                                                                          </xs:element>
+                                                                      </xs:sequence>
+                                                                  </xs:complexType>
+                                                              </xs:element>
+                                                              <xs:element name="creating" type="tns:bv-extenders-list" minOccurs="0" maxOccurs="1" />
+                                                              <xs:element name="created" type="tns:bv-extenders-list" minOccurs="0" maxOccurs="1" />
+                                                              <xs:element name="loading" type="tns:bv-extenders-list" minOccurs="0" maxOccurs="1" />
+                                                              <xs:element name="loaded" type="tns:bv-extenders-list" minOccurs="0" maxOccurs="1" />
+                                                              <xs:element name="text" type="xs:string" minOccurs="0" maxOccurs="1" />
+                                                          </xs:sequence>
+                                                          <xs:attribute name="name" type="xs:string" use="required" />
+                                                          <xs:attribute name="type" type="tns:bv-action-type" use="required" />
+                                                          <xs:attribute name="typeReadOnly" type="tns:bv-action-type" use="optional" />
+                                                          <xs:attribute name="typeMethod" type="tns:bv-action-type" use="optional" />
+                                                          <xs:attribute name="caption" type="xs:string" use="required" />
+                                                          <xs:attribute name="icon" type="xs:string" use="required" />
+                                                          <xs:attribute name="tooltip" type="xs:string" use="required" />
+                                                          <xs:attribute name="captionReadOnly" type="xs:string" use="optional" />
+                                                          <xs:attribute name="iconReadOnly" type="xs:string" use="optional" />
+                                                          <xs:attribute name="tooltipReadOnly" type="xs:string" use="optional" />
+                                                          <xs:attribute name="alignment" type="tns:bv-action-alignment" use="optional" default="Left"/>
+                                                          <xs:attribute name="panel" type="tns:bv-action-panel" use="optional" default="Main" />
+                                                          <xs:attribute name="app" type="tns:bv-action-app" use="optional" default="All" />
+                                                          <xs:attribute name="visible" type="tns:bv-bool" use="optional" default="true" />
+                                                          <xs:attribute name="close" type="tns:bv-bool" use="optional" default="false" />
+                                                          <xs:attribute name="predicate" type="xs:string" use="optional" />
+                                                          <xs:attribute name="enabled" type="xs:string" use="optional" />
+                                                          <xs:attribute name="groupcode" type="xs:string" use="optional" />
+                                                          <xs:attribute name="permissionAction" type="tns:bv-permission-action-type" use="optional" />
+                                                          <xs:attribute name="permissionPredicate" type="xs:string" use="optional" />
+                                                          <xs:attribute name="related-lists" type="xs:string" use="optional" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+
+                                                <xs:attribute name="child" type="xs:string" use="optional" />
+                                            </xs:complexType>
+                                        </xs:element-->
+                                    </xs:sequence>
+                                    
+                                    <xs:attribute name="name" type="xs:string" use="required" />
+                                    <xs:attribute name="type" type="tns:bv-get-type" />
+                                    <xs:attribute name="hacodable" type="tns:bv-bool" use="optional" default="false" />
+                                    <xs:attribute name="tostring" type="xs:string" use="optional" />
+                                    <xs:attribute name="detailname" type="xs:string" use="optional" />
+                                    <xs:attribute name="formsize" type="tns:bv-formsize" use="optional" />
+                                    <xs:attribute name="lookupcachename" type="tns:bv-lookup-table-cache" use="optional" />
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+          <xs:attribute name="name" type="xs:string" use="required" />
+          <xs:attribute name="langid" type="xs:string" use="optional" />
+          <xs:attribute name="connection" type="xs:string" use="required" />
+          <xs:attribute name="inherited" type="xs:string" use="optional" />
+          <xs:attribute name="generator" type="xs:string" use="required" />
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

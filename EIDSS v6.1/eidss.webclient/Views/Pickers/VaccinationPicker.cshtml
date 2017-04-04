@@ -1,0 +1,111 @@
+﻿@model eidss.model.Schema.VaccinationListItem
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using bv.common.Configuration
+@using bv.model.Model.Core
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+
+<script type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+<input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        @Html.Hidden("idfVaccination", Model.idfVaccination)
+        <div class="windowButtonsPn">
+            <input id="idButtonOk" type="button" class="windowButton" onclick="vetCase.saveAndCloseVaccinationGridEditWindow('@(Model.CaseObjectIdent)');" value="@Translator.GetMessageString("Ok")"/>                        
+            <input id="idButtonCancel" type="button" class="windowButton" onclick="bvPopup.closeDefaultPopup()" value="@Translator.GetMessageString("Cancel")"/>
+        </div>  
+        <div class="windowSeparator"></div>  
+        <table class="level1"> 
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Translator.GetString("Vaccination.strDiagnosis")
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.Diagnosis, width: EditorControlWidth.Large)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, model => model.datVaccinationDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datVaccinationDate) 
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, model => model.idfSpecies)
+                </td>
+                <td>
+                    @{
+                        var onSpeciesLoad = string.Format("function(e){{ vetCase.setIdfSpeciesValue(e, '{0}'); }}", Model.idfSpecies);
+                    }
+                    @(Html.BvCombobox(Model, m => m.idfSpecies)
+                        .Events(events => events.DataBound(onSpeciesLoad))
+                        .BindTo(ViewBag.HerdsAndSpecies))
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, model => model.intNumberVaccinated)
+                </td>
+                <td>
+                    @Html.BvNumeric(Model, m => m.intNumberVaccinated, 0)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, model => model.idfsVaccinationType)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.VaccinationType)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, model => model.idfsVaccinationRoute)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.VaccinationRoute)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, model => model.strLotNumber)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strLotNumber)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, model => model.strManufacturer)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strManufacturer)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Translator.GetString("Vaccination.strNote")
+                </td>
+                <td>
+                    @Html.BvTextArea(Model, m => m.strNote)
+                </td>
+            </tr>
+        </table>
+    }
+</div>

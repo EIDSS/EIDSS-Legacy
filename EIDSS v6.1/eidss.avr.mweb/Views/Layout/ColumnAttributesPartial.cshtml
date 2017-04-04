@@ -1,0 +1,516 @@
+﻿@using System.Drawing
+@using System.Web.UI.WebControls
+@using bv.common.Core
+@using bv.model.Model.Core
+@using bv.common.Configuration
+@using eidss.avr.db.Common
+@using eidss.avr.mweb.Utils
+@using eidss.web.common.Utils
+@using LayoutHelper = eidss.avr.mweb.Utils.LayoutHelper
+@model eidss.avr.mweb.Models.AvrPivotGridModel
+
+@{
+    var CanUpdate = eidss.model.Core.AvrPermissions.UpdatePermission;
+}
+
+@Html.DevExpress().PopupControl(
+    settings =>
+    {
+        settings.Name = "pcColumn";
+        settings.Width = 1000;
+        settings.CallbackRouteValues = new { Controller = "Layout", Action = "ColumnAttributesPartial" };
+        settings.CloseAction = CloseAction.OuterMouseClick;
+        settings.ShowCloseButton = false;
+        settings.PopupAnimationType = AnimationType.None;
+        settings.ShowHeader = true;
+        settings.Modal = true;
+        settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+        settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+        settings.LoadContentViaCallback = LoadContentViaCallback.None;
+        settings.ControlStyle.CssClass = "k-window";
+        settings.Styles.Header.CssClass = "k-window-titlebar";
+        settings.ClientSideEvents.EndCallback = "columnPopup.onPopupEndCallback";
+        settings.AutoUpdatePosition = true;
+        settings.CustomJSProperties = (s, e) => { e.Properties["cpHeaderText"] = Model.PivotSettings.SelectedField != null ? Model.PivotSettings.SelectedField.Caption : ""; };
+        settings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+        settings.SetContent(() =>
+        {
+            using (Html.BeginForm("OnSaveFieldChanges", "Layout", FormMethod.Post, new { id = "popupForm", @style = "width: 1000px" }))
+            {
+                var clonedField = Model.PivotSettings.SelectedField != null ?
+                    Model.PivotSettings.SelectedField.GetClonedField(Model.PivotSettings.LayoutDataset, true)
+                    : new WebPivotGridFieldClone();
+                bool isDateTimeField = Model.PivotSettings.SelectedField != null && Model.PivotSettings.SelectedField.IsDateTimeField;
+                bool allowMissedValues = Model.PivotSettings.SelectedField != null
+                                         && !Model.PivotSettings.SelectedField.IsHiddenFilterField
+                                         && Model.PivotSettings.SelectedField.Visible
+                                         && (Model.PivotSettings.SelectedField.Area == PivotArea.ColumnArea
+                                             || Model.PivotSettings.SelectedField.Area == PivotArea.RowArea);
+                if (BaseSettings.TranslationMode)
+                {
+                    ViewContext.Writer.Write("<input type='hidden' id='aspclassnamePopup' value='" + GetType().FullName + "' />");
+                }
+
+                ViewContext.Writer.Write(
+                    "<div class='frame'>" +
+                    "<table  class = 'level1'>" +
+                        "<tr>" +
+                            "<td class=\"actionButtons actionline\" colspan = '2'>");
+                if (CanUpdate)
+                {
+                    
+                    ViewContext.Writer.Write(
+                        "<input id=\"btnDeleteCopy\" class=\"button\" type=\"button\" value=\"" + Translator.GetMessageString("Delete") + "\" onclick='columnPopup.onDeleteCopy();' " + (Model.PivotSettings.CanDeleteSelectedField() && !Model.PivotSettings.IsPublished ? "/>" : "disabled />") +
+                        "<input id=\"btnCancelChangesColumn\" class=\"button\" type=\"button\" value=\"" + Translator.GetMessageString("Cancel") + "\" onclick='columnPopup.onCancelChanges();'/>" +
+                        "<input id=\"btnSaveColumn\" class=\"button\" type=\"button\" value=\"" + Translator.GetMessageString("Ok") + "\" onclick='columnPopup.onSaveChanges();' " + (clonedField.IsEmpty ? "disabled />" : "/>"));
+                }
+                else
+                    ViewContext.Writer.Write(
+                        "<input id=\"btnCancelChangesColumn\" class=\"button\" type=\"button\" value=\"" + Translator.GetMessageString("Ok") + "\" onclick='columnPopup.onCancelChanges();'/>");
+                if (BaseSettings.TranslationMode)
+                {
+                    ViewContext.Writer.Write("<input id='btnTranslationTool' class='button' type='button' value='" + Translator.GetMessageString("btTranslationTool") + "' onclick='avrTranslation.OpenTranslationWindowForPopup();' />");
+                }
+                ViewContext.Writer.Write(
+                                "<br style='height:0'/><div id='idError' class='errorMessage' style='display:none'>" +
+                                "<span id='idErrorText'></span>" +
+                                "</div>" +
+                            "</td>" +
+                        "</tr>" +
+                        "<tr>" +
+                            "<td class=\"sectionTitle\" colspan = '2' >" +
+                                "<span class=\"sectionText\">" + Translator.GetMessageString("Settings") + "</span>" +
+                            "</td>" +
+                        "</tr>" +
+                        "<tr class=\"settingsFields\">" +
+                        "<td class='medium firstLabel line'>");
+                //Row with original english caption
+                Html.DevExpress().Label(
+                    labelSettings =>
+                    {
+                        labelSettings.Text = Translator.GetMessageString("strOriginalColumnNameEn");
+                        labelSettings.AssociatedControlName = "OriginalColumnNameEn";
+                        labelSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                    }
+                    )
+                    .Render();
+                ViewContext.Writer.Write(
+                    "</td>" +
+                    "<td class='wide'>");
+                Html.DevExpress().TextBox(
+                    textBoxSettings =>
+                    {
+                        textBoxSettings.Name = "OriginalColumnNameEn";
+                        textBoxSettings.Enabled = false;
+                        textBoxSettings.Text = clonedField.OriginalCaptionEn;
+                        textBoxSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                    }
+                    )
+                    .Render();
+                ViewContext.Writer.Write(
+                            "</td>" +
+                        "</tr>" +
+                        "<tr class=\"settingsFields\">" +
+                            "<td class='medium firstLabel line'>");
+                //Row with original national caption
+                if (ModelUserContext.CurrentLanguage != Localizer.lngEn)
+                {
+                    Html.DevExpress().Label(
+                        labelSettings =>
+                        {
+                            labelSettings.Text = Translator.GetMessageString("strOriginalColumnName");
+                            labelSettings.AssociatedControlName = "OriginalColumnName";
+                            labelSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                        }
+                        )
+                        .Render();
+                    ViewContext.Writer.Write(
+                        "</td>" +
+                        "<td class='wide'>");
+                    Html.DevExpress().TextBox(
+                        textBoxSettings =>
+                        {
+                            textBoxSettings.Name = "OriginalColumnName";
+                            textBoxSettings.Enabled = false;
+                            textBoxSettings.Text = clonedField.OriginalCaption;
+                            textBoxSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                        }
+                        )
+                        .Render();
+                    ViewContext.Writer.Write(
+                                "</td>" +
+                            "</tr>" +
+                            "<tr class=\"settingsFields\">" +
+                                "<td class='medium firstLabel line'>");
+                }
+                //Row with english caption
+                Html.DevExpress().Label(
+                    labelSettings =>
+                    {
+                        labelSettings.Text = Translator.GetMessageString("strNewColumnNameEn");
+                        labelSettings.AssociatedControlName = "txtNewColumnNameEn";
+                        labelSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                    }
+                    )
+                    .Render();
+                ViewContext.Writer.Write(
+                    "</td>" +
+                    "<td class='wide'>");
+                Html.DevExpress().TextBox(
+                    textBoxSettings =>
+                    {
+                        textBoxSettings.Name = "txtNewColumnNameEn";
+                        LayoutPivotGridHelper.SetMandatoryStyle(textBoxSettings);
+                        textBoxSettings.Text = clonedField.CaptionEn;
+                        textBoxSettings.ClientEnabled = !clonedField.IsEmpty && CanUpdate && !Model.PivotSettings.IsPublished;
+                        textBoxSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                    }
+                    )
+                    .Render();
+                ViewContext.Writer.Write(
+                            "</td>" +
+                        "</tr>" +
+                        "<tr class=\"settingsFields\">" +
+                            "<td class='medium firstLabel line'>");
+                //Row with national caption
+                if (ModelUserContext.CurrentLanguage != Localizer.lngEn)
+                {
+                    Html.DevExpress().Label(
+                        labelSettings =>
+                        {
+                            labelSettings.Text = Translator.GetMessageString("strNewColumnName");
+                            labelSettings.AssociatedControlName = "txtColumnName";
+                            labelSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                        }
+                        )
+                        .Render();
+                    ViewContext.Writer.Write(
+                        "</td>" +
+                        "<td class='wide'>");
+                    Html.DevExpress().TextBox(
+                        textBoxSettings =>
+                        {
+                            textBoxSettings.Name = "txtColumnName";
+                            LayoutPivotGridHelper.SetMandatoryStyle(textBoxSettings);
+                            textBoxSettings.Text = clonedField.Caption;
+                            textBoxSettings.ClientEnabled = !clonedField.IsEmpty && CanUpdate && !Model.PivotSettings.IsPublished;
+                            textBoxSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                        }
+                        )
+                        .Render();
+                    ViewContext.Writer.Write(
+                                "</td>" +
+                            "</tr>" +
+                            "<tr class=\"settingsFields\">" +
+                                "<td class='medium firstLabel line'>");
+                }
+                
+                //Row with aggregate function combobox
+                Html.DevExpress().Label(
+                    labelSettings =>
+                    {
+                        labelSettings.ControlStyle.CssClass = "label";
+                        labelSettings.Text = Translator.GetMessageString("strAggregateFunction");
+                        labelSettings.AssociatedControlName = "cbAggregateFunction";
+                        labelSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                    }
+                )
+                .Render();
+                ViewContext.Writer.Write(
+                            "</td>" +
+                            "<td class='wide'>");
+                Html.DevExpress().ComboBox(
+                    comboBoxSettings =>
+                    {
+                        comboBoxSettings.Name = "cbAggregateFunction";
+                        comboBoxSettings.CallbackRouteValues = new { Controller = "Layout", Action = "OnSaveFieldChanges", };
+                        comboBoxSettings.Properties.ValueType = typeof(long);
+                        comboBoxSettings.Properties.ValueField = "idfAggregateFunction";
+                        comboBoxSettings.Properties.TextField = "AggregateFunctionName";
+                        comboBoxSettings.Properties.ClientSideEvents.ValueChanged = "columnPopup.onAggregateFunctionIdChanged";
+                        comboBoxSettings.Properties.EnableClientSideAPI = true;
+                        comboBoxSettings.ClientEnabled = !clonedField.IsEmpty && CanUpdate && !Model.PivotSettings.IsPublished;
+                        comboBoxSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                    }
+                ).BindList(LayoutHelper.GetAggregateFunctionsView())
+                .Bind(clonedField.AggregateFunctionId)
+                .Render();
+                ViewContext.Writer.Write(
+                            "</td>" +
+                        "</tr>" +
+                        "<tr class=\"settingsFields\">" +
+                            "<td class='medium firstLabel line'>");
+                //Row with precision spinedit
+                Html.DevExpress().Label(
+                    labelSettings =>
+                    {
+                        labelSettings.ControlStyle.CssClass = "label";
+                        labelSettings.Text = Translator.GetMessageString("lblPrecision");
+                        labelSettings.AssociatedControlName = "txtPrecision";
+                        labelSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                    }
+                )
+                .Render();
+                ViewContext.Writer.Write(
+                            "</td>" +
+                            "<td class='wide'>");
+                Html.DevExpress().SpinEdit(
+                    spinSettings =>
+                    {
+                        spinSettings.Name = "txtPrecision";
+                        spinSettings.Properties.EnableClientSideAPI = true;
+                        spinSettings.Properties.NumberType = SpinEditNumberType.Integer;
+                        spinSettings.Properties.MinValue = -1;
+                        spinSettings.Properties.MaxValue = 16;
+                        spinSettings.Enabled = !clonedField.IsEmpty && CanUpdate && !Model.PivotSettings.IsPublished;
+                        spinSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                    }
+                ).Bind(clonedField.Precision)
+                .Render();
+                ViewContext.Writer.Write(
+                            "</td>" +
+                        "</tr>" +
+                        "<tr>" +
+                            "<td class=\"sectionTitle\" colspan = '2' >" +
+                                "<span class=\"sectionText\">" + Translator.GetMessageString("titleParameters") + "</span>" +
+                            "</td>" +
+                        "</tr>" +
+                        "<tr class=\"parametersFields\">" +
+                        "<td class='medium firstLabel line'>");
+                //Row Basic Count Function combobox
+                Html.DevExpress().Label(
+                    labelSettings =>
+                    {
+                        labelSettings.ControlStyle.CssClass = "label";
+                        labelSettings.Text = Translator.GetMessageString("strBasicCountFunction");
+                        labelSettings.AssociatedControlName = "cbBasicCountFunction";
+                        labelSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                    }
+                )
+                .Render();
+                ViewContext.Writer.Write(
+                            "</td>" +
+                            "<td class='wide'><input type='hidden' id='enableBasicCount' value='{0}'/>", !clonedField.IsEmpty && CanUpdate && !Model.PivotSettings.IsPublished && clonedField.IsDataArea);
+               
+                Html.DevExpress().ComboBox(
+                    comboBoxSettings =>
+                    {
+                        comboBoxSettings.Name = "cbBasicCountFunction";
+                        comboBoxSettings.CallbackRouteValues = new { Controller = "Layout", Action = "OnSaveFieldChanges", };
+                        comboBoxSettings.Properties.ValueType = typeof(long);
+                        comboBoxSettings.Properties.ValueField = "idfAggregateFunction";
+                        comboBoxSettings.Properties.TextField = "AggregateFunctionName";
+                        //comboBoxSettings.Properties.ClientSideEvents.ValueChanged = "columnPopup.onAggregateFunctionIdChanged";
+                        comboBoxSettings.Properties.EnableClientSideAPI = true;
+                        comboBoxSettings.ClientEnabled = !clonedField.IsEmpty && CanUpdate && !Model.PivotSettings.IsPublished && clonedField.IsDataArea &&
+                            !(clonedField.AggregateFunctionId == 10004002L || clonedField.AggregateFunctionId == 10004003L || clonedField.AggregateFunctionId == 10004004L || clonedField.AggregateFunctionId == 10004020L );
+                        comboBoxSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                    }
+                ).BindList(LayoutHelper.GetBascicCountFunctionsView())
+                .Bind(clonedField.BasicCountFunctionId)
+                .Render();
+                ViewContext.Writer.Write(
+                            "</td>" +
+                        "</tr>" +
+                        "<tr class=\"parametersFields\">" +
+                            "<td class='medium firstLabel line'>");
+                //Row with Admin Unit combobox
+                Html.DevExpress().Label(
+                    labelSettings =>
+                    {
+                        labelSettings.Text = Translator.GetMessageString("lblAdministrativeUnitField");
+                        labelSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                    }
+                )
+                .Render();
+                ViewContext.Writer.Write(
+                            "</td>" +
+                            "<td class='wide'>");
+                Html.DevExpress().ComboBox(
+                    comboBoxSettings =>
+                    {
+                        comboBoxSettings.Name = "cbAdministrativeUnitField";
+                        comboBoxSettings.Properties.ValueType = typeof(long);
+                        comboBoxSettings.ClientEnabled = Model.PivotSettings.IsPopulationAggregateFunction() && !Model.PivotSettings.IsGenderAggregateFunction() && CanUpdate && !Model.PivotSettings.IsPublished;
+                        comboBoxSettings.Properties.ValueField = "Id";
+                        comboBoxSettings.Properties.TextField = "Caption";
+                        comboBoxSettings.Properties.EnableClientSideAPI = true;
+                        comboBoxSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                    }
+                ).BindList(AvrPivotGridHelper.GetAdministrativeUnitView(Model.PivotSettings.QueryId, Model.PivotSettings.Fields.Cast<IAvrPivotGridField>().ToList()))
+                .Bind(clonedField.UnitLayoutSearchFieldId)
+                .Render();
+                ViewContext.Writer.Write(
+                            "</td>" +
+                        "</tr>" +
+                        "<tr class=\"parametersFields\">" +
+                        "<td class='medium firstLabel line'>");
+                //Row with Date field combobox
+                Html.DevExpress().Label(
+                    labelSettings =>
+                    {
+                        labelSettings.Text = Translator.GetMessageString("lblDateField");
+                        labelSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                    }
+                )
+                .Render();
+                ViewContext.Writer.Write(
+                            "</td>" +
+                            "<td class='wide'>");
+                Html.DevExpress().ComboBox(
+                    comboBoxSettings =>
+                    {
+                        comboBoxSettings.Name = "cbGroupDateField";
+                        comboBoxSettings.Properties.ValueType = typeof(long);
+                        comboBoxSettings.ClientEnabled = Model.PivotSettings.IsPopulationAggregateFunction() && CanUpdate && !Model.PivotSettings.IsPublished;
+                        comboBoxSettings.Properties.ValueField = "Id";
+                        comboBoxSettings.Properties.TextField = "Caption";
+                        comboBoxSettings.Properties.EnableClientSideAPI = true;
+                        comboBoxSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                    }
+                ).BindList(AvrPivotGridHelper.GetStatisticDateView(Model.PivotSettings.Fields.Cast<IAvrPivotGridField>().ToList()))
+                .Bind(clonedField.DateLayoutSearchFieldId)
+                .Render();
+
+                ViewContext.Writer.Write(
+                            "</td>" +
+                        "</tr>" +
+                        "<tr>" +
+                            "<td class=\"sectionTitle\" colspan = '2'>" +
+                                "<span class=\"sectionText\">" + Translator.GetMessageString("titleGroupDate") + "</span>" +
+                            "</td>" +
+                        "</tr>" +
+                        "<tr class=\"groupDateFields\">" +
+                            "<td class='medium firstLabel line'>");
+                //Row with group date combobox
+                Html.DevExpress().Label(
+                    labelSettings =>
+                    {
+                        labelSettings.Text = Translator.GetMessageString("titleGroupDate");
+                        labelSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                    }
+                )
+                .Render();
+                ViewContext.Writer.Write(
+                            "</td>" +
+                            "<td class='wide'>");
+                Html.DevExpress().ComboBox(
+                    comboBoxSettings =>
+                    {
+                        comboBoxSettings.Name = "cbPrivateGroupDate";
+                        comboBoxSettings.Properties.ValueType = typeof(long);
+                        comboBoxSettings.Properties.TextField = "Value";
+                        comboBoxSettings.Properties.ValueField = "Key";
+                        comboBoxSettings.Enabled = isDateTimeField && !Model.PivotSettings.IsPublished;
+                        comboBoxSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                    }
+                ).BindList(Model.PivotSettings.Intervals)
+                .Bind(clonedField.PrivateGroupInterval)
+                .Render();
+
+                ViewContext.Writer.Write(
+                            "</td>" +
+                        "</tr>" +
+                        "<tr>" +
+                            "<td class=\"sectionTitle\" colspan = '2' >" +
+                                "<span class=\"sectionText\">" + Translator.GetMessageString("titleMissedValues") + "</span>" +
+                            "</td>" +
+                        "</tr>");
+                if (isDateTimeField)
+                {
+                    ViewContext.Writer.Write(
+                        "<tr class=\"missedValues\">" +
+                        "<td class='medium firstLabel line'>");
+                    //Row with start group date 
+                    Html.DevExpress().Label(
+                        labelSettings =>
+                        {
+                            labelSettings.Text = Translator.GetMessageString("DateFrom");
+                            labelSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                        }
+                        )
+                        .Render();
+                    ViewContext.Writer.Write(
+                        "</td>" +
+                        "<td class='wide'>");
+                    Html.DevExpress().DateEdit(
+                        dateSettings =>
+                        {
+                            dateSettings.Name = "dtDiapasonStartDate";
+                            LayoutPivotGridHelper.SetMandatoryStyle(dateSettings);
+                            dateSettings.ClientEnabled = clonedField.AddMissedValues && CanUpdate;
+                            dateSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                        }
+                        ).Bind(clonedField.DiapasonStartDate)
+                        .Render();
+                    ViewContext.Writer.Write(
+                        "</td>" +
+                        "</tr>" +
+                        "<tr class=\"missedValues\">" +
+                        "<td class='medium firstLabel line'>");
+                    //Row with end group date 
+                    Html.DevExpress().Label(
+                        labelSettings =>
+                        {
+                            labelSettings.Text = Translator.GetMessageString("DateTo");
+                            labelSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                        }
+                        )
+                        .Render();
+                    ViewContext.Writer.Write(
+                        "</td>" +
+                        "<td class='wide'>");
+                    Html.DevExpress().DateEdit(
+                        dateSettings =>
+                        {
+                            dateSettings.Name = "dtDiapasonEndDate";
+                            LayoutPivotGridHelper.SetMandatoryStyle(dateSettings);
+                            dateSettings.ClientEnabled = clonedField.AddMissedValues && CanUpdate;
+                            dateSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                        }
+                        ).Bind(clonedField.DiapasonEndDate)
+                        .Render();
+
+                    ViewContext.Writer.Write(
+                            "</td>" +
+                        "</tr>");
+                }
+                ViewContext.Writer.Write(
+                    "<tr class=\"missedValues\">" +
+                        "<td class='medium firstLabel line'>&nbsp;" +
+                        "</td>" +
+                        "<td class='wide'>");
+                //Row with Add Missed values checkbox 
+                Html.DevExpress().CheckBox(
+                    checkboxSettings =>
+                    {
+                        checkboxSettings.Name = "chkAddMissedValue";
+                        checkboxSettings.Text = Translator.GetMessageString("lblAddMissedValues");
+                        checkboxSettings.Enabled = allowMissedValues
+                                                   && CanUpdate
+                                                   && (isDateTimeField
+                                                       || (Model.PivotSettings.SelectedField != null && Model.PivotSettings.SelectedField.AllowMissedReferenceValues 
+                                                       && (Model.PivotSettings.SelectedField.ReferenceTypeId.HasValue || Model.PivotSettings.SelectedField.GisReferenceTypeId.HasValue)));
+                        checkboxSettings.Properties.ClientSideEvents.CheckedChanged = "columnPopup.onAddMissedValueChanged";
+                        checkboxSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                    }
+                    ).Bind(clonedField.AddMissedValues)
+                    .Render();
+
+                ViewContext.Writer.Write(
+                            "</td>" +
+                        "</tr>" +
+                    "</table>" +
+                    "</div>"
+                );
+            }
+        });
+
+
+        //settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer(null, '', true); }";
+    }).GetHtml()
+
+
+
+
+

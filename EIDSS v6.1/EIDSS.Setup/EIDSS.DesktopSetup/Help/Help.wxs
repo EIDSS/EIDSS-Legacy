@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "$(var.ProjectDir)ProductInfo.wxi" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="Help">
+    <ComponentGroup Id="Help" Directory="APPLICATIONFOLDER" Source="$(var.ThirdParty)">
+      <Component Id="HM2GO.EXE">
+        <File Name="HM2GO.EXE" Vital="yes" Checksum="yes" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+
+    <CustomActionRef Id="RegisterCustomCultures" />
+  </Fragment>
+
+  <Fragment Id="CustomCulture">
+    <CustomAction
+      Id="RegisterCustomCultures"
+      DllEntry="RegisterCustomCultures"
+      BinaryKey="CustomActions"
+      Execute="deferred"
+      Impersonate="no" />
+    <InstallExecuteSequence>
+      <Custom Action="RegisterCustomCultures" After="InstallFiles">
+        <![CDATA[$HM2GO.EXE > 2 Or ?HM2GO.EXE > 2 And $HM2GO.EXE <> 2 ]]>
+      </Custom>
+    </InstallExecuteSequence>
+
+    <UI>
+      <ProgressText Action="RegisterCustomCultures">!(loc.RegisterCustomCultures)</ProgressText>
+    </UI>
+  </Fragment>
+</Wix>

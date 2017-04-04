@@ -1,0 +1,64 @@
+﻿@model eidss.webclient.Models.SearchPanelModel
+@{
+    ViewBag.Title = "SearchPanelSimple";    
+}
+@using Kendo.Mvc.UI
+@using bv.model.Model.Core;
+@using eidss.webclient.Utils;
+@using eidss.webclient.Models;
+@using eidss.web.common.Utils
+
+<div>
+    <form id="panelFormSimple">
+        <div id="simplesearchpanel">
+            <table>
+                <tr>
+                    <td>
+            @(Html.Kendo().DropDownList()
+                  .Name("SimpleSearchList")
+                  .DataTextField("Text")
+                  .DataValueField("Value")
+                  .BindTo(Model.SearchPanelItemsToolbox
+                               .Select(c => new SearchPanelSimpleItem { Text = Translator.GetString(c.LabelId), Value = c.Name, Classname = "clsItem" }).Reverse()
+                               .Union(new []{new SearchPanelSimpleItem() {Text = "", Value = "", Classname = "clsItem" }}).Reverse()
+                  )
+                  .SelectedIndex(0)
+                  .Events(e => e.Select("searchPanel.onSimpleSearchSelect").Change("searchPanel.onSimpleSearchChanged").Open("searchPanel.onSimpleSearchOpen"))
+                  .Template("<div class='${data.Classname}'>${ data.Text }<div>")
+                  )
+                    </td>
+                    <td>
+                        @foreach (var t in Model.SearchPanelItemsToolbox)
+                        {
+                            <div id='@(t.Name + "_div")' class="clsItemControl" style="visibility: hidden; height: 0px">
+                                @if (t.EditorType == EditorType.Lookup)
+                                {
+                                    var o = Model.SearchPanelItems.FirstOrDefault(m => m.Dependent == t.Name); 
+                                    var masterName = o == null? null : o.Name;
+                                    @Html.Partial("../Search/SearchPanelMetaItem",
+                                                  t,
+                                                  SearchPanelDataExtractor.GetDataForItem(
+                                                      Model.Id.ToString(),
+                                                      t,
+                                                      Model.ResultObjectInstance,
+                                                      Model.CurrentFilter,
+                                                      masterName,
+                                                      Model.FieldIsHiddenPersonalData(t.Name), true)
+                                         )
+                                }
+                                else
+                                {                                                
+                                    @Html.Partial("../Search/SearchPanelMetaItem", t, SearchPanelDataExtractor.GetDataForItem(Model.Id.ToString(), t, Model.ResultObjectInstance, Model.CurrentFilter, isHiddenPersonalData: Model.FieldIsHiddenPersonalData(t.Name), isSimpleMode: true))  
+                                }
+                            </div>
+                        }
+                    </td>
+                    <td>
+                            <input type="button" class="button" id="simpleSearchButton" style="visibility: hidden" value="@Translator.GetMessageString("Search")" onclick="searchPanel.searchWithCheckChangesSimple();"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div> 
+

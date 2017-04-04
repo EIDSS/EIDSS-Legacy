@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="LaboratorySectionMaster"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <!--фейковая хранимка-->
+    <get name="spLaboratorySectionMaster_SelectDetail" type= "detailone" />
+  </storage>
+
+  <tables>
+    <table name="LaboratorySectionMaster">
+     <help win="lab_l25" web="lab_l25"/>
+     <fields>
+        <storage name="bIsMyPref" type="bool"/>
+        <storage name="newCounter" type="int"/>
+      </fields>
+      <relations>
+        <relation name="LaboratorySectionItems" table="LaboratorySectionItem" internal="false" type="child" notautoload="true" skipclone="true" lazy="false" source="idfsLaboratorySection" target="idfsLaboratorySection" />
+        <relation name="LaboratorySectionMyPrefItems" table="LaboratorySectionItem" internal="false" type="child" notautoload="true" skipclone="true" lazy="false" source="idfsLaboratorySection" target="idfsLaboratorySection" />
+      </relations>
+      <storage>
+        <post  name="spDummy_Post"/>
+      </storage>
+      <postorder>
+        <item name="LaboratorySectionItems" />
+        <item name="LaboratorySectionMyPrefItems" />
+      </postorder>
+      <deleteorder>
+        <item name="LaboratorySectionItems" />
+        <item name="LaboratorySectionMyPrefItems" />
+      </deleteorder>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfsLaboratorySection" class="GetNewIDExtender" />
+        </creating>
+        <created>
+          <custom_extender>
+            <text>
+              obj.ClearIsNew();
+            </text>
+          </custom_extender>
+        </created>
+        <posting>
+          <custom_extender>
+            <text>
+              obj.LaboratorySectionItems.Union(obj.LaboratorySectionMyPrefItems)
+                .Where(c => c.idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.OutOfRepository &amp;&amp; c.OriginalSampleStatus != (long)eidss.model.Enums.SampleStatus.OutOfRepository)
+                .GroupBy(c => c.idfSendToOfficeOut).ToList().ForEach(g => 
+                    {
+                        g.GroupBy(c => c.datSendDate).ToList().ForEach(i =>
+                            {
+                                var sample = i.First();
+                                var strBarcode = manager.SetSpCommand("dbo.spGetNextNumber", (long)NumberingObjectEnum.SampleTransfer, DBNull.Value, DBNull.Value)
+                                    .ExecuteScalar&lt;string&gt;(ScalarSourceType.OutputParameter, "NextNumberValue");
+                                var idfTransferOut = manager.SetSpCommand("dbo.spsysGetNewID", DBNull.Value)
+                                    .ExecuteScalar&lt;long&gt;(ScalarSourceType.OutputParameter);
+                                manager.SetSpCommand("dbo.spLabSampleTransfer_Post",
+	                                  4, //@Action INT,  --##PARAM @Action - posting action,  4 - add record, 8 - delete record, 16 - modify record
+                                    idfTransferOut, //@idfTransferOut bigint,
+                                    strBarcode, //@strBarcode nvarchar(200),
+	                                  "", //@strNote nvarchar(2000),
+	                                  EidssUserContext.User.OrganizationID, //@idfSendFromOffice bigint,--target site
+	                                  sample.idfSendToOfficeOut, //@idfSendToOffice bigint,--target site
+	                                  sample.idfSendByPerson, //@idfSendByPerson bigint,--who sent
+	                                  sample.datSendDate, //@datSendDate datetime,--time sent
+	                                  (long)eidss.model.Enums.TestStatus.InProcess //@idfsTransferStatus bigint--transfer status
+                                    ).ExecuteNonQuery();
+
+                                i.ToList().ForEach(j =>
+                                    {
+                                        manager.SetSpCommand("dbo.spLabSampleTransfer_Send",
+	                                          j.idfMaterial, //@idfMaterial bigint,
+	                                          sample.idfSendToOfficeOut, //@idfSentToOffice bigint,
+                                            sample.datSendDate //@datSendDate datetime 
+                                            ).ExecuteNonQuery();
+                                    
+                                        manager.SetSpCommand("dbo.spLabSampleTransfer_Manage",
+	                                          idfTransferOut, //@idfTransferOut bigint,
+	                                          j.idfMaterial, //@idfMaterial bigint,
+	                                          1 //@add integer
+                                            ).ExecuteNonQuery();
+
+                                        manager.SetEventParams(false, new object[] { EventType.NewSampleTransferInLocal, idfTransferOut, "" });
+
+                                    });
+                            });
+                    });
+            </text>
+          </custom_extender>
+        </posting>
+      </extenders>
+      <validators>
+        <post>
+          <container name="LaboratorySectionItems" filter="c => c.HasChanges">
+            <required_validator child="true" target="strBarcode" label="strLabBarcode" predicate="c => c.idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.Accessioned" />
+            <required_validator child="true" target="idfsSampleType" />
+            <required_validator child="true" target="datAccession" predicate="c => c.idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.Accessioned" />
+            <required_validator child="true" target="idfsAccessionCondition" predicate="c => c.idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.Accessioned &amp;&amp; c.idfsSampleKind != (long)eidss.model.Enums.SampleKind.Aliquot &amp;&amp; c.idfsSampleKind != (long)eidss.model.Enums.SampleKind.Derivative" />
+            <required_validator child="true" target="idfSpeciesVectorInfo" label="strPatientSessionVectorInfo" predicate="c => c.idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.Accessioned" />
+            <required_validator child="true" target="idfSendToOfficeOut" label="strOrganizationSendTo" predicate="c => c.idfsSampleStatus == (long)eidss.model.Enums.SampleStatus.OutOfRepository" />
+            <required_validator child="true" target="idfsDiagnosis" label="TestDiagnosisName" predicate="c => c.idfTesting.HasValue &amp;&amp; !c.bTestDeleted" />
+            <required_validator child="true" target="idfsTestName" label="TestName" predicate="c => c.idfTesting.HasValue &amp;&amp; !c.bTestDeleted"/>
+            <required_validator child="true" target="idfsTestStatus" label="TestStatus" predicate="c => c.idfTesting.HasValue &amp;&amp; !c.bTestDeleted"/>
+            <required_validator child="true" target="idfsTestResult" label="TestResult" predicate="c => c.idfTesting.HasValue &amp;&amp; !c.bTestDeleted &amp;&amp; (c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Preliminary || c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Finalized || (/*c.blnExternalTest.HasValue &amp;&amp; */c.blnExternalTest/*.Value*/))" />
+            <required_validator child="true" target="datStartedDate" predicate="c => c.idfTesting.HasValue &amp;&amp; !c.bTestDeleted &amp;&amp; (c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Preliminary || (/*c.blnExternalTest.HasValue &amp;&amp; */c.blnExternalTest/*.Value*/))" />
+            <!-- 10417,10418 required_validator child="true" target="idfTestedByPerson" predicate="c => c.idfTesting.HasValue &amp;&amp; !c.bTestDeleted &amp;&amp; (c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Finalized || (c.blnExternalTest.HasValue &amp;&amp; c.blnExternalTest.Value))" /-->
+            <required_validator child="true" target="idfTestedByPerson" predicate="c => c.idfTesting.HasValue &amp;&amp; !c.bTestDeleted &amp;&amp; (c.idfsTestStatus == (long)eidss.model.Enums.TestStatus.Finalized &amp;&amp; !(/*c.blnExternalTest.HasValue &amp;&amp; */c.blnExternalTest/*.Value*/))" />
+            <required_validator child="true" target="datConcludedDate" label="datTestResultDate" predicate="c => c.idfTesting.HasValue &amp;&amp; !c.bTestDeleted &amp;&amp; (/*c.blnExternalTest.HasValue &amp;&amp; */c.blnExternalTest/*.Value*/)"/>
+            <required_validator child="true" target="idfPerformedByOffice" label="strResultsReceivedFrom" predicate="c => c.idfTesting.HasValue &amp;&amp; !c.bTestDeleted &amp;&amp; (/*c.blnExternalTest.HasValue &amp;&amp; */c.blnExternalTest/*.Value*/)"/>
+            <required_validator child="true" target="datReceivedDate" predicate="c => c.idfTesting.HasValue &amp;&amp; !c.bTestDeleted &amp;&amp; (/*c.blnExternalTest.HasValue &amp;&amp; */c.blnExternalTest/*.Value*/)"/>
+            <required_validator child="true" target="strContactPerson" label="strContact" predicate="c => c.idfTesting.HasValue &amp;&amp; !c.bTestDeleted &amp;&amp; (/*c.blnExternalTest.HasValue &amp;&amp; */c.blnExternalTest/*.Value*/)"/>
+          </container>
+        </post>
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <remove type="Delete"/>
+          <remove type="SelectAll"/>
+        </standard>
+        <action name="SelectAll" type="Action">
+          <visual panel="Main" alignment="Right" app="Win">
+            <regular caption="strSelectAll_Id" icon="selectall" tooltip="tooltipSelectAll_Id"/>
+          </visual>
+          <run>
+            <preUI webType="JScript"/>
+          </run>
+        </action>
+        <action name="Report" type="Report">
+          <visual panel="Main" alignment="Left" app="Win">
+            <regular caption="strReport_Id" icon="Report" tooltip="tooltipReport_Id"/>
+          </visual>
+        </action>
+
+        <action name="CreateSample" type="Action">
+          <visual app="Web" alignment="Left" panel="Main">
+            <regular caption="titleBtnCreateSample" tooltip="titleBtnCreateSample" icon="add"/>
+          </visual>
+          <permissions type="Sample.Insert"/>
+          <run>
+            <preUI webType="JScript" methodName="laboratory.CreateSample"/>
+          </run>
+        </action>
+        <action name="GroupAccessionIn" type="Action">
+          <visual app="Web" alignment="Left" panel="Main">
+            <regular caption="titleGroupAccessionIn" tooltip="titleGroupAccessionIn"  icon="Sample_Accession__small_"/>
+          </visual>
+          <permissions type="AccessionIn1.Execute"/>
+          <run>
+            <preUI webType="JScript" methodName="laboratory.GroupAccessionIn"/>
+          </run>
+        </action>
+        <action name="ActionLaboratoryDetails" type="Action">
+          <visual app="Web" alignment="Left" panel="Main" visiblePredicate="(c,a,p,r) => r &amp;&amp; (c as LaboratorySectionMaster).bIsMyPref">
+            <regular caption="LaboratorySection" icon="" tooltip="LaboratorySection"/>
+          </visual>
+          <run>
+            <preUI webType="JScript"/>
+          </run>
+        </action>
+        <action name="ActionLaboratoryDetailsMyPref" type="Action">
+          <visual app="Web" alignment="Left" panel="Main" visiblePredicate="(c,a,p,r) => r &amp;&amp; !(c as LaboratorySectionMaster).bIsMyPref">
+            <regular caption="MyPreferences" icon="" tooltip="MyPreferences"/>
+          </visual>
+          <run>
+            <preUI webType="JScript"/>
+          </run>
+        </action>
+      </actions>
+    </table>
+  </tables>
+</object>

@@ -1,0 +1,116 @@
+﻿@model eidss.model.Schema.Address
+
+@using eidss.model.Core
+@using eidss.webclient.Utils
+@using eidss.web.common.Utils
+
+<input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+<table class="level1">
+    <tr>
+        <td class="medium">
+            @Html.BvLabel(Model, m => m.idfsCountry)
+        </td>
+        <td>
+                @Html.BvReadOnlyEditbox(Model, m => m.strReadOnlyCountry)
+        </td>                            
+    </tr >   
+     <tr>
+        <td class="medium">
+            @Html.BvLabel(Model, m => m.idfsRegion)
+        </td>
+        <td class="xlarge">
+            @Html.BvCombobox(Model, m => m.Region, false, null /*"address.onRegionChanged"*/)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvLabel(Model, m => m.idfsRayon)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, m => m.Rayon, false, null /*"address.onRayonChanged"*/)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvLabel(Model, m => m.idfsSettlement)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, m => m.Settlement, false, null /*"address.onSettlementChanged"*/)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvLabel(Model, m => m.strStreetName)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, m => m.Street, false)
+        </td>
+    </tr>
+    <tr>
+        @if (eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+        {
+            <td class="label">
+                @Html.BvLabel(Model, m => m.strBuilding)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, m => m.strBuilding, true)
+            </td>
+        }
+        else if (EidssSiteContext.Instance.IsUsaAddressFormat)
+        {
+            <td class="label">
+                @Html.BvLabel(Model, m => m.strBuilding)/&shy;@Html.BvLabel(Model, m => m.strHouse)/&shy;@Html.BvLabel(Model, m => m.strApartment)
+            </td>
+            <td class="building">
+                @Html.BvEditbox(Model, m => m.strBuilding, true)
+                @Html.BvEditbox(Model, m => m.strHouse, true)
+                @Html.BvEditbox(Model, m => m.strApartment, true)
+            </td>
+        }
+        else
+        {
+            <td class="label">
+                @Html.BvLabel(Model, m => m.strHouse)/&shy;@Html.BvLabel(Model, m => m.strBuilding)/&shy;@Html.BvLabel(Model, m => m.strApartment)
+            </td>
+            if (Customization.Instance.VisibilityFeatures.IsOnlyHouseUseInAddress)
+            {
+                <td>
+                    @Html.BvEditbox(Model, m => m.strHouse, true)
+                </td>
+            }
+            else
+            {
+                <td class="building">
+                    @Html.BvEditbox(Model, m => m.strHouse, true)
+                    @Html.BvEditbox(Model, m => m.strBuilding, true)
+                    @Html.BvEditbox(Model, m => m.strApartment, true)
+                </td>
+            }
+        }
+    </tr>
+    <tr>
+        <td>
+            @if (eidss.model.Core.EidssSiteContext.Instance.CustomizationPackageID != (long) eidss.model.Enums.CustomizationPackage.Iraq)
+            {
+                @Html.BvLabel(Model, m => m.strPostCode)
+            }
+        </td>
+        <td>
+            @if (eidss.model.Core.EidssSiteContext.Instance.CustomizationPackageID != (long) eidss.model.Enums.CustomizationPackage.Iraq)
+            {
+                @Html.BvCombobox(Model, m => m.PostCode, false)
+            }
+        </td>
+    </tr>
+    @if (eidss.model.Core.EidssSiteContext.Instance.IsThaiCustomization)
+    {
+    <tr>
+        <td>
+            @Translator.GetString("strAddressCode")
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strBuilding, true)
+        </td>
+    </tr>
+    }
+</table>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<?include $(var.ProjectDir)MultiInstance\MultiInstance.wxi?>
+
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <!--
+      The MajorUpgrade and Upgrade elements shouldn't be used when each new instance must have its own upgradecode.
+      In such a case we have to fill Upgrade Table at the beginning of installation using custom action.
+      See <Fragment Id="Fill upgrade Table">
+    -->
+  <!--<MajorUpgrade
+      AllowSameVersionUpgrades="yes"
+      Schedule="afterInstallExecute"
+      DowngradeErrorMessage="A newer version of [ProductName] is already installed." />-->
+  <!--<Upgrade>
+      <UpgradeVeersion .... />
+    </Upgrade>-->
+
+  <PropertyRef Id="INSTANCEID" />
+  <InstanceTransforms Property="INSTANCEID">
+    <Instance Id="$(var.Instance01)" ProductCode="$(var.ProductCode.I01)" ProductName="$(var.ProductFullName).I01" />
+    <Instance Id="$(var.Instance02)" ProductCode="$(var.ProductCode.I02)" ProductName="$(var.ProductFullName).I02" />
+    <Instance Id="$(var.Instance03)" ProductCode="$(var.ProductCode.I03)" ProductName="$(var.ProductFullName).I03" />
+    <Instance Id="$(var.Instance04)" ProductCode="$(var.ProductCode.I04)" ProductName="$(var.ProductFullName).I04" />
+    <Instance Id="$(var.Instance05)" ProductCode="$(var.ProductCode.I05)" ProductName="$(var.ProductFullName).I05" />
+    <Instance Id="$(var.Instance06)" ProductCode="$(var.ProductCode.I06)" ProductName="$(var.ProductFullName).I06" />
+    <Instance Id="$(var.Instance07)" ProductCode="$(var.ProductCode.I07)" ProductName="$(var.ProductFullName).I07" />
+    <Instance Id="$(var.Instance08)" ProductCode="$(var.ProductCode.I08)" ProductName="$(var.ProductFullName).I08" />
+    <Instance Id="$(var.Instance09)" ProductCode="$(var.ProductCode.I09)" ProductName="$(var.ProductFullName).I09" />
+    <Instance Id="$(var.Instance10)" ProductCode="$(var.ProductCode.I10)" ProductName="$(var.ProductFullName).I10" />
+    <Instance Id="$(var.Instance11)" ProductCode="$(var.ProductCode.I11)" ProductName="$(var.ProductFullName).I11" />
+    <Instance Id="$(var.Instance12)" ProductCode="$(var.ProductCode.I12)" ProductName="$(var.ProductFullName).I12" />
+    <Instance Id="$(var.Instance13)" ProductCode="$(var.ProductCode.I13)" ProductName="$(var.ProductFullName).I13" />
+    <Instance Id="$(var.Instance14)" ProductCode="$(var.ProductCode.I14)" ProductName="$(var.ProductFullName).I14" />
+    <Instance Id="$(var.Instance15)" ProductCode="$(var.ProductCode.I15)" ProductName="$(var.ProductFullName).I15" />
+    <Instance Id="$(var.Instance16)" ProductCode="$(var.ProductCode.I16)" ProductName="$(var.ProductFullName).I16" />
+    <Instance Id="$(var.Instance17)" ProductCode="$(var.ProductCode.I17)" ProductName="$(var.ProductFullName).I17" />
+    <Instance Id="$(var.Instance18)" ProductCode="$(var.ProductCode.I18)" ProductName="$(var.ProductFullName).I18" />
+    <Instance Id="$(var.Instance19)" ProductCode="$(var.ProductCode.I19)" ProductName="$(var.ProductFullName).I19" />
+    <Instance Id="$(var.Instance20)" ProductCode="$(var.ProductCode.I20)" ProductName="$(var.ProductFullName).I20" />
+  </InstanceTransforms>
+
+  <!--
+    We have to specify RemoveExistingProducts and MigrateFeatureStates manually due to
+    lack of MajorUpgrade and Upgrade elements.
+  -->
+  <InstallExecuteSequence>
+    <RemoveExistingProducts After="InstallExecute" />
+    <MigrateFeatureStates Suppress="no" />
+  </InstallExecuteSequence>
+  <InstallUISequence>
+    <MigrateFeatureStates Suppress="no" />
+  </InstallUISequence>
+
+  <FeatureRef Id="Instance" />
+</Include>

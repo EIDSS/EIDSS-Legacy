@@ -1,0 +1,162 @@
+﻿@model eidss.model.Schema.FarmPanel           
+@{
+    ViewBag.Title = @Translator.GetMessageString("Details");
+    Layout = null;
+}
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+@functions
+{   
+    HtmlString HideBlock(bool? visible)
+    {
+        if (visible.HasValue && visible.Value) return new HtmlString("");
+        else return  new HtmlString("style='display:none'");        
+    }
+}
+<script language="javascript" type="text/javascript">
+    function FarmOfAvianType(chbId) {
+        var flag = $("#" + chbId).is(':checked');
+        FarmOfType(flag, 'AvianDetails', 2);
+        if (flag) {
+            ReloadHerdFlockGridToolbar("Flocks");
+        }
+    }
+
+
+    function FarmOfType(flag, key, index) {
+        if (flag) {
+            $('#' + key).show();
+            Enable(index);
+        }
+        else {
+            $('#' + key).hide();
+            Disable(index);
+        }
+    }
+    function Disable(index) {
+        var tabstrip = $("#Farm").data("tTabStrip");
+        var item = $("li", tabstrip.element)[index];
+       tabstrip.disable(item);
+    }
+
+    function Enable(index) {
+        var tabstrip = $("#Farm").data("tTabStrip");
+        var item = $("li", tabstrip.element)[index];
+        tabstrip.enable(item);
+    }
+
+    function FarmOfLvstkType(chbId) {
+        var flag = $("#" + chbId).is(':checked');
+        FarmOfType(flag, 'LiveStockDetails', 1);
+        if (flag) {
+            ReloadHerdFlockGridToolbar("Herds");
+        }
+    }
+
+</script>
+<table class="bordered">
+    <tr>
+        <td colspan="4" class="sectionName">
+            @Translator.GetMessageString("titleContactInfo")
+        </td>
+    </tr>
+    <tr>
+        <td class="medium">
+            @Html.BvLabel(Model, m => m.strFarmCode)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strFarmCode)
+        </td>        
+        <td class="fillAll">
+        </td>
+        <td rowspan="7" valign="top">
+            @Html.Action("Coordinates", "GeoLocation", new { root = Model.idfFarm, location = Model.Location })
+            @Html.AddressWithCountry(Model.idfFarmAddress.Value, Model.Address)
+        </td>
+    </tr>
+    <tr>
+        <td class="medium">
+            @Html.BvLabel(Model, m => m.strNationalName)
+        </td>
+        <td class="xlarge">
+            @Html.BvEditbox(Model, m => m.strNationalName)
+        </td>
+        <td class="fillAll">
+        </td>
+    </tr>
+    <tr>
+        <td>@Html.BvLabel(Model, m => m.idfOwner)
+        </td>
+        <td class="xlarge noIndent">
+            <table>
+                <tr>
+                    <td>
+                        @Html.BvEditbox(Model, m => m.strOwnerLastName)
+                    </td>
+                    <td>
+                        @Html.BvEditbox(Model, m => m.strOwnerFirstName)
+                    </td>
+                    <td>
+                        @Html.BvEditbox(Model, m => m.strOwnerMiddleName)
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td class="fillAll">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvLabel(Model, m => m.strContactPhone)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strContactPhone)
+        </td>
+        <td class="fillAll">
+        </td>
+    </tr>
+@if (!eidss.model.Core.EidssSiteContext.Instance.IsDTRACustomization)
+{ 
+    <tr>
+        <td>
+            @Html.BvLabel(Model, m => m.strFax)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strFax)
+        </td>
+        <td class="fillAll">
+        </td>
+    </tr>
+}
+    <tr>
+        <td>
+            @Html.BvLabel(Model, m => m.strEmail)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strEmail)
+        </td>
+        <td class="fillAll">
+        </td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td></td>
+        <td class="fillAll">
+        </td>
+    </tr>
+</table>
+<div  id='LiveStockDetails'>
+<table class="bordered fourParts">
+    <tr>
+        <td class="sectionName">
+            @Html.BvLabel(Model, m => m.idfsOwnershipStructure)
+        </td>
+    </tr>
+    <tr>
+        <td valign='top'>
+            @Html.BvRadioButtonGroup(Model, m => m.OwnershipStructure)
+        </td>
+    </tr>
+</table>
+</div>
+

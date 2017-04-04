@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="Address"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get />
+    </storage>
+    
+    <tables>
+        <table name="Address">
+            <fields>
+              <calculated name="HCase" type="HumanCase" depends="Parent" lambda="c => c.Parent is Patient ? (c.Parent as Patient).Parent as HumanCase : c.Parent is HumanCase ? c.Parent as HumanCase : null" />
+              <calculated name="VCase" type="VetCase" depends="Parent" lambda="c => c.Parent is FarmPanel ? (c.Parent as FarmPanel).Parent as VetCase : null" />
+              <calculated name="FPanel" type="FarmPanel" depends="Parent" lambda="c => c.Parent is FarmPanel ? c.Parent as FarmPanel : null" />
+              <storage name="blnGeoLocationShared" type="bool"/>
+              <storage name="blnReadOnlyRegion" type="bool"/>
+              <storage name="bCancelCoordinationValidation" type="bool"/>
+              <storage name="blnNeedForeignAddressStr" type="bool"/>
+              <storage name="blnForceReadOnly" type="bool"/>
+              <calculated name="FullName" type="string" depends="" lambda="c => c.strAddressStringTranslate"/>
+              <calculated name="IsReadOnlyParent" depends="HCase" type="bool"
+                          lambda="c => c.HCase == null ? (c.FPanel == null ? (c.VCase == null ? false : c.VCase.IsClosed || c.VCase.ReadOnly) : c.FPanel.IsReadOnlyParent || c.FPanel.IsReadOnlyByPermissions) : c.HCase.IsClosed || c.HCase.ReadOnly"/>
+              <calculated name="strReadOnlyCountry" type="string" depends="idfsCountry" lambda='c => c.idfsCountry == null ? (string)null : c.Country.strCountryName' />
+              <calculated name="strReadOnlyRegion" type="string" depends="idfsRegion" lambda='c => c.idfsRegion == null ? (string)null : c.Region.strRegionName' />
+              <calculated name="strReadOnlyRayon" type="string" depends="idfsRayon" lambda='c => c.idfsRayon == null ? (string)null : c.Rayon.strRayonName' />
+              <calculated name="strReadOnlySettlement" type="string" depends="idfsSettlement" 
+                          lambda='c => c.idfsSettlement == null ? (string)null : c.Settlement.strSettlementName' />
+              <calculated name="strReadOnlyStreet" type="string" depends="strStreetName" lambda='c => c.strStreetName' />
+              <calculated name="strReadOnlyPostCode" type="string" depends="strPostCode" lambda='c => c.strPostCode' />
+              <calculated name="strReadOnlyBuilding" type="string" depends="strBuilding" lambda='c => c.strBuilding' />
+              <calculated name="strReadOnlyApartment" type="string" depends="strApartment" lambda='c => c.strApartment' />
+              <calculated name="strReadOnlyHouse" type="string" depends="strHouse" lambda='c => c.strHouse' />
+              <calculated name="strReadOnlyFullName" type="string" depends="" lambda="c => c.strAddressStringTranslate"/>
+              <calculated name="strReadOnlyAdaptiveFullName" type="string" depends="" lambda="c => c.IsDirty ? c.CreateAddressString() : c.strAddressStringTranslate"/>
+            </fields>
+            <readonly>
+                <fields name="strReadOnlyCountry,strReadOnlyRegion,strReadOnlyRayon,strReadOnlySettlement" predicate="c => true" />
+                <fields name="strReadOnlyStreet,strReadOnlyPostCode" predicate="c => true" />
+                <fields name="strReadOnlyBuilding,strReadOnlyApartment,strReadOnlyHouse" predicate="c => true" />
+                <fields name="strReadOnlyFullName,strReadOnlyAdaptiveFullName" predicate="c => true" />
+                <fields name="Country,idfsCountry" predicate="c => c.IsReadOnlyParent || c.blnForceReadOnly || c.IsHiddenPersonalData(&quot;Street&quot;)" />
+                <fields name="Region,idfsRegion" predicate="c => c.IsReadOnlyParent || c.blnForceReadOnly || c.IsHiddenPersonalData(&quot;Street&quot;) || blnNeedForeignAddressStr &amp;&amp; c.idfsCountry != null &amp;&amp; c.idfsCountry != eidss.model.Core.EidssSiteContext.Instance.CountryID || blnReadOnlyRegion || c.idfsCountry == null" />
+                <fields name="Rayon,idfsRayon" predicate="c => c.IsReadOnlyParent || c.blnForceReadOnly || c.IsHiddenPersonalData(&quot;Street&quot;) || c.idfsRegion == null" />
+                <fields name="Settlement,idfsSettlement" predicate="c => c.IsReadOnlyParent || c.blnForceReadOnly || c.IsHiddenPersonalData(&quot;Street&quot;) || c.idfsRayon == null" />
+                <fields name="Street,strStreetName,PostCode,strPostCode,strHouse,strApartment" predicate="c => c.IsReadOnlyParent || c.blnForceReadOnly || c.idfsSettlement == null" />
+                <fields name="strBuilding" predicate="c => c.IsReadOnlyParent || c.blnForceReadOnly || (c.idfsSettlement == null &amp;&amp; !eidss.model.Core.EidssSiteContext.Instance.IsThaiCustomization)" />
+                <fields name="*" predicate="c => c.IsReadOnlyParent || c.blnForceReadOnly" />
+            </readonly>
+            <invisible>
+              <fields name="strForeignAddress" predicate='c => !c.idfsCountry.HasValue || (c.idfsCountry.HasValue &amp;&amp; c.idfsCountry == eidss.model.Core.EidssSiteContext.Instance.CountryID)'/>
+              <!--fields name="strForeignAddress" predicate='c => c.idfsCountry != null &amp;&amp; c.idfsCountry == eidss.model.Core.EidssSiteContext.Instance.CountryID'/-->
+              <!--fields name="Region,idfsRegion,Rayon,idfsRayon,Settlement,idfsSettlement,Street,strStreetName,PostCode,strPostCode,strHouse,strBuilding,strApartment,dblLongitude,dblLatitude" predicate='c => c.idfsCountry == null || c.idfsCountry != eidss.model.Core.EidssSiteContext.Instance.CountryID'/-->
+              <fields name="*" predicate="c => false" />
+            </invisible>
+            <lookups>
+                <lookup name="Country" table="CountryLookup" source="idfsCountry" target="idfsCountry" notaddempty="true" />
+                <lookup name="Region" table="RegionLookup" source="idfsRegion" target="idfsRegion">
+                    <params>
+                        <param name="CountryID" lambda="c => c.idfsCountry ?? 0" type="long" />
+                        <param name="ID" const="null" />
+                    </params>
+                </lookup>
+                <lookup name="Rayon" table="RayonLookup" source="idfsRayon" target="idfsRayon">
+                    <params>
+                        <param name="RegionID" lambda="c => c.idfsRegion ?? 0" type="long" />
+                        <param name="ID" const="null" />
+                    </params>
+                </lookup>
+                <lookup name="Settlement" table="SettlementLookup" source="idfsSettlement" target="idfsSettlement">
+                    <params>
+                        <param name="RayonID" lambda="c => c.idfsRayon ?? 0" type="long" />
+                        <param name="ID" const="null" />
+                    </params>
+                </lookup>
+                <lookup name="Street" table="StreetLookup" source="strStreetName" target="strStreetName" hintonly="true">
+                    <params>
+                        <param name="idfsSettlement" lambda="c => c.idfsSettlement ?? 0" type="long" />
+                    </params>
+                </lookup>
+                <lookup name="PostCode" table="PostalCodeLookup" source="strPostCode" target="strPostCode" hintonly="true">
+                    <params>
+                        <param name="idfsSettlement" lambda="c => c.idfsSettlement ?? 0" type="long" />
+                    </params>
+                </lookup>
+            </lookups>
+            <storage>
+                <post />
+            </storage>
+            <extenders>
+                <creating>
+                  <scalar_extender class="GetNewIDExtender" target="idfGeoLocation" />
+                </creating>
+                <created>
+                    <!-- set default country as current country of database -->
+                    <lambda_extender target="Country" type="CountryLookup" lambda='c => 
+                                     c.CountryLookup.Where(a => a.idfsCountry == eidss.model.Core.EidssSiteContext.Instance.CountryID)
+                                     .SingleOrDefault()'/>
+                </created>
+                <posting> 
+                  <lambda_extender target="blnForeignAddress" type="bool" lambda="c => c.idfsCountry == null || c.idfsCountry != eidss.model.Core.EidssSiteContext.Instance.CountryID"/>
+                </posting>
+            </extenders>
+            <handlers>
+                <fieldhandler>
+                    <!-- If the Region has been changed or cleared, the Rayon, Town or Village, Street, Postal Code and Building/House/Apt. 
+                         become blank and Street, Postal Code and Building/House/Apt. become disabled.
+                         If the Rayon has been changed or cleared, the Rayon, Town or Village, Street, Postal Code and Building/House/Apt. 
+                         become blank and Street, Postal Code and Building/House/Apt. become disabled. 
+                         After the Town or Village is specified, the Street, Postal Code and Building/House/Apt. become enabled. 
+                         Each time the Town or Village is changed with not blank value, the Street, Postal Code and Building/House/Apt. become blank. 
+                         If the Town or Village has been cleared, the Street, Postal Code and Building/House/Apt. become blank and disabled.
+                    -->
+                    <scalar_handler class="SetScalarHandler" target="Region" field="idfsCountry" lambda="(o, fld, prev_fld) => null" />                    
+                    <scalar_handler class="SetScalarHandler" target="Rayon" field="idfsRegion" lambda="(o, fld, prev_fld) => null" />                    
+                    <scalar_handler class="SetScalarHandler" target="Settlement" field="idfsRayon" lambda="(o, fld, prev_fld) => null" />                    
+                    <scalar_handler class="SetScalarHandler" target="Street" field="idfsSettlement" lambda='(o, fld, prev_fld) => null' />
+                    <scalar_handler class="SetScalarHandler" target="PostCode" field="idfsSettlement" lambda='(o, fld, prev_fld) => null' />
+                    <scalar_handler class="SetScalarHandler" target="strStreetName" field="idfsSettlement" lambda='(o, fld, prev_fld) => ""' />
+                    <scalar_handler class="SetScalarHandler" target="strPostCode" field="idfsSettlement" lambda='(o, fld, prev_fld) => ""' />
+                    <scalar_handler class="SetScalarHandler" target="strHouse" field="idfsSettlement" lambda='(o, fld, prev_fld) => ""' />
+                    <scalar_handler class="SetScalarHandler" target="strBuilding" field="idfsSettlement" lambda='(o, fld, prev_fld) => eidss.model.Core.EidssSiteContext.Instance.IsThaiCustomization ? o.strBuilding : ""' />
+                    <scalar_handler class="SetScalarHandler" target="strApartment" field="idfsSettlement" lambda='(o, fld, prev_fld) => ""' />
+                  
+                    <scalar_handler class="SetScalarHandler" target="strForeignAddress" field="idfsCountry" lambda='(o, fld, prev_fld) => ""' />
+
+                    <lookup_handler lookup="Region" field="idfsCountry" />
+                    <lookup_handler lookup="Rayon" field="idfsRegion" />
+                    <lookup_handler lookup="Settlement" field="idfsRayon" />
+                    <lookup_handler lookup="Street" field="idfsSettlement" />
+                    <lookup_handler lookup="PostCode" field="idfsSettlement" />
+
+                    <lambda_handler field="idfsCountry" target="strForeignAddress" type="string"
+                                    lambda='c => (c.idfsCountry != null &amp;&amp; c.idfsCountry == eidss.model.Core.EidssSiteContext.Instance.CountryID) ? null : c.strForeignAddress' />
+                </fieldhandler>
+            </handlers>
+          <actions>
+            <action name="CreateAsSharedOrNot" type="Create">
+              <run>
+                <params>
+                  <param name="blnGeoLocationShared" type="bool" />
+                </params>
+                <creating>
+                  <lambda_extender target="blnGeoLocationShared" type="bool" lambda='c => blnGeoLocationShared' />
+                </creating>
+              </run>
+            </action>
+          </actions>
+        </table>
+    </tables>
+
+</object>
+

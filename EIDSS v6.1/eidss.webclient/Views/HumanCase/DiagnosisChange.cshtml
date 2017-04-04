@@ -1,0 +1,44 @@
+﻿@model List<BaseReference>
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using Kendo.Mvc.UI
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {                                        
+        <div class="windowButtonsPn">                  
+             <input id="idButtonOk" type="button" class="windowButton" onclick="humanCase.setChangeDiagnosisReason('@ViewBag.HumanCaseId', '@ViewBag.NewDiagnosis');" value="@Translator.GetMessageString("Ok")"/>     
+             <input id="idButtonCancel" type="button" class="windowButton" onclick="humanCase.closeChangeDiagnosisReason('@ViewBag.CbFinalDiagnosisId', '@ViewBag.PreviousDiagnosis');" value="@Translator.GetMessageString("Cancel")"/>  
+         </div>   
+        <div class="windowSeparator"></div>
+        <table class="level1">   
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Translator.GetMessageString("titleChangeDiagnosis") 
+                </td>                                          
+                <td>
+                    @(Html.Kendo().ComboBox()
+                        .HtmlAttributes(new { @class = "requiredField" })
+                        .Name("ChangeDiagnosisReason")
+                        .BindTo(new SelectList(Model, "idfsBaseReference", "name"))
+                    )
+                </td>                
+            </tr>                    
+        </table>           
+    }
+</div>

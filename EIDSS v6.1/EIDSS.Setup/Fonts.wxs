@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "$(var.ProjectDir)ProductInfo.wxi" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="Fonts">
+    <ComponentGroup Id="eidss.fonts" Directory="FontsFolder" Source="$(var.SetupSources)Fonts\">
+      <Component Id="ADVC39C_.TTF" Shared="yes">
+        <File Name="ADVC39C_.TTF" TrueType="yes" ReadOnly="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="ADVC39D_.TTF" Shared="yes">
+        <File Name="ADVC39D_.TTF" TrueType="yes" ReadOnly="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="sylfaen.ttf" Shared="yes">
+        <File Name="sylfaen.ttf" TrueType="yes" ReadOnly="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="IDAutomationC128S.ttf" Shared="yes">
+        <File Name="IDAutomationC128S.ttf" TrueType="yes" ReadOnly="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="IDAutomationC128XS.ttf">
+        <File Name="IDAutomationC128XS.ttf" TrueType="yes" ReadOnly="yes" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>

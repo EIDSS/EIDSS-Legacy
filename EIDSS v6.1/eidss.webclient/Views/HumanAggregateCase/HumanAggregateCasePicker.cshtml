@@ -1,0 +1,57 @@
+﻿@model eidss.model.Schema.HumanAggregateCaseListItem.Accessor
+@{
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
+}
+
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Configurations
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+<input type='hidden' id='useSelectedItems' value='true' />
+<script language="javascript" type="text/javascript">
+    $(window).load(function () {
+    });
+    $(document).ready(function () {
+        gridFacade.clearSelectedItems();
+    });
+</script>
+
+<div class="popupContent searchPopupContent">     
+    <input type="hidden" id="hdnReportAreaType" value="@ViewBag.ReportAreaType" />    
+    <input type="hidden" id="hdnReportPeriodType" value="@ViewBag.ReportPeriodType" />    
+    <div class="windowButtonsPn">
+        <input id="idButtonSelect" type="button" class="windowButton" onclick="aggregateSummary.onAggrCaseItemPickerSelect();" value="@Translator.GetMessageString("Select")"/>     
+        <input id="idButtonSelectAll" type="button" class="windowButton windowButtonWide" onclick="aggregateSummary.onAggrCaseItemPickerSelectAll();" value="@Translator.GetMessageString("strSelectAll_Id")" />     
+        <input id="idButtonClose" type="button" class="windowButton" onclick="searchPicker.closePicker();" value="@Translator.GetMessageString("Close")"/>  
+    </div>
+    <div class="windowSeparator"></div>  
+    <div class="listForm">
+        <div id="searchpanel" class="customSearchPanel">
+            @Html.SearchPanel(Model, (bv.model.Model.Core.FilterParams)ViewBag.Filter, (bv.model.Model.Core.IObject)ViewBag.InitObject)
+        </div>
+        <table class="lfSearchPanelTable">
+            <tr>
+                <td class="lfSearchPanelTd">
+                    @Html.SearchPanelOperator()
+                </td>
+                <td class="lfGridTd">
+                    @(Html.DetailsPopupSearchGrid<HumanAggregateCaseListItem.HumanAggregateCaseListItemGridModel, HumanAggregateCaseListItem.HumanAggregateCaseListItemGridModelList>(
+                          new HumanAggregateCaseListItem.HumanAggregateCaseListItemGridModelList((long)AutoGridRoots.HumanAggregateCaseSelectList), "HumanAggregateCase",
+                          gridName: "Grid", selectionType: GridRowSelectionType.Multi, bPageable: false)
+                          .DataSource(dataSource => dataSource
+                                                        .Ajax()
+                                                        .Sort(sort => sort.Add("strCaseID").Ascending()))
+                          )   
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</div>                  
+ 

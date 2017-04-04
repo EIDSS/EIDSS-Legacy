@@ -1,0 +1,67 @@
+﻿@model HumanCase
+           
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+
+<div class="tabPanelContent">
+    <table class="level1">
+        <tr>
+            <td class="medium firstLabel">
+                @Html.BvLabel(Model, m => m.idfsYNTestsConducted)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, m => m.TestsConducted, clientOnChange: "sample.onTestsConductedChanged")
+            </td>
+            <td class="testsPaperForm">
+                <input type="button" id="btnPrintTests" class="button" value="@Translator.GetMessageString("titlePaperForms")" onclick="humanCase.onTestsReportClick()"/>
+            </td>
+        </tr>
+    </table>
+    <div class="sectionTitle">
+        @Translator.GetMessageString("tabTitleTests")  
+    </div>
+    
+    @{
+        var permissions = Model.GetPermissions();
+    }
+    
+    @{
+        var isTestsGridReadOnly = Model.IsReadOnly("CaseTests") ||
+                                  (permissions == null ? false : permissions.IsReadOnlyForEdit ||
+                                                                 !permissions.CanExecute("CanAddTestResults"));
+    }
+
+    @Html.Action("CaseTestsGrid", "Grids",
+                 new
+                     {
+                         root = Model.idfCase,
+                         name = Model.ObjectIdent + "CaseTests",
+                         tests = Model.CaseTests,
+                         isReadOnly = isTestsGridReadOnly,
+                         HACode = (int)eidss.model.Enums.HACode.Human,
+                         showSearchButton = false
+                     })
+    
+    <div class="sectionTitle">
+        @Translator.GetMessageString("titleResultSummary")  
+    </div>
+           
+    @{
+        var isValidationGridReadOnly = Model.IsReadOnly("CaseTestValidations") ||
+                                       (permissions == null ? false : permissions.IsReadOnlyForEdit ||
+                                                                      (!permissions.CanExecute("CanValidateTestInterpretation") &&
+                                                                       !permissions.CanExecute("CanValidateTestResult")));
+    }
+
+    @Html.Action("CaseTestValidationsGrid", "Grids",
+                 new
+                     {
+                         root = Model.idfCase,
+                         name = Model.ObjectIdent + "CaseTestValidations",
+                         validations = Model.CaseTestValidations,
+                         isReadOnly = isValidationGridReadOnly,
+                         HACode = (int)eidss.model.Enums.HACode.Human,
+                         withCreateCaseButton = false
+                     })
+</div>

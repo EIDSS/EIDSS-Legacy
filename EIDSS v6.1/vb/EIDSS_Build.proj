@@ -1,0 +1,549 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Solution Folders -->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <AppName>EIDSS</AppName>
+    <EIDSSCodeFolder>$(MSBuildProjectDirectory)\EIDSS</EIDSSCodeFolder>
+    <SharedCodeFolder>$(MSBuildProjectDirectory)\Shared</SharedCodeFolder>
+    <ISSSourceFilesFolder>$(MSBuildProjectDirectory)\EIDSS_Setup\Source_Files</ISSSourceFilesFolder>
+    <ISSWHOSourceFilesFolder>$(MSBuildProjectDirectory)\EIDSS_Setup\WHO_Source_Files</ISSWHOSourceFilesFolder>
+    <ISSSetupFolder>$(MSBuildProjectDirectory)\EIDSS_Setup\Product Configuration 1\Release\DiskImages\DISK1</ISSSetupFolder>
+    <ISSWHOSetupFolder>$(MSBuildProjectDirectory)\EIDSS_Setup\WHO Product Configuration 1\Release\DiskImages\DISK1</ISSWHOSetupFolder>
+    <ISSCompiler>&quot;c:\Program Files\InstallShield 11\System\IsCmdBld.exe&quot;</ISSCompiler>
+    <ISSSetupProjectFolder>$(MSBuildProjectDirectory)\EIDSS_Setup</ISSSetupProjectFolder>
+    <ISSSetupProject>$(ISSSetupProjectFolder)\EIDSS30.ism</ISSSetupProject>
+    <ISSWHOSetupProject>$(ISSSetupProjectFolder)\WHO30.ism</ISSWHOSetupProject>
+    <CodeOutputFolder>$(MSBuildProjectDirectory)\Build</CodeOutputFolder>
+    <SqlScriptsFolder>$(EIDSSCodeFolder)\EIDSS_Common_Db\Database</SqlScriptsFolder>
+    <EIDSSOutputPath>EIDSS\EIDSS_Main\bin\</EIDSSOutputPath>
+    <EIDSSAgentOutputPath>EIDSS\EIDSS_ClientAgent\bin\</EIDSSAgentOutputPath>
+    <MapProjectsFolder>$(EIDSSCodeFolder)\EIDSS.GISControl\MapProjects</MapProjectsFolder>
+    <ReleaseDeploymentFolder>\\Qnap\Warehouse\_Install\EIDSS_30\Release</ReleaseDeploymentFolder>
+    <TestDeploymentFolder>\\Qnap\Warehouse\_Install\EIDSS_30\Tests</TestDeploymentFolder>
+    <VSSServer>\\Qnap\VSS\srcsafe.ini</VSSServer>
+    <VSSRootPath>$/EIDSS_V3/EIDSS</VSSRootPath>
+    <VSSEIDSSPath>$(VSSRootPath)/EIDSS</VSSEIDSSPath>
+    <VSSEIDSS_SetupPath>$(VSSRootPath)/EIDSS_Setup/EIDSS30.ism</VSSEIDSS_SetupPath>
+    <VSSWHO_SetupPath>$(VSSRootPath)/EIDSS_Setup/WHO30.ism</VSSWHO_SetupPath>
+    <VSSEIDSS_Setup>$(VSSRootPath)/EIDSS_Setup</VSSEIDSS_Setup>
+    <VSSSharedPath>$(VSSRootPath)/Shared</VSSSharedPath>
+    <VSSMapProjectsFolder>$(VSSRootPath)/EIDSS/EIDSS.GISControl/MapProjects</VSSMapProjectsFolder>
+    <VSSEnglishHelpPath>$/Help/EIDSS_EN/EIDSS_Help_EN.hxs</VSSEnglishHelpPath>
+    <VSSUser>Mike</VSSUser>
+    <VSSPassword></VSSPassword>
+    <IncrementBuildVersion  Condition=" '$(IncrementBuildVersion)' == '' ">true</IncrementBuildVersion>
+  </PropertyGroup>
+  <Choose>
+    <When  Condition="'$(DeploymentBuild)'=='true'">
+      <PropertyGroup>
+        <DeploymentFolder>$(ReleaseDeploymentFolder)</DeploymentFolder>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <DeploymentFolder>$(TestDeploymentFolder)</DeploymentFolder>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+
+  <!-- Release configuration-->
+  <PropertyGroup
+     Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <!--Debug configuration-->
+  <PropertyGroup
+       Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <!-- Solution Files -->
+  <PropertyGroup>
+    <SolutionName>EIDSS.Test.sln</SolutionName>
+    <VersionNumberFile>$(MSBuildProjectDirectory)\eidss_build.number</VersionNumberFile>
+    <EnvironmentFile>$(MSBuildProjectDirectory)\Environment.txt</EnvironmentFile>
+    <LastTestRunSucceededFile>LastTestRunSucceeded</LastTestRunSucceededFile>
+    <LastCodeAnalysisSucceededFile>LastCodeAnalysisSucceeded</LastCodeAnalysisSucceededFile>
+    <InstallBuildEmailFile>$(Temp)\InstallBuildEmailFile.htm</InstallBuildEmailFile>
+    <InstallBuildEmailTemplate>$(ISSSourceFilesFolder)\InstallBuildEmailTemplate.htm</InstallBuildEmailTemplate>
+    <NUnitFile>TestResult.xml</NUnitFile>
+    <FxCopFile>CodeAnalysisLog.xml</FxCopFile>
+  </PropertyGroup>
+  <!-- Misc Settings -->
+  <PropertyGroup>
+    <Major>2</Major>
+    <Minor>0</Minor>
+    <Build>0</Build>
+    <Revision>0</Revision>
+    <AppVersion>$(Major).$(Minor).$(Build).$(Revision)</AppVersion>
+    <BuildTargets Condition=" '$(BuildTargets)' == '' ">Build</BuildTargets>
+    <DeploymentBuild Condition=" '$(DeploymentBuild)' == '' ">false</DeploymentBuild>
+    <TestBuild Condition=" '$(TestBuild)' == '' ">false</TestBuild>
+  </PropertyGroup>
+
+  <!-- Only import the other targets here after the property definitions above have been defined -->
+  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>
+
+  <ItemGroup>
+    <ISSSetupFiles Include="$(ISSSourceFilesFolder)\**\eidss*.dll" />
+    <ISSSetupFiles Include="$(ISSSourceFilesFolder)\**\GISControl.dll" />
+    <ISSSetupFiles Include="$(ISSSourceFilesFolder)\**\bv*.dll" />
+    <ISSSetupFiles Include="$(ISSSourceFilesFolder)\**\eidss*.exe" />
+    <ISSSetupFiles Include="$(ISSSourceFilesFolder)\**\*.pdf" />
+    <ISSSetupFiles Include="$(ISSSourceFilesFolder)\**\*.rpt" />
+    <ISSSetupFiles Include="$(ISSSourceFilesFolder)\MapProjects\**\*.map" />
+  </ItemGroup>
+
+
+
+
+  <ItemGroup>
+    <ReportSourceFiles Include="$(EIDSSCodeFolder)\EIDSS_Main\Bin\**\*.pdf" />
+  </ItemGroup>
+  <ItemGroup>
+    <MapFiles Include="$(MapProjectsFolder)\**\*.map" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ISSSetup Include="$(ISSSetupFolder)\*.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <ISSWHOSetup Include="$(ISSWHOSetupFolder)\*.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DefaultExclude Include="$(EIDSSCodeFolder)\*\bin\**\*.dll" />
+    <DefaultExclude Include="$(EIDSSCodeFolder)\*\bin\**\*.pdb" />
+    <DefaultExclude Include="$(EIDSSCodeFolder)\*\bin\**\*.config" />
+    <DefaultExclude Include="$(EIDSSCodeFolder)\*\bin\**\*.xml" />
+    <DefaultExclude Include="$(EIDSSCodeFolder)\*\obj\**" />
+    <DefaultExclude Include="$(SharedCodeFolder)\*\bin\**" />
+    <DefaultExclude Include="$(SharedCodeFolder)\*\obj\**" />
+    <DefaultExclude Include="$(MSBuildProjectDirectory)\**\*.user" />
+    <DefaultExclude Include="$(MSBuildProjectDirectory)\**\*.zip" />
+    <DefaultExclude Include="$(MSBuildProjectDirectory)\**\*.bak" />
+    <DefaultExclude Include="$(MSBuildProjectDirectory)\**\*.suo" />
+    <DefaultExclude Include="$(MSBuildProjectDirectory)\**\*.exe" />
+    <DefaultExclude Include="$(MSBuildProjectDirectory)\**\*.dll" />
+    <DefaultExclude Include="$(MSBuildProjectDirectory)\**\*.mdb" />
+    <DefaultExclude Include="$(MSBuildProjectDirectory)\**\*.ldb" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <SourceFiles Include="$(EIDSSCodeFolder)\**\*.*" Exclude="@(DefaultExclude)" />
+    <SourceFiles Include="$(SharedCodeFolder)\**\*.*" Exclude="@(DefaultExclude)" />
+  </ItemGroup>
+
+
+  <Target Name="ZipSorceFiles">
+    <!--Condition="'$(DeploymentBuild)'=='true'" -->
+    <CreateProperty Value="$(DeploymentFolder)\$(AppVersion)\Source" Condition="'$(ZipOutputFolder)'==''">
+      <Output TaskParameter="Value" PropertyName="ZipOutputFolder"/>
+    </CreateProperty>
+    <MakeDir Directories="$(ZipOutputFolder)"  ContinueOnError="false"/>
+    <Message Text="Source files directory is created:$(ZipOutputFolder)" />
+    <Zip Files="@(SourceFiles)"
+			ZipFileName="$(ZipOutputFolder)\$(AppName)$(AppVersion).zip"  ContinueOnError="false" WorkingDirectory="$(MSBuildProjectDirectory)"/>
+    <Message Text="Source files are zipped to directory $(ZipOutputFolder)" />
+
+  </Target>
+
+  <!--InstallShield support-->
+  <PropertyGroup>
+    <PrConfName>&quot;Product Configuration 1&quot;</PrConfName>
+    <WHOPrConfName>&quot;WHO Product Configuration 1&quot;</WHOPrConfName>
+    <IISProductVersion>&quot;Product Version $(AppVersion)&quot;</IISProductVersion>
+    <EIDSSProjectLocation>&quot;$(ISSSetupProject)&quot;</EIDSSProjectLocation>
+    <WHOProjectLocation>&quot;$(ISSWHOSetupProject)&quot;</WHOProjectLocation>
+    <RleleaseConfiguration>-c COMP</RleleaseConfiguration>
+    <ProductConfiguration>-a $(PrConfName)</ProductConfiguration>
+    <WHOProductConfiguration>-a $(WHOPrConfName)</WHOProductConfiguration>
+  </PropertyGroup>
+
+  <Target Name="CreateSetup">
+    <VssGet UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+     LocalPath="$(ISSSetupProjectFolder)"
+     Recursive="True"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSEIDSS_Setup)"
+     ContinueOnError="true"/>
+    <VssCheckout UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+     LocalPath="$(ISSSetupProjectFolder)"
+     Recursive="False"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSEIDSS_SetupPath)"
+     ContinueOnError="true"/>
+    <VssCheckout UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+     LocalPath="$(ISSSetupProjectFolder)"
+     Recursive="False"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSWHO_SetupPath)"
+     ContinueOnError="true"/>
+    <XmlUpdate Prefix="dt"
+                    Namespace="urn:schemas-microsoft-com:datatypes"
+                    XPath="/msi/table[@name='Property']/row/td[text()='ProductVersion']/following-sibling::td[1]"
+                    XmlFileName="$(ISSSetupProject)"
+                    Value="$(AppVersion)"/>
+    <XmlUpdate Prefix="dt"
+                    Namespace="urn:schemas-microsoft-com:datatypes"
+                    XPath="/msi/table[@name='Property']/row/td[text()='ProductVersion']/following-sibling::td[1]"
+                    XmlFileName="$(ISSWHOSetupProject)"
+                    Value="$(AppVersion)"/>
+
+    <VssCheckin UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+     LocalPath="$(ISSSetupProject)"
+     Recursive="False"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSEIDSS_SetupPath)" />
+    <VssCheckin UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+     LocalPath="$(ISSWHOSetupProject)"
+     Recursive="False"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSWHO_SetupPath)" />
+    <Exec Command="$(ISSCompiler) -p  $(EIDSSProjectLocation) $(ProductConfiguration) $(RleleaseConfiguration) ">
+    </Exec>
+    <Exec Command="$(ISSCompiler) -p  $(WHOProjectLocation) $(WHOProductConfiguration) $(RleleaseConfiguration) ">
+    </Exec>
+    <Message Text="EIDSS_Setup is generated"/>
+  </Target>
+
+  <Target Name="Deploy" DependsOnTargets="CopyBinFiles">
+    <Message Text="Deploying to folder $(DeploymentFolder)\$(AppVersion)\Setup"/>
+    <MakeDir Directories="$(DeploymentFolder)\$(AppVersion)\Setup"  ContinueOnError="false"/>
+    <Copy SourceFiles="@(ISSSetup)" DestinationFolder="$(DeploymentFolder)\$(AppVersion)\Setup"/>
+    <Copy SourceFiles="@(ISSWHOSetup)" DestinationFolder="$(DeploymentFolder)\$(AppVersion)\Setup"/>
+  </Target>
+  <!--InstallShield support End-->
+
+
+  <Target Name="Version">
+    <Version VersionFile="$(VersionNumberFile)" RevisionType="None" BuildType="None"  Condition="'$(IncrementBuildVersion)' == ''">
+      <Output TaskParameter="Major" PropertyName="Major" />
+      <Output TaskParameter="Minor" PropertyName="Minor" />
+      <Output TaskParameter="Build" PropertyName="Build" />
+      <Output TaskParameter="Revision" PropertyName="Revision" />
+    </Version>
+    <Version VersionFile="$(VersionNumberFile)" RevisionType="BuildIncrement" Condition="'$(IncrementBuildVersion)' == 'false'">
+      <Output TaskParameter="Major" PropertyName="Major" />
+      <Output TaskParameter="Minor" PropertyName="Minor" />
+      <Output TaskParameter="Build" PropertyName="Build" />
+      <Output TaskParameter="Revision" PropertyName="Revision" />
+    </Version>
+    <Version VersionFile="$(VersionNumberFile)" RevisionType="BuildIncrement" BuildType="Increment" Condition="'$(IncrementBuildVersion)' == 'true'">
+      <Output TaskParameter="Major" PropertyName="Major" />
+      <Output TaskParameter="Minor" PropertyName="Minor" />
+      <Output TaskParameter="Build" PropertyName="Build" />
+      <Output TaskParameter="Revision" PropertyName="Revision" />
+    </Version>
+    <CreateProperty Value="$(Major).$(Minor).$(Build).$(Revision)">
+      <Output TaskParameter="Value" PropertyName="AppVersion"/>
+    </CreateProperty>
+
+    <Message Text="Version: $(AppVersion)"/>
+    <Message Text="Version: $(Major).$(Minor).$(Build).$(Revision)"/>
+  </Target>
+  <Target Name="UpdateMapVersion">
+    <XmlUpdate Prefix=""
+                    Namespace=""
+                    XPath="/Map/EIDSS.Version"
+                    XmlFileName="$(MapProjectsFolder)\az-L\default.map"
+                    Value="$(AppVersion)"/>
+    <XmlUpdate Prefix=""
+                    Namespace=""
+                    XPath="/Map/EIDSS.Version"
+                    XmlFileName="$(MapProjectsFolder)\ka\default.map"
+                    Value="$(AppVersion)"/>
+    <XmlUpdate Prefix=""
+                    Namespace=""
+                    XPath="/Map/EIDSS.Version"
+                    XmlFileName="$(MapProjectsFolder)\kk\default.map"
+                    Value="$(AppVersion)"/>
+    <XmlUpdate Prefix=""
+                    Namespace=""
+                    XPath="/Map/EIDSS.Version"
+                    XmlFileName="$(MapProjectsFolder)\ru\default.map"
+                    Value="$(AppVersion)"/>
+    <XmlUpdate Prefix=""
+                    Namespace=""
+                    XPath="/Map/EIDSS.Version"
+                    XmlFileName="$(MapProjectsFolder)\uk\default.map"
+                    Value="$(AppVersion)"/>
+    <XmlUpdate Prefix=""
+                    Namespace=""
+                    XPath="/Map/EIDSS.Version"
+                    XmlFileName="$(MapProjectsFolder)\en\default.map"
+                    Value="$(AppVersion)"/>
+  </Target>
+
+  <!-- Generate the GlobalAssemblyInfo files -->
+  <Target Name="AssemblyInfo">
+    <AssemblyInfo CodeLanguage="VB"
+     OutputFile="$(EIDSSCodeFolder)\EIDSSAssemblyInfo.vb"
+     AssemblyConfiguration="$(Configuration)"
+     AssemblyCompany="Black &amp; Veatch Special Projects Corp."
+     AssemblyTitle="EIDSS"
+     AssemblyProduct="Electronic Integrated Disease Surveillance System"
+     AssemblyCopyright="Copyright © 2005-2011, Black &amp; Veatch Special Projects Corp."
+     AssemblyTrademark="Trademark by Black &amp; Veatch Special Projects Corp."
+     AssemblyVersion="$(AppVersion)"
+     AssemblyFileVersion="$(AppVersion)" />
+
+    <AssemblyInfo CodeLanguage="CS"
+     OutputFile="$(EIDSSCodeFolder)\EIDSSAssemblyInfo.cs"
+     AssemblyConfiguration="$(Configuration)"
+     AssemblyCompany="Black &amp; Veatch Special Projects Corp."
+     AssemblyTitle="EIDSS"
+     AssemblyProduct="Electronic Integrated Disease Surveillance System"
+     AssemblyCopyright="Copyright © 2005-2011, Black &amp; Veatch Special Projects Corp."
+     AssemblyTrademark="Trademark by Black &amp; Veatch Special Projects Corp."
+     AssemblyVersion="$(AppVersion)"
+     AssemblyFileVersion="$(AppVersion)" />
+
+    <AssemblyInfo CodeLanguage="VB"
+     OutputFile="$(SharedCodeFolder)\BV_AssemblyInfo.vb"
+     AssemblyConfiguration="$(Configuration)"
+     AssemblyCompany="Black &amp; Veatch Special Projects Corp."
+     AssemblyTitle="BV framework"
+     AssemblyProduct="BV framework"
+     AssemblyCopyright="Copyright © 2005-2011, Black &amp; Veatch Special Projects Corp."
+     AssemblyTrademark="Trademark by Black &amp; Veatch Special Projects Corp."
+     AssemblyVersion="$(AppVersion)"
+     AssemblyFileVersion="$(AppVersion)" />
+  </Target>
+
+  <!-- SourceSafe support-->
+  <Target Name ="VSSGet">
+    <Message Text="Deleting report files..." />
+    <Attrib Files="@(ReportSourceFiles)" ReadOnly="False"/>
+    <Delete Files="@(ReportSourceFiles)" TreatErrorsAsWarnings="True"/>
+    <VssGet UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+     LocalPath="$(SharedCodeFolder)"
+     Recursive="True"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSSharedPath)"/>
+    <VssGet UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+     LocalPath="$(EIDSSCodeFolder)"
+     Recursive="True"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSEIDSSPath)"/>
+    <VssGet UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+     LocalPath="$(ISSSourceFilesFolder)"
+     Recursive="False"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSEnglishHelpPath)"
+     ContinueOnError="False"/>
+  </Target>
+
+  <Target Name ="VSSCheckoutVersion">
+    <VssCheckout UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+     LocalPath="$(MSBuildProjectDirectory)"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSRootPath)\eidss_build.number"
+     ContinueOnError="true"/>
+    <VssCheckout UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+     LocalPath="$(EIDSSCodeFolder)"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSEIDSSPath)\EIDSSAssemblyInfo.vb"
+     ContinueOnError="true"/>
+    <VssCheckout UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+     LocalPath="$(EIDSSCodeFolder)"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSEIDSSPath)\EIDSSAssemblyInfo.cs"
+     ContinueOnError="true"/>
+    <VssCheckout UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+     LocalPath="$(SharedCodeFolder)"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSSharedPath)\BV_AssemblyInfo.vb"
+     ContinueOnError="true"/>
+    <VssCheckout UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+     LocalPath="$(MapProjectsFolder)/az-L"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSMapProjectsFolder)/az-L/default.map"
+     ContinueOnError="true"/>
+    <VssCheckout UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+     LocalPath="$(MapProjectsFolder)/ka"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSMapProjectsFolder)/ka/default.map"
+     ContinueOnError="true"/>
+    <VssCheckout UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+     LocalPath="$(MapProjectsFolder)/kk"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSMapProjectsFolder)/kk/default.map"
+     ContinueOnError="true"/>
+    <VssCheckout UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+     LocalPath="$(MapProjectsFolder)/ru"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSMapProjectsFolder)/ru/default.map"
+     ContinueOnError="true"/>
+    <VssCheckout UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+     LocalPath="$(MapProjectsFolder)/uk"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSMapProjectsFolder)/uk/default.map"
+     ContinueOnError="true"/>
+    <VssCheckout UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+     LocalPath="$(MapProjectsFolder)/en"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSMapProjectsFolder)/en/default.map"
+     ContinueOnError="true"/>
+  </Target>
+
+  <Target Name ="VSSCheckinVersion">
+    <VssCheckin UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+     LocalPath="$(MSBuildProjectDirectory)\eidss_build.number"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSRootPath)\eidss_build.number" />
+    <VssCheckin UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+     LocalPath="$(EIDSSCodeFolder)\EIDSSAssemblyInfo.vb"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSEIDSSPath)\EIDSSAssemblyInfo.vb" />
+    <VssCheckin UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+     LocalPath="$(EIDSSCodeFolder)\EIDSSAssemblyInfo.cs"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSEIDSSPath)\EIDSSAssemblyInfo.cs" />
+    <VssCheckin UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+     LocalPath="$(SharedCodeFolder)\BV_AssemblyInfo.vb"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSSharedPath)\BV_AssemblyInfo.vb" />
+    <VssCheckin UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+          LocalPath="$(MapProjectsFolder)\az-L\default.map"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSMapProjectsFolder)/az-L/default.map" />
+    <VssCheckin UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+          LocalPath="$(MapProjectsFolder)\ka\default.map"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSMapProjectsFolder)/ka/default.map" />
+    <VssCheckin UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+          LocalPath="$(MapProjectsFolder)\kk\default.map"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSMapProjectsFolder)/kk/default.map" />
+    <VssCheckin UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+          LocalPath="$(MapProjectsFolder)\ru\default.map"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSMapProjectsFolder)/ru/default.map" />
+    <VssCheckin UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+          LocalPath="$(MapProjectsFolder)\uk\default.map"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSMapProjectsFolder)/uk/default.map" />
+    <VssCheckin UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+          LocalPath="$(MapProjectsFolder)\en\default.map"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSMapProjectsFolder)/en/default.map" />
+  </Target>
+
+  <Target Name ="VSSLabel">
+    <VssLabel UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+     Label="$(AppName) version $(AppVersion)"
+     Recursive="True"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSEIDSSPath)" />
+    <VssLabel UserName="$(VSSUser)"
+     Password="$(VSSPassword)"
+     Label="$(AppName) version $(AppVersion)"
+     Recursive="True"
+     DatabasePath="$(VSSServer)"
+     Path="$(VSSSharedPath)" />
+  </Target>
+
+  <Target Name="IncrementVersion" DependsOnTargets="VSSCheckoutVersion;Version;AssemblyInfo;UpdateMapVersion;VSSCheckinVersion">
+  </Target>
+
+  <ItemGroup>
+    <SetupFiles Include="$(EIDSSCodeFolder)\EIDSS_Main\Bin\**\eidss*.dll" Exclude="$(EIDSSCodeFolder)\EIDSS_Main\Bin\**\EIDSS_WebServiceExport*.dll"/>
+    <SetupFiles Include="$(EIDSSCodeFolder)\EIDSS_Main\Bin\**\GISControl*.dll" />
+    <SetupFiles Include="$(EIDSSCodeFolder)\EIDSS_Main\Bin\**\eidss*.exe" />
+    <SetupFiles Include="$(EIDSSCodeFolder)\EIDSS_Main\Bin\**\bv*.dll" />
+    <SetupFiles Include="$(EIDSSCodeFolder)\EIDSS_ClientAgent\Bin\**\eidss*.dll" />
+    <SetupFiles Include="$(EIDSSCodeFolder)\EIDSS_ClientAgent\Bin\**\eidss*.exe" />
+    <SetupFiles Include="$(EIDSSCodeFolder)\EIDSS_Main\Bin\**\*.pdf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WHOSetupFiles Include="$(EIDSSCodeFolder)\EIDSS_Main\Bin\**\EIDSS_WebServiceExport*.dll"/>
+    <WHOSetupFiles Include="$(EIDSSCodeFolder)\EIDSS_Main\Bin\**\WebExport.xml" />
+  </ItemGroup>
+
+  <Target Name="CopySetupFiles" DependsOnTargets="DeleteSetupFiles">
+    <Message Text="Install Folder:$(ISSSourceFilesFolder)" />
+    <Attrib Files="@(ISSSetupFiles)" ReadOnly="False"/>
+    <Copy SourceFiles="@(SetupFiles)" DestinationFiles="@(SetupFiles->'$(ISSSourceFilesFolder)\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(MapFiles)" DestinationFiles="@(MapFiles->'$(ISSSourceFilesFolder)\MapProjects\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(WHOSetupFiles)" DestinationFiles="@(WHOSetupFiles->'$(ISSWHOSourceFilesFolder)\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Attrib Files="@(ISSSetupFiles)" ReadOnly="False"/>
+  </Target>
+  <Target Name="DeleteSetupFiles">
+    <Message Text="Deleting iis setup files in $(ISSSourceFilesFolder)" />
+    <Attrib Files="@(ISSSetupFiles)" ReadOnly="False"/>
+    <Delete Files="@(ISSSetupFiles)" TreatErrorsAsWarnings="True"/>
+  </Target>
+
+
+  <Target Name="Compile"  >
+    <MakeDir Directories="$(OutputPath)" />
+    <Delete Files="$(OutputPath)\*.*" />
+    <Message Text="Build solution in: $(OutputPath)"></Message>
+    <MSBuild Projects="EIDSS\EIDSS.Test.sln" Properties="Configuration=Release;"  ContinueOnError="false"  Targets="Rebuild" />
+  </Target>
+
+  <Target Name="Build" DependsOnTargets="VSSGet;IncrementVersion;Compile;VSSLabel;CopySetupFiles;CreateSetup;Deploy;ZipSorceFiles">
+    <Message Text="EIDSS Build Complete"/>
+    <Message Text="$(MSBuildProjectDirectory)\$(OutputPath)" />
+    <Message Text="Configuration=$(Configuration)" />
+  </Target>
+
+  <ItemGroup>
+    <BinFiles Include="$(ISSSourceFilesFolder)\**\*.dll" />
+    <BinFiles Include="$(ISSSourceFilesFolder)\**\eidss*.exe" />
+    <BinFiles Include="$(ISSSourceFilesFolder)\**\*.pdf" />
+    <BinFiles Include="$(ISSSourceFilesFolder)\**\*.config" />
+    <BinFiles Include="$(ISSSourceFilesFolder)\**\*.Hx*" />
+  </ItemGroup>
+  <Target Name="CopyBinFiles">
+    <Message Text="Install Folder:$(ISSSourceFilesFolder)" />
+    <CreateProperty Value="$(DeploymentFolder)\$(AppVersion)\Bin" Condition="'$(BinFolder)'==''">
+      <Output TaskParameter="Value" PropertyName="BinFolder"/>
+    </CreateProperty>
+    <MakeDir Directories="$(BinFolder)"  ContinueOnError="false"/>
+    <Message Text="Source files directory is created:$(BinFolder)" />
+    <Copy SourceFiles="@(BinFiles)" DestinationFiles="@(BinFiles->'$(BinFolder)\%(RecursiveDir)%(Filename)%(Extension)')"/>
+  </Target>
+
+
+</Project>

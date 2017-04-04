@@ -1,0 +1,29 @@
+﻿@model eidss.model.Schema.FarmPanel
+           
+@using bv.model.Model.Core
+@using eidss.webclient.Utils
+
+@{
+    var permissions = Model.GetAccessor() as IObjectPermissions;
+}
+
+<script type="text/javascript">
+    $($('#farmPicker')).ready(function () {
+        farm.initInlinePicker('buttonSelectFarm', '@(Model.IsReadOnly("idfRootFarm"))', '@(Model.IsNew && !permissions.CanInsert)', 'farmPicker');
+    });  
+</script>
+
+<span class="picker">
+    <span class="pickerWrap" id="farmPicker">
+        @Html.BvEditbox(Model, m => m.strFarmCode)
+        @*<span class="pickerSelect" onclick='' id='buttonClianFarmPicker'>
+            <span class="k-icon k-i-close"></span>
+        </span>*@
+    </span>
+</span>
+@if (permissions.CanSelect)
+{
+    <button id='buttonSelectFarm' class="button smallImageButton" onclick='farm.showSearchPicker()' type="button" alt="Select">
+        <img src="@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/Search.png"))" alt="Select" draggable='false' />
+    </button>
+}

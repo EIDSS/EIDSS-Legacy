@@ -1,0 +1,27 @@
+﻿@using eidss.web.common.Utils
+@model eidss.model.Schema.VetCase
+
+<table class="level1">
+    <tr>
+        <td class="xlarge firstLabel">
+            @Translator.GetString(ViewBag.StrOfficePropertyName.ToString())
+        </td>
+        <td class="large">                    
+            @Html.Action("InlineOrganizationPicker", "Organization", new { obj = Model, objectId = Model.idfCase, idfsOrganizationPropertyName = ViewBag.IdfsOfficePropertyName.ToString(),
+                                                                           strOrganizationPropertyName = ViewBag.StrOfficePropertyName.ToString(), 
+                                                                           idfsEmployeePropertyName = ViewBag.IdfsPersonPropertyName.ToString(),
+                                                                           strEmployeePropertyName = ViewBag.StrPersonPropertyName.ToString(), 
+                                                                           HACode = (int)ViewBag.HACode})  
+        </td>
+        <td class="xlarge label">
+            @Translator.GetString(ViewBag.StrPersonPropertyName.ToString()) 
+        </td>
+        <td class="xlarge">
+            @Html.Action("InlineEmployeePicker", "Employee", new { obj = Model, objectId = Model.idfCase, idfsEmployeePropertyName = ViewBag.IdfsPersonPropertyName.ToString(), 
+                                                                    strEmployeePropertyName = ViewBag.StrPersonPropertyName.ToString(), 
+                                                                    idfsOrganizationPropertyName = ViewBag.IdfsOfficePropertyName.ToString(),
+                                                                    strOrganizationPropertyName = ViewBag.StrOfficePropertyName.ToString(),
+                                                                    showEditButton = ViewBag.ShowEditPersonButton })
+        </td>
+    </tr>
+</table>

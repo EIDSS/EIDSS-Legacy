@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "ProductInfo.wxi" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="Directory tree">
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="DesktopFolder" Name="Desktop" />
+      <Directory Id="FontsFolder" SourceName="Fonts" />
+      <Directory Id="CommonAppDataFolder">
+        <Directory Id="CommonAppData.Manufacturer" Name="$(var.ManufacturerFullName)">
+          <Directory Id="CommonAppData.Product" Name="$(var.ProductName)">
+            <Directory Id="CommonAppData.Translations" Name="Translations" />
+          </Directory>
+        </Directory>
+      </Directory>
+      <Directory Id="ProgramMenuFolder" SourceName="Programs">
+        <Directory Id="BVShortcutFolder" Name="$(var.Manufacturer)">
+          <Directory Id="EIDSSShortcutFolder" Name="$(var.ProductFullName)" />
+        </Directory>
+      </Directory>
+
+      <?if $(var.Platform) = x64?>
+      <Directory Id="ProgramFiles64Folder">
+        <Directory Id="ISMYCOMPANYDIR" Name="$(var.Manufacturer)" />
+      </Directory>
+      <?else?>
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="ISMYCOMPANYDIR" Name="$(var.Manufacturer)" />
+      </Directory>
+      <?endif?>
+    </Directory>
+
+    <DirectoryRef Id="ISMYCOMPANYDIR">
+      <Directory Id="EIDSS50" Name="$(var.ProductNameAbbreviation)$(var.MajorVersion)$(var.MinorVersion)">
+        <Directory Id="APPLICATIONFOLDER">
+          <Directory Id="AR_IQ" Name="ar-IQ" />
+          <Directory Id="AZ_AZ_LATN" Name="az-AZ-Latn"  />
+          <Directory Id="AZ_LATN_AZ" Name="az-Latn-AZ" />
+          <Directory Id="HY_AM" Name="hy-AM" />
+          <Directory Id="KA_GE" Name="ka-GE" />
+          <Directory Id="KK_KZ" Name="kk-KZ" />
+          <Directory Id="RU_RU" Name="ru-RU" />
+          <Directory Id="UK_UA" Name="uk-UA" />
+          <Directory Id="TH_TH" Name="th-TH" />
+          <Directory Id="gdal_data" Name="gdal_data" />
+          <Directory Id="Help" Name="Help" />
+          <Directory Id="AccessTemplate" Name="AccessTemplate" />
+          <Directory Id="MapProjects" Name="MapProjects" />
+          <Directory Id="Paper_Forms" Name="Paper Forms" />
+          <Directory Id="ESRI" Name="ESRI">
+            <Directory Id="ESRIx64" Name="x64" />
+            <Directory Id="ESRIx86" Name="x86" />
+          </Directory>
+        </Directory>
+      </Directory>
+    </DirectoryRef>
+  </Fragment>
+</Wix>

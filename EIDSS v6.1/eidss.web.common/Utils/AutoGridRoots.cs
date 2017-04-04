@@ -1,0 +1,36 @@
+﻿namespace eidss.web.common.Utils
+{
+    public enum AutoGridRoots : long
+    {
+        VetCaseList = -1,
+        HumanCaseList = -2,
+        HumanAggregateCaseList = -3,
+        VetAggregateCaseList = -4,
+        VetAggregateActionList = -5,
+        AsSessionList = -6,
+        AsCampaignList = -7,
+        PatientList = -8,
+        OutbreakList = -9,
+        FarmsList = -10,
+        FarmSelectList = -100,
+        PatientSelectList = -101,
+        AsCampaignSelectList = -102,
+        HumanAggregateCaseSelectList = -103,
+        VetAggregateCaseSelectList = -104,
+        VetAggregateActionSelectList = -104,
+        AsSessionSelectList = -105,
+        HumanCasePopUpSelectList = -106,
+        PersonSelectList = -107,
+        OrganizationSelectList = -108,
+        VetCasePopUpSelectList = -109,
+        OutbreakSelectList = -110,
+        VsSessionPopUpSelectList = -111,
+        HumanAggregateCaseSummaryHeaderList = -200,
+        VetAggregateCaseSummaryHeaderList = -201,
+        VetAggregateActionSummaryHeaderList = -202,
+        HumanCaseDeduplicationList = -210,
+        LabSampleBookPreference = -203,
+        LabSampleBook = -204,
+        VsSessionList = -205,
+    }
+}

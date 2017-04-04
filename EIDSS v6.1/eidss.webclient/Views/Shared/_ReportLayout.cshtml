@@ -1,0 +1,108 @@
+﻿@using Kendo.Mvc.UI
+@using bv.common.Configuration
+@using bv.model.Model.Core
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+@using System.Web.Optimization
+
+<!DOCTYPE html>
+<html>    
+    <head>
+        <title>@ViewBag.Title</title>
+               
+        <link href="@Url.Content("~/Content/Kendo/kendo.common.min.css")" rel="stylesheet" />
+        @if (Cultures.IsRtl)
+        {
+            <link href="@Url.Content("~/Content/Kendo/kendo.rtl.min.css")" rel="stylesheet" />
+        }
+        <link href="@Url.Content("~/Content/Kendo/kendo.uniform.min.css")" rel="stylesheet" />
+        
+        @Html.IncludeVersionedCss("~/Content/Styles/Common.css")
+        @Html.IncludeVersionedCss("~/Content/Styles/DetailsPageRestrictions.css")
+        @Html.IncludeVersionedCss("~/Content/Styles/Details.css")
+        @Html.IncludeVersionedCss("~/Content/Styles/Report.css")
+        @Html.IncludeVersionedCss("~/Content/Styles/PopupWindow.css")
+        @Html.IncludeVersionedCss("~/Content/Styles/ErrorPage.css")
+
+
+        <!-- Translations -->
+        @*<script src="@Url.Content(String.Format("~/Scripts/Kendo/min/cultures/kendo.culture.{0}.min.js", Cultures.GetCultureStandard(ModelUserContext.CurrentLanguage)))" type="text/javascript" ></script>*@
+        @*Html.IncludeVersionedJs(String.Format("~/Scripts/Messages/EIDSS.BvMessages.{0}.js", Cultures.GetCulture(ModelUserContext.CurrentLanguage)))*@
+        <script src="@Url.Content(String.Format("~/Scripts/Kendo/min/cultures/kendo.culture.{0}.min.js", Cultures.GetCulture(ModelUserContext.CurrentLanguage)))" type="text/javascript"></script>
+        <script src="@Url.Action("MessagesScript", "Account", new { version = Extenders.VersionCode() })"></script>
+        <!-- Common -->        
+        @Scripts.Render("~/bundles/system")
+        @Extenders.RenderEidss("~/bundles/EIDSS")
+
+
+
+
+        <script type="text/javascript">
+
+            $(window).load(function() {
+                $.ajaxSetup({ cache: false });
+            });
+
+            $(document).ready(function () {
+                kendo.culture('@Cultures.GetCulture(ModelUserContext.CurrentLanguage)');
+                changeFont();
+            });
+
+            document.onkeypress = function (e) {
+                e = window.event || e;
+                if (e.keyCode == 13) {
+                    return false;
+                }
+                return true;
+            };
+
+        </script>
+    </head>
+    <body class='detailsViewContainer @(Cultures.IsRtl ? "k-rtl" : "")'>
+        @Html.Heartbeat()
+        @(
+            Html.Kendo().Window()
+            .Name("Message")
+              .Modal(true)
+              .Visible(false)
+              .Draggable(true)
+              .Events(events => events.Close("bvPopup.closeDefaultPopup"))
+        )
+        <div id="test"></div>
+        <input id='MapOpenerId' type='hidden' value='' />
+        <div>
+            <div class="detailPageContentReport">
+                <div class="detailHeader">
+                    <span class="formTitle">
+                        @ViewBag.Title
+                    </span>
+                    <span class="formNumber">
+                        @ViewBag.Number
+                    </span>
+    @if (BaseSettings.TranslationMode)
+    {
+                    <span class="formNumberTranslation">
+                       | 
+                    </span>
+                    <span class="formNumberTranslation">
+                       <a class="formNumberTranslation" href='javascript:bvTranslation.OpenTranslationWindow();'>@Translator.GetMessageString("btTranslationTool")</a>
+                    </span>
+    }
+                </div>  
+                <div class="tabPanelContent">
+                    @RenderBody()   
+                </div>
+            </div>
+        </div>
+        <div id="error">
+            <span class="errorMessage">
+                <input id='ErrorMessage' name='ErrorMessage' type='hidden' value='@ViewData["ErrorMessage"]' />
+            </span>            
+        </div>
+        @if (BaseSettings.TranslationMode)
+        {
+            <div id="TranslationWindow"></div>       
+            <div id="SplitWindow"></div>       
+        }
+    </body>    
+</html>

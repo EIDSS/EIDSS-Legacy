@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/eidss.model.Reports.ARM" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/eidss.model.Reports.ARM" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8097/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" />
+  <xs:complexType name="FormN85SurrogateModel">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" base="q1:BaseDateModel">
+        <xs:sequence>
+          <xs:element name="_x003C_RayonId_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_RayonName_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_RegionId_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_RegionName_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_UserName_x003E_k__BackingField" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="FormN85SurrogateModel" nillable="true" type="tns:FormN85SurrogateModel" />
+</xs:schema>

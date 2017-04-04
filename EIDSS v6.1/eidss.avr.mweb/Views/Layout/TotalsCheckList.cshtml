@@ -1,0 +1,45 @@
+﻿@model eidss.avr.mweb.Models.AvrPivotGridModel
+@using System.Drawing
+@using System.Web.UI.WebControls
+@using eidss.avr.mweb.Utils
+
+@Html.DevExpress().DropDownEdit(
+    settings => {
+        settings.Name = "totalsComboBox";
+        settings.Width = 200;
+        settings.Height = 10;
+        settings.Properties.NullText = "";
+        settings.ControlStyle.CssClass = "xlarge";
+        if (Model.PivotSettings.CompactLayout || !eidss.model.Core.AvrPermissions.UpdatePermission)
+            settings.ClientEnabled = false;
+        settings.Style.Add("float", "right");
+
+        //settings.Width = Unit.Percentage(100); 
+        settings.Properties.DropDownWindowStyle.BackColor = Color.FromArgb(0xEDEDED);
+        settings.Text = LayoutPivotGridHelper.GetTotalsText(Model);
+        settings.SetDropDownWindowTemplateContent(c => @Html.DevExpress().ListBox(
+            listBoxSettings => {
+                                   listBoxSettings.Name = "totalsCheckListBox";
+                                   listBoxSettings.ControlStyle.Border.BorderWidth = 0;
+                                   listBoxSettings.ControlStyle.BorderBottom.BorderWidth = 1;
+                                   listBoxSettings.ControlStyle.BorderBottom.BorderColor = Color.FromArgb(0xDCDCDC);
+                                   listBoxSettings.Width = Unit.Percentage(100);
+
+                                   listBoxSettings.Properties.SelectionMode = ListEditSelectionMode.CheckColumn;
+                                   listBoxSettings.Properties.ValueType = typeof(string);
+                                   listBoxSettings.Properties.TextField = "Name";
+                                   listBoxSettings.Properties.ValueField = "ID";
+                    
+                                   listBoxSettings.Properties.ClientSideEvents.SelectedIndexChanged = "layoutPivotGrid.totalsSelectionChanged";
+                                   listBoxSettings.Properties.ClientSideEvents.LostFocus = "layoutPivotGrid.totalsSelectionLostFocus";
+                                   listBoxSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+            }
+                                                           ).BindList(LayoutPivotGridHelper.GetTotalsList(Model)).Render());
+        settings.Properties.AnimationType = AnimationType.None;
+        settings.ReadOnly = true;
+        settings.Enabled = !Model.PivotSettings.IsPublished;
+        //settings.Properties.ClientSideEvents.TextChanged = "layoutPivotGrid.synchronizeTotalsValues";
+        settings.Properties.ClientSideEvents.DropDown = "layoutPivotGrid.synchronizeTotalsValues";
+        settings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+    }
+).GetHtml()

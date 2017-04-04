@@ -1,0 +1,42 @@
+﻿@model eidss.model.Schema.OutbreakListItem.Accessor
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Configurations
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+<div class="popupContent searchPopupContent">
+    <div class="windowButtonsPn">                  
+        <input id="idButtonSelect" type="button" class="windowButton" onclick="outbreak.onSearchPickerSelect('@ViewBag.ObjectId', '@ViewBag.IdfsOutbreakPropertyName', '@ViewBag.strOutbreakPropertyName', '@ViewBag.ShowInInternalWindow');" value="@Translator.GetMessageString("Select")"/>     
+        <input id="idButtonClose" type="button" class="windowButton" onclick="searchPicker.closePicker('@ViewBag.ShowInInternalWindow')" value="@Translator.GetMessageString("Close")"/>  
+    </div>
+    <div class="windowSeparator"></div>  
+    <div class="listForm">
+        <div id="searchpanel" class="customSearchPanel">
+            @Html.SearchPanel(Model, (bv.model.Model.Core.FilterParams)ViewBag.Filter, (bv.model.Model.Core.IObject)ViewBag.InitObject)
+        </div>
+        <table class="lfSearchPanelTable">
+            <tr>
+                <td class="lfSearchPanelTd">
+                    @Html.SearchPanelOperator()
+                </td>
+                <td class="lfGridTd">
+                    @(Html.DetailsPopupSearchGrid<OutbreakListItem.OutbreakListItemGridModel, OutbreakListItem.OutbreakListItemGridModelList>(
+                          new OutbreakListItem.OutbreakListItemGridModelList((long)AutoGridRoots.OutbreakSelectList), "Outbreak",
+                          gridName: "Grid", selectionType: GridRowSelectionType.Single)
+                          .DataSource(dataSource => dataSource
+                                                        .Ajax()
+                                                        .Sort(sort => sort.Add("strOutbreakID").Ascending()))
+                          )   
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+

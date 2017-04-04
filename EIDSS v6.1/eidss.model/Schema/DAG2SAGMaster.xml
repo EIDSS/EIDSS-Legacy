@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- Diagnosis Age Group To Statistical Age Group -->
+<object name="DiagnosisAgeGroup2StatisticalAgeGroupMaster"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spDiagnosisAgeGroupMaster_SelectDetail" type= "detailone" />
+  </storage>
+
+  <tables>
+    <table name="DiagnosisAgeGroup2StatisticalAgeGroupMaster">
+      <properties auditObject="daoReference" auditTable="trtBaseReference" permissionObject="Reference">
+        <lookupcache>
+          <item name="Statistic"/>
+        </lookupcache>
+      </properties>
+      <help win="Age_Groups-Statistical_Age_Groups_Matrix"/>
+      <readonly>
+        <fields name="DiagnosisAgeGroup" predicate="c => false" ignoreReadOnly="true"/>
+      </readonly>
+      <relations>
+        <relation name="DAG2SAG" table="DiagnosisAgeGroup2StatisticalAgeGroup" internal="false" type="child" lazy="false" source="idfsDiagnosisAgeGroup" target="idfsDiagnosisAgeGroup" />
+      </relations>
+      <lookups>
+        <lookup name="DiagnosisAgeGroup" table="DiagnosisAgeGroupLookup" source="idfsDiagnosisAgeGroup" target="idfsReference" />         
+      </lookups>
+      <storage>
+        <post  name="spDummy_Post"/>
+        <delete />
+        <candelete  name=''/>
+      </storage>
+      <postorder>
+        <item name="DAG2SAG" />
+      </postorder>
+      <deleteorder>
+        <item name="DAG2SAG" />
+      </deleteorder>
+      <extenders>
+        <creating>
+          <custom_extender>
+            <text>
+              obj.m_IsNew = false;
+              var accMaster = DiagnosisAgeGroup2StatisticalAgeGroupMaster.Accessor.Instance(null);
+              accMaster._LoadDAG2SAG(manager, obj);
+            </text>
+          </custom_extender>
+        </creating>
+        <created>
+        </created>
+        <loading>
+        </loading>
+        <posting>
+        </posting>
+        <posted>
+        </posted>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+        </fieldhandler>
+      </handlers>
+
+      <validators>
+        <childchange>
+          <!--container name="DAG2SAG" field="idfsStatisticalAgeGroup" filter="c => true" >
+            <duplicate_reference_validator container="DAG2SAG" field="idfsStatisticalAgeGroup"  label="strStatisticalAgeGroup" predicate="(master,i) => master.DAG2SAG.Where(c => 
+                                                              (long)c.Key != (long)i.Key 
+                                                              &amp;&amp; c.idfsDiagnosisAgeGroup == i.idfsDiagnosisAgeGroup
+                                                              &amp;&amp; c.idfsStatisticalAgeGroup == i.idfsStatisticalAgeGroup
+                                                              &amp;&amp; !c.IsMarkedToDelete
+                                                              &amp;&amp; !i.IsMarkedToDelete
+                                                              ).Count() == 0"/>
+          </container-->
+          <container name="DAG2SAG" field="idfsStatisticalAgeGroup" filter="c => true" >
+            <!--required_child_validator container="DAG2SAG" field="idfsStatisticalAgeGroup" label="strStatisticalAgeGroup" predicate ="(c,i) => (i.idfsStatisticalAgeGroup != null)"/-->
+            <required_validator target="idfsStatisticalAgeGroup" label="strStatisticalAgeGroup" child="true" />
+          </container>
+        </childchange>
+        <post>
+          <duplicate_list_validator collection="DAG2SAG" type="DiagnosisAgeGroup2StatisticalAgeGroup" filter="c => !c.IsMarkedToDelete">
+            <item field="idfsStatisticalAgeGroup" lookup="StatisticalAgeGroup" inMsg="true" />
+            <item field="idfsDiagnosisAgeGroup" />
+          </duplicate_list_validator>
+        </post>
+
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <remove type="Delete"/>
+        </standard>
+        <action name="DeleteStatisticalAgeGroup" type="Action">
+          <visual panel="Main" alignment ="Right" visiblePredicate = "ActionMetaItem.DefaultDeleteGroupItemVisiblePredicate">
+            <regular caption ="strDelete_Id" tooltip ="tooltipDelete_Id" icon ="Delete_Remove"/>
+          </visual>
+          <run>
+            <preUI webType="JScript"/>
+          </run>
+        </action>
+      </actions>
+    </table>
+
+  </tables>
+</object>

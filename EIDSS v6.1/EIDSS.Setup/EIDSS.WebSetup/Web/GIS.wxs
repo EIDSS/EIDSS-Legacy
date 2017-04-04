@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "$(var.ProjectDir)ProductInfo.wxi" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Fragment Id="GIS Maps">
+    <Property Id="GISMAPS" Secure="yes">
+      <RegistrySearch Id="GISMAPS.RS" Root="HKLM" Key="$(var.WebRegistryKey)" Name="GISMaps" Type="raw" />
+    </Property>
+
+    <Property Id="GISURL" Secure="yes">
+      <RegistrySearch Id="GISURL.rs" Root="HKLM" Key="$(var.WebRegistryKey)" Name="GISUrl" Type="raw" />
+    </Property>
+
+    <SetProperty Action="SetGisUrlToHost" Id="GISURL" Value="[WEBSITE_HEADER]:[WEBSITE_PORT]/Maps/" Before="SetGisUrlToAVRHost" Sequence="execute">
+      <![CDATA[Not GISURL And WEBSITE_HEADER And WEBSITE_HEADER <> "" And $Web.AppPool >= 3]]>
+    </SetProperty>
+    <SetProperty Action="SetGisUrlToIP" Id="GISURL" Value="[WEBSITE_IP]:[WEBSITE_PORT]/Maps/" Before="SetGisUrlToAVRHost" Sequence="execute">
+      <![CDATA[Not GISURL And (Not WEBSITE_HEADER Or WEBSITE_HEADER = "") And $Web.AppPool >= 3]]>
+    </SetProperty>
+    <SetProperty Action="SetGisUrlToAVRHost" Id="GISURL" Value="[AVR_WEBSITE_HEADER]:[AVR_WEBSITE_PORT]/Maps/" Before="SetGisUrlPrefix" Sequence="execute">
+      <![CDATA[Not GISURL And AVR_WEBSITE_HEADER And AVR_WEBSITE_HEADER <> "" And $AVR.AppPool >= 3]]>
+    </SetProperty>
+    <SetProperty Action="SetGisUrlToAVRIP" Id="GISURL" Value="[AVR_WEBSITE_IP]:[AVR_WEBSITE_PORT]/Maps/" Before="SetGisUrlPrefix" Sequence="execute">
+      <![CDATA[Not GISURL And (Not AVR_WEBSITE_HEADER Or AVR_WEBSITE_HEADER = "") And $AVR.AppPool >= 3]]>
+    </SetProperty>
+    <SetProperty Action="SetGisUrlPrefix" Id="GISURL" Value="{http://[GISURL]}" After="CostFinalize" Sequence="execute">
+      <![CDATA[GISURL And GISURL <> "" And Not GISURL << "http://" And Not GISURL << "https://"]]>
+    </SetProperty>
+
+    <ComponentGroup Id="GISMaps" Directory="GISMAPS">
+      <Component Id="MapsUrl" MultiInstance="yes">
+        <RegistryValue Root="HKLM" Key="$(var.WebRegistryKey)" Name="MapsUrl" Value="[GISURL]" Type="string" KeyPath="yes" />
+        <RegistryValue Root="HKLM" Key="$(var.WebRegistryKey)" Name="GISMaps" Value="[GISMAPS]" Type="string" />
+
+        <?define key = MapLocalUrl ?>
+        <?define value = [GISURL] ?>
+        <?define order = 21 ?>
+        <?include $(var.ProjectDir)AddConfigKey.wxi?>
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>

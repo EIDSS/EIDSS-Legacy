@@ -1,0 +1,247 @@
+﻿@model FlexNode
+@using Kendo.Mvc.UI;
+@using System.Data;
+@using bv.common.Core
+@using eidss.model.Enums;
+@using eidss.model.Model.FlexibleForms.FlexNodes;
+@using eidss.model.Model.FlexibleForms.Helpers;
+@using eidss.web.common.Utils
+
+@{    
+    var sectionTemplate = Model.GetSectionTemplate();
+    var gridName = String.Format("idfsSection_{0}", sectionTemplate.idfsSection);
+    var sectionDataTable = Model.GetDataTableForSectionTable();
+    var idObservation = Model.FFModel.CurrentObservation.HasValue ? Model.FFModel.CurrentObservation.Value : 0;
+    var rowsHeader = Model.GetHeaderRowsForSectionTable();
+    var tdStubStyle = sectionTemplate.DefaultName.Substring(0, 3) + sectionTemplate.DefaultName.Substring(4, 1);
+    var colTitle = new Dictionary<int, string>();
+    var strtIndex = 0;
+    var bFirst = true;
+}
+
+<table class="ffGridBanded" id="@gridName">
+    @foreach (var rowH in rowsHeader)
+    {
+        var index = 0;
+        //Header
+        <tr>
+            @if (!Model.HasStubChildren && !Model.FFModel.ReadOnly)
+            {
+                <th class="checkColumn" />
+                <th class="editColumn" />
+            }
+            @foreach (var node in rowH)
+            {
+                if (node.Item2 > 1)
+                {
+                    <th rowspan="@node.Item2">@node.Item1.Text</th>
+                    colTitle[index] = !colTitle.ContainsKey(index) ? node.Item1.Text : colTitle[index] + " -> " + node.Item1.Text;
+                    index++;
+                    if (index - strtIndex <= 1)
+                    {
+                        strtIndex++;
+                    }
+                }
+                else if (node.Item3 > 1)
+                {
+                    <th colspan="@node.Item3">@node.Item1.Text</th>
+                    for (int i = 0; i < node.Item3; i++)
+                    {
+                        colTitle[index + (bFirst ? 0 : strtIndex)] = !colTitle.ContainsKey(index + (bFirst ? 0 : strtIndex)) ? node.Item1.Text : colTitle[index + (bFirst ? 0 : strtIndex)] + " -> " + node.Item1.Text;
+                        index++;
+                    }
+                }
+                else
+                {
+                    <th>@node.Item1.Text</th>
+                    colTitle[index + (bFirst ? 0 : strtIndex)] = !colTitle.ContainsKey(index + (bFirst ? 0 : strtIndex)) ? node.Item1.Text : colTitle[index + (bFirst ? 0 : strtIndex)] + " -> " + node.Item1.Text;
+                    index++;
+                }
+            }
+
+        </tr>
+        bFirst = false;
+    }
+    
+    @if (sectionDataTable.Rows.Count == 0)
+    {
+        var colCount = sectionDataTable.Columns.Count;
+        if (!Model.HasStubChildren && !Model.FFModel.ReadOnly)
+        {
+            colCount++;
+        }
+        else
+        {
+            colCount--;
+        }
+        <tr>
+            <td colspan="@colCount">&nbsp;</td>
+        </tr>
+    }
+
+    @foreach (DataRow row in sectionDataTable.Rows)
+    {//body
+        var colIndex = 0;
+        var rowVal = Convert.ToInt64(row["idfRow"]);
+        var columnStubNumber = 1;
+        var rowTooltip = "";
+        <tr idfrow="@rowVal">
+            @if (!Model.HasStubChildren && !Model.FFModel.ReadOnly)
+            {
+                <td class="checkColumn centered">
+                    <input type='radio' name='@gridName' data-item-id='@rowVal' onclick='ffGrid.onRowRadioButtonClick("@gridName", this)'/>
+                </td>
+                <td class="editColumn centered">
+                    <a class='editButton' href='javascript:ffGrid.showEditDialog("@gridName", false, "@sectionTemplate.NationalName", "@idObservation", "@rowVal");' />
+                    <a class='deleteButton' href='javascript:ffGrid.deleteRow("@gridName", "@idObservation", "@rowVal");' />
+                </td>
+            }
+             
+            
+            @foreach (DataColumn column in sectionDataTable.Columns)
+            {
+                var columnName = column.ColumnName;
+                if (columnName == "idfRow")
+                {
+                    continue;
+                }
+
+                var idfsParameter = HelperFunctions.GetColumnParameter(column);
+                var parameter = Model.FFModel.CurrentTemplate.ParameterTemplatesLookup.FirstOrDefault(p => p.idfsParameter == idfsParameter);
+                var paramKey = HelperFunctions.GetParameterKey(idObservation, idfsParameter, rowVal, Model.FFModel.CurrentTemplate.idfsFormTemplate);
+                <td>
+                    @if (!HelperFunctions.IsStubColumn(column) && !Model.FFModel.ReadOnly && !Model.FFModel.IsSummary && Model.HasStubChildren)
+                    {
+                        <div class="tdFfContainer">
+                            @if (parameter != null)
+                            {
+                                var minValue = -99000000;
+                                const int maxValue = 99000000;
+                                var typeControl = 2; //0-NumericTextBox, 1-IntegerTextBox, 2-String
+
+                                switch (parameter.ParameterType)
+                                {
+                                    case FFParameterTypes.NumericPositive:
+                                        minValue = 0;
+                                        typeControl = 0;
+                                        break;
+                                    case FFParameterTypes.NumericNatural:
+                                        minValue = 0;
+                                        typeControl = 1;
+                                        break;
+                                    case FFParameterTypes.NumericInteger:
+                                        typeControl = 1;
+                                        break;
+                                }
+
+                                if (typeControl == 0)
+                                {
+                                    double? valueDouble = null;
+                                    if (!Utils.IsEmpty(row[columnName]))
+                                    {
+                                        valueDouble = Convert.ToDouble(row[columnName]);
+                                    }//.Format(CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator)
+                                    Html.Kendo().NumericTextBox()
+                                        .Name(paramKey)
+                                        .Placeholder(String.Empty)
+                                        .Spinners(false)
+                                        .Min(minValue)
+                                        .Max(maxValue)
+                                        .Format("n2")
+                                        .Decimals(2)
+                                        .HtmlAttributes(new { title = Translator.GetMessageString("strColumnTooltip") + ": " + colTitle[colIndex] + rowTooltip })
+                                        .Value(valueDouble)
+                                        .Render();
+
+                                }
+                                else if (typeControl == 1)
+                                {
+                                    int? valueInt = null;
+                                    if (!Utils.IsEmpty(row[columnName]))
+                                    {
+                                        valueInt = Convert.ToInt32(row[columnName]);
+                                    }
+
+                                    if (parameter.ParameterType.Equals(FFParameterTypes.NumericNatural))
+                                    {
+                                        Html.Kendo().NumericTextBox<int>()
+                                            .Name(paramKey)
+                                            .Placeholder(String.Empty)
+                                            .Spinners(false)
+                                            .Min(minValue)
+                                            .Max(maxValue)
+                                            .Format("n0")
+                                            .Decimals(0)
+                                            .HtmlAttributes(new { title = Translator.GetMessageString("strColumnTooltip") + ": " + colTitle[colIndex] + rowTooltip })
+                                            .Value(valueInt)
+                                            .Render();
+
+                                    }
+                                    else if (parameter.ParameterType.Equals(FFParameterTypes.NumericPositive))
+                                    {
+                                        Html.Kendo().NumericTextBox<decimal>()
+                                            .Name(paramKey)
+                                            .Placeholder(String.Empty)
+                                            .Spinners(false)
+                                            .Min(minValue)
+                                            .Max(maxValue)
+                                            .Format("n2")
+                                            .Decimals(2)
+                                            .HtmlAttributes(new { title = Translator.GetMessageString("strColumnTooltip") + ": " + colTitle[colIndex] + rowTooltip })
+                                            .Value(valueInt)
+                                            .Render();
+
+                                    }
+                                }
+                                else if (typeControl == 2)
+                                {
+                                    <div class='tdContainer'>
+                                        @Html.TextBox(paramKey, row[columnName], new { title = Translator.GetMessageString("strColumnTooltip") + ": " + colTitle[colIndex] + rowTooltip })
+                                    </div>
+                                }
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        rowTooltip += "<br/>" + column.Caption + ": " + row[column.ColumnName];
+                        if (Model.FFModel.ReadOnly)
+                        {
+                            <div class="readonlyFfCell">
+                                @row[column.ColumnName]
+                            </div>
+                        }
+                        else if (HelperFunctions.IsStubColumn(column))
+                        {
+                            <div class="ffGridBanded-@tdStubStyle-@columnStubNumber">
+                                @row[column.ColumnName]
+                            </div>
+                            columnStubNumber++;
+                        }
+                        else
+                        {
+                            <div>
+                                @row[column.ColumnName]
+                            </div>
+                        }
+                    }
+                </td>
+
+                colIndex++;
+            }
+        </tr>
+    }
+</table>
+
+@(Html.Kendo().Tooltip()
+        .For("#" + gridName)
+        .Filter("input[type='text']")
+        .Position(TooltipPosition.Bottom)
+        .AutoHide(false)
+        .ShowOn(TooltipShowOnEvent.Click)
+        .ContentTemplateId("template")
+        .Width(300)
+    )
+<script id="template" type="text/x-kendo-template">
+    #=target.data('title')#
+</script>

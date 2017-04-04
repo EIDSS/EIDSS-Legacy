@@ -1,0 +1,36 @@
+﻿@model eidss.model.Schema.LaboratorySectionGetByFieldBarcodeListItem.Accessor
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Configurations
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+
+<input type='hidden' id='useSelectedItems' value='true' />
+<script language="javascript" type="text/javascript">
+    $(window).load(function () {           
+    });
+    $(document).ready(function () {
+        gridFacade.clearSelectedItems();
+    });
+</script>
+
+<div class="popupContent searchPopupContent withoutSearchPanel">
+    <div class="windowButtonsPn">
+        <input id="idButtonSelect" type="button" class="windowButton" onclick="laboratory.selectGroupAccessionInFromGrid();" value="@Translator.GetMessageString("Select")" />
+        <input id="idButtonClose" type="button" class="windowButton" onclick="searchPicker.closePicker('true', 'SampleGroupAccessionInGrid')" value="@Translator.GetMessageString("Cancel")" />
+    </div>
+
+    @(Html.DetailsPopupSearchGrid<LaboratorySectionGetByFieldBarcodeListItem.LaboratorySectionGetByFieldBarcodeListItemGridModel, LaboratorySectionGetByFieldBarcodeListItem.LaboratorySectionGetByFieldBarcodeListItemGridModelList>(
+        new LaboratorySectionGetByFieldBarcodeListItem.LaboratorySectionGetByFieldBarcodeListItemGridModelList((long)AutoGridRoots.HumanCasePopUpSelectList),
+                "Laboratory", "SampleGroupAccessionInGridIndexAjax",
+                gridName: "GroupAccessionInGrid", selectionType: GridRowSelectionType.Multi,
+        getFilterFuncName: "laboratory.getGroupAccessionInFilter"))
+</div>
+

@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="AVRFacade" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost:8071/?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:8071/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:8071/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/eidss.model.AVR.ServiceData" />
+      <xsd:import schemaLocation="http://localhost:8071/?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/eidss.model.Avr.Chart" />
+      <xsd:import schemaLocation="http://localhost:8071/?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/System" />
+      <xsd:import schemaLocation="http://localhost:8071/?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/eidss.model.AVR.Db" />
+      <xsd:import schemaLocation="http://localhost:8071/?xsd=xsd6" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IAVRFacade_ExportChartToJpg_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExportChartToJpg" />
+  </wsdl:message>
+  <wsdl:message name="IAVRFacade_ExportChartToJpg_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExportChartToJpgResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAVRFacade_GetCachedView_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCachedView" />
+  </wsdl:message>
+  <wsdl:message name="IAVRFacade_GetCachedView_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCachedViewResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAVRFacade_GetCachedQueryTableHeader_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCachedQueryTableHeader" />
+  </wsdl:message>
+  <wsdl:message name="IAVRFacade_GetCachedQueryTableHeader_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCachedQueryTableHeaderResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAVRFacade_GetConcreteCachedQueryTableHeader_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetConcreteCachedQueryTableHeader" />
+  </wsdl:message>
+  <wsdl:message name="IAVRFacade_GetConcreteCachedQueryTableHeader_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetConcreteCachedQueryTableHeaderResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAVRFacade_GetCachedQueryTablePacket_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCachedQueryTablePacket" />
+  </wsdl:message>
+  <wsdl:message name="IAVRFacade_GetCachedQueryTablePacket_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCachedQueryTablePacketResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAVRFacade_InvalidateQueryCacheForLanguage_InputMessage">
+    <wsdl:part name="parameters" element="tns:InvalidateQueryCacheForLanguage" />
+  </wsdl:message>
+  <wsdl:message name="IAVRFacade_InvalidateQueryCacheForLanguage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:InvalidateQueryCacheForLanguageResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAVRFacade_InvalidateQueryCache_InputMessage">
+    <wsdl:part name="parameters" element="tns:InvalidateQueryCache" />
+  </wsdl:message>
+  <wsdl:message name="IAVRFacade_InvalidateQueryCache_OutputMessage">
+    <wsdl:part name="parameters" element="tns:InvalidateQueryCacheResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAVRFacade_GetQueryRefreshDateTime_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetQueryRefreshDateTime" />
+  </wsdl:message>
+  <wsdl:message name="IAVRFacade_GetQueryRefreshDateTime_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetQueryRefreshDateTimeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAVRFacade_GetServiceVersion_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetServiceVersion" />
+  </wsdl:message>
+  <wsdl:message name="IAVRFacade_GetServiceVersion_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetServiceVersionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAVRFacade_GetDatabaseName_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDatabaseName" />
+  </wsdl:message>
+  <wsdl:message name="IAVRFacade_GetDatabaseName_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDatabaseNameResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAVRFacade_GetQueryIdList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetQueryIdList" />
+  </wsdl:message>
+  <wsdl:message name="IAVRFacade_GetQueryIdList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetQueryIdListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAVRFacade_GetLayoutIdList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetLayoutIdList" />
+  </wsdl:message>
+  <wsdl:message name="IAVRFacade_GetLayoutIdList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetLayoutIdListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAVRFacade_CopyLayout_InputMessage">
+    <wsdl:part name="parameters" element="tns:CopyLayout" />
+  </wsdl:message>
+  <wsdl:message name="IAVRFacade_CopyLayout_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CopyLayoutResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IAVRFacade">
+    <wsdl:operation name="ExportChartToJpg">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAVRFacade/ExportChartToJpg" message="tns:IAVRFacade_ExportChartToJpg_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAVRFacade/ExportChartToJpgResponse" message="tns:IAVRFacade_ExportChartToJpg_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCachedView">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAVRFacade/GetCachedView" message="tns:IAVRFacade_GetCachedView_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAVRFacade/GetCachedViewResponse" message="tns:IAVRFacade_GetCachedView_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCachedQueryTableHeader">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAVRFacade/GetCachedQueryTableHeader" message="tns:IAVRFacade_GetCachedQueryTableHeader_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAVRFacade/GetCachedQueryTableHeaderResponse" message="tns:IAVRFacade_GetCachedQueryTableHeader_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetConcreteCachedQueryTableHeader">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAVRFacade/GetConcreteCachedQueryTableHeader" message="tns:IAVRFacade_GetConcreteCachedQueryTableHeader_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAVRFacade/GetConcreteCachedQueryTableHeaderResponse" message="tns:IAVRFacade_GetConcreteCachedQueryTableHeader_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCachedQueryTablePacket">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAVRFacade/GetCachedQueryTablePacket" message="tns:IAVRFacade_GetCachedQueryTablePacket_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAVRFacade/GetCachedQueryTablePacketResponse" message="tns:IAVRFacade_GetCachedQueryTablePacket_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="InvalidateQueryCacheForLanguage">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAVRFacade/InvalidateQueryCacheForLanguage" message="tns:IAVRFacade_InvalidateQueryCacheForLanguage_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAVRFacade/InvalidateQueryCacheForLanguageResponse" message="tns:IAVRFacade_InvalidateQueryCacheForLanguage_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="InvalidateQueryCache">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAVRFacade/InvalidateQueryCache" message="tns:IAVRFacade_InvalidateQueryCache_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAVRFacade/InvalidateQueryCacheResponse" message="tns:IAVRFacade_InvalidateQueryCache_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetQueryRefreshDateTime">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAVRFacade/GetQueryRefreshDateTime" message="tns:IAVRFacade_GetQueryRefreshDateTime_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAVRFacade/GetQueryRefreshDateTimeResponse" message="tns:IAVRFacade_GetQueryRefreshDateTime_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetServiceVersion">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAVRFacade/GetServiceVersion" message="tns:IAVRFacade_GetServiceVersion_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAVRFacade/GetServiceVersionResponse" message="tns:IAVRFacade_GetServiceVersion_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDatabaseName">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAVRFacade/GetDatabaseName" message="tns:IAVRFacade_GetDatabaseName_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAVRFacade/GetDatabaseNameResponse" message="tns:IAVRFacade_GetDatabaseName_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetQueryIdList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAVRFacade/GetQueryIdList" message="tns:IAVRFacade_GetQueryIdList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAVRFacade/GetQueryIdListResponse" message="tns:IAVRFacade_GetQueryIdList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLayoutIdList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAVRFacade/GetLayoutIdList" message="tns:IAVRFacade_GetLayoutIdList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAVRFacade/GetLayoutIdListResponse" message="tns:IAVRFacade_GetLayoutIdList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CopyLayout">
+      <wsdl:input wsaw:Action="http://tempuri.org/IAVRFacade/CopyLayout" message="tns:IAVRFacade_CopyLayout_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IAVRFacade/CopyLayoutResponse" message="tns:IAVRFacade_CopyLayout_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IAVRFacade" type="tns:IAVRFacade">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ExportChartToJpg">
+      <soap:operation soapAction="http://tempuri.org/IAVRFacade/ExportChartToJpg" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCachedView">
+      <soap:operation soapAction="http://tempuri.org/IAVRFacade/GetCachedView" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCachedQueryTableHeader">
+      <soap:operation soapAction="http://tempuri.org/IAVRFacade/GetCachedQueryTableHeader" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetConcreteCachedQueryTableHeader">
+      <soap:operation soapAction="http://tempuri.org/IAVRFacade/GetConcreteCachedQueryTableHeader" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCachedQueryTablePacket">
+      <soap:operation soapAction="http://tempuri.org/IAVRFacade/GetCachedQueryTablePacket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InvalidateQueryCacheForLanguage">
+      <soap:operation soapAction="http://tempuri.org/IAVRFacade/InvalidateQueryCacheForLanguage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InvalidateQueryCache">
+      <soap:operation soapAction="http://tempuri.org/IAVRFacade/InvalidateQueryCache" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetQueryRefreshDateTime">
+      <soap:operation soapAction="http://tempuri.org/IAVRFacade/GetQueryRefreshDateTime" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetServiceVersion">
+      <soap:operation soapAction="http://tempuri.org/IAVRFacade/GetServiceVersion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDatabaseName">
+      <soap:operation soapAction="http://tempuri.org/IAVRFacade/GetDatabaseName" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetQueryIdList">
+      <soap:operation soapAction="http://tempuri.org/IAVRFacade/GetQueryIdList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLayoutIdList">
+      <soap:operation soapAction="http://tempuri.org/IAVRFacade/GetLayoutIdList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CopyLayout">
+      <soap:operation soapAction="http://tempuri.org/IAVRFacade/CopyLayout" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AVRFacade">
+    <wsdl:port name="BasicHttpBinding_IAVRFacade" binding="tns:BasicHttpBinding_IAVRFacade">
+      <soap:address location="http://localhost:8071/" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

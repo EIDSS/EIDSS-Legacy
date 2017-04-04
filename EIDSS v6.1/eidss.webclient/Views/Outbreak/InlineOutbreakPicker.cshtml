@@ -1,0 +1,35 @@
+﻿@model bv.model.Model.Core.IObject
+           
+@using eidss.webclient.Utils
+
+<script language="javascript" type="text/javascript">
+    $($('#@(ViewBag.MainDivId)')).ready(function () {
+        outbreak.initInlinePicker('@(ViewBag.BtnSearchPicker)', '@(ViewBag.BtnClianPicker)', '@(ViewBag.BtnViewPicker)', '@(ViewBag.IsSearchButtonReadOnly)', '@(ViewBag.IsClianButtonReadOnly)', '@(ViewBag.IsViewButtonReadOnly)',
+        '@(ViewBag.MainDivId)');
+    });
+</script>
+
+@*Html.BvHidden(Model, (string)ViewBag.IdfsOutbreakPropertyName)*@
+
+@{
+    var className = Model.IsInvisible(ViewBag.IdfsOutbreakPropertyName) ? "invisible" : "";
+}
+
+<div id="@ViewBag.MainDivId" class="@className">
+    <span class="picker">
+        <span class="pickerWrap">
+            @Html.BvHidden(Model, (string)ViewBag.IdfsOutbreakPropertyName)
+            @Html.BvEditbox(Model, (string)ViewBag.StrOutbreakPropertyName)  
+            <span class="pickerSelect" onclick='@ViewBag.OnClianButtonClick' id='@ViewBag.BtnClianPicker'>
+                <span class="k-icon k-i-close"></span>
+            </span>
+        </span>
+    </span>
+    <button id='@ViewBag.BtnSearchPicker' class="button smallImageButton" onclick='@ViewBag.OnSelectItemClick' type="button" alt="Select">
+        <img src="@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/Search.png"))" alt="Select" draggable='false' />
+    </button>
+    <button id='@ViewBag.BtnViewPicker' class="button smallImageButton" onclick='ActionEditOutbreak($("#@(Model.ObjectIdent + (string)ViewBag.IdfsOutbreakPropertyName)")[0].value)' type="button" alt="View">
+        <img src="@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/view_icon.png"))" alt="View" draggable='false' />
+    </button>
+</div>
+

@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="BasicSyndromicSurveillanceAggregateList"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="fn_BasicSyndromicSurveillanceAggregate_SelectList" type="fnlist" filter-object="BasicSyndromicSurveillance" />
+  </storage>
+
+  <tables>
+    <table name="BasicSyndromicSurveillanceAggregateList">
+      <properties auditObject="daoBssForm" auditTable="tlbBasicSyndromicSurveillance" permissionObject="AccessToBssModule"/>
+      <help win="SS_aggr_list"/>
+      <searchpanel>
+        <item name="strFormID" editor="Text" labelId="strFormID" />
+
+        <item name="datStartDate" editor="Date" labelId="strWeeksFrom" defaultoper="&gt;=" default="c=>DatePeriodHelper.GetFirstWeekOfYear(DateTime.Today.Year)"/>
+        <item name="datFinishDate" editor="Date" labelId="strWeeksTo" defaultoper="&lt;=" default="c=>DateTime.Now"/>
+
+        <item name="idfHospital" editor="Lookup" labelId="strHospital" 
+                  lookupName="HospitalLookup" lookupType="OrganizationLookup" lookupText="c.name" lookupValue="c.idfInstitution"/>
+        
+        <item name="idfsSite" editor="Lookup" labelId="lbDataEntrySiteID" default="c=>(c as BasicSyndromicSurveillanceAggregateList).SiteLookup.SingleOrDefault(s=>s.idfsSite == EidssSiteContext.Instance.SiteID)"	lookupName="SiteLookup" lookupType="SiteLookup" lookupText="c.strSiteName" lookupValue="c.idfsSite">
+            <columns>
+              <column name="strSiteName" />
+              <column name="strSiteID"  />
+            </columns>  
+        </item>
+        
+      </searchpanel>
+      <grid>
+        <item name="idfAggregateHeader" visible="false" key="true"/>
+        <item name="strFormID" action="ActionEditBSS"/>
+        <item name="strWeek" type="string"/>
+        <item name="strHospitals" />
+      </grid>
+      <labels>
+        <item labelId="strHospital" name="strHospitals"/>
+        <item labelId="WeekForAggr" name="strWeek"/>
+      </labels>
+      <fields>
+        <storage name="idfHospital" type="long?"/>
+        <calculated name="strWeek" depends="intWeek" type="string" lambda="c => eidss.model.Helpers.AggregateListHelper.GetWeekCaption(c.intYear, c.intWeek)"/>
+      </fields>
+      <readonly>
+        <fields name="*" predicate="c => false" />
+      </readonly>
+			<lookups>
+				<lookup name="Hospital" table="OrganizationLookup" source="idfHospital" target="idfInstitution">
+          <params>
+            <param name="ID" const="null" />
+            <param name="intHACode" type="int" lambda="c => (int)HACode.Syndromic" />
+          </params>
+          <filters>
+            <filter predicate="c => (((c.intHACode??0) &amp; (int)HACode.Syndromic) != 0) || c.idfInstitution == obj.idfHospital" />
+          </filters>          
+        </lookup>
+        <lookup name="Site" table="SiteLookup" source="idfsSite" target="idfsSite">
+          <filters>
+            <filter predicate="c => (c.intHACode.GetValueOrDefault() &amp; (int)HACode.Syndromic) != 0"/>
+          </filters>
+        </lookup>
+      </lookups>
+      <storage>
+        <delete name="spBasicSyndromicSurveillanceAggregateHeader_Delete"/>
+      </storage>
+      <extenders>
+        <creating>
+          <custom_extender>
+          </custom_extender>
+        </creating>
+        <created>
+        </created>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+        </fieldhandler>
+      </handlers>
+      <actions child="BasicSyndromicSurveillanceAggregateHeader">
+        <standard>
+          <remove type="Report"/>
+        </standard>
+        <action name="ActionEditBSS" type="Action">
+          <run>
+            <preUI webType="JScript"/>
+          </run>
+        </action>
+      </actions>
+    </table>
+  </tables>
+
+</object>

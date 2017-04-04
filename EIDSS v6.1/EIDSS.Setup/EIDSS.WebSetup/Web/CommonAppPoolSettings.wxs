@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "$(var.ProjectDir)ProductInfo.wxi" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="Idle Timeout Settings">
+    <Property Id="DEFAULT_APP_POOL_IDLE_TIMEOUT_IN_MINUTES" Secure="yes" Value="60" />
+    <Property Id="IdleTimoutLowerBound" Value="15" />
+    <Property Id="IdleTimoutUpperBound" Value="300" />
+    <Property Id="APP_POOL_IDLE_TIMEOUT_IN_MINUTES" Secure="yes">
+      <RegistrySearch Id="APP_POOL_IDLE_TIMEOUT_IN_MINUTES.RS" Root="HKLM" Key="$(var.WebRegistryKey)" Name="AppPoolIdleTimeout" Type="raw" />
+    </Property>
+    <SetProperty Id="APP_POOL_IDLE_TIMEOUT_IN_MINUTES" Value="[DEFAULT_APP_POOL_IDLE_TIMEOUT_IN_MINUTES]" After="AppSearch" Sequence="first">
+      Not APP_POOL_IDLE_TIMEOUT_IN_MINUTES Or "" = APP_POOL_IDLE_TIMEOUT_IN_MINUTES
+    </SetProperty>
+
+    <DirectoryRef Id="APPLICATIONFOLDER">
+      <Component Id="IdleTimeoutSetting" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.WebRegistryKey)">
+          <RegistryValue Name="AppPoolIdleTimeout" Value="[APP_POOL_IDLE_TIMEOUT_IN_MINUTES]" Type="string" KeyPath="yes" />
+        </RegistryKey>
+      </Component>
+    </DirectoryRef>
+
+    <CustomAction Id="GetAppPoolIdleTimeoutInSeconds" DllEntry="GetAppPoolIdleTimeoutInSeconds" BinaryKey="CustomActions" />
+    <InstallExecuteSequence>
+      <Custom Action="GetAppPoolIdleTimeoutInSeconds" After="SetAPP_POOL_IDLE_TIMEOUT_IN_MINUTES"><![CDATA[NOT REMOVE~="ALL"]]></Custom>
+    </InstallExecuteSequence>
+  </Fragment>
+</Wix>

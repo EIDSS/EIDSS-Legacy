@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="VetAggregateActionSummary"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="spAggregateCaseDummy_SelectDetail" />
+	</storage>
+
+	<tables>
+		<table name="VetAggregateActionSummary">
+      <help web="VC_V14"/>
+      <labels>
+        <item name="strPeriodName" labelId="idfsPeriodType" />
+      </labels>
+      <fields>
+        <storage name="idfsPeriodType" type="long?"/>
+        <storage name="idfsAreaType" type="long?"/>
+      </fields>
+      <relations>
+        <relation name="AggregateCaseListItems" table="VetAggregateActionListItem" internal="false" type="child" notautoload="true" lazy="false" source="idfAggrCase" target="" />
+      </relations>
+      <lookups>
+        <lookup name="StatisticPeriodType" table="BaseReference" section="rftStatisticPeriodType" source="idfsPeriodType" target="idfsBaseReference" />
+        <lookup name="StatisticAreaType" table="BaseReference" section="rftStatisticAreaType" source="idfsAreaType" target="idfsBaseReference" />
+      </lookups>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfAggrCase" class="GetNewIDExtender" />
+        </creating>
+      </extenders>
+      <validators>
+        <post>
+          <required_validator target="idfsPeriodType" property="StatisticPeriodType" />
+          <required_validator target="idfsAreaType" property="StatisticAreaType"/>
+        </post>
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <remove type="Delete"/>
+          <remove type="Ok"/>
+          <remove type="Cancel"/>
+          <remove type="Save"/>
+          <remove type="Report"/>
+        </standard>
+        <action name="Select" type="Action">
+          <visual panel="Top" alignment="Right">
+            <regular caption="strSelect_Id" icon="" tooltip="strSelect_Id"/>
+          </visual>
+          <run>
+            <preUI webType="JScript" methodName="aggregateSummary.selectVetAggrAction"/>
+          </run>
+        </action>
+        <action name="RemoveAll" type="Action">
+          <visual panel="Top" alignment="Right">
+            <regular caption="strRemoveAll_Id" icon="" tooltip="strRemoveAll_Id"/>
+          </visual>
+          <run>
+            <preUI webType="JScript" methodName="aggregateSummary.removeAllFromAggrCase"/>
+          </run>
+        </action>
+
+        <action name="ShowSummaryInfo" type="Action">
+          <visual panel="Main" alignment="Right">
+            <regular caption="strShowSummaryInfo_Id" icon="" tooltip="strShowSummaryInfo_Id"/>
+          </visual>
+          <run>
+            <preUI webType="JScript" methodName="aggregateSummary.showSummaryInfoAggrCase"/>
+          </run>
+        </action>
+
+        <action name="ReportContextMenu" type="Action">
+          <visual panel="Main" alignment="Left">
+            <regular caption="strReport_Id" icon="Report" tooltip="strReport_Id"/>
+          </visual>
+          <run>
+            <preUI webType="JScript"/>
+          </run>
+        </action>
+
+        <action name="PaperForm" type="Action">
+          <visual panel="ContextMenu">
+            <regular caption="titleVetAggregateActionsSummaryReport" icon="" tooltip=""/>
+          </visual>
+          <run>
+            <preUI webType="JScript" methodName="aggregateSummary.printAggrCase"/>
+          </run>
+        </action>
+      </actions>
+    </table>
+	</tables>
+
+</object>

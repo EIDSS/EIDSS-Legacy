@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "$(var.ProjectDir)ProductInfo.wxi" ?>
+<?define OpenAPIRegistryKey = $(var.WebRegistryKey)\OpenAPI?>
+
+<Wix
+  xmlns="http://schemas.microsoft.com/wix/2006/wi"
+  xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension"
+  xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+
+  <Fragment Id="EIDSS OpenAPI">
+    <ComponentGroup Id="eidss.openapi">
+      <ComponentRef Id="OpenAPI.AppPool" />
+      <ComponentGroupRef Id="OpenAPI.WebSite" />
+      <ComponentGroupRef Id="eidss.openapi.Harvested" />
+      <ComponentGroupRef Id="openapi.ThirdParty.GIS.GDBAPI" />
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment Id="EIDSS.OpenAPI APP Pool">
+    <Property Id="OPEN_API_APPPOOL" Secure="yes">
+      <RegistrySearch Id="OPEN_API_APPPOOL.RS" Root="HKLM" Key="$(var.OpenAPIRegistryKey)" Name="AppPool" Type="raw" />
+    </Property>
+    <SetProperty
+      Id="OPEN_API_APPPOOL"
+      After="SetOPEN_API_WEBSITE_NAME"
+      Value="[OPEN_API_WEBSITE_NAME]"
+      Sequence="execute">Not OPEN_API_APPPOOL</SetProperty>
+
+    <DirectoryRef Id="CommonAppData.Product">
+      <Component Id="OpenAPI.AppPool" MultiInstance="yes">
+        <RegistryValue Root="HKLM" Key="$(var.OpenAPIRegistryKey)" Name="AppPool" Value="[OPEN_API_APPPOOL]" Type="string" KeyPath="yes" />
+        <iis:WebAppPool
+          Id="OpenAPI.AppPool"
+          Name="[OPEN_API_APPPOOL]"
+          ManagedRuntimeVersion="v4.0"
+          ManagedPipelineMode="Integrated"
+          Identity="other"
+          User="ServiceAccount" />
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+
+  <Fragment Id="OpenAPI.WebSite">
+    <Property Id="OPEN_API_WEBSITE_NAME" Secure="yes">
+      <RegistrySearch Id="OPEN_API_WEBSITE_NAME.RS" Root="HKLM" Key="$(var.OpenAPIRegistryKey)" Name="WebSite" Type="raw" />
+    </Property>
+    <SetProperty
+      Action="SetOPEN_API_WEBSITE_NAME"
+      Id="OPEN_API_WEBSITE_NAME"
+      After="AppSearch"
+      Value="$(var.ProductFamilyAbbreviation).OpenAPI_v$(var.MajorVersion)_[COUNTRY]([INSTANCEID])"
+      Sequence="execute">
+      Not OPEN_API_WEBSITE_NAME
+    </SetProperty>
+
+    <Property Id="OPEN_API_WEBSITE_IP" Value="*" Secure="yes">
+      <RegistrySearch Id="OPEN_API_WEBSITE_IP.RS" Root="HKLM" Key="$(var.OpenAPIRegistryKey)" Name="IP" Type="raw" />
+    </Property>
+    <Property Id="OPEN_API_WEBSITE_HEADER" Value="openapi.DOMAIN.com" Secure="yes">
+      <RegistrySearch Id="OPEN_API_WEBSITE_HEADER.RS" Root="HKLM" Key="$(var.OpenAPIRegistryKey)" Name="Header" Type="raw" />
+    </Property>
+    <Property Id="OPEN_API_WEBSITE_PORT" Secure="yes">
+      <RegistrySearch Id="OPEN_API_WEBSITE_PORT.RS" Root="HKLM" Key="$(var.OpenAPIRegistryKey)" Name="Port" Type="raw" />
+    </Property>
+
+    <ComponentGroup Id="OpenAPI.WebSite" Directory="eidss.openapi">
+      <Component Id="OpenAPI.WebSite" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.OpenAPIRegistryKey)">
+          <RegistryValue Name="WebSite" Value="[OPEN_API_WEBSITE_NAME]" Type="string" KeyPath="yes" />
+          <RegistryValue Name="IP" Value="[OPEN_API_WEBSITE_IP]" Type="string" />
+          <RegistryValue Name="Header" Value="[OPEN_API_WEBSITE_HEADER]" Type="string" />
+          <RegistryValue Name="Port" Value="[OPEN_API_WEBSITE_PORT]" Type="string" />
+        </RegistryKey>
+        <iis:WebSite
+          Id="OpenAPI.WebSite"
+          Description="[OPEN_API_WEBSITE_NAME]"
+          StartOnInstall="yes"
+          Directory="eidss.openapi"
+          AutoStart="yes"
+          ConfigureIfExists="yes">
+
+          <iis:WebAddress Id="OpenAPI.WebAddress" Port="[OPEN_API_WEBSITE_PORT]" Header="[OPEN_API_WEBSITE_HEADER]" IP="[OPEN_API_WEBSITE_IP]" />
+          <iis:WebApplication Id="OpenAPI.WebApplication" Name="OpenAPI" WebAppPool="OpenAPI.AppPool" />
+        </iis:WebSite>
+      </Component>
+
+      <?define website = OpenAPI?>
+      <Component Id="$(var.website).web.config" Guid="{5117FAAF-B6A9-433B-B75A-A0233CAFCFAE}" KeyPath="yes" MultiInstance="yes">
+        <File Id="$(var.website).web.config" Name="web.config" Checksum="yes" Source="$(var.OpenAPIPath)web.config" CompanionFile="eidss.openapi.web.dll" />
+      </Component>
+      <?include TurnOffDebug.wxi?>
+      <ComponentRef Id="eidss.openapi.web.dll" />
+    </ComponentGroup>
+
+    <DirectoryRef Id="eidss.openapi.bin">
+      <Component Id="eidss.openapi.web.dll" MultiInstance="yes">
+        <File Id="eidss.openapi.web.dll" KeyPath="yes" Checksum="yes" Source="$(var.OpenAPIPath)bin\eidss.openapi.web.dll" />
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+
+  <?define website=openapi?>
+  <Fragment Id="$(var.website).ThirdParty.GIS.GDBAPI">
+    <ComponentGroup Id="$(var.website).ThirdParty.GIS.GDBAPI" Directory="eidss.$(var.website).bin">
+      <ComponentGroupRef Id="$(var.website).ThirdParty.GIS.GDBAPI.x86" />
+      <ComponentGroupRef Id="$(var.website).ThirdParty.GIS.GDBAPI.x64" />
+    </ComponentGroup>
+
+    <?include GDBAPI.wxi?>
+  </Fragment>
+  
+  <Fragment Id="openapi.StructureMap.DI">
+    <?define directory = eidss.openapi.bin?>
+    <?define prefix = openapi?>
+    <?define guid = {F8CA5CA5-49F2-41ED-8D17-80BABD75F7E2}?>
+    <?include $(var.SolutionDir)StructureMap.wxi?>
+  </Fragment>
+</Wix>

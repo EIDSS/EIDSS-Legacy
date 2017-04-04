@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="Rule"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+    <storage>
+      <!--get name="spFFGetRules" type="simplelist" /-->
+      <get name="spFFGetRules" type="lookuplist" cache="true" />
+    </storage>
+    <tables>
+        <table name="Rule">
+          <keys>
+            <key name="idfsRule"/>
+            <!--key name="idfsFormTemplate"/>
+            <key name="langid"/-->
+          </keys>
+          <fields>
+            <storage name="idfsRuleActionDummy" type="long?"/>
+            <storage name="idfRuleConstantDummy" type="long?"/>
+            <storage name="idfsParameterDummy" type="long?"/>
+          </fields>
+          <!--relations>
+            <relation name="Actions" table="RuleAction" internal="false" type="child" lazy="false" source="idfsRule" target="idfsRule" />
+            <relation name="Constants" table="RuleConstant" internal="false" type="child" lazy="false" source="idfsRule" target="idfsRule" />
+            <relation name="Parameters" table="RuleParameter" internal="false" type="child" lazy="false" source="idfsRule" target="idfsRule" />
+          </relations-->
+          <lookups>
+            <lookup name="Actions" table="RuleAction" source="idfsRuleActionDummy" target="idfsRuleAction" notaddempty="true" isshowdeleted="true">
+              <params>
+                <param name="idfsRule" type="Int64" lambda="c => c.idfsRule" />
+              </params>
+            </lookup>
+            <lookup name="Constants" table="RuleConstant" source="idfRuleConstantDummy" target="idfRuleConstant" notaddempty="true" isshowdeleted="true">
+              <params>
+                <param name="idfsRule" type="Int64" lambda="c => c.idfsRule" />
+              </params>
+            </lookup>
+            <lookup name="Parameters" table="RuleParameter" source="idfsParameterDummy" target="idfsParameter" notaddempty="true" isshowdeleted="true">
+              <params>
+                <param name="idfsRule" type="Int64" lambda="c => c.idfsRule" />
+              </params>
+            </lookup>
+            <lookup name="Functions" table="RuleFunctionLookup" source="idfsRuleFunction" target="idfsRuleFunction" notaddempty="true" >
+              <params>
+                <param name="count" const="-1" />
+              </params>
+            </lookup>
+          </lookups>
+
+          <!--actions>
+            <action name="SelectDetailList" type="Loadlist" />
+          </actions-->
+        </table>
+    </tables>
+</object>

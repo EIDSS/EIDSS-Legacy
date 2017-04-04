@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<object name="OutbreakListItem" connection="EidssConnectionString" generator="ObjectGenerator.xslt" xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="fn_Outbreak_SelectList" type="fnlist" filter-object="Outbreak" />
+		<count name="spOutbreak_SelectCount"/>
+	</storage>
+
+	<tables>
+		<table name="OutbreakListItem">
+            <properties auditObject="daoOutbreak" auditTable="tlbOutbreak" permissionObject="Outbreak" />
+      <help win="OB_C10" web="OB_C10"/>
+      <extfilters>
+        <filter>
+          <join>
+            inner join
+            (
+            select distinct hc.idfOutbreak from tlbHumanCase hc
+            inner join tlbHuman h on h.idfHuman = hc.idfHuman
+            where dbo.fnConcatFullName(h.strLastName, h.strFirstName, h.strSecondName) like @strHumanPatientName1
+            and hc.intRowStatus = 0
+            and h.intRowStatus = 0
+            ) o_hc on o_hc.idfOutbreak = dbo.fn_Outbreak_SelectList.idfOutbreak
+          </join>
+          <where>
+            <expr param="strHumanPatientName1" value="1=1"/>
+          </where>
+        </filter>
+        <filter>
+          <join>
+          inner join
+			    (
+			    select distinct vc.idfOutbreak from tlbVetCase vc 
+				    inner join tlbFarm f on f.idfFarm = vc.idfFarm
+				    inner join tlbHuman h on h.idfHuman = f.idfHuman
+			    where dbo.fnConcatFullName(h.strLastName, h.strFirstName, h.strSecondName) like @strFarmOwner1
+				    and vc.intRowStatus = 0 
+				    and f.intRowStatus=0 
+				    and h.intRowStatus = 0
+			    ) o_vc on o_vc.idfOutbreak = dbo.fn_Outbreak_SelectList.idfOutbreak
+          </join>
+          <where>
+            <expr param="strFarmOwner1" value="1=1"/>
+          </where>
+        </filter>
+
+      </extfilters>
+      <searchpanel>
+				<item name="strOutbreakID" editor="Text" labelId="strOutbreakID" />
+				<item name="idfsDiagnosisOrDiagnosisGroup" editor="Lookup" editorWidth="Large" labelId="DiagnosisName" 
+					  lookupName="DiagnosisLookup" lookupType="DiagnosisLookup" lookupText="c.name" lookupValue="c.idfsDiagnosis" />
+        <item name="idfsDiagnosisGroup" editor="Lookup" labelId="strDiagnosisGroup" isParam="true"
+            lookupName="DiagnosisGroupLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        <item name="datStartDate" editor="Date" labelId="Outbreak.datStartDate" range="true" 
+					  default="c => DateTime.Today.AddDays(-EidssUserContext.User.Options.Prefs.DefaultDays)"/>
+				<item name="datFinishDate" editor="Date" labelId="Outbreak.datFinishDate" range="true" />
+				<item name="strGeoLocationName" editor="Text" labelId="strGeoLocationName" />
+				<item name="idfsOutbreakStatus" editor="Lookup" labelId="strOutbreakStatus" 
+					  lookupName="OutbreakStatusLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference" />
+        <item name="strHumanPatientName1" editor="Text" labelId="strHumanPatientName" isParam="true" />
+        <item name="strFarmOwner1" editor="Text" labelId="strFarmOwnerName" isParam="true"/>
+      </searchpanel> 
+
+			<grid>
+				<item name="idfOutbreak" visible="false" key="true" />
+				<item name="strOutbreakID" action="ActionEditOutbreak" required="true" />
+				<item name="strDiagnosisOrDiagnosisGroup" />
+				<item name="datStartDate" required="true" />
+				<item name="datFinishDate" />
+				<item name="strGeoLocationName" />
+				<item name="strOutbreakStatus" />
+				<item name="strPatientName"/>
+			</grid>
+      
+      <personaldata>
+        <group name="Human_PersonName">
+          <item name="strPatientName"/>
+          <item name="strHumanPatientName"/>
+        </group>
+        <group name="Vet_Farm_Settlement">
+          <item name="strFarmOwner"/>
+          <item name="strPatientName"/>
+        </group>
+        <group name="Vet_Farm_Details">
+          <item name="strFarmOwner"/>
+          <item name="strPatientName"/>
+        </group>
+      </personaldata>
+
+      <lookups>
+				<lookup name="Diagnosis" table="DiagnosisLookup" source="idfsDiagnosisOrDiagnosisGroup" target="idfsDiagnosis">
+          <filters>
+            <filter predicate="c => !EidssUserContext.User.DenyDiagnosis.ContainsKey(c.idfsDiagnosis)"/>
+            <filter predicate="c => ((c.intHACode &amp; (int)HACode.HumanLivestockAvianVector) != 0) || c.idfsDiagnosis == obj.idfsDiagnosisOrDiagnosisGroup" />
+            <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsDiagnosisOrDiagnosisGroup" />
+          </filters>
+				</lookup>
+        <lookup name="DiagnosisGroup" table="BaseReference" section="rftDiagnosisGroup" source="idfsDiagnosisGroup" target="idfsBaseReference" />
+				<lookup name="OutbreakStatus" table="BaseReference" section="rftOutbreakStatus" source="idfsOutbreakStatus" target="idfsBaseReference" />
+			</lookups>
+
+			<storage>
+				<delete name="spOutbreak_Delete"/>
+				<candelete name="spOutbreak_CanDelete"/>
+			</storage>
+			
+			<actions child="Outbreak">
+        <action name="ActionEditOutbreak" type="Action">
+          <run>
+            <preUI webType="JScript"/>
+          </run>
+        </action>
+      </actions>
+		</table>
+	</tables>
+
+</object>

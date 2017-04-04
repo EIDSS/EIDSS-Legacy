@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="HumanCaseDeduplicationListItem"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="fn_Organization_SelectList" type="fnlist" />
+		<count name="spOrganization_SelectCount"/>
+	</storage>
+
+	<tables>
+		<table name="OrganizationListItem">
+      <properties auditObject="daoOrganization" auditTable="tlbOffice" permissionObject="Organization">
+        <lookupcache>
+          <item name="Organization"/>
+        </lookupcache>
+      </properties>
+      <help win="Organisations"/>
+      <extfilters>
+				<filter>
+					<join>
+						INNER JOIN fnInstitution(@LangID)
+						ON fn_Organization_SelectList.idfInstitution = fnInstitution.idfOffice
+						INNER JOIN tlbGeoLocationShared geo
+						ON fnInstitution.idfLocation = geo.idfGeoLocationShared
+					</join>
+					<where>
+						<!--<expr param="name" value="1=1"/>-->
+						<expr param="idfsRegion1" value="geo.idfsRegion {0} @idfsRegion1"/>
+						<expr param="idfsRayon1" value="geo.idfsRayon {0} @idfsRayon1"/>
+						<expr param="idfsSettlement1" value="geo.idfsSettlement {0} @idfsSettlement1"/>
+						<expr param="blnForeignAddress" value="(isnull(@blnForeignAddress,0) = 0 or geo.blnForeignAddress {0} @blnForeignAddress)"/>
+					</where>
+				</filter>
+			</extfilters>
+			<searchpanel>
+				<item name="strOrganizationID" editor="Text" labelId="strOrganizationID" default="c => String.Empty"/>
+				<item name="name" editor="Text" labelId="Abbreviation" default="c => String.Empty"/>
+				<item name="FullName" editor="Text" labelId="Organization.Name" default="c => String.Empty"/>
+        <item name="intHACode" editor="Lookup" labelId="strOrganizationHACode" multiple="true" bitmask="true"
+             lookupName="HACodeLookup" lookupType="HACodeLookup" lookupText="c.CodeName" lookupValue="c.intHACode"/>
+        <item name="blnForeignAddress" editor="Flag" isParam="true" labelId="lblShowForeignOrganization" /> <!-- dependent="idfsRegion" -->
+        <item name="idfsRegion1" editor="Lookup" labelId="idfsRegion" isParam="true" dependent="idfsRayon1"
+					  lookupName="RegionLookup" lookupType="RegionLookup" lookupText="c.strRegionName" lookupValue="c.idfsRegion"
+					  defaultoper="="/>
+				<item name="idfsRayon1" editor="Lookup" labelId="idfsRayon" isParam="true" dependent="idfsSettlement1"
+					  lookupName="RayonLookup" lookupType="RayonLookup" lookupText="c.strRayonName" lookupValue="c.idfsRayon"/>
+				<item name="idfsSettlement1" editor="Lookup" labelId="Settlement" isParam="true"
+					  lookupName="SettlementLookup" lookupType="SettlementLookup" lookupText="c.strSettlementName" lookupValue="c.idfsSettlement"/>
+
+      </searchpanel>
+
+      <grid orderby="ISNULL(dbo.fn_Organization_SelectList.intOrder,0), dbo.fn_Organization_SelectList.name">
+				<item name="idfInstitution" visible="false" key="true" />
+				<item name="name" required="true" />
+				<item name="FullName" required="true" />
+				<item name="strOrganizationID" required="true" />
+				<item name="Address"/>
+				<item name="intOrder"/>
+			</grid>
+
+			<labels>
+				<item name="FullName" labelId="Organization.Name"/>
+        <item name="name" labelId="Abbreviation"/>
+        <item name="strOrganizationID" labelId="strOrganizationID"/>
+        <item name="Address" labelId="Organization.Address"/>
+			</labels>
+
+      <fields>
+				<storage name="idfsCountry" type="long?" />
+				<storage name="idfsRegion1" type="long?" />
+				<storage name="idfsRayon1" type="long?" />
+				<storage name="idfsSettlement1" type="long?" />
+				<storage name="blnForeignAddress" type="bool?" />
+			</fields>
+
+      <readonly>
+				<fields name="Region,idfsRegion1" predicate="c => c.blnForeignAddress == true || c.idfsCountry == null || c.idfsCountry != eidss.model.Core.EidssSiteContext.Instance.CountryID" />
+				<fields name="Rayon,idfsRayon1" predicate="c => c.blnForeignAddress == true || c.idfsRegion1 == null" />
+				<fields name="Settlement,idfsSettlement1" predicate=" c => c.blnForeignAddress == true || c.idfsRayon1 == null" />
+				<fields name="*" predicate="c => false" />
+			</readonly>
+			<lookups>
+				<lookup name="Country" table="CountryLookup" source="idfsCountry" target="idfsCountry" />
+				<lookup name="Region" table="RegionLookup" source="idfsRegion1" target="idfsRegion">
+					<params>
+						<param name="CountryID" lambda="c => c.idfsCountry ?? 0" type="long" />
+						<param name="ID" const="null" />
+					</params>
+				</lookup>
+				<lookup name="Rayon" table="RayonLookup" source="idfsRayon1" target="idfsRayon">
+					<params>
+						<param name="RegionID" lambda="c => c.idfsRegion1 ?? 0" type="long" />
+						<param name="ID" const="null" />
+					</params>
+				</lookup>
+				<lookup name="Settlement" table="SettlementLookup" source="idfsSettlement1" target="idfsSettlement">
+					<params>
+						<param name="RayonID" lambda="c => c.idfsRayon1 ?? 0" type="long" />
+						<param name="ID" const="null" />
+					</params>
+				</lookup>
+        <lookup name="HACode" table="HACodeLookup" source="intHACode" target="intHACode" emptyTextProp="CodeName" zeroTextId="SelectAll">
+          <params>
+            <param name="intHACode" lambda="c => (int)(Enums.HACode.Human | Enums.HACode.Avian | Enums.HACode.Livestock | Enums.HACode.Vector | Enums.HACode.Syndromic)" type="int" />
+          </params>
+        </lookup>
+      </lookups>
+      <storage>
+        <delete name="spOrganization_Delete"/>
+        <candelete name="spOrganization_CanDelete"/>
+      </storage>
+
+      <extenders>
+				<created>
+					<!-- set default country as current country of database -->
+					<lambda_extender target="Country" type="CountryLookup" lambda='c => 
+                                     c.CountryLookup.Where(a => a.idfsCountry == eidss.model.Core.EidssSiteContext.Instance.CountryID)
+                                     .SingleOrDefault()'/>
+          <lambda_extender target="Region" type="RegionLookup" lambda='c => 
+                                     EidssUserContext.User.Options.Prefs.DefaultRegion == true?
+                                     c.RegionLookup.Where(a => a.idfsRegion == eidss.model.Core.EidssSiteContext.Instance.RegionID)
+                                     .SingleOrDefault(): null'/>
+        </created>
+			</extenders>
+			<handlers>
+				<fieldhandler>
+					<lambda_handler field="blnForeignAddress" target="Country" type="CountryLookup" lambda="c => c.blnForeignAddress == true? null:c.CountryLookup.Where(a => a.idfsCountry == eidss.model.Core.EidssSiteContext.Instance.CountryID).SingleOrDefault()"/>
+					<lambda_handler field="idfsCountry" target="Region" type="RegionLookup" lambda="c => null"/>
+					<lambda_handler field="idfsRegion1" target="Rayon" type="RayonLookup" lambda="c => null"/>
+					<lambda_handler field="idfsRayon1" target="Settlement" type="SettlementLookup" lambda="c => null"/>
+					<lookup_handler lookup="Region" field="idfsCountry" />
+					<lookup_handler lookup="Rayon" field="idfsRegion1" />
+					<lookup_handler lookup="Settlement" field="idfsRayon1" />
+				</fieldhandler>
+			</handlers>
+
+
+      <actions child="Personnel">
+        <standard>
+          <remove type="Report"/>
+        </standard>
+        <action name="CreateWithHACode" type="Create">
+          <run>
+            <params>
+              <param name="code" type="int"/>
+            </params>
+            <created>
+              <!--lambda_extender type="HACodeLookup" target="HACode" lambda="o => o.HACodeLookup.FirstOrDefault(c => c.intHACode == code)"/-->
+              <lambda_extender type="int" target="intHACode" lambda="o => code"/>
+            </created>
+          </run>
+        </action>
+      </actions>
+      <!--actions child="Personnel">
+				<action name="Report" type="Report" visible="false" />
+			</actions-->
+
+		</table>
+	</tables>
+
+</object>

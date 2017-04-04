@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="ParameterTemplate"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+    <storage>
+      <!--get name="spFFGetParameterTemplate" type="simplelist" /--> 
+      <get name="spFFGetParameterTemplate" type="lookuplist"  cache="true" />
+    </storage>
+    <tables>
+        <table name="ParameterTemplate">
+            <keys>
+                <key name="idfsParameter"/>
+              <!--key name="idfsFormTemplate"/>
+                <key name="langid"/-->
+            </keys>
+          <fields>
+            <!--storage name="RootKeyID" type="long"/-->
+            <storage name="idfsValueDummy" type="long?"/>
+            <calculated name="idfsParameterTypeNotNull" type="long" depends="idfsParameterType" lambda="c => c.idfsParameterType.HasValue ? c.idfsParameterType.Value : 0"/>
+          </fields>
+          <relations>
+            <!--relation name="FormType" table="FormType" internal="false" type="link" source="idfsFormType" target="idfsFormType" /-->
+            <!--relation name="ParentSection" table="Section" internal="false" type="sibling" source="idfsSection" target="idfsSection" paramsonly="true">
+              <params>
+                <param name="idfsFormType" type="Int64?" lambda="c => null" />
+                <param name="idfsSection" type="Int64?" lambda="c => c.idfsSection" />
+                <param name="idfsParentSection" type="Int64?" lambda="c => null" />
+              </params>
+            </relation-->
+            <!--relation name="SelectList" table="ParameterSelect" lazy="false" internal="false" type="child" source="idfsParameterTypeNotNull" target="idfsParameterType" paramsonly="true">
+              <params>
+                <param name="idfsParameterType" type="Int64" lambda="c => c.idfsParameterTypeNotNull" />
+                <param name="idfsFormType" type="Int64" lambda="c => c.idfsFormType" />
+                <param name="intHACode" type="Int64?" lambda="c => c.intHACode" />
+              </params>
+            </relation-->
+          </relations>
+          <lookups>
+            <lookup name="ParentSection" table="Section" source="idfsSection" target="idfsSection" notaddempty="true">
+              <params>
+                <param name="idfsFormType" type="Int64?" lambda="c => null" />
+                <param name="idfsSection" type="Int64?" lambda="c => c.idfsSection" />
+                <param name="idfsParentSection" type="Int64?" lambda="c => null" />
+              </params>
+            </lookup>
+            <lookup name="SelectList" table="ParameterSelect" source="idfsValueDummy" target="idfsValue" >
+              <params>
+                <param name="idfsParameterType" type="Int64" lambda="c => c.idfsParameterTypeNotNull" />
+                <param name="idfsFormType" type="Int64" lambda="c => c.idfsFormType" />
+                <param name="intHACode" type="Int64?" lambda="c => c.intHACode" />
+              </params>
+            </lookup>
+          </lookups>
+          <extenders>
+            <!--loaded>
+              <insert_extender target="SelectList" index="0" type="ParameterSelect" lambda="c => SelectListAccessor.CreateDefault(manager, c, c.idfsParameter, c.idfsParameterTypeNotNull, c.intHACode)"/>
+            </loaded-->
+          </extenders>
+
+          <!--actions>
+            <action name="SelectDetailList" type="Loadlist" />
+          </actions-->
+        </table>
+    </tables>
+</object>

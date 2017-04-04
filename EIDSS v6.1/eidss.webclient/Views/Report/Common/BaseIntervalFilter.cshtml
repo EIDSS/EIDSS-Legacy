@@ -1,0 +1,38 @@
+﻿@using Kendo.Mvc.UI
+@model eidss.model.Reports.Common.BaseIntervalModel
+
+<table id="BaseIntervalFilterTable">
+    <tr>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.StartDate)
+        </td>
+        <td class="largereport">
+
+            @(Html.Kendo().DatePicker()
+                  .Name("StartDate")
+                  .Value(Model.StartDate)
+                  .HtmlAttributes(new { @class = "requiredField", @validationMessage = Model.ValidationMessage, value = Model.UseEmptyInititalStartDate ? "" : Model.StartDate.ToShortDateString() })
+                  .Events(c => c.Change("paperForm.OnStartDateChanged"))
+                  .Min(Model.MinStartDate ?? DateTime.MinValue)
+                  .Max(Model.MaxStartDate ?? DateTime.MaxValue)
+                  )
+
+        </td>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.EndDate)
+        </td>
+        <td class="largereport">
+            @(Html.Kendo().DatePicker()
+                    .Name("EndDate")
+                    .Value(Model.EndDate)
+                    .HtmlAttributes(new { @class = "requiredField", value = Model.UseEmptyInititalEndDate ? "" : Model.EndDate.ToShortDateString() })
+                    .Events(c => c.Change("paperForm.OnEndDateChanged"))
+                    .Min(Model.MinEndDate ?? DateTime.MinValue)
+                    .Max(Model.MaxEndDate ?? DateTime.MaxValue)
+                  )
+
+        </td>
+
+    </tr>
+
+</table>

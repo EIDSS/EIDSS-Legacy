@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "$(var.ProjectDir)ProductInfo.wxi" ?>
+<?define AvrWebRegistryKey = $(var.WebRegistryKey)\Avr?>
+
+<Wix
+  xmlns="http://schemas.microsoft.com/wix/2006/wi"
+  xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension"
+  xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+
+  <Fragment Id="AVR">
+    <ComponentGroup Id="eidss.avr">
+      <ComponentGroupRef Id="AVR.WebSite" />
+      <ComponentRef Id="AVRServiceHostURL" />
+      <ComponentRef Id="AVR.GISMAPS.VirtualDirectory" />
+      <ComponentGroupRef Id="AVR.AppPoolSettings" />
+      <ComponentGroupRef Id="AvrSettings" />
+      <ComponentGroupRef Id="GISMaps" />
+      <ComponentGroupRef Id="AVR.App_Data.Folders" />
+      <ComponentGroupRef Id="eidss.avr.Harvested" />
+      <ComponentGroupRef Id="SqlServerTypes" />
+      <ComponentGroupRef Id="AVR.exporter" />
+      <ComponentGroupRef Id="avr.ThirdParty.GIS.GDBAPI" />
+      <ComponentRef Id="CommonAppData.Translations.Folder" />
+    </ComponentGroup>
+
+    <PropertyRef Id="AODBCD2010DependentFeatures" />
+  </Fragment>
+
+  <Fragment Id="AVR App Pool">
+    <Property Id="AVR_APPPOOL" Secure="yes">
+      <RegistrySearch Id="AVR_APPPOOL.RS" Root="HKLM" Key="$(var.AvrWebRegistryKey)" Name="AppPool" Type="raw" />
+    </Property>
+    <SetProperty Id="AVR_APPPOOL" After="SetAVR_WEBSITE_NAME" Value="[AVR_WEBSITE_NAME]" Sequence="execute">Not AVR_APPPOOL</SetProperty>
+
+    <PropertyRef Id="APP_POOL_IDLE_TIMEOUT_IN_MINUTES" />
+
+    <?define website = AVR?>
+    <?define webconfigSource = $(var.AVRPath)web.config?>
+    <?define websiteDirectory = eidss.avr?>
+    <ComponentGroup Id="$(var.website).AppPoolSettings" Directory="$(var.websiteDirectory)">
+      <Component Id="$(var.website).AppPool" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.AvrWebRegistryKey)">
+          <RegistryValue Name="AppPool" Value="[AVR_APPPOOL]" Type="string" KeyPath="yes" />
+        </RegistryKey>
+        <iis:WebAppPool
+          Id="$(var.website).AppPool"
+          Name="[AVR_APPPOOL]"
+          ManagedRuntimeVersion="v4.0"
+          ManagedPipelineMode="Integrated"
+          Identity="other"
+          User="ServiceAccount" />
+        <!--IdleTimeout="[APP_POOL_IDLE_TIMEOUT_IN_MINUTES]" /> see custom action - IIsAppPool table doesn't allow formatted values -->
+      </Component>
+
+      <ComponentGroupRef Id="$(var.website).web.config_idleTimeout" />
+    </ComponentGroup>
+
+    <?include SetAppPoolIdleTimeout.wxi?>
+  </Fragment>
+
+  <Fragment Id="AVR WebSite">
+    <Property Id="AVR_WEBSITE_NAME" Secure="yes">
+      <RegistrySearch Id="AVR_WEBSITE_NAME.RS" Root="HKLM" Key="$(var.AvrWebRegistryKey)" Name="WebSite" Type="raw" />
+    </Property>
+    <SetProperty
+      Action="SetAVR_WEBSITE_NAME"
+      Id="AVR_WEBSITE_NAME"
+      After="AppSearch"
+      Value="$(var.ProductFamilyAbbreviation).AVR_v$(var.MajorVersion)_[COUNTRY]([INSTANCEID])"
+      Sequence="execute">
+      Not AVR_WEBSITE_NAME
+    </SetProperty>
+
+    <Property Id="AVR_WEBSITE_IP" Value="*" Secure="yes">
+      <RegistrySearch Id="AVR_WEBSITE_IP.RS" Root="HKLM" Key="$(var.AvrWebRegistryKey)" Name="IP" Type="raw" />
+    </Property>
+    <Property Id="AVR_WEBSITE_HEADER" Value="avr.DOMAIN.com" Secure="yes">
+      <RegistrySearch Id="AVR_WEBSITE_HEADER.RS" Root="HKLM" Key="$(var.AvrWebRegistryKey)" Name="Header" Type="raw" />
+    </Property>
+    <Property Id="AVR_WEBSITE_PORT" Value="80" Secure="yes">
+      <RegistrySearch Id="AVR_WEBSITE_PORT.RS" Root="HKLM" Key="$(var.AvrWebRegistryKey)" Name="Port" Type="raw" />
+    </Property>
+
+    <ComponentGroup Id="AVR.WebSite" Directory="eidss.avr">
+      <Component Id="AVR.WebSite" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.AvrWebRegistryKey)">
+          <RegistryValue Name="WebSite" Value="[AVR_WEBSITE_NAME]" Type="string" KeyPath="yes" />
+          <RegistryValue Name="IP" Value="[AVR_WEBSITE_IP]" Type="string" />
+          <RegistryValue Name="Header" Value="[AVR_WEBSITE_HEADER]" Type="string" />
+          <RegistryValue Name="Port" Value="[AVR_WEBSITE_PORT]" Type="string" />
+        </RegistryKey>
+        <iis:WebSite
+          Id="AVR.WebSite"
+          Description="[AVR_WEBSITE_NAME]"
+          StartOnInstall="yes"
+          Directory="eidss.avr"
+          AutoStart="yes"
+          ConfigureIfExists="yes">
+
+          <iis:WebAddress Id="AVR.WebAddress" Port="[AVR_WEBSITE_PORT]" Header="[AVR_WEBSITE_HEADER]" IP="[AVR_WEBSITE_IP]" />
+          <iis:WebApplication Id="AVR.WebApplication" Name="Web" WebAppPool="AVR.AppPool" />
+          <iis:WebDirProperties
+            Id="AVR.WebDirProperties"
+            AnonymousAccess="yes"
+            AnonymousUser="ServiceAccount" />
+        </iis:WebSite>
+      </Component>
+
+      <?define website = AVR?>
+      <Component Id="$(var.website).web.config" Guid="{A3936657-683E-4C1B-A827-36596D2FDB12}" KeyPath="yes" MultiInstance="yes">
+        <File Id="$(var.website).web.config" Name="web.config" Checksum="yes" Source="$(var.AVRPath)web.config" CompanionFile="eidss.avr.mweb.dll" />
+      </Component>
+      <?include TurnOffDebug.wxi?>
+      <ComponentRef Id="eidss.avr.mweb.dll" />
+    </ComponentGroup>
+
+    <DirectoryRef Id="eidss.avr.bin">
+      <Component Id="eidss.avr.mweb.dll" MultiInstance="yes">
+        <File Id="eidss.avr.mweb.dll" KeyPath="yes" Checksum="yes" Source="$(var.AVRPath)bin\eidss.avr.mweb.dll" />
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+
+  <Fragment Id="AVR Service settings">
+    <Property Id="AVR_SERVICE_HOSTURL" Secure="yes" Value="http://localhost:8071/">
+      <RegistrySearch Id="AVR_SERVICE_HOSTURL.RS" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="AVRServiceHostURL" Type="raw" />
+    </Property>
+    <DirectoryRef Id="eidss.avr">
+      <Component Id="AVRServiceHostURL" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.ProductRegistryKey)">
+          <RegistryValue Name="AVRServiceHostURL" Value="[AVR_SERVICE_HOSTURL]" Type="string" KeyPath="yes" />
+        </RegistryKey>
+
+        <?define key = AVRServiceHostURL ?>
+        <?define value = [AVR_SERVICE_HOSTURL] ?>
+        <?define order = 41 ?>
+        <?include $(var.ProjectDir)AddConfigKey.wxi?>
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+
+  <Fragment Id="Avr WebSite Depends On">
+    <DirectoryRef Id="eidss.avr.bin">
+      <Directory Id="eidss.avr.SqlServerTypes" Name="SqlServerTypes">
+        <Directory Id="eidss.avr.x64" Name="x64">
+          <Component Id="eidss.avr.x64.msvcr100.dll" MultiInstance="yes">
+            <File Id="eidss.avr.x64.msvcr100.dll" Name="msvcr100.dll" Checksum="yes" KeyPath="yes" />
+          </Component>
+          <Component Id="eidss.avr.x64.SqlServerSpatial110.dll" MultiInstance="yes">
+            <File Id="eidss.avr.x64.SqlServerSpatial110.dll" Name="SqlServerSpatial110.dll" Checksum="yes" KeyPath="yes" />
+          </Component>
+        </Directory>
+        <Directory Id="eidss.avr.x86" Name="x86">
+          <Component Id="eidss.avr.x86.msvcr100.dll" MultiInstance="yes">
+            <File Id="eidss.avr.x86.msvcr100.dll" Name="msvcr100.dll" Checksum="yes" KeyPath="yes" />
+          </Component>
+          <Component Id="eidss.avr.x86.SqlServerSpatial110.dll" MultiInstance="yes">
+            <File Id="eidss.avr.x86.SqlServerSpatial110.dll" Name="SqlServerSpatial110.dll" Checksum="yes" KeyPath="yes" />
+          </Component>
+        </Directory>
+      </Directory>
+    </DirectoryRef>
+
+    <ComponentGroup Id="SqlServerTypes">
+      <ComponentRef Id="eidss.avr.x64.msvcr100.dll" />
+      <ComponentRef Id="eidss.avr.x64.SqlServerSpatial110.dll" />
+      <ComponentRef Id="eidss.avr.x86.msvcr100.dll" />
+      <ComponentRef Id="eidss.avr.x86.SqlServerSpatial110.dll" />
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment Id="Avr App_Data">
+    <ComponentGroup Id="AVR.App_Data.Folders">
+      <Component
+        Id="AVR.App_Data.Folder"
+        Guid="{9776E699-6266-448A-842E-6535F4649628}"
+        Directory="eidss.avr.app_data"
+        KeyPath="yes"
+        MultiInstance="yes">
+
+        <CreateFolder>
+          <util:PermissionEx
+            Domain="[SERVICE_ACCOUNT_DOMAIN]"
+            User="[SERVICE_ACCOUNT_NAME]"
+            CreateFile="yes"
+            GenericRead="yes"
+            GenericWrite="yes"
+            Read="yes" />
+        </CreateFolder>
+      </Component>
+
+      <Component
+        Id="AVR.App_Data.SubFolder"
+        Guid="{19DC9AC1-84AC-42B7-A65B-89F203F9A1F6}"
+        Directory="ExportQueryFiles"
+        KeyPath="yes"
+        MultiInstance="yes">
+
+        <CreateFolder>
+          <util:PermissionEx
+            Domain="[SERVICE_ACCOUNT_DOMAIN]"
+            User="[SERVICE_ACCOUNT_NAME]"
+            CreateFile="yes"
+            GenericRead="yes"
+            GenericWrite="yes"
+            Read="yes"
+            Delete="yes"
+            DeleteChild="yes" />
+        </CreateFolder>
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment Id="AVR GIS Maps Virtual Directory">
+    <DirectoryRef Id="GISMAPS">
+      <Component Id="AVR.GISMAPS.VirtualDirectory" Guid="{72FFF8EE-77C9-4E8A-933E-96EEFBEF9580}" KeyPath="yes" MultiInstance="yes">
+        <iis:WebVirtualDir Id="AVR.GISMAPS.VirtualDirectory" Alias="Maps" Directory="GISMAPS" WebSite="AVR.WebSite">
+          <!-- Task 9529: 30 days equal 2592000 seconds -->
+          <iis:WebDirProperties Id="AVR.GISMAPS.VirtualDirectory.Propertiess" CacheControlMaxAge="2592000" />
+        </iis:WebVirtualDir>
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+
+  <Fragment Id="AVR exporter">
+    <ComponentGroup Id="AVR.exporter" Directory="eidss.avr.bin">
+      <Component Id="eidss.avr.export.x64.exe">
+        <File Name="eidss.avr.export.x64.exe" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="eidss.avr.export.x64.exe.config">
+        <File Name="eidss.avr.export.x64.exe.config" KeyPath="yes" />
+      </Component>
+      <Component Id="eidss.avr.export.x86.exe">
+        <File Name="eidss.avr.export.x86.exe" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="eidss.avr.export.x86.exe.config">
+        <File Name="eidss.avr.export.x86.exe.config" KeyPath="yes" />
+      </Component>
+      <ComponentRef Id="template.mdb" />
+    </ComponentGroup>
+
+    <DirectoryRef Id="AccessTemplate">
+      <Component Id="template.mdb">
+        <File Source="$(var.BinariesPaths)AccessTemplate\template.mdb" KeyPath="yes" />
+
+        <CreateFolder>
+          <util:PermissionEx
+            Domain="[SERVICE_ACCOUNT_DOMAIN]"
+            User="[SERVICE_ACCOUNT_NAME]"
+            GenericRead="yes"
+            Read="yes" />
+        </CreateFolder>
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+
+  <Fragment Id="AODBCD2010 for AVR">
+    <Property Id="AODBCD2010DependentFeatures" Value="!(loc.FeatureAVRTitle)" Hidden="yes" />
+
+    <InstallExecuteSequence>
+      <Custom Action="CA.AODBCD2010NotFound_Under5" After="CostFinalize">
+        <![CDATA[(Not AODBCD2010 Or AODBCD2010 < "02.50") And &AVR > 2 And VersionMsi < "5.00"]]>
+      </Custom>
+      <Custom Action="CA.AODBCD2010NotFound_Over5" After="CostFinalize">
+        <![CDATA[(Not AODBCD2010 Or AODBCD2010 < "02.50") And &AVR > 2 And VersionMsi >= "5.00"]]>
+      </Custom>
+    </InstallExecuteSequence>
+  </Fragment>
+
+  <?define website=avr?>
+  <Fragment Id="$(var.website).ThirdParty.GIS.GDBAPI">
+    <ComponentGroup Id="$(var.website).ThirdParty.GIS.GDBAPI" Directory="eidss.$(var.website).bin">
+      <ComponentGroupRef Id="$(var.website).ThirdParty.GIS.GDBAPI.x86" />
+      <ComponentGroupRef Id="$(var.website).ThirdParty.GIS.GDBAPI.x64" />
+    </ComponentGroup>
+
+    <?include GDBAPI.wxi?>
+  </Fragment>
+</Wix>

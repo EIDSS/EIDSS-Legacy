@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="VectorFieldTest"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spVectorFieldTest_SelectDetail" type="detaillist" />        
+  </storage>
+  
+  <tables>
+    <table name="VectorFieldTest">      
+      <grid>
+        <item name="idfPensideTest" key="true" visible="false"/>
+        
+        <item name="strVectorID" required="true" />
+        <item name="strVectorTypeName"  />
+        <item name="strVectorSubTypeName" type="string"/>
+        
+        <item name="idfMaterial" required="true" />
+        <item name="strSampleFieldBarcode" type="string" required="true" /><!-- Sample name -->
+        <item name="strSampleName" required="true"/> <!-- Sample Type -->
+        <item name="datFieldCollectionDate" />
+        <item name="idfsPensideTestName" required="true"/> <!-- Test Name -->
+        <item name="strPensideTestName" type="string" required="true"/>
+        <item name="idfsPensideTestCategory"/>
+        <item name="strPensideTestCategory" type="string"/>
+        <item name="datTestDate" required="true" /> <!-- Date Test Concluded -->
+        <item name="idfTestedByOffice" />
+        <item name="strTestedByOffice" type="string" />
+        <item name="idfTestedByPerson" />
+        <item name="strTestedByPerson" type="string" />
+        <item name="idfsPensideTestResult"  required="true"/>
+        <item name="strPensideTestResult" type="string" required="true" />
+        <item name="idfsDiagnosis" required="true"/>
+        <item name="strDiagnosis" type="string" required="true" />
+      </grid>      
+      <labels>
+        <item labelId="VectorSample.strFieldBarcode" name="strFieldBarcode"/>
+        <item labelId="VectorSample.strFieldBarcode" name="strSampleFieldBarcode"/>
+        <item labelId="idfPensideTestTestedByPerson" name="idfTestedByPerson"/>
+        <item labelId="idfPensideTestTestedByOffice" name="idfTestedByOffice"/>
+        <item labelId="idfPensideTestTestedByPerson" name="strTestedByPerson"/>
+        <item labelId="idfPensideTestTestedByOffice" name="strTestedByOffice"/>
+        <item labelId="idfPensideTestTestDate" name="datTestDate"/>
+        <item labelId="idfPensideTestTestCategory" name="idfsPensideTestCategory"/>
+        <item labelId="idfPensideTestTestCategory" name="strPensideTestCategory"/>
+        <item labelId="Vector.strVectorID" name="strVectorID"/>     
+        <item labelId="idfsSampleType" name="strSampleName"/>
+        <item labelId="idfsVectorType" name="strVectorTypeName"/>
+        <item labelId="idfsVectorSubType" name="strVectorSubTypeName"/>
+        <item labelId="FT.strDisease" name="idfsDiagnosis"/>        
+        <item labelId="FT.strDisease" name="strDiagnosis"/>
+        <item labelId="FT.PensideTestResult" name="idfsPensideTestResult"/>
+        <item labelId="FT.PensideTestResult" name="strPensideTestResult"/>
+        <item labelId="strPensideTypeName" name="idfsPensideTestName"/>
+        <item labelId="strPensideTypeName" name="strPensideTestName"/>
+      </labels>      
+      <keys>
+        <key name="idfPensideTest"/>
+      </keys>
+      <fields>
+        <calculated name="strPensideTestName" type="string" depends="idfsPensideTestName"
+                        lambda='c => c.TestType == null ? String.Empty : c.TestType.strPensideTypeName' />
+        <calculated name="strPensideTestCategory" type="string" depends="idfsPensideTestCategory"
+                        lambda='c => c.TestCategory == null ? String.Empty : c.TestCategory.name' />
+        <calculated name="strPensideTestResult" type="string" depends="idfsPensideTestResult"
+                        lambda='c => c.TestResultFiltered == null ? String.Empty : c.TestResultFiltered.strPensideTestResultName' />
+        <calculated name="strDiagnosis" type="string" depends="idfsDiagnosis"
+                        lambda='c => c.DiagnosisFiltered == null ? String.Empty : c.DiagnosisFiltered.DiagnosisName' />
+        <calculated name="strTestedByOffice" type="string" depends="idfTestedByOffice"
+                        lambda='c => c.TestedByOffice == null ? String.Empty : c.TestedByOffice.name' />
+        <calculated name="strTestedByPerson" type="string" depends="idfTestedByPerson"
+                        lambda='c => c.TestedByPerson == null ? String.Empty : c.TestedByPerson.FullName' />
+        <calculated name="strSampleFieldBarcode" type="string" depends="ParentSample"
+                        lambda='c => c.ParentSample == null ? String.Empty : c.ParentSample.strFieldBarcode' />
+        <calculated name="strVectorSubTypeName" type ="string" lambda="c => ((c.ParentVector != null) &amp;&amp; (c.ParentVector.VectorSubType != null)) ? c.ParentVector.VectorSubType.name : String.Empty" depends="Parent" />
+        <calculated name="ParentVector" type="Vector" lambda="c => Parent as Vector" depends="Parent"/>
+        <calculated name="Samples" type="EditableList&lt;VectorSample&gt;" depends="ParentVector" lambda="c => c.ParentVector == null ? new EditableList&lt;VectorSample&gt;() : c.ParentVector.Samples"/>
+        <calculated name="SamplesSelectList" type="BvSelectList" depends="Samples" lambda="c => c.Samples == null ? null : new BvSelectList(c.Samples, &quot;idfMaterial&quot;, &quot;strFieldBarcode&quot;, c.ParentSample, &quot;idfMaterial&quot;)"/>
+        <calculated name="ParentSample" type="VectorSample" depends="idfMaterial" lambda="c => c.Samples == null ? null : c.Samples.FirstOrDefault(s => s.idfMaterial == c.idfMaterial)"/>
+        <calculated name="CaseObjectIdent" type="string" depends="idfVectorSurveillanceSession" lambda='c => "Vectors_" + c.idfVectorSurveillanceSession + "_"' />
+        <!-- ссылка на полный перечень векторов в сессии -->
+        <calculated name="Vectors" type="EditableList&lt;Vector&gt;" depends="ParentVector" lambda="c => c.ParentVector == null ? new EditableList&lt;Vector&gt;() : c.ParentVector.Vectors"/>
+      </fields>
+      <readonly>
+        <fields name="TestedByPerson" predicate="c => TestedByOffice == null"/>
+        <fields name="strSampleName,datFieldCollectionDate,strVectorID,strVectorTypeName,strVectorSubTypeName" predicate="c => true" />
+        <fields name="*" predicate="c => false" />
+      </readonly>
+      <relations>
+      </relations>
+      <lookups>
+        <lookup name="TestType" table="PensideTestLookup" source="idfsPensideTestName" target="idfsPensideTestName" >
+          <filters>
+            <filter predicate="c => obj.idfsVectorType == 0 ? true : c.idfsVectorType == obj.idfsVectorType"/>
+          </filters>
+        </lookup>
+        <lookup name="TestCategory" table="BaseReference" section="rftPensideTestCategory" source="idfsPensideTestCategory" target="idfsBaseReference" />
+        
+        <lookup name="Diagnosis" table="Diagnosis2PensideTestMatrixLookup" source="idfsDiagnosis" target="idfsDiagnosis">
+          <filters>
+            <filter predicate="c => c.idfsPensideTestName == (obj.idfsPensideTestName.HasValue &amp;&amp; obj.idfsPensideTestName.Value != 0 ? obj.idfsPensideTestName.Value : c.idfsPensideTestName)"/>
+          </filters>
+        </lookup>
+        
+        <lookup name="TestResult" table="TypeFieldTestToResultMatrixLookup" source="idfsPensideTestResult" target="idfsPensideTestResult">
+          <filters>
+            <filter predicate="c => c.idfsPensideTestName == (obj.idfsPensideTestName.HasValue &amp;&amp; obj.idfsPensideTestName.Value != 0 ? obj.idfsPensideTestName.Value : c.idfsPensideTestName)"/>
+          </filters>
+        </lookup>
+        
+        <lookup name="DiagnosisFiltered" table="Diagnosis2PensideTestMatrixLookup" source="idfsDiagnosis" target="idfsDiagnosis">
+          <filters>
+            <filter predicate="c => c.idfsPensideTestName == (obj.idfsPensideTestName.HasValue &amp;&amp; obj.idfsPensideTestName.Value != 0 ? obj.idfsPensideTestName.Value : -1)"/>
+          </filters>
+        </lookup>
+        <lookup name="TestResultFiltered" table="TypeFieldTestToResultMatrixLookup" source="idfsPensideTestResult" target="idfsPensideTestResult">
+          <filters>
+            <filter predicate="c => c.idfsPensideTestName == (obj.idfsPensideTestName.HasValue &amp;&amp; obj.idfsPensideTestName.Value != 0 ? obj.idfsPensideTestName.Value : -1)"/>
+          </filters>
+        </lookup>
+        <lookup name="TestedByPerson" table="PersonLookup" source="idfTestedByPerson" target="idfPerson" >
+          <params>
+            <param name="OfficeID" lambda="c => c.idfTestedByOffice" type="long?" />
+            <param name="ID" const="null" />
+            <param name="ShowUsersOnly" const="false"/>
+            <param name="intHACode" const="null"/>
+          </params>
+        </lookup>
+        <lookup name="TestedByOffice" table="OrganizationLookup" source="idfTestedByOffice" target="idfInstitution">
+          <params>
+            <param name="ID" const="null" />
+            <param name="intHACode" const="null" />
+          </params>
+          <filters>
+            <filter predicate="c => (((c.intHACode??0) &amp; (int)HACode.Vector) != 0) || c.idfInstitution == obj.idfTestedByOffice" />
+          </filters>
+        </lookup>       
+      </lookups>
+      <storage>
+        <post />
+        <delete />
+        <candelete />  
+      </storage>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfPensideTest" class="GetNewIDExtender" />
+          <lambda_extender target="idfVector" type="long?" lambda="c => c.ParentVector != null ? c.ParentVector.idfVector : obj.idfVector"/>
+          <lambda_extender target="idfsVectorType" type="long" lambda="c => c.ParentVector != null ? c.ParentVector.idfsVectorType : obj.idfsVectorType"/>
+          <lambda_extender target="strVectorID" type="string" lambda="c => c.ParentVector != null ? c.ParentVector.strVectorID : String.Empty"/>
+          <lambda_extender target="strVectorTypeName" type="string" lambda="c => ((c.ParentVector != null) &amp;&amp; (c.ParentVector.VectorType != null)) ? c.ParentVector.VectorType.strTranslatedName : String.Empty"/>
+          <lambda_extender target="strSampleName" type="string" lambda="c => c.ParentSample != null ? c.ParentSample.strSampleName : String.Empty"/>
+          <lambda_extender target="datFieldCollectionDate" type="DateTime?" lambda="c => c.ParentSample != null ? c.ParentSample.datCollectionDateTime : obj.datFieldCollectionDate"/>
+          <lambda_extender target="idfVectorSurveillanceSession" type="long?" lambda='c => c.ParentVector == null ? c.idfVectorSurveillanceSession : c.ParentVector.idfVectorSurveillanceSession' />
+        </creating>
+        <loading>
+        </loading>
+        <loaded>
+        </loaded>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <lambda_handler target="strSampleName" field="idfMaterial" type="string" lambda='c => c.Samples == null ? "" : c.Samples.Where(s => s.idfMaterial == c.idfMaterial).FirstOrDefault().strSampleName'/>
+          <lambda_handler target="datFieldCollectionDate" field="idfMaterial" type="DateTime?" lambda='c => c.Samples == null ? c.datFieldCollectionDate : c.Samples.Where(s => s.idfMaterial == c.idfMaterial).FirstOrDefault().datFieldCollectionDate'/>
+          <lambda_handler target="TestType" field="idfsPensideTestName" type="PensideTestLookup" lambda='c => c.TestTypeLookup.Where(x => x.idfsPensideTestName == c.idfsPensideTestName).FirstOrDefault()'/>
+          <lambda_handler target="TestCategory" field="idfsPensideTestCategory" type="BaseReference" lambda='c => c.TestCategoryLookup.Where(x => x.idfsBaseReference == c.idfsPensideTestCategory).FirstOrDefault()'/>
+          <lambda_handler target="TestedByOffice" field="idfTestedByOffice" type="OrganizationLookup" lambda='c => c.TestedByOfficeLookup.Where(x => x.idfInstitution == c.idfTestedByOffice).FirstOrDefault()'/>
+          <lambda_handler target="TestedByPerson" field="idfTestedByPerson" type="PersonLookup" lambda='c => c.TestedByPersonLookup.Where(x => x.idfPerson == c.idfTestedByPerson).FirstOrDefault()'/>
+          
+          <!--сброс введенных значений-->
+          
+          <scalar_handler class="SetScalarHandler" target="TestedByPerson" field="idfTestedByOffice" lambda="(o, fld, prev_fld) => null" />
+          <scalar_handler class="SetScalarHandler" target="Diagnosis" field="idfsPensideTestName" lambda="(o, fld, prev_fld) => null" />
+          <scalar_handler class="SetScalarHandler" target="TestResult" field="idfsPensideTestName" lambda="(o, fld, prev_fld) => null" />
+          <lookup_handler lookup="TestType" field="idfsPensideTestName" />
+          <lookup_handler lookup="Diagnosis" field="idfsPensideTestName" />
+          <lookup_handler lookup="TestResult" field="idfsPensideTestName" />
+          <lookup_handler lookup="TestedByPerson" field="idfTestedByOffice" />
+          
+          <scalar_handler class="SetScalarHandler" target="DiagnosisFiltered" field="idfsPensideTestName" lambda="(o, fld, prev_fld) => null" />
+          <scalar_handler class="SetScalarHandler" target="TestResultFiltered" field="idfsPensideTestName" lambda="(o, fld, prev_fld) => null" />
+          <lookup_handler lookup="DiagnosisFiltered" field="idfsPensideTestName" />
+          <lookup_handler lookup="TestResultFiltered" field="idfsPensideTestName" />
+        </fieldhandler>
+        <childhandler>
+          <lambda_handler target="datFieldCollectionDate" container="ParentVector" field="datCollectionDateTime" type="DateTime?" lambda='c => c.ParentVector.datCollectionDateTime'/>
+        </childhandler>
+      </handlers>
+      <validators>
+        <chains>
+          <item field="datTestDate" type="DateTime">
+            <item field="datFieldCollectionDate" type="DateTime">
+              <item field="CurrentDate" value="DateTime.Now" />
+            </item>
+          </item>
+        </chains>
+        <post>
+          <required_validator target="idfMaterial"/>
+          <required_validator target="idfsPensideTestName"/>
+          <predicate_validator field="idfsDiagnosis" predicate="c => c.idfsPensideTestResult != null ? c.idfsDiagnosis != null : true" message="errNoDiagnosisForTestResult" />
+        </post>
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <remove type="Edit"/>
+        </standard>
+        <action name="Create" type="Create">
+          <visual panel="Group" visiblePredicate="(c, a, b, p) => false" />
+        </action>
+        <action name="Edit" type="Edit">
+          <visual panel="Group" visiblePredicate="(c, a, b, p) => false" />
+        </action>
+        <action name="ViewOnDetailForm" type="Action">
+          <visual panel="Group" alignment ="Right" enablePredicate='(c, p, b) => c != null  &amp;&amp; !c.Key.Equals(PredefinedObjectId.FakeListObject)'>
+            <regular caption ="strViewOnDetailForm_Id" tooltip ="tooltipViewOnDetailForm_Id" icon =""/>
+          </visual>
+          <run>
+            <preUI webType="JScript"/>
+          </run>
+        </action>
+      </actions>
+    </table>    
+  </tables>
+
+</object>

@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="VsSession"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get />
+    <validate name="spVsSession_Validate" />
+  </storage>
+
+  <tables>
+    <table name="VsSession">
+      <properties auditObject="daoVectorSurveillanceSession" auditTable="tlbVectorSurveillanceSession" permissionObject="VsSession">
+        <events>
+          <create name="VsSessionCreatedLocal"/>
+          <change name="VsSessionNewDiagnosisLocal" predicate="c => c.DiagnosisList.Count(i => i.IsNew &amp;&amp; !i.IsMarkedToDelete) > 0" />
+          <change name="VsSessionFieldTestResultRegistrationLocal" predicate="c => c.FieldTests.Count(i => i.IsNew &amp;&amp; !i.IsMarkedToDelete) > 0" />
+          <change name="VsSessionTestResultRegistrationLocal" predicate="c => c.LabTests.Count(i => i.IsNew &amp;&amp; !i.IsMarkedToDelete) > 0" />
+        </events>
+      </properties>
+      <help win="vss_form"/>
+      <labels>
+        <item labelId="LocationDisplayName" name="Location"/>
+      </labels>
+      <fields>
+        <storage name="idfsDiagnosis" type="long?"/>
+        
+        <calculated name="strVectorsCalculated" type="string"
+                  depends="Vectors"
+                  lambda='c => c.GetVestorsNames()' />
+        
+        <calculated name="strDiagnosesCalculated" type="string"
+                  depends="DiagnosisList"
+                  lambda='c => c.GetDiagnosesNames()' />
+        
+        <calculated name="IsClosed" type="bool" depends="idfsVectorSurveillanceStatus" dependonpost="yes"
+                        lambda="c => (c.idfsVectorSurveillanceStatus == (long)VsStatusEnum.Closed) " />
+        
+        <calculated name="Samples" type="EditableList&lt;VectorSample&gt;" depends="Vectors" lambda="c => {var list = new EditableList&lt;VectorSample&gt;();foreach (var vector in Vectors){list.AddRange(vector.Samples);}return list;}"/>
+        <calculated name="FieldTests" type="EditableList&lt;VectorFieldTest&gt;" depends="Vectors" lambda="c => {var list = new EditableList&lt;VectorFieldTest&gt;();foreach (var vector in Vectors){list.AddRange(vector.FieldTests);}return list;}"/>
+        <calculated name="LabTests" type="EditableList&lt;VectorLabTest&gt;" depends="Vectors" lambda="c => {var list = new EditableList&lt;VectorLabTest&gt;();foreach (var vector in Vectors){list.AddRange(vector.LabTests);}return list;}"/>
+        <calculated name="CaseObjectIdent" type="string" depends="idfVectorSurveillanceSession" lambda='c => "Vectors_" + c.idfVectorSurveillanceSession + "_"' />
+      </fields>
+      <readonly>
+        <fields name="strSessionID,strVectorsCalculated,strDiagnosesCalculated,intSummaryQuantity,intSummaryCollectionEffort,datSummaryCollectionFrom,datSummaryCollectionTo,datCloseDate" predicate="c => true"/>
+        <fields name="VsStatus" predicate="c => c.ReadOnly" />
+        <fields name="Vectors,Summaries,DiagnosisList,Location" predicate='c => c.IsClosed || c.ReadOnly'/>
+        <fields name="*" predicate="c => c.ReadOnly || c.IsClosed" />
+      </readonly>
+      <relations>
+        <relation name="DiagnosisList" table="DiagnosisItem" internal="true" type="child" source="idfVectorSurveillanceSession" target="idfVectorSurveillanceSession" lazy="false" />
+        <relation name="Vectors" table="Vector" internal="false" type="child" source="idfVectorSurveillanceSession" target="idfVectorSurveillanceSession" lazy="false" />
+        <relation name="Summaries" table="VsSessionSummary" internal="false" type="child" source="idfVectorSurveillanceSession" target="idfVectorSurveillanceSession" lazy="false" />
+        <relation name="Location" table="GeoLocation" internal="false" type="link" source="idfLocation" target="idfGeoLocation" lazy="false" />
+      </relations>
+      <lookups>
+        <lookup name="VsStatus" table="BaseReference" section="rftVectorSurveillanceSessionStatus" source="idfsVectorSurveillanceStatus" target="idfsBaseReference" notaddempty="true" />
+        
+        <lookup name="Diagnoses" table="DiagnosisLookup" source="idfsDiagnosis" target="idfsDiagnosis">
+              <filters>
+                <filter predicate="c => ((c.intHACode &amp; (int)HACode.Vector) != 0) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+                <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+              </filters>
+        </lookup>
+      </lookups>
+      <storage>
+        <post />
+        <delete />
+        <!--TODO решить, как правильно сделать-->
+        <!--<candelete />-->
+      </storage>
+      <postorder>
+        <item name="Location" />
+        <item name="this"/>
+        <item name="Vectors"/>
+        <item name="Summaries"/>
+      </postorder>
+      <deleteorder>
+        <item name="Summaries"/>
+        <item name="Vectors"/>
+        <item name="this"/>
+        <item name="Location" />
+      </deleteorder>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfVectorSurveillanceSession" class="GetNewIDExtender" />
+          <lambda_extender target="datStartDate" type="DateTime" lambda="c => DateTime.Now" />
+          <lambda_extender target="strSessionID" type="string" lambda='c => "(new)"' />
+          <lambda_extender target="Location" type="GeoLocation" lambda="c => LocationAccessor.CreateWithoutCountry(manager, c)" />
+        </creating>
+        <created>
+          <lambda_extender target="VsStatus" type="BaseReference" lambda="c => c.VsStatusLookup.Where(l => l.idfsBaseReference == (long)VsStatusEnum.InProgress).SingleOrDefault()"/>
+        </created>
+        <loading>
+        </loading>
+        <loaded>
+          <lambda_extender target="Location" type="GeoLocation" lambda="c => c.Location == null ? LocationAccessor.CreateWithoutCountry(manager, c) : c.Location" />
+        </loaded>
+        <posting>
+          <lambda_extender target="datModificationForArchiveDate" type="DateTime?" lambda="c => c.HasChanges ? DateTime.Now : c.datModificationForArchiveDate"/>
+          <custom_extender>
+            <text>
+              obj.Location.SetChange();
+              obj.SetPostingOrder();
+            </text>
+          </custom_extender>
+        </posting>
+        <posted>
+          <custom_extender>
+            <text>
+              obj.RestoreOriginalOrder();
+            </text>
+          </custom_extender>
+        </posted>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <lambda_list_handler field="strSessionID" target="strSessionID" list="Vectors" type="string" lambda="c => c.strSessionID" />
+          <lambda_handler field="idfsVectorSurveillanceStatus" target="datCloseDate" type="DateTime?" lambda="c => c.IsClosed ? new DateTime?(DateTime.Now) : null" />
+        </fieldhandler>
+      </handlers>
+      <validators>
+        <change>
+          <predicate_validator field="datStartDate" predicate="c => PredicateValidator.CompareDates(c.datStartDate, DateTime.Now)" message="datStartDate_CurrentDate_msgId" />
+          <predicate_validator field="intCollectionEffort" predicate="c => c.intCollectionEffort != null? c.intCollectionEffort > 0 : true" message="intCollectionEffort_CurrentDate_msgId" />
+          <custom_validator field="idfOutbreak" method="CheckOutbreak" onYesAsk="c => c.ChangeOutbreakDiagnosis()" />
+        </change>
+        <post>
+          <!--<required_validator target="strSessionID"/>-->
+          <required_validator target="idfsVectorSurveillanceStatus" property="VsStatus"/>
+          <required_validator target="datStartDate"/>
+          <!--согласно спецификации в.4 и багу 9776 это поле не обязательное-->
+          <!--<required_validator target="Location.LocationDisplayName"/>
+          <required_validator target="Location.strReadOnlyAdaptiveFullName"/>-->
+          <!--<required_validator target="intCollectionEffort"/>-->
+        </post>
+        <delete>
+          <predicate_validator field="" property="" predicate="v => v.Samples.Where(s => !s.IsMarkedToDelete).Count() == 0" message="msgCantDeleteRecord" />
+          <predicate_validator field="" property="" predicate="v => v.Vectors.Where(s => !s.IsMarkedToDelete).Count() == 0" message="msgCantDeleteRecord" />
+          <predicate_validator field="" property="" predicate="v => v.FieldTests.Where(ft => ft.idfsPensideTestResult != null).Count() == 0" message="msgCantDeleteRecord" />
+          <predicate_validator field="" property="" predicate="v => !v.IsClosed" message="msgCantDeleteRecord" />
+          <predicate_validator field="" property="" predicate="v => v.idfOutbreak == null || v.idfOutbreak == 0" message="msgCantDeleteRecord" />
+        </delete>
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+        </standard>
+<!--
+        <action name="ReportContextMenu" type="Action">
+          <visual panel="Main" alignment="Left">
+            <regular caption="strReport_Id" icon="Report" tooltip="strReport_Id"/>
+          </visual>
+          <run>
+            <preUI webType="JScript"/>
+          </run>
+        </action>
+
+        <action name="VsSessionReport"  type="Action">
+          <visual panel="ContextMenu" alignment="Left" visiblePredicate="(c, a, b, p) => false" >
+            <regular caption="titleVsSessionReport" icon="Report" tooltip="titleVsSessionReport"/>
+          </visual>
+          <run>
+            <preUI webType="JScript"/>
+          </run>
+        </action>
+-->
+      </actions>
+    </table>
+    <table name="DiagnosisItem">
+      <keys>
+        <key name="idfVectorSurveillanceSession" />
+      </keys>
+      <storage>
+      </storage>
+    </table>
+  </tables>
+
+</object>

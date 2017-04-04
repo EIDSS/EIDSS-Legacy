@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "ProductInfo.wxi" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Product
+     Id="$(var.ProductCode)"
+     Name="$(var.ProductFullName)"
+     Language="!(loc.ProductLanguage)"
+     Version="$(var.ProductVersion)"
+     Manufacturer="$(var.Manufacturer)"
+     UpgradeCode="$(var.UpgradeCode)">
+
+    <Package
+      Manufacturer="$(var.Manufacturer)"
+      Description="$(var.ProductName)"
+      Comments="$(var.ProductName)"
+      SummaryCodepage="!(loc.SummaryCodepage)"
+      InstallerVersion="300"
+      Compressed="yes"
+      InstallScope="perMachine" />
+
+    <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
+    <?include $(var.SolutionDir)MultiInstance\MultiInstanceActivator.wxi?>
+
+    <?if $(var.Platform) = x86?>
+    <Condition Message="!(loc.ConditionWindows64Bit)">NOT VersionNT64</Condition>
+    <?endif?>
+    <Condition Message="!(loc.ConditionElevationPrivileges)">Installed OR Privileged</Condition>
+    <Condition Message="!(loc.ConditionOperatingSystem)"><![CDATA[VersionNT >= 600]]></Condition>
+
+    <PropertyRef Id="NETFRAMEWORK40FULL" />
+    <Condition Message="!(loc.ConditionNetFramework4)"><![CDATA[Installed OR NETFRAMEWORK40FULL]]></Condition>
+
+    <PropertyRef Id="IISVERSION" />
+
+    <UIRef Id="UI_EIDSS.WEB" />
+    <UIRef Id="WixUI_ErrorProgressText" />
+    <WixVariable Id="WixUILicenseRtf" Value="$(var.SolutionDir)LicenseAgreement.rtf" />
+    <Icon Id="Icon.ProductIcon" SourceFile="$(var.SetupSources)Bitmaps\eidss.ico" />
+
+    <Property Id="ARPPRODUCTICON" Value="Icon.ProductIcon" />
+    <SetProperty Id="ARPINSTALLLOCATION" Value="[APPLICATIONFOLDER]" After="InstallValidate" Sequence="execute" />
+    <Property Id="ProductShortName" Value="$(var.ProductName)" />
+    <Property Id="ProductFamilyAbbreviation" Value="$(var.ProductFamilyAbbreviation)" />
+    <Property Id="MajorVersion" Value="$(var.MajorVersion)" />
+    <Property Id="MinorVersion" Value="$(var.MinorVersion)" />
+    <Property Id="Build" Value="$(var.Build)" />
+    <Property Id="Revision" Value="$(var.Revision)" />
+
+    <FeatureGroupRef Id="Features" />
+  </Product>
+
+  <Fragment Id="Features">
+    <FeatureGroup Id="Features">
+      <Feature Id="ProductRegistration" Absent="disallow" AllowAdvertise="no" Display="hidden">
+        <ComponentRef Id="ProductRegistryKey" />
+        <ComponentRef Id="Country" />
+      </Feature>
+
+      <Feature Id="Config" Title="Config" Absent="disallow" AllowAdvertise="no" Display="hidden">
+        <ComponentGroupRef Id="EidssConfig" />
+      </Feature>
+
+      <Feature
+        Id="Websites"
+        Title="!(loc.FeatureWebsitesTitle)"
+        Description="!(loc.FeatureWebsitesDescription)"
+        AllowAdvertise="no"
+        Absent="allow"
+        Display="expand">
+
+        <ComponentGroupRef Id="CommonWebsiteComponents" />
+
+        <Feature Id="EIDSS.Web" Title="!(loc.FeautreWebTitle)" Description="!(loc.FeautreWebDescription)" AllowAdvertise="no" Absent="allow">
+          <ComponentGroupRef Id="eidss.web" />
+        </Feature>
+
+        <Feature Id="AVR" Title="!(loc.FeatureAVRTitle)" Description="!(loc.FeatureAVRDescription)" AllowAdvertise="no" Absent="allow">
+          <ComponentGroupRef Id="eidss.avr" />
+        </Feature>
+
+        <Feature Id="EIDSS.Mobile" Title="!(loc.FeatureMobileTitle)" Description="!(loc.FeatureMobileDescription)" AllowAdvertise="no" Absent="allow">
+          <ComponentGroupRef Id="eidss.mobile" />
+        </Feature>
+
+        <Feature Id="Smartphone" Title="!(loc.FeautreSmartphoneTitle)" Description="!(loc.FeautreSmartphoneDescription)" AllowAdvertise="no" Absent="allow">
+          <ComponentGroupRef Id="eidss.smartphone" />
+        </Feature>
+
+        <Feature Id="OpenAPI" Title="!(loc.FeautreOpenAPITitle)" Description="!(loc.FeautreOpenAPIDescription)" AllowAdvertise="no" Absent="allow">
+          <ComponentGroupRef Id="eidss.openapi" />
+        </Feature>
+      </Feature>
+
+      <Feature
+        Id="ReportsService"
+        Title="!(loc.FeautreReportsServiceTitle)"
+        Description="!(loc.FeautreReportsServiceDescription)"
+        Absent="allow"
+        AllowAdvertise="no">
+
+        <ComponentGroupRef Id="ReportsService" />
+      </Feature>
+    </FeatureGroup>
+
+    <Property Id="FEATURE.PRODUCTREGISTRATION" Secure="yes" />
+    <Property Id="FEATURE.CONFIG" Secure="yes" />
+    <Property Id="FEATURE.WEBSITES" Secure="yes" />
+    <Property Id="FEATURE.EIDSS.WEB" Secure="yes" />
+    <Property Id="FEATURE.AVR" Secure="yes" />
+    <Property Id="FEATURE.EIDSS.MOBILE" Secure="yes" />
+    <Property Id="FEATURE.OPENAPI" Secure="yes" />
+    <Property Id="FEATURE.SMARTPHONE" Secure="yes" />
+    <Property Id="FEATURE.REPORTSSERVICE" Secure="yes" />
+    <CustomAction Id="FindInstalledFeatures" DllEntry="FindInstalledFeatures" BinaryKey="CustomActions" />
+    <InstallExecuteSequence>
+      <Custom Action="FindInstalledFeatures" After="FindRelatedProducts">WIX_UPGRADE_DETECTED</Custom>
+    </InstallExecuteSequence>
+    <InstallUISequence>
+      <Custom Action="FindInstalledFeatures" After="FindRelatedProducts">WIX_UPGRADE_DETECTED</Custom>
+    </InstallUISequence>
+
+  </Fragment>
+
+  <Fragment Id="ProductRegistryKey">
+    <DirectoryRef Id="APPLICATIONFOLDER">
+      <Component Id="ProductRegistryKey" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.ProductRegistryKey)">
+          <RegistryValue Name="InstallPath" Value="[APPLICATIONFOLDER]" Type="string" KeyPath="yes" />
+          <RegistryValue Name="Instance" Value="[INSTANCEID]" Type="string" />
+          <RegistryValue Name="Version" Value="$(var.ProductVersion)" Type="string" />
+          <RegistryValue Key="Product" Value="$(var.ProductCode)" Type="string" />
+        </RegistryKey>
+      </Component>
+    </DirectoryRef>
+
+    <SetProperty Id="ProductName" After="AppSearch" Value="$(var.ProductFullName).[COUNTRY]([INSTANCEID])" Sequence="execute">1</SetProperty>
+  </Fragment>
+</Wix>

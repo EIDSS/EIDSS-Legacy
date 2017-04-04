@@ -1,0 +1,60 @@
+﻿@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+@using Kendo.Mvc.UI
+@model eidss.model.Reports.AZ.LabTestingTesultsModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/ExportButtons", Model)
+    <div class="bluelayout">
+        <div class="tabPanelContent">
+        
+            @Html.Partial("Common/BaseFilter", Model)
+
+            <table id="DiagnosisTable" >
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.SampleId)
+                    </td>
+                    <td class="largereport">
+                        <span class='tdContainer'>
+                            @Html.TextBoxFor(m => m.SampleId, new Dictionary<string, object> {{"class", "requiredField"}, {"onchange", "paperForm.sampleIdChanged_az()"},{"oninput", "paperForm.sampleIdChanged_az()"}})
+                        </span>
+                    </td>
+                    <td class="rightbuttons">
+                        <button id="btnSearch" name="btnSearch" type="button" class="button" onclick="paperForm.searchLabTestingResult()" disabled="disabled">
+                            @Translator.GetMessageString("Search")
+                        </button>
+                    </td>
+                    <td colspan="2">
+                    </td>
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.LabDepartmentId)
+                    </td>
+                    <td class="mlarge">
+                        @{
+                            @(Html.Kendo().ComboBox()
+                                  .BindTo(Model.DepartmentsList.ConvertToSelectListItem())
+                                  .Name("LabDepartmentId")
+                                  .Enable(false)
+                                  )
+                        }
+                    </td>
+                    <td colspan="3">
+                    </td>
+                </tr>
+
+
+            </table>
+        </div>
+    </div>
+}

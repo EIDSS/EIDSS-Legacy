@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "$(var.ProjectDir)ProductInfo.wxi" ?>
+
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <?ifndef multiinstance?>
+  <?define multiinstance = no?>
+  <?endif?>
+
+  <ComponentGroup Id="$(var.prefix).StructureMap" Directory="$(var.directory)" Source="$(var.ThirdParty)">
+    <Component Id="$(var.prefix).StructureMap.dll" MultiInstance="$(var.multiinstance)">
+      <File Id="$(var.prefix).StructureMap.dll" Name="StructureMap.dll" KeyPath="yes" Checksum="yes" />
+    </Component>
+    <Component Id="$(var.prefix).StructureMap.Net4.dll" MultiInstance="$(var.multiinstance)">
+      <File Id="$(var.prefix).StructureMap.Net4.dll" Name="StructureMap.Net4.dll" KeyPath="yes" Checksum="yes" />
+    </Component>
+  </ComponentGroup>
+
+  <?undef directory?>
+  <?undef prefix?>
+  <?undef multiinstance?>
+</Include>

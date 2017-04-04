@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="Template" 
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+    <storage>
+      <!--get name="spFFGetTemplates" type="detailone" /-->
+      <get name="spFFGetTemplates" type="lookuplist"  cache="true" />
+    </storage>
+    <tables>
+      
+      <table name="Template">
+        <fields>
+          <storage name="idfsSectionDummy" type="long?"/>
+          <storage name="idfsParameterDummy" type="long?"/>
+          <storage name="idfsLabelDummy" type="long?"/>
+          <storage name="idfsLineDummy" type="long?"/>
+          <storage name="idfsRuleDummy" type="long?"/>
+        </fields>
+        <relations>
+          <!--relation name="FormType" table="FormType" internal="false" type="link" source="idfsFormType" target="idfsFormType" /-->
+          <!--relation name="SectionTemplates" table="SectionTemplate" internal="false" type="child" source="idfsFormTemplate" target="idfsFormTemplate" paramsonly="true">
+            <params>
+              <param name="idfsSection" type="Int64?" lambda="c => null" />
+              <param name="idfsFormTemplate" type="Int64?" lambda="c => c.idfsFormTemplate" />
+            </params>
+          </relation-->
+          <!--relation name="ParameterTemplates" table="ParameterTemplate" internal="false" type="child" source="idfsFormTemplate" target="idfsFormTemplate" paramsonly="true">
+            <params>
+              <param name="idfsParameter" type="Int64?" lambda="c => null" />
+              <param name="idfsFormTemplate" type="Int64?" lambda="c => c.idfsFormTemplate" />
+            </params>
+          </relation-->
+          <!--relation name="Labels" table="Label" internal="false" type="child" source="idfsFormTemplate" target="idfsFormTemplate" paramsonly="true">
+            <params>
+              <param name="idfsFormTemplate" type="Int64?" lambda="c => c.idfsFormTemplate" />
+            </params>
+          </relation-->
+          <!--relation name="Lines" table="Line" internal="false" type="child" source="idfsFormTemplate" target="idfsFormTemplate" paramsonly="true">
+            <params>
+              <param name="idfsFormTemplate" type="Int64?" lambda="c => c.idfsFormTemplate" />
+            </params>
+          </relation-->
+          <!--relation name="Rules" table="Rule" internal="false" type="child" source="idfsFormTemplate" target="idfsFormTemplate" paramsonly="true">
+            <params>
+              <param name="idfsFormTemplate" type="Int64?" lambda="c => c.idfsFormTemplate" />
+            </params>
+          </relation-->
+        </relations>
+        <lookups>
+          <lookup name="SectionTemplates" table="SectionTemplate" source="idfsSectionDummy" target="idfsSection" notaddempty="true" isshowdeleted="true">
+            <params>
+              <param name="idfsSection" type="Int64?" lambda="c => null" />
+              <param name="idfsFormTemplate" type="Int64?" lambda="c => c.idfsFormTemplate" />
+            </params>
+          </lookup>
+          <lookup name="ParameterTemplates" table="ParameterTemplate" source="idfsParameterDummy" target="idfsParameter" notaddempty="true" isshowdeleted="true">
+            <params>
+              <param name="idfsParameter" type="Int64?" lambda="c => null" />
+              <param name="idfsFormTemplate" type="Int64?" lambda="c => c.idfsFormTemplate" />
+            </params>
+          </lookup>
+          <lookup name="Labels" table="Label" source="idfsLabelDummy" target="idfDecorElement" notaddempty="true" isshowdeleted="true">
+            <params>
+              <param name="idfsFormTemplate" type="Int64" lambda="c => c.idfsFormTemplate" />
+            </params>
+          </lookup>
+          <lookup name="Lines" table="Line" source="idfsLineDummy" target="idfDecorElement" notaddempty="true" isshowdeleted="true">
+            <params>
+              <param name="idfsFormTemplate" type="Int64" lambda="c => c.idfsFormTemplate" />
+            </params>
+          </lookup>
+          <lookup name="Rules" table="Rule" source="idfsRuleDummy" target="idfsRule" notaddempty="true" isshowdeleted="true">
+            <params>
+              <param name="idfsFormTemplate" type="Int64" lambda="c => c.idfsFormTemplate" />
+            </params>
+          </lookup>
+        </lookups>
+      </table>
+      
+      <!--фейковый объект, чтобы вписаться в структуру форм-->
+      <table name="AddParameterWindowItem">
+        <keys>
+          <key name="ID" />
+          <!--фейковое поле-->
+        </keys>
+        <fields>
+          <storage name="blnNeedCopyGeneralData" type="bool"/>
+          <storage name="blnNeedCopyFF" type="bool"/>
+          <storage name="blnNeedCopySamples" type="bool"/>
+          <storage name="blnNeedCopyFT" type="bool"/>
+          <storage name="idfVectorSurveillanceSession" type="long"/>
+          <storage name="idfVector" type="long"/>
+          <calculated name="CaseObjectIdent" type="string" depends="idfVectorSurveillanceSession" lambda='c => "VsSession_" + c.idfVectorSurveillanceSession + "_"' />
+        </fields>
+        <readonly>
+          <fields name="blnNeedCopyGeneralData" predicate="c => true"/>
+          <fields name="*" predicate="c => c.ReadOnly" />
+        </readonly>
+        <extenders>
+          <creating>
+            <lambda_extender target="blnNeedCopyGeneralData" type="bool" lambda="c => true" />
+            <lambda_extender target="blnNeedCopyFF" type="bool" lambda="c => false" />
+            <lambda_extender target="blnNeedCopySamples" type="bool" lambda="c => false" />
+            <lambda_extender target="blnNeedCopyFT" type="bool" lambda="c => false" />
+          </creating>
+        </extenders>
+        <actions>
+          <standard>
+            <remove type="Create"/>
+            <remove type="Ok"/>
+            <remove type="Cancel"/>
+            <remove type="Delete"/>
+            <remove type="Save"/>
+          </standard>
+          <action name="Ok" type="Close" >
+            <visual panel="Main" alignment ="Right" >
+              <regular caption ="strSelect_Id" tooltip ="tooltipSelect_Id" icon =""/>
+            </visual>
+            <run>
+              <preUI webType="JScript"/>
+            </run>
+          </action>
+          <action name="Cancel" type="Close">
+            <visual panel="Main" alignment ="Right" >
+              <regular caption ="strCancel_Id" tooltip ="tooltipCancel_Id" icon =""/>
+            </visual>
+            <run>
+              <preUI webType="JScript" methodName="vector.vectorDetailCancel" />
+            </run>
+          </action>
+        </actions>
+      </table>
+    </tables>
+</object>

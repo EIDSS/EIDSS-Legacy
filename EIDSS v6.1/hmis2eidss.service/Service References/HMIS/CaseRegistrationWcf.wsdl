@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="CaseRegistrationWcf" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="WSHttpBinding_ICaseRegistrationWcf_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <wsoma:OptimizedMimeSerialization xmlns:wsoma="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization" />
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://case.moh.gov.ge/CaseRegistration/Services/CaseRegistrationWcf.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://case.moh.gov.ge/CaseRegistration/Services/CaseRegistrationWcf.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://case.moh.gov.ge/CaseRegistration/Services/CaseRegistrationWcf.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Hmis.Contracts.CaseRegistration.Contracts.Results" />
+      <xsd:import schemaLocation="http://case.moh.gov.ge/CaseRegistration/Services/CaseRegistrationWcf.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Hmis.Contracts.Common.Contracts" />
+      <xsd:import schemaLocation="http://case.moh.gov.ge/CaseRegistration/Services/CaseRegistrationWcf.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/Hmis.Contracts.CaseRegistration.Contracts" />
+      <xsd:import schemaLocation="http://case.moh.gov.ge/CaseRegistration/Services/CaseRegistrationWcf.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/Hmis.Contracts.CaseRegistration.Enums" />
+      <xsd:import schemaLocation="http://case.moh.gov.ge/CaseRegistration/Services/CaseRegistrationWcf.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/Hmis.Contracts.Billing.Contracts" />
+      <xsd:import schemaLocation="http://case.moh.gov.ge/CaseRegistration/Services/CaseRegistrationWcf.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/Hmis.Contracts.CommonData.Contracts" />
+      <xsd:import schemaLocation="http://case.moh.gov.ge/CaseRegistration/Services/CaseRegistrationWcf.svc?xsd=xsd8" namespace="http://schemas.datacontract.org/2004/07/Hmis.Contracts.CommonData.Enums" />
+      <xsd:import schemaLocation="http://case.moh.gov.ge/CaseRegistration/Services/CaseRegistrationWcf.svc?xsd=xsd9" namespace="http://schemas.datacontract.org/2004/07/Hmis.Contracts.Billing.Enums" />
+      <xsd:import schemaLocation="http://case.moh.gov.ge/CaseRegistration/Services/CaseRegistrationWcf.svc?xsd=xsd10" namespace="http://schemas.datacontract.org/2004/07/Hmis.Contracts.Billing.Contracts.Results" />
+      <xsd:import schemaLocation="http://case.moh.gov.ge/CaseRegistration/Services/CaseRegistrationWcf.svc?xsd=xsd11" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ICaseRegistrationWcf_Login_InputMessage">
+    <wsdl:part name="parameters" element="tns:Login" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_Login_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LoginResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_GetCaseByID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCaseByID" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_GetCaseByID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCaseByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_GetProvidersByPersonalID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetProvidersByPersonalID" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_GetProvidersByPersonalID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetProvidersByPersonalIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_GetAllCasesByDateRange_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllCasesByDateRange" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_GetAllCasesByDateRange_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllCasesByDateRangeResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_GetFilteredCasesByAndDateRange_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetFilteredCasesByAndDateRange" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_GetFilteredCasesByAndDateRange_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetFilteredCasesByAndDateRangeResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_GetReimbursementStatusByCaseID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetReimbursementStatusByCaseID" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_GetReimbursementStatusByCaseID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetReimbursementStatusByCaseIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_GetDateDiffByCaseID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDateDiffByCaseID" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_GetDateDiffByCaseID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDateDiffByCaseIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_GetClosingDateDiffByCaseID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetClosingDateDiffByCaseID" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_GetClosingDateDiffByCaseID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetClosingDateDiffByCaseIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_UpdateReportingCaseStatus_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateReportingCaseStatus" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_UpdateReportingCaseStatus_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateReportingCaseStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_IsCaseSentToReporting_InputMessage">
+    <wsdl:part name="parameters" element="tns:IsCaseSentToReporting" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_IsCaseSentToReporting_OutputMessage">
+    <wsdl:part name="parameters" element="tns:IsCaseSentToReportingResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_SearchRequestsInCaseByIds_InputMessage">
+    <wsdl:part name="parameters" element="tns:SearchRequestsInCaseByIds" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_SearchRequestsInCaseByIds_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchRequestsInCaseByIdsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_IsCaseDiagnosisEditted_InputMessage">
+    <wsdl:part name="parameters" element="tns:IsCaseDiagnosisEditted" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_IsCaseDiagnosisEditted_OutputMessage">
+    <wsdl:part name="parameters" element="tns:IsCaseDiagnosisEdittedResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_IsCaseDiagnosisEdittedAfterClosing_InputMessage">
+    <wsdl:part name="parameters" element="tns:IsCaseDiagnosisEdittedAfterClosing" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_IsCaseDiagnosisEdittedAfterClosing_OutputMessage">
+    <wsdl:part name="parameters" element="tns:IsCaseDiagnosisEdittedAfterClosingResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_IsCostEditedLaterThenNHoursIfTransferr_InputMessage">
+    <wsdl:part name="parameters" element="tns:IsCostEditedLaterThenNHoursIfTransferr" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_IsCostEditedLaterThenNHoursIfTransferr_OutputMessage">
+    <wsdl:part name="parameters" element="tns:IsCostEditedLaterThenNHoursIfTransferrResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_GetDiagChangeDiffFromDischarge_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDiagChangeDiffFromDischarge" />
+  </wsdl:message>
+  <wsdl:message name="ICaseRegistrationWcf_GetDiagChangeDiffFromDischarge_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDiagChangeDiffFromDischargeResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ICaseRegistrationWcf">
+    <wsdl:operation name="Login">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/Login" message="tns:ICaseRegistrationWcf_Login_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/LoginResponse" message="tns:ICaseRegistrationWcf_Login_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCaseByID">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/GetCaseByID" message="tns:ICaseRegistrationWcf_GetCaseByID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/GetCaseByIDResponse" message="tns:ICaseRegistrationWcf_GetCaseByID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProvidersByPersonalID">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/GetProvidersByPersonalID" message="tns:ICaseRegistrationWcf_GetProvidersByPersonalID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/GetProvidersByPersonalIDResponse" message="tns:ICaseRegistrationWcf_GetProvidersByPersonalID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllCasesByDateRange">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/GetAllCasesByDateRange" message="tns:ICaseRegistrationWcf_GetAllCasesByDateRange_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/GetAllCasesByDateRangeResponse" message="tns:ICaseRegistrationWcf_GetAllCasesByDateRange_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFilteredCasesByAndDateRange">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/GetFilteredCasesByAndDateRange" message="tns:ICaseRegistrationWcf_GetFilteredCasesByAndDateRange_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/GetFilteredCasesByAndDateRangeResponse" message="tns:ICaseRegistrationWcf_GetFilteredCasesByAndDateRange_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetReimbursementStatusByCaseID">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/GetReimbursementStatusByCaseID" message="tns:ICaseRegistrationWcf_GetReimbursementStatusByCaseID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/GetReimbursementStatusByCaseIDResponse" message="tns:ICaseRegistrationWcf_GetReimbursementStatusByCaseID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDateDiffByCaseID">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/GetDateDiffByCaseID" message="tns:ICaseRegistrationWcf_GetDateDiffByCaseID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/GetDateDiffByCaseIDResponse" message="tns:ICaseRegistrationWcf_GetDateDiffByCaseID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetClosingDateDiffByCaseID">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/GetClosingDateDiffByCaseID" message="tns:ICaseRegistrationWcf_GetClosingDateDiffByCaseID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/GetClosingDateDiffByCaseIDResponse" message="tns:ICaseRegistrationWcf_GetClosingDateDiffByCaseID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateReportingCaseStatus">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/UpdateReportingCaseStatus" message="tns:ICaseRegistrationWcf_UpdateReportingCaseStatus_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/UpdateReportingCaseStatusResponse" message="tns:ICaseRegistrationWcf_UpdateReportingCaseStatus_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IsCaseSentToReporting">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/IsCaseSentToReporting" message="tns:ICaseRegistrationWcf_IsCaseSentToReporting_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/IsCaseSentToReportingResponse" message="tns:ICaseRegistrationWcf_IsCaseSentToReporting_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchRequestsInCaseByIds">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/SearchRequestsInCaseByIds" message="tns:ICaseRegistrationWcf_SearchRequestsInCaseByIds_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/SearchRequestsInCaseByIdsResponse" message="tns:ICaseRegistrationWcf_SearchRequestsInCaseByIds_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IsCaseDiagnosisEditted">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/IsCaseDiagnosisEditted" message="tns:ICaseRegistrationWcf_IsCaseDiagnosisEditted_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/IsCaseDiagnosisEdittedResponse" message="tns:ICaseRegistrationWcf_IsCaseDiagnosisEditted_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IsCaseDiagnosisEdittedAfterClosing">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/IsCaseDiagnosisEdittedAfterClosing" message="tns:ICaseRegistrationWcf_IsCaseDiagnosisEdittedAfterClosing_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/IsCaseDiagnosisEdittedAfterClosingResponse" message="tns:ICaseRegistrationWcf_IsCaseDiagnosisEdittedAfterClosing_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IsCostEditedLaterThenNHoursIfTransferr">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/IsCostEditedLaterThenNHoursIfTransferr" message="tns:ICaseRegistrationWcf_IsCostEditedLaterThenNHoursIfTransferr_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/IsCostEditedLaterThenNHoursIfTransferrResponse" message="tns:ICaseRegistrationWcf_IsCostEditedLaterThenNHoursIfTransferr_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDiagChangeDiffFromDischarge">
+      <wsdl:input wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/GetDiagChangeDiffFromDischarge" message="tns:ICaseRegistrationWcf_GetDiagChangeDiffFromDischarge_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ICaseRegistrationWcf/GetDiagChangeDiffFromDischargeResponse" message="tns:ICaseRegistrationWcf_GetDiagChangeDiffFromDischarge_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WSHttpBinding_ICaseRegistrationWcf" type="tns:ICaseRegistrationWcf">
+    <wsp:PolicyReference URI="#WSHttpBinding_ICaseRegistrationWcf_policy" />
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Login">
+      <soap12:operation soapAction="http://tempuri.org/ICaseRegistrationWcf/Login" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCaseByID">
+      <soap12:operation soapAction="http://tempuri.org/ICaseRegistrationWcf/GetCaseByID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProvidersByPersonalID">
+      <soap12:operation soapAction="http://tempuri.org/ICaseRegistrationWcf/GetProvidersByPersonalID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllCasesByDateRange">
+      <soap12:operation soapAction="http://tempuri.org/ICaseRegistrationWcf/GetAllCasesByDateRange" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFilteredCasesByAndDateRange">
+      <soap12:operation soapAction="http://tempuri.org/ICaseRegistrationWcf/GetFilteredCasesByAndDateRange" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetReimbursementStatusByCaseID">
+      <soap12:operation soapAction="http://tempuri.org/ICaseRegistrationWcf/GetReimbursementStatusByCaseID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDateDiffByCaseID">
+      <soap12:operation soapAction="http://tempuri.org/ICaseRegistrationWcf/GetDateDiffByCaseID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetClosingDateDiffByCaseID">
+      <soap12:operation soapAction="http://tempuri.org/ICaseRegistrationWcf/GetClosingDateDiffByCaseID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateReportingCaseStatus">
+      <soap12:operation soapAction="http://tempuri.org/ICaseRegistrationWcf/UpdateReportingCaseStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsCaseSentToReporting">
+      <soap12:operation soapAction="http://tempuri.org/ICaseRegistrationWcf/IsCaseSentToReporting" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchRequestsInCaseByIds">
+      <soap12:operation soapAction="http://tempuri.org/ICaseRegistrationWcf/SearchRequestsInCaseByIds" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsCaseDiagnosisEditted">
+      <soap12:operation soapAction="http://tempuri.org/ICaseRegistrationWcf/IsCaseDiagnosisEditted" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsCaseDiagnosisEdittedAfterClosing">
+      <soap12:operation soapAction="http://tempuri.org/ICaseRegistrationWcf/IsCaseDiagnosisEdittedAfterClosing" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsCostEditedLaterThenNHoursIfTransferr">
+      <soap12:operation soapAction="http://tempuri.org/ICaseRegistrationWcf/IsCostEditedLaterThenNHoursIfTransferr" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDiagChangeDiffFromDischarge">
+      <soap12:operation soapAction="http://tempuri.org/ICaseRegistrationWcf/GetDiagChangeDiffFromDischarge" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CaseRegistrationWcf">
+    <wsdl:port name="WSHttpBinding_ICaseRegistrationWcf" binding="tns:WSHttpBinding_ICaseRegistrationWcf">
+      <soap12:address location="http://case.moh.gov.ge/CaseRegistration/Services/CaseRegistrationWcf.svc" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>http://case.moh.gov.ge/CaseRegistration/Services/CaseRegistrationWcf.svc</wsa10:Address>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

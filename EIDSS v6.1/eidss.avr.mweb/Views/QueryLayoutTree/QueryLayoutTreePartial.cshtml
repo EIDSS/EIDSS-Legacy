@@ -1,0 +1,271 @@
+﻿@using System.Drawing
+@using System.Web.UI.WebControls
+@using DevExpress.Web.ASPxTreeList.Internal
+@using bv.common.Core
+@using eidss.avr.mweb.Utils
+@using eidss.model.Avr.Tree
+@using eidss.model.Core
+@using eidss.web.common.Utils
+@model List<AvrTreeElement>
+
+@{
+    var treeList = Html.DevExpress().TreeList(
+    settings =>
+    {
+        settings.Name = "treeList";
+        settings.CallbackRouteValues = new { Controller = "QueryLayoutTree", Action = "QueryLayoutTreePartial" };
+        settings.Width = Unit.Percentage(100);
+
+        settings.AutoGenerateColumns = false;
+        settings.KeyFieldName = "ID";
+        settings.ParentFieldName = "ParentID";
+        settings.RootValue = null;
+
+        settings.SettingsSelection.Enabled = true;
+        settings.SettingsSelection.AllowSelectAll = false;
+        settings.Styles.SelectedNode.Border.BorderWidth = 1;
+        settings.Styles.SelectedNode.Border.BorderStyle = BorderStyle.Solid;
+        settings.Styles.SelectedNode.Border.BorderColor = Color.FromArgb(0, 0, 0);
+        settings.Settings.GridLines = System.Web.UI.WebControls.GridLines.Horizontal;
+
+        settings.Styles.Node.CssClass = "treeClass";
+        settings.CommandColumn.Width = Unit.Pixel(60);
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ID";
+            c.Visible = false;
+        });
+        settings.Columns.Add(c =>
+            {
+                c.FieldName = "QueryID";
+                c.Visible = false;
+            });
+        settings.Columns.Add(c =>
+            {
+                c.FieldName = "ElementType";
+                c.Visible = false;
+            });
+
+        settings.Columns.Add(c =>
+            {
+                c.FieldName = "NationalName";
+                c.Width = Unit.Percentage(100);
+                c.Caption = Translator.GetString("strTranslatedName");
+                c.SetDataCellTemplateContent(col =>
+                    {
+                        string imageUrl;
+                        string nodeTemplate;
+                        bool showEditButton;
+                        string editImageUrl = "/Content/Images/edit.png";
+                        bool showDeleteButton = false;
+                        var elemType = DataBinder.Eval(col.DataItem, "ElementType").ToString();
+                        switch (elemType)
+                        {
+                            case "Query":
+                                imageUrl = "/Content/Images/query_16x16.png";
+                                nodeTemplate = Utils.Str(DataBinder.Eval(col.DataItem, "NationalName"));
+                                showEditButton = AvrPermissions.UpdatePermission;
+                                editImageUrl = "/Content/Images/edit_readonly.png";
+                                break;
+                            case "Layout":
+                                imageUrl = "/Content/Images/layout_16x16.png";
+                                nodeTemplate = string.Format("<a href='javascript:void(0)' onclick='queryTreeList.showPivot({0}, false)' class='layoutLink{1}'>{2}</a>",
+                                                             DataBinder.Eval(col.DataItem, "ID"),
+                                                             true.Equals(DataBinder.Eval(col.DataItem, "IsPublished")) ? " published" : "", DataBinder.Eval(col.DataItem, "NationalName"));
+                                showEditButton = AvrPermissions.UpdatePermission;
+                                showDeleteButton = AvrPermissions.DeletePermission;
+                                break;
+                            default:
+                                imageUrl = "/Content/Images/folder_16x16.png";
+                                showEditButton = AvrPermissions.UpdatePermission && !((TreeListTemplateDataItem)(col.DataItem)).Row.IsEditing;
+                                showDeleteButton = AvrPermissions.DeletePermission && !((TreeListTemplateDataItem)(col.DataItem)).Row.IsEditing;
+                                nodeTemplate = Utils.Str(DataBinder.Eval(col.DataItem, "NationalName"));
+                                break;
+                        }
+
+                        var template1 = string.Format("<div title='{0}'>", DataBinder.Eval(col.DataItem, "Description"));
+                        var template2 = string.Format("<img src='{0}' alt='' style='padding-left: 8px;padding-right:8px;'/>{1}</div>", imageUrl, nodeTemplate);
+                        ViewContext.Writer.Write(template1);
+                        if (showEditButton)
+                            if (!((TreeListTemplateDataItem)(col.DataItem)).Row.IsEditing)
+                                Html.DevExpress().Image(imgSettings =>
+                                {
+                                    imgSettings.Name = "e" + col.NodeKey;
+                                    imgSettings.ImageUrl = editImageUrl;
+                                    imgSettings.Style.Add("cursor", "pointer");
+                                    imgSettings.Properties.ClientSideEvents.Click = string.Format("function(s, e){{ $.cookie('newElementType', ''); treeList.StartEdit('{0}'); }}", col.NodeKey);
+                                }).Render();
+                            else
+                                Html.DevExpress().Image(imgSettings =>
+                                {
+                                    imgSettings.ImageUrl = "";
+                                    imgSettings.Style.Add("width", "16px");
+                                    imgSettings.Style.Add("height", "16px");
+                                }).Render();
+
+                        if (showDeleteButton)
+                            if (!((TreeListTemplateDataItem)(col.DataItem)).Row.IsEditing)
+                                Html.DevExpress().Image(imgSettings =>
+                            {
+                                imgSettings.Name = "d" + col.NodeKey;
+                                imgSettings.ImageUrl = "/Content/Images/trash.png";
+                                imgSettings.Style.Add("cursor", "pointer");
+                                imgSettings.Properties.ClientSideEvents.Click = string.Format("function(s, e){{ queryTreeList.canDeleteNodeRoutines('{0}'); }}", col.NodeKey);
+                            }).Render();
+                            else
+                                Html.DevExpress().Image(imgSettings =>
+                                {
+                                    imgSettings.ImageUrl = "";
+                                    imgSettings.Style.Add("width", "16px");
+                                    imgSettings.Style.Add("height", "16px");
+                                }).Render();
+
+                        ViewContext.Writer.Write(template2);
+                    }
+                    );
+            });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "LayoutAuthor";
+            c.Visible = AvrPermissions.AccessToAVRAdministrationPermission;
+            c.Caption = Translator.GetString("LayoutAuthor");
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "ReadOnly";
+            c.Visible = false;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "IsShared";
+            c.Visible = false;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DescriptionID";
+            c.Visible = false;
+        });
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "Description";
+            c.Visible = false;
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "DescriptionEnglish";
+            c.Visible = false;
+        });
+
+        settings.SettingsBehavior.ColumnResizeMode = ColumnResizeMode.Disabled;
+
+        settings.HtmlDataCellPrepared = (sender, e) =>
+        {
+            //TODO это надо делать в HtmlRowPrepared, но обработчик почему-то не вызывается
+            if (e.Column.FieldName == "NationalName")
+            {
+                var id = Convert.ToInt64(e.NodeKey);
+                var tree = Session["QueryTree"] as List<AvrTreeElement>;
+                if (tree != null)
+                {
+                    var node = tree.FirstOrDefault(c => c.ID == id);
+                    if (node != null)
+                    {
+                        if (node.IsPublished)
+                            e.Cell.CssClass = "published";
+                    }
+                }
+            }
+        };
+
+        //settings.CommandColumn.Width = Unit.Pixel(20);
+
+        //settings.CommandColumn.ButtonType = ButtonType.Image;
+        //settings.CommandColumn.VisibleIndex = 0;
+        //settings.CommandColumn.Visible = true;
+        //settings.CommandColumn.NewButton.Visible = false;
+        //settings.CommandColumn.EditButton.Visible = true;
+        //settings.CommandColumn.EditButton.Image.Url = "/Content/Images/edit.png";
+        //settings.CommandColumn.DeleteButton.Visible = false;
+        //settings.CommandColumn.DeleteButton.Image.Url = "/Content/Images/trash.png";
+        settings.SettingsEditing.Mode = TreeListEditMode.EditFormAndDisplayNode;
+        settings.SettingsEditing.AllowNodeDragDrop = true;
+        //settings.SettingsBehavior.AllowFocusedNode = true;
+
+        settings.SettingsEditing.UpdateNodeRouteValues = new { Controller = "QueryLayoutTree", Action = "QueryLayoutTreeUpdatePartial" };
+        settings.SettingsEditing.AddNewNodeRouteValues = new { Controller = "QueryLayoutTree", Action = "QueryLayoutTreeAddPartial" };
+        settings.SettingsEditing.NodeDragDropRouteValues = new { Controller = "QueryLayoutTree", Action = "QueryLayoutTreeMovePartial" };
+        settings.SettingsEditing.DeleteNodeRouteValues = new { Controller = "QueryLayoutTree", Action = "QueryLayoutTreeDeletePartial" };
+        settings.SettingsEditing.ConfirmDelete = false;
+
+        settings.ClientSideEvents.SelectionChanged = "queryTreeList.checkedChanged";
+        settings.ClientSideEvents.EndCallback = "queryTreeList.showEditNodes";
+        settings.ClientSideEvents.BeginCallback = "queryTreeList.getCalledEvent";
+        settings.ClientSideEvents.CallbackError = "queryTreeList.callbackErrorHandle";
+        settings.ClientSideEvents.CustomButtonClick = "queryTreeList.customButtonClick";
+
+        settings.SettingsBehavior.ExpandCollapseAction = TreeListExpandCollapseAction.NodeDblClick;
+        settings.SettingsCookies.StoreExpandedNodes = true;
+        settings.SettingsCookies.StoreSelection = true;
+
+        settings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+
+        settings.SetEditFormTemplateContent(c => Html.RenderPartial("QueryLayoutTreeEditNodePartial", QueryLayoutTreeHelper.GetTreeElement(c, Request.Cookies["newElementType"])));
+
+        settings.PreRender = (sender, e) =>
+            {
+                var treeListControl = (MVCxTreeList)sender;
+                treeListControl.ExpandAll();
+
+                if (treeListControl.Nodes.Count > 0) treeListControl.Nodes[0].Selected = true;
+            };
+
+        settings.CustomJSProperties = (sender, e) =>
+        {
+            //TODO это правильный способ передачи на Client Side, но на C.S. он не виден
+            /*
+            e.Properties["cpDeleteNodeError"] = "test";
+            var x = e.Properties["cpDeleteNodeError"];
+            var y = x;
+            */
+            var keys = e.Properties.Keys.ToList();
+            var x = keys.FirstOrDefault(c => c == "cpSelectedNode");
+            if (x == null) e.Properties["cpSelectedNode"] = 0;
+        };
+
+        settings.BeforeGetCallbackResult = (sender, e) =>
+            {
+                var tl = (MVCxTreeList)sender;
+                tl.UnselectAll();
+
+            };
+
+        settings.HtmlRowPrepared = (s, e) =>
+            {
+                if (e.GetValue("ElementType") != null)
+                {
+                    if (Equals(e.GetValue("ElementType").ToString(), "Query"))
+                    {
+                        e.Row.Attributes.Add("nodeType", "queryNode");
+                    }
+                    if (Equals(e.GetValue("ElementType").ToString(), "Layout"))
+                    {
+                        e.Row.Attributes.Add("nodeType", "layoutNode");
+                        e.Row.Attributes.Add("queryId", e.GetValue("QueryID").ToString());
+                    }
+                    if (Equals(e.GetValue("ElementType").ToString(), "Folder"))
+                    {
+                        e.Row.Attributes.Add("nodeType", "folderNode");
+                        e.Row.Attributes.Add("queryId", e.GetValue("QueryID").ToString());
+                    }
+                }
+            };
+    });
+}
+
+@treeList.Bind(Model).GetHtml()

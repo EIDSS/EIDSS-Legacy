@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="RuleFunctionLookup"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="spFFGetRuleFunctions" type="lookuplist" cache="true"/>
+    </storage>
+
+    <tables>
+        <table name="RuleFunctionLookup" tostring="c => c.strMaskNational" lookupcachename="rftRuleFunction">
+            <keys>
+                <key name="idfsRuleFunction" />
+            </keys>          
+        </table>      
+    </tables>
+
+</object>
+

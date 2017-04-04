@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="UserGroupMember"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spUserGroupMember_SelectDetail" type="detaillist" />        
+  </storage>
+  
+  <tables>
+    <table name="UserGroupMember">
+      <properties auditObject="daoUser" auditTable="tlbEmployee" permissionObject="UserGroup"/>
+      <help win="UserGroupForm"/>
+      <searchpanel>
+        <item name="idfsEmployeeType" editor="Lookup" labelId="Type"
+					lookupName="EmployeeTypeLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        <item name="strName" editor="Text" labelId="strName" />
+        <item name="OrganizationName" editor="Text" labelId="UserGroupMember.OrganizationName" />
+        <item name="strDescription" editor="Text" labelId="strDescription" />
+      </searchpanel>
+      <grid>        
+        <item name="ID" visible="false" key="true" type="long" />
+        <item name="EmployeeTypeName"  />
+        <item name="strName"  />
+        <item name="OrganizationName" />
+        <item name="strDescription" />
+      </grid>
+      <labels>
+        <item labelId="UserGroupMember.EmployeeTypeName" name="EmployeeTypeName"/>
+        <item labelId="UserGroupMember.strName" name="strName"/>
+        <item labelId="UserGroupMember.OrganizationName" name="OrganizationName"/>
+        <item labelId="UserGroupMember.strDescription" name="strDescription"/>
+      </labels>
+      <fields>
+        <storage name="ID" type="long"/>
+      </fields>
+      <lookups>
+        <lookup name="EmployeeType" table="BaseReference" section="rftEmployeeType" source="idfsEmployeeType" target="idfsBaseReference" />
+      </lookups>
+      <storage>
+        <post />
+        <delete />        
+      </storage>
+      <extenders>       
+        <creating>
+          <scalar_extender target="ID" class="AutoIncrementExtender" />
+        </creating>        
+      </extenders>      
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <remove type="Edit"/>
+          <remove type="Delete"/>          
+        </standard>
+        <action name="AddGroupMember" type="Action">
+          <visual panel="Group" alignment="Right" enablePredicate="(c, p, b) => c != null ? (c.Environment != null ? !c.Environment.ReadOnly : !c.ReadOnly) : true &amp;&amp; eidss.model.Core.EidssUserContext.User.HasPermission(bv.common.Core.PermissionHelper.UpdatePermission(eidss.model.Enums.EIDSSPermissionObject.UserGroup))">
+            <regular caption="strAdd_Id" icon="add" tooltip="tooltipAdd_Id" />
+          </visual>
+        </action>
+        <action name="DeleteGroupMember" type="Action">
+          <visual panel="Group" alignment="Right" enablePredicate="(c, p, b) => c != null &amp;&amp; !c.Key.Equals(PredefinedObjectId.FakeListObject)  &amp;&amp; eidss.model.Core.EidssUserContext.User.HasPermission(bv.common.Core.PermissionHelper.UpdatePermission(eidss.model.Enums.EIDSSPermissionObject.UserGroup))">
+            <regular caption="strDelete_Id" icon="delete" tooltip="tooltipDelete_Id" />
+          </visual>
+        </action>               
+      </actions>
+    </table>    
+  </tables>
+
+</object>

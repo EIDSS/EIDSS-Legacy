@@ -1,0 +1,1037 @@
+﻿html {
+    background-color: #d5e0ed;
+    color: #262626;
+    box-sizing: border-box; 
+}
+body {
+    background-color: #d5e0ed;
+    font-size: 12px;
+    color: #262626;
+    overflow-y: scroll;
+}
+.page {
+    max-width: 1024px;
+}
+@media screen and (min-width: 901px) and (max-width: 1300px) {
+.page {
+    max-width: 800px;
+}
+}
+@media screen and (min-width: 501px) and (max-width: 900px) {
+.page {
+    max-width: 512px;
+}
+}
+@media screen and (min-width: 401px) and (max-width: 500px) {
+.page {
+    max-width: 460px;
+}
+}
+@media screen and (max-width: 400px) {
+.page {
+    max-width: 380px;
+}
+}
+
+.detailPageContent {
+    background-color: #fff;
+}
+
+
+.reportlabel {
+    padding-left: 15px;
+}
+.rightbuttons {
+    padding-left: 15px;
+    text-align: right;
+    white-space: nowrap;    
+}
+
+.bluelayout {
+	margin-left: 0;
+    margin-right: 0;
+    border-color: #173660;
+    background-color: #173660;
+    padding: 3px;
+}
+
+.whitepanel {
+	margin-left: 0;
+    margin-right: 0;
+    border-color: #173660;
+    background-color: #173660;
+    padding: 3px;
+}
+
+.td-padding {
+	padding-left: 2px;
+}
+
+.fillAll
+{
+    width: 100%;
+    min-width: 100%;    
+}
+.tdContainer
+{
+    margin-right: 4px; /* fix for IE (100% 'input' width) */ 
+}
+.k-rtl .tdContainer
+{
+    margin-left: 4px; /* fix for IE (100% 'input' width) */
+    margin-right: inherit;
+}
+.tdContainer input[type="text"]
+{
+    min-height: 20px;
+    max-height: 20px;
+    line-height: 20px;
+    border: #ccc 1px solid;
+}
+.tabPanelContent .tdContainer {
+    margin-right: 0;
+}
+.k-rtl .tabPanelContent .tdContainer {
+    margin-left: 0;
+    margin-right: inherit;
+}
+.tabPanelContent .tdContainer input[type="text"],
+.summary .tdContainer input[type="text"]{
+    min-width: 166px;
+    max-width: 166px;
+}
+.tabPanelContent .number .tdContainer input[type="text"]{
+    min-width: 50px;
+    max-width: 50px;
+}
+td.fillAll .tdContainer {
+    margin-right: 4px;
+    width: 100%;
+    min-width: 100%;    
+}
+td.fillAll .tdContainer input[type="text"]{
+    width: 100%;
+    min-width: 100%;    
+}
+.k-combobox{
+    min-width: 169px;
+    max-width: 169px;
+}
+.k-dropdown{
+    min-width: 169px;
+    max-width: 169px;
+}
+.k-datepicker{
+    min-width: 170px;
+    max-width: 170px;
+}
+.readonlyField {
+    background-color: #f2f2f2;
+    border-collapse: collapse;
+    border: 1px #CCCCCC solid;
+}
+.detailHeader {
+    min-height: 47px;
+    max-height: 47px;
+    line-height: 47px;
+    vertical-align: middle;
+    font-size: 16px;
+    color: #fff;
+    font-weight: bold;
+    padding: 0 20px;
+    background: url(/Content/Images/Human_Case_Header.png);
+}
+.formTitle {
+    font-size: 22px;
+}
+
+.formNumber {
+    float: right;
+} 
+.k-rtl .formNumber {
+    float: left;
+}
+span.formNumber a
+{
+    color: #fff;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: normal;
+}
+.formNumberTranslation {
+    float: right;
+    color: #d4dae3;
+    text-decoration: none;
+} 
+.k-rtl .formNumberTranslation {
+    float: left;
+} 
+.invalidObject {
+    border: #e3676f solid 1px;
+    background-color: #ffffe3;
+} 
+.invalidObjectPopup {
+    border: #e3676f solid 1px;
+    background-color: #ffffe3;
+    margin-bottom: 16px;
+} 
+.invalidObjectText {
+    font-size: 12px;
+    font-weight: bold;
+    padding-left: 20px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+} 
+.invalidObject img {
+    vertical-align: top;
+    float: right;
+}
+.invalidObjectPopup img {
+    vertical-align: top;
+    float: right;
+}
+
+
+.actionPanel {
+    padding: 10px;
+    width: 100%;
+}
+.detailsGrid .button.k-grid-add,
+.detailsGrid .button.k-grid-add:hover {
+    min-width: 70px;
+    background: #85a2c7;
+    background: url(/Content/Images/button.png) repeat-x;
+    border: #85a2c7 1px solid;
+    line-height: 20px;
+    vertical-align: middle;
+    text-align: center;
+    color: #102541;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 0 10px;
+}
+.reportButtons .button {
+    float: left;
+    margin-right: 4px;
+}
+.k-rtl .reportButtons .button {
+    float: right;
+    margin-left: 4px;
+    margin-right: inherit;
+}
+.actionButtons .button {
+    float: right;
+    margin-left: 4px;
+}
+.k-rtl .actionButtons .button {
+    float: left;
+    margin-right: 4px;
+    margin-left: inherit;
+}
+.summary,
+.popupSummary {
+    background-color: #afc2da;
+}
+.summary {
+    padding: 5px 10px 5px 0;
+    border: #b9cadf 1px solid;
+    border-collapse: collapse;    
+}
+.summary td {
+    padding-top: 5px;
+}
+.popupSummary {
+    background-color: #afc2da;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.label {
+    padding-right: 10px;
+    padding-left: 15px;
+    white-space: normal;
+    word-wrap: break-word;
+}
+.summary .label {
+    padding-left: 10px;
+}
+.level1 .firstLabel
+{
+    padding-left: 8px;
+    padding-right: 10px;
+    white-space: normal;
+}
+.level1 .firstLabel1 {
+    padding-left: 0px;
+    padding-right: 15px;
+    white-space: normal;
+}
+.level1 .firstLabel2 {
+    padding-left: 8px;
+    padding-right: 20px;
+    white-space: normal;
+}
+.k-tabstrip.k-header .k-item {
+    border-color: #bfbfbf;
+    background: url(/Content/Images/tab.png) repeat-x;
+    margin-right: 4px;
+}
+.k-tabstrip.k-header .k-tabstrip-items {
+    padding-left: 0;
+    padding-top: 10px;
+}
+.k-tabstrip.k-header .k-link {
+    padding-left: 10px;
+    padding-right: 10px;
+    font-weight: bold;
+    color: #262626;
+}
+.k-tabstrip.k-header .k-link {
+    color: #262626;
+}
+.k-tabstrip.k-header .k-tabstrip-items .k-state-active.k-item {
+    background: url(/Content/Images/selected_tab.png) repeat-x;
+    border-color: #102541;
+    color: #fff;
+}
+.k-tabstrip.k-header .k-tabstrip-items .k-state-active.k-item .k-link {
+    color: #fff;
+}
+.k-tabstrip .k-content {
+    margin: 0;
+}
+.k-tabstrip .k-content.k-state-active{
+    margin-left: 0;
+    margin-right: 0;
+    border-color: #173660; 
+    background-color: #173660; 
+    padding: 3px;
+}
+.tabPanelContent.bordered {
+    margin-top: 5px;
+    border: 3px solid #173660;
+    min-height: 100%;
+}
+.tabPanelContent.bordered2 {
+    margin-top: 5px;
+    border: 3px solid #173660;
+}
+
+
+.twoLinesHeightTab.k-tabstrip.k-header > .k-tabstrip-items {
+    display: table;
+    border-spacing: 4px 0;
+    margin-left: -4px;
+    border-collapse: separate;
+}
+.twoLinesHeightTab.k-tabstrip.k-header > .k-tabstrip-items .k-item {
+    vertical-align:middle;
+    display: table-cell;
+    margin-right: 4px;
+}
+.twoLinesHeightTab.k-tabstrip.k-header .k-item {
+    height: 36px;
+    background: url(/Content/Images/inactive_tab_for_details_form.png) repeat-x;
+}
+.twoLinesHeightTab.k-tabstrip.k-header .k-state-active.k-item {
+    height: 36px;
+    background: url(/Content/Images/active_tab_for_details_form.png) repeat-x;
+}
+.twoLinesHeightTab.k-tabstrip.k-header .k-item > .k-link {
+    padding: 0 10px;
+    text-align: center;
+}
+
+.threeLinesHeightTab.k-tabstrip.k-header > .k-tabstrip-items {
+    display: table;
+    border-spacing: 4px 0;
+    margin-left: -4px;
+    border-collapse: separate;
+}
+.threeLinesHeightTab.k-tabstrip.k-header > .k-tabstrip-items .k-item {
+    vertical-align:middle;
+    display: table-cell;
+    margin-right: 4px;
+}
+.threeLinesHeightTab.k-tabstrip.k-header .k-item {
+    height: 57px;
+    background: url(/Content/Images/inactive_tab_for_details_form_58.png) repeat-x;
+}
+.threeLinesHeightTab.k-tabstrip.k-header .k-state-active.k-item {
+    height: 57px;
+    background: url(/Content/Images/active_tab_for_details_form_58.png) repeat-x;
+}
+.threeLinesHeightTab.k-tabstrip.k-header .k-item > .k-link {
+    padding: 0 10px;
+    text-align: center;
+}
+
+
+.innerTabs.k-tabstrip.k-header > .k-tabstrip-items {
+    display: table;
+    width: 100%;
+}
+.k-tabstrip .innerTabs.k-tabstrip.k-header .k-item {
+    height: 30px;
+}
+.innerTabs.k-tabstrip.k-header .k-item {
+    border-radius: 0;
+    margin-right: 0;
+    border: solid 1px #bfbfbf;
+    background: url(/Content/Images/non-active-sub-tab-line.png) repeat-x;
+    height: 30px;
+    vertical-align:middle;
+    display: table-cell;
+}
+.innerTabs.k-tabstrip.k-header .k-state-active > .k-link{
+    color: #fff;
+}
+.innerTabs.k-tabstrip.k-header .k-state-active.k-item{
+    color: #fff;
+    background: url(/Content/Images/active-sub-tab-line.png) repeat-x;
+    border: #102541 solid 1px ;
+}
+.innerTabs.k-tabstrip.k-header .k-link {
+    color: #262626;
+}
+.innerTabs.k-tabstrip.k-header .k-tabstrip-items {
+    padding-top: 0;
+}
+.innerTabs.k-tabstrip .k-content.k-state-active{
+    border: none;
+    border-width: 0;
+    padding: 0;
+}
+.threeLinesHeightInnerTab.k-tabstrip.k-header .k-item {
+    background: url(/Content/Images/subtab_bg.png) repeat-x;
+    height: 57px;
+}
+.threeLinesHeightInnerTab.k-tabstrip.k-header .k-state-active.k-item {
+    background: url(/Content/Images/subtab_bg_selected.png) repeat-x;
+    height: 57px;
+    border-color: #102541;
+}
+.tabPanelContent {
+    background-color: #fff;
+    padding: 3px;
+    min-height: 200px;
+}
+.subTab {
+    padding: 0;
+}
+.sectionTitle {
+    margin: 10px 15px;
+    padding: 5px 0px 17px 10px;
+    border-bottom: #204b86 1px solid;
+}
+.sectionTitle a
+{
+    color: #06f;
+    font-size: 13px;
+    text-decoration: none;
+}
+.k-ie .smallImageButton
+{
+    border: none;
+}
+.smallImageButton
+{
+    width: 22px;
+    min-width: 22px;
+    height: 19px;
+    min-height: 19px;
+    max-height: 19px;
+    line-height: 19px;
+    padding: 3px 0 0 0;
+    border-radius: 0;
+    margin: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+.smallImageButton:hover
+{
+    border: #ccc 1px solid;
+    padding: 3px 0 0 0;
+    border-radius: 4px;
+}
+.subSectionTitle {
+    font-weight: bold;    
+}
+.picker {
+    background-color: #f2f2f2;
+    border-style: none;
+    color: rgb(69, 69, 69);
+    display: inline-block;
+    font-size: 12px;
+    height: 25px;
+    outline-color: rgb(69, 69, 69);
+    overflow-x: visible;
+    overflow-y: visible;
+    position: relative;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: 170px;
+}
+.pickerWrap {
+    background-color: #f2f2f2;
+    /*background-image: none, linear-gradient(rgb(254, 254, 254) 0px, rgb(231, 231, 231) 100%);
+    background-position: 50% 50%, 50% 50%;
+    background-repeat: repeat, repeat;*/
+    border: rgb(204, 204, 204) solid 1px;
+    color: rgb(69, 69, 69);
+    display: block;
+    font-size: 12px;
+    height: 24px;
+    padding: 0 24px 0 0;
+    position: relative;
+    white-space: nowrap;
+}
+.k-rtl .pickerWrap {
+    padding: 0 0 0 24px;
+}
+.pickerWrap input[type="text"] {
+    border-style: none;
+    color: rgb(46, 46, 46);
+    display: inline-block;
+    font-size: 12px;      
+    height: 19.79px;
+    letter-spacing: normal;
+    line-height: 19.79px;
+    margin: 0;
+    padding: 2.125px 0;
+    text-indent: 4px;
+    vertical-align: top;
+    white-space: nowrap;
+    word-spacing: 0;
+}
+.pickerWrap .tdContainer input[type="text"],
+.pickerWrap input[type="text"].requiredField,
+.pickerWrap input[type="text"].requiredField.readonlyField {
+    background-color: transparent;
+    opacity: 1;
+    border: 0;
+    /*min-width: 146px;*/
+    max-width: 146px;
+}
+.pickerSelect {
+    border-radius: 0;
+    border-style: none;
+    color: rgb(69, 69, 69);
+    cursor: default;
+    display: block;
+    font-size: 12px;
+    height: 24px;
+    line-height: 24px;
+    min-height: 19.79px;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    text-decoration: none;
+    top: 0;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: 24px;
+}
+.k-rtl .pickerSelect {
+    left: 0;
+    right: inherit;
+}
+.clearFix {
+    clear: both;
+}
+.k-icon {
+    cursor: pointer;
+}
+.k-numerictextbox,
+.k-numerictextbox .k-numeric-wrap,
+.k-numerictextbox .k-select {
+    border-radius: 0;
+}
+.k-numerictextbox .k-select .k-link {
+    padding-right: 4px;
+    padding-left: 3px;
+}
+.k-numerictextbox {
+    width: 170px;
+}
+.tdFfContainer .k-numerictextbox {
+    width: 100%;
+    min-width: 50px;
+}
+.fillByContent .tdContainer,
+.fillByContent .tdContainer input[type="text"]
+{
+    width: 100%;
+    min-width: 100%;
+}
+.fullPageWidth textarea
+{
+    width: 995px;
+    margin-left: 5px;
+}
+.fullPageHeight
+{
+    position: relative;
+}
+.fullPageHeight textarea
+{
+    position: absolute;
+    left: 0;
+    top: 0;
+ 
+    height: 92%;
+}
+.popupWindowWidth textarea
+{
+    width: 370px;
+}
+.popupContent .contactedPersonNotes textarea {
+    width: 780px;
+    margin-left: 10px;
+}
+textarea {
+    overflow-y: auto;
+    border: #7395bf 1px solid;
+    height: 60px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.fillByContent textarea {
+    display: block;
+}
+.checkBox {
+    padding: 0;
+}
+.checkBox li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.checkBox input[type="checkbox"] {
+    margin-left: 0;
+    padding-left: 0;
+}
+.popupContent .windowButtonsPn{
+    margin-bottom: 15px;
+}
+.windowButtonsLeftPn {
+    float: left;
+    text-align: left;
+}
+.k-rtl .windowButtonsLeftPn {
+    float: right;
+    text-align: right;
+}
+.detailsGrid .k-grid-header .k-link {
+    font-size: 12px;
+    font-weight: bold;
+    color: #262626;
+    border-color: #82a1c6;
+}
+.detailsGrid .k-grid-header .k-link,
+.detailsGrid .k-grid-header,
+.detailsGrid .k-grid-pager {
+    background-color: #afc2da;
+    background-image: none;
+}
+.detailsGrid,
+.detailsGrid .k-grid-toolbar,
+.detailsGrid .k-grid-header,
+.detailsGrid .k-grid-header .k-header,
+.detailsGrid .k-grid-content,
+.detailsGrid .k-grid-pager,
+.detailsGrid .k-grid-pager .k-link,
+.detailsGrid .k-grid-pager .k-pager-numbers a,
+.detailsGrid .k-grid-pager .k-pager-numbers span{
+    border-color: #82a1c6;
+    color: #262626;
+    font-size: 12px;
+}
+.detailsGrid.k-grid {
+    border-top: none;
+}
+.detailsGrid .k-grid-toolbar {
+    margin: 0 -2px;
+    border-bottom: none;
+    padding-bottom: 10px;
+}
+.detailsGrid .k-grid-content {
+    font-size: 12px;
+    background-color: #eef2f7;
+    min-height: 200px;
+}
+.detailsGrid .k-grid-content .k-alt {
+    background-color: #fff;
+}
+.detailsGrid .k-grid-content td,
+.detailsGrid td {
+    border-bottom: #82a1c6 1px solid;
+    border-color: #82a1c6;
+    border-collapse: collapse;
+}
+.detailsGrid .k-grid-content .t-no-data td {
+    border-bottom: 0;
+}
+.detailsGrid .k-grid-pager .k-link.k-state-disabled,
+.detailsGrid .k-grid-pager .k-link {
+    padding: 0 3px;
+}
+.detailsGrid .k-grid-pager .k-pager-numbers .k-link,
+.detailsGrid .k-grid-pager .k-pager-numbers .k-link:hover {
+    padding: 0 7px;
+}
+.detailsGrid .k-grid-pager .k-pager-numbers span.k-state-selected {
+    background-color: #7395bf;
+    color: #fff;
+}
+.detailsGrid .k-grid-header {
+    border-top: 1px solid #82a1c6;
+}
+.detailsGrid .k-grid-toolbar {
+    text-align: right;
+}
+.k-rtl .detailsGrid .k-grid-toolbar {
+    text-align: left;
+}
+.detailsGrid .k-grid-toolbar .button {
+    margin-left: 4px;
+}
+.k-rtl .detailsGrid .k-grid-toolbar .button {
+    margin-right: 4px;
+}
+.detailsGrid .k-grid-toolbar .k-grid-add .k-add {
+    display: none;
+}
+.detailsGrid .k-state-selected,
+.detailsGrid .k-alt.k-state-selected {
+    background-color: #f7f9df;
+}
+.editColumn {
+    width: 50px;
+    max-width: 50px;
+}
+.checkColumn {
+    width: 20px;
+    max-width: 20px;
+}
+.detailsGrid .k-grid td.checkColumn {
+    padding-left: 0;
+    padding-right: 0;
+    text-align: center;
+}
+.popupContent {
+    min-height: 300px;
+    padding-bottom: 10px;
+}
+.tabContentSeparator,
+.windowSeparator {
+    border-bottom: #7395bf solid 1px;
+    height: 1px;
+}
+.windowSeparator {
+    margin: 0 -5px 15px -5px;
+}
+.tabContentSeparator{
+    margin: 10px 5px;
+}
+.popupContent .tdContainer input[type="text"],
+.popupContent .ffEditorTd .tdContainer input[type="text"]{
+    min-width: 370px;
+    max-width: 370px;
+}
+.popupContent .k-datepicker,
+.popupContent .k-combobox,
+.popupContent .k-dropdown,
+.popupContent .k-numerictextbox,
+.popupContent .picker,
+.popupContent .ffEditorTd .k-datepicker,
+.popupContent .ffEditorTd .k-combobox,
+.popupContent .ffEditorTd .k-numerictextbox,
+.popupContent .ffEditorTd .picker{
+    min-width: 373px;
+    max-width: 373px;
+}
+.popupContent .twoColumns .tdContainer input[type="text"]{
+    min-width: 235px;
+    max-width: 235px;
+}
+.popupContent .twoColumns .k-datepicker,
+.popupContent .twoColumns .k-combobox,
+.popupContent .twoColumns .k-numerictextbox,
+.popupContent .twoColumns .picker{
+    min-width: 239px;
+    max-width: 239px;
+}
+.popupContent .twoColumns .building .tdContainer input[type="text"] {
+    min-width: 75px;
+    max-width: 75px;
+}
+.popupContent textarea,
+.popupContent .ffEditorTd textarea {
+    width: 370px;
+    height: 80px;
+}
+.popupContent .ffEditorTd textarea {
+    min-width: 370px;
+    max-width: 370px;
+}
+.k-overlay {
+    background: #818181;
+    filter: none;
+    opacity: 0.7!important;
+}
+.popupContent input[type="checkbox"] {
+    margin-left: -3px;
+}
+.k-rtl .popupContent input[type="checkbox"] {
+    margin-right: 0px;
+    margin-left: 3px;
+}
+.windowNumber {
+    float: right;
+    margin-right: 12px;
+}
+.k-rtl .windowNumber {
+    float: left;
+    margin-left: 12px;
+    margin-right: inherit;
+}
+.testsPaperForm {
+    text-align: right;
+    width: 100%;
+    margin-right: 23px;
+}
+.searchPopupContent .listForm {
+    position: relative;
+    min-height: 480px;
+}
+.searchPopupContent .lfGrid {
+    min-height: 480px;
+}
+.searchPopupContent .spFilterItems {
+    max-height: 410px;
+}
+.searchPopupContent .k-grid-content {
+    min-height: 410px;
+}
+.popupSearchGrid {
+    max-width: 670px;
+    min-width: 655px;
+    margin-right: -10px;
+}
+.k-rtl .popupSearchGrid {
+    margin-right: -2px;
+    margin-left: -20px;
+}
+.withoutSearchPanel .popupSearchGrid {
+    max-width: 695px;
+    min-width: 695px;
+}
+.collapseEditWindowPanel {
+	position: relative;
+	background: #ffffff;
+	border: 1px solid #7395bf;
+    width: 100%;
+    min-height: 250px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: -10px;
+    padding: 10px;
+    display: none;
+}
+.collapseEditWindowPanel:after, .collapseEditWindowPanel:before {
+	bottom: 100%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+.collapseEditWindowPanel:after {
+	border-color: rgba(255, 255, 255, 0);
+	border-bottom-color: #ffffff;
+	border-width: 10px;
+	right: 35px;
+	
+}
+.collapseEditWindowPanel:before {
+	border-color: rgba(115, 149, 191, 0);
+	border-bottom-color: #7395bf;
+	border-width: 11px;
+	right: 35px;
+	margin-right: -1px;
+}
+.collapseEditWindowPanel.secondButton:after,
+.collapseEditWindowPanel.secondButton:before {
+	right: 13px;
+}
+.collapseEditWindowPanel .listForm > table{
+    width: 100%;
+}
+.ffLabel {
+    font-weight: bold;
+    padding-left: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.ffLabelTd {
+    width: 670px;
+}
+.popupContent .ffLabelTd {
+    width: 250px; /* == xlarge */
+	min-width: 250px;
+	max-width: 250px;
+}
+.ffEditorTd .tdContainer input[type="text"],
+.ffEditorTd textarea{
+    min-width: 290px;
+    max-width: 290px;
+}
+.ffEditorTd .k-datepicker,
+.ffEditorTd .k-combobox,
+.ffEditorTd .k-numerictextbox,
+.ffEditorTd .picker{
+    min-width: 293px;
+    max-width: 293px;
+}
+.horizontalRadioList {
+    list-style: none;
+    padding: 5px 0 0 0;
+    margin: 0;
+}
+.horizontalRadioList li {
+    display: block;
+    vertical-align:middle;
+    float:left;
+    margin: 0 15px 0 0;
+    padding: 0 0 5px 0;
+}
+.detailsViewContainer .lfGrid {
+    min-width: 990px;
+    max-width: 990px;
+}
+
+.tablewithoutsettings1 {
+	border-width: 0;
+	border-style: none;
+	border-left: 0;
+	border: 0;
+	margin: 0;
+	padding-left: 2px;
+}
+
+
+.k-dropdown .k-input, .k-dropdown .k-state-focused .k-input, .k-dropdown .k-state-hover .k-input, .k-menu .k-popup {
+    color: #000;
+}
+
+.k-input, input.k-textbox, textarea.k-textbox, input.k-textbox:hover, textarea.k-textbox:hover, .k-textbox > input, .k-multiselect-wrap {
+    color: #000;
+}
+
+.k-list-container {
+    color: #000;
+}
+
+.k-state-hover, .k-state-hover:hover, .k-splitbar-horizontal-hover:hover, .k-splitbar-vertical-hover:hover, .k-list > .k-state-hover, .k-scheduler .k-scheduler-toolbar ul li.k-state-hover, .k-pager-wrap .k-link:hover, .k-dropdown .k-state-focused, .k-imagebrowser-dropzone, .k-mobile-list .k-item > .k-link:active, .k-mobile-list .k-item > .k-label:active, .k-mobile-list .k-check.k-edit-label:active, .k-mobile-list .k-scheduler-timezones :nth-child(2).k-edit-field:active, .k-mobile-list .k-recur-view .k-check:active {
+    color: #000;
+}
+
+
+
+.smallGridEditor {
+    min-width:100px;    
+}
+.smallGridEditor.k-input {
+    min-width:75px;    
+}
+.mediumGridEditor {
+    min-width:150px;    
+}
+.mediumGridEditor.k-input {
+    min-width:125px;    
+}
+.text-box.single-line
+{
+    min-height: 22px;
+    max-height: 22px;
+    border: #ccc 1px solid;
+}
+
+/* fixing the error of grind column resizing in chrome */
+.k-grid tr
+{
+   -webkit-transform: scale3d(1,1,1);
+}
+.k-grid th,
+.k-grid td
+{
+    -webkit-transform: translateZ(0);
+}
+
+/* file_upload */
+.file_upload{
+    display: block;
+    position: relative;
+    overflow: hidden;
+    font-size: 1em;              /* example */
+    height: 2em;                 /* example */
+    line-height: 2em;             /* the same as height */
+
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    transition: box-shadow 0.1s linear
+}
+.file_upload .button, .file_upload > mark{
+    display: block;
+    cursor: pointer              /* example */
+}
+.file_upload .button{
+    float: right;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 8em;                  /* example */
+    height: 100%;
+    text-align: center           /* example */
+}
+.file_upload > mark{
+    background: transparent;     /* example */
+    padding-left: 1em            /* example */
+}
+.file_upload input[type=file]{
+    position: absolute;
+    top: 0;
+    visibility: hidden
+}
+
+
+
+.psevdoFile {
+    overflow:hidden;
+    background: url(/Content/Images/Search1.png) right top no-repeat;
+    position: relative;
+    display: inline-block;
+}
+
+.fileInput {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size:199px;
+    opacity:0;
+    /*filter:alpha(opacity:0);*/
+    cursor: pointer;
+}
+
+.inputFileText {
+    border: 1px solid #dadada;
+    height: 26px;
+    line-height: 26px;
+    float: left;
+    padding: 0 3px;
+    margin: 0 17px 0 0;
+}
+/**********************/

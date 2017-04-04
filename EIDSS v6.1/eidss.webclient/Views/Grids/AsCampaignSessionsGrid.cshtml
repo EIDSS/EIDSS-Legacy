@@ -1,0 +1,29 @@
+﻿@model AsMonitoringSession.AsMonitoringSessionGridModelList
+@using eidss.model.Schema
+@using eidss.webclient.Utils;
+@using eidss.web.common.Utils;
+@using eidss.webclient.Configurations
+
+
+@{
+    var gridName = (string)ViewBag.GridName;
+}
+
+
+@(Html.BvDetailsFormGrid<AsMonitoringSession.AsMonitoringSessionGridModel, AsMonitoringSession.AsMonitoringSessionGridModelList>
+      ((string)ViewBag.GridName, 
+      Model, "detailsGrid",
+      showEditWindowFuncName: "asCampaign.viewSession",
+      readOnly: (bool)ViewBag.IsReadOnly, 
+      bCustomToolbar: true,
+      strExcludeColumns: (string)ViewBag.ExcludeColumns,
+      deleteItemFuncName: "asCampaign.deleteSession")
+      .ToolBar(toolBar =>
+            toolBar.Template(
+                @<text>
+                    <input type='button' class='button'  data-role='grid-add-button' id='btNew' value='@Translator.GetMessageString("btCreateASSession")' 
+                        onclick='bvGrid.addRow("@Model.ListKey", "@gridName", asCampaign.RedirectToSession)'/>
+                    <input type='button' class="button" data-role='grid-common-button' id='btSelect' value='@Translator.GetMessageString("btSelectASSession")' 
+                        onclick="@string.Format("asSession.ShowASSessionPicker('asCampaign.onSessionPickerSelect', '{0}', '{1}');", gridName, Model.ListKey)" />
+                </text>)
+            ))

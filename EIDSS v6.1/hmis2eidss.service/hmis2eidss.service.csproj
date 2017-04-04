@@ -1,0 +1,247 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{47E3E13F-F6D6-4C9C-9D78-1B51BCF42334}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>hmis2eidss.service</RootNamespace>
+    <AssemblyName>hmis2eidss.service</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\EIDSSAssemblyInfo.cs">
+      <Link>EIDSSAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Import\Hmis2EidssImport.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scheduler\HMIS2EIDSSConfigurationException.cs" />
+    <Compile Include="Scheduler\SchedulerConfigurationStrategy.cs" />
+    <Compile Include="Scheduler\SchedulerRunner.cs" />
+    <Compile Include="Schema\HmisDiagnosisLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HmisDiagnosisLookup.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Schema\HmisLog.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HmisLog.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Schema\HmisRayonLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HmisRayonLookup.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Schema\HmisRegionLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HmisRegionLookup.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Schema\HmisSettlementLookup.model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HmisSettlementLookup.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\HMIS\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsService\HMIS2EIDSSHostKeeper.cs" />
+    <Compile Include="WindowsService\HMIS2EIDSSServiceInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Schema\HmisLog.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>HmisLog.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\HmisSettlementLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>HmisSettlementLookup.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\HmisDiagnosisLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>HmisDiagnosisLookup.model.cs</LastGenOutput>
+    </Content>
+    <None Include="Scripts\hmisDiagnosis.sql" />
+    <None Include="Scripts\mergeAllSql.cmd" />
+    <None Include="Service References\HMIS\hmis2eidss.service.HMIS.CaseResultContract.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\HMIS\hmis2eidss.service.HMIS.CasesResultContract.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\HMIS\hmis2eidss.service.HMIS.OrganizationsResultContract.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\HMIS\hmis2eidss.service.HMIS.ReimbursementStatusResultContract.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\HMIS\hmis2eidss.service.HMIS.RequestsResultContract.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\HMIS\hmis2eidss.service.HMIS.ResultGenericContractOfNullableOfboolean5F2dSckg.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\HMIS\hmis2eidss.service.HMIS.ResultGenericContractOfNullableOflong5F2dSckg.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\HMIS\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\HMIS\configuration.svcinfo" />
+    <None Include="Service References\HMIS\configuration91.svcinfo" />
+    <None Include="Service References\HMIS\CaseRegistrationWcf.disco" />
+    <None Include="Scripts\hmisRegion.sql" />
+    <None Include="Scripts\hmisRayon.sql" />
+    <Content Include="Schema\HmisRayonLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>HmisRayonLookup.model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Schema\HmisRegionLookup.xml">
+      <Generator>ObjectGenerator</Generator>
+      <LastGenOutput>HmisRegionLookup.model.cs</LastGenOutput>
+    </Content>
+    <None Include="Scripts\hmisSettlement.sql" />
+    <None Include="Scripts\hmisLog.sql" />
+    <None Include="Scripts\hmisDiagnosisData.sql" />
+    <None Include="Scripts\hmisRegionData.sql" />
+    <None Include="Scripts\hmisRayonData.sql" />
+    <None Include="Scripts\hmisSettlementData.sql" />
+    <Content Include="ThirdPartyComponents\InstallUtil.exe" />
+    <Content Include="ThirdPartyComponents\InstallUtilLib.dll" />
+    <None Include="Service References\HMIS\CaseRegistrationWcf10.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\HMIS\CaseRegistrationWcf11.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\HMIS\CaseRegistrationWcf6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\HMIS\CaseRegistrationWcf7.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\HMIS\CaseRegistrationWcf8.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\HMIS\CaseRegistrationWcf9.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="HMIS2EIDSSLoggingConfiguration.config">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Service References\HMIS\CaseRegistrationWcf.wsdl" />
+    <None Include="Service References\HMIS\CaseRegistrationWcf.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\HMIS\CaseRegistrationWcf1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\HMIS\CaseRegistrationWcf2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\HMIS\CaseRegistrationWcf3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\HMIS\CaseRegistrationWcf4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\HMIS\CaseRegistrationWcf5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ThirdPartyComponents\InstallUtil.exe.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\bltoolkit.3.2.dev\BLToolkit.4.csproj">
+      <Project>{0c325f5d-e50e-4340-8724-d29896ccc583}</Project>
+      <Name>BLToolkit.4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\bv.common\bv.common.csproj">
+      <Project>{bee76b17-720d-4b65-996a-5712912b3acf}</Project>
+      <Name>bv.common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\bv.model\bv.model.csproj">
+      <Project>{9067327e-1960-4326-acb9-d982ddbeaa76}</Project>
+      <Name>bv.model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.core\eidss.core.csproj">
+      <Project>{bf545ecd-f673-4c71-9362-57c01df13062}</Project>
+      <Name>eidss.core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.model\eidss.model.csproj">
+      <Project>{e4b87b63-d5f2-4f9f-b39c-a7714896d1de}</Project>
+      <Name>eidss.model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\HMIS\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(ProjectDir)ThirdPartyComponents\InstallUtil.exe" "$(TargetDir)InstallUtil.exe" /y
+copy "$(ProjectDir)ThirdPartyComponents\InstallUtil.exe.config" "$(TargetDir)InstallUtil.config" /y
+copy "$(ProjectDir)ThirdPartyComponents\InstallUtilLib.dll" "$(TargetDir)InstallUtilLib.dll" /y
+</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

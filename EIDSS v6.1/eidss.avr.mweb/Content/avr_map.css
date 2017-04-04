@@ -1,0 +1,20 @@
+#map {cursor:wait}
+.map_legend {display:block; border: 1px solid black; width: 50px; height:25px;}
+
+.checkbox_layer {height: 35px;width: 19px;clear:left;float:left;margin: 0 0 3px;padding: 0 0 0 16px; background: url("/Content/Toolbar/checkbox_layer.png") no-repeat;cursor: pointer;text-align:left;}
+.checkbox_info {height: 35px;width: 19px;clear:left;float:left;margin: 0 0 3px;padding: 0 0 0 16px; background: url("/Content/Toolbar/checkbox_info.png") no-repeat;cursor: pointer;text-align:left;}
+.checkbox_meas {height: 35px;width: 19px;clear:left;float:left;margin: 0 0 3px;padding: 0 0 0 16px; background: url("/Content/Toolbar/checkbox_meas.png") no-repeat;cursor: pointer;text-align:left;}
+.checkbox input,.radio input {display: none;}
+.checkbox input.show,.radio input.show {display: inline;}
+.selected {background-position: 0 -70px;}
+.block {width: 50%;float: left;}
+label {padding-left:10px;float:left;text-align:left;}
+.toolbar_item {padding-right:7px;}
+
+@media print {
+#map_toolbar {display:none;}
+#print_toolbar {display:none;}
+.leaflet-control-zoom {display:none;}
+.leaflet-control-attribution {display:none;}
+.leaflet-control-container {display:none;}
+}

@@ -1,0 +1,40 @@
+﻿@using Kendo.Mvc.UI
+@using bv.common.Configuration
+@using eidss.webclient.Utils
+@model eidss.model.Reports.GG.Hum60BJournalModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/ExportButtons", Model)
+    <div class="bluelayout">
+        <div class="tabPanelContent">
+        
+            @Html.Partial("Common/BaseFilter", Model)
+
+            @Html.Partial("Common/BaseIntervalFilter", Model)
+
+            <table id="DiagnosisTable" >
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.Diagnosis)
+                    </td>
+                    <td class="largereport">
+                        @{
+                            @(Html.Kendo().ComboBox()
+                                  .BindTo(Model.DiagnosisList.ConvertToSelectListItem())
+                                  .Name("Diagnosis"))
+                        }
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+}

@@ -1,0 +1,95 @@
+﻿@model FlexNode
+           
+@using System.Data
+@using eidss.mobileclient.Utils
+@using eidss.model.Model.FlexibleForms.FlexNodes
+    
+@{
+    var sectionDataTable = Model.GetDataTableForSectionTable();
+    var sectionTemplate = Model.GetSectionTemplate();
+    var gridName = String.Format("idfsSection_{0}", sectionTemplate.idfsSection);
+    var sectionName = "pn_" + gridName;
+    var pnButtonsName = "pnButtons_" + gridName;
+    var btAddName = "btAdd_" + gridName;
+}
+
+<script language="javascript" type="text/javascript">
+    $(document.getElementById('@(sectionName)')).ready(function () {
+        onFFGridLoad("@(gridName)");
+    });  
+</script>
+@*@if (Model.HasSectionChildren)
+{
+    <label>@Translator.GetMessageString("Add")</label>
+}
+else
+{*@
+<br/>
+<div id="@sectionName" class="pnFFGrid">
+    <label>@sectionTemplate.NationalName</label><br/>
+    @if (!Model.FFModel.ReadOnly)
+    {
+        <table class="threeParts" id="@pnButtonsName">
+            <tr>
+                <td>
+                    <button id='@btAddName' onclick="onEditFFGridRowClick('@gridName', 'true');" type="button">
+                        <img src="@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/add.png"))" alt='@Translator.GetBvMessageString("strAdd_Id")' />
+                    </button>
+                </td>
+                <td>
+                    <button onclick="onEditFFGridRowClick('@gridName', 'false');" type="button">
+                        <img src="@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/edit.png"))" alt='@Translator.GetBvMessageString("strEdit_Id")' />
+                    </button>
+                </td>
+                <td>
+                    <button onclick="onCopyFFGridRowClick('@gridName');" type="button">
+                        <img src="@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/copy.png"))" alt='@Translator.GetBvMessageString("strCopy_Id")' />
+                    </button>
+                </td>
+                <td>
+                    <button onclick="onRemoveFFGridRowClick('@gridName');" type="button">
+                        <img src="@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/Delete_Remove.png"))" alt='@Translator.GetBvMessageString("strDelete_Id")' />
+                    </button>
+                </td>
+            </tr>
+        </table>
+    }
+    <table class="bvGrid" id="@gridName">
+        <tr>
+            <th></th>
+            @foreach (FlexNode node in Model.ChildList)
+            {
+                <th>@node.Text</th>
+            }
+        </tr>
+        @if (sectionDataTable.Rows.Count == 0)
+        {
+            <tr>
+                <td colspan="@(Model.ChildList.Count() + 1)">
+                    @Translator.GetMessageString("msgNoRecords")
+                </td>
+            </tr>
+        }
+        @foreach (DataRow row in sectionDataTable.Rows)
+        {
+            <tr>
+                <td>
+                    <input type="radio" onclick="  SelectGridRowByRadioButton('@gridName', this);" />
+                    <input type="hidden" value="@row["idfRow"]" />
+                </td>
+                @foreach (DataColumn column in sectionDataTable.Columns)
+                {
+                    if (column.ColumnName == "idfRow")
+                    {
+                        continue;
+                    }
+                    <td>
+                        @row[column.ColumnName]
+                    </td>
+                }
+            </tr>
+        }
+    </table>
+</div>
+<br/>
+@*}*@

@@ -1,0 +1,29 @@
+﻿@model HumanCase
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using Kendo.Mvc.UI
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {                                        
+        <div class="windowButtonsPn">                  
+             <input id="idButtonOk" type="button" class="windowButton" onclick="bvPopup.closeDefaultPopup();" value="@Translator.GetMessageString("Ok")"/>     
+         </div>   
+        <div class="windowSeparator"></div>
+
+        @(Html.BvDetailsFormGrid<ChangeDiagnosisHistory.ChangeDiagnosisHistoryGridModel, ChangeDiagnosisHistory.ChangeDiagnosisHistoryGridModelList>(
+            Model.ObjectIdent + "DiagnosisHistory", new ChangeDiagnosisHistory.ChangeDiagnosisHistoryGridModelList(Model.idfCase, Model.DiagnosisHistory),
+            "detailsGrid", null, null, false, false, false, false)
+            )
+                
+    }
+</div>

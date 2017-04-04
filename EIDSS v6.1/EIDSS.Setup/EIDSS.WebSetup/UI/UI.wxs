@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include FeatureConditions.wxi?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <Property Id="WIXUI_INSTALLDIR" Value="PRODUCTFOLDER" />
+
+    <Property Id="WIXUI_DONTVALIDATEPATH">
+      <RegistrySearchRef Id="APPLICATIONFOLDER.RS" />
+    </Property>
+
+    <CustomAction Id="RebuildDialogChain" DllEntry="RebuildDialogChain" BinaryKey="CustomActions" />
+
+    <UI Id="UI_EIDSS.WEB">
+      <TextStyle Id="WixUI_Font_Normal" FaceName="!(loc.Advanced_Font_FaceName)" Size="!(loc.Advanced_Font_Normal_Size)" />
+      <TextStyle Id="WixUI_Font_Bigger" FaceName="!(loc.Advanced_Font_FaceName)" Size="!(loc.Advanced_Font_Bigger_Size)" />
+      <TextStyle Id="WixUI_Font_Title" FaceName="!(loc.Advanced_Font_FaceName)" Size="!(loc.Advanced_Font_Title_Size)" Bold="yes" />
+      <TextStyle Id="WixUI_Font_Emphasized" FaceName="!(loc.Advanced_Font_FaceName)" Size="!(loc.Advanced_Font_Emphasized_Size)" Bold="yes" />
+
+      <Property Id="DefaultUIFont" Value="WixUI_Font_Normal" />
+      <Property Id="WixUI_Mode" Value="Advanced" />
+
+      <DialogRef Id="BrowseDlg" />
+      <DialogRef Id="CustomCustomizeDlg" />
+      <DialogRef Id="DiskCostDlg" />
+      <DialogRef Id="ErrorDlgUnder5" />
+      <DialogRef Id="CustomFatalError" />
+      <DialogRef Id="FilesInUse" />
+      <DialogRef Id="LicenseAgreementDlg" />
+      <DialogRef Id="MsiRMFilesInUse" />
+      <DialogRef Id="PrepareDlg" />
+      <DialogRef Id="ProgressDlg" />
+      <DialogRef Id="ResumeDlg" />
+      <DialogRef Id="CustomUserExit" />
+      <DialogRef Id="WelcomeDlg" />
+
+      <Publish Dialog="CustomExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999">1</Publish>
+      <Publish Dialog="CustomExitDialog" Control="Finish" Property="WixShellExecTarget" Value="[#EidssConfigEditor.exe]" Order="1000">1</Publish>
+      <Publish Dialog="CustomExitDialog" Control="Finish" Event="DoAction" Value="LaunchConfigurator" Order="1001">
+        <![CDATA[NOT Installed AND WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1]]>
+      </Publish>
+
+      <Publish Dialog="BrowseDlg" Control="OK" Event="DoAction" Value="WixUIValidatePath" Order="1">1</Publish>
+      <Publish Dialog="BrowseDlg" Control="OK" Event="SpawnDialog" Value="InvalidDirDlg" Order="2"><![CDATA[WIXUI_INSTALLDIR_VALID<>"1"]]></Publish>
+      
+      <Publish Dialog="MaintenanceWelcomeDlg" Control="Next" Event="NewDialog" Value="MaintenanceTypeDlg">1</Publish>
+
+      <Publish Dialog="MaintenanceTypeDlg" Control="Back" Event="NewDialog" Value="MaintenanceWelcomeDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="ChangeButton" Event="NewDialog" Value="CustomCustomizeDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="RepairButton" Event="DoAction" Value="RebuildDialogChain" Order="101">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="RepairButton" Event="DoAction" Value="FindInstallerPorts" Order="102">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="RepairButton" Event="NewDialog" Value="VerifyReadyDlg" Order="201">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="RemoveButton" Event="DoAction" Value="RebuildDialogChain" Order="101">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="RemoveButton" Event="DoAction" Value="FindInstallerPorts" Order="102">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="RemoveButton" Event="NewDialog" Value="VerifyReadyDlg" Order="201">1</Publish>
+
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="LicenseAgreementDlg">1</Publish>
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg">Installed AND PATCH</Publish>
+
+      <Publish Dialog="LicenseAgreementDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg">1</Publish>
+      <Publish Dialog="LicenseAgreementDlg" Control="Next" Event="NewDialog" Value="CountryDlg">LicenseAccepted = "1" And Not WIX_UPGRADE_DETECTED</Publish>
+      <Publish Dialog="LicenseAgreementDlg" Control="Next" Event="NewDialog" Value="CustomCustomizeDlg">LicenseAccepted = "1" And WIX_UPGRADE_DETECTED</Publish>
+
+      <Publish Dialog="CountryDlg" Control="Back" Event="NewDialog" Value="LicenseAgreementDlg">1</Publish>
+      <Publish Dialog="CountryDlg" Control="Next" Event="NewDialog" Value="CustomInstallDirDlg" Order="100">SkipLanguageDlg</Publish>
+      <Publish Dialog="CountryDlg" Control="Next" Event="NewDialog" Value="[LanguageDlg]" Order="100">Not SkipLanguageDlg</Publish>
+
+      <?define LanguageDlg = ArmeniaLanguagesDlg?>
+      <?define Country = !(loc.Armenia)?>
+      <?include LanguagesDlg\PublishLanguagesDlg.wxi?>
+
+      <?define LanguageDlg = AzerbaijanLanguagesDlg?>
+      <?define Country = !(loc.Azerbaijan)?>
+      <?include LanguagesDlg\PublishLanguagesDlg.wxi?>
+
+      <?define LanguageDlg = GeorgiaLanguagesDlg ?>
+      <?define Country = !(loc.Georgia) ?>
+      <?include LanguagesDlg\PublishLanguagesDlg.wxi?>
+
+      <?define LanguageDlg = IraqLanguagesDlg ?>
+      <?define Country = !(loc.Iraq) ?>
+      <?include LanguagesDlg\PublishLanguagesDlg.wxi?>
+
+      <?define LanguageDlg = KazakhstanLanguagesDlg ?>
+      <?define Country = !(loc.Kazakhstan) ?>
+      <?include LanguagesDlg\PublishLanguagesDlg.wxi?>
+
+      <?define LanguageDlg = LaosLanguagesDlg ?>
+      <?define Country = !(loc.Laos) ?>
+      <?include LanguagesDlg\PublishLanguagesDlg.wxi?>
+
+      <?define LanguageDlg = ThailandLanguagesDlg ?>
+      <?define Country = !(loc.Thailand) ?>
+      <?include LanguagesDlg\PublishLanguagesDlg.wxi?>
+
+      <?define LanguageDlg = UkraineLanguagesDlg ?>
+      <?define Country = !(loc.Ukraine) ?>
+      <?include LanguagesDlg\PublishLanguagesDlg.wxi?>
+
+      <?define LanguageDlg = VietnamLanguagesDlg ?>
+      <?define Country = !(loc.Vietnam) ?>
+      <?include LanguagesDlg\PublishLanguagesDlg.wxi?>
+
+      <Publish Dialog="CustomInstallDirDlg" Control="Back" Event="NewDialog" Value="CountryDlg">SkipLanguageDlg</Publish>
+      <Publish Dialog="CustomInstallDirDlg" Control="Back" Event="NewDialog" Value="[LanguageDlg]">Not SkipLanguageDlg</Publish>
+      <Publish Dialog="CustomInstallDirDlg" Control="Next" Event="NewDialog" Value="CustomCustomizeDlg" Order="100">WIXUI_DONTVALIDATEPATH OR WIXUI_INSTALLDIR_VALID="1"</Publish>
+
+      <Publish Dialog="CustomCustomizeDlg" Control="Back" Event="NewDialog" Value="CustomInstallDirDlg">NOT (Installed OR WIX_UPGRADE_DETECTED)</Publish>
+      <Publish Dialog="CustomCustomizeDlg" Control="Back" Event="NewDialog" Value="LicenseAgreementDlg">WIX_UPGRADE_DETECTED</Publish>
+      <Publish Dialog="CustomCustomizeDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg">Installed AND NOT PATCH</Publish>
+      <Publish Dialog="CustomCustomizeDlg" Control="Next" Event="DoAction" Value="RebuildDialogChain" Order="3">1</Publish>
+      <Publish Dialog="CustomCustomizeDlg" Control="Next" Event="DoAction" Value="FindInstallerPorts" Order="4">1</Publish>
+      <Publish Dialog="CustomCustomizeDlg" Control="Next" Event="NewDialog" Value="[CustomCustomizeDlgNext]" Order="101">1</Publish>
+
+      <Publish Dialog="GisMapsFolderDlg" Control="Back" Event="NewDialog" Value="[GisMapsFolderDlgBack]">1</Publish>
+      <Publish Dialog="GisMapsFolderDlg" Control="Next" Event="NewDialog" Value="[GisMapsFolderDlgNext]" Order="100">
+        DIR_VALID = "1"
+      </Publish>
+
+      <?foreach num in ;2?>
+      <Publish Dialog="DbSettingsDlg$(var.num)" Control="Back" Event="NewDialog" Value="[DbSettingsDlgBack]">1</Publish>
+      <Publish Dialog="DbSettingsDlg$(var.num)" Control="Next" Event="NewDialog" Value="[DbSettingsDlgNext]" Order="100">
+        SKIP_VALIDATE_CONNECTION Or DbConnection_Valid = "1"
+      </Publish>
+
+      <Publish Dialog="ArchiveDbSettingsDlg$(var.num)" Control="Back" Event="NewDialog" Value="[ArchiveDbSettingsDlgBack]">1</Publish>
+      <Publish Dialog="ArchiveDbSettingsDlg$(var.num)" Control="Next" Event="NewDialog" Value="[ArchiveDbSettingsDlgNext]" Order="100">
+        <![CDATA[SKIP_VALIDATE_CONNECTION Or ArchDbConnection_Valid = "1" Or AllowConnection$(var.num) <> "1"]]>
+      </Publish>
+
+      <Publish Dialog="ReportsSvcSettingsDlg$(var.num)" Control="Back" Event="NewDialog" Value="[ReportsSvcSettingsDlgBack]">1</Publish>
+      <Publish Dialog="ReportsSvcSettingsDlg$(var.num)" Control="Next" Event="NewDialog" Value="[ReportsSvcSettingsDlgNext]" Order="100">
+        REPORTS_SERVICE_PORT_VALID = "1"
+      </Publish>
+
+      <Publish Dialog="WebSettingsDlg$(var.num)" Control="Back" Event="NewDialog" Value="[WebSettingsDlgBack]">1</Publish>
+      <Publish Dialog="WebSettingsDlg$(var.num)" Control="Next" Event="NewDialog" Value="[WebSettingsDlgNext]" Order="100">
+        WEBSITE_PORT_VALID = "1" Or SharePorts
+      </Publish>
+
+      <Publish Dialog="DbSettingsForAVRDlg$(var.num)" Control="Back" Event="NewDialog" Value="[DbSettingsForAVRDlgBack]">1</Publish>
+      <Publish Dialog="DbSettingsForAVRDlg$(var.num)" Control="Next" Event="NewDialog" Value="[DbSettingsForAVRDlgNext]" Order="100">
+        SKIP_VALIDATE_CONNECTION Or DbConnectionForAvr_Valid = "1"
+      </Publish>
+
+      <Publish Dialog="AvrSvcSettingsDlg$(var.num)" Control="Back" Event="NewDialog" Value="[AvrSvcSettingsDlgBack]">1</Publish>
+      <Publish Dialog="AvrSvcSettingsDlg$(var.num)" Control="Next" Event="NewDialog" Value="[AvrSvcSettingsDlgNext]" Order="100">
+        AVR_SERVICE_HOSTURL_VALID = "1" And (AVR_WEBSITE_PORT_VALID = "1" Or SharePorts)
+      </Publish>
+
+      <Publish Dialog="MobileDlg$(var.num)" Control="Back" Event="NewDialog" Value="[MobileDlgBack]">1</Publish>
+      <Publish Dialog="MobileDlg$(var.num)" Control="Next" Event="NewDialog" Value="[MobileDlgNext]" Order="100">
+        MOBILEWEBSITE_PORT_VALID = "1" Or SharePorts
+      </Publish>
+
+      <Publish Dialog="SmartphoneDlg$(var.num)" Control="Back" Event="NewDialog" Value="[SmartphoneDlgBack]">1</Publish>
+      <Publish Dialog="SmartphoneDlg$(var.num)" Control="Next" Event="NewDialog" Value="[SmartphoneDlgNext]" Order="100">
+        SMARTPHONE_WEBSITE_PORT_VALID = "1" Or SharePorts
+      </Publish>
+
+      <Publish Dialog="OpenAPIDlg$(var.num)" Control="Back" Event="NewDialog" Value="[OpenAPIDlgBack]">1</Publish>
+      <Publish Dialog="OpenAPIDlg$(var.num)" Control="Next" Event="NewDialog" Value="[OpenAPIDlgNext]" Order="100">
+        OPEN_API_WEBSITE_PORT_VALID = "1" Or SharePorts
+      </Publish>
+      <?endforeach?>
+
+      <Publish Dialog="ServiceAccountDlg" Control="Back" Event="NewDialog" Value="[ServiceAccountDlgBack]">1</Publish>
+      <Publish Dialog="ServiceAccountDlg" Control="Next" Event="NewDialog" Value="[ServiceAccountDlgNext]" Order="100">
+        SERVICE_ACCOUNT_VALID = "1" Or SharePorts
+      </Publish>
+
+      <Publish Dialog="SharedWebsitePortDlg" Control="Back" Event="NewDialog" Value="[SharedWebsitePortDlgBack]">1</Publish>
+      <Publish Dialog="SharedWebsitePortDlg" Control="Next" Event="NewDialog" Value="[SharedWebsitePortDlgNext]" Order="100">
+        <![CDATA[Not (BadNumber And SharePorts)]]>
+      </Publish>
+
+      <Publish Dialog="LogPathsDlg" Control="Back" Event="NewDialog" Value="[LogPathsDlgBack]">1</Publish>
+      <Publish Dialog="LogPathsDlg" Control="Next" Event="NewDialog" Value="[LogPathsDlgNext]" Order="100">1</Publish>
+
+      <Publish Dialog="WebAppSettingsDlg" Control="Back" Event="NewDialog" Value="[WebAppSettingsDlgBack]">1</Publish>
+      <Publish Dialog="WebAppSettingsDlg" Control="Next" Event="NewDialog" Value="[WebAppSettingsDlgNext]" Order="100">
+        Not BadNumber
+      </Publish>
+
+      <Publish Dialog="AppPoolSettingsDlg" Control="Back" Event="NewDialog" Value="[AppPoolSettingsDlgBack]">1</Publish>
+      <Publish Dialog="AppPoolSettingsDlg" Control="Next" Event="NewDialog" Value="[AppPoolSettingsDlgNext]" Order="100">
+        Not BadNumber
+      </Publish>
+
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="[VerifyReadyDlgBack]" Order="2"></Publish>
+    </UI>
+
+    <UIRef Id="WixUI_Common" />
+  </Fragment>
+</Wix>

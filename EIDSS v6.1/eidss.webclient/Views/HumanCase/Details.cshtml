@@ -1,0 +1,154 @@
+﻿@model eidss.model.Schema.HumanCase
+@{
+    ViewBag.Title = @Translator.GetMessageString("frmHumanCase");
+    ViewBag.Number = "H02";
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+    
+}
+@using Kendo.Mvc.UI
+@using bv.common.Core
+@using bv.model.Model.Core
+@using eidss.model.Core
+@using eidss.model.Enums
+@using eidss.web.common.Utils
+@using bv.common.Configuration
+@using eidss.webclient.Utils;
+@using AnimationDuration = Kendo.Mvc.UI.AnimationDuration
+
+<input type="hidden" id="grid_selecteditem" value="@Model.idfCase" /> 
+<input type="hidden" id="IdfCurrentResidence" value="@Model.Patient.CurrentResidenceAddress.idfGeoLocation" /> 
+@*<input type="hidden" id="IsNewCase" value="@ViewBag.IsNewCase" />*@
+
+<input type="hidden" id="EpiId" value="@ViewBag.IdfEpiObservation" />
+<input type="hidden" id="CsId" value="@ViewBag.IdfCSObservation" />
+<input type="hidden" id="DiagnosisId" value="@ViewBag.DiagnosisId" />
+<input type="hidden" id="SystemCountry" value="@EidssSiteContext.Instance.CountryID" />
+
+<input type="hidden" id="IsReadOnlyForEdit" value="@ViewBag.IsReadOnlyForEdit" />
+
+@Html.Hidden("hiddenUrlName", Url.Action("Index", "HumanCase"))
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+<script type="text/javascript">
+    $(window).load(function () {
+        var idfCase = $('#idfCase').val();
+        var idRegAddr = $("#RegistrationAddress").val();
+        var checkBox = $("#HumanCase_" + "@Model.idfCase" + "_blnPermantentAddressAsCurrent").val();
+        var editBox = $('#HumanCase_' + idfCase + '_strRegistrationPhone');
+        var btnShowMap = $('#RegistrationAddress_' + idRegAddr + '_');
+        if (checkBox == "true" || checkBox == "True") {
+            editBox.attr("readonly", "readonly");
+            editBox.addClass("readonlyField");
+            btnShowMap.attr("disabled", "disabled");
+        } else {
+            editBox.removeAttr("readonly");
+            editBox.removeClass("readonlyField");
+            btnShowMap.removeAttr("disabled");
+        }
+    });
+</script>
+
+@Html.PopupMenu(eidss.model.Schema.HumanCase.Accessor.Instance(null), "SelectReport")
+
+@using (Html.BeginForm())
+{   
+    @Html.BvHidden(Model, m => m.idfsDiagnosis)
+    
+    @Html.IdentificationAndHeartbeat("idfCase", Model.idfCase) 
+    
+    @Html.Hidden("lastShowedDiagnosisCS", 0)
+    @Html.Hidden("lastShowedDiagnosisEpi", 0)
+      
+    <div class="summary">
+		<table class="level1"> 
+            <tr>                                                               
+                <td class="xmedium label">
+                    @Html.BvLabel(Model, m => m.strCaseID)
+                </td>
+                <td class="medium">
+                    @Html.BvEditbox(Model, m => m.strCaseID)
+                </td>
+                <td class="medium label">
+                    @Html.BvLabel(Model, m => m.idfsCaseProgressStatus)
+                </td>
+                <td class="medium">
+                    @Html.BvCombobox(Model, m => m.CaseProgressStatus)
+                </td>
+                <td class="medium label">
+                    @Html.BvLabel(Model, m => m.datEnteredDate)
+                </td>
+                <td class="medium">
+                    @Html.BvEditbox(Model, m => m.strReadOnlyEnteredDate)
+                </td>
+            </tr>
+            <tr> 
+                <td class="label">   
+                    <label>@Translator.GetString("strPatient")</label>                                                     
+                </td>
+                <td>
+                    @Html.BvEditbox(Model.Patient, m => m.strName)                                        
+                </td>
+                <td class="label">
+                    @Html.BvLabel(Model, m => m.strDiagnosis)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strDiagnosis)
+                </td>
+                <td class="label">
+                    @Html.BvLabel(Model, m => m.datModificationDate)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strReadOnlyModificationDate)
+                </td>
+            </tr>
+            <tr>
+                <td class="label">        
+                    @Html.BvLabel(Model, m => m.strCaseClassification)                                  
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strCaseClassification)
+                </td>
+                <td class="label">
+                    @Html.BvLabel(Model, m => m.strPersonEnteredBy)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strPersonEnteredBy)
+                </td>
+                <td class="label">
+                    @Translator.GetString("Organization")
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strOfficeEnteredBy)
+                </td>
+            </tr>                           
+        </table> 
+    </div>                
+    @(Html.Kendo().TabStrip()
+              .Name("MainTabStrip")
+              .HtmlAttributes(new { @class = "twoLinesHeightTab" })
+              .Events(events => events.Select("function(e){ humanCase.onTabSelect(e, '" + Model.idfCase + "', 'MainTabStrip'); }"))
+              .Animation(animation => animation.Enable(false))
+              .Items(items =>
+              {
+                  items.Add()
+                       .Text(Translator.GetMessageString("tabTitleNotification"))
+                       .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleNotification" } : new { })
+                       .Content(Html.Partial(@"../HumanCase/Notification", Model).ToHtmlString());
+                  if (!eidss.model.Core.EidssUserContext.User.HasPermission(PermissionHelper.ExecutePermission(EIDSSPermissionObject.UseSimplifiedHumanCaseReportForm)))
+                  {
+                      items.Add()
+                           .Text(Translator.GetMessageString("tabTitleCaseInvestigation"))
+                           .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleCaseInvestigation" } : new { })
+                           .Content(Html.Partial(@"../HumanCase/Investigation", Model).ToHtmlString());
+                      items.Add()
+                           .Text(Translator.GetMessageString("tabTitleTests"))
+                           .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleTests" } : new { })
+                           .Content(Html.Partial(@"../HumanCase/Tests", Model).ToHtmlString());
+                  }
+              }).SelectedIndex(0))		
+  
+}
+

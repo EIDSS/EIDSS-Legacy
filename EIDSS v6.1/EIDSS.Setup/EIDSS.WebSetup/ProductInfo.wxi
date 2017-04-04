@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Include>
+  <?ifdef GlobalProductInfo.wxi?>
+  <?include $(var.GlobalProductInfo.wxi)?>
+  <?endif?>
+
+  <?include $(var.ProjectDir)MultiInstance\MultiInstance.wxi?>
+  <?define UpgradeCode = $(var.UpgradeCode.Default)?>
+
+  <?ifndef ProductName?>
+  <?Error ProductName is not defined!?>
+  <?endif?>
+
+  <?define ProductFullName = $(var.ProductName) ($(var.ProductVersion))?>
+
+  <!-- Important! Use property [UpgradeCode] and not macro $(var.UpgradeCode). Otherwise it won't be transformed in another instance -->
+  <?define ProductRegistryKey = $(var.ProductFamilyRegistryKey)\[UpgradeCode]?>
+  <?define WebRegistryKey = $(var.ProductRegistryKey)\Web?>
+
+  <?define ThirdParty = $(var.SourceDir)dlls\?>
+  <?define ThirdParty.GIS = $(var.ThirdParty)gis\?>
+</Include>

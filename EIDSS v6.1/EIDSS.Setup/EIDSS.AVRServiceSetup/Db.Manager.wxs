@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="Db.Manager">
+    <Property Id="DB_MANAGER_FOLDER" Secure="yes" />
+    <Property Id="DB_MANAGER" Secure="yes" />
+    <Property Id="DB_MANAGER_ARCHIVE" Secure="yes" />
+
+    <CustomAction Id="SearchForDbManagerArchive" DllEntry="SearchForDbManagerArchive" BinaryKey="CustomActions" Execute="firstSequence" />
+    <CustomAction Id="PrepareDbManagerToExtract" DllEntry="PrepareDbManagerToExtract" BinaryKey="CustomActions"  />
+    <CustomAction Id="ExtractDbManager" DllEntry="ExtractDbManager" BinaryKey="CustomActions"  />
+    <SetProperty Id="RemoveDbManager" Value="DB_MANAGER_FOLDER=[DB_MANAGER_FOLDER]" After="ExtractDbManager" Sequence="execute">
+      DB_MANAGER
+    </SetProperty>
+    <CustomAction Id="RemoveDbManager" DllEntry="RemoveDbManager" BinaryKey="CustomActions" Execute="deferred" />
+    <CustomAction Id="RemoveDbManagerOnError" DllEntry="RemoveDbManager" BinaryKey="CustomActions" />
+
+    <InstallExecuteSequence>
+      <Custom Action="SearchForDbManagerArchive" After="CostInitialize">
+        Not Installed And Not DB_MANAGER_ARCHIVE
+      </Custom>
+      <Custom Action="PrepareDbManagerToExtract" Before="ExtractDbManager">
+        Not REMOVE~="ALL" And Not DB_MANAGER And ADMIN_AVR_USER And ADMIN_AVR_PASSWORD
+      </Custom>
+      <Custom Action="ExtractDbManager" Before="SetDB_INSTALLED_FROM_SETUP">
+        Not REMOVE~="ALL" And DB_MANAGER And ADMIN_AVR_USER And ADMIN_AVR_PASSWORD
+      </Custom>
+      <Custom Action="RemoveDbManager" After="InstallSqlData">DB_MANAGER_FOLDER</Custom>
+      <Custom Action="RemoveDbManagerOnError" OnExit="error">DB_MANAGER_FOLDER</Custom>
+    </InstallExecuteSequence>
+    <InstallUISequence>
+      <Custom Action="SearchForDbManagerArchive" After="CostInitialize">
+        Not Installed And Not DB_MANAGER_ARCHIVE
+      </Custom>
+    </InstallUISequence>
+    <UI>
+      <ProgressText Action="ExtractDbManager">!(loc.ExtractDbManager)</ProgressText>
+      <ProgressText Action="RemoveDbManager">!(loc.RemoveDbManager)</ProgressText>
+    </UI>
+  </Fragment>
+</Wix>

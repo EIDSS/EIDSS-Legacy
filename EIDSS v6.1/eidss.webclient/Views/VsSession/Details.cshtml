@@ -1,0 +1,136 @@
+﻿@using Kendo.Mvc.UI
+@using bv.common.Configuration
+@using bv.model.Model.Core
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+@model eidss.model.Schema.VsSession
+@{
+    ViewBag.Title = @Translator.GetMessageString("titleVsSession");
+    ViewBag.Number = "W02";
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+}
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@{
+    var selectedIndex = ObjectStorage.Using<int, int>(i => i, ModelUserContext.ClientID, 0, "SelectedIndex", false);
+    
+    
+    /*
+    if (ModelStorage.Get(ModelUserContext.ClientID, 0, "SelectedIndex", false) != null)
+    {
+        selectedIndex = Convert.ToInt32(ModelStorage.Get(ModelUserContext.ClientID, 0, "SelectedIndex", false));
+    }
+    */
+}
+
+@Html.PopupMenu(eidss.model.Schema.VsSession.Accessor.Instance(null), "SelectReport")
+
+@using (Html.BeginForm())
+{
+    @Html.IdentificationAndHeartbeat("idfVectorSurveillanceSessionHeartbeat", Model.idfVectorSurveillanceSession)
+    @Html.HiddenFor(m => m.idfVectorSurveillanceSession)
+    
+    <div class="summary">
+        <table class="level1">
+            <tr>                                                               
+                <td class="xmedium label">
+                    @Html.BvLabel(Model, m => m.strSessionID)
+                </td>
+                <td class="medium">
+                    @Html.BvEditbox(Model, m => m.strSessionID)
+                </td>
+                <td class="xmedium label">
+                    @Html.BvLabel(Model, m => m.strFieldSessionID)
+                </td>
+                <td class="medium">
+                    @Html.BvEditbox(Model, m => m.strFieldSessionID)
+                </td>
+                <td class="small label">
+                    @Html.BvLabel(Model, m => m.Location)
+                </td>
+                <td>
+                    @Html.Action("InlineGeoLocationPicker", "GeoLocation", new { root = Model.idfVectorSurveillanceSession, location = Model.Location })
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                    @Html.BvLabel(Model, m => m.datStartDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datStartDate)
+                </td>
+                <td class="label">
+                    @Html.BvLabel(Model, m => m.idfsVectorSurveillanceStatus)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.VsStatus)
+                    @*@Html.BvCombobox(Model, m => m.VsStatus, true, "function(e){ vssession.OnStatusChanged(e, '" + Model.idfVectorSurveillanceSession + "'); }")*@
+                </td>
+                <td class="label">
+                    @Html.BvLabel(Model, m => m.idfOutbreak)
+                </td>
+                <td>
+                    @Html.Action("InlineOutbreakPicker", "Outbreak", new { obj = Model, objectId = Model.idfVectorSurveillanceSession, idfsOutbreakPropertyName = "idfOutbreak", strOutbreakPropertyName = "strOutbreakID"})
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                    @Html.BvLabel(Model, m => m.datCloseDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datCloseDate)
+                </td>
+                <td class="label">        
+                    @Html.BvLabel(Model, m => m.strDescription)                                  
+                </td>
+                <td class="vsSessionDescription" colspan="3">
+                    @Html.BvEditbox(Model, m => m.strDescription)
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                    @Html.BvLabel(Model, m => m.intCollectionEffort)
+                </td>
+                <td>
+                    @Html.BvNumeric(Model, m => m.intCollectionEffort, 0)
+                </td>
+                <td class="label">        
+                    @Html.BvLabel(Model, m => m.strVectorsCalculated)                                  
+                </td>
+                <td class="vsSessionDescription" colspan="3">
+                    @Html.BvEditbox(Model, m => m.strVectorsCalculated)
+                </td>
+            </tr>
+            <tr>
+                <td class="label">        
+                    @Html.BvLabel(Model, m => m.strDiagnosesCalculated)                                  
+                </td>
+                <td class="vsSessionDiagnosesCalculated" colspan="5">
+                    @Html.BvTextArea(Model, m => m.strDiagnosesCalculated)
+                </td>
+            </tr>
+        </table>
+    </div>
+    @(Html.Kendo().TabStrip()
+              .Name("MainTabStrip")
+              .HtmlAttributes(new { @class = "twoLinesHeightTab" })
+              .Animation(animation => animation.Enable(false))
+              .Items(items =>
+                  {
+                      items.Add()
+                           .Text(Translator.GetMessageString("tabTitleDetailedInfo"))
+                           .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleDetailedInfo" } : new { })
+                           .Content(Html.Partial(@"../VsSession/DetailedInfo", Model).ToHtmlString());
+                      items.Add()
+                           .Text(Translator.GetMessageString("titleSummaryInfo"))
+                           .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "titleSummaryInfo" } : new { })
+                           .Content(Html.Partial(@"../VsSession/SummaryInfo", Model).ToHtmlString());
+                  }).SelectedIndex(selectedIndex))
+} 
+
+
+
+

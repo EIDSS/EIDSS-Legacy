@@ -1,0 +1,837 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="SoapService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://apitest.eidss.info/SoapService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://apitest.eidss.info/SoapService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://apitest.eidss.info/SoapService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/eidss.openapi.contract" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ISoapService_Login_InputMessage">
+    <wsdl:part name="parameters" element="tns:Login" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_Login_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LoginResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_HumanCaseCreate_InputMessage">
+    <wsdl:part name="parameters" element="tns:HumanCaseCreate" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_HumanCaseCreate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:HumanCaseCreateResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_HumanCaseUpdate_InputMessage">
+    <wsdl:part name="parameters" element="tns:HumanCaseUpdate" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_HumanCaseUpdate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:HumanCaseUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_HumanCaseGet_InputMessage">
+    <wsdl:part name="parameters" element="tns:HumanCaseGet" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_HumanCaseGet_OutputMessage">
+    <wsdl:part name="parameters" element="tns:HumanCaseGetResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_HumanCaseDelete_InputMessage">
+    <wsdl:part name="parameters" element="tns:HumanCaseDelete" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_HumanCaseDelete_OutputMessage">
+    <wsdl:part name="parameters" element="tns:HumanCaseDeleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_HumanCaseList_InputMessage">
+    <wsdl:part name="parameters" element="tns:HumanCaseList" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_HumanCaseList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:HumanCaseListResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_HumanCaseSampleCreate_InputMessage">
+    <wsdl:part name="parameters" element="tns:HumanCaseSampleCreate" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_HumanCaseSampleCreate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:HumanCaseSampleCreateResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_HumanCaseSampleDelete_InputMessage">
+    <wsdl:part name="parameters" element="tns:HumanCaseSampleDelete" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_HumanCaseSampleDelete_OutputMessage">
+    <wsdl:part name="parameters" element="tns:HumanCaseSampleDeleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_HumanCaseTestCreate_InputMessage">
+    <wsdl:part name="parameters" element="tns:HumanCaseTestCreate" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_HumanCaseTestCreate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:HumanCaseTestCreateResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_HumanCaseTestDelete_InputMessage">
+    <wsdl:part name="parameters" element="tns:HumanCaseTestDelete" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_HumanCaseTestDelete_OutputMessage">
+    <wsdl:part name="parameters" element="tns:HumanCaseTestDeleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_HumanCaseTestInterpretationCreate_InputMessage">
+    <wsdl:part name="parameters" element="tns:HumanCaseTestInterpretationCreate" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_HumanCaseTestInterpretationCreate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:HumanCaseTestInterpretationCreateResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_HumanCaseTestInterpretationDelete_InputMessage">
+    <wsdl:part name="parameters" element="tns:HumanCaseTestInterpretationDelete" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_HumanCaseTestInterpretationDelete_OutputMessage">
+    <wsdl:part name="parameters" element="tns:HumanCaseTestInterpretationDeleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_VetCaseCreate_InputMessage">
+    <wsdl:part name="parameters" element="tns:VetCaseCreate" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_VetCaseCreate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:VetCaseCreateResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_VetCaseUpdate_InputMessage">
+    <wsdl:part name="parameters" element="tns:VetCaseUpdate" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_VetCaseUpdate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:VetCaseUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_VetCaseGet_InputMessage">
+    <wsdl:part name="parameters" element="tns:VetCaseGet" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_VetCaseGet_OutputMessage">
+    <wsdl:part name="parameters" element="tns:VetCaseGetResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_VetCaseDelete_InputMessage">
+    <wsdl:part name="parameters" element="tns:VetCaseDelete" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_VetCaseDelete_OutputMessage">
+    <wsdl:part name="parameters" element="tns:VetCaseDeleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_VetCaseList_InputMessage">
+    <wsdl:part name="parameters" element="tns:VetCaseList" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_VetCaseList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:VetCaseListResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_VetCaseSampleCreate_InputMessage">
+    <wsdl:part name="parameters" element="tns:VetCaseSampleCreate" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_VetCaseSampleCreate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:VetCaseSampleCreateResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_VetCaseSampleDelete_InputMessage">
+    <wsdl:part name="parameters" element="tns:VetCaseSampleDelete" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_VetCaseSampleDelete_OutputMessage">
+    <wsdl:part name="parameters" element="tns:VetCaseSampleDeleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_VetCaseTestCreate_InputMessage">
+    <wsdl:part name="parameters" element="tns:VetCaseTestCreate" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_VetCaseTestCreate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:VetCaseTestCreateResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_VetCaseTestDelete_InputMessage">
+    <wsdl:part name="parameters" element="tns:VetCaseTestDelete" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_VetCaseTestDelete_OutputMessage">
+    <wsdl:part name="parameters" element="tns:VetCaseTestDeleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_VetCaseTestInterpretationCreate_InputMessage">
+    <wsdl:part name="parameters" element="tns:VetCaseTestInterpretationCreate" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_VetCaseTestInterpretationCreate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:VetCaseTestInterpretationCreateResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_VetCaseTestInterpretationDelete_InputMessage">
+    <wsdl:part name="parameters" element="tns:VetCaseTestInterpretationDelete" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_VetCaseTestInterpretationDelete_OutputMessage">
+    <wsdl:part name="parameters" element="tns:VetCaseTestInterpretationDeleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_VetCasePensideTestCreate_InputMessage">
+    <wsdl:part name="parameters" element="tns:VetCasePensideTestCreate" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_VetCasePensideTestCreate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:VetCasePensideTestCreateResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_VetCasePensideTestDelete_InputMessage">
+    <wsdl:part name="parameters" element="tns:VetCasePensideTestDelete" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_VetCasePensideTestDelete_OutputMessage">
+    <wsdl:part name="parameters" element="tns:VetCasePensideTestDeleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_FarmGet_InputMessage">
+    <wsdl:part name="parameters" element="tns:FarmGet" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_FarmGet_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FarmGetResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_FarmList_InputMessage">
+    <wsdl:part name="parameters" element="tns:FarmList" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_FarmList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FarmListResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_OrganizationCreate_InputMessage">
+    <wsdl:part name="parameters" element="tns:OrganizationCreate" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_OrganizationCreate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:OrganizationCreateResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_OrganizationUpdate_InputMessage">
+    <wsdl:part name="parameters" element="tns:OrganizationUpdate" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_OrganizationUpdate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:OrganizationUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_OrganizationGet_InputMessage">
+    <wsdl:part name="parameters" element="tns:OrganizationGet" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_OrganizationGet_OutputMessage">
+    <wsdl:part name="parameters" element="tns:OrganizationGetResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_OrganizationDelete_InputMessage">
+    <wsdl:part name="parameters" element="tns:OrganizationDelete" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_OrganizationDelete_OutputMessage">
+    <wsdl:part name="parameters" element="tns:OrganizationDeleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_OrganizationList_InputMessage">
+    <wsdl:part name="parameters" element="tns:OrganizationList" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_OrganizationList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:OrganizationListResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_OrganizationPersonCreate_InputMessage">
+    <wsdl:part name="parameters" element="tns:OrganizationPersonCreate" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_OrganizationPersonCreate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:OrganizationPersonCreateResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_OrganizationPersonDelete_InputMessage">
+    <wsdl:part name="parameters" element="tns:OrganizationPersonDelete" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_OrganizationPersonDelete_OutputMessage">
+    <wsdl:part name="parameters" element="tns:OrganizationPersonDeleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_PatientGet_InputMessage">
+    <wsdl:part name="parameters" element="tns:PatientGet" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_PatientGet_OutputMessage">
+    <wsdl:part name="parameters" element="tns:PatientGetResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_PatientList_InputMessage">
+    <wsdl:part name="parameters" element="tns:PatientList" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_PatientList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:PatientListResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_ReferenceList_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReferenceList" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_ReferenceList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReferenceListResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_DiagnosisList_InputMessage">
+    <wsdl:part name="parameters" element="tns:DiagnosisList" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_DiagnosisList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DiagnosisListResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_SampleTypeForDiagnosisList_InputMessage">
+    <wsdl:part name="parameters" element="tns:SampleTypeForDiagnosisList" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_SampleTypeForDiagnosisList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SampleTypeForDiagnosisListResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_CountryList_InputMessage">
+    <wsdl:part name="parameters" element="tns:CountryList" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_CountryList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CountryListResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_RegionList_InputMessage">
+    <wsdl:part name="parameters" element="tns:RegionList" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_RegionList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RegionListResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_RayonList_InputMessage">
+    <wsdl:part name="parameters" element="tns:RayonList" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_RayonList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RayonListResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_SettlementList_InputMessage">
+    <wsdl:part name="parameters" element="tns:SettlementList" />
+  </wsdl:message>
+  <wsdl:message name="ISoapService_SettlementList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SettlementListResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ISoapService">
+    <wsdl:operation name="Login">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/Login" message="tns:ISoapService_Login_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/LoginResponse" message="tns:ISoapService_Login_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="HumanCaseCreate">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/HumanCaseCreate" message="tns:ISoapService_HumanCaseCreate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/HumanCaseCreateResponse" message="tns:ISoapService_HumanCaseCreate_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="HumanCaseUpdate">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/HumanCaseUpdate" message="tns:ISoapService_HumanCaseUpdate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/HumanCaseUpdateResponse" message="tns:ISoapService_HumanCaseUpdate_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="HumanCaseGet">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/HumanCaseGet" message="tns:ISoapService_HumanCaseGet_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/HumanCaseGetResponse" message="tns:ISoapService_HumanCaseGet_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="HumanCaseDelete">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/HumanCaseDelete" message="tns:ISoapService_HumanCaseDelete_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/HumanCaseDeleteResponse" message="tns:ISoapService_HumanCaseDelete_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="HumanCaseList">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/HumanCaseList" message="tns:ISoapService_HumanCaseList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/HumanCaseListResponse" message="tns:ISoapService_HumanCaseList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="HumanCaseSampleCreate">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/HumanCaseSampleCreate" message="tns:ISoapService_HumanCaseSampleCreate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/HumanCaseSampleCreateResponse" message="tns:ISoapService_HumanCaseSampleCreate_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="HumanCaseSampleDelete">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/HumanCaseSampleDelete" message="tns:ISoapService_HumanCaseSampleDelete_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/HumanCaseSampleDeleteResponse" message="tns:ISoapService_HumanCaseSampleDelete_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="HumanCaseTestCreate">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/HumanCaseTestCreate" message="tns:ISoapService_HumanCaseTestCreate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/HumanCaseTestCreateResponse" message="tns:ISoapService_HumanCaseTestCreate_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="HumanCaseTestDelete">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/HumanCaseTestDelete" message="tns:ISoapService_HumanCaseTestDelete_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/HumanCaseTestDeleteResponse" message="tns:ISoapService_HumanCaseTestDelete_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="HumanCaseTestInterpretationCreate">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/HumanCaseTestInterpretationCreate" message="tns:ISoapService_HumanCaseTestInterpretationCreate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/HumanCaseTestInterpretationCreateResponse" message="tns:ISoapService_HumanCaseTestInterpretationCreate_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="HumanCaseTestInterpretationDelete">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/HumanCaseTestInterpretationDelete" message="tns:ISoapService_HumanCaseTestInterpretationDelete_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/HumanCaseTestInterpretationDeleteResponse" message="tns:ISoapService_HumanCaseTestInterpretationDelete_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="VetCaseCreate">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/VetCaseCreate" message="tns:ISoapService_VetCaseCreate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/VetCaseCreateResponse" message="tns:ISoapService_VetCaseCreate_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="VetCaseUpdate">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/VetCaseUpdate" message="tns:ISoapService_VetCaseUpdate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/VetCaseUpdateResponse" message="tns:ISoapService_VetCaseUpdate_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="VetCaseGet">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/VetCaseGet" message="tns:ISoapService_VetCaseGet_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/VetCaseGetResponse" message="tns:ISoapService_VetCaseGet_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="VetCaseDelete">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/VetCaseDelete" message="tns:ISoapService_VetCaseDelete_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/VetCaseDeleteResponse" message="tns:ISoapService_VetCaseDelete_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="VetCaseList">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/VetCaseList" message="tns:ISoapService_VetCaseList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/VetCaseListResponse" message="tns:ISoapService_VetCaseList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="VetCaseSampleCreate">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/VetCaseSampleCreate" message="tns:ISoapService_VetCaseSampleCreate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/VetCaseSampleCreateResponse" message="tns:ISoapService_VetCaseSampleCreate_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="VetCaseSampleDelete">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/VetCaseSampleDelete" message="tns:ISoapService_VetCaseSampleDelete_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/VetCaseSampleDeleteResponse" message="tns:ISoapService_VetCaseSampleDelete_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="VetCaseTestCreate">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/VetCaseTestCreate" message="tns:ISoapService_VetCaseTestCreate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/VetCaseTestCreateResponse" message="tns:ISoapService_VetCaseTestCreate_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="VetCaseTestDelete">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/VetCaseTestDelete" message="tns:ISoapService_VetCaseTestDelete_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/VetCaseTestDeleteResponse" message="tns:ISoapService_VetCaseTestDelete_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="VetCaseTestInterpretationCreate">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/VetCaseTestInterpretationCreate" message="tns:ISoapService_VetCaseTestInterpretationCreate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/VetCaseTestInterpretationCreateResponse" message="tns:ISoapService_VetCaseTestInterpretationCreate_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="VetCaseTestInterpretationDelete">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/VetCaseTestInterpretationDelete" message="tns:ISoapService_VetCaseTestInterpretationDelete_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/VetCaseTestInterpretationDeleteResponse" message="tns:ISoapService_VetCaseTestInterpretationDelete_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="VetCasePensideTestCreate">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/VetCasePensideTestCreate" message="tns:ISoapService_VetCasePensideTestCreate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/VetCasePensideTestCreateResponse" message="tns:ISoapService_VetCasePensideTestCreate_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="VetCasePensideTestDelete">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/VetCasePensideTestDelete" message="tns:ISoapService_VetCasePensideTestDelete_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/VetCasePensideTestDeleteResponse" message="tns:ISoapService_VetCasePensideTestDelete_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FarmGet">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/FarmGet" message="tns:ISoapService_FarmGet_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/FarmGetResponse" message="tns:ISoapService_FarmGet_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FarmList">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/FarmList" message="tns:ISoapService_FarmList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/FarmListResponse" message="tns:ISoapService_FarmList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="OrganizationCreate">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/OrganizationCreate" message="tns:ISoapService_OrganizationCreate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/OrganizationCreateResponse" message="tns:ISoapService_OrganizationCreate_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="OrganizationUpdate">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/OrganizationUpdate" message="tns:ISoapService_OrganizationUpdate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/OrganizationUpdateResponse" message="tns:ISoapService_OrganizationUpdate_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="OrganizationGet">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/OrganizationGet" message="tns:ISoapService_OrganizationGet_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/OrganizationGetResponse" message="tns:ISoapService_OrganizationGet_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="OrganizationDelete">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/OrganizationDelete" message="tns:ISoapService_OrganizationDelete_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/OrganizationDeleteResponse" message="tns:ISoapService_OrganizationDelete_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="OrganizationList">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/OrganizationList" message="tns:ISoapService_OrganizationList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/OrganizationListResponse" message="tns:ISoapService_OrganizationList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="OrganizationPersonCreate">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/OrganizationPersonCreate" message="tns:ISoapService_OrganizationPersonCreate_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/OrganizationPersonCreateResponse" message="tns:ISoapService_OrganizationPersonCreate_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="OrganizationPersonDelete">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/OrganizationPersonDelete" message="tns:ISoapService_OrganizationPersonDelete_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/OrganizationPersonDeleteResponse" message="tns:ISoapService_OrganizationPersonDelete_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="PatientGet">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/PatientGet" message="tns:ISoapService_PatientGet_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/PatientGetResponse" message="tns:ISoapService_PatientGet_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="PatientList">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/PatientList" message="tns:ISoapService_PatientList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/PatientListResponse" message="tns:ISoapService_PatientList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReferenceList">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/ReferenceList" message="tns:ISoapService_ReferenceList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/ReferenceListResponse" message="tns:ISoapService_ReferenceList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DiagnosisList">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/DiagnosisList" message="tns:ISoapService_DiagnosisList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/DiagnosisListResponse" message="tns:ISoapService_DiagnosisList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SampleTypeForDiagnosisList">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/SampleTypeForDiagnosisList" message="tns:ISoapService_SampleTypeForDiagnosisList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/SampleTypeForDiagnosisListResponse" message="tns:ISoapService_SampleTypeForDiagnosisList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CountryList">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/CountryList" message="tns:ISoapService_CountryList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/CountryListResponse" message="tns:ISoapService_CountryList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RegionList">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/RegionList" message="tns:ISoapService_RegionList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/RegionListResponse" message="tns:ISoapService_RegionList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RayonList">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/RayonList" message="tns:ISoapService_RayonList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/RayonListResponse" message="tns:ISoapService_RayonList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SettlementList">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISoapService/SettlementList" message="tns:ISoapService_SettlementList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISoapService/SettlementListResponse" message="tns:ISoapService_SettlementList_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_ISoapService" type="tns:ISoapService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Login">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/Login" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HumanCaseCreate">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/HumanCaseCreate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HumanCaseUpdate">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/HumanCaseUpdate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HumanCaseGet">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/HumanCaseGet" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HumanCaseDelete">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/HumanCaseDelete" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HumanCaseList">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/HumanCaseList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HumanCaseSampleCreate">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/HumanCaseSampleCreate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HumanCaseSampleDelete">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/HumanCaseSampleDelete" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HumanCaseTestCreate">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/HumanCaseTestCreate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HumanCaseTestDelete">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/HumanCaseTestDelete" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HumanCaseTestInterpretationCreate">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/HumanCaseTestInterpretationCreate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HumanCaseTestInterpretationDelete">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/HumanCaseTestInterpretationDelete" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VetCaseCreate">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/VetCaseCreate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VetCaseUpdate">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/VetCaseUpdate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VetCaseGet">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/VetCaseGet" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VetCaseDelete">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/VetCaseDelete" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VetCaseList">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/VetCaseList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VetCaseSampleCreate">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/VetCaseSampleCreate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VetCaseSampleDelete">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/VetCaseSampleDelete" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VetCaseTestCreate">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/VetCaseTestCreate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VetCaseTestDelete">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/VetCaseTestDelete" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VetCaseTestInterpretationCreate">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/VetCaseTestInterpretationCreate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VetCaseTestInterpretationDelete">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/VetCaseTestInterpretationDelete" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VetCasePensideTestCreate">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/VetCasePensideTestCreate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VetCasePensideTestDelete">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/VetCasePensideTestDelete" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FarmGet">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/FarmGet" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FarmList">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/FarmList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OrganizationCreate">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/OrganizationCreate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OrganizationUpdate">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/OrganizationUpdate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OrganizationGet">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/OrganizationGet" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OrganizationDelete">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/OrganizationDelete" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OrganizationList">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/OrganizationList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OrganizationPersonCreate">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/OrganizationPersonCreate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OrganizationPersonDelete">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/OrganizationPersonDelete" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PatientGet">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/PatientGet" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PatientList">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/PatientList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReferenceList">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/ReferenceList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DiagnosisList">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/DiagnosisList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SampleTypeForDiagnosisList">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/SampleTypeForDiagnosisList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CountryList">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/CountryList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegionList">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/RegionList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RayonList">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/RayonList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SettlementList">
+      <soap:operation soapAction="http://tempuri.org/ISoapService/SettlementList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SoapService">
+    <wsdl:port name="BasicHttpBinding_ISoapService" binding="tns:BasicHttpBinding_ISoapService">
+      <soap:address location="http://apitest.eidss.info/SoapService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

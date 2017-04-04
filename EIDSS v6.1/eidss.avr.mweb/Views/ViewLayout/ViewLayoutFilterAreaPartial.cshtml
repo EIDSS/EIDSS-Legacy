@@ -1,0 +1,93 @@
+﻿@model AvrView
+@using eidss.model.Avr.View
+@using eidss.web.common.Utils
+
+@{
+    var CanUpdate = !Model.IsReadOnly && eidss.model.Core.AvrPermissions.UpdatePermission;
+}
+
+<div>
+    <table class="level1">
+        <tr>
+            <td class="medium"></td>
+            <td class="mlarge"></td>
+            <td class="wide"></td>
+            <td class="medium"></td>
+            <td class="mlarge"></td>
+            <td class="small"></td>
+        </tr>
+        <tr role="row">
+            <td class="firstLabel">
+                <label>@Translator.GetMessageString("lblColumn"):</label>
+            </td>
+            <td colspan="4">
+                @Html.Partial("AggregateColumnCombo", Model)
+            </td>
+            <td class="small">
+                            @if (CanUpdate)
+                            {
+                <img src="~/Content/Images/add_icon_(16x16).png" title="@Translator.GetMessageString("btAddAggregateColumn")" class="imageButton"
+                    id="btnAddAggrCol"
+                    onclick="aggregateForm.OnAggregate(@ViewBag.LayoutId);" />
+                            }
+                <img src="~/Content/Images/edit.png" title="@Translator.GetMessageString("Edit")" class="imageButton"
+                    id="btnEditColCaption" 
+                    onclick="aggregateForm.OnEditColumn(@ViewBag.LayoutId);" />
+                            @if (CanUpdate)
+                            {
+                <img src="~/Content/Images/trash.png" title="@Translator.GetMessageString("DeleteAggregateColumn")" class="imageButton"
+                    id="btnDelColCaption" 
+                    onclick="aggregateForm.OnDeleteColumn(@ViewBag.LayoutId);" />
+                            }
+            </td>
+         </tr>
+        <tr>
+            <td class="firstLabel">
+                <label>@Translator.GetMessageString("lblChartDefSeries"):</label>
+            </td>
+            <td colspan="4">
+                @Html.Partial("ChartDefSeriesCombo", Model)
+            </td>
+            <td></td>
+        </tr>
+        <tr role="row">
+            <td class="firstLabel">
+                <label>@Translator.GetMessageString("lblChartDefXaxis"):</label>
+            </td>
+            <td>
+               @Html.Partial("ChartDefXAxisCombo", Model)
+            </td>
+            <td class="xsmall"/>
+            <td colspan="3" class="left">
+                <a href="#" onclick="viewGridForm.OnOpenChart(@ViewBag.LayoutId);">@Translator.GetMessageString("btOpenChartButton")</a>
+            </td>
+        </tr>
+        <tr>
+            <td class="firstLabel">
+                <label>@Translator.GetMessageString("lblMapDefGradientData"):</label>
+            </td>
+            <td>
+                @Html.Partial("MapDefGradientCombo", Model)
+            </td>
+            <td />
+            <td class="medium">
+                <label>@Translator.GetMessageString("lblMapDefChartData"):</label>
+            </td>
+            <td>
+               @Html.Partial("MapDefChartCombo", Model)
+            </td>
+        </tr>
+        <tr>
+            <td class="firstLabel">
+                <label>@Translator.GetMessageString("lblMapDefAdminUnit"):</label>
+            </td>
+            <td>
+                @Html.Partial("MapAdminUnitCombo", Model)
+            </td>
+            <td />
+            <td colspan="3" class="left">
+                <a href="#" onclick="viewGridForm.OnOpenMap(@ViewBag.LayoutId);">@Translator.GetMessageString("btOpenMapButton")</a>
+            </td>
+        </tr>
+    </table>
+</div>

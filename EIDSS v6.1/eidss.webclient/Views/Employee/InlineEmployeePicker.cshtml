@@ -1,0 +1,40 @@
+﻿@model bv.model.Model.Core.IObject
+           
+@using eidss.webclient.Utils
+
+<script language="javascript" type="text/javascript">
+    $($('#@(ViewBag.MainDivId)')).ready(function () {
+        employee.initInlinePicker('@(ViewBag.BtnSearchPicker)', '@(ViewBag.BtnClianPicker)', '@(ViewBag.BtnAddNew)',
+            '@(ViewBag.IsSearchButtonReadOnly)', '@(ViewBag.IsClianButtonReadOnly)', '@(ViewBag.IsAddButtonReadOnly)',
+            '@(ViewBag.MainDivId)');
+    });  
+</script>
+
+@{
+    var className = Model.IsInvisible(ViewBag.IdfsEmployeePropertyName) ? "employee invisible" : "employee";
+}
+
+<div class="@className" id="@ViewBag.MainDivId">
+    <span class="picker">
+        <span class="pickerWrap">
+            @Html.BvHidden(Model, (string)ViewBag.IdfsEmployeePropertyName)
+            @Html.BvEditbox(Model, (string)ViewBag.StrEmployeePropertyName) 
+            <span class="pickerSelect" onclick='@ViewBag.OnClianButtonClick' id='@ViewBag.BtnClianPicker'>
+                <span class="k-icon k-i-close"></span>
+            </span>
+        </span>
+    </span>
+    <button id='@ViewBag.BtnSearchPicker' class="button smallImageButton" onclick='@ViewBag.OnSelectItemClick' type="button">
+        <img src="@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/Search.png"))" alt="Select" draggable='false' />
+    </button> 
+    <button type='button' id='@ViewBag.BtnAddNew' class='button smallImageButton' onclick='@ViewBag.OnAddButtonClick'>
+        <img src="@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/add.png"))" alt="Select" draggable='false' />
+    </button>
+    @if (ViewBag.ShowEditButton != null && (bool) ViewBag.ShowEditButton)
+    {
+        <button id='@ViewBag.BtnViewPicker' class="button smallImageButton" onclick='@ViewBag.OnEditButtonClick' type="button">
+            <img src="@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/view_icon.png"))" alt="View" draggable='false' />
+        </button>
+    }
+    <div class="clearFix"></div>
+</div>

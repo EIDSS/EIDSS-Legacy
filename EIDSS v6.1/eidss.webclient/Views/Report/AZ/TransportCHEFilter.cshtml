@@ -1,0 +1,32 @@
+﻿@using Kendo.Mvc.UI
+@using eidss.webclient.Utils
+@model eidss.model.Reports.AZ.TransportCHEModel
+
+<table id="TransportCHEFilterTable" class="level1">
+
+    <tr>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.RegionId)
+        </td>
+        <td class="largereport">
+            @{
+                @(Html.Kendo().ComboBox()
+                      .BindTo(Model.GetRegions().ConvertToSelectListItem())
+                      .Name("Address.RegionId").Events(c => c.Change("paperForm.OnTransportCHERegionChanged")))
+            }
+            
+        </td>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.RayonId)
+        </td>
+        <td class="largereport">
+            @{
+                @(Html.Kendo().ComboBox()
+                      .BindTo(Model.GetRayons().ConvertToSelectListItem())
+                      .Name("Address.RayonId"))
+            }
+        </td>
+        <td></td>
+    </tr>
+    
+</table>

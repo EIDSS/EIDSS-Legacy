@@ -1,0 +1,16 @@
+﻿@model bv.model.Model.Core.IObjectMeta
+@using Kendo.Mvc.UI
+@using bv.common.Enums
+@using bv.model.Model.Core;
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+<div id="menuDiv" style="visibility: hidden; position: absolute; z-index: 1000; ">
+    @(Html.Kendo().Menu()
+          .Name("menuPopup")
+          .HoverDelay(500)
+          .Items(items => items.Add().Text("dummy"))
+          .Orientation(MenuOrientation.Vertical)
+          .Events(e => e.Select("function(e) { popupMenu.select(e, '" + ViewBag.Selector +"'); }"))
+          )
+</div>

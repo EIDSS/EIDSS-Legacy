@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="VectorLabTest"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spVectorLabTest_SelectDetail" type="detaillist" />        
+  </storage>
+  
+  <tables>
+    <table name="VectorLabTest">
+      <grid>
+        <item name="idfTesting" key="true" visible="false"/>
+        <item name="strVectorID" required="true" />
+        <item name="strVectorTypeName" />
+        <item name="strVectorSubTypeName" type="string"/>
+        <item name="strBarcode" /> <!-- LAB Sample ID -->
+        <item name="strFieldBarcode" required="true" /> <!-- Field Sample ID -->
+        <item name="strSampleType" required="true" /> <!-- Sample Type -->
+        <item name="datFieldCollectionDate" />
+        <!--<item name="datAccession" />-->
+        <item name="strTestName" required="true"/>
+        <item name="strTestCategory"/>
+        <item name="datStartedDate" required="true" />
+        <item name="strTestedByOffice"/>
+        <item name="strTestedByPerson"/>
+        <item name="strTestResultName" required="true"/>
+        <item name="strDiagnosisName" required="true"/>
+        <item name="HasAmendmentHistory" type="bool"/>
+        <item name="strAmendmentHistory" type="string"/>
+      </grid>
+      <labels>
+        <item labelId="TestName" name="strTestName"/>
+        <item labelId="Vector.strVectorID" name="strVectorID"/>
+        <item labelId="VectorSample.strBarcode" name="strBarcode"/> 
+        <item labelId="VectorSample.strFieldBarcode" name="strFieldBarcode"/>
+        <item labelId="idfsSampleType" name="strSampleType"/>
+        <item labelId="idfPensideTestTestDate" name="datStartedDate"/>
+        <item labelId="idfPensideTestTestCategory" name="strTestCategory"/>        
+        <item labelId="idfPensideTestTestedByPerson" name="strTestedByPerson"/>
+        <item labelId="idfPensideTestTestedByOffice" name="strTestedByOffice"/>
+        <item labelId="FT.strDisease" name="strDiagnosisName"/>
+        <item labelId="TestResult" name="strTestResultName"/>
+        <item labelId="idfsVectorType" name="strVectorTypeName"/>
+        <item labelId="idfsVectorSubType" name="strVectorSubTypeName"/>
+        <item labelId="HasAmendmentHistory" name="strAmendmentHistory"/>
+      </labels>
+      <keys>
+        <key name="idfTesting"/>
+      </keys>
+      <fields>
+        <storage name="strAmendmentHistory" type="string"/>
+        <calculated name="ParentVector" type="Vector" lambda="c => Parent as Vector" depends="Parent"/>
+        <calculated name="strVectorSubTypeName" type ="string" lambda="c => ((c.ParentVector != null) &amp;&amp; (c.ParentVector.VectorSubType != null)) ? c.ParentVector.VectorSubType.name : String.Empty" depends="Parent" />
+        <!--<calculated name="CaseObjectIdent" type="string" depends="idfVectorSurveillanceSession" lambda='c => "Vectors_" + c.idfVectorSurveillanceSession + "_"' />-->
+        <!-- ссылка на полный перечень векторов в сессии -->
+        <calculated name="Vectors" type="EditableList&lt;Vector&gt;" depends="ParentVector" lambda="c => c.ParentVector == null ? new EditableList&lt;Vector&gt;() : c.ParentVector.Vectors"/>
+        <calculated name="HasAmendmentHistory" type="bool" lambda="c => c.AmendmentHistory != null ? AmendmentHistory.Count > 0 : false" depends="AmendmentHistory"/>
+      </fields>
+      <readonly>       
+        <fields name="*" predicate="c => true" />
+      </readonly>
+      <relations>
+        <relation name="TypeLabTestToResultMatrix" type="child"
+                  table="TypeLabTestToResultMatrixLookup"
+                  source="idfsTestResult"
+                  target="" internal="false" lazy="false"/>
+        <relation name="AmendmentHistory" table="LabTestAmendment" internal="false" type="child" lazy="false" source="idfTesting" target="idfTesting" />
+      </relations>
+      <lookups>
+      </lookups>
+      <storage>         
+      </storage>
+      <extenders>
+        <created>
+          <db_lambda_extender target="idfTesting" type="long" lambda="(c,m) => { _LoadTypeLabTestToResultMatrix(m,c); return c.idfTesting; }" />
+        </created>
+      </extenders>
+      <handlers>
+        <fieldhandler>   
+        </fieldhandler>
+      </handlers>
+      <validators>
+        <change>
+        </change>
+        <post>          
+        </post>
+        <delete>
+        </delete>
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <!--<remove type="Edit"/>-->
+          <remove type="Delete"/>
+        </standard>
+        <!--
+        <action name="Edit" type="Edit">
+          <visual panel="Group" visiblePredicate="(c, a, b, p) => false" />
+        </action>
+        -->
+        <action name="ViewOnDetailForm" type="Action">
+          <visual panel="Group" alignment ="Right" enablePredicate='(c, p, b) => c != null  &amp;&amp; !c.Key.Equals(PredefinedObjectId.FakeListObject)'>
+            <regular caption ="strViewOnDetailForm_Id" tooltip ="tooltipViewOnDetailForm_Id" icon =""/>
+          </visual>
+          <run>
+            <preUI webType="JScript"/>
+          </run>
+        </action>
+      </actions>
+    </table>    
+  </tables>
+
+</object>

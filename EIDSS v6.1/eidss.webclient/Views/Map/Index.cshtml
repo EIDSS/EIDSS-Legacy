@@ -1,0 +1,50 @@
+﻿@using eidss.webclient.Utils
+@{
+    
+}
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="@Url.Content("~/Content/LeafMap/dist/leaflet.css")" />    
+	<!--[if lte IE 8]><link rel="stylesheet" href="@Url.Content("~/Content/LeafMap/dist/leaflet.ie.css")" /><![endif]-->	    
+	<link rel="stylesheet" href="@Url.Content("~/Content/LeafMap/css/screen.css")" />
+
+    <script src="@Url.Content("~/Scripts/jquery-1.4.4.js")"></script>     
+	<script src="@Url.Content("~/Scripts/LeafMap/leaflet-include.js")"></script>
+</head>
+<body class='@(Cultures.IsRtl ? "k-rtl" : "")'>
+	<div id="map" style="width: 600px; height: 600px; border: 1px solid #ccc"></div>
+
+	<script type="text/javascript">
+
+	    var cloudmadeUrl = 'http://gis.bv.ru/ogs/cache/google/OsmGeorgia/{z}/{x}/{y}.png',
+
+			cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+			cloudmade = new L.TileLayer(cloudmadeUrl, { maxZoom: 18, attribution: cloudmadeAttribution }),
+			latlng = new L.LatLng(50.5, 30.51);
+
+	    var cloudmadeUrl = 'http://b.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+			cloudmade2 = new L.TileLayer(cloudmadeUrl, { maxZoom: 18, attribution: cloudmadeAttribution }),
+			latlng = new L.LatLng(50.5, 30.51);
+
+
+	    var map = new L.Map('map', { center: latlng, zoom: 12, layers: [cloudmade2, cloudmade] });
+	    L.control.scale().addTo(map);
+
+	    var geojson = new L.GeoJSON();
+	    var jqxhr = $.getJSON("/en-US/Map/GeoJSON/", function (json) {
+	        geojson.addGeoJSON(json);
+	    });
+
+	    geojson.on('featureparse', function (e) {
+	        var popupText = 'Color: ' + e.properties.style + '<br/>';
+	        
+	            e.layer.setStyle({ color: e.properties.style });
+	            popupText += 'color: ' + e.properties.style ;
+	        e.layer.bindPopup(popupText);
+	    });
+	    map.addLayer(geojson);		
+	</script>
+</body>
+</html>

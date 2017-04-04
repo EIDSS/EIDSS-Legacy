@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="SampleTypeForDiagnosisLookup"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="spSampleTypeForDiagnosis_SelectLookup" type="lookuplist" cache="true"/>
+    </storage>
+
+    <tables>
+        <table name="SampleTypeForDiagnosisLookup" tostring="c => c.name" lookupcachename="rftSampleType">
+          <keys>
+            <key name="idfMaterialForDisease"/>
+            <keyLookup name="idfsReference"/>
+          </keys>
+        </table>
+    </tables>
+
+</object>
+

@@ -1,0 +1,45 @@
+﻿@model eidss.model.Schema.HumanCase
+           
+@using bv.model.Model.Core
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+<div class="tabPanelContent">
+    <div class="sectionTitle">
+        @Translator.GetMessageString("titleSampleReceivingRegistration")      
+    </div>
+    <table class="level1">
+        <tr>
+            <td class="xlarge firstLabel">
+                @Html.BvLabel(Model, m => m.idfsYNSpecimenCollected)
+            </td>
+            <td class="large">
+                @Html.BvCombobox(Model, m => m.SpecimenCollected, true/*, "bvComboBox.onChanged"*/)
+            </td>
+        </tr>
+        <tr>
+            <td class="xlarge firstLabel">                     
+                @Html.BvLabel(Model, m => m.NotCollectedReason)
+            </td>
+            <td class="large">
+                @Html.BvCombobox(Model, m => m.NotCollectedReason, width:EditorControlWidth.XLarge)
+            </td>  
+        </tr>
+    </table>
+
+    @Html.Action("HumanCaseSamplesGrid", "Grids",
+        new
+        {
+            root = Model.idfCase,
+            name = Model.ObjectIdent + "Samples",
+            samples = Model.Samples,
+            isReadOnly = Model.IsReadOnly("Samples") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit)
+        })
+    
+    <div class="sectionTitle">
+       @Html.Label(Translator.GetString("strSampleNotes"))    
+    </div>
+    <div class="fullPageWidth">
+        @Html.BvTextArea(Model, m => m.strSampleNotes)
+    </div>     
+</div>

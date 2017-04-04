@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="Person"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="spPerson_SelectDetail" />
+    <!--validate name="spHumanCase_Validate" /-->
+  </storage>
+	<tables>
+		<table name="Person">
+      <properties auditObject="daoEmployee" auditTable="tlbPerson" permissionObject="Person">
+        <lookupcache>
+          <item name="Person"/>
+        </lookupcache>
+      </properties>
+      <fields>
+        <!--storage name="NewObject" type="bool"/-->
+        <!--<storage name="idfsOASite" type="long?"/>-->
+
+        <calculated name="strInstitutionName" type="string" depends="Institution"
+                    lambda='c => c.idfInstitution == null ? (string)null : c.Institution.name' />
+        <calculated name="idfsOrganizationSite" type="long?" depends="Institution"
+                    lambda='c => c.idfInstitution == null ? null : c.Institution.idfsSite' />
+        <calculated name="strPositionName" type="string" depends="StaffPosition"
+                    lambda='c => c.idfsStaffPosition == null ? (string)null : c.StaffPosition.name' />
+       
+        <storage name="ObjectAccessListFiltered" type="EditableList&lt;ObjectAccess&gt;" />
+        <storage name="HideDeleteAction" type="bool"/>
+      </fields>
+      <readonly>
+        <fields name="strInstitutionName,idfsSite" predicate="c => true" />
+        <!--<fields name="Site" predicate="c => true" />-->
+
+      </readonly>
+      <relations>
+        <relation name="LoginInfoList" table="LoginInfo" internal="false" type="child" source="idfPerson" target="idfPerson" lazy="false" />
+        <relation name="GroupInfoList" table="PersonGroupInfo" internal="true" type="child" source="idfPerson" target="idfEmployee" lazy="false" />
+        <!--<relation name="UserGroupMemberList" table="UserGroupMember" internal="false" type="child" source="idfPerson" target="idfEmployee" lazy="false" />-->
+        <relation name="ObjectAccessList" table="ObjectAccess" internal="false" type="child" source="idfPerson" target="idfEmployee" lazy="false" />        
+      </relations>
+      <lookups>
+        <lookup name="Institution" table="OrganizationLookup" source="idfInstitution" target="idfInstitution">
+          <params>
+            <param name="ID" const="null" />
+            <param name="intHACode" const="null" />
+          </params>
+        </lookup>
+        <lookup name="Department" table="DepartmentLookup" source="idfDepartment" target="idfDepartment">
+          <params>
+            <param name="Institution" lambda="c => c.idfInstitution ?? 0" type="long" />
+            <param name="ID" const="null" />
+          </params>
+        </lookup>
+        <lookup name="StaffPosition" table="BaseReference" section="rftPosition" source="idfsStaffPosition" target="idfsBaseReference" />
+        <!--<lookup name="Site" table="SiteLookup" source="idfsOASite" target="idfsSite"/>-->        
+      </lookups>
+      <storage>
+        <!--<post name="spPerson_Post" />-->
+        <post />
+        <delete name="spPerson_Delete" />
+      </storage>
+      <postorder>
+        <item name="this"/>
+        <item name="LoginInfoList"/>
+        <item name="GroupInfoList"/>
+        <!--<item name="UserGroupMemberList"/>-->
+        <item name="ObjectAccessList"/>
+      </postorder>
+      <deleteorder>
+        <!--<item name="LoginInfoList"/>
+        <item name="ObjectAccessList"/>
+        --><!--<item name="UserGroupMemberList"/>--><!--
+        <item name="GroupInfoList"/>
+        <item name="this"/>-->
+      </deleteorder>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfPerson" class="GetNewIDExtender" />          
+          <custom_extender>
+            <text>
+              _LoadObjectAccessList(obj);              
+            </text>
+          </custom_extender>
+        </creating>
+        <created>
+          <!--<value_extender target="Site" value="obj.SiteLookup.Where(s => s.idfsSite == EidssSiteContext.Instance.SiteID).FirstOrDefault();"/>-->
+          <value_extender target="idfsSite" value="EidssSiteContext.Instance.SiteID"/>
+          <custom_extender>
+            <text>
+              obj.RefreshObjectAccessListFiltered();
+            </text>
+          </custom_extender>
+        </created>
+        <loaded>
+          <custom_extender>
+            <text>
+              <!--obj.Site = obj.SiteLookup.Where(s => s.idfsSite == EidssSiteContext.Instance.SiteID).FirstOrDefault();-->
+              obj.RefreshObjectAccessListFiltered();
+            </text>
+          </custom_extender>
+        </loaded>
+      </extenders>
+      
+      <handlers>
+        <fieldhandler>
+          <!--<custom_handler field="Site">
+            <text>
+              obj.RefreshObjectAccessListFiltered();
+            </text>
+          </custom_handler>-->
+          <lookup_handler lookup="Department" field="idfInstitution" />
+        </fieldhandler>
+      </handlers>
+      <validators>
+        <post>
+          <required_validator target="strFirstName" />        
+          <required_validator target="strFamilyName" />
+          <required_validator target="Institution" label="Organization" />
+        </post>
+      </validators>
+      <actions>
+        <!--<action name="Create" type="Create" />-->
+        <standard>
+          <remove type="Create"/>
+          <remove type="Edit"/>
+          <remove type="Delete"/>
+        </standard>
+        <action name="Delete" type="Action" forceClose="true">
+          <visual alignment="Right" panel="Main" visiblePredicate="(c,a,p,r) => !((c as Person).IsNew || (c as Person).HideDeleteAction) &amp;&amp; EidssUserContext.User.HasPermission(PermissionHelper.DeletePermission(EIDSSPermissionObject.Person))">
+            <regular caption="strDelete_Id" tooltip="tooltipDelete_Id"  icon="Delete_Remove"/>
+            <readOnly caption="" tooltip="tooltipDelete_Id"  icon=""/>
+          </visual>
+          <run>
+            <preText>
+              return new ActResult(obj.MarkToDelete() &amp;&amp; ObjectAccessor.PostInterface&lt;Person&gt;().Post(manager, obj), obj);
+            </preText>
+          </run>
+        </action>
+      </actions>
+		</table>
+    
+    <table name="PersonGroupInfo">
+      <grid>
+        <item name="idfEmployeeGroup" key="true" visible="false" />        
+        <item name="strName"/>
+        <item name="strDescription"/>
+      </grid>
+      <storage>
+        <post name="dbo.spPersonGroupInfo_Post"/>
+      </storage>
+      <actions>        
+        <standard>
+          <remove type="Create"/>
+          <remove type="Edit"/>
+          <remove type="Delete"/>
+        </standard>
+        <action name="AddGroupInfo" type="Action">          
+          <visual panel="Group" alignment="Right" visiblePredicate="(c, a, b, p) => EidssUserContext.User.HasPermission(PermissionHelper.UpdatePermission(EIDSSPermissionObject.UserGroup))">
+            <regular caption="strAdd_Id" icon="add" tooltip="tooltipAdd_Id" />
+          </visual>
+        </action>
+        <action name="DeleteGroupInfo" type="Action">
+          <visual panel="Group" alignment="Right" visiblePredicate="(c, a, b, p) => EidssUserContext.User.HasPermission(PermissionHelper.UpdatePermission(EIDSSPermissionObject.UserGroup))"
+                   enablePredicate="(c, p, b) => c != null  &amp;&amp; !c.Key.Equals(PredefinedObjectId.FakeListObject)">
+            <regular caption="strDelete_Id" icon="delete" tooltip="tooltipDelete_Id" />
+          </visual>
+        </action>
+      </actions>  
+    </table>
+	</tables>
+
+</object>

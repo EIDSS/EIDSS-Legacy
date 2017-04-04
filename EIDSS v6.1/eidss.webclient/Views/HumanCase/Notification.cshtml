@@ -1,0 +1,245 @@
+﻿@model eidss.model.Schema.HumanCase
+           
+@using bv.model.Model.Core
+@using eidss.model.Core
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+<div class="tabPanelContent">
+    <div class="sectionTitle">
+        @Translator.GetMessageString("titleGeneralInformation")  
+    </div>
+    <table class="level1">
+        <tr>
+            <td colspan="2" class="xlarge firstLabel">
+                @if (!eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+                {
+                    @Html.BvLabel(Model, m => m.datCompletionPaperFormDate)
+                }
+            </td>
+            <td class="large">
+                @if (!eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+                {
+                    @Html.BvDatebox(Model, m => m.datCompletionPaperFormDate)
+                }
+            </td>
+            <td class="xlarge label">
+                @Html.BvLabel(Model, m => m.strLocalIdentifier)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, m => m.strLocalIdentifier, true)
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="firstLabel">
+                @Html.BvLabel(Model, m => m.idfsTentativeDiagnosis)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, m => m.TentativeDiagnosis, true, "humanCase.onTentativeDiagnosisChange", width: EditorControlWidth.Large)
+            </td>
+            <td class="label">
+                @Html.BvLabel(Model, m => m.datTentativeDiagnosisDate)
+            </td>
+            <td>
+                @Html.BvDatebox(Model, m => m.datTentativeDiagnosisDate)
+            </td>
+        </tr>    
+        <tr>
+            <td colspan="2" class="firstLabel">
+                @Html.BvLabel(Model, m => m.datNotificationDate)
+            </td>
+            <td colspan="3">
+                @Html.BvDatebox(Model, m => m.datNotificationDate)
+            </td>
+        </tr>
+        <tr>
+            <td class="medium firstLabel">
+                @Translator.GetMessageString("titleNotificationSendBy"):
+            </td>
+            <td>
+                @Html.BvLabel(Model, m => m.idfSentByOffice)
+            </td>
+            <td>                
+                @Html.Action("InlineOrganizationPicker", "Organization", new { obj = Model, objectId = Model.idfCase, idfsOrganizationPropertyName = "idfSentByOffice",
+                    strOrganizationPropertyName = "strSentByOffice", idfsEmployeePropertyName = "idfSentByPerson",
+                    strEmployeePropertyName = "strSentByPerson", HACode = (int)eidss.model.Enums.HACode.Human })
+            </td>
+            <td class="label">
+                @Html.BvLabel(Model, m => m.strSentByPerson, m => m.idfSentByPerson)
+            </td>
+            <td>
+                @Html.Action("InlineEmployeePicker", "Employee", new { obj = Model, objectId = Model.idfCase, idfsEmployeePropertyName = "idfSentByPerson", 
+                    strEmployeePropertyName = "strSentByPerson", idfsOrganizationPropertyName = "idfSentByOffice",
+                    strOrganizationPropertyName = "strSentByOffice", showEditButton = true })
+            </td>
+        </tr>
+        <tr>
+            <td class="firstLabel">
+                @Translator.GetMessageString("titleNotificationReceivedBy"):
+            </td>
+            <td>
+                @Html.BvLabel(Model, m => m.idfReceivedByOffice)
+            </td>
+            <td>
+                @Html.Action("InlineOrganizationPicker", "Organization", new { obj = Model, objectId = Model.idfCase, idfsOrganizationPropertyName = "idfReceivedByOffice",
+                    strOrganizationPropertyName = "strReceivedByOffice", idfsEmployeePropertyName = "idfReceivedByPerson",
+                    strEmployeePropertyName = "strReceivedByPerson", HACode = (int)eidss.model.Enums.HACode.Human })
+            </td>
+            <td class="label">
+                @Html.BvLabel(Model, m => m.strReceivedByPerson, m => m.idfReceivedByPerson)
+            </td>
+            <td>
+                @Html.Action("InlineEmployeePicker", "Employee", new { obj = Model, objectId = Model.idfCase, idfsEmployeePropertyName = "idfReceivedByPerson", 
+                    strEmployeePropertyName = "strReceivedByPerson", idfsOrganizationPropertyName = "idfReceivedByOffice",
+                    strOrganizationPropertyName = "strReceivedByOffice", showEditButton = true})                
+            </td>
+        </tr> 
+        <tr>
+            <td colspan="5" class="firstLabel subSectionTitle">
+                @Translator.GetMessageString("titleInvestigation")
+            </td>
+        </tr> 
+        <tr>            
+            <td colspan="2" class="firstLabel">
+                @Html.BvLabel(Model, m => m.idfInvestigatedByOffice)
+            </td>
+            <td>                                
+                @Html.Action("InlineOrganizationPicker", "Organization", new { obj = Model, objectId = Model.idfCase, idfsOrganizationPropertyName = "idfInvestigatedByOffice",
+                    strOrganizationPropertyName = "strInvestigatedByOffice", idfsEmployeePropertyName = "idfInvestigatedByPerson",
+                    strEmployeePropertyName = "strInvestigatedByPerson", HACode = (int)eidss.model.Enums.HACode.Human })     
+            </td>
+            <td class="label">
+                @Html.BvLabel(Model, m => m.datInvestigationStartDate)
+            </td>
+            <td>
+                @Html.BvDatebox(Model, m => m.datInvestigationStartDate)
+            </td>
+        </tr>    
+    </table> 
+    <div class="sectionTitle">
+        @Translator.GetMessageString("titleDemographicInformation")   
+    </div> 
+    @if (Customization.Instance.PersonIdentityServiceFeatures.IsAvailable && Customization.Instance.PersonIdentityServiceFeatures.IsOnHumanCase)
+    { 
+    <div class="findPerson">
+        <button class="button" id="buttonFindInPersonIdentityService" type="button" onclick="humanCase.onFindInPersonIdentityServiceClick();">
+            @Translator.GetMessageString(Customization.Instance.PersonIdentityServiceFeatures.ButtonResId)
+        </button>
+    </div>
+    }
+    <div class="duplicates">
+        <button class="button" id="buttonSearchforDuplicates" type="button" onclick="humanCase.onSearchForDuplicatesClick();">
+            @Translator.GetMessageString("btTitleSearchforDuplicates")
+        </button>
+    </div>
+    @Html.Action("Patient", "Person", new { root = Model.idfCase, patient = Model.Patient, isAgeVisible = true, isCoordinatesFieldsVisible = true,
+        isLastNameSearchVisible = true }) 
+    
+    <table class="level1">                  
+        <tr>
+            <td class="xmedium firstLabel">
+                @Html.BvLabel(Model, m => m.strWorkPhone)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, m => m.strWorkPhone)
+            </td>
+            <td class="xmedium label">
+                @Html.BvLabel(Model, m => m.idfsOccupationType)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, m => m.OccupationType)
+            </td> 
+        </tr>
+        <tr>
+            <td class="firstLabel" colspan="3">
+                @Html.BvLabel(Model, m => m.datFacilityLastVisit)
+            </td>                    
+            <td>
+                @Html.BvDatebox(Model, m => m.datFacilityLastVisit)
+            </td>  
+            <td></td>                          
+        </tr> 
+        <tr>
+            <td colspan="4" class="firstLabel subSectionTitle">
+                @Html.BvLabel(Model, m => m.idfRegistrationAddress)
+            </td>
+        </tr>   
+        <tr>
+            <td colspan="4" class="firstLabel">
+                @Html.BvCheckBox(Model, m=>m.blnPermantentAddressAsCurrent, false, "humanCase.onPermantentAddressAsCurrentClick") 
+            </td>
+        </tr>  
+    </table>
+    @Html.Address(Model.idfCase, Model.RegistrationAddress, true, true, true, true)
+    <table class="level1">
+        <tr>
+            <td class="xmedium firstLabel">
+                @Html.BvLabel(Model, m => m.strRegistrationPhone)
+            </td>                    
+            <td class="medium">
+                @Html.BvEditbox(Model, m => m.strRegistrationPhone)
+            </td> 
+        </tr>                               
+    </table>
+    <div class="sectionTitle">
+        @Translator.GetMessageString("titleClinicalInformation") 
+    </div> 
+    <table class="level1">
+        <tr>            
+            <td class="xlarge firstLabel">
+                @Html.BvLabel(Model, m => m.datOnSetDate)
+            </td>
+            <td class="large">
+                @Html.BvDatebox(Model, m => m.datOnSetDate)
+            </td>
+            <td class="xlarge label">
+                @Html.BvLabel(Model, m => m.idfsFinalState)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, m => m.PatientState)
+            </td>
+        </tr>
+        <tr>
+            <td class="firstLabel">
+                @Translator.GetString("lblChangedDiagnosis")                   
+            </td>
+            <td>            
+                @Html.BvCombobox(Model, m => m.FinalDiagnosis, true, "humanCase.onFinalDiagnosisChangeNop", width: EditorControlWidth.Large).Events(e => e.Select("humanCase.onFinalDiagnosisChange"))
+                <button id='buttonSelectDiagnosisHistory' class="button smallImageButton" onclick='humanCase.showDiagnosisHistory()' type="button">
+                    <img src="@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/info.png"))" alt="Select" draggable='false' />
+                </button>
+            </td>
+            <td class="label">
+                @Html.BvLabel(Model, m => m.datFinalDiagnosisDate)
+            </td>
+            <td>
+                @Html.BvDatebox(Model, m => m.datFinalDiagnosisDate)
+            </td>
+        </tr>
+        <tr>
+            <td class="firstLabel">
+                @Html.BvLabel(Model, m => m.idfsHospitalizationStatus)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, m => m.PatientLocationType)
+            </td>
+            <td class="label">
+                @Html.BvLabel(Model, m => m.strCurrentLocation)
+                @Html.BvLabel(Model, m => m.idfHospital)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, m => m.strCurrentLocation)
+                @Html.Action("InlineOrganizationPicker", "Organization", new { obj = Model, objectId = Model.idfCase, idfsOrganizationPropertyName = "idfHospital",
+                    strOrganizationPropertyName = "strHospital", HACode = (int)eidss.model.Enums.HACode.Human })
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" class="firstLabel">
+                @Html.BvLabel(Model, m => m.strNote)
+            </td>
+        </tr>
+    </table>    
+    <div class="fullPageWidth">
+        @Html.BvTextArea(Model, m => m.strNote)
+    </div>
+</div>

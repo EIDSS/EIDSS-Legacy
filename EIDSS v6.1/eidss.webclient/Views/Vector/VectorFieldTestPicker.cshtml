@@ -1,0 +1,161 @@
+﻿@model eidss.model.Schema.VectorFieldTest
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using bv.common.Configuration
+@using bv.model.Model.Core
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+<script type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+<input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        <div class="windowButtonsPn">
+            <input id="idButtonOk" type="button" class="windowButton" onclick="vectorfieldtest.saveAndCloseVectorFieldTestGridEditWindow('@Model.CaseObjectIdent');" value="@Translator.GetMessageString("Ok")"/>                        
+            <input id="idButtonCancel" type="button" class="windowButton" onclick="bvPopup.closeDefaultPopup()" value="@Translator.GetMessageString("Cancel")"/>        
+        </div>   
+        <div class="windowSeparator"></div>  
+        
+        @Html.Hidden("idfPensideTest", Model.idfPensideTest)  
+                                                     
+        <table class="level1">
+            @* 
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Html.BvLabel(Model, m => m.strVectorID)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strVectorID)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.idfsVectorType)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strVectorTypeName)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strVectorSubTypeName)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strVectorSubTypeName)
+                </td> 
+            </tr>
+            *@
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.idfMaterial)
+                </td>
+                <td>
+                    @Html.BvComboboxWithList(Model, m => m.idfMaterial, Model.SamplesSelectList, valueName: "SampleLongName")
+                </td> 
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strSampleName)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strSampleName)
+                </td> 
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.datFieldCollectionDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datFieldCollectionDate)
+                </td> 
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.idfsPensideTestName)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.TestType, true, "vectorfieldtest.onTestTypeChanged")
+                </td> 
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.idfsPensideTestCategory)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.TestCategory)
+                </td> 
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.datTestDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datTestDate)
+                </td> 
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.idfTestedByOffice)
+                </td>
+                <td>                     
+                    @Html.Action("InlineOrganizationPicker", "Organization", new { obj = Model, objectId = Model.idfPensideTest, idfsOrganizationPropertyName = "idfTestedByOffice",
+                        strOrganizationPropertyName = "strTestedByOffice", idfsEmployeePropertyName = "idfTestedByPerson",
+                        strEmployeePropertyName = "strTestedByPerson", showInInternalWindow = true, HACode = (int)eidss.model.Enums.HACode.Vector })     
+                </td>                            
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="collapseEditWindowPanel" id="idfTestedByOffice_InternalPicker">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.idfTestedByPerson)
+                </td>
+                <td>
+                    @Html.Action("InlineEmployeePicker", "Employee", new { obj = Model, objectId = Model.idfPensideTest, idfsEmployeePropertyName = "idfTestedByPerson", 
+                        strEmployeePropertyName = "strTestedByPerson", idfsOrganizationPropertyName = "idfTestedByOffice",
+                        strOrganizationPropertyName = "strTestedByOffice", showEditButton = true, showInInternalWindow = true, HACode = (int)eidss.model.Enums.HACode.Vector })                     
+                </td>                            
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="collapseEditWindowPanel" id="idfTestedByPerson_InternalPicker">
+                    </div>
+                    <div class="collapseEditWindowPanel secondButton" id="idfTestedByPerson_InternalCreator">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.idfsPensideTestResult)
+                </td>
+                <td>
+                    <!-- зависит от Test Type (Test name) -->
+                    @Html.BvCombobox(Model, m => m.TestResultFiltered, false, keyName: "idfsPensideTestResult")
+                </td> 
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.idfsDiagnosis)
+                </td>
+                <td>
+                    <!-- зависит от Test Type (Test name) -->
+                    @Html.BvCombobox(Model, m => m.DiagnosisFiltered, false, keyName: "idfsDiagnosis", width: EditorControlWidth.Large)
+                </td> 
+            </tr>
+        </table>            
+    }           
+</div>

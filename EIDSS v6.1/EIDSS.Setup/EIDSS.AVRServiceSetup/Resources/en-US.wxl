@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<?include "$(var.ProjectDir)ProductInfo.wxi" ?>
+
+<WixLocalization Culture="en-US" Codepage="1252" xmlns="http://schemas.microsoft.com/wix/2006/localization">
+  <String Id="ProductLanguage" Localizable="no">1033</String>
+  <String Id="SummaryCodepage" Localizable="no">1252</String>
+
+  <String Id="ConditionElevationPrivileges" Overridable="yes" Localizable="yes">Installation of [ProductName] requires administrative privileges.</String>
+  <String Id="ConditionOperatingSystem" Overridable="yes" Localizable="yes">Setup cannot proceed because this computer is running an unsupported operating system. Please refer to the [ProductName] Release Notes for a list of supported operating systems.</String>
+  <String Id="ConditionNetFramework4" Overridable="yes" Localizable="yes">Microsoft .NET Framework 4 required.</String>
+
+  <String Id="AVRServiceName" Overridable="yes" Localizable="yes">[ProductFamilyAbbreviation]AVRService_v[MajorVersion].[MinorVersion]</String>
+  <String Id="AVRServiceDisplayName" Overridable="yes" Localizable="yes">[ProductFamilyAbbreviation] AVR Service version [MajorVersion].[MinorVersion]</String>
+  <String Id="AVRServiceDescription" Overridable="yes" Localizable="yes"></String>
+  <String Id="AvrSvcSettingsDlg_Title" Overridable="yes" Localizable="yes">[ProductName] Setup</String>
+  <String Id="AvrSvcSettingsDlgTitle" Overridable="yes" Localizable="yes">{\WixUI_Font_Title}AVR Service Settings</String>
+  <String Id="AvrSvcSettingsDlgDescription" Overridable="yes" Localizable="yes">Specify AVR Service Settings</String>
+  <String Id="AvrSvcSettingsDlgBannerBitmap" Overridable="yes" Localizable="yes">WixUI_Bmp_Banner</String>
+  <String Id="AvrSvcSettingsDlgServiceName" Overridable="yes" Localizable="yes">Service Name:</String>
+  <String Id="AvrSvcSettingsDlgServiceDisplayName" Overridable="yes" Localizable="yes">Display Name:</String>
+  <String Id="AvrSvcSettingsDlgServicePort" Overridable="yes" Localizable="yes">Port:</String>
+  <String Id="AvrSvcSettingsDlgTestPort" Overridable="yes" Localizable="yes">&amp;Test port</String>
+  <String Id="AvrSvcSettingsDlgServiceAccount" Overridable="yes" Localizable="yes">Service Account:</String>
+  <String Id="AvrSvcSettingsDlgServiceAccountPassword" Overridable="yes" Localizable="yes">Account Password:</String>
+  
+  <String Id="DbSettingsDlg_Title" Overridable="yes" Localizable="yes">[ProductName] Setup</String>
+  <String Id="DbSettingsDlgTitle" Overridable="yes" Localizable="yes">{\WixUI_Font_Title}Database Connection Settings</String>
+  <String Id="DbSettingsDlgDescription" Overridable="yes" Localizable="yes">Specify Database Connection Settings</String>
+  <String Id="DbSettingsDlgBannerBitmap" Overridable="yes" Localizable="yes">WixUI_Bmp_Banner</String>
+  <String Id="DbSettingsDlgServer" Overridable="yes" Localizable="yes">SQL Server:</String>
+  <String Id="DbSettingsDlgDatabase" Overridable="yes" Localizable="yes">Database:</String>
+  <String Id="DbSettingsDlgUser" Overridable="yes" Localizable="yes">User:</String>
+  <String Id="DbSettingsDlgPassword" Overridable="yes" Localizable="yes">Password:</String>
+  <String Id="DbSettingsDlgCheckConnectionButton" Overridable="yes" Localizable="yes">&amp;Test Connection</String>
+
+  <String Id="ArchiveDbSettingsDlg_Title" Overridable="yes" Localizable="yes">[ProductName] Setup</String>
+  <String Id="ArchiveDbSettingsDlgTitle" Overridable="yes" Localizable="yes">{\WixUI_Font_Title}Archive Database Connection Settings</String>
+  <String Id="ArchiveDbSettingsDlgDescription" Overridable="yes" Localizable="yes">Specify Archive Database Connection Settings</String>
+  <String Id="ArchiveDbSettingsDlgBannerBitmap" Overridable="yes" Localizable="yes">WixUI_Bmp_Banner</String>
+  <String Id="ArchiveDbSettingsDlgAllowConnectionCheckBox" Overridable="yes" Localizable="yes">Allow connection to archive database</String>
+  <String Id="ArchiveDbSettingsDlgServer" Overridable="yes" Localizable="yes">SQL Server:</String>
+  <String Id="ArchiveDbSettingsDlgDatabase" Overridable="yes" Localizable="yes">Database:</String>
+  <String Id="ArchiveDbSettingsDlgUser" Overridable="yes" Localizable="yes">User:</String>
+  <String Id="ArchiveDbSettingsDlgPassword" Overridable="yes" Localizable="yes">Password:</String>
+  <String Id="ArchiveDbSettingsDlgCheckConnectionButton" Overridable="yes" Localizable="yes">&amp;Test Connection</String>
+
+  <String Id="SelectAvrDbDeploymentTypeDlg_Title" Overridable="yes" Localizable="yes">[ProductName] Setup</String>
+  <String Id="SelectAvrDbDeploymentTypeDlgTitle" Overridable="yes" Localizable="yes">{\WixUI_Font_Title}AVR Service Database Installation</String>
+  <String Id="SelectAvrDbDeploymentTypeDlgDescription" Overridable="yes" Localizable="yes">Choose whether to install new AVR database or find existing one</String>
+  <String Id="SelectAvrDbDeploymentTypeDlgBannerBitmap" Overridable="yes" Localizable="yes">WixUI_Bmp_Banner</String>
+  <String Id="DeploymentTypeInstall" Overridable="yes" Localizable="yes">Deploy new AVR Database</String>
+  <String Id="DeploymentTypeFind" Overridable="yes" Localizable="yes">Find existing AVR Database</String>
+
+  <String Id="DbAdminSettingsDlg_Title" Overridable="yes" Localizable="yes">[ProductName] Setup</String>
+  <String Id="DbAdminSettingsDlgTitle" Overridable="yes" Localizable="yes">{\WixUI_Font_Title}Database Admin Connection Settings</String>
+  <String Id="DbAdminSettingsDlgDescription" Overridable="yes" Localizable="yes">Connection Settings for SQL Server with EIDSS Database</String>
+  <String Id="DbAdminSettingsDlgBannerBitmap" Overridable="yes" Localizable="yes">WixUI_Bmp_Banner</String>
+  <String Id="DbAdminSettingsDlgServer" Overridable="yes" Localizable="yes">SQL Server:</String>
+  <String Id="DbAdminSettingsDlgUser" Overridable="yes" Localizable="yes">SQL Server Administrator:</String>
+  <String Id="DbAdminSettingsDlgPassword" Overridable="yes" Localizable="yes">Password:</String>
+  <String Id="DbAdminSettingsDlgCheckConnectionButton" Overridable="yes" Localizable="yes">&amp;Test Connection</String>
+
+  <String Id="InstallAvrDbSettingsDlg_Title" Overridable="yes" Localizable="yes">[ProductName] Setup</String>
+  <String Id="InstallAvrDbSettingsDlgTitle" Overridable="yes" Localizable="yes">{\WixUI_Font_Title}AVR Service Database Settings</String>
+  <String Id="InstallAvrDbSettingsDlgDescription" Overridable="yes" Localizable="yes">Specify AVR Service Database Settings</String>
+  <String Id="InstallAvrDbSettingsDlgBannerBitmap" Overridable="yes" Localizable="yes">WixUI_Bmp_Banner</String>
+  <String Id="InstallAvrDbSettingsDlgServer" Overridable="yes" Localizable="yes">SQL Server:</String>
+  <String Id="InstallAvrDbSettingsDlgDatabase" Overridable="yes" Localizable="yes">Database:</String>
+  <String Id="InstallAvrDbSettingsDlgAdminUser" Overridable="yes" Localizable="yes">SQL Server Administrator:</String>
+  <String Id="InstallAvrDbSettingsDlgAdminPassword" Overridable="yes" Localizable="yes">Password:</String>
+  <String Id="InstallAvrDbSettingsDlgUser" Overridable="yes" Localizable="yes">AVR Service User:</String>
+  <String Id="InstallAvrDbSettingsDlgPassword" Overridable="yes" Localizable="yes">Password:</String>
+          
+  <String Id="AvrDbSettingsDlg_Title" Overridable="yes" Localizable="yes">[ProductName] Setup</String>
+  <String Id="AvrDbSettingsDlgTitle" Overridable="yes" Localizable="yes">{\WixUI_Font_Title}AVR Service Database Connection Settings</String>
+  <String Id="AvrDbSettingsDlgDescription" Overridable="yes" Localizable="yes">Specify AVR Service Database Connection Settings</String>
+  <String Id="AvrDbSettingsDlgBannerBitmap" Overridable="yes" Localizable="yes">WixUI_Bmp_Banner</String>
+  <String Id="AvrDbSettingsDlgServer" Overridable="yes" Localizable="yes">SQL Server:</String>
+  <String Id="AvrDbSettingsDlgDatabase" Overridable="yes" Localizable="yes">Database:</String>
+  <String Id="AvrDbSettingsDlgUser" Overridable="yes" Localizable="yes">User:</String>
+  <String Id="AvrDbSettingsDlgPassword" Overridable="yes" Localizable="yes">Password:</String>
+  <String Id="AvrDbSettingsDlgCheckConnectionButton" Overridable="yes" Localizable="yes">&amp;Test Connection</String>
+
+  <String Id="BadPortText_PortIsOccupied" Overridable="yes">Port [[Port]] is not free! Try to choose another one.</String>
+  <String Id="BadPortText_UnsupportedPortValue" Overridable="yes">Value of port [[Port]] is empty or unsupported!</String>
+  <String Id="BadPortText_PortIsOutOfBoundary" Overridable="yes">Value of port [[Port]] is out of port boundaries!</String>
+
+  <String Id="ErrorConnectionText_ConnectionTestSucceded" Overridable="yes" Localizable="yes">Connection test succeeded!</String>
+  <String Id="ErrorConnectionText_ConnectionTestFailed" Overridable="yes" Localizable="yes">Connection test failed! Specify proper connection settings.</String>
+  <String Id="ErrorConnectionText_EmptyMandatoryFileds" Overridable="yes" Localizable="yes">Some mandatory fields are empty.</String>
+  <String Id="ErrorConnectionText_BadAvrAdminLogin" Overridable="yes" Localizable="yes">Login failed for user '[ADMIN_AVR_USER]'.</String>
+  <String Id="ErrorConnectionText_BadAvrUserLogin" Overridable="yes" Localizable="yes">Login failed for user '[AVRUSER]'.</String>
+  <String Id="ErrorConnectionText_NotAvrAdmin" Overridable="yes" Localizable="yes">User '[ADMIN_AVR_USER]' is not admin.</String>
+  <String Id="ErrorConnectionText_BadAdminLogin" Overridable="yes" Localizable="yes">Login failed for user '[ADMIN_DB_USER]'.</String>
+  <String Id="ErrorConnectionText_NotAdmin" Overridable="yes" Localizable="yes">User '[ADMIN_DB_USER]' is not admin.</String>
+
+  <String Id="SchedulerSettingsDlg_Title" Overridable="yes" Localizable="yes">[ProductName] Setup</String>
+  <String Id="SchedulerSettingsDlgTitle" Overridable="yes" Localizable="yes">{\WixUI_Font_Title}AVR Service Scheduler Settings</String>
+  <String Id="SchedulerSettingsDlgDescription" Overridable="yes" Localizable="yes">Specify Scheduler Configuration</String>
+  <String Id="SchedulerSettingsDlgBannerBitmap" Overridable="yes" Localizable="yes">WixUI_Bmp_Banner</String>
+  <String Id="SchedulerSettingsDlgCheckBox" Overridable="yes" Localizable="yes">Enable schedule</String>
+  <String Id="SchedulerSettingsDlgRefreshCacheInDaysTitle" Overridable="yes" Localizable="yes">Refresh AVR query cache every</String>
+  <String Id="SchedulerSettingsDlgRefreshCacheInDaysTail" Overridable="yes" Localizable="yes">day(s) since the last update</String>
+  <String Id="SchedulerSettingsDlgRemoveNotUsedCacheInDaysTitle" Overridable="yes" Localizable="yes">Remove cache of queries that users have not opened in AVR within</String>
+  <String Id="SchedulerSettingsDlgRemoveNotUsedCacheInDays" Overridable="yes" Localizable="yes">day(s)</String>
+  <String Id="SchedulerSettingsDlgRunImmediately" Overridable="yes" Localizable="yes">Refresh cache immediately after service starts</String>
+  <String Id="SchedulerSettingsDlgDaysBetweenSchedulerRunsTitle" Overridable="yes" Localizable="yes">Cache refreshing occurs every</String>
+  <String Id="SchedulerSettingsDlgDaysBetweenSchedulerRunsTail" Overridable="yes" Localizable="yes">day(s)</String>
+  <String Id="SchedulerSettingsDlgTimeOfSchedulerRunsTitle" Overridable="yes" Localizable="yes">Cache refreshing starts at</String>
+  <String Id="SchedulerSettingsDlgSeparator" Overridable="yes" Localizable="yes">:</String>
+  <String Id="SchedulerSettingsDlgSecondsBetweenSchedulerTasksTitle" Overridable="yes" Localizable="yes">Wait</String>
+  <String Id="SchedulerSettingsDlgSecondsBetweenSchedulerTasksTail" Overridable="yes" Localizable="yes">second(s) between updates of different AVR queries</String>
+
+  <String Id="LogFileText" Overridable="yes" Localizable="yes">Show log file</String>
+  <String Id="ExitDialogOptionalCheckBoxText" Overridable="yes" Localizable="yes"></String>
+  
+  <String Id="DeployAvrDatabase" Overridable="yes" Localizable="yes">Deploying AVR Database...</String>
+  <String Id="ExtractDbManager" Overridable="yes" Localizable="yes">Unpacking DB.Manager...</String>
+  <String Id="RemoveDbManager" Overridable="yes" Localizable="yes">Removing DB.Manager unpack folder...</String>
+</WixLocalization>

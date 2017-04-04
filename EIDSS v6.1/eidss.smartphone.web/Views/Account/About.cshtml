@@ -1,0 +1,39 @@
+﻿@{    
+    Layout = null;
+}
+@using eidss.web.common.Utils
+@using eidss.smartphone.web.Utils
+
+<div>
+    <table class="about">
+        <tr>
+            <td class="aboutTextTd">
+                <div class="abbreviation">@Translator.GetMessageString("EIDSS_Short_Caption")</div>
+                <div class="fullName">@Translator.GetMessageString("EIDSS_Caption")</div>
+                <div class="version">@Translator.GetMessageString("Version"): @typeof(eidss.smartphone.web.MvcApplication).Assembly.GetName().Version</div><br/>
+                <div class="hr"></div>
+            </td>
+            <td>
+                <img src="../../Content/Images/EIDSS_logo.png"/>
+            </td>
+        </tr>
+    </table>
+    <div class="userInfo">
+        <div>
+            <span class="userInfoLabel">@Translator.GetString("PersonName"): </span>@UserContextHelper.UserFullName()
+        </div>
+        <div>
+            <span class="userInfoLabel">@Translator.GetString("idfInstitution"): </span>@UserContextHelper.UserOrganization()
+        </div>
+        <div>
+            <span class="userInfoLabel">@Translator.GetString("strSiteID"): </span>@UserContextHelper.ContextSiteCode()
+        </div>
+        <div>
+            <span class="userInfoLabel">@Translator.GetString("idfsCountry"): </span>@UserContextHelper.ContextCountry()
+        </div>
+    </div>
+    <div class='windowButtonsPn'>
+        <input id="idButtonOk" type="button" class="windowButton" value="@Translator.GetMessageString("Ok")" onclick="listForm.closeWindow()"/>
+    </div>
+</div>
+

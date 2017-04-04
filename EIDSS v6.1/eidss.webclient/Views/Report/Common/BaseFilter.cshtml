@@ -1,0 +1,27 @@
+﻿@using Kendo.Mvc.UI
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+@model eidss.model.Reports.Common.BaseModel
+          
+
+    <div class="sectionTitle">
+        @Translator.GetMessageString("titleParameters")  
+    </div>
+    <table id="BaseFilterTable" class="level1">
+        <tr>
+            <td class="mediumreport">
+                @Html.LabelFor(m => m.Language)
+            </td>
+            <td class="largereport">
+                @{
+                    @(Html.Kendo().ComboBox()
+                          .Name("Language")
+                          .BindTo(Model.SupportedLanguages.ConvertToSelectListItem())
+                          .HtmlAttributes(new {@class = "requiredField"})
+                          .Events(c => c.Change("paperForm.OnLanguageChanged"))
+                          )
+                }
+            </td>
+        </tr>
+    </table>
+

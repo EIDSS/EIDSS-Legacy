@@ -1,0 +1,199 @@
+﻿@using System.Web.UI.WebControls
+@using eidss.web.common.Utils
+@using eidss.avr.mweb.Utils;
+@using eidss.avr.mweb.Models;
+@using bv.common.Configuration
+@model AvrPivotGridModel
+
+@{
+    Layout = "../Shared/_Layout.cshtml";
+    var CanUpdate = eidss.model.Core.AvrPermissions.UpdatePermission;
+    var CanInsert = eidss.model.Core.AvrPermissions.InsertPermission;
+}
+
+@Html.IncludeVersionedJs("~/Scripts/EIDSS/PivotGrid.js")       
+@Html.IncludeVersionedJs("~/Scripts/EIDSS/columnPopup.js")       
+@Html.IncludeVersionedCss("~/Content/Styles/columnPopup.css")
+
+<script type="text/javascript" language="javascript">
+
+    $(document).ready(function () {
+        layoutPivotGrid.initPivotGrid();
+    });
+</script>
+
+@if (BaseSettings.TranslationMode)
+{
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@using (Html.BeginForm())
+{
+   @Html.Hidden("LayoutId", (long)ViewBag.LayoutId)        
+   <div>
+       <div class="topButtonPanel">
+           <table class="actionPanel">
+               <tbody>
+                   <tr>
+                       <td class="reportButtons one">
+                           <input id="btnView" type="button" class="button" value='@Translator.GetMessageString("SwitchToView")'/>
+                           <input id="btnRefreshData"  type="button" class="button" value='@Translator.GetMessageString("RefreshData")'
+                                  onclick="layoutPivotGrid.OnRefreshData();" />
+                       </td>
+                       <td class="actionButtons">
+                           <input id="btnClose" class="button" type="button" value='@Translator.GetMessageString("Close")' onclick="layoutPivotGrid.onClose();" />
+                            @if (CanUpdate)
+                            {
+                           <input id="btnCancelChanges" class="button" type="button" value='@Translator.GetMessageString("CancelChanges")'  onclick="layoutPivotGrid.onCancelChanges();"/>
+                           <input id="btnSavePivot" class="button" type="button" value='@Translator.GetMessageString("Save")' onclick="layoutPivotGrid.onSave();"/>
+                            }
+                    @if (BaseSettings.TranslationMode)
+                    {
+                            <input id="btnTranslationTool" class="button" type="button" value="@Translator.GetMessageString("btTranslationTool")" onclick="avrTranslation.OpenTranslationWindow();" />
+                    }
+                       </td>
+                   </tr>
+               </tbody>
+           </table>
+       </div>
+
+       <div class="topPanel">
+           <table class="level1">
+               <tr>
+                   <td class="medium firstLabel">
+                       @Html.Hidden("idEditFilter", "")
+                            @if (CanUpdate)
+                            {
+                       <label>@Html.CheckBoxFor(x => x.PivotSettings.ApplyFilter)@Translator.GetMessageString("lblApplyPivotGridFilters")&nbsp;</label>
+                       <a href="#" style="padding-left: 25px;" onclick="layoutPivotGrid.showPrefilter('True');">@Translator.GetMessageString("lblEditFilters")</a>
+                            }
+                            else
+                            {
+                       <label>@Html.DisplayFor(x => x.PivotSettings.ApplyFilter)@Translator.GetMessageString("lblApplyPivotGridFilters")&nbsp;</label>
+                       <a href="#" style="padding-left: 25px;" onclick="layoutPivotGrid.showPrefilter('False');">@Translator.GetMessageString("lblEditFilters")</a>
+                            }
+                   </td>
+                   <td class="large">
+                            @if (CanUpdate && !Model.PivotSettings.IsPublished)
+                            {
+                       <label>@Html.EditorFor(x => x.PivotSettings.CompactLayout)@Translator.GetMessageString("lblCompactPivotGrid")</label>
+                            }
+                            else
+                            {
+                       <label>@Html.DisplayFor(x => x.PivotSettings.CompactLayout)@Translator.GetMessageString("lblCompactPivotGrid")</label>
+                            }
+                   </td>
+                   <td class="large">
+
+                            @if (CanUpdate)
+                            {
+                       <label>@Html.CheckBoxFor(x => x.PivotSettings.UseArchiveData, LayoutPivotGridHelper.EnableArchiveDataUsing ? new object() : new { disabled = "disabled" })@Translator.GetMessageString("lblUseArchiveData")</label>
+                            }
+                            else
+                            {
+                       <label>@Html.DisplayFor(x => x.PivotSettings.UseArchiveData, LayoutPivotGridHelper.EnableArchiveDataUsing ? new object() : new { disabled = "disabled" })@Translator.GetMessageString("lblUseArchiveData")</label>
+                            }
+                   </td>
+               </tr>
+               <tr role="row">
+                   <td class="medium firstLabel">
+                            @if (CanUpdate)
+                            {
+                       <label>@Html.EditorFor(x => x.PivotSettings.ShowDataInPivot)@Translator.GetMessageString("lblShowDataInPivotGrid")</label>
+                            }
+                            else
+                            {
+                       <label>@Html.DisplayFor(x => x.PivotSettings.ShowDataInPivot)@Translator.GetMessageString("lblShowDataInPivotGrid")</label>
+                            }
+                   </td>
+                   <td class="large">
+                            @if (CanUpdate)
+                            {
+                       <label>@Html.EditorFor(x => x.PivotSettings.ShowMissedValues)@Translator.GetMessageString("lblShowMissedValues")</label>
+                            }
+                            else
+                            {
+                       <label>@Html.DisplayFor(x => x.PivotSettings.ShowMissedValues)@Translator.GetMessageString("lblShowMissedValues")</label>
+                            }
+                   </td>
+                   <td class="large">
+                            @if (CanUpdate)
+                            {
+                       <label>@Html.EditorFor(x => x.PivotSettings.FreezeRowHeaders)@Translator.GetMessageString("lblFreezeRowHeader")</label>
+                            }
+                            else
+                            {
+                       <label>@Html.DisplayFor(x => x.PivotSettings.FreezeRowHeaders)@Translator.GetMessageString("lblFreezeRowHeader")</label>
+                            }
+                   </td>
+               </tr>
+           </table>
+           <table class="level1">
+               <tr role="row">
+                   <td class="medium firstLabel" style="width:200px;">
+                       @Translator.GetMessageString("lblDefaultGroupDate")
+                   </td>
+                   <td>
+                       @Html.Partial("DefaultGroupDateCombo", Model)
+                   </td>
+                   <td style="width:200px;text-align: right;padding-right: 10px;">
+                       @Translator.GetMessageString("lblShowTotals")
+                   </td>
+                   <td style="width:300px">
+                       @Html.Partial("TotalsCheckList", Model)
+                   </td>
+                   <td class="xsmall">&nbsp;</td>
+               </tr>
+               <tr>
+                   <td  class="medium firstLabel">
+                       @Translator.GetMessageString("lblColumn")
+                   </td>
+                   <td  colspan="3">
+                       @Html.Partial("FieldsListCombo", Model)
+                       @Html.Partial("ColumnAttributesPartial", Model)
+                   </td>
+                   <td>
+                       <img id="idEditColumn"  class="imageButton" src="~/Content/Images/edit.png" title='@Translator.GetMessageString("Edit")' onclick="columnPopup.onEditColumn()"/>
+                            @if (CanInsert)
+                            {
+                       <img id="idCopyColumn" class="imageButton"  src="~/Content/Images/copy.png" title='@Translator.GetMessageString("CopyColumn")' onclick="columnPopup.onCopyColumn()"/>
+                            }
+                   </td>
+               </tr>
+           </table>
+       </div>
+       <div class="splitter"></div>
+       <div id = "pivotContainer" class="tabPanelContent bordered">
+           @Html.DevExpress().Splitter(
+               settings =>
+               {
+                   settings.Name = "roundPanel";
+                   settings.Width = Unit.Percentage(99);
+                   settings.PaneMinSize = 100;
+                   settings.ResizingMode = ResizingMode.Postponed;
+                   settings.ShowCollapseBackwardButton = true;
+                   settings.ShowCollapseForwardButton = true;
+                   if (!Model.PivotSettings.IsPublished && CanUpdate)
+                       settings.Panes.Add(pane =>
+                       {
+                           pane.AutoWidth = false;
+                           pane.Size = new Unit(400);
+                           pane.AutoHeight = true;
+                           pane.SetContent(() => Html.DevExpress().PivotCustomizationExtension(LayoutPivotGridHelper.LayoutPivotGridSettings(Request)).Render());
+                       });
+                   settings.Panes.Add(pane =>
+                   {
+                       pane.ScrollBars = ScrollBars.Auto;
+                       pane.Size = Unit.Percentage(80);
+                       pane.AutoHeight = true;
+                       pane.SetContent(() => Html.RenderPartial("PivotGridPartial", Model));
+                   });
+
+                   settings.ClientSideEvents.PaneResized = "layoutPivotGrid.OnSplitterPaneResized";
+                   settings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+
+               }).GetHtml()
+       </div>
+    
+    </div>
+}

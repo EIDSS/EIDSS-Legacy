@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/eidss.model.Enums" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/eidss.model.Enums" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8097/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="ArrayOfPersonalDataGroup">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PersonalDataGroup" type="tns:PersonalDataGroup" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPersonalDataGroup" nillable="true" type="tns:ArrayOfPersonalDataGroup" />
+  <xs:simpleType name="PersonalDataGroup">
+    <xs:annotation>
+      <xs:appinfo>
+        <ActualType Name="long" Namespace="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Human_PersonName" />
+      <xs:enumeration value="Human_PersonAge" />
+      <xs:enumeration value="Human_PersonSex" />
+      <xs:enumeration value="Human_CurrentResidence_Settlement" />
+      <xs:enumeration value="Human_CurrentResidence_Details" />
+      <xs:enumeration value="Human_CurrentResidence_Coordinates" />
+      <xs:enumeration value="Human_Employer_Settlement" />
+      <xs:enumeration value="Human_Employer_Details" />
+      <xs:enumeration value="Human_PermanentResidence_Settlement" />
+      <xs:enumeration value="Human_PermanentResidence_Details" />
+      <xs:enumeration value="Human_PermanentResidence_Coordinates" />
+      <xs:enumeration value="Human_Contact_Settlement" />
+      <xs:enumeration value="Human_Contact_Details" />
+      <xs:enumeration value="Vet_Farm_Settlement" />
+      <xs:enumeration value="Vet_Farm_Details" />
+      <xs:enumeration value="Vet_Farm_Coordinates" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="PersonalDataGroup" nillable="true" type="tns:PersonalDataGroup" />
+  <xs:simpleType name="DiagnosisUsingTypeEnum">
+    <xs:annotation>
+      <xs:appinfo>
+        <ActualType Name="long" Namespace="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="StandardCase">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10020001</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AggregatedCase">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10020002</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="DiagnosisUsingTypeEnum" nillable="true" type="tns:DiagnosisUsingTypeEnum" />
+  <xs:simpleType name="StatisticPeriodType">
+    <xs:annotation>
+      <xs:appinfo>
+        <ActualType Name="long" Namespace="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Month">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10091001</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Day">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10091002</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Quarter">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10091003</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Week">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10091004</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Year">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">10091005</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="StatisticPeriodType" nillable="true" type="tns:StatisticPeriodType" />
+</xs:schema>

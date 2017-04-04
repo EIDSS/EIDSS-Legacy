@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="SectionTemplate"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+    <storage>
+      <!--get name="spFFGetSectionTemplate" type="simplelist" /--> 
+      <get name="spFFGetSectionTemplate" type="lookuplist"  cache="true" />
+    </storage>
+    <tables>
+        <table name="SectionTemplate">
+          <keys>
+                <key name="idfsSection"/>
+            <!--key name="idfsFormTemplate"/>
+                <key name="langid"/-->
+            </keys>
+          <fields>
+            <!--TODO восстановить работу согласно новым правилам в EIDSS 6-->
+            <calculated name="IsFixedStubSection" type="bool" depends="" lambda='c => true' />
+            <!--c => eidss.model.Model.FlexibleForms.Helpers.CriticalObjectsHelper.Sections.ContainsKey(c.idfsSection)-->
+          </fields>
+          <relations>
+                <!--relation name="Section" table="Section" internal="false" type="sibling" source="idfsSection" target="idfsSection" paramsonly="true">
+                    <params>
+                        <param name="idfsFormType" type="Int64?" lambda="c => null" />
+                        <param name="idfsSection" type="Int64?" lambda="c => c.idfsSection" />
+                        <param name="idfsParentSection" type="Int64?" lambda="c => null" />
+                    </params>
+                </relation>
+                <relation name="ParentSection" table="Section" internal="false" type="sibling" source="idfsParentSection" target="idfsSection" paramsonly="true">
+                    <params>
+                        <param name="idfsFormType" type="Int64?" lambda="c => null" />
+                        <param name="idfsSection" type="Int64?" lambda="c => c.idfsParentSection" />
+                        <param name="idfsParentSection" type="Int64?" lambda="c => null" />
+                    </params>
+                </relation-->
+                <!--relation name="FormType" table="FormType" internal="false" type="link" source="idfsFormType" target="idfsFormType" /-->
+            </relations>
+          <lookups>
+            <lookup name="Section" table="Section" source="idfsSection" target="idfsSection" notaddempty="true">
+              <params>
+                <param name="idfsFormType" type="Int64?" lambda="c => null" />
+                <param name="idfsSection" type="Int64?" lambda="c => c.idfsSection" />
+                <param name="idfsParentSection" type="Int64?" lambda="c => null" />
+              </params>
+            </lookup>
+            <lookup name="ParentSection" table="Section" source="idfsParentSection" target="idfsSection" notaddempty="true">
+              <params>
+                <param name="idfsFormType" type="Int64?" lambda="c => null" />
+                <param name="idfsSection" type="Int64?" lambda="c => c.idfsParentSection" />
+                <param name="idfsParentSection" type="Int64?" lambda="c => null" />
+              </params>
+            </lookup>
+          </lookups>
+
+          <!--actions>
+            <action name="SelectDetailList" type="Loadlist" />
+          </actions-->
+        </table>
+    </tables>
+</object>

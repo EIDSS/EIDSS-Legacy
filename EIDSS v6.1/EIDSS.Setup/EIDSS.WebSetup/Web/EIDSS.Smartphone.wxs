@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "$(var.ProjectDir)ProductInfo.wxi" ?>
+<?define SmartphoneRegistryKey = $(var.WebRegistryKey)\Smartphone?>
+
+<Wix
+  xmlns="http://schemas.microsoft.com/wix/2006/wi"
+  xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension"
+  xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+
+  <Fragment Id="EIDSS Smartphone">
+    <ComponentGroup Id="eidss.smartphone">
+      <ComponentRef Id="Smartphone.AppPool" />
+      <ComponentGroupRef Id="Smartphone.WebSite" />
+      <ComponentGroupRef Id="AndroidApplication" />
+      <ComponentGroupRef Id="eidss.smartphone.Harvested" />
+      <ComponentGroupRef Id="smartphone.ThirdParty.GIS.GDBAPI" />
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment Id="EIDSS.Smartphone APP Pool">
+    <Property Id="SMARTPHONE_APPPOOL" Secure="yes">
+      <RegistrySearch Id="SMARTPHONE_APPPOOL.RS" Root="HKLM" Key="$(var.SmartphoneRegistryKey)" Name="AppPool" Type="raw" />
+    </Property>
+    <SetProperty
+      Id="SMARTPHONE_APPPOOL"
+      After="SetSMARTPHONE_WEBSITE_NAME"
+      Value="[SMARTPHONE_WEBSITE_NAME]"
+      Sequence="execute">
+      Not SMARTPHONE_APPPOOL
+    </SetProperty>
+
+    <DirectoryRef Id="CommonAppData.Product">
+      <Component Id="Smartphone.AppPool" MultiInstance="yes">
+        <RegistryValue Root="HKLM" Key="$(var.SmartphoneRegistryKey)" Name="AppPool" Value="[SMARTPHONE_APPPOOL]" Type="string" KeyPath="yes" />
+        <iis:WebAppPool
+          Id="Smartphone.AppPool"
+          Name="[SMARTPHONE_APPPOOL]"
+          ManagedRuntimeVersion="v4.0"
+          ManagedPipelineMode="Integrated"
+          Identity="other"
+          User="ServiceAccount" />
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+
+  <Fragment Id="SMARTPHONE.WebSite">
+    <Property Id="SMARTPHONE_WEBSITE_NAME" Secure="yes">
+      <RegistrySearch Id="SMARTPHONE_WEBSITE_NAME.RS" Root="HKLM" Key="$(var.SmartphoneRegistryKey)" Name="WebSite" Type="raw" />
+    </Property>
+    <SetProperty
+      Action="SetSMARTPHONE_WEBSITE_NAME"
+      Id="SMARTPHONE_WEBSITE_NAME"
+      After="AppSearch"
+      Value="$(var.ProductFamilyAbbreviation).Smartphone_v$(var.MajorVersion)_[COUNTRY]([INSTANCEID])"
+      Sequence="execute">
+      Not SMARTPHONE_WEBSITE_NAME
+    </SetProperty>
+
+    <Property Id="SMARTPHONE_WEBSITE_IP" Value="*" Secure="yes">
+      <RegistrySearch Id="SMARTPHONE_WEBSITE_IP.RS" Root="HKLM" Key="$(var.SmartphoneRegistryKey)" Name="IP" Type="raw" />
+    </Property>
+    <Property Id="SMARTPHONE_WEBSITE_HEADER" Value="smartphone.DOMAIN.com" Secure="yes">
+      <RegistrySearch Id="SMARTPHONE_WEBSITE_HEADER.RS" Root="HKLM" Key="$(var.SmartphoneRegistryKey)" Name="Header" Type="raw" />
+    </Property>
+    <Property Id="SMARTPHONE_WEBSITE_PORT" Secure="yes">
+      <RegistrySearch Id="SMARTPHONE_WEBSITE_PORT.RS" Root="HKLM" Key="$(var.SmartphoneRegistryKey)" Name="Port" Type="raw" />
+    </Property>
+
+    <ComponentGroup Id="Smartphone.WebSite" Directory="eidss.smartphone">
+      <Component Id="Smartphone.WebSite" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.SmartphoneRegistryKey)">
+          <RegistryValue Name="WebSite" Value="[SMARTPHONE_WEBSITE_NAME]" Type="string" KeyPath="yes" />
+          <RegistryValue Name="IP" Value="[SMARTPHONE_WEBSITE_IP]" Type="string" />
+          <RegistryValue Name="Header" Value="[SMARTPHONE_WEBSITE_HEADER]" Type="string" />
+          <RegistryValue Name="Port" Value="[SMARTPHONE_WEBSITE_PORT]" Type="string" />
+        </RegistryKey>
+        <iis:WebSite
+          Id="Smartphone.WebSite"
+          Description="[SMARTPHONE_WEBSITE_NAME]"
+          StartOnInstall="yes"
+          Directory="eidss.smartphone"
+          AutoStart="yes"
+          ConfigureIfExists="yes">
+
+          <iis:WebAddress Id="Smartphone.WebAddress" Port="[SMARTPHONE_WEBSITE_PORT]" Header="[SMARTPHONE_WEBSITE_HEADER]" IP="[SMARTPHONE_WEBSITE_IP]" />
+          <iis:WebApplication Id="Smartphone.WebApplication" Name="Smartphone" WebAppPool="Smartphone.AppPool" />
+        </iis:WebSite>
+      </Component>
+
+      <?define website = Smartphone?>
+      <Component Id="$(var.website).web.config" Guid="{E22C3E63-CA3B-47D3-9B1C-7BE246F47878}" KeyPath="yes" MultiInstance="yes">
+        <File Id="$(var.website).web.config" Name="web.config" Checksum="yes" Source="$(var.SmartphonePath)web.config" CompanionFile="eidss.smartphone.web.dll" />
+      </Component>
+      <?include TurnOffDebug.wxi?>
+      <ComponentRef Id="eidss.smartphone.web.dll" />
+    </ComponentGroup>
+    <DirectoryRef Id="eidss.smartphone.bin">
+      <Component Id="eidss.smartphone.web.dll" MultiInstance="yes">
+        <File Id="eidss.smartphone.web.dll" KeyPath="yes" Checksum="yes" Source="$(var.SmartphonePath)bin\eidss.smartphone.web.dll" />
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+
+  <Fragment Id="apk">
+    <ComponentGroup Id="AndroidApplication">
+      <Component
+        Id="SetPermissions"
+        Guid="{DBF008BA-8795-49F7-9B37-862638E7F94B}"
+        Directory="eidss.smartphone.app_data"
+        KeyPath="yes"
+        MultiInstance="yes">
+
+        <CreateFolder>
+          <util:PermissionEx Domain="[SERVICE_ACCOUNT_DOMAIN]" User="[SERVICE_ACCOUNT_NAME]" GenericRead="yes" Read="yes" />
+        </CreateFolder>
+      </Component>
+
+      <ComponentRef Id="eidss.apk" />
+      <ComponentRef Id="eidss.apk_am" />
+      <ComponentRef Id="eidss.apk_az" />
+      <ComponentRef Id="eidss.apk_gg" />
+      <ComponentRef Id="eidss.apk_iq" />
+      <ComponentRef Id="eidss.apk_kz" />
+      <ComponentRef Id="eidss.apk_th" />
+      <ComponentRef Id="eidss.apk_uk" />
+    </ComponentGroup>
+
+    <DirectoryRef Id="ANDROID">
+      <Directory Id="Android_default" Name="Android_default">
+        <Component Id="eidss.apk" MultiInstance="yes">
+          <Condition><![CDATA[COUNTRY <> "!(loc.Armenia)" And COUNTRY <> "!(loc.Azerbaijan)" And COUNTRY <> "!(loc.Georgia)" And COUNTRY <> "!(loc.Iraq)" And COUNTRY <> "!(loc.Kazakhstan)"]]></Condition>
+          <File Id="eidss.smartphone.bin_eidss.apk" Name="eidss.apk" Source="$(var.Apk.TargetPath)" KeyPath="yes">
+            <CopyFile Id="eidss.smartphone.bin_eidss.apk" DestinationDirectory="ANDROID" />
+          </File>
+        </Component>
+      </Directory>
+
+      <Directory Id="Android_am" Name="Android_am">
+        <Component Id="eidss.apk_am" MultiInstance="yes">
+          <Condition><![CDATA[COUNTRY = "!(loc.Armenia)"]]></Condition>
+          <File Id="eidss.smartphone.bin_eidss.apk_am" Name="eidss.apk" Source="$(var.AmApk.TargetPath)" KeyPath="yes">
+            <CopyFile Id="eidss.smartphone.bin_eidss.apk_am" DestinationDirectory="ANDROID" />
+          </File>
+        </Component>
+      </Directory>
+
+      <Directory Id="Android_az" Name="Android_az">
+        <Component Id="eidss.apk_az" MultiInstance="yes">
+          <Condition><![CDATA[COUNTRY = "!(loc.Azerbaijan)"]]></Condition>
+          <File Id="eidss.smartphone.bin_eidss.apk_az" Name="eidss.apk" Source="$(var.AzApk.TargetPath)" KeyPath="yes">
+            <CopyFile Id="eidss.smartphone.bin_eidss.apk_az" DestinationDirectory="ANDROID" />
+          </File>
+        </Component>
+      </Directory>
+
+      <Directory Id="ANDROID_GG" Name="Android_gg" ComponentGuidGenerationSeed="{DA3E82CE-0762-4371-BC8F-2F971ACFA9A7}">
+        <Component Id="eidss.apk_gg" MultiInstance="yes">
+          <Condition><![CDATA[COUNTRY = "!(loc.Georgia)"]]></Condition>
+          <File Id="eidss.smartphone.bin_eidss.apk_gg" Name="eidss.apk" Source="$(var.GgApk.TargetPath)" KeyPath="yes">
+            <CopyFile Id="eidss.smartphone.bin_eidss.apk_gg" DestinationDirectory="ANDROID" />
+          </File>
+        </Component>
+      </Directory>
+
+      <Directory Id="Android_iq" Name="Android_iq">
+        <Component Id="eidss.apk_iq" MultiInstance="yes">
+          <Condition><![CDATA[COUNTRY = "!(loc.Iraq)"]]></Condition>
+          <File Id="eidss.smartphone.bin_eidss.apk_iq" Name="eidss.apk" Source="$(var.IqApk.TargetPath)" KeyPath="yes">
+            <CopyFile Id="copy_eidss.smartphone.bin_eidss.apk_iq" DestinationDirectory="ANDROID" />
+          </File>
+        </Component>
+      </Directory>
+
+      <Directory Id="Android_kz" Name="Android_kz">
+        <Component Id="eidss.apk_kz" MultiInstance="yes">
+          <Condition><![CDATA[COUNTRY = "!(loc.Kazakhstan)"]]></Condition>
+          <File Id="eidss.smartphone.bin_eidss.apk_kz" Name="eidss.apk" Source="$(var.KzApk.TargetPath)" KeyPath="yes">
+            <CopyFile Id="eidss.smartphone.bin_eidss.apk_kz" DestinationDirectory="ANDROID" />
+          </File>
+        </Component>
+      </Directory>
+
+      <Directory Id="Android_th" Name="Android_th">
+        <Component Id="eidss.apk_th" MultiInstance="yes">
+          <Condition><![CDATA[COUNTRY = "!(loc.Thailand)"]]></Condition>
+          <File Id="eidss.smartphone.bin_eidss.apk_th" Name="eidss.apk" Source="$(var.ThApk.TargetPath)" KeyPath="yes">
+            <CopyFile Id="eidss.smartphone.bin_eidss.apk_th" DestinationDirectory="ANDROID" />
+          </File>
+        </Component>
+      </Directory>
+
+      <Directory Id="Android_uk" Name="Android_uk">
+        <Component Id="eidss.apk_uk" MultiInstance="yes">
+          <Condition><![CDATA[COUNTRY = "!(loc.Ukraine)"]]></Condition>
+          <File Id="eidss.smartphone.bin_eidss.apk_uk" Name="eidss.apk" Source="$(var.UkApk.TargetPath)" KeyPath="yes">
+            <CopyFile Id="eidss.smartphone.bin_eidss.apk_uk" DestinationDirectory="ANDROID" />
+          </File>
+        </Component>
+      </Directory>
+    </DirectoryRef>
+  </Fragment>
+
+  <?define website=smartphone?>
+  <Fragment Id="$(var.website).ThirdParty.GIS.GDBAPI">
+    <ComponentGroup Id="$(var.website).ThirdParty.GIS.GDBAPI" Directory="eidss.$(var.website).bin">
+      <ComponentGroupRef Id="$(var.website).ThirdParty.GIS.GDBAPI.x86" />
+      <ComponentGroupRef Id="$(var.website).ThirdParty.GIS.GDBAPI.x64" />
+    </ComponentGroup>
+
+    <?include GDBAPI.wxi?>
+  </Fragment>
+  
+  <Fragment Id="smartphone.StructureMap.DI">
+    <?define directory = eidss.smartphone.bin?>
+    <?define prefix = smartphone?>
+    <?define guid = {45325774-6ED1-40B2-98A3-2C031FC1F0AA}?>
+    <?include $(var.SolutionDir)StructureMap.wxi?>
+  </Fragment>
+</Wix>

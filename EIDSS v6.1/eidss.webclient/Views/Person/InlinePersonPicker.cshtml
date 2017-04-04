@@ -1,0 +1,35 @@
+﻿@model bv.model.Model.Core.IObject
+           
+@using eidss.webclient.Utils
+
+<script language="javascript" type="text/javascript">
+    $($('#@(ViewBag.MainDivId)')).ready(function () {
+        person.initInlinePicker('@(ViewBag.BtnSearchPicker)', '@(ViewBag.BtnClianPicker)', '@(ViewBag.BtnViewPicker)', '@(ViewBag.IsSearchButtonReadOnly)', '@(ViewBag.IsClianButtonReadOnly)', '@(ViewBag.IsViewButtonReadOnly)');
+    });
+</script>
+
+@*Такой внешний вид контрола для выбора пациента является исключением. Лупа помещена внутрь текстового поля, что бы не переделывать верску адреса. Согласовано с аналитиками.*@
+<span class="picker">
+    <span class="pickerWrap inlinePatientPicker" id="@ViewBag.MainDivId">
+        @Html.BvHidden(Model, (string)ViewBag.IdfsPatientPropertyName)
+        @Html.BvEditbox(Model, (string)ViewBag.StrPatientPropertyName, true)
+        <span class="pickerSelect cleanPatientButton" onclick='@ViewBag.OnClianButtonClick' id='@ViewBag.BtnClianPicker'>
+            <span class="k-icon k-i-close"></span>
+        </span>
+        <span class="pickerSelect searchPatientButton" id='@ViewBag.BtnSearchPicker' onclick="@ViewBag.OnSelectItemClick" ondrag="detailPage.dragNothing(event)">
+            <img src="@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/Search.png"))" alt="Select" draggable='false' />
+        </span>
+    </span>
+</span>
+
+@*<span class="picker">
+    <span class="pickerWrap" id="@ViewBag.MainDivId">
+        @Html.BvEditbox(Model, (string)ViewBag.StrPatientPropertyName)  
+        <span class="pickerSelect" onclick='@ViewBag.OnClianButtonClick' id='@ViewBag.BtnClianPicker'>
+            <span class="k-icon k-i-close"></span>
+        </span>
+    </span>
+</span>
+<button id='@ViewBag.BtnSearchPicker' class="button smallImageButton" onclick='@ViewBag.OnSelectItemClick' type="button" alt="Select">
+    <img src="@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/Search.png"))" alt="Select" draggable='false' />
+</button>*@

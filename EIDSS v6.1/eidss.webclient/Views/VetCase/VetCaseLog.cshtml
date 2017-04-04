@@ -1,0 +1,12 @@
+﻿@model eidss.model.Schema.VetCase
+           
+@using eidss.web.common.Utils
+
+<div class="tabPanelContent">
+<div class="sectionTitle">
+    @Translator.GetMessageString("tabTitleVetCaseLog")
+</div>
+    @Html.Action("VetCaseLogGrid", "Grids", new { root = Model.idfCase, name = Model.ObjectIdent + "Logs", log = Model.Logs,
+                                                     isReadOnly = Model.IsReadOnly("Logs") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit)
+                                                })
+</div>

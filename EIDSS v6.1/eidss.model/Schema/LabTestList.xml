@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="LabTestListItem"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage> 
+		<get name="fn_LabTest_SelectList" type="fnlist" />
+		<count name="spLabTest_SelectCount"/>
+	</storage>
+
+	<tables> 
+		<table name="LabTestListItem">
+      <properties newTestResultEvent="true" auditObject="daoTest" auditTable="tlbTesting" permissionObject="Test"/>
+      <help win="lab_l03" web="lab_l03"/>
+      <extfilters>
+        <filter>
+          <join>
+          </join>
+          <where>
+            <expr param="BatchTestIsNull" value="idfBatchTest is null"/>
+          </where>
+        </filter>
+      </extfilters>
+
+      <searchpanel>
+				<item name="idfsTestName" editor="Lookup" labelId="TestName"
+							lookupName="TestNameRefLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+				<item name="BatchTestCode" editor="Text" labelId="BatchTestCode"/>
+        <item name="idfsTestStatus" editor="Lookup" labelId="Status"
+							lookupName="TestStatusLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+        <item name="datConcludedDate" editor="Date" labelId="datConcludedDate" range="true"/>
+				<item name="CaseID" editor="Text" labelId="CaseID"/>
+				<item name="idfsDiagnosis" editor="Lookup" editorWidth="Large" labelId="TestDiagnosis2"
+							lookupName="DiagnosisLookup" lookupType="DiagnosisLookup" lookupText="c.name" lookupValue="c.idfsDiagnosis"/>
+        <item name="strPatientName" editor="Text" labelId="strHumanPatientName"/>
+        <item name="strFarmOwner" editor="Text" labelId="strFarmOwnerName"/>        
+				<item name="AnimalName" editor="Text" labelId="AnimalName"/>
+				<item name="strBarcode" editor="Text" labelId="strLabBarcode"/>
+				<item name="strFieldBarcode" editor="Text" labelId="strFieldBarcode"/>
+				<item name="datAccession" editor="Date" labelId="datAccession" range="true" rangeDefDates="true"
+							default="c => DateTime.Today.AddDays(-EidssUserContext.User.Options.Prefs.DefaultDays)"/>
+				<item name="idfsSampleType" editor="Lookup" labelId="SampleType"
+							lookupName="SampleTypeLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+			</searchpanel>
+			
+			<grid> 
+				<item name="idfTesting"  visible="false" key="true" />
+				<item name="BatchTestCode" />
+				<item name="TestName"/>
+				<item name="TestCategory"/>
+				<item name="Status"/>
+				<item name="TestResult"/>
+				<item name="datConcludedDate"/>
+				<item name="strBarcode"/>
+				<item name="strSampleName"/>
+				<item name="strFieldBarcode"/>
+				<item name="datAccession"/>
+				<item name="DepartmentName"/>
+				<item name="CaseID"/>
+				<item name="DiagnosisName" defaultSort="Descending"/>
+				<item name="HumanName"/>
+				<item name="AnimalName"/>
+			</grid>
+			
+			<labels>
+				<item name="strBarcode" labelId="strLabBarcode"/>
+				<item name="DiagnosisName" labelId="TestDiagnosisName"/>
+			</labels>
+      <personaldata>
+        <group name="Human_PersonName">
+          <item name="strPatientName"/>
+        </group>
+        <group name="Vet_Farm_Settlement">
+          <item name="strFarmOwner"/>
+        </group>
+        <group name="Vet_Farm_Details">
+          <item name="strFarmOwner"/>
+        </group>
+       </personaldata>
+
+      <lookups>
+				<lookup name="TestNameRef" table="BaseReference" section="rftTestName" source="idfsTestName" target="idfsBaseReference" />
+				<!--<lookup name="BatchStatusName" table="BaseReference" section="rftTestStatus" source="idfsBatchStatus" target="idfsBaseReference" />-->
+				<lookup name="Diagnosis" table="DiagnosisLookup" source="idfsDiagnosis" target="idfsDiagnosis">
+          <filters>
+            <filter predicate="c => ((c.intHACode &amp; (int)HACode.All) != 0) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+            <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+          </filters>
+				</lookup>
+        <lookup name="SampleType" table="BaseReference" section="rftSampleType" source="idfsSampleType" target="idfsBaseReference">
+          <filters>
+            <filter predicate="c => c.idfsBaseReference != (long)SampleTypeEnum.Unknown"/>
+          </filters>
+        </lookup>
+        <lookup name="TestStatus" table="BaseReference" section="rftTestStatus" source="idfsTestStatus" target="idfsBaseReference">
+          <filters>
+            <filter predicate="c => c.idfsBaseReference != (long)eidss.model.Enums.TestStatus.Declined"/>
+          </filters>
+        </lookup>
+        <lookup name="TestCategoryRef" table="BaseReference" section="rftTestCategory" source="idfsTestCategory" target="idfsBaseReference" />
+        <lookup name="TestResultRef" table="BaseReference" section="rftTestResult" source="idfsTestResult" target="idfsBaseReference" />
+      </lookups>
+
+			<storage>
+				<delete name="spLabTest_Delete"/>
+				<candelete name="spLabTest_CanDelete"/>
+			</storage>
+
+      <actions child="LabTest">
+        <standard>
+          <remove type="Create"/>
+        </standard>
+        <action name="MakeBatch" type="Action">
+          <visual alignment="Right" panel="Top">
+            <regular caption="strMakeBatch_Id" tooltip="strMakeBatch_Id"  icon="edit"/>
+          </visual>
+          <permissions type="Test.Update"/>
+          <run>
+            <params>
+              <param name="key" type="object" />
+              <param name="item" type="IObject" />
+              <param name="listPanel" type="object" />
+            </params>
+          </run>
+        </action>
+      </actions>
+
+      <!--actions child="LabTest">
+				<action name="Create" type="Create" visible="false" panel="Top" />
+				<action name="MakeBatch" type="Action" caption="strMakeBatch_Id" tooltip="strMakeBatch_Id"  icon="Batch__small_"
+						alignment="Right" panel="Top" close="false" visible="true" >
+					<params>
+						<param name="key" type="object" />
+						<param name="item" type="IObject" />
+						<param name="listPanel" type="object" />
+					</params>
+					<text>
+					</text>
+				</action>
+			</actions-->
+		</table>
+	</tables>
+
+</object>

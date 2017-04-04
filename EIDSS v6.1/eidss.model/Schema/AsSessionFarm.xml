@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="AsSessionFarm"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="spASSessionFarms_SelectDetail" />
+	</storage>
+
+	<tables>
+    <table name="AsSessionFarm" hacodable="true" type="detaillist">
+      <grid>
+        <item name='idfFarm' key='true' type='long?' visible='false'/>
+        <item name="strFarmCode" required="true" />
+        <item name="strOwnerName" />
+        <item name="strNationalName" />
+        <item name="strContactPhone" type="string" />
+        <item name="strRegion" type="string" required="true" />
+        <item name="strRayon" type="string" required="true" />
+        <item name="strTownOrVillage" type="string" />
+      </grid>
+      <fields>
+        <storage name="bDeleteInDetails" type="bool"/>
+        <storage name="bDeleteInSummary" type="bool"/>
+        <calculated name="strOwnerLastName" type="string" depends="Farm" lambda="c => c.Farm.strOwnerLastName" setter="Farm.strOwnerLastName = value"/>
+        <calculated name="strContactPhone" type="string" depends="Farm" lambda="c => c.Farm.strContactPhone"/>
+        <calculated name="strRegion" type="string" depends="Farm" lambda='c => c.Farm.Address.Region == null ? "" : c.Farm.Address.Region.strRegionName'/>
+        <calculated name="strRayon" type="string" depends="Farm" lambda='c => c.Farm.Address.Rayon == null ? "" : c.Farm.Address.Rayon.strRayonName'/>
+        <calculated name="strTownOrVillage" type="string" depends="Farm" lambda='c => c.Farm.Address.Settlement == null ? "" : c.Farm.Address.Settlement.strSettlementName'/>
+        <calculated name="AsSessionDiseases" type="List&lt;AsSessionDisease&gt;" depends="Parent"
+                    lambda="c => c.Parent == null ? new List&lt;AsSessionDisease&gt;() : (c.Parent as AsSession).Diseases.Where(i => !i.IsMarkedToDelete).ToList()" />
+      </fields>
+      <relations>
+        <relation name="Farm" table="FarmPanel" internal="false" lazy="false" source="idfFarm" target="idfFarm" type="link" hacodable="true" />
+      </relations>
+      <storage>
+        <post name="spASSessionFarm_Link"/>
+      </storage>
+      <postorder>
+        <item name="Farm"/>
+        <!--item name="this"/-->
+      </postorder>
+      <extenders>
+        <creating>
+          <lambda_extender type="int?" target="_HACode" lambda="c => (int)eidss.model.Enums.HACode.Livestock"/>
+          <db_lambda_extender target="Farm" type="FarmPanel" lambda="(c,m) => FarmPanel.Accessor.Instance(null).CreateBySession(m, c, c.Parent as AsSession)"/>
+          <lambda_extender target="idfMonitoringSession" type="long?" lambda="c => (Parent as AsSession).idfMonitoringSession"/>
+          <lambda_extender target="Farm.idfMonitoringSession" type="long?" lambda="c => (Parent as AsSession).idfMonitoringSession"/>
+          <lambda_extender target="Farm.intHACode" type="int?" lambda="c => (int)eidss.model.Enums.HACode.Livestock"/>
+          <lambda_extender target="idfFarm" type="long" lambda="c => c.Farm.idfFarm"/>
+          <lambda_extender target="idfRootFarm" type="long?" lambda="c => c.Farm.idfRootFarm"/>
+          <lambda_extender target="strFarmCode" type="string" lambda="c => c.Farm.strFarmCode"/>
+        </creating>
+        <created>
+          <custom_extender>
+            <text>
+              if (obj.AsSessionDiseases.Select(i => i.idfsSpeciesType).Distinct().Count() == 1 &amp;&amp; obj.AsSessionDiseases.Select(i => i.idfsSpeciesType).Distinct().Count(i => i.HasValue &amp;&amp; i.Value > 0) == 1)
+              {
+                  var idfsSpeciesType = obj.AsSessionDiseases.FirstOrDefault(i => i.idfsSpeciesType.HasValue &amp;&amp; i.idfsSpeciesType.Value > 0, i => i.idfsSpeciesType);
+                  FarmPanel.Accessor.Instance(null).CreateHerd(manager, obj.Farm);
+                  var herd = obj.Farm.FarmTree[1];
+                  FarmPanel.Accessor.Instance(null).CreateSpecies(manager, obj.Farm, herd);
+                  var species = obj.Farm.FarmTree[2];
+                  species.SpeciesType = species.SpeciesTypeLookup.FirstOrDefault(i => i.idfsBaseReference == idfsSpeciesType);
+              }
+            </text>
+          </custom_extender>
+        </created>
+        <loading>
+          <lambda_extender type="int?" target="_HACode" lambda="c => (int)eidss.model.Enums.HACode.Livestock"/>
+        </loading>
+        <deleted>
+          <lambda_extender type="bool" target="blnIsDetailsFarm" lambda="c => c.bDeleteInDetails ? false : c.blnIsDetailsFarm"/>
+          <lambda_extender type="bool" target="blnIsSummaryFarm" lambda="c => c.bDeleteInSummary ? false : c.blnIsSummaryFarm"/>
+          <lambda_extender type="bool" target="m_IsMarkedToDelete" lambda="c => !(c.blnIsDetailsFarm || c.blnIsSummaryFarm)"/>
+        </deleted>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <lambda_handler field="idfRootFarm" target="Farm.idfRootFarm" type="long?" lambda="c => c.idfRootFarm"/>
+          <lambda_handler field="idfOwner" target="Farm.idfOwner" type="long?" lambda="c => c.idfOwner"/>
+        </fieldhandler>
+        <childhandler>
+          <lambda_handler target="idfFarm" container="Farm" field="idfFarm" type="long" lambda="c => c.Farm.idfFarm" />
+          <lambda_handler target="strFarmCode" container="Farm" field="strFarmCode" type="string" lambda="c => c.Farm.strFarmCode" />
+          <lambda_handler target="strOwnerName" container="Farm" field="strFullNameCalc" type="string" lambda="c => c.Farm.strFullNameCalc" />
+          <lambda_handler target="strNationalName" container="Farm" field="strNationalName" type="string" lambda="c => c.Farm.strNationalName" />
+        </childhandler>
+      </handlers>
+      <validators>
+        <post>
+          <predicate_validator predicate="c => c.Farm.FarmTree.Any(x => !x.IsMarkedToDelete &amp;&amp; x.idfsPartyType == (int)PartyTypeEnum.Species)" 
+                               message="AsSession_SummaryFarmShouldContainSpecies" />
+          <predicate_validator predicate="c => !c.Farm.FarmTree.Any(x => !x.IsMarkedToDelete &amp;&amp; x.idfsPartyType == (int)PartyTypeEnum.Herd &amp;&amp; !c.Farm.FarmTree.Any(y => !y.IsMarkedToDelete &amp;&amp; y.idfParentParty == x.idfParty &amp;&amp; y.idfsPartyType == (int)PartyTypeEnum.Species))" 
+                               message="AsSession_HerdShouldContainSpecies" />
+        </post>
+        <delete>
+          <predicate_validator predicate="c => !(c.bDeleteInDetails &amp;&amp; (c.Parent as AsSession).ASAnimalsSamples.Any(i => !i.IsMarkedToDelete &amp;&amp; i.idfFarm == c.idfFarm))" message="msgCantDeleteASFarm" />
+          <predicate_validator predicate="c => !(c.bDeleteInSummary &amp;&amp; (c.Parent as AsSession).SummaryItems.Any(i => !i.IsMarkedToDelete &amp;&amp; i.idfFarm == c.idfFarm))" message="msgCantDelete" />
+        </delete>
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Ok"/>
+          <remove type="Cancel"/>
+          <remove type="Create"/>
+          <remove type="Save"/>
+          <remove type="Edit"/>
+          <remove type="Delete"/>
+        </standard>
+        <action name="delete" type="Delete" />
+        <action name="edit" type="Edit" />
+        <action name="TVIOk" type="Action" forceClose="true">
+          <visual panel="Main" alignment="Right" app="Web">
+            <regular caption="strOK_Id" tooltip="tooltipOK_Id" icon=""/>
+          </visual>
+          <run>
+            <preUI webType="JScript" methodName="asSession.formFarmDetailOk"/>
+            <preText>
+              return (obj.GetAccessor() as IObjectValidator).Validate(manager, obj, true, true, true);
+            </preText>
+          </run>
+        </action>
+        <action name="TVICancel" type="Action">
+          <visual panel="Main" alignment="Right" app="Web">
+            <regular caption="strCancel_Id" tooltip="tooltipCancel_Id" icon=""/>
+          </visual>
+          <run>
+            <preUI webType="JScript" methodName="asSession.formDetailCancel"/>
+          </run>
+        </action>
+      </actions>
+    </table>
+  </tables>
+
+</object>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Target Name="GenerateInnerVersion">
+    <PropertyGroup>
+      <InnerVersion>$([System.DateTime]::Now.ToString(`yyyyMMddHHmmssfff`))</InnerVersion>
+      <DefineConstants>
+        InnerVersion=$(InnerVersion);
+        $(DefineConstants)
+      </DefineConstants>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="GetInstanceProductCodesFile" DependsOnTargets="GetTargetPath" Outputs="$(ProductCodesFile)">
+    <PropertyGroup>
+      <ProductCodesFile>$(TargetDir)$(TargetName).ProductCodes</ProductCodesFile>
+    </PropertyGroup>
+
+    <Message Importance="low" Text="$(ProductCodesFile)" />
+  </Target>
+
+  <PropertyGroup>
+    <GenerateInstanceProductCodesDependsOn>
+      GetInstanceProductCodesFile;
+      CoreGenerateInstanceProductCodes;
+      DropGeneratedInstanceProductCodesToFile
+    </GenerateInstanceProductCodesDependsOn>
+  </PropertyGroup>
+  <Target Name="GenerateInstanceProductCodes" DependsOnTargets="$(GenerateInstanceProductCodesDependsOn)" Outputs="$(ProductCodesFile)" />
+
+  <Target Name="CoreGenerateInstanceProductCodes" Outputs="$(ProductCode);$(ProductCodes)">
+    <PropertyGroup>
+      <ProductCode>$([System.Guid]::NewGuid().ToString().ToUpper())</ProductCode>
+      <ProductCodes>
+        ProductCode.I01=$([System.Guid]::NewGuid().ToString().ToUpper());
+        ProductCode.I02=$([System.Guid]::NewGuid().ToString().ToUpper());
+        ProductCode.I03=$([System.Guid]::NewGuid().ToString().ToUpper());
+        ProductCode.I04=$([System.Guid]::NewGuid().ToString().ToUpper());
+        ProductCode.I05=$([System.Guid]::NewGuid().ToString().ToUpper());
+        ProductCode.I06=$([System.Guid]::NewGuid().ToString().ToUpper());
+        ProductCode.I07=$([System.Guid]::NewGuid().ToString().ToUpper());
+        ProductCode.I08=$([System.Guid]::NewGuid().ToString().ToUpper());
+        ProductCode.I09=$([System.Guid]::NewGuid().ToString().ToUpper());
+        ProductCode.I10=$([System.Guid]::NewGuid().ToString().ToUpper());
+        ProductCode.I11=$([System.Guid]::NewGuid().ToString().ToUpper());
+        ProductCode.I12=$([System.Guid]::NewGuid().ToString().ToUpper());
+        ProductCode.I13=$([System.Guid]::NewGuid().ToString().ToUpper());
+        ProductCode.I14=$([System.Guid]::NewGuid().ToString().ToUpper());
+        ProductCode.I15=$([System.Guid]::NewGuid().ToString().ToUpper());
+        ProductCode.I16=$([System.Guid]::NewGuid().ToString().ToUpper());
+        ProductCode.I17=$([System.Guid]::NewGuid().ToString().ToUpper());
+        ProductCode.I18=$([System.Guid]::NewGuid().ToString().ToUpper());
+        ProductCode.I19=$([System.Guid]::NewGuid().ToString().ToUpper());
+        ProductCode.I20=$([System.Guid]::NewGuid().ToString().ToUpper());
+      </ProductCodes>
+      <DefineConstants>
+        ProductCode=$(ProductCode);
+        $(ProductCodes);
+        $(DefineConstants)
+      </DefineConstants>
+    </PropertyGroup>
+  </Target>
+
+  <Target
+    Name="DropGeneratedInstanceProductCodesToFile"
+    Outputs="$(ProductCodesFile)"
+    Condition=" !Exists( '$(ProductCodesFile)' ) ">
+
+    <MakeDir Directories="$(TargetDir)" Condition=" !Exists( '$(TargetDir)' )" />
+    <WriteLinesToFile File="$(ProductCodesFile)" Lines="Default ProductCode=$(ProductCode)" Overwrite="true" />
+    <WriteLinesToFile File="$(ProductCodesFile)" Lines="$(ProductCodes)" Overwrite="false" />
+
+    <ItemGroup>
+      <FileWrites Include="$(ProductCodesFile)" />
+    </ItemGroup>
+  </Target>
+
+</Project>

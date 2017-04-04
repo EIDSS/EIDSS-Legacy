@@ -1,0 +1,102 @@
+﻿@{
+    ViewBag.Title = Translator.GetMessageString("titleClinicalSigns"); 
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+}
+           
+@using eidss.mobileclient.Utils
+
+<script src="@Url.Content("~/Scripts/EIDSS.VetCase.js")" type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript">
+    $(function () {
+        //$("#accordion").accordion();
+    });         
+</script>
+
+<table>
+    <tr>  
+        @if ((bool)ViewBag.CanUpdate)
+        {      
+            <td>
+                <input type="submit" value="@Translator.GetMessageString("Ok")" onclick="var params = ['@ViewBag.RootKey', '@ViewBag.ReturnMethodName']; ShowEidssDialogOKPromptWithActionSaveExecutionAndCloseWindow(onSaveAndCloseFF, params);" />         
+            </td>
+            <td>
+                <input type="button" value="@Translator.GetMessageString("Cancel")" onclick="var params = ['@ViewBag.RootKey', '@ViewBag.ReturnMethodName']; ShowEidssDialogCancelPromptWithActionCancelExecution(onCancelFFEdit, params);" />                                  
+            </td>
+        }
+        else
+        { 
+            <td>
+                <input type="button" value="@Translator.GetMessageString("Cancel")" onclick="var params = ['@ViewBag.RootKey', '@ViewBag.ReturnMethodName']; ShowEidssDialogClosePromptWithActionCloseExecution(onCancelFFEdit, params);" />                                  
+            </td>
+        }
+    </tr>
+</table>   
+      
+<table>
+    @if ((bool)ViewBag.IsHerdDetails)
+    {
+        <tr>                                                               
+            <td>
+                @Translator.GetString("strHerd")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="text" disabled="disabled" value="@ViewBag.HerdName" />            
+            </td>
+        </tr>
+    }
+    else
+    {
+        <tr>                                                               
+            <td>
+                @Translator.GetString("strFlock")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="text" disabled="disabled" value="@ViewBag.FlockName" />            
+            </td>
+        </tr>
+    }
+    <tr>                                                               
+        <td>
+            @Translator.GetString("Species")                
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="text" disabled="disabled" value="@ViewBag.SpeciesName" /> 
+        </td>
+    </tr>
+</table>
+<br /> 
+
+@using (Html.BeginForm())
+{    
+    <input type="hidden" id="hdnControllerName" value="VetCase"/>
+    <div id="accordion">        
+        @Html.Action("ShowFarmTreeFlexibleForm", "FFPresenter", new { root = ViewBag.RootKey, key = ViewBag.IdfSpecies, name = ViewBag.Name, canUpdate = (bool)ViewBag.CanUpdate })    
+    </div>
+}
+
+<table>
+    <tr>        
+        @if ((bool)ViewBag.CanUpdate)
+        {      
+            <td>
+                <input type="submit" value="@Translator.GetMessageString("Ok")" onclick="var params = ['@ViewBag.RootKey', '@ViewBag.ReturnMethodName']; ShowEidssDialogOKPromptWithActionSaveExecutionAndCloseWindow(onSaveAndCloseFF, params);" />         
+            </td>
+            <td>
+                <input type="button" value="@Translator.GetMessageString("Cancel")" onclick="var params = ['@ViewBag.RootKey', '@ViewBag.ReturnMethodName']; ShowEidssDialogCancelPromptWithActionCancelExecution(onCancelFFEdit, params);" />                                  
+            </td>
+        }
+        else
+        { 
+            <td>
+                <input type="button" value="@Translator.GetMessageString("Cancel")" onclick="var params = ['@ViewBag.RootKey', '@ViewBag.ReturnMethodName']; ShowEidssDialogClosePromptWithActionCloseExecution(onCancelFFEdit, params);" />                                  
+            </td>
+        }
+    </tr>
+</table> 

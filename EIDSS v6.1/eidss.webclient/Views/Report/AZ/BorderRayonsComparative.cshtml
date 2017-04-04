@@ -1,0 +1,58 @@
+﻿@using Kendo.Mvc.UI
+@using bv.common.Configuration
+@using bv.model.Model.Core
+@using eidss.webclient.Utils
+@model eidss.webclient.Models.Reports.BorderRayonsModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Hidden("ReportName", "BorderRayons") @*for validation*@
+    
+    @Html.Partial("Common/ExportButtons", Model)
+    <div class="bluelayout">
+        <div class="tabPanelContent">
+
+            @Html.Partial("Common/BaseFilter", Model)
+            @Html.Partial("Common/BaseYearFilter", Model)
+
+            @Html.Partial("Common/FromMonthToMonthFilter", Model.FromMonthToMonthModel)
+
+            <table id="DiagnosisGroupFilterTable" class="level1">
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.DiagOrGroup)
+                    </td>
+                    <td class="largereport">
+                        @Html.BvComboboxWithCheckboxes(Model, m => m.DiagOrGroup, "idfsDiagnosisOrDiagnosisGroup", "name",
+                            Model.DiagOrGroupSelected == null ? "" : Model.DiagOrGroupSelected.ToList().Aggregate("", (r, c) => r == "" ? c.ToString() : r + "," + c.ToString()),
+                            controller: "Report", action: "SelectDiagOrGroup", width: EditorControlWidth.Large
+                            )
+                    </td>
+                </tr>
+            </table>
+
+            @Html.Partial("Common/AddressFilter", Model.Address)
+
+            <table id="ComparativeFilterTable">
+
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.Counter)
+                    </td>
+                    <td class="largereport">
+
+                       @Html.Partial("AZ/MultipleCounterFilter", Model.Counter, new ViewDataDictionary {{"FilterName", "MultipleCounterFilter.CheckedItems"}})
+                    </td>
+                    <td ></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+}

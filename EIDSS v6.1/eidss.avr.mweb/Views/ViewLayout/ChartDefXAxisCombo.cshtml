@@ -1,0 +1,18 @@
+﻿@using eidss.avr.mweb.Utils
+@model eidss.model.Avr.View.AvrView
+
+@Html.DevExpress().ComboBox(settings => {
+    settings.Name = "ChartXAxisViewColumn";
+    settings.CallbackRouteValues = new { Controller = "ViewLayout", Action = "GetDataColumns", layoutId = ViewBag.LayoutId, viewName = "ChartDefXAxisCombo" };//GetChartDefXAxisColumns
+    settings.ControlStyle.CssClass = "wide";
+    settings.Enabled = !Model.IsReadOnly && eidss.model.Core.AvrPermissions.UpdatePermission;
+    //settings.ClientEnabled = true;
+    settings.Properties.ValueType = typeof(string);
+    settings.Properties.TextField = "FullPath";
+    settings.Properties.ValueField = "UniquePath";
+    settings.Properties.EnableCallbackMode = true;
+    settings.Properties.CallbackPageSize = 20;
+    settings.Properties.ClientSideEvents.ValueChanged = "viewGridForm.OnChartDefXaxisSelectionChanged";
+    //settings.Properties.ClientSideEvents.SelectedIndexChanged = "function(s, e) {alert(s.GetValue()); ChartXAxisViewColumn.PerformCallback(); }";
+    settings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+}).BindList(eidss.model.Avr.View.AvrView.GetChartXAxisList(Model)).Bind(Model.ChartXAxisViewColumn).GetHtml()

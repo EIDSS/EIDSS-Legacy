@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="NotificationService.DepednsOn">
+    <ComponentGroup Id="NotificationService.DepednsOn" Directory="APPLICATIONFOLDER" Source="$(var.BinariesPaths)">
+      <Component Id="BLToolkit.4.dll">
+        <File Id="BLToolkit.4.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="bv.common.dll">
+        <File Id="bv.common.dll" KeyPath="yes" Checksum="yes" Source="$(var.bv.common.TargetPath)" />
+      </Component>
+      <Component Id="bv.model.dll">
+        <File Id="bv.model.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="bvdb_common.dll">
+        <File Id="bvdb_common.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="bv_common.dll">
+        <File Id="bv_common.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="eidss.core.dll">
+        <File Id="eidss.core.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="eidss.model.dll">
+        <File Id="eidss.model.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="eidss_common.dll">
+        <File Id="eidss_common.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="eidss_db.dll">
+        <File Id="eidss_db.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="InstallUtilLib.dll">
+        <File Id="InstallUtilLib.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="Microsoft.SqlServer.ConnectionInfo.dll">
+        <File Id="Microsoft.SqlServer.ConnectionInfo.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="Microsoft.SqlServer.Management.Sdk.Sfc.dll">
+        <File Id="Microsoft.SqlServer.Management.Sdk.Sfc.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="Microsoft.SqlServer.Smo.dll">
+        <File Id="Microsoft.SqlServer.Smo.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="Microsoft.SqlServer.SqlEnum.dll">
+        <File Id="Microsoft.SqlServer.SqlEnum.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="Microsoft.Win32.TaskScheduler.dll">
+        <File Id="Microsoft.Win32.TaskScheduler.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="TaskScheduler.dll">
+        <File Id="TaskScheduler.dll" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      
+      <ComponentGroupRef Id="eidss.core.EnterpriseLibrary.DependsOn" />
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment Id="eidss.core.EnterpriseLibrary.DependsOn">
+    <ComponentGroup Id="eidss.core.EnterpriseLibrary.DependsOn" Directory="APPLICATIONFOLDER" Source="$(var.BinariesPaths)">
+      <Component Id="Microsoft.Practices.EnterpriseLibrary.Common.dll">
+        <File Name="Microsoft.Practices.EnterpriseLibrary.Common.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Microsoft.Practices.EnterpriseLibrary.Data.dll">
+        <File Name="Microsoft.Practices.EnterpriseLibrary.Data.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll">
+        <File Name="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Microsoft.Practices.EnterpriseLibrary.Logging.dll">
+        <File Name="Microsoft.Practices.EnterpriseLibrary.Logging.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Microsoft.Practices.ServiceLocation.dll">
+        <File Name="Microsoft.Practices.ServiceLocation.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Microsoft.Practices.Unity.dll">
+        <File Name="Microsoft.Practices.Unity.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Microsoft.Practices.Unity.Interception.dll">
+        <File Name="Microsoft.Practices.Unity.Interception.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>

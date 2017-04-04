@@ -1,0 +1,49 @@
+﻿@model eidss.model.Schema.VetFarmTree
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        //ChangeMessageWindowHeigth();
+    });
+</script>
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        <div class="windowButtonsPn">                  
+            <input id="idButtonOk" type="button" class="windowButton" onclick=" asSession.saveAndCloseSpeciesGridEditWindow('@(Model.idfParentParty)'); " value="@Translator.GetMessageString("Ok")"/>     
+            <input id="idButtonCancel" type="button" class="windowButton" onclick=" bvPopup.closeDefaultPopup(); " value="@Translator.GetMessageString("Cancel")"/>  
+        </div>
+        <div class="windowSeparator"></div>
+        @Html.HiddenFor(x=>x.idfParty)
+        @Html.Hidden("IdfMonitoringSession", (long)ViewBag.IdfMonitoringSession)
+        @Html.Hidden("IdfRoot", (long)ViewBag.IdfRoot)
+        <table class="level1">    
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Html.BvLabel(Model, model => model.strSpeciesName)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.SpeciesType)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, model => model.intTotalAnimalQty)
+                </td>
+                <td>
+                    @Html.BvNumeric(Model, m => m.intTotalAnimalQty, 0, 0, 100000)
+                </td>
+            </tr>
+        </table>
+    }
+</div>

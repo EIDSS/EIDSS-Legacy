@@ -1,0 +1,49 @@
+﻿@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+@using Kendo.Mvc.UI
+@model eidss.webclient.Models.Reports.ComparativeSeveralYearsTHModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+@if (BaseSettings.TranslationMode)
+{
+    <input type='hidden' id='aspclassname' value='@GetType().FullName'/>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/ExportButtons", Model)
+    <div class="bluelayout">
+        <div class="tabPanelContent">
+
+            @Html.Partial("Common/BaseFilter", Model)
+
+            @Html.Partial("TH/FromYearToYearFilter", Model.YearModel)
+
+            @Html.Partial("TH/DistrictFilter", Model.District)
+            <table id="ComparativeFilterTable">
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.Counter)
+                    </td>
+                    <td class="largereport">
+
+                        @{
+                            @(Html.Kendo().ComboBox()
+                                  .BindTo(Model.CounterList.ConvertToSelectListItem())
+                                  .Name("Counter")
+                                  .HtmlAttributes(new {@class = "requiredField"})
+                                  )
+                        }
+
+                    </td>
+                    <td colspan="3"></td>
+                </tr>
+            </table>
+
+            @Html.Partial("Common/MultipleDiagnosisFilter", Model.MultipleDiagnosisFilter, new ViewDataDictionary {{"FilterName", "MultipleDiagnosisFilter.CheckedItems"}, {"Caption", Translator.GetMessageString("Diagnosis")}})
+        </div>
+    </div>
+}

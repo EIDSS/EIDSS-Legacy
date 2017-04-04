@@ -1,0 +1,420 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="AsSessionAnimalSample"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spASSessionAnimalsSamples_SelectDetail" type="detaillist" />
+  </storage>
+
+  <tables>
+    <!--table name="AsSessionAnimalSample" tostring='a => a.ClonedAsSample ? (string.IsNullOrEmpty(a.strSampleName) ? "" : a.strSampleName + " / " + a.strFieldBarcode) : a.strAnimalCode'-->
+    <table name="AsSessionAnimalSample" tostring='a => a.strAnimalCode'>
+      <grid sequence='true'>
+        <item name="id" key="true" visible="false"/>
+        <item name="idfsSpeciesType" visible="false"/>
+        <item name="SequenceNumber" type="int" required="true" />
+        <item name="strAnimalCodeReadonly" type="bool" visible="false" useInWin="false"/>
+        <item name="AnimalAgeReadonly" type="bool" visible="false" useInWin="false"/>
+        <item name="strColorReadonly" type="bool" visible="false" useInWin="false"/>
+        <item name="AnimalGenderReadonly" type="bool" visible="false" useInWin="false"/>
+        <item name="strNameReadonly" type="bool" visible="false" useInWin="false"/>
+        <item name="strDescriptionReadonly" type="bool" visible="false" useInWin="false"/>
+        <item name="SampleTypeReadonly" type="bool" visible="false" useInWin="false"/>
+        <item name="strFieldBarcodeReadonly" type="bool" visible="false" useInWin="false"/>
+        <item name="datFieldCollectionDateReadonly" type="bool" visible="false" useInWin="false"/>
+        <item name="strFarmCode" required="true" />
+        <item name="strSpeciesType" type="string" required="true" />
+        <item name="strAnimalCode" required="true" />
+        <item name="AnimalAge" type="AsSessionAnimalAge" uihint="AnimalAgeEditor"/>
+        <!--item name="strAnimalAge" type="string" /-->
+        <item name="strColor"/>
+        <item name="AnimalGender" type="AsSessionBaseReference" uihint="AnimalGenderEditor"/>
+        <!--item name="strAnimalGender" type="string" /-->
+        <item name="strName"/>
+        <item name="strDescription"/>
+        <item name="SampleType" type="AsSessionSampleTypeForDiagnosis" uihint="SampleTypeEditor" required="true"/>
+        <!--item name="strSampleName"  type="string" /-->
+        <item name="strFieldBarcode" required="true"/>
+        <item name="datFieldCollectionDate" type="DateTime?" uihint="FieldCollectionDateEditor" required="true"/>
+        <item name="strSendToOffice" required="true"/>
+      </grid>
+      <labels>
+        <item name="Farms" labelId="Farm"/>
+        <item name="Species" labelId="strHerdSpecies"/>
+        <item name="strDescription" labelId="strComments"/>
+        <item name="strSampleName" labelId="AsSessionTableViewItem.strSampleName"/>
+        <item name="SampleType" labelId="AsSessionTableViewItem.strSampleName"/>
+        <item name="strFieldBarcode" labelId="AsSessionTableViewItem.strFieldBarcode"/>
+        <item name="AnimalAge" labelId="strAnimalAge"/>
+        <item name="idfsAnimalAge" labelId="AsSessionTableViewItem.AnimalAge"/>
+        <item name="AnimalGender" labelId="strAnimalGender"/>
+        <item name="idfsSampleType" labelId="AsSessionTableViewItem.SampleType"/>
+        <item name="strName" labelId="strAnimalName"/>
+        <item name="strSendToOffice" labelId="strSendToOrganization"/>
+      </labels>
+      <fields>
+        <storage name="NumOfCopies" type="int"/>
+        <storage name="SequenceNumber" type="int"/>
+        <!--storage name="ClonedAsSample" type="bool"/-->
+        <storage name="FilterByDiagnosis" type="bool"/>
+        <!--storage name="idfAnimalForLookup" type="long?"/-->
+        <!--storage name="strAnimalForLookup" type="string"/>
+        <storage name="strAnimalForLookupPrev" type="string"/-->
+
+        <calculated name="strAnimalCodeReadonly" depends="bSampleAccessioned" type="bool" lambda='c => c.bSampleAccessioned'/>
+        <calculated name="AnimalAgeReadonly" depends="bSampleAccessioned" type="bool" lambda='c => false'/>
+        <calculated name="strColorReadonly" depends="bSampleAccessioned" type="bool" lambda='c => false'/>
+        <calculated name="AnimalGenderReadonly" depends="bSampleAccessioned" type="bool" lambda='c => false'/>
+        <calculated name="strNameReadonly" depends="bSampleAccessioned" type="bool" lambda='c => false'/>
+        <calculated name="strDescriptionReadonly" depends="bSampleAccessioned" type="bool" lambda='c => false'/>
+        <calculated name="SampleTypeReadonly" depends="bSampleAccessioned" type="bool" lambda='c => c.bSampleAccessioned'/>
+        <calculated name="strFieldBarcodeReadonly" depends="bSampleAccessioned" type="bool" lambda='c => c.bSampleAccessioned'/>
+        <calculated name="datFieldCollectionDateReadonly" depends="bSampleAccessioned" type="bool" lambda='c => c.bSampleAccessioned'/>
+
+        <calculated name="newAnimalName" depends="" type="string" lambda='c => "(new animal " + (c.ParentAnimalsAll.Count(i => i.strAnimalCode.StartsWith("(new")) + 1) + ")"'/>
+        <storage name="bIsLinkToNewAnimal" type="bool" />
+
+        <calculated name="strAnimalAge" depends="idfsAnimalAge" type="string" lambda='c => c.AnimalAge == null ? "" : AnimalAge.name'/>
+        <calculated name="strAnimalGender" depends="idfsAnimalGender" type="string" lambda='c => c.AnimalGender == null ? "" : AnimalGender.name'/>
+        <calculated name="strSpeciesType" depends="idfsSpeciesType" type="string" lambda='c => c.SpeciesType == null ? "" : SpeciesType.name'/>
+        <calculated name="strSampleName" depends="idfsSampleType" type="string" lambda='c => c.SampleType == null ? "" : SampleType.name'/>
+        <calculated name="strSampleNameAndFieldBarcode" depends="idfsSampleType,strFieldBarcode" type="string" lambda='a => string.IsNullOrEmpty(a.strSampleName) ? "" : a.strSampleName + " / " + a.strFieldBarcode'/>
+        <calculated name="ParentFarms" depends="Parent" type="List&lt;FarmPanel&gt;" lambda="c => c.Parent == null ? new List&lt;FarmPanel&gt;() : (c.Parent as AsSession).ASFarmsDetails.Where(i => !i.IsMarkedToDelete).Select(i => i.Farm).ToList()"/>
+        <calculated name="ParentSpecies" depends="Parent" type="List&lt;VetFarmTree&gt;" 
+                    lambda="c => c.Parent == null ? new List&lt;VetFarmTree&gt;() : (c.Parent as AsSession).ASFarmsDetails.SingleOrDefault(i => i.idfFarm == c.idfFarm, farm => farm.Farm.FarmTree.Where(i => i.idfsPartyType == (long)PartyTypeEnum.Species &amp;&amp; !i.IsMarkedToDelete &amp;&amp; ( (c.Parent as AsSession).Diseases.Any(j => !j.IsMarkedToDelete &amp;&amp; (!j.idfsSpeciesType.HasValue || j.idfsSpeciesType.Value == 0)) || (c.Parent as AsSession).Diseases.Any(j => !j.IsMarkedToDelete &amp;&amp; j.idfsSpeciesType == i.idfsSpeciesTypeReference) || (c.Parent as AsSession).Diseases.Count(j => !j.IsMarkedToDelete) == 0 )).ToList())"/>
+        <calculated name="ParentAnimals" depends="Parent" type="List&lt;AsSessionAnimalSample&gt;" 
+                    lambda="c => c.Parent == null ? new List&lt;AsSessionAnimalSample&gt;() : (c.Parent as AsSession).ASAnimalsSamples.Where(i => !i.IsMarkedToDelete &amp;&amp; i.idfSpecies == c.idfSpecies).Distinct(new AnimalComparator()).ToList()"/>
+        <calculated name="ParentAnimalsAll" depends="Parent" type="List&lt;AsSessionAnimalSample&gt;" 
+                    lambda="c => c.Parent == null ? new List&lt;AsSessionAnimalSample&gt;() : (c.Parent as AsSession).ASAnimalsSamples.Where(i => !i.IsMarkedToDelete).Distinct(new AnimalComparator()).ToList()"/>
+        <calculated name="ParentAnimalsSamples" depends="Parent" type="List&lt;AsSessionAnimalSample&gt;" 
+                    lambda="c => c.Parent == null ? new List&lt;AsSessionAnimalSample&gt;() : (c.Parent as AsSession).ASAnimalsSamples.Where(i => !i.IsMarkedToDelete).ToList()"/>
+      </fields>
+      <readonly>
+        <fields name="strSendToOffice" predicate="c => true"/>
+        <fields name="Farms,idfFarm,Species,idfSpecies,Animals,strAnimalCode,FilterByDiagnosis,SampleType,idfsSampleType" predicate="c => c.bSampleAccessioned"/>
+        <fields name="strFieldBarcode,datFieldCollectionDate,idfSendToOffice" predicate="c => c.bSampleAccessioned || c.SampleType == null"/>
+      </readonly>
+      <lookups>
+        <lookup name="Farms" table="FarmPanel" existinglookup="ParentFarms" source="idfFarm" target="idfFarm" notaddempty="true" />
+        <lookup name="Species" table="VetFarmTree" existinglookup="ParentSpecies" source="idfSpecies" target="idfParty" notaddempty="true" />
+        <lookup name="Animals" table="AsSessionAnimalSample" existinglookup="ParentAnimals" source="strAnimalCode" target="strAnimalCode" recursive="true" notaddempty="true" addthis="true" action='c => { c.LockNotifyChanges(); c.strAnimalCode = Resources.EidssMessages.Get("newAnimalRecord"); c.bIsLinkToNewAnimal = true; c.UnlockNotifyChanges(); }' iKey="idfAnimal" hintonly="true" />
+        <lookup name="AnimalGender" table="BaseReference" section="rftAnimalSex" source="idfsAnimalGender" target="idfsBaseReference" notaddlookupmanager="true">
+          <filters>
+            <filter predicate="c => ((c.intHACode.GetValueOrDefault() &amp; (int)HACode.Livestock) != 0) || !c.intHACode.HasValue || c.idfsBaseReference == obj.idfsAnimalGender" />
+          </filters>
+        </lookup>
+        <lookup name="AnimalAge" table="AnimalAgeLookup" source="idfsAnimalAge" target="idfsReference" notaddlookupmanager="true">
+          <params>
+            <param name="idfsSpeciesType" lambda='c => c.idfsSpeciesType.ToString()' type="string" />
+          </params>
+        </lookup>
+        <lookup name="SpeciesType" table="BaseReference" section="rftSpeciesList" source="idfsSpeciesType" target="idfsBaseReference" notaddlookupmanager="true">
+          <filters>
+            <filter predicate="c => (c.intHACode.GetValueOrDefault() &amp; ((int?)HACode.Livestock).GetValueOrDefault()) != 0 || c.idfsBaseReference == obj.idfsSpeciesType" />
+          </filters>
+        </lookup>
+        <lookup name="SampleType" table="SampleTypeForDiagnosisLookup" source="idfsSampleType" target="idfsReference" notaddlookupmanager="true">
+          <params>
+            <param name="intHACode" const="null"/>
+          </params>
+          <filters>
+            <filter predicate="c => (c.intHACode &amp; (int)HACode.Livestock) != 0 || c.idfsReference == obj.idfsSampleType"/>
+            <!--
+            (obj.Parent is AsSession) &amp;&amp; (obj.Parent as AsSession).Diseases.Count(i => !i.IsMarkedToDelete &amp;&amp; i.idfsSpeciesType == obj.idfsSpeciesType) == 1 &amp;&amp; (obj.Parent as AsSession).Diseases.Count(i => !i.IsMarkedToDelete &amp;&amp; i.idfsSpeciesType == obj.idfsSpeciesType &amp;&amp; i.idfsSampleType.HasValue &amp;&amp; i.idfsSampleType.Value != 0) == 1
+            task 11381
+            -->
+            <filter predicate="c => (
+                                (obj.Parent is AsSession) &amp;&amp; (obj.Parent as AsSession).Diseases.Count(i => !i.IsMarkedToDelete &amp;&amp; i.idfsSpeciesType == obj.idfsSpeciesType) &gt; 0 &amp;&amp; (obj.Parent as AsSession).Diseases.Count(i => !i.IsMarkedToDelete &amp;&amp; i.idfsSpeciesType == obj.idfsSpeciesType &amp;&amp; i.idfsSampleType.HasValue &amp;&amp; i.idfsSampleType.Value != 0) == (obj.Parent as AsSession).Diseases.Count(i => !i.IsMarkedToDelete &amp;&amp; i.idfsSpeciesType == obj.idfsSpeciesType)
+                                ? (
+                                      c.idfsDiagnosis == 0 &amp;&amp; (obj.Parent as AsSession).Diseases.Any(i => !i.IsMarkedToDelete &amp;&amp; (i.idfsSpeciesType == obj.idfsSpeciesType /*|| !i.idfsSpeciesType.HasValue || i.idfsSpeciesType.Value == 0*/) &amp;&amp; i.idfsSampleType == c.idfsReference)
+                                  )
+                                : (
+                                    !obj.FilterByDiagnosis ? 
+                                    (
+                                        c.idfsDiagnosis == 0
+                                    )
+                                    :
+                                    (
+                                        (obj.Parent is AsSession) &amp;&amp; (obj.Parent as AsSession).Diseases
+                                            .Where(i => !i.IsMarkedToDelete &amp;&amp; (i.idfsSpeciesType == 0 || i.idfsSpeciesType == null || i.idfsSpeciesType == obj.idfsSpeciesType))
+                                            .Any(i => i.idfsDiagnosis == c.idfsDiagnosis) 
+                                    )
+                                  )
+                                ) || (c.idfsReference == obj.idfsSampleType)
+                                "/>
+            <filter predicate="c => c.idfsReference != (long)SampleTypeEnum.Unknown"/>
+            <filter predicate="c => c.idfsReference != 0"/>
+            <filter distinct="SampleTypeForDiagnosisLookupComparator" />
+          </filters>
+        </lookup>
+      </lookups>
+      <storage>
+        <post name="spASSessionTableView_Post" lockNotify="true"/>
+      </storage>
+      <postorder>
+        <item name="this"/>
+      </postorder>
+      <extenders>
+        <creating>
+          <scalar_extender target="id" class="GetNewIDExtender"/>
+          <lambda_extender target="idfAnimal" type="long" lambda="c => c.id"/>
+          <!--value_extender target="strAnimalCode" value='"(new animal " + ++(Parent as AsSession).newCounterAnimal + ")"'/-->
+          <!--value_extender target="strAnimalCode" value='"(new animal " + (obj.ParentAnimalsAll.Count(i => i.strAnimalCode.StartsWith("(new")) + 1) + ")"'/-->
+          <lambda_extender target="strAnimalCode" type="string" lambda="c => c.newAnimalName"/>
+          <lambda_extender target="idfMonitoringSession" type="long?" lambda="c => Parent == null ? new long?() : (Parent as AsSession).idfMonitoringSession"/>
+          <lambda_extender target="FilterByDiagnosis" type="bool" lambda="c => EidssUserContext.User.Options.Prefs.FilterByDiagnosis" />
+        </creating>
+        <created>
+          <lambda_extender target="Farms" type="FarmPanel" lambda="c => c.FarmsLookup.Count() == 1 ? c.FarmsLookup.FirstOrDefault() : null"/>
+        </created>
+        <loading>
+          <!--lambda_extender target="idfAnimalForLookup" type="long?" lambda="c => c.idfAnimal"/-->
+          <!--lambda_extender target="strAnimalForLookupPrev" type="string" lambda="c => c.ParentAnimals.SingleOrDefault(i => i.idfAnimal == c.idfAnimal, i => i.strAnimalCode)"/>
+          <lambda_extender target="strAnimalForLookup" type="string" lambda="c => c.strAnimalForLookupPrev"/-->
+          <lambda_extender target="FilterByDiagnosis" type="bool" lambda="c => EidssUserContext.User.Options.Prefs.FilterByDiagnosis" />
+        </loading>
+        <posted>
+          <!--lambda_extender target="Farms" type="FarmPanel" lambda='c => c.Farms == null ? null : c.FarmsLookup.FirstOrDefault(i => i.idfFarm == c.Farms.idfFarm)'/-->
+          <lambda_extender target="strFarmCode" type="string" lambda='c => c.Farms == null ? "" : c.Farms.strFarmCode'/>
+          <custom_extender>
+            <text>
+              obj.ParentAnimalsSamples.Where(c => c.idfAnimal == obj.idfAnimal &amp;&amp; c.strAnimalCode.StartsWith("(new")).ToList().ForEach(t => { t.LockNotifyChanges(); t.strAnimalCode = obj.strAnimalCode; t.UnlockNotifyChanges(); });
+            </text>
+          </custom_extender>
+        </posted>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <!--scalar_handler field="idfFarm" class="SetScalarHandler" target="Species" lambda="(o, fld, prev_fld) => null" /-->
+          <lambda_handler field="idfFarm" target="Species" type="VetFarmTree" lambda='c => c.SpeciesLookup.Count() == 1 ? c.SpeciesLookup.FirstOrDefault() : null'/>
+
+          <lambda_handler field="idfFarm" target="strFarmCode" type="string" lambda='c => c.Farms == null ? "" : c.Farms.strFarmCode'/>
+          <scalar_handler field="idfSpecies" class="SetScalarHandler" target="Animals" lambda="(o, fld, prev_fld) => null" />
+          <!--lambda_handler field="idfSpecies" target="Animals" type="AsSessionAnimalSample" lambda='c => c.SpeciesLookup.Count() != 1 || c.AnimalsLookup.Count() != 1 ? null : c.AnimalsLookup[0]'/-->
+
+          <lambda_handler field="idfSpecies" target="SpeciesType" type="BaseReference" lambda="c => c.SpeciesLookup.SingleOrDefault(i => i.idfParty == c.idfSpecies, i => i.SpeciesTypeLookup.FirstOrDefault(o => o.idfsBaseReference == i.idfsSpeciesTypeReference))"/>
+          <lookup_handler field="idfsSpeciesType" lookup="AnimalAge" />
+          <lookup_handler lookup="SampleType" field="FilterByDiagnosis" />
+          <lookup_handler lookup="SampleType" field="idfsSpeciesType" />
+          <lambda_handler field="idfsSpeciesType" target="SampleType" type="SampleTypeForDiagnosisLookup" 
+                          lambda="c => 
+                                (obj.Parent as AsSession).Diseases.Where(i => !i.IsMarkedToDelete &amp;&amp; i.idfsSpeciesType == obj.idfsSpeciesType).Select(i => i.idfsSampleType).Distinct().Count() == 1
+                                    ? c.SampleTypeLookup.FirstOrDefault(k => k.idfsReference == (obj.Parent as AsSession).Diseases.FirstOrDefault(i => !i.IsMarkedToDelete &amp;&amp; i.idfsSpeciesType == obj.idfsSpeciesType, i => i.idfsSampleType))
+                                    : null
+                          "/>
+          
+          <!--
+          <lambda_extender target="idfsSampleType" type="long?" lambda="c => (Parent as AsSession).Diseases.Count(i => !i.IsMarkedToDelete) == 1 ? (Parent as AsSession).Diseases.FirstOrDefault(i => !i.IsMarkedToDelete &amp;&amp; i.idfsSampleType.HasValue, i => i.idfsSampleType) : null"/>
+          
+          <lambda_handler field="idfAnimalForLookup" target="AnimalAge" type="AnimalAgeLookup" lambda="c => c.AnimalsLookup.SingleOrDefault(i => i.idfAnimal == c.idfAnimalForLookup, i => i.AnimalAge)"/>
+          <lambda_handler field="idfAnimalForLookup" target="strColor" type="string" lambda="c => c.AnimalsLookup.SingleOrDefault(i => i.idfAnimal == c.idfAnimalForLookup, i => i.strColor)"/>
+          <lambda_handler field="idfAnimalForLookup" target="AnimalGender" type="BaseReference" lambda="c => c.AnimalsLookup.SingleOrDefault(i => i.idfAnimal == c.idfAnimalForLookup, i => i.AnimalGender)"/>
+          <lambda_handler field="idfAnimalForLookup" target="strName" type="string" lambda="c => c.AnimalsLookup.SingleOrDefault(i => i.idfAnimal == c.idfAnimalForLookup, i => i.strName)"/>
+          <lambda_handler field="idfAnimalForLookup" target="strDescription" type="string" lambda="c => c.AnimalsLookup.SingleOrDefault(i => i.idfAnimal == c.idfAnimalForLookup, i => i.strDescription)"/>
+          <lambda_handler field="idfAnimalForLookup" target="SampleType" type="SampleTypeForDiagnosisLookup" lambda="c => null"/>
+          <lambda_handler field="idfAnimalForLookup" target="strFieldBarcode" type="string" lambda='c => ""'/>
+          <lambda_handler field="idfAnimalForLookup" target="datFieldCollectionDate" type="DateTime?" lambda="c => null"/>
+          -->
+          <!--custom_handler field="strAnimalForLookup">
+            <text>
+              var a = obj.AnimalsLookup.FirstOrDefault(i => i.strAnimalCode == obj.strAnimalForLookupPrev);
+              if (a == null)
+                  a = obj.AnimalsLookup.FirstOrDefault();
+              if (a != null)
+                  a.strAnimalCode = obj.strAnimalForLookup;
+              obj.Animals = obj.AnimalsLookup.FirstOrDefault(i => i.strAnimalCode == obj.strAnimalForLookup);
+              obj.strAnimalForLookupPrev = obj.strAnimalForLookup;
+            </text>
+          </custom_handler>
+          <lambda_handler field="strAnimalForLookup" target="AnimalAge" type="AnimalAgeLookup" lambda="c => c.AnimalsLookup.SingleOrDefault(i => i.strAnimalCode == c.strAnimalForLookup, i => i.AnimalAge)"/>
+          <lambda_handler field="strAnimalForLookup" target="strColor" type="string" lambda="c => c.AnimalsLookup.SingleOrDefault(i => i.strAnimalCode == c.strAnimalForLookup, i => i.strColor)"/>
+          <lambda_handler field="strAnimalForLookup" target="AnimalGender" type="BaseReference" lambda="c => c.AnimalsLookup.SingleOrDefault(i => i.strAnimalCode == c.strAnimalForLookup, i => i.AnimalGender)"/>
+          <lambda_handler field="strAnimalForLookup" target="strName" type="string" lambda="c => c.AnimalsLookup.SingleOrDefault(i => i.strAnimalCode == c.strAnimalForLookup, i => i.strName)"/>
+          <lambda_handler field="strAnimalForLookup" target="strDescription" type="string" lambda="c => c.AnimalsLookup.SingleOrDefault(i => i.strAnimalCode == c.strAnimalForLookup, i => i.strDescription)"/>
+          <lambda_handler field="strAnimalForLookup" target="SampleType" type="SampleTypeForDiagnosisLookup" lambda="c => null"/>
+          <lambda_handler field="strAnimalForLookup" target="strFieldBarcode" type="string" lambda='c => ""'/>
+          <lambda_handler field="strAnimalForLookup" target="datFieldCollectionDate" type="DateTime?" lambda="c => null"/-->
+
+          <custom_handler field="strAnimalCode">
+            <text>
+              // check existing animal
+              var animalExist = obj.AnimalsLookup.FirstOrDefault(i => i.strAnimalCode == obj.strAnimalCode &amp;&amp; i.idfAnimal != obj.idfAnimal);
+              if (animalExist == null &amp;&amp; obj.bIsLinkToNewAnimal)
+              {
+                  animalExist = obj.AnimalsLookup.FirstOrDefault(i => i.bIsLinkToNewAnimal);
+              }
+              if (animalExist != null)
+              {
+                  if (obj.idfAnimal == animalExist.idfAnimal)
+                  {
+                      obj.LockNotifyChanges();
+                      obj.Animals = obj;
+                      obj.UnlockNotifyChanges();
+                  }
+                  else
+                  {
+                      obj.LockNotifyChanges();
+                      var saveAnimalCode = obj.strAnimalCode;
+                      var bChangedAnimalCode = (saveAnimalCode != Resources.EidssMessages.Get("newAnimalRecord"));
+                      obj.Animals = animalExist;
+                      if (animalExist.bIsLinkToNewAnimal)
+                      {
+                          animalExist.LockNotifyChanges();
+                          animalExist.strAnimalCode = bChangedAnimalCode ? saveAnimalCode : obj.newAnimalName;
+                          animalExist.UnlockNotifyChanges();
+                          obj.strAnimalCode = animalExist.strAnimalCode;
+                          obj.bIsLinkToNewAnimal = true;
+                      }
+                      obj.UnlockNotifyChanges();
+                      obj.idfAnimal = animalExist.idfAnimal;
+                  }
+              }
+              else
+              {
+                  obj.LockNotifyChanges();
+                  obj.Animals = obj;
+                  obj.UnlockNotifyChanges();
+              }
+              if (!obj.bIsLinkToNewAnimal)
+              {
+                  obj.ParentAnimalsSamples.ForEach(c => 
+                    { 
+                        if (c.idfAnimal == obj.idfAnimal &amp;&amp; c.idfSpecies == obj.idfSpecies &amp;&amp; c.strAnimalCode != obj.strAnimalCode) 
+                            {
+                                c.LockNotifyChanges();
+                                c.strAnimalCode = obj.strAnimalCode; 
+                                c.UnlockNotifyChanges();
+                            }
+                    });
+              }
+
+              /*
+              var a = obj.AnimalsLookup.FirstOrDefault(i => i.strAnimalCode == obj.strAnimalCode_Previous);
+              if (a == null)
+                  a = obj;
+                  //a = obj.AnimalsLookup.FirstOrDefault();
+              if (a != null)
+              {
+                  a.LockNotifyChanges();
+                  a.strAnimalCode = obj.strAnimalCode;
+                  a.UnlockNotifyChanges();
+              }
+              obj.Animals = obj.AnimalsLookup.FirstOrDefault(i => i.strAnimalCode == obj.strAnimalCode);
+              var idfAnimal = obj.AnimalsLookup.FirstOrDefault(i => i.strAnimalCode == obj.strAnimalCode, i => i.idfAnimal);
+              if (obj.idfAnimal != idfAnimal)
+                  obj.idfAnimal = idfAnimal;
+              */
+            </text>
+          </custom_handler>
+          <!--lambda_handler field="strAnimalCode" target="idfAnimal" type="long" lambda="c => c.AnimalsLookup.SingleOrDefault(i => i.strAnimalCode == c.strAnimalCode, i => i.idfAnimal)"/-->
+          <lambda_handler field="idfAnimal" target="AnimalAge" type="AnimalAgeLookup" lambda="c => c.AnimalsLookup.FirstOrDefault(i => i.idfAnimal == c.idfAnimal, i => i.AnimalAge)"/>
+          <lambda_handler field="idfAnimal" target="strColor" type="string" lambda="c => c.AnimalsLookup.FirstOrDefault(i => i.idfAnimal == c.idfAnimal, i => i.strColor)"/>
+          <lambda_handler field="idfAnimal" target="AnimalGender" type="BaseReference" lambda="c => c.AnimalsLookup.FirstOrDefault(i => i.idfAnimal == c.idfAnimal, i => i.AnimalGender)"/>
+          <lambda_handler field="idfAnimal" target="strName" type="string" lambda="c => c.AnimalsLookup.FirstOrDefault(i => i.idfAnimal == c.idfAnimal, i => i.strName)"/>
+          <lambda_handler field="idfAnimal" target="strDescription" type="string" lambda="c => c.AnimalsLookup.FirstOrDefault(i => i.idfAnimal == c.idfAnimal, i => i.strDescription)"/>
+          <!--lambda_handler field="idfAnimal" target="SampleType" type="SampleTypeForDiagnosisLookup" lambda="c => c.idfAnimal == c.idfAnimal_Previous ? c.SampleType : null"/-->
+          
+          <!-- bug 11848 -->
+          <!--lambda_handler field="idfAnimal" target="strFieldBarcode" type="string" lambda='c => c.idfAnimal == c.idfAnimal_Previous ? c.strFieldBarcode : ""'/>
+          <lambda_handler field="idfAnimal" target="datFieldCollectionDate" type="DateTime?" lambda="c => c.idfAnimal == c.idfAnimal_Previous ? c.datFieldCollectionDate : null"/-->
+
+          <scalar_handler field="idfsSampleType" class="SetScalarHandler" target="idfMaterial" lambda="(o, fld, prev_fld) => fld.HasValue ? (prev_fld.HasValue ? o.idfMaterial : ((new GetNewIDExtender&lt;AsSessionAnimalSample&gt;()).GetScalar(o))) : null" />
+          <lambda_handler field="idfsSampleType" target="strFieldBarcode" type="string" lambda='c => c.idfsSampleType.HasValue ? c.strFieldBarcode : ""'/>
+          <lambda_handler field="idfsSampleType" target="datFieldCollectionDate" type="DateTime?" lambda="c => c.idfsSampleType.HasValue ? c.datFieldCollectionDate : null"/>
+
+          <custom_handler field="idfsSampleType">
+            <text>
+              if (!obj.idfsSampleType_Previous.HasValue || obj.idfsSampleType_Previous.Value == 0)
+              {
+                  if (obj.idfsSampleType.HasValue &amp;&amp; obj.idfsSampleType.Value != 0)
+                  {
+                      if (!obj.idfSendToOffice.HasValue || obj.idfSendToOffice.Value == 0)
+                      {
+                          var lastSample = obj.ParentAnimalsSamples.OrderBy(c => c.id).LastOrDefault(c => c.idfSendToOffice.HasValue &amp;&amp; c.idfSendToOffice.Value != 0);
+                          if (lastSample != null)
+                          {
+                              obj.idfSendToOffice = lastSample.idfSendToOffice;
+                              obj.strSendToOffice = lastSample.strSendToOffice;
+                          }
+                      }
+                  }
+              }
+            </text>
+          </custom_handler>
+
+          <custom_handler field="idfsAnimalAge">
+            <text>
+              obj.ParentAnimalsSamples.ForEach(c => { if (c.idfAnimal == obj.idfAnimal &amp;&amp; c.idfsAnimalAge != obj.idfsAnimalAge) c.AnimalAge = c.AnimalAgeLookup.FirstOrDefault(i => i.idfsReference == obj.idfsAnimalAge); });
+            </text>
+          </custom_handler>
+          <custom_handler field="strColor">
+            <text>
+              obj.ParentAnimalsSamples.ForEach(c => { if (c.idfAnimal == obj.idfAnimal &amp;&amp; c.strColor != obj.strColor) c.strColor = obj.strColor; });
+            </text>
+          </custom_handler>
+          <custom_handler field="idfsAnimalGender">
+            <text>
+              obj.ParentAnimalsSamples.ForEach(c => { if (c.idfAnimal == obj.idfAnimal &amp;&amp; c.idfsAnimalGender != obj.idfsAnimalGender) c.AnimalGender = c.AnimalGenderLookup.FirstOrDefault(i => i.idfsBaseReference == obj.idfsAnimalGender); });
+            </text>
+          </custom_handler>
+          <custom_handler field="strName">
+            <text>
+              obj.ParentAnimalsSamples.ForEach(c => { if (c.idfAnimal == obj.idfAnimal &amp;&amp; c.strName != obj.strName) c.strName = obj.strName; });
+            </text>
+          </custom_handler>
+          <custom_handler field="strDescription">
+            <text>
+              obj.ParentAnimalsSamples.ForEach(c => { if (c.idfAnimal == obj.idfAnimal &amp;&amp; c.strDescription != obj.strDescription) c.strDescription = obj.strDescription; });
+            </text>
+          </custom_handler>
+        </fieldhandler>
+      </handlers>
+      <validators>
+        <chains>
+          <item field="datFieldCollectionDate" type="DateTime">
+            <item field="CurrentDate" value="DateTime.Now" />
+          </item>
+        </chains>
+        <post>
+          <required_validator target="Farms" label="Farm" />
+          <required_validator target="Species" label="strHerdSpecies" />
+          <required_validator target="Animals" label="strAnimalCode" />
+          <required_validator target="strAnimalCode" />
+
+          <custom_mandatory_validator name="idfSendToOffice" fieldId="AsSessionSample_SentTo" label="VetCaseSample.idfSendToOffice" predicate="c => c.idfsSampleType.HasValue &amp;&amp; c.idfsSampleType.Value > 0" nocheckpredicateinadd="true"/>
+          <custom_mandatory_validator name="strSendToOffice" fieldId="AsSessionSample_SentTo" label="VetCaseSample.idfSendToOffice" predicate="c => c.idfsSampleType.HasValue &amp;&amp; c.idfsSampleType.Value > 0" nocheckpredicateinadd="true"/>
+        </post>
+        <delete>
+          <predicate_validator predicate="c => !c.bSampleAccessioned" message="msgCantDeleteRecord" />
+          <predicate_validator predicate="c => !(c.Parent as AsSession).CaseTests.Any(i => !i.IsMarkedToDelete &amp;&amp; (i.idfMaterial == c.idfMaterial || i.idfMaterialAsSession == c.idfMaterial))" message="msgCantDeleteASSample" />
+        </delete>
+      </validators>
+      <actions>
+        <action name="CreateCopy" type="Create">
+          <run>
+            <params>
+              <param name="original" type="AsSessionAnimalSample"/>
+              <param name="sampleType" type="long?"/>
+            </params>
+            <created>
+              <lambda_extender target="Farms" type="FarmPanel" lambda="c => original.Farms == null ? null : c.FarmsLookup.SingleOrDefault(i => i.idfFarm == original.Farms.idfFarm)"/>
+              <lambda_extender target="Species" type="VetFarmTree" lambda="c => original.Species == null ? null : c.SpeciesLookup.SingleOrDefault(i => i.idfParty == original.Species.idfParty)"/>
+              <lambda_extender target="Animals" type="AsSessionAnimalSample" lambda="c => c.AnimalsLookup.SingleOrDefault(i => i.idfAnimal == c.idfAnimal)"/>
+              <lambda_extender target="AnimalGender" type="BaseReference" lambda="c => original.AnimalGender == null ? null : c.AnimalGenderLookup.SingleOrDefault(i => i.idfsBaseReference == original.AnimalGender.idfsBaseReference)"/>
+              <lambda_extender target="SpeciesType" type="BaseReference" lambda="c => original.SpeciesType == null ? null : c.SpeciesTypeLookup.SingleOrDefault(i => i.idfsBaseReference == original.SpeciesType.idfsBaseReference)"/>
+              <lambda_extender target="AnimalAge" type="AnimalAgeLookup" lambda="c => original.AnimalAge == null ? null : c.AnimalAgeLookup.SingleOrDefault(i => i.idfsReference == original.AnimalAge.idfsReference)"/>
+              <lambda_extender target="SampleType" type="SampleTypeForDiagnosisLookup" lambda="c => c.SampleTypeLookup.SingleOrDefault(i => i.idfsReference == sampleType)"/>
+              <value_extender target="datFieldCollectionDate" value="original.datFieldCollectionDate"/>
+              <value_extender target="idfSendToOffice" value="original.idfSendToOffice"/>
+              <value_extender target="strSendToOffice" value="original.strSendToOffice"/>
+              <lambda_extender target="id" type="long" lambda="c => c.idfMaterial.HasValue ? c.idfMaterial.Value : c.idfAnimal"/>
+            </created>
+          </run>
+        </action>
+      </actions>
+    </table>
+  </tables>
+
+</object>

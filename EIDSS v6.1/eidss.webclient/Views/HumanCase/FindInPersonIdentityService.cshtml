@@ -1,0 +1,59 @@
+﻿@model Patient
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using Kendo.Mvc.UI
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {                                        
+        <div class="windowButtonsPn">                  
+            <input id="idButtonClose" type="button" class="windowButton" onclick="humanCase.onFindInPersonIdentityServiceSearchClick();" value="@Translator.GetMessageString("Search")" />
+            <input id="idButtonClose" type="button" class="windowButton" onclick="bvPopup.closeDefaultPopup();" value="@Translator.GetMessageString("Close")" />
+         </div>   
+        <div class="windowSeparator"></div>
+        @Html.Hidden("idfHuman", Model.idfHuman)                                               
+        <table class="level1">    
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Html.BvLabel(Model, m => m.SearchMethod)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.SearchMethod)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.DocumentType)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.DocumentType, width: bv.model.Model.Core.EditorControlWidth.XLarge)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strDocumentNumber)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strDocumentNumber, isNumeric: 2, maxLength: 50)
+               </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.datDocumentDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datDocumentDate)
+                </td>
+            </tr>
+        </table> 
+    }
+</div>

@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="PersonListItem"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="fn_Person_SelectList" type="fnlist" />
+		<count name="spPerson_SelectCount"/>
+	</storage>
+
+	<tables>
+		<table name="PersonListItem">
+      <properties auditObject="daoEmployee" auditTable="tlbPerson" permissionObject="Person">
+        <lookupcache>
+          <item name="Person"/>
+        </lookupcache>
+      </properties>
+      <help win="Persons_List" web="Persons_List"/>
+
+      <searchpanel>
+				<item name="idfRankName" editor="Lookup" labelId="strRankName"
+					lookupName="PositionLookup" lookupType="BaseReference" lookupText="c.name" lookupValue="c.idfsBaseReference"/>
+				<item name="strFamilyName" editor="Text" labelId="strLastName"/>
+				<item name="strFirstName" editor="Text" labelId="strFirstName" />
+				<item name="strSecondName" editor="Text" labelId="strSecondName" />
+        <item name="idfInstitution" editor="Lookup" labelId="idfInstitution" isParam="true" useInWeb="false"
+              lookupName="InstitutionLookup" lookupType="OrganizationLookup" lookupText="c.name" lookupValue="c.idfInstitution" default="c => (c as PersonListItem).InstitutionLookup.FirstOrDefault(i=>i.idfInstitution == eidss.model.Core.EidssSiteContext.Instance.OrganizationID)"/>
+        <item name="strOrganizationID" editor="Text" labelId="strOrganizationID" default="c => String.Empty" useInWeb="false"/>
+      </searchpanel>
+
+			<grid>
+				<item name="idfEmployee" key="true" visible="false" />
+				<item name="strFamilyName" required="true"/>
+				<item name="strFirstName" />
+				<item name="strSecondName" />
+				<item name="Organization" defaultSort="Ascending" required="true"/>
+        <item name="OrganizationFullName" required="true"/>
+				<item name="strRankName"/>
+			</grid>
+
+			<labels>
+        <item name="OrganizationFullName" labelId="Organization.Name"/>
+        <item name="Organization" labelId="Abbreviation"/>
+				<item name="strFamilyName" labelId="strLastName"/>
+			</labels>
+
+			<lookups>
+        <lookup name="Institution" table="OrganizationLookup" source="idfInstitution" target="idfInstitution">
+          <params>
+            <param name="ID" const="null" />
+            <param name="intHACode" const="null" />
+          </params>
+        </lookup>
+				<lookup name="Position" table="BaseReference" section="rftPosition" source="idfRankName" target="idfsBaseReference" />
+			</lookups>
+
+			<storage>
+				<delete name="spPerson_Delete"/>
+				<candelete name="spPerson_CanDelete"/>
+			</storage>
+
+			<actions child="Person">
+        <standard>
+          <remove type="Report"/>
+        </standard>        
+        <!--action name="Edit" type="Edit" onRow="true">
+          <visual alignment="Right" panel="Top">
+            <regular caption="strEdit_Id" tooltip="tooltipEdit_Id"  icon="edit"/>
+            <readOnly caption="strView_Id" tooltip="tooltipEdit_Id"  icon="View1"/>
+          </visual>
+        <run>
+          <params>
+            <param name="qq" type="string"/>
+          </params>
+          <postText>
+            www
+          </postText>
+          <preText>
+            qqq
+          </preText>
+        </run>
+        </action-->
+			</actions>
+		</table>
+	</tables>
+
+</object>

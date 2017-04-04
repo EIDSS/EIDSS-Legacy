@@ -1,0 +1,366 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2FC5D059-460A-43ED-8BE8-693386B54CAD}</ProjectGuid>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>Resources\this.Icon.ico</ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>EIDSS_ClientAgent</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyMode>None</AssemblyOriginatorKeyMode>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>WinExe</OutputType>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionStrict>On</OptionStrict>
+    <RootNamespace>EIDSS_ClientAgent</RootNamespace>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <MyType>WindowsFormsWithCustomSubMain</MyType>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <PublishUrl>http://localhost/EIDSS_ClientAgent/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>..\..\..\eidss.main\bin\Debug\</OutputPath>
+    <DocumentationFile>EIDSS_ClientAgent.xml</DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>..\..\..\eidss.main\bin\Release\</OutputPath>
+    <DocumentationFile>EIDSS_ClientAgent.xml</DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032,42353,42354,42355</NoWarn>
+    <DebugType>none</DebugType>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Printing.v15.1.Core">
+      <Name>DevExpress.Printing.v15.1.Core</Name>
+      <AssemblyFolderKey>hklm\devexpress.net.v3</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="DevExpress.Data.v15.1">
+      <Name>DevExpress.Data.v15.1</Name>
+      <AssemblyFolderKey>hklm\devexpress.net.v3</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v15.1">
+      <Name>DevExpress.Utils.v15.1</Name>
+      <AssemblyFolderKey>hklm\devexpress.net.v3</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v15.1">
+      <Name>DevExpress.XtraEditors.v15.1</Name>
+      <AssemblyFolderKey>hklm\devexpress.net.v3</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v15.1">
+      <Name>DevExpress.XtraPrinting.v15.1</Name>
+      <AssemblyFolderKey>hklm\devexpress.net.v3</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v15.1">
+      <Name>DevExpress.XtraGrid.v15.1</Name>
+      <AssemblyFolderKey>hklm\devexpress.net.v3</AssemblyFolderKey>
+    </Reference>
+    <Reference Include="eidss.skin, Version=14.1.4.0, Culture=neutral, PublicKeyToken=95fc6c5621878f0a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\eidss.skin\eidss.skin.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Runtime.Remoting">
+      <Name>System.Runtime.Remoting</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\..\..\bv.common\bv.common.csproj">
+      <Project>{BEE76B17-720D-4B65-996A-5712912B3ACF}</Project>
+      <Name>bv.common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\bv.model\bv.model.csproj">
+      <Project>{9067327E-1960-4326-ACB9-D982DDBEAA76}</Project>
+      <Name>bv.model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\bv.winclient\bv.winclient.csproj">
+      <Project>{B0163672-F328-4D02-9B71-FB698EDAF815}</Project>
+      <Name>bv.winclient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\eidss.core\eidss.core.csproj">
+      <Project>{BF545ECD-F673-4C71-9362-57C01DF13062}</Project>
+      <Name>eidss.core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\eidss.remoting\eidss.remoting.csproj">
+      <Project>{59C761C4-5FAA-49BC-9E73-155C5EA095A2}</Project>
+      <Name>eidss.remoting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\bvwin_common\bvwin_common.vbproj">
+      <Name>bvwin_common</Name>
+      <Project>{B3E5BA6B-FAA3-4A7D-8236-3F8842D61CD4}</Project>
+      <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\bv_common\bvcommon.vbproj">
+      <Project>{BA2844A8-F629-4B02-ACD6-B60063E4D27F}</Project>
+      <Name>bvcommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\bv_dbcommon\bvdb_common.vbproj">
+      <Name>bvdb_common</Name>
+      <Project>{6C48BB93-277D-4804-B280-F6130E29EB81}</Project>
+      <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\EIDSS_Common\EIDSS_Common.vbproj">
+      <Project>{119CC05A-2F6C-4FC8-AC74-79BB76E3C1C0}</Project>
+      <Name>EIDSS_Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EIDSS_Common_Db\EIDSS_Common_Db.vbproj">
+      <Name>EIDSS_Common_Db</Name>
+      <Project>{B66DEB84-FBE3-44E4-9B72-1E459CE0E50D}</Project>
+      <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="bv.common" />
+    <Import Include="bv.common.db" />
+    <Import Include="EIDSS" />
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <Compile Include="..\..\..\EIDSSAssemblyInfo.vb">
+      <Link>EIDSSAssemblyInfo.vb</Link>
+    </Compile>
+    <Compile Include="AssemblyInfo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BaseTaskBarForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NotificationForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PopupMessage.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RemotingClient.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Submain.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="BaseTaskBarForm.ar-IQ.resx">
+      <DependentUpon>BaseTaskBarForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseTaskBarForm.az-Latn-AZ.resx">
+      <DependentUpon>BaseTaskBarForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseTaskBarForm.hy-am.resx">
+      <DependentUpon>BaseTaskBarForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseTaskBarForm.ka-GE.resx">
+      <DependentUpon>BaseTaskBarForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseTaskBarForm.kk-KZ.resx">
+      <DependentUpon>BaseTaskBarForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseTaskBarForm.resx">
+      <DependentUpon>BaseTaskBarForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseTaskBarForm.ru-RU.resx">
+      <DependentUpon>BaseTaskBarForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseTaskBarForm.th-TH.resx">
+      <DependentUpon>BaseTaskBarForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseTaskBarForm.uk-UA.resx">
+      <DependentUpon>BaseTaskBarForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="licenses.licx" />
+    <EmbeddedResource Include="NotificationForm.ar-IQ.resx">
+      <DependentUpon>NotificationForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NotificationForm.az-Latn-AZ.resx">
+      <DependentUpon>NotificationForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NotificationForm.en-IQ-Eidss.resx">
+      <DependentUpon>NotificationForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NotificationForm.en-TH-Eidss.resx">
+      <DependentUpon>NotificationForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NotificationForm.hy-am.resx">
+      <DependentUpon>NotificationForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NotificationForm.ka-GE.resx">
+      <DependentUpon>NotificationForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NotificationForm.kk-KZ.resx">
+      <DependentUpon>NotificationForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NotificationForm.resx">
+      <DependentUpon>NotificationForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NotificationForm.ru-KZ-Eidss.resx">
+      <DependentUpon>NotificationForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NotificationForm.ru-RU.resx">
+      <DependentUpon>NotificationForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NotificationForm.th-TH.resx">
+      <DependentUpon>NotificationForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NotificationForm.uk-UA.resx">
+      <DependentUpon>NotificationForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PopupMessage.ar-IQ.resx">
+      <DependentUpon>PopupMessage.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PopupMessage.az-Latn-AZ.resx">
+      <DependentUpon>PopupMessage.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PopupMessage.hy-am.resx">
+      <DependentUpon>PopupMessage.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PopupMessage.ka-GE.resx">
+      <DependentUpon>PopupMessage.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PopupMessage.kk-KZ.resx">
+      <DependentUpon>PopupMessage.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PopupMessage.resx">
+      <DependentUpon>PopupMessage.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PopupMessage.ru-RU.resx">
+      <DependentUpon>PopupMessage.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PopupMessage.th-TH.resx">
+      <DependentUpon>PopupMessage.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PopupMessage.uk-UA.resx">
+      <DependentUpon>PopupMessage.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ClientAgent.ico" />
+    <None Include="Migrated rules for EIDSS_ClientAgent.ruleset" />
+    <None Include="Resources\NotifyIcon1.Icon.ico" />
+    <None Include="Resources\this.Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="My Project\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

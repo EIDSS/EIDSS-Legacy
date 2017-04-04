@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <PropertyRef Id="AVRUSER" />
+    <PropertyRef Id="AVRPASSWORD" />
+    <PropertyRef Id="AvrDbServerInstanceName"/>
+    <CustomActionRef Id="TestAvrDbConnection" />
+    
+    <UI>
+      <Dialog Id="AvrDbSettingsDlg" Width="370" Height="270" Title="!(loc.AvrDbSettingsDlg_Title)">
+        <Control Id="Description" Type="Text" X="25" Y="23" Width="280" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.AvrDbSettingsDlgDescription)" />
+        <Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.AvrDbSettingsDlgTitle)" />
+        <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="!(loc.AvrDbSettingsDlgBannerBitmap)" />
+        <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+        <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+
+        <Control Id="ServerTitle" Type="Text" Width="50" Height="17" X="20" Y="80" Text="!(loc.AvrDbSettingsDlgServer)" />
+        <Control Id="MachineName" Type="Edit" Width="120" Height="15" X="80" Y="80" Property="ComputerName" RightAligned="yes" Disabled="yes" />
+        <Control Id="Slash" Type="Text" Width="5" Height="17" X="200" Y="80" Text="\" />
+        <Control Id="Server" Type="Edit" Width="145" Height="15" X="205" Y="80" Property="AvrDbServerInstanceName" />
+        <Control Id="DatabaseTitle" Type="Text" Width="50" Height="17" X="20" Y="110" Text="!(loc.AvrDbSettingsDlgDatabase)" />
+        <Control Id="Database" Type="Edit" Width="270" Height="15" X="80" Y="110" Property="AVR_DATABASE" Disabled="yes" />
+        <Control Id="UserTitle" Type="Text" Width="50" Height="17" X="20" Y="140" Text="!(loc.AvrDbSettingsDlgUser)" />
+        <Control Id="User" Type="Edit" Width="270" Height="15" X="80" Y="140" Property="AVRUSER" />
+        <Control Id="PasswordTitle" Type="Text" Width="50" Height="17" X="20" Y="170" Text="!(loc.AvrDbSettingsDlgPassword)" />
+        <Control Id="Password" Type="Edit" Width="270" Height="15" X="80" Y="170" Property="AVRPASSWORD" Password="yes" />
+
+        <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)">
+          <Publish Property="AVR_DB_SERVER" Value="[ComputerName]{\[AvrDbServerInstanceName]}" Order="1">1</Publish>
+          <Publish Event="DoAction" Value="TestAvrDbConnection" Order="2">1</Publish>
+          <Publish Property="ErrorConnectionText" Value="!(loc.ErrorConnectionText_ConnectionTestFailed)" Order="3"><![CDATA[AVRDBCONNECTION_VALID <> "1"]]></Publish>
+          <Publish Event="SpawnDialog" Value="ErrorConnectionDlg" Order="4"><![CDATA[Not SKIP_VALIDATE_CONNECTION And AVRDBCONNECTION_VALID <> "1"]]></Publish>
+        </Control>
+        <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" />
+        <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+          <Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+        </Control>
+
+        <Control Id="CheckConnection" Type="PushButton" X="100" Y="200" Width="100" Height="17" Text="!(loc.AvrDbSettingsDlgCheckConnectionButton)">
+          <Publish Property="AVR_DB_SERVER" Value="[ComputerName]{\[AvrDbServerInstanceName]}" Order="1">1</Publish>
+          <Publish Event="DoAction" Value="TestAvrDbConnection" Order="2">1</Publish>
+          <Publish Event="NewDialog" Value="AvrDbSettingsDlg2" Order="10">1</Publish>
+        </Control>
+
+        <Control Id="TestResult_Success" Type="Icon" IconSize="32" X="220" Y="192" Width="34" Height="34" Text="SuccessImg" FixedSize="yes" Hidden="yes">
+          <Condition Action="hide"><![CDATA[AVRDBCONNECTION_VALID <> "1"]]></Condition>
+          <Condition Action="show"><![CDATA[AVRDBCONNECTION_VALID = "1"]]></Condition>
+        </Control>
+        <Control Id="TestResult_Failure" Type="Icon" IconSize="32" X="220" Y="192" Width="34" Height="34" Text="FailureImg" FixedSize="yes" Hidden="yes">
+          <Condition Action="hide"><![CDATA[AVRDBCONNECTION_VALID = "1"]]></Condition>
+          <Condition Action="show"><![CDATA[AVRDBCONNECTION_VALID And AVRDBCONNECTION_VALID <> "1"]]></Condition>
+        </Control>
+      </Dialog>
+    </UI>
+  </Fragment>
+</Wix>

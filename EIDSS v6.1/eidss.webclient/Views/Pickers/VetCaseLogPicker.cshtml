@@ -1,0 +1,70 @@
+﻿@model eidss.model.Schema.VetCaseLog
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        @Html.Hidden("idfVetCaseLog", Model.idfVetCaseLog)
+        <div class="windowButtonsPn">
+            <input id="idButtonOk" type="button" class="windowButton" onclick="vetCase.saveAndCloseVetCaseLogGridEditWindow('@(Model.CaseObjectIdent)');" value="@Translator.GetMessageString("Ok")"/>                        
+            <input id="idButtonCancel" type="button" class="windowButton" onclick="bvPopup.closeDefaultPopup()" value="@Translator.GetMessageString("Cancel")"/>        
+        </div>   
+        <div class="windowSeparator"></div>  
+        <table class="level1">
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Html.BvLabel(Model, m => m.strActionRequired)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strActionRequired)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.datCaseLogDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datCaseLogDate)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strPerson)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.Person)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strNote)
+                </td>
+                <td>
+                    @Html.BvTextArea(Model, m => m.strNote, true)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strCaseLogStatus)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.CaseLogStatus)
+                </td>                            
+            </tr>
+        </table>
+    }           
+</div>

@@ -1,0 +1,8 @@
+﻿@using Kendo.Mvc.UI
+@model DateTime?
+
+@(Html.Kendo().DatePicker()
+    .Name("datConcludedDate")
+    .Value(Model.HasValue && Model.Value > DateTime.MinValue ? Model : DateTime.Today)
+    .HtmlAttributes(new { @class="smallGridEditor" })
+    )

@@ -1,0 +1,80 @@
+﻿@using System.Text
+@using Kendo.Mvc.UI
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+@model eidss.model.Reports.Common.BaseModel
+           
+@{
+    var sbRename = new StringBuilder();
+    if (ViewBag.ArrayForRename != null)
+    {
+        var list = (ViewBag.ArrayForRename as List<string>);
+        if (list != null)
+        {
+            sbRename.Append(",new Array(");
+            for (int index = 0; index < list.Count; index++)
+            {
+                var item = list[index];
+                sbRename.AppendFormat("\"{0}\"", item);
+                if (index < list.Count - 1)
+                {
+                    sbRename.Append(",");
+                }
+            }
+            sbRename.Append(")");
+        }
+    }
+}
+
+@*TODO надо ли стиль таблицы вынести в отдельный класс или у нас есть специальный класс?*@
+<table id="ExportButtonsTable" style="width: 100%">
+    <tr>        
+        <td  colspan="3">      
+            &nbsp;
+        </td>
+    </tr>
+    <tr>
+        <td class="reportlabel">
+            @Html.LabelFor(m => m.ExportFormat)
+        </td>
+        <td class="largereport,reportlabel">
+            @{
+                var items = Model.SupportedExportFormats.ConvertToSelectListItem().ToList();
+                for (var i = 0; i < items.Count; i++)
+                {
+                    items[i].Text = items[i].Text.ToUpperInvariant();
+                }
+                
+                @(Html.Kendo().ComboBox()
+                      .BindTo(items)
+                      .Name("ExportFormat")
+                      )
+            }
+        </td>
+        <td  class="reportlabel">
+            @{
+                if (@Model.ShowUseArchiveDataCheckbox)
+                {
+                    @Html.CheckBoxFor(m => m.UseArchive)
+                    @Html.LabelFor(m => m.UseArchive)
+                }
+            }
+        </td>
+        <td class="rightbuttons">
+            <button id="btOpen" name="btOpen" type="button" class="button" onclick="paperForm.OpenInNewWindow('@ViewBag.GetReportActionName'@sbRename.ToString())">
+                @Translator.GetMessageString("titleOpen")
+            </button> 
+            <button id="btSave" name="btSave" type="button" class="button" onclick="paperForm.ShowSaveDialog('@ViewBag.GetReportActionName'@sbRename.ToString())">
+                @Translator.GetMessageString("Save")
+            </button>  
+            <button id="btClose" name="btClose" type="button" class="button" onclick="javascript:actions.close();">
+                @Translator.GetMessageString("Close")
+            </button>
+        </td>
+    </tr>
+    <tr>        
+        <td colspan="3">      
+            &nbsp;
+        </td>
+    </tr>
+</table>

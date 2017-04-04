@@ -1,0 +1,71 @@
+﻿@model eidss.model.Schema.AnimalListItem
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+
+<div class="popupContent">
+@using (Html.BeginForm())
+{          
+    <div class="windowButtonsPn">
+        <input id="idButtonOk" type="button" class="windowButton" onclick="vetCase.saveAndCloseAnimalsGridEditWindow('@(Model.CaseObjectIdent)');" value="@Translator.GetMessageString("Ok")"/>                        
+        <input id="idButtonCancel" type="button" class="windowButton" onclick="bvPopup.closeDefaultPopup()" value="@Translator.GetMessageString("Cancel")"/>        
+    </div>   
+    <div class="windowSeparator"></div>  
+    @Html.Hidden("idfAnimal", Model.idfAnimal)
+    <table class="level1">
+        <tr>
+            <td class="xlarge firstLabel">
+                @Html.BvLabel(Model, model => model.strHerdSpecies)
+            </td>
+            <td>
+                @{
+                    var onSpeciesLoad = string.Format("function(e){{ vetCase.setIdfSpeciesValue(e, '{0}'); }}", Model.idfSpecies);
+                }
+                @(Html.BvCombobox(Model, m => m.idfSpecies, clientOnChange: "sample.onAnimalSpeciesChanged")
+                    .Events(events => events.DataBound(onSpeciesLoad))
+                    .BindTo(ViewBag.SpeciesSelection))
+            </td>
+        </tr>
+        <tr>
+            <td class="firstLabel">
+                @Html.BvLabel(Model, model => model.strAnimalCode)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, m => m.strAnimalCode)
+            </td>
+        </tr>
+        <tr>
+            <td class="firstLabel">
+                @Html.BvLabel(Model, model => model.idfsAnimalAge)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, m => m.AnimalAge, false)
+            </td>
+        </tr>
+        <tr>
+            <td class="firstLabel">
+                @Html.BvLabel(Model, model => model.idfsAnimalGender)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, m => m.AnimalGender)
+            </td>
+        </tr>
+        <tr>
+            <td class="firstLabel">
+                @Html.BvLabel(Model, model => model.idfsAnimalCondition)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, m => m.AnimalCondition)
+            </td>
+        </tr>
+    </table>
+}
+</div>

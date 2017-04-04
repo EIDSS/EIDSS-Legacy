@@ -1,0 +1,20 @@
+﻿@using Kendo.Mvc.UI
+@using eidss.webclient.Utils
+@model eidss.model.Reports.Common.WeeksModel
+
+<table id="WeeksTable" >
+    <tr>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.WeekId)
+        </td>
+        <td class="largereport">
+            @{
+                @(Html.Kendo().ComboBox()
+                    .BindTo(Model.GetWeeksList(Model.Year).ConvertToSelectListItem())
+                    .HtmlAttributes(new {@class = "requiredField"})
+                    .Name("WeeksFilter.WeekId"))
+            }
+        </td>
+        <td></td>
+    </tr>
+</table>

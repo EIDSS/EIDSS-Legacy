@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="VsSessionSummary"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spVsSessionSummary_SelectDetail" type="detaillist"/>
+  </storage>
+
+  <tables>
+    <table name="VsSessionSummary">
+      <properties auditObject="daoVectorSurveillanceSession" auditTable="tlbVectorSurveillanceSessionSummary" permissionObject="VsSessionSummary">
+      </properties>
+      <help win="vss_form"/>
+      <grid>
+        <item name="idfsVSSessionSummary" visible="false" key="true"/>
+        <item name="strVSSessionSummaryID"  required="true"/>
+        <item name="strLocation" type="string" required="true"/>
+        <item name="datCollectionDateTime"/>
+        <item name="idfsVectorType" required="true"/>
+        <item name="idfsVectorSubType" required="true" />
+        <item name="idfsSex" />
+        <item name="strVectorType" required="true"/>
+        <item name="strVectorSubType" required="true"/>
+        <item name="strSex" />
+        <item name="intQuantity" required="true"/>
+        <item name="strDiagnosesSummary" type="string" required="true"/>
+      </grid>
+      <labels>
+        <item labelId="VsSessionSummary.RecordID" name="strVSSessionSummaryID"/>
+        <item labelId="AsSessionCase.strGeoLocation" name="idfGeoLocation"/>
+        <item labelId="idfsAnimalGender" name="idfsSex"/>
+        <item labelId="LocationDisplayName" name="strLocation"/>
+        <item labelId="VsSessionSummary.intQuantity" name="intQuantity"/>
+        <item labelId="idfsVectorType" name="strVectorType"/>
+        <item labelId="idfsVectorSubType" name="strVectorSubType"/>
+        <item labelId="idfsAnimalGender" name="strSex"/>
+      </labels>
+      <fields>
+        <storage name="idfsDiagnosis" type="long?"/> 
+        <calculated name="Session" type="VsSession" lambda="c => Parent as VsSession" depends="Parent"/>
+        <calculated name="datStartDateFromSession" type="DateTime?" lambda="c => c.Session != null ? c.Session.datStartDate : DateTime.Now" depends="Parent"/>
+        <calculated name="strDiagnosesSummary" type="string" setter="" lambda='c => {var sb = new StringBuilder();foreach (var d in c.DiagnosisList){if (!sb.ToString().Contains(d.strDiagnosis) &amp;&amp; !d.IsMarkedToDelete) sb.AppendFormat(sb.Length == 0 ? "{0} ({1})" : ", {0} ({1})", d.strDiagnosis, d.intPositiveQuantity);}return sb.ToString();}' depends="DiagnosisList"/>
+        <calculated name="strLocation" type="string" setter="" lambda='c => c.Location != null ? c.Location.LocationDisplayName : String.Empty' depends="Location"/>
+        <calculated name="CaseObjectIdent" type="string" depends="idfVectorSurveillanceSession" lambda='c => "Summaries_" + c.idfsVSSessionSummary + "_"' />
+      </fields>
+      <readonly>
+        <fields name="strVSSessionSummaryID" predicate="c => true"/>
+        <fields name="strDiagnosesSummary" predicate="c => c.idfsVectorSubType == 0 || c.ReadOnly"/>
+        <fields name="strLocation" predicate="c => false || c.ReadOnly"/>
+        <fields name="*" predicate="c => c.ReadOnly" />
+      </readonly>
+      <relations>
+        <relation name="DiagnosisList" table="VsSessionSummaryDiagnosis" internal="false" type="child" source="idfsVSSessionSummary" target="idfsVSSessionSummary" lazy="false" />
+        <relation name="Location" table="GeoLocation" internal="false" type="link" source="idfGeoLocation" target="idfGeoLocation" lazy="false" />
+      </relations>
+      <lookups>
+        <lookup name="Diagnoses" table="DiagnosisLookup" source="idfsDiagnosis" target="idfsDiagnosis">
+          <filters>
+            <filter predicate="c => ((c.intHACode &amp; (int)HACode.Vector) != 0) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+            <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsDiagnosis" />
+          </filters>
+        </lookup>
+        <lookup name="VectorType" table="VectorTypeLookup" source="idfsVectorType" target="idfsBaseReference" />
+        <lookup name="VectorSubType" table="VectorSubTypeLookup" source="idfsVectorSubType" target="idfsBaseReference">
+          <params>
+            <param name="VectorTypeID" lambda="c => c.idfsVectorType > 0 ? (long?)c.idfsVectorType : 0" type="long?" />
+            <param name="ID" const="null" />
+          </params>
+        </lookup>
+        <lookup name="AnimalGender" table="BaseReference" section="rftAnimalSex" source="idfsSex" target="idfsBaseReference" >
+          <filters>
+            <filter predicate="c => ((c.intHACode &amp; (int)HACode.Vector) != 0) || c.idfsBaseReference == obj.idfsSex" />
+          </filters>
+        </lookup>
+      </lookups>
+      <storage>
+        <post />
+        <delete />
+      </storage>
+      <postorder>
+        <item name="Location" />
+        <item name="this"/>
+        <item name="DiagnosisList"/>
+      </postorder>
+      <deleteorder>
+        <item name="DiagnosisList"/>
+        <item name="this"/>
+        <item name="Location" />
+      </deleteorder>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfsVSSessionSummary" class="GetNewIDExtender" />
+          <lambda_extender target="strVSSessionSummaryID" type="string" lambda='c => "(new)"' />
+          <lambda_extender target="Location" type="GeoLocation" lambda="c => LocationAccessor.CreateWithCountry(manager, c)" />
+          <!--<lambda_extender target="intQuantity" type="int" lambda="c => 0"/>-->
+        </creating>
+        <created>
+          <lambda_extender target="idfVectorSurveillanceSession" type="long" lambda='c => c.Session != null ? c.Session.idfVectorSurveillanceSession : c.idfVectorSurveillanceSession' />
+        </created>
+        <loading>
+        </loading>
+        <loaded>
+          <lambda_extender target="Location" type="GeoLocation" lambda="c => c.Location == null ? LocationAccessor.CreateWithCountry(manager, c) : c.Location" />
+        </loaded>
+        <posting>
+        </posting>
+        <posted>
+        </posted>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <lambda_handler target="strVectorType" field="idfsVectorType" type="string" lambda='c => c.VectorType == null ? String.Empty : c.VectorType.strTranslatedName'/>
+          <lambda_handler target="strVectorSubType" field="idfsVectorSubType" type="string" lambda='c => c.VectorSubType == null ? String.Empty : c.VectorSubType.name'/>
+          <lambda_handler target="strSex" field="idfsSex" type="string" lambda='c => c.AnimalGender == null ? String.Empty : c.AnimalGender.name'/>
+          <!--
+          <lookup_handler lookup="Region" field="idfsCountry" />
+          <lookup_handler lookup="Rayon" field="idfsRegion" />          
+          <lookup_handler lookup="Settlement" field="idfsRayon" />
+          -->
+          <lookup_handler lookup="VectorSubType" field="idfsVectorType" />
+          <lambda_handler target="VectorSubType" field="idfsVectorType" type="VectorSubTypeLookup" lambda="c => null"/>
+          <lambda_handler target="VectorType" field="idfsVectorType" type="VectorTypeLookup" lambda='c => c.VectorTypeLookup.Where(x => x.idfsBaseReference == c.idfsVectorType).FirstOrDefault()'/>
+          <lambda_handler target="VectorSubType" field="idfsVectorSubType" type="VectorSubTypeLookup" lambda='c => c.VectorSubTypeLookup.Where(x => x.idfsBaseReference == c.idfsVectorSubType).FirstOrDefault()'/>
+          <!--
+          <lambda_handler target="strCountry" field="idfsCountry" type="string" lambda='c =>c.Country == null ? String.Empty : c.Country.strCountryName'/>
+          <lambda_handler target="strRegion" field="idfsRegion" type="string" lambda='c =>c.Region == null ? String.Empty : c.Region.strRegionName'/>
+          <lambda_handler target="strRayon" field="idfsRayon" type="string" lambda='c =>c.Rayon == null ? String.Empty : c.Rayon.strRayonName'/>
+          <lambda_handler target="strSettlement" field="idfsSettlement" type="string" lambda='c =>c.Settlement == null ? String.Empty : c.Settlement.strSettlementName'/>
+          -->
+        </fieldhandler>
+      </handlers>
+      <validators>
+        <chains>
+          <item field="datStartDateFromSession" type="DateTime">
+            <item field="datCollectionDateTime">
+            </item>
+          </item>
+          <item field="MinValue" type="NullableInt" value="1">
+            <item field="intQuantity"/>
+          </item>
+          <item field="datCollectionDateTime" type="DateTime">
+            <item field="CurrentDate" value="DateTime.Now" />
+          </item>
+        </chains>
+        <post>
+          <required_validator target="idfsVSSessionSummary"/>
+          <required_validator target="idfVectorSurveillanceSession"/>
+          <required_validator target="strVSSessionSummaryID" label="VsSessionSummary.RecordID"/>
+          <!--<required_validator target="Location"/>-->
+          <required_validator target="Location.LocationDisplayName"/>
+          <required_validator target="Location.strReadOnlyAdaptiveFullName"/>
+          <required_validator target="idfsVectorType"/>
+          <required_validator target="idfsVectorSubType"/>
+          <required_validator target="VectorType"/>
+          <required_validator target="VectorSubType"/>
+        </post>
+        <delete>
+        </delete>
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Ok"/>
+          <remove type="Cancel"/>
+          <remove type="Create"/>
+          <remove type="Edit"/>
+        </standard>
+        <action name="Create" type="Create">
+          <visual panel="Group" visiblePredicate="(c, a, b, p) => false" />
+        </action>
+        <action name="Edit" type="Edit">
+          <visual panel="Group" visiblePredicate="(c, a, b, p) => false" />
+        </action>
+        <action name="SummaryOk" type="Action" forceClose="true">
+          <visual panel="Main" alignment="Right" app="Web">
+            <regular caption="strOK_Id" tooltip="tooltipOK_Id" icon=""/>
+          </visual>
+          <run>
+            <preUI webType="JScript" methodName="vssessionsummary.formDetailOk"/>
+            <preText>
+              return (obj.GetAccessor() as IObjectValidator).Validate(manager, obj, true, true, true);
+            </preText>
+          </run>
+        </action>
+        <action name="SummaryCancel" type="Action">
+          <visual panel="Main" alignment="Right" app="Web">
+            <regular caption="strCancel_Id" tooltip="tooltipCancel_Id" icon=""/>
+          </visual>
+          <run>
+            <preUI webType="JScript" methodName="vssessionsummary.formDetailCancel"/>
+          </run>
+        </action>
+      </actions>
+    </table>
+  </tables>
+
+</object>

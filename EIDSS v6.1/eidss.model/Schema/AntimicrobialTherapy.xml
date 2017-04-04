@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="AntimicrobialTherapy"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="spAntimicrobialTherapy_SelectDetail" type="detaillist" />
+    </storage>
+
+    <tables>
+        <table name="AntimicrobialTherapy">
+            <grid>
+                <item name="idfAntimicrobialTherapy" visible="false" key="true"/>
+                <item name="strAntimicrobialTherapyName" required="true" />
+                <item name="strDosage" />
+                <item name="datFirstAdministeredDate" />
+            </grid>
+            <fields>
+              <!--storage name="NewObject" type="bool"/-->
+              <calculated name="CaseObjectIdent" type="string" depends="idfHumanCase" lambda='c => "HumanCase_" + c.idfHumanCase + "_"' />
+            </fields>
+            <storage>
+                <post name="spAntimicrobialTherapy_Post" />
+                <delete name="spAntimicrobialTherapy_Delete" />
+            </storage>
+            <extenders>
+                <creating>
+                    <scalar_extender target="idfAntimicrobialTherapy" class="GetNewIDExtender" />
+                </creating>
+            </extenders>
+            <validators>
+              <chains>
+                <item field="datFirstAdministeredDate" type="DateTime">
+                  <item field="CurrentDate" value="DateTime.Now" />
+                </item>
+              </chains>
+              <post>
+                <required_validator target="strAntimicrobialTherapyName"/>
+              </post>
+            </validators>
+          <actions>
+            <standard>
+              <remove type="Create"/>
+            </standard>
+            <!--<action name="Create1" type="Action">
+              <visual app="Web" alignment="Right" panel="Group">
+                <regular caption="id" tooltip="" icon=""/>
+                <readOnly caption="" icon="" tooltip=""/>
+              </visual>
+              <run>
+                <preUI webType="JScript"/>                  
+              </run>
+            </action>-->
+            <action name="Create" type="Create">
+              <visual app="Web" alignment="Right" panel="Group">
+                <regular caption="Add" tooltip="" icon=""/>
+              </visual>
+              <run>
+                <params>
+                  <param name="idfHumanCase" type="long" />
+                </params>
+                <creating>
+                  <lambda_extender target="idfHumanCase" type="long" lambda='c => idfHumanCase' />
+                </creating>
+              </run>
+            </action>
+          </actions>
+        </table>
+    </tables>
+
+</object>

@@ -1,0 +1,39 @@
+﻿@model eidss.model.Schema.VetCase
+@using Kendo.Mvc.UI
+@using eidss.web.common.Utils
+@using bv.common.Configuration
+
+@(Html.Kendo().TabStrip()
+    .Name("EpiSectionTabStrip")
+    .Animation(animation => animation.Enable(false))
+    .HtmlAttributes(new { @class = "innerTabs oneLineHeightInnerTab" })
+    .Events(events => events.Select("function(e){ vetCase.onTabSelect(e, '" + Model.idfCase + "', 'EpiSectionTabStrip'); }"))
+    .Items(items =>
+    {
+        items.Add()
+            .Text(Translator.GetMessageString("strFlockSpeciesInfo"))
+            .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "strFlockSpeciesInfo" } : new { })
+            .Content(
+                    @<text>
+                        <div class="tabPanelContent">
+                            @Html.Action("HerdOrFlockList", "VetCase",
+                                            new
+                                                {
+                                                    root = Model.idfCase,
+                                                    listName = Model.Farm.ObjectIdent + "FarmTree",
+                                                    items = Model.Farm.FarmTree,
+                                                    readOnly = Model.IsClosed || Model.IsReadOnly("FarmTree") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit),
+                                                    isFlock = true
+                                                })
+
+                        </div>
+                    </text>);
+        items.Add()
+            .Text(Translator.GetMessageString("sectionTitleAvianEpiInfo"))
+            .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "sectionTitleAvianEpiInfo", @class = "ffTab" } : new { @class = "ffTab" })
+            .Content(
+                @<text>
+                     <div class="tabPanelContent" id="EpiFlexForm"></div>
+                 </text>);
+    })
+    .SelectedIndex(0))

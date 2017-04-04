@@ -1,0 +1,94 @@
+﻿@model eidss.model.Schema.VetFarmTree
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        //ChangeMessageWindowHeigth();
+    });
+</script>
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        <div class="windowButtonsPn">                  
+            <input id="idButtonOk" type="button" class="windowButton" onclick=" vetCase.saveAndCloseSpeciesGridEditWindow('@(Model.idfParentParty)'); " value="@Translator.GetMessageString("Ok")"/>     
+            <input id="idButtonCancel" type="button" class="windowButton" onclick=" bvPopup.closeDefaultPopup(); " value="@Translator.GetMessageString("Cancel")"/>  
+        </div>
+        <div class="windowSeparator"></div>
+        @Html.HiddenFor(x=>x.idfParty)
+        @Html.Hidden("IdfCaseVetCase", (long)ViewBag.IdfCase)
+        <table class="level1">    
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Html.BvLabel(Model, model => model.strSpeciesName)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.SpeciesType)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, model => model.intTotalAnimalQty)
+                </td>
+                <td>
+                    @Html.BvNumeric(Model, m => m.intTotalAnimalQty, 0, 0, 100000)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, model => model.intSickAnimalQty)
+                </td>
+                <td>
+                    @Html.BvNumeric(Model, m => m.intSickAnimalQty, 0, 0, 100000)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, model => model.intDeadAnimalQty)
+                </td>
+                <td>
+                    @Html.BvNumeric(Model, m => m.intDeadAnimalQty, 0, 0, 100000)
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @if ((Model._HACode.HasValue ? Model._HACode.Value : 0) == (int)eidss.model.Enums.HACode.Livestock)
+                    {
+                        @Html.BvLabel(Model, model => model.strNote)
+                    }
+                    else
+                    {
+                        @Html.BvLabel(Model, model => model.strAverageAge)
+                    }
+                </td>
+                <td>
+                    @if ((Model._HACode.HasValue ? Model._HACode.Value : 0) == (int)eidss.model.Enums.HACode.Livestock)
+                    {
+                        @Html.BvTextArea(Model, m => m.strNote, true)
+                    }
+                    else
+                    {
+                        @Html.BvEditbox(Model, m => m.strAverageAge, true)
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, model => model.datStartOfSignsDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datStartOfSignsDate)
+                </td>
+            </tr>
+        </table>
+    }
+</div>

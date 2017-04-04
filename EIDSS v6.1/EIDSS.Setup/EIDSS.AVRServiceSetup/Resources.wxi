@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <DirectoryRef Id="APPLICATIONFOLDER">
+    <Directory Id="$(var.FolderId)" Name="$(var.Folder)" />
+  </DirectoryRef>
+
+  <ComponentGroup Id="Resources_$(var.FolderId)" Directory="$(var.FolderId)" Source="$(var.BinariesPaths)$(var.Folder)\">
+    <Component Id="bv.common.resources.dll_$(var.FolderId)">
+      <File
+        Id="bv.common.resources.dll_$(var.FolderId)"
+        Checksum="yes"
+        KeyPath="yes"
+        Source="$(var.bv.common.TargetDir)$(var.Folder)\$(var.bv.common.TargetName).resources$(var.bv.common.TargetExt)" />
+    </Component>
+    <?ifndef no_bv.winclient.resources.dll?>
+    <Component Id="bv.winclient.resources.dll_$(var.FolderId)">
+      <File Id="bv.winclient.resources.dll_$(var.FolderId)" Name="bv.winclient.resources.dll" Checksum="yes" KeyPath="yes" />
+    </Component>
+    <?else?>
+    <?undef no_bv.winclient.resources.dll?>
+    <?endif?>
+
+    <?ifndef no_bvwin_common.resources.dll?>
+    <Component Id="bvwin_common.resources.dll_$(var.FolderId)">
+      <File Id="bvwin_common.resources.dll_$(var.FolderId)" Name="bvwin_common.resources.dll" Checksum="yes" KeyPath="yes" />
+    </Component>
+    <?else?>
+    <?undef no_bvwin_common.resources.dll?>
+    <?endif?>
+    
+    <?ifndef no_eidss.avr.resources.dll?>
+    <Component Id="eidss.avr.resources.dll_$(var.FolderId)">
+      <File Id="eidss.avr.resources.dll_$(var.FolderId)" Name="eidss.avr.resources.dll" Checksum="yes" KeyPath="yes" />
+    </Component>
+    <?else?>
+    <?undef no_eidss.avr.resources.dll?>
+    <?endif?>
+    <Component Id="eidss.core.resources.dll_$(var.FolderId)">
+      <File Id="eidss.core.resources.dll_$(var.FolderId)" Name="eidss.core.resources.dll" Checksum="yes" KeyPath="yes" />
+    </Component>
+    <Component Id="eidss.winclient.resources.dll_$(var.FolderId)">
+      <File Id="eidss.winclient.resources.dll_$(var.FolderId)" Name="eidss.winclient.resources.dll" Checksum="yes" KeyPath="yes" />
+    </Component>
+    <Component Id="eidss_forms.resources.dll_$(var.FolderId)">
+      <File Id="eidss_forms.resources.dll_$(var.FolderId)" Name="eidss_forms.resources.dll" Checksum="yes" KeyPath="yes" />
+    </Component>
+    <?ifndef no_EIDSS.FlexibleForms.resources.dll?>
+    <Component Id="EIDSS.FlexibleForms.resources.dll_$(var.FolderId)">
+      <File Id="EIDSS.FlexibleForms.resources.dll_$(var.FolderId)" Name="EIDSS.FlexibleForms.resources.dll" Checksum="yes" KeyPath="yes" />
+    </Component>
+    <?else?>
+    <?undef no_EIDSS.FlexibleForms.resources.dll?>
+    <?endif?>
+  </ComponentGroup>
+
+  <?undef FolderId?>
+  <?undef Folder?>
+</Include>

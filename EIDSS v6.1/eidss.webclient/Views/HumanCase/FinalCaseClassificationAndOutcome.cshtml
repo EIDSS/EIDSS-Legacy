@@ -1,0 +1,129 @@
+﻿@model eidss.model.Schema.HumanCase
+           
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+
+<div class="tabPanelContent">
+    <div class="sectionTitle">
+        @Translator.GetMessageString("titleGeneralInformation")  
+    </div>        
+    <table class="level1">
+        <tr>
+            <td class="xlarge firstLabel">
+                @Html.BvLabel(Model, m => m.idfsFinalCaseStatus)
+            </td>
+            <td class="large">
+                @Html.BvCombobox(Model, m => m.FinalCaseClassification)
+            </td>
+            <td class="xlarge label">
+                @if (!eidss.model.Core.EidssSiteContext.Instance.IsGeorgiaCustomization)
+                {
+                    @Html.BvLabel(Model, m => m.datFinalCaseClassificationDate)
+                }
+            </td>
+            <td>
+                @if (!eidss.model.Core.EidssSiteContext.Instance.IsGeorgiaCustomization)
+                {
+                    @Html.BvDatebox(Model, m => m.datFinalCaseClassificationDate)
+                }
+            </td>                       
+        </tr>
+        <tr>
+            <td class="firstLabel">     
+                @Html.BvLabel(Model, m => m.strReadOnlyDiagnosis)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, m => m.strReadOnlyDiagnosis)
+            </td>
+            <td class="label">
+                @Html.BvLabel(Model, m => m.strReadOnlyDiagnosisDate)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, m => m.strReadOnlyFinalDiagnosisDate)
+            </td>
+        </tr>
+        <tr>
+            <td class="firstLabel">                
+                @Translator.GetMessageString("chbTitleBasisOfDiagnosis")
+            </td>
+            <td>
+                <ul class="checkBox">
+                    <li>
+                        @Html.BvCheckBox(Model, m => m.blnClinicalDiagBasis, true)
+                    </li>
+                    <li>
+                        @Html.BvCheckBox(Model, m => m.blnEpiDiagBasis, true)
+                    </li>
+                    <li>
+                        @Html.BvCheckBox(Model, m => m.blnLabDiagBasis, true)          
+                    </li>
+                </ul>                            
+            </td>
+            <td colspan="2">                           
+            </td>   
+        </tr>
+        <tr>
+            <td class="firstLabel"> 
+                @Html.BvLabel(Model, m => m.idfsOutcome)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, m => m.Outcome)
+            </td>
+            <td class="label">
+                @Html.BvLabel(Model, m => m.datDischargeDate)
+                @Html.BvLabel(Model, m => m.datDateOfDeath)
+            </td>
+            <td>
+                @Html.BvDatebox(Model, m => m.datDischargeDate)
+                @Html.BvDatebox(Model, m => m.datDateOfDeath)
+            </td>
+        </tr>      
+       @* <tr>
+            <td colspan="2">
+            </td>
+            <td class="label">
+                @Html.BvLabel(Model, m => m.datDateOfDeath)
+            </td>
+            <td>
+                @Html.BvDatebox(Model, m => m.datDateOfDeath)
+            </td>
+        </tr>  *@
+        <tr>
+            <td class="firstLabel"> 
+                @Html.BvLabel(Model, m => m.idfsYNRelatedToOutbreak)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, m => m.RelatedToOutbreak)
+            </td>
+            <td class="label">
+                @Html.BvLabel(Model, m => m.idfOutbreak)
+            </td>
+            <td>
+                @Html.Action("InlineOutbreakPicker", "Outbreak", new { obj = Model, objectId = Model.idfCase, idfsOutbreakPropertyName = "idfOutbreak", strOutbreakPropertyName = "strOutbreakID"})
+            </td>
+        </tr>      
+    </table>  
+    <div class="sectionTitle">
+        @Html.BvLabel(Model, m=>m.strSummaryNotes)   
+    </div>  
+    <div class="fullPageWidth">
+        @Html.BvTextArea(Model, m => m.strSummaryNotes) 
+    </div>                 
+    <div class="sectionTitle">
+        @Translator.GetMessageString("titleEpidemiologists")    
+    </div>  
+    
+    <table class="level1">
+        <tr>
+            <td class="xlarge firstLabel">
+                @Html.BvLabel(Model, m => m.strEpidemiologistsName, m => m.idfInvestigatedByPerson)         
+            </td>            
+            <td>
+                @Html.Action("InlineEmployeePicker", "Employee", new { obj = Model, objectId = Model.idfCase, idfsEmployeePropertyName = "idfInvestigatedByPerson", 
+                    strEmployeePropertyName = "strInvestigatedByPerson", idfsOrganizationPropertyName = "idfInvestigatedByOffice",
+                    strOrganizationPropertyName = "strInvestigatedByOffice", showEditButton = true })                              
+            </td>  
+        </tr>
+    </table> 
+</div>

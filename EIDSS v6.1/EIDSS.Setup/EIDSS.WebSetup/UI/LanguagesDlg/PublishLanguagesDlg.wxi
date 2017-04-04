@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Publish Dialog="CountryDlg" Control="Next" Property="LanguageDlg" Value="$(var.LanguageDlg)" Order="1">Not Installed And COUNTRY = "$(var.Country)"</Publish>
+
+  <Publish Dialog="$(var.LanguageDlg)" Control="Back" Event="NewDialog" Value="CountryDlg">1</Publish>
+  <Publish Dialog="$(var.LanguageDlg)" Control="Next" Event="NewDialog" Value="CustomInstallDirDlg" Order="100"><![CDATA[1 <> LanguagesValidationError]]></Publish>
+
+  <?undef LanguageDlg?>
+  <?undef Country?>
+</Include>

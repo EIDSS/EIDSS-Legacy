@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "ProductInfo.wxi" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Product
+     Id="$(var.ProductCode)"
+     Name="$(var.ProductFullName)"
+     Language="!(loc.ProductLanguage)"
+     Version="$(var.ProductVersion)"
+     Manufacturer="$(var.Manufacturer)"
+     UpgradeCode="$(var.UpgradeCode)">
+
+    <Package
+      Manufacturer="$(var.Manufacturer)"
+      Description="$(var.ProductName)"
+      Comments="$(var.ProductName)"
+      SummaryCodepage="!(loc.SummaryCodepage)"
+      InstallerVersion="300"
+      Compressed="yes"
+      InstallScope="perMachine" />
+
+    <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
+    <?include $(var.SolutionDir)MultiInstance\MultiInstanceActivator.wxi?>
+
+
+    <Condition Message="!(loc.ConditionElevationPrivileges)">Installed OR Privileged</Condition>
+    <Condition Message="!(loc.ConditionOperatingSystem)"><![CDATA[(VersionNT = 501 AND ServicePackLevel >= 3) OR VersionNT >= 600]]></Condition>
+
+    <PropertyRef Id="NETFRAMEWORK40FULL" />
+    <Condition Message="!(loc.ConditionNetFramework4)"><![CDATA[Installed OR NETFRAMEWORK40FULL]]></Condition>
+
+    <Property Id="ARPNOREPAIR" Value="1" />
+    <Property Id="WIXUI_INSTALLDIR" Value="APPLICATIONFOLDER" />
+    <UIRef Id="WixUI_AVRService" />
+    <UIRef Id="WixUI_ErrorProgressText" />
+    <WixVariable Id="WixUILicenseRtf" Value="$(var.SolutionDir)LicenseAgreement.rtf" />
+    <!--<WixVariable Id="WixUIBannerBmp" Value="$(var.SetupSources)Banner.png" />-->
+    <Icon Id="Icon.ProductIcon" SourceFile="$(var.SetupSources)Bitmaps\eidss.ico" />
+
+    <Property Id="ARPPRODUCTICON" Value="Icon.ProductIcon" />
+    <SetProperty Id="ARPINSTALLLOCATION" Value="[APPLICATIONFOLDER]" After="InstallValidate" Sequence="execute" />
+    <Property Id="ProductFamilyAbbreviation" Value="$(var.ProductFamilyAbbreviation)" />
+    <Property Id="MajorVersion" Value="$(var.MajorVersion)" />
+
+
+    <Feature Id="ProductRegistration" Absent="disallow" AllowAdvertise="no" Level="1" Display="hidden">
+      <ComponentRef Id="ProductRegistryKey" />
+    </Feature>
+
+    <Feature Id="AVR.Service" Absent="disallow" AllowAdvertise="no" Level="1" Display="hidden">
+      <ComponentGroupRef Id="AVR.Service" />
+      <ComponentGroupRef Id="AVR.Service.Config" />
+      <ComponentGroupRef Id="AVR.Service.DepednsOn" />
+      <ComponentGroupRef Id="AVR.Database" />
+      <ComponentRef Id="SchedulerSettings" />
+      <ComponentRef Id="ServiceLogging" />
+      <ComponentGroupRef Id="Autotester" />
+    </Feature>
+  </Product>
+
+  <Fragment Id="ProductRegistryKey">
+    <DirectoryRef Id="APPLICATIONFOLDER">
+      <Component Id="ProductRegistryKey" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.ProductRegistryKey)">
+          <RegistryValue Name="InstallPath" Value="[APPLICATIONFOLDER]" Type="string" KeyPath="yes" />
+          <RegistryValue Name="Instance" Value="[INSTANCEID]" Type="string" />
+          <RegistryValue Name="Version" Value="$(var.ProductVersion)" Type="string" />
+        </RegistryKey>
+      </Component>
+    </DirectoryRef>
+
+    <SetProperty Id="ProductName" After="AppSearch" Value="$(var.ProductFullName)([INSTANCEID])" Sequence="execute">1</SetProperty>
+  </Fragment>
+</Wix>

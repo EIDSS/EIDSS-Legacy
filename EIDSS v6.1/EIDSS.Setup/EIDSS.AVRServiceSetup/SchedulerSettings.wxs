@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "ProductInfo.wxi" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Fragment Id="Scheduler Settings">
+    <Property Id="SCHEDULER_ENABLED" Secure="yes" Value="true">
+      <RegistrySearch Id="SCHEDULER_ENABLED.Rs" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="SchedulerEnables" Type="raw" />
+    </Property>
+    <Property Id="REFRESH_CACHE_IN_DAYS" Secure="yes" Value="7">
+      <RegistrySearch Id="REFRESH_CACHE_IN_DAYS.Rs" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="RefreshCacheInDays" Type="raw" />
+    </Property>
+    <Property Id="REMOVE_NOT_USED_CACHE_IN_DAYS" Secure="yes" Value="30">
+      <RegistrySearch Id="REMOVE_NOT_USED_CACHE_IN_DAYS.Rs" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="RemoveNotUsedCacheInDays" Type="raw" />
+    </Property>
+    <Property Id="RUN_IMMEDIATELY" Secure="yes" Value="false">
+      <RegistrySearch Id="RUN_IMMEDIATELY.Rs" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="RunImmediately" Type="raw" />
+    </Property>
+    <Property Id="DAYS_BETWEEN_SCHEDULER_RUNS" Secure="yes" Value="1">
+      <RegistrySearch Id="DAYS_BETWEEN_SCHEDULER_RUNS.Rs" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="DaysBetweenSchedulerRuns" Type="raw" />
+    </Property>
+    <Property Id="TIME_OF_SCHEDULER_RUNS_HOURS" Secure="yes" Value="02">
+      <RegistrySearch Id="TIME_OF_SCHEDULER_RUNS_HOURS.Rs" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="TimeOfSchedulerRunsHours" Type="raw" />
+    </Property>
+    <Property Id="TIME_OF_SCHEDULER_RUNS_MINUTES" Secure="yes" Value="00">
+      <RegistrySearch Id="TIME_OF_SCHEDULER_RUNS_MINUTES.Rs" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="TimeOfSchedulerRunsMinutes" Type="raw" />
+    </Property>
+    <Property Id="TIME_OF_SCHEDULER_RUNS_SECONDS" Secure="yes" Value="00">
+      <RegistrySearch Id="TIME_OF_SCHEDULER_RUNS_SECONDS.Rs" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="TimeOfSchedulerRunsSeconds" Type="raw" />
+    </Property>
+    <Property Id="SECONDS_BETWEEN_SCHEDULER_TASKS" Secure="yes" Value="360">
+      <RegistrySearch Id="SECONDS_BETWEEN_SCHEDULER_TASKS.Rs" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="SecondsBetweenSchedulerTasks" Type="raw" />
+    </Property>
+
+    <DirectoryRef Id="APPLICATIONFOLDER">
+      <Component Id="SchedulerSettings" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.ProductRegistryKey)\Scheduler">
+          <RegistryValue Name="SchedulerEnables" Value="[SCHEDULER_ENABLED]" Type="string" KeyPath="yes" />
+          <RegistryValue Name="RefreshCacheInDays" Value="[REFRESH_CACHE_IN_DAYS]" Type="string" />
+          <RegistryValue Name="RemoveNotUsedCacheInDays" Value="[REMOVE_NOT_USED_CACHE_IN_DAYS]" Type="string" />
+          <RegistryValue Name="RunImmediately" Value="[RUN_IMMEDIATELY]" Type="string" />
+          <RegistryValue Name="DaysBetweenSchedulerRuns" Value="[DAYS_BETWEEN_SCHEDULER_RUNS]" Type="string" />
+          <RegistryValue Name="TimeOfSchedulerRunsHours" Value="[TIME_OF_SCHEDULER_RUNS_HOURS]" Type="string" />
+          <RegistryValue Name="TimeOfSchedulerRunsMinutes" Value="[TIME_OF_SCHEDULER_RUNS_MINUTES]" Type="string" />
+          <RegistryValue Name="TimeOfSchedulerRunsSeconds" Value="[TIME_OF_SCHEDULER_RUNS_SECONDS]" Type="string" />
+          <RegistryValue Name="SecondsBetweenSchedulerTasks" Value="[SECONDS_BETWEEN_SCHEDULER_TASKS]" Type="string" />
+        </RegistryKey>
+
+        <util:XmlConfig
+          Id="Config.schedulerConfiguration"
+          File="[#ServiceConfig]"
+          Action="create"
+          ElementPath="/configuration"
+          Name="schedulerConfiguration"
+          VerifyPath="/configuration/schedulerConfiguration"
+          Node="element"
+          On="install"
+          Sequence="201">
+
+          <?define key = schedulerEnabled ?>
+          <?define value = [SCHEDULER_ENABLED] ?>
+          <?include AddSchedulerSetting.wxi?>
+
+          <?define key = refreshedCacheOnUserCallAfterDays ?>
+          <?define value = [REFRESH_CACHE_IN_DAYS] ?>
+          <?include AddSchedulerSetting.wxi?>
+
+          <?define key = dontRefreshCacheNotUsedByUserAfterDays ?>
+          <?define value = [REMOVE_NOT_USED_CACHE_IN_DAYS] ?>
+          <?include AddSchedulerSetting.wxi?>
+
+          <?define key = immediatelyRunSchedulerWhenServiceStarts ?>
+          <?define value = [RUN_IMMEDIATELY] ?>
+          <?include AddSchedulerSetting.wxi?>
+
+          <?define key = daysBetweenSchedulerRuns ?>
+          <?define value = [DAYS_BETWEEN_SCHEDULER_RUNS] ?>
+          <?include AddSchedulerSetting.wxi?>
+
+          <?define key = timeOfSchedulerRuns ?>
+          <?define value = [TIME_OF_SCHEDULER_RUNS_HOURS]:[TIME_OF_SCHEDULER_RUNS_MINUTES]:[TIME_OF_SCHEDULER_RUNS_SECONDS] ?>
+          <?include AddSchedulerSetting.wxi?>
+
+          <?define key = secondsBetweenSchedulerTasks ?>
+          <?define value = [SECONDS_BETWEEN_SCHEDULER_TASKS] ?>
+          <?include AddSchedulerSetting.wxi?>
+        </util:XmlConfig>
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+</Wix>

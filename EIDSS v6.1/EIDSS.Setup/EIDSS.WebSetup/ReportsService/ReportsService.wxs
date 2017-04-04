@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "$(var.ProjectDir)ProductInfo.wxi" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Fragment Id="Reports Service">
+    <Property Id="REPORTS_SERVICE" Secure="yes">
+      <RegistrySearch Id="REPORTS_SERVICE.RS" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="Reports Service" Type="raw" />
+    </Property>
+    <SetProperty Id="REPORTS_SERVICE" After="AppSearch" Value="!(loc.ReportsServiceName)_[COUNTRY]([INSTANCEID])" Sequence="first">
+      Not REPORTS_SERVICE
+    </SetProperty>
+
+    <Property Id="REPORTS_SERVICE_DISPLAY_NAME" Secure="yes">
+      <RegistrySearch Id="REPORTS_SERVICE_DISPLAY_NAME.RS" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="Reports Service Display Name" Type="raw" />
+    </Property>
+    <SetProperty Id="REPORTS_SERVICE_DISPLAY_NAME" After="AppSearch" Value="!(loc.ReportsServiceDisplayName). [COUNTRY]([INSTANCEID])" Sequence="first">
+      Not REPORTS_SERVICE_DISPLAY_NAME
+    </SetProperty>
+
+    <Property Id="REPORTS_SERVICE_DESCRIPTION" Secure="yes" />
+    <SetProperty Id="REPORTS_SERVICE_DESCRIPTION" After="AppSearch" Value="!(loc.ReportsServiceDescription)" Sequence="execute">
+      Not REPORTS_SERVICE_DESCRIPTION
+    </SetProperty>
+
+    <Property Id="REPORTS_SERVICE_PORT" Secure="yes">
+      <RegistrySearch Id="REPORTS_SERVICE_PORT.RS" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="Reports Service Port" Type="raw" />
+    </Property>
+
+    <ComponentGroup Id="ReportsService" Directory="ReportsService">
+      <Component Id="EIDSS.Reports.Service.exe" MultiInstance="yes">
+        <File Name="EIDSS.Reports.Service.exe" KeyPath="yes" Checksum="yes" />
+        <File Name="EIDSS.Reports.Service.exe.config" />
+
+        <ServiceInstall
+          Name="[REPORTS_SERVICE]"
+          DisplayName="[REPORTS_SERVICE_DISPLAY_NAME]"
+          Description="[REPORTS_SERVICE_DESCRIPTION]"
+          Type="ownProcess"
+          Start="auto"
+          ErrorControl="normal" />
+        <ServiceControl
+          Id="ReportsService"
+          Name="[REPORTS_SERVICE]"
+          Start="install"
+          Stop="both"
+          Remove="uninstall"
+          Wait="yes" />
+      </Component>
+      <Component Id="ServiceRegistryInstallInformation" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.ProductRegistryKey)">
+          <RegistryValue Name="Reports Service" Value="[REPORTS_SERVICE]" Type="string" KeyPath="yes" />
+          <RegistryValue Name="Reports Service Display Name" Value="[REPORTS_SERVICE_DISPLAY_NAME]" Type="string" />
+          <RegistryValue Name="Reports Service Port" Value="[REPORTS_SERVICE_PORT]" Type="string" />
+        </RegistryKey>
+
+        <?define key = ServiceSystemName ?>
+        <?define value = [REPORTS_SERVICE] ?>
+        <?define order = 101 ?>
+        <?include $(var.ProjectDir)AddConfigKey.wxi?>
+
+        <?define key = ServiceDisplayName ?>
+        <?define value = [REPORTS_SERVICE_DISPLAY_NAME] ?>
+        <?define order = 102 ?>
+        <?include $(var.ProjectDir)AddConfigKey.wxi?>
+
+        <?define key = ReportServiceHostURL ?>
+        <?define value = "http://localhost:[REPORTS_SERVICE_PORT]" ?>
+        <?define order = 103 ?>
+        <?include $(var.ProjectDir)AddConfigKey.wxi?>
+      </Component>
+
+      <Component Id="BLToolkit.4.dll" MultiInstance="yes">
+        <File Name="BLToolkit.4.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="bv.common.dll" MultiInstance="yes">
+        <File Name="bv.common.dll" KeyPath="yes" Checksum="yes" Source="$(var.bv.common.TargetPath)" />
+      </Component>
+      <Component Id="bv.model.dll" MultiInstance="yes">
+        <File Name="bv.model.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="bv.winclient.dll" MultiInstance="yes">
+        <File Name="bv.winclient.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="bvdb_common.dll" MultiInstance="yes">
+        <File Name="bvdb_common.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="bvwin_common.dll" MultiInstance="yes">
+        <File Name="bvwin_common.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="bv_common.dll" MultiInstance="yes">
+        <File Name="bv_common.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.Charts.v15.1.Core.dll" MultiInstance="yes">
+        <File Name="DevExpress.Charts.v15.1.Core.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.Data.v15.1.dll" MultiInstance="yes">
+        <File Name="DevExpress.Data.v15.1.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.Printing.v15.1.Core.dll" MultiInstance="yes">
+        <File Name="DevExpress.Printing.v15.1.Core.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraBars.v15.1.dll" MultiInstance="yes">
+        <File Name="DevExpress.XtraBars.v15.1.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.Utils.v15.1.dll" MultiInstance="yes">
+        <File Name="DevExpress.Utils.v15.1.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraEditors.v15.1.dll" MultiInstance="yes">
+        <File Name="DevExpress.XtraEditors.v15.1.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraPrinting.v15.1.dll" MultiInstance="yes">
+        <File Name="DevExpress.XtraPrinting.v15.1.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraReports.v15.1.dll" MultiInstance="yes">
+        <File Name="DevExpress.XtraReports.v15.1.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraCharts.v15.1.dll" MultiInstance="yes">
+        <File Name="DevExpress.XtraCharts.v15.1.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraGrid.v15.1.dll" MultiInstance="yes">
+        <File Name="DevExpress.XtraGrid.v15.1.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraPivotGrid.v15.1.dll" MultiInstance="yes">
+        <File Name="DevExpress.XtraPivotGrid.v15.1.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.PivotGrid.v15.1.Core.dll" MultiInstance="yes">
+        <File Name="DevExpress.PivotGrid.v15.1.Core.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraNavBar.v15.1.dll" MultiInstance="yes">
+        <File Name="DevExpress.XtraNavBar.v15.1.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraTreeList.v15.1.dll" MultiInstance="yes">
+        <File Name="DevExpress.XtraTreeList.v15.1.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DevExpress.XtraGauges.v15.1.Core.dll" MultiInstance="yes">
+        <File Name="DevExpress.XtraGauges.v15.1.Core.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="eidss.core.dll" MultiInstance="yes">
+        <File Name="eidss.core.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="EIDSS.FlexibleForms.dll" MultiInstance="yes">
+        <File Name="EIDSS.FlexibleForms.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="eidss.gis.common.dll" MultiInstance="yes">
+        <File Name="eidss.gis.common.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="eidss.gis.dll" MultiInstance="yes">
+        <File Name="eidss.gis.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="eidss.model.dll" MultiInstance="yes">
+        <File Name="eidss.model.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Eidss.Report.Autotester.exe" MultiInstance="yes">
+        <File Name="Eidss.Report.Autotester.exe" KeyPath="yes" Checksum="yes" />
+        <File Name="Eidss.Report.Autotester.exe.config" />
+      </Component>
+      <Component Id="EIDSS.Reports.dll" MultiInstance="yes">
+        <File Name="EIDSS.Reports.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="eidss.winclient.dll" MultiInstance="yes">
+        <File Name="eidss.winclient.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="eidss_common.dll" MultiInstance="yes">
+        <File Name="eidss_common.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="eidss_db.dll" MultiInstance="yes">
+        <File Name="eidss_db.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="eidss_forms.dll" MultiInstance="yes">
+        <File Name="eidss_forms.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="ReportsLoggingConfiguration.config" MultiInstance="yes">
+        <File Name="ReportsLoggingConfiguration.config" KeyPath="yes" Checksum="yes" />
+      </Component>
+
+      <ComponentGroupRef Id="ReportsServiceResources" />
+      <ComponentGroupRef Id="MapProjects" />
+      <ComponentGroupRef Id="gis.Harvested" />
+      <ComponentGroupRef Id="eidss.fonts" />
+      <ComponentGroupRef Id="eidss.core.EnterpriseLibrary.DependsOn" />
+      <ComponentGroupRef Id="ReportsService.StructureMap" />
+    </ComponentGroup>
+
+    <ComponentGroup Id="MapProjects" Directory="MapProjects" Source="$(var.BinariesPaths)MapProjects\">
+      <Component Id="Default.map">
+        <File Name="Default.map" Vital="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="Default.KZ.map">
+        <File Name="Default.KZ.map" Vital="yes" KeyPath="yes" />
+      </Component>
+      <Component Id="Default.TH.map">
+        <File Name="Default.TH.map" Vital="yes" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+
+    <InstallExecuteSequence>
+      <InstallServices>(?EIDSS.Reports.Service.exe = 2) And ($EIDSS.Reports.Service.exe >= 3)</InstallServices>
+    </InstallExecuteSequence>
+  </Fragment>
+  
+  <Fragment Id="eidss.core.EnterpriseLibrary.DependsOn">
+    <ComponentGroup Id="eidss.core.EnterpriseLibrary.DependsOn" Directory="ReportsService" Source="$(var.BinariesPaths)">
+      <Component Id="Microsoft.Practices.EnterpriseLibrary.Common.dll" MultiInstance="yes">
+        <File Name="Microsoft.Practices.EnterpriseLibrary.Common.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Microsoft.Practices.EnterpriseLibrary.Data.dll" MultiInstance="yes">
+        <File Name="Microsoft.Practices.EnterpriseLibrary.Data.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll" MultiInstance="yes">
+        <File Name="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Microsoft.Practices.EnterpriseLibrary.Logging.dll" MultiInstance="yes">
+        <File Name="Microsoft.Practices.EnterpriseLibrary.Logging.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Microsoft.Practices.ServiceLocation.dll" MultiInstance="yes">
+        <File Name="Microsoft.Practices.ServiceLocation.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Microsoft.Practices.Unity.dll" MultiInstance="yes">
+        <File Name="Microsoft.Practices.Unity.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="Microsoft.Practices.Unity.Interception.dll" MultiInstance="yes">
+        <File Name="Microsoft.Practices.Unity.Interception.dll" KeyPath="yes" Checksum="yes" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment Id="Reports Service Resources">
+    <?define FolderId=ar_IQ?>
+    <?define Folder=ar-IQ?>
+    <?define no_EIDSS.FlexibleForms.resources.dll?>
+    <?include ReportsServiceResources.wxi?>
+
+    <?define FolderId=az_Latn_AZ?>
+    <?define Folder=az-Latn-AZ?>
+    <?include ReportsServiceResources.wxi?>
+
+    <?define FolderId=hy_AM?>
+    <?define Folder=hy-AM?>
+    <?include ReportsServiceResources.wxi?>
+
+    <?define FolderId=ka_GE?>
+    <?define Folder=ka-GE?>
+    <?include ReportsServiceResources.wxi?>
+
+    <?define FolderId=kk_KZ?>
+    <?define Folder=kk-KZ?>
+    <?include ReportsServiceResources.wxi?>
+
+    <?define FolderId=ru_RU?>
+    <?define Folder=ru-RU?>
+    <?include ReportsServiceResources.wxi?>
+
+    <?define FolderId=uk_UA?>
+    <?define Folder=uk-UA?>
+    <?include ReportsServiceResources.wxi?>
+    
+    <?define FolderId=en_IQ_Eidss?>
+    <?define Folder=en-IQ-Eidss?>
+    <?define no_bv.winclient.resources.dll?>
+    <?define no_bvwin_common.resources.dll?>
+    <?define no_EIDSS.FlexibleForms.resources.dll?>
+    <?include ReportsServiceResources.wxi?>
+
+    <?define FolderId=ru_KZ_Eidss?>
+    <?define Folder=ru-KZ-Eidss?>
+    <?define no_bv.winclient.resources.dll?>
+    <?define no_bvwin_common.resources.dll?>
+    <?define no_EIDSS.FlexibleForms.resources.dll?>
+    <?include ReportsServiceResources.wxi?>
+
+    <?define FolderId=th_TH?>
+    <?define Folder=th-TH?>
+    <?define no_eidss.gis.resources.dll?>
+    <?include ReportsServiceResources.wxi?>
+    
+    <?define FolderId=en_TH_Eidss?>
+    <?define Folder=en-TH-Eidss?>
+    <?define no_bv.winclient.resources.dll ?>
+    <?define no_bvwin_common.resources.dll ?>
+    <?define no_EIDSS.FlexibleForms.resources.dll ?>
+    <?include ReportsServiceResources.wxi?>
+
+    <ComponentGroup Id="ReportsServiceResources">
+      <?define FolderIds=ar_IQ;az_Latn_AZ;hy_AM;ka_GE;kk_KZ;ru_RU;uk_UA;en_IQ_Eidss;ru_KZ_Eidss;th_TH;en_TH_Eidss?>
+      <?foreach FolderId in $(var.FolderIds)?>
+      <ComponentGroupRef Id="ReportsServiceResources_$(var.FolderId)" />
+      <?endforeach?>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment Id="ReportsService.StructureMap.DI">
+    <?define directory = ReportsService?>
+    <?define prefix = ReportsService?>
+    <?include $(var.SolutionDir)StructureMap.wxi?>
+  </Fragment>
+</Wix>

@@ -1,0 +1,56 @@
+﻿@model eidss.model.Schema.AsCampaign
+@using eidss.webclient.Utils;
+
+<table class="bordered">
+    <tr>
+        <td class="xlarge firstLabel">
+            @Html.BvLabel(Model, m => m.strCampaignID)
+        </td>
+        <td class="large">
+            @Html.BvEditbox(Model, m => m.strCampaignID, false)
+        </td>
+        <td class="xlarge label">
+           @Html.BvLabel(Model, m=>m.datCampaignDateStart) 
+        </td>
+        <td class="large">
+            @Html.BvDatebox(Model, m => m.datCampaignDateStart)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvLabel(Model, m => m.strCampaignName)
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strCampaignName, true)
+        </td>
+        <td class="xlarge label">
+           @Html.BvLabel(Model, m=>m.datCampaignDateEnd) 
+        </td>
+        <td>
+            @Html.BvDatebox(Model, m => m.datCampaignDateEnd)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvLabel(Model, m => m.idfsCampaignType)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, m => m.CampaignType)
+        </td>
+        <td class="xlarge label">
+            @Html.BvLabel(Model, m=>m.strCampaignAdministrator)           
+        </td>
+        <td>
+            @Html.BvEditbox(Model, m => m.strCampaignAdministrator)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.BvLabel(Model, m => m.idfsCampaignStatus)
+        </td>
+        <td>
+            @Html.BvCombobox(Model, m => m.CampaignStatus, clientOnChange: "asCampaign.onCampaignStatusChange")
+        </td>
+    </tr>  
+</table>
+

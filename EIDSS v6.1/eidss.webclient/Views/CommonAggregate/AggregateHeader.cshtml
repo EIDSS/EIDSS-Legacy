@@ -1,0 +1,384 @@
+﻿@model eidss.model.Schema.AggregateCaseHeader
+
+@using Kendo.Mvc.UI
+@using eidss.web.common.Utils
+@using bv.common.Configuration
+@using eidss.webclient.Utils;
+@using eidss.model.Schema;
+@using eidss.model.Enums;
+@using bv.model.Model.Core;
+
+<div class="tabPanelContent">
+    <div class="sectionTitle">
+                @if (Model.idfsAggrCaseType == (long)AggregateCaseType.HumanAggregateCase)
+                {
+                    @Translator.GetMessageString("titleHumanAggregateCaseNotificationInfo") 
+                }
+                else if (Model.idfsAggrCaseType == (long)AggregateCaseType.VetAggregateAction)
+                {
+                    @Translator.GetMessageString("titleVetAggregateActionNotificationInfo") 
+                }
+                else if (Model.idfsAggrCaseType == (long)AggregateCaseType.VetAggregateCase)
+                {
+                    @Translator.GetMessageString("titleVetAggregateCaseNotificationInfo") 
+                }
+    </div>
+    <table class="level1">
+        <tr>
+            <td class="large firstLabel subSectionTitle">
+                @if (Model.idfsAggrCaseType == (long)AggregateCaseType.HumanAggregateCase)
+                {
+                    @Translator.GetMessageString("titleHumanAggregateCaseNotificationSendBy") 
+                }
+                else if (Model.idfsAggrCaseType == (long)AggregateCaseType.VetAggregateAction)
+                {
+                    @Translator.GetMessageString("titleVetAggregateActionNotificationSendBy") 
+                }
+                else if (Model.idfsAggrCaseType == (long)AggregateCaseType.VetAggregateCase)
+                {
+                    @Translator.GetMessageString("titleVetAggregateCaseNotificationSendBy") 
+                }
+            </td>
+            <td class="xmedium label">
+                @Html.BvLabel(Model, m => m.strSentByOffice, m => m.idfSentByOffice)
+            </td>
+            <td class="xlarge">                
+                @Html.Action("InlineOrganizationPicker", "Organization", new { obj = Model, objectId = Model.idfAggrCase, idfsOrganizationPropertyName = "idfSentByOffice",
+                                                                                strOrganizationPropertyName = "strSentByOffice", idfsEmployeePropertyName = "idfSentByPerson",
+                                                                                strEmployeePropertyName = "strSentByPerson", HACode = 
+                                                                                Model.idfsAggrCaseType == (long)AggregateCaseType.HumanAggregateCase ? (int)eidss.model.Enums.HACode.Human : (int)eidss.model.Enums.HACode.LivestockAvian})
+            </td>
+            <td class="small label">
+                @Html.BvLabel(Model, m => m.idfSentByPerson)
+            </td>
+            <td>
+                @Html.Action("InlineEmployeePicker", "Employee", new { obj = Model, objectId = Model.idfAggrCase, idfsOrganizationPropertyName = "idfSentByOffice", 
+                                                                        strOrganizationPropertyName = "strSentByOffice", idfsEmployeePropertyName = "idfSentByPerson",
+                                                                        strEmployeePropertyName = "strSentByPerson"})
+            </td>                  
+        </tr>
+        <tr>
+            <td class="firstLabel" colspan="2">
+                @Translator.GetString("datDate")
+            </td>
+            <td colspan="3">
+                @Html.BvDatebox(Model, m => m.datSentByDate)
+            </td>
+        </tr>
+        <tr>
+            <td class="firstLabel subSectionTitle">
+                @if (Model.idfsAggrCaseType == (long)AggregateCaseType.HumanAggregateCase)
+                {
+                    @Translator.GetMessageString("titleHumanAggregateCaseNotificationReceivedBy") 
+                }
+                else if (Model.idfsAggrCaseType == (long)AggregateCaseType.VetAggregateAction)
+                {
+                    @Translator.GetMessageString("titleHumanAggregateCaseNotificationReceivedBy") 
+                }
+                else if (Model.idfsAggrCaseType == (long)AggregateCaseType.VetAggregateCase)
+                {
+                    @Translator.GetMessageString("titleVetAggregateCaseNotificationReceivedBy") 
+                }
+            </td>
+            <td class="label">
+                @Html.BvLabel(Model, m => m.strReceivedByOffice, m => m.idfReceivedByOffice)
+            </td>
+            <td>                
+                @Html.Action("InlineOrganizationPicker", "Organization", new { obj = Model, objectId = Model.idfAggrCase, idfsOrganizationPropertyName = "idfReceivedByOffice",
+                                                                                strOrganizationPropertyName = "strReceivedByOffice", idfsEmployeePropertyName = "idfReceivedByPerson",
+                                                                                strEmployeePropertyName = "strReceivedByPerson", HACode = 
+                                                                                Model.idfsAggrCaseType == (long)AggregateCaseType.HumanAggregateCase ? (int)eidss.model.Enums.HACode.Human : (int)eidss.model.Enums.HACode.LivestockAvian})                                  
+            </td>
+            <td class="label">
+                @Html.BvLabel(Model, m => m.idfReceivedByPerson)
+            </td>
+            <td>
+                @Html.Action("InlineEmployeePicker", "Employee", new { obj = Model, objectId = Model.idfAggrCase, idfsEmployeePropertyName = "idfReceivedByPerson", 
+                                                                        strEmployeePropertyName = "strReceivedByPerson", idfsOrganizationPropertyName = "idfReceivedByOffice", 
+                                                                        strOrganizationPropertyName = "strReceivedByOffice"})
+            </td>                  
+        </tr>
+        <tr>
+            <td class="firstLabel" colspan="2">
+                @Translator.GetString("datDate")
+            </td>
+            <td colspan="3">
+                @Html.BvDatebox(Model, m => m.datReceivedByDate)
+            </td>
+        </tr>
+        <tr>
+            <td class="firstLabel subSectionTitle">
+                @Translator.GetMessageString("titleEnteredBy"):
+            </td>
+            <td class="label">
+                @Html.BvLabel(Model, m => m.strEnteredByOffice)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, m => m.strEnteredByOffice)
+            </td>
+            <td class="label">
+                @Html.BvLabel(Model, m => m.strEnteredByPerson)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, m => m.strEnteredByPerson)
+            </td> 
+        </tr>
+        <tr>                 
+            <td class="firstLabel" colspan="2">
+                @Translator.GetString("datDate")
+            </td>
+            <td colspan="3">
+                @Html.BvEditbox(Model, m => m.strReadOnlyEnteredByDate)
+            </td>
+        </tr>
+    </table>
+    <div class="sectionTitle">
+        @Translator.GetMessageString("titleGeneralInfo")  
+    </div>
+    <table class="level1">
+        <tr>
+            <td class="aggregateHeaderGeneralInfoFirstTd firstLabel">
+                @if (Model.idfsAggrCaseType == (long)AggregateCaseType.VetAggregateAction)
+                {
+                    @Translator.GetMessageString("strActionID") 
+                }
+                else
+                {
+                    @Html.BvLabel(Model, m => m.strCaseID)
+                }
+            </td>
+            <td class="xlarge">
+                @Html.BvEditbox(Model, m => m.strCaseID)
+            </td>
+            <td colspan="2" />                  
+        </tr>
+        <tr>
+            <td class="firstLabel">
+                        @Html.BvLabel(Model, m => m.YearForAggr)
+            </td>
+            <td>
+                        @(Html.BvCombobox(Model, m => m.YearAggr, false, "aggregateCase.onYearChanged"))
+            </td>                            
+            <td class="small label">
+                @switch (Model.Settings.idfsStatisticPeriodType)
+                {
+                    case (long)StatisticPeriodType.Quarter:
+                        @Html.BvLabel(Model, m => m.QuarterForAggr);
+                        break;
+                    case (long)StatisticPeriodType.Month:
+                    case (long)StatisticPeriodType.Day:
+                        @Html.BvLabel(Model, m => m.MonthForAggr);
+                        break;
+                    case (long)StatisticPeriodType.Week:
+                        @Html.BvLabel(Model, m => m.WeekForAggr);
+                        break;
+                    default:
+                        break;
+                }
+            </td>
+            <td>
+                @switch (Model.Settings.idfsStatisticPeriodType)
+                {
+                    case (long)StatisticPeriodType.Quarter:
+                        @(Html.BvCombobox(Model, m => m.QuarterAggr, false))
+                        break;
+                    case (long)StatisticPeriodType.Month:
+                        @(Html.BvCombobox(Model, m => m.MonthAggr, false))
+                        break;
+                    case (long)StatisticPeriodType.Day:
+                        @(Html.BvCombobox(Model, m => m.MonthAggr, false, "aggregateCase.onMonthChanged"))
+                        break;
+                    case (long)StatisticPeriodType.Week:
+                        @(Html.BvCombobox(Model, m => m.WeekAggr, false))
+                        break;
+                    default:
+                        break;
+                }
+            </td>
+        </tr>
+        <tr>
+            <td class="firstLabel">
+                @switch (Model.Settings.idfsStatisticPeriodType)
+                {
+                    case (long)StatisticPeriodType.Day:
+                        @Html.BvLabel(Model, m => m.DayForAggr);
+                        break;
+                    default:
+                        break;
+                }
+            </td>
+            <td colspan="3">
+                @switch (Model.Settings.idfsStatisticPeriodType)
+                {
+                    case (long)StatisticPeriodType.Day:
+                        @Html.BvDatebox(Model, m => m.DayForAggr, limitMonth: true);
+                        break;
+                    default:
+                         break;
+                }
+            </td>                            
+        </tr>
+        <tr>
+            <td class="firstLabel">
+                @Html.BvLabel(Model, m => m.idfsCountry)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, m => m.Country, true, "address.onCountryChanged")
+            </td>                            
+            <td class="label">
+                @if (Model.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Region || 
+                      Model.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Rayon || 
+                      Model.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Settlement)
+                { @Html.BvLabel(Model, m => m.idfsRegion); }
+            </td>
+            <td>
+                @if (Model.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Region || 
+                      Model.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Rayon || 
+                      Model.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Settlement) 
+                { @Html.BvCombobox(Model, m => m.Region, false, null /*"address.onRegionChanged"*/) }
+            </td>
+        </tr>
+        <tr>
+            <td class="firstLabel">
+                @if (Model.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Rayon || 
+                      Model.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Settlement) 
+                { @Html.BvLabel(Model, m => m.idfsRayon); }
+            </td>
+            <td>
+                @if (Model.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Rayon || 
+                      Model.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Settlement) 
+                { @Html.BvCombobox(Model, m => m.Rayon, false, null /*"address.onRayonChanged"*/) }
+            </td>
+            <td class="label">
+                @if (Model.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Settlement) 
+                { @Html.BvLabel(Model, m => m.Settlement); }
+            </td>
+            <td>
+                @if (Model.Settings.idfsStatisticAreaType == (long)StatisticAreaType.Settlement) 
+                { @Html.BvCombobox(Model, m => m.Settlement, false, null /*"address.onSettlementChanged"*/) }
+            </td>
+        </tr>
+    </table>
+    <div class="sectionTitle">
+        @Translator.GetMessageString("tabTitleDetailedInfo")  
+    </div>
+
+
+<div>
+    @switch (Model.idfsAggrCaseType)
+    {
+        case (long)AggregateCaseType.HumanAggregateCase:
+        case (long)AggregateCaseType.VetAggregateCase:
+            bool h = Model.idfsAggrCaseType == (long)AggregateCaseType.HumanAggregateCase;
+            <table class="level1">
+                <tr>
+                    <td class="firstLabel">
+                        @Html.BvLabel(Model, m => m.AggregateMatrixVersionCase)
+                    </td>
+                    <td class="xxlarge">
+                        @Html.BvCombobox(Model, m => m.AggregateMatrixVersionCase, true, "aggregateCase.toFlexFormCaseReload"+(h?"E":"")).HtmlAttributes(new {style = "width: 100%; max-width: 299px;"})
+                    </td>                            
+                    <td class="label">
+                        @Html.BvLabel(Model, m => m.FFTemplateCase)
+                    </td>
+                    <td class="xxlarge">
+                        @Html.BvCombobox(Model, m => m.FFTemplateCase, true, "aggregateCase.toFlexFormCaseReload"+(h?"E":"")).HtmlAttributes(new {style = "width: 100%; max-width: 299px;"})
+                    </td>
+                </tr>
+            </table>
+
+            <div id="FlexFormCase">
+            </div>
+            break;
+        case (long)AggregateCaseType.VetAggregateAction:
+            @(Html.Kendo().TabStrip()
+                .HtmlAttributes(new { @class = "twoLinesHeightTab" })
+                .Name("tabDetailedInfo")
+                .Animation(animation => animation.Enable(false))
+                .Items(items =>
+                {
+                    items.Add()
+                        .Text(Translator.GetMessageString("titleDiagnosticInvestigation"))
+                        .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "titleDiagnosticInvestigation" } : new { })
+                        .Content(
+                            @<text>
+                                 <div class="tabPanelContent">
+                                 <table class="level1">
+                                     <tr>
+                                         <td class="firstLabel">
+                                             @Html.BvLabel(Model, m => m.AggregateMatrixVersionDiagnostic)
+                                         </td>
+                                         <td class="xxlarge">
+                                             @Html.BvCombobox(Model, m => m.AggregateMatrixVersionDiagnostic, true, "aggregateCase.toFlexFormDiagnosticReload").HtmlAttributes(new {style = "width: 100%; max-width: 299px;"})
+                                         </td>                            
+                                         <td class="label">
+                                             @Html.BvLabel(Model, m => m.FFTemplateDiagnostic)
+                                         </td>
+                                         <td class="xxlarge">
+                                             @Html.BvCombobox(Model, m => m.FFTemplateDiagnostic, true, "aggregateCase.toFlexFormDiagnosticReload").HtmlAttributes(new {style = "width: 100%; max-width: 299px;"})
+                                         </td>
+                                     </tr>
+                                 </table>
+                                 <div id="FlexFormDiagnostic">
+                                 </div>
+                                 </div>
+                             </text>);
+                    items.Add()
+                        .Text(Translator.GetMessageString("tabTitleTreatmentProphylacticMeasures"))
+                        .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleTreatmentProphylacticMeasures" } : new { })
+                        .Content(
+                            @<text>
+                                <div class="tabPanelContent">
+                                <table class="level1">
+                                    <tr>
+                                        <td class="firstLabel">
+                                            @Html.BvLabel(Model, m => m.AggregateMatrixVersionProphylactic)
+                                        </td>
+                                        <td class="xxlarge">
+                                            @Html.BvCombobox(Model, m => m.AggregateMatrixVersionProphylactic, true, "aggregateCase.toFlexFormProphylacticReload").HtmlAttributes(new {style = "width: 100%; max-width: 299px;"})
+                                        </td>                            
+                                        <td class="label">
+                                            @Html.BvLabel(Model, m => m.FFTemplateProphylactic)
+                                        </td>
+                                        <td class="xxlarge">
+                                            @Html.BvCombobox(Model, m => m.FFTemplateProphylactic, true, "aggregateCase.toFlexFormProphylacticReload").HtmlAttributes(new {style = "width: 100%; max-width: 299px;"})
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div id="FlexFormProphylactic">
+                                </div>
+                                </div>
+                            </text>);
+                    items.Add()
+                        .Text(Translator.GetMessageString("tabTitleVeterinarySanitaryMeasures"))
+                        .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleVeterinarySanitaryMeasures" } : new { })
+                        .Content(
+                            @<text>
+                                <div class="tabPanelContent">
+                                <table class="level1">
+                                    <tr>
+                                        <td class="firstLabel">
+                                            @Html.BvLabel(Model, m => m.AggregateMatrixVersionSanitary)
+                                        </td>
+                                        <td class="xxlarge">
+                                            @Html.BvCombobox(Model, m => m.AggregateMatrixVersionSanitary, true, "aggregateCase.toFlexFormSanitaryReload").HtmlAttributes(new {style = "width: 100%; max-width: 299px;"})
+                                        </td>                            
+                                        <td class="label">
+                                            @Html.BvLabel(Model, m => m.FFTemplateSanitary)
+                                        </td>
+                                        <td class="xxlarge">
+                                            @Html.BvCombobox(Model, m => m.FFTemplateSanitary, true, "aggregateCase.toFlexFormSanitaryReload").HtmlAttributes(new {style = "width: 100%; max-width: 299px;"})
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div id="FlexFormSanitary">
+                                </div>
+                                </div>
+                            </text>);
+                })
+                .SelectedIndex(0))                
+            break;
+    }
+</div>     
+</div>
+         

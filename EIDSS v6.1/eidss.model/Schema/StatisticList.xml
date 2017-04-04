@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<object name="StatisticListItem" connection="EidssConnectionString" generator="ObjectGenerator.xslt" xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="fn_Statistic_SelectList" type="fnlist" />
+		<count name="spStatistic_SelectCount"/>
+
+	</storage>
+
+	<tables>
+		<table name="StatisticListItem">
+      <properties auditObject="daoStatistic" auditTable="tlbStatistic" permissionObject="Statistic" />
+       <help win="Statistics"/>
+
+            <extfilters>
+                <filter>
+                    <join>
+                        inner join (
+                        select 
+	                        idfsSettlement as idfsArea,
+	                        idfsSettlement,
+	                        idfsRayon,
+	                        idfsRegion,
+	                        idfsCountry
+                        from dbo.gisSettlement
+                        union all
+                        select 
+	                        idfsRayon,
+	                        null,
+	                        idfsRayon,
+	                        idfsRegion,
+	                        idfsCountry
+                        from dbo.gisRayon
+                        union all
+                        select 
+	                        idfsRegion,
+	                        null,
+	                        null,
+	                        idfsRegion,
+	                        idfsCountry
+                        from dbo.gisRegion
+                        union all
+                        select 
+	                        idfsCountry,
+	                        null,
+	                        null,
+	                        null,
+	                        idfsCountry
+                        from dbo.gisCountry
+                        ) Area on fn_Statistic_SelectList.idfsArea = Area.idfsArea
+                    </join>
+                    <where>
+                      <!--expr param="idfsStatisticDataType" lambda='() => "Area.idfsCountry = " + eidss.model.Core.EidssSiteContext.Instance.CountryID' /-->
+                        <expr param="idfsRegion" value="Area.idfsRegion {0} @idfsRegion"/>
+                        <expr param="idfsRayon" value="Area.idfsRayon {0} @idfsRayon"/>
+                        <expr param="idfsSettlement" value="Area.idfsSettlement {0} @idfsSettlement"/>
+                    </where>
+                </filter>
+            </extfilters>
+            <searchpanel>
+				<item name="idfsStatisticDataType" editor="Lookup" labelId="idfsStatisticDataType" lookupName="StatisticDataTypeLookup"
+					  lookupType="StatisticTypeLookup" lookupText="c.name" lookupValue="c.idfsBaseReference" />
+				<item name="datStatisticStartDate" editor="Date" labelId="datStatisticStartDate" range="true"  mandatory="true"
+					  default="c => new DateTime(DateTime.Now.Year - 1, 01, 01)"/>
+                <item name="idfsRegion" editor="Lookup" labelId="idfsRegion" isParam="true" dependent="idfsRayon"
+                      lookupName="RegionLookup" lookupType="RegionLookup" lookupText="c.strRegionName" lookupValue="c.idfsRegion"/>
+                <item name="idfsRayon" editor="Lookup" labelId="idfsRayon" isParam="true" dependent="idfsSettlement"
+                      lookupName="RayonLookup" lookupType="RayonLookup" lookupText="c.strRayonName" lookupValue="c.idfsRayon"/>
+                <item name="idfsSettlement" editor="Lookup" labelId="strSettlement" isParam="true"
+                      lookupName="SettlementLookup" lookupType="SettlementLookup" lookupText="c.strSettlementName" lookupValue="c.idfsSettlement"/>
+                
+                <item name="idfsStatisticAreaType" editor="Numeric" labelId=""/>
+			</searchpanel>
+
+			<grid>
+				<item name="idfStatistic" visible="false" key="true"  />
+				<item name="varValue" />
+        <item name="strStatisticalAgeGroup" />
+        <item name="ParameterType" />
+				<item name="setnParameterName" />
+				<item name="setnPeriodTypeName" />
+				<item name="datStatisticStartDate" />
+				<item name="setnAreaTypeName" />
+				<item name="setnArea" />
+			</grid>
+            <fields>
+                <storage name="idfsCountry" type="long?" />
+                <storage name="idfsRegion" type="long?" />
+                <storage name="idfsRayon" type="long?" />
+                <storage name="idfsSettlement" type="long?" />
+                <storage name="idfsHumanGender" type="long?"/>
+            </fields>
+            <readonly>
+                <fields name="Region,idfsRegion" 
+                        predicate="c => c.idfsCountry == null /*|| c.StatisticDataType == null 
+                        || (c.StatisticDataType != null &amp;&amp; c.StatisticDataType.idfsStatisticAreaType == (long)eidss.model.Enums.StatisticAreaType.Country)*/
+                        " />
+                <fields name="Rayon,idfsRayon" 
+                        predicate="c => c.idfsRegion == null /*|| c.StatisticDataType == null 
+                        || (c.StatisticDataType != null &amp;&amp; c.StatisticDataType.idfsStatisticAreaType == (long)eidss.model.Enums.StatisticAreaType.Country)
+                        || (c.StatisticDataType != null &amp;&amp; c.StatisticDataType.idfsStatisticAreaType == (long)eidss.model.Enums.StatisticAreaType.Region)*/
+                        " />
+                <fields name="Settlement,idfsSettlement" 
+                        predicate="c => c.idfsRayon == null /*|| c.StatisticDataType == null 
+                        || (c.StatisticDataType != null &amp;&amp; c.StatisticDataType.idfsStatisticAreaType == (long)eidss.model.Enums.StatisticAreaType.Country)
+                        || (c.StatisticDataType != null &amp;&amp; c.StatisticDataType.idfsStatisticAreaType == (long)eidss.model.Enums.StatisticAreaType.Region)
+                        || (c.StatisticDataType != null &amp;&amp; c.StatisticDataType.idfsStatisticAreaType == (long)eidss.model.Enums.StatisticAreaType.Rayon)*/
+                        " />
+                <fields name="*" predicate="c => false" />
+            </readonly>
+            <invisible>
+                <fields name="idfsStatisticAreaType" predicate="c => true"/>
+            </invisible>
+            <lookups>
+                <lookup name="StatisticDataType" table="StatisticTypeLookup" source="idfsStatisticDataType" target="idfsBaseReference" />
+                <lookup name="Country" table="CountryLookup" source="idfsCountry" target="idfsCountry" />
+                <lookup name="Region" table="RegionLookup" source="idfsRegion" target="idfsRegion">
+                    <params>
+                        <param name="CountryID" lambda="c => c.idfsCountry ?? 0" type="long" />
+                        <param name="ID" const="null" />
+                    </params>
+                </lookup>
+                <lookup name="Rayon" table="RayonLookup" source="idfsRayon" target="idfsRayon">
+                    <params>
+                        <param name="RegionID" lambda="c => c.idfsRegion ?? 0" type="long" />
+                        <param name="ID" const="null" />
+                    </params>
+                </lookup>
+                <lookup name="Settlement" table="SettlementLookup" source="idfsSettlement" target="idfsSettlement">
+                    <params>
+                        <param name="RayonID" lambda="c => c.idfsRayon ?? 0" type="long" />
+                        <param name="ID" const="null" />
+                    </params>
+                </lookup>
+            </lookups>
+
+			<storage>
+				<delete name="spStatistic_Delete"/>
+			</storage>
+
+            <extenders>
+                <created>
+                    <!-- set default country as current country of database -->
+                    <lambda_extender target="Country" type="CountryLookup" lambda='c => 
+                                     c.CountryLookup.Where(a => a.idfsCountry == eidss.model.Core.EidssSiteContext.Instance.CountryID)
+                                     .SingleOrDefault()'/>
+                    <lambda_extender target="Region" type="RegionLookup" lambda='c => 
+                                     EidssUserContext.User.Options.Prefs.DefaultRegion == true?
+                                     c.RegionLookup.Where(a => a.idfsRegion == eidss.model.Core.EidssSiteContext.Instance.RegionID)
+                                     .SingleOrDefault(): null'/>
+                </created>
+            </extenders>
+            <handlers>
+                <fieldhandler>
+                    <lambda_handler field="idfsStatisticDataType" target="idfsStatisticAreaType" type="long?" 
+                                    lambda="c => c.StatisticDataType == null ? (long?)null : c.StatisticDataType.idfsStatisticAreaType"/>
+                    <lambda_handler field="idfsCountry" target="Region" type="RegionLookup" lambda="c => null"/>
+                    <lambda_handler field="idfsRegion" target="Rayon" type="RayonLookup" lambda="c => null"/>
+                    <lambda_handler field="idfsRayon" target="Settlement" type="SettlementLookup" lambda="c => null"/>
+                    <lookup_handler lookup="Region" field="idfsCountry" />
+                    <lookup_handler lookup="Rayon" field="idfsRegion" />
+                    <lookup_handler lookup="Settlement" field="idfsRayon" />
+                </fieldhandler>
+            </handlers>
+
+      <actions child="Statistic">
+        <standard>
+          <remove type="Report"/>
+        </standard>
+        <action name="ImportData" type="Action">
+          <visual panel="Top" alignment="Right">
+            <regular caption="strLoadData_Id" tooltip="strLoadData_Id" icon=""/>
+          </visual>
+          <permissions predicate="() => EidssUserContext.User.HasPermission(PermissionHelper.InsertPermission(EIDSSPermissionObject.Statistic))"/>
+        </action>
+			</actions>
+		</table>
+	</tables>
+
+</object>

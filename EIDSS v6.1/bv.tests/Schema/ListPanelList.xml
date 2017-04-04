@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<object name="ListPanelItem"
+		connection="TestConnectionString"
+		generator="ObjectGenerator.xslt"
+		xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="fnLookupTable2_SelectList" type="fnlist" />
+	</storage>
+
+	<tables >
+		<table name="ListPanelItem">
+			<properties permissionObject="Test" />
+			<extfilters>
+				<filter>
+					<join>inner join dbo.LookupTable1 t1 on t1.Lookup1ID = Lookup2ParentID</join>
+					<where>
+						<expr param="par11" value="t1.Lookup1Field1 {0} @par11" />
+					</where>
+				</filter>
+				<filter>
+					<join>inner join dbo.LookupTable1 t2 on t2.Lookup1ID = Lookup2ParentID</join>
+					<where>
+						<expr param="par21" value="t2.Lookup1ID {0} @par21" />
+						<expr param="par22" value="t2.Lookup1ID {0} @par22" />
+					</where>
+				</filter>
+			</extfilters>
+			<searchpanel>
+				<item name="par21" isParam="true" defaultoper=">=" labelId="par21_TtlId" location="Additional" editor="Numeric" range="false" mandatory="false" />
+				<item name="par22" isParam="true" defaultoper="&lt;=" labelId="par22_TtlId" location="Additional" editor="Numeric" />
+				<item name="Lookup2Field1" editor="Text" mandatory="false" labelId="lblID"  />
+				<item name="par11" isParam="true" editor="Text" labelId="par11_TtlId" />
+				<item name="Lookup2ParentID" editor="Lookup" labelId="lblIDLookup"
+                      lookupName="ParentLookupLookup" lookupType="Lookup1Table" lookupText='c.Lookup1ID.ToString() + " - " + c.Lookup1Field1' lookupValue="c.Lookup1ID" />
+			</searchpanel>
+			<grid>
+				<item name="Lookup2ID" key="true" />
+				<item name="Lookup2Field1" defaultSort="Descending" />
+				<item name="Lookup2ParentID" visible="false"  />
+			</grid>
+			<lookups>
+				<lookup name="ParentLookup" table="Lookup1Table" source="Lookup2ParentID" target="Lookup1ID" />
+			</lookups>
+			
+
+			<storage>
+				<post name="spListPanelItem_Post" />
+				<!--				<candelete name="" />-->
+			</storage>
+			<actions child="ListPanelObject"></actions>
+			
+		</table>
+	</tables>
+
+</object>

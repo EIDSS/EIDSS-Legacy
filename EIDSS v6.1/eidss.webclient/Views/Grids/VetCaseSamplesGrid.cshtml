@@ -1,0 +1,8 @@
+﻿@model eidss.model.Schema.VetCaseSample.VetCaseSampleGridModelList
+@using eidss.model.Schema
+@using eidss.webclient.Utils;
+
+@(Html.BvDetailsFormGrid<VetCaseSample.VetCaseSampleGridModel, VetCaseSample.VetCaseSampleGridModelList>((string)ViewBag.SampleName, Model, "detailsGrid",
+    "sample.showVetCaseSampleGridEditWindow", null, (bool)ViewBag.IsReadOnly, false, false, 
+    strExcludeColumns: (string)ViewBag.ExcludeColumns)
+)

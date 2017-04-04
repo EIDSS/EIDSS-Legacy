@@ -1,0 +1,30 @@
+﻿@using Kendo.Mvc.UI
+@using bv.common.Configuration
+@using bv.model.Model.Core
+@using eidss.webclient.Utils
+@model eidss.webclient.Models.Reports.ZoonoticModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/ExportButtons", Model)
+    <div class="bluelayout">
+        <div class="tabPanelContent">
+        
+            @Html.Partial("Common/BaseFilter", Model)
+
+            @Html.Partial("Common/BaseYearFilter", Model)
+
+            @Html.Partial("Common/AddressFilter", Model.Address)
+
+            @Html.Partial("Common/DiagnosisGroupDiagnosisTreeFilter", Model.DiagnosisModel)
+
+        </div>
+    </div>
+}

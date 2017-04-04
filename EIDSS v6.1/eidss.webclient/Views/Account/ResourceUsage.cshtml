@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <title>@Translator.GetMessageString("ResourceUsageTitle")</title>
+</head>
+
+@model List<bv.model.ResourcesUsage.FormDescription>
+@{
+    ViewBag.Title = Translator.GetMessageString("ResourceUsageTitle");
+    Layout = null;
+}
+@using Kendo.Mvc.UI
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+
+    <body class='@(Cultures.IsRtl ? "k-rtl" : "")'>
+<div>
+        @using (Html.BeginForm())
+        {
+            <div class="windowButtonsPn">
+                <div style="float: left">This term is used in other forms. Do you want to save term translation?</div>
+                <input id="idButtonSplit" type="button" class="windowButton" onclick="bvTranslation.SplitDoSplit()" value="@Translator.GetMessageString("Split")"/>     
+                <input id="idButtonAccept" type="button" class="windowButton" onclick="bvTranslation.SplitDoAccept()" value="@Translator.GetMessageString("Accept")"/>     
+                <input id="idButtonCancel" type="button" class="windowButton" onclick="bvTranslation.SplitDoCancel()" value="@Translator.GetMessageString("Cancel")"/>     
+            </div>
+            <div class="windowSeparator"></div>
+        }
+
+
+    @(Html.Kendo().Grid(Model)
+          .Name("GridUsage")
+          .DataSource(dataBinding => dataBinding.Server()/*.Model(m =>
+              {
+                  m.Field(p => p.Key.Replace(".", " "));
+                  m.Field(p => p.Apptype);
+                  m.Field(p => p.Caption);
+                  m.Field(p => p.Comment);
+                  m.Field(p => p.FormID);
+                  m.Field(p => p.Obsolete);
+                  m.Field(p => p.PathsString);
+                  m.Field(p => p.ViewsString);
+              })*/)
+          .Columns(columns =>
+              {
+                  columns.Bound(p => p.Key).Title("Key").Width(250);
+                  columns.Bound(p => p.Apptype).Title("App").Width(60);
+                  columns.Bound(p => p.Caption).Title("Caption").Width(150);
+                  columns.Bound(p => p.Comment).Title("Comment").Width(40); ;
+                  columns.Bound(p => p.FormID).Title("Form").Width(45);
+                  columns.Bound(p => p.Obsolete).Title("Obsolete").Width(40);
+                  columns.Bound(p => p.PathsString).Title("Paths").Width(40); ;
+                  columns.Bound(p => p.ViewsString).Title("Views");
+              }
+          )
+          .Scrollable(c => c.Height(420).Enabled(true))
+          .Editable(editing => editing.Enabled(false))
+          .Resizable(resizing => resizing.Columns(true))
+          )
+
+</div>   
+
+</body</html>

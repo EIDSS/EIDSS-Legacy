@@ -1,0 +1,87 @@
+@using eidss.avr.mweb.Utils
+@using bv.common.Configuration
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    
+        <link href="@Url.Content("~/Content/Kendo/kendo.common.min.css")" rel="stylesheet" />
+        @if (Cultures.IsRtl)
+        {
+            <link href="@Url.Content("~/Content/Kendo/kendo.rtl.min.css")" rel="stylesheet" />
+        }
+        <link href="@Url.Content("~/Content/Kendo/kendo.silver.min.css")" rel="stylesheet" />
+
+        @Html.IncludeVersionedCss("~/Content/Styles/Common.css")
+        @Html.IncludeVersionedCss("~/Content/Styles/ListForm.css")
+    
+        <script src="@Url.Content("~/Scripts/jquery-1.11.1.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/globalize.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/cultures/globalize.cultures.js")" type="text/javascript"></script>
+
+        <script src="@Url.Action("MessagesScript", "Account", new { version = Extenders.VersionCode() })"></script>
+        @Html.IncludeVersionedJs("~/Scripts/EIDSS/avrUrls.js")       
+        @Html.IncludeVersionedJs("~/Scripts/EIDSS/Common.js")       
+        @Html.IncludeVersionedJs("~/Scripts/EIDSS/DefaultPage.js")       
+        @Html.IncludeVersionedJs("~/Scripts/EIDSS/Dialogs.js")       
+        @Html.IncludeVersionedJs("~/Scripts/EIDSS/CheckComboBox.js")       
+
+    
+        <script src="@Url.Content("~/Scripts/jquery.session.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/jquery.cookie.js")" type="text/javascript"></script>
+
+        @Html.IncludeVersionedJs("~/Scripts/EIDSS/ConfirmationDlg.js")       
+        @Html.IncludeVersionedJs("~/Scripts/EIDSS/WarningDlg.js")       
+        @Html.IncludeVersionedJs("~/Scripts/EIDSS/OkCancelDlg.js")       
+        @Html.IncludeVersionedJs("~/Scripts/EIDSS/ViewGrid.js")       
+        @Html.IncludeVersionedJs("~/Scripts/EIDSS/AggregateColumnDlg.js")       
+        @Html.IncludeVersionedJs("~/Scripts/EIDSS/TranslationTool.js")       
+    
+
+    <!-- Translations -->
+            @Html.DevExpress().GetStyleSheets( 
+            new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout, Theme = GeneralSettings.Theme}, 
+            new StyleSheet { ExtensionSuite = ExtensionSuite.Editors, Theme = GeneralSettings.Theme }, 
+            new StyleSheet { ExtensionSuite = ExtensionSuite.HtmlEditor, Theme = GeneralSettings.Theme }, 
+            new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, Theme = GeneralSettings.Theme}, 
+            new StyleSheet { ExtensionSuite = ExtensionSuite.PivotGrid, Theme = GeneralSettings.Theme },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.Chart, Theme = GeneralSettings.Theme },
+            new StyleSheet { ExtensionSuite = ExtensionSuite.Report, Theme = GeneralSettings.Theme },
+	        new StyleSheet { ExtensionSuite = ExtensionSuite.Scheduler, Theme = GeneralSettings.Theme },
+	        new StyleSheet { ExtensionSuite = ExtensionSuite.TreeList, Theme = GeneralSettings.Theme }
+        )
+        @Html.DevExpress().GetScripts( 
+            new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout }, 
+            new Script { ExtensionSuite = ExtensionSuite.HtmlEditor }, 
+            new Script { ExtensionSuite = ExtensionSuite.GridView }, 
+            new Script { ExtensionSuite = ExtensionSuite.PivotGrid },
+            new Script { ExtensionSuite = ExtensionSuite.Editors }, 
+            new Script { ExtensionSuite = ExtensionSuite.Chart },
+            //new Script { ExtensionSuite = ExtensionSuite.Report },
+	        new Script { ExtensionSuite = ExtensionSuite.Scheduler },
+	        new Script { ExtensionSuite = ExtensionSuite.TreeList }
+        )
+    
+    
+</head>
+    <body class='@(Cultures.IsRtl ? "k-rtl" : "")'>
+        <div class="page homePage">
+            <div class="titlePanel">@ViewBag.Title</div>
+            @Html.Heartbeat()
+            @Html.Partial("ConfirmationDlg")
+            @Html.Partial("WarningDlg")
+            @Html.Partial("OkCancelDlg")
+    @if (BaseSettings.TranslationMode)
+    {
+            @Html.Partial("TranslationToolDlg", new bv.common.Resources.TranslationTool.TranslatorContainer())
+    }
+            <div class="content">
+                @RenderBody()
+            </div>
+        </div>
+        <div id="loading" class="loader">
+            <img id="loadingImg" class="loaderImg" src='@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/ajax-loader.gif"))' alt="" />
+        </div>   
+    </body>
+</html>

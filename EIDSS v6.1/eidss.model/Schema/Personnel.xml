@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="Personnel"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+      <get name="spPerson_SelectDetail" />
+    <!--validate name="spHumanCase_Validate" /-->
+    </storage>
+
+  <tables>
+        <table name="Personnel">
+          <properties auditObject="daoEmployee" auditTable="tlbPerson" permissionObject="Person"/>
+          <fields>
+                <!-- In the field Patient the last and the first name of the patient will be displayed -->
+                <calculated name="strFullName" type="string" depends="strFirstName,strSecondName,strFamilyName"
+                            lambda='c => String.Format("{0} {1} {2}", c.strFamilyName, c.strFirstName, c.strSecondName)' />
+                <storage name="idfSelectedPerson" type="long?"/>
+            </fields>
+            <readonly>
+              <fields name="strInstitutionName" predicate="c => true" />
+            </readonly>
+            <lookups>              
+              <lookup name="Department" table="DepartmentLookup" source="idfDepartment" target="idfDepartment" >
+                <params>
+                  <param name="OrganizationID" lambda="c => c.idfInstitution ?? 0" type="long" />
+                  <param name="ID" const="null" />
+                </params>
+              </lookup>
+              <lookup name="Position" table="BaseReference" section="rftPosition" source="idfsStaffPosition" target="idfsBaseReference" />
+              <lookup name="Person" table="PersonLookup" source="idfSelectedPerson" target="idfPerson">
+                <params>
+                  <param name="OfficeID" lambda="c => c.idfInstitution ?? 0" type="long" />
+                  <param name="ID" const="null" />
+                  <param name="ShowUsersOnly" const="false"/>
+                  <param name="intHACode" const="null"/>
+                </params>
+              </lookup>
+            </lookups>
+            <extenders>
+                <creating>
+                  <scalar_extender target="idfPerson" class="GetNewIDExtender" />
+                </creating>
+            </extenders>
+            <handlers>
+                <fieldhandler>
+                  <lookup_handler lookup="Person" field="idfInstitution" />                                    
+                </fieldhandler>
+            </handlers>
+        </table>
+    </tables>
+
+</object>

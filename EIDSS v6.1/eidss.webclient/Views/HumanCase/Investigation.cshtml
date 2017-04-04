@@ -1,0 +1,48 @@
+﻿@model eidss.model.Schema.HumanCase
+@using Kendo.Mvc.UI
+@using eidss.web.common.Utils
+@using bv.common.Configuration
+
+<div class="tabPanelContent subTab">
+@(Html.Kendo().TabStrip()
+    .Name("InvestigationTabStrip")
+    .Events(events => events.Select("function(e){ humanCase.onTabSelect(e, '" + Model.idfCase + "', 'InvestigationTabStrip'); }"))
+    .Animation(animation => animation.Enable(false))
+    .HtmlAttributes(new { @class = "innerTabs threeLinesHeightInnerTab" })
+    .Items(tabstrip =>
+    {
+        tabstrip.Add()
+            .Text(Translator.GetMessageString("tabTitleClinicalInformation"))
+            .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "titleClinicalInformation" } : new { })
+            .Content(Html.Partial(@"../HumanCase/ClinicalInformation", Model).ToHtmlString());
+        tabstrip.Add()
+            .Text(Translator.GetMessageString("tabTitleSamplesCollection"))
+            .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleSamplesCollection" } : new { })
+            .Content(Html.Partial(@"../HumanCase/SamplesCollection", Model).ToHtmlString());
+        tabstrip.Add()
+            .Text(Translator.GetMessageString("tabTitleContactList"))
+            .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleContactList" } : new { })
+            .Content(Html.Partial(@"../HumanCase/ContactList", Model).ToHtmlString());
+        tabstrip.Add()
+            .Text(Translator.GetMessageString("tabTitleCaseClassification"))
+            .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleCaseClassification", @class = "ffTab" } : new { @class = "ffTab" })
+            .Content(
+                @<text>
+                    <div class="tabPanelContent" id="CaseClassificationFlexForm"></div>
+                </text>
+            );
+        tabstrip.Add()
+            .Text(Translator.GetMessageString("tabTitleEpidemiologicalLinksAndRiskFactors"))
+            .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleEpidemiologicalLinksAndRiskFactors", @class = "ffTab" } : new { @class = "ffTab" })
+            .Content(
+                @<text>
+                    <div class="tabPanelContent" id="EpiLinksFlexForm"></div>
+                </text>
+            );
+        tabstrip.Add()
+            .Text(Translator.GetMessageString("tabTitleFinalCaseClassificationAndOutcome"))
+            .HtmlAttributes(Config.GetBoolSetting("AutoTestingVersion") ? (object)new { bvid = "tabTitleFinalCaseClassificationAndOutcome" } : new { })
+            .Content(Html.Partial(@"../HumanCase/FinalCaseClassificationAndOutcome", Model).ToHtmlString());
+    }).SelectedIndex(0)
+)
+</div>

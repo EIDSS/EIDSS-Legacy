@@ -1,0 +1,105 @@
+﻿@model eidss.model.Schema.SystemPreferences
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using bv.common.Configuration
+@using bv.model.Model.Core
+@using eidss.model.Schema
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+@Html.IncludeVersionedCss("~/Content/Styles/Details.css")
+
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {                                        
+        <div class="windowButtonsPn">                  
+            <input id="idButtonDefault" type="button" class="button" onclick="detailPage.setSystemPreferencesDefault();" value="@Translator.GetMessageString("btnRestoreToDefault")" />
+            <input id="idButtonOk" type="button" class="button" onclick="detailPage.setSystemPreferences();" value="@Translator.GetMessageString("Ok")" />     
+            <input id="idButtonCancel" type="button" class="button" onclick="bvPopup.closeDefaultPopup();" value="@Translator.GetMessageString("Cancel")" />  
+        </div>   
+        <div class="windowSeparator"></div>
+        @Html.Hidden("idfSystemPreferences", Model.idfSystemPreferences)
+        <table class="level1 twoColumns">   
+            <tr>
+                <td class="xxlarge label">
+                    @Html.BvLabel(Model, m => m.intListGridPageSize)
+                </td>                                          
+                <td>
+                    @Html.BvNumeric(Model, m => m.intListGridPageSize, 0, 1, 200, true)
+                </td>                
+            </tr>                    
+            <tr>
+                <td class="label">
+                    @Html.BvLabel(Model, m => m.intPopupGridPageSize)
+                </td>
+                <td>
+                    @Html.BvNumeric(Model, m => m.intPopupGridPageSize, 0, 1, 200, true)
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                    @Html.BvLabel(Model, m => m.intDetailGridPageSize)
+                </td>
+                <td>
+                    @Html.BvNumeric(Model, m => m.intDetailGridPageSize, 0, 1, 200, true)
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                    @Html.BvLabel(Model, m => m.intLabSectionPageSize)
+                </td>
+                <td>
+                    @Html.BvNumeric(Model, m => m.intLabSectionPageSize, 0, 1, 200, true)
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                </td>
+                <td>
+                    @Html.BvCheckBox(Model, m => m.blnDefaultRegion, true)
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                    @Html.BvLabel(Model, m => m.intDefaultDays)
+                </td>
+                <td>
+                    @Html.BvNumeric(Model, m => m.intDefaultDays, 0, 1, 60, true)
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                </td>
+                <td>
+                    @Html.BvCheckBox(Model, m => m.blnFilterByDiagnosis, true)
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                </td>
+                <td>
+                    @Html.BvCheckBox(Model, m => m.blnPrintMapInVetInvestigationForm, true)
+                </td>
+            </tr>
+            <tr>
+                <td class="label">
+                </td>
+                <td>
+                    @Html.BvCheckBox(Model, m => m.blnShowWharningForFinalCaseDefinition, true)
+                </td>
+            </tr>
+        </table>           
+    }
+</div>

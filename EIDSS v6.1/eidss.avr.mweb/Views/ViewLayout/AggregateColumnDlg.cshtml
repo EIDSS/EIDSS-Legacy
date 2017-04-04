@@ -1,0 +1,243 @@
+﻿@using eidss.model.Avr.View
+@using System.Drawing
+@using System.Web.UI.WebControls
+@using eidss.avr.db.Common
+@using eidss.avr.mweb.Utils
+@using eidss.avr.mweb.Models
+@using eidss.web.common.Utils
+@using bv.common.Core
+@using bv.model.Model.Core
+@using bv.common.Configuration
+@{
+    var CanUpdate = !Model.IsReadOnly && eidss.model.Core.AvrPermissions.UpdatePermission;
+}
+
+@model AvrView
+
+    @Html.DevExpress().PopupControl(
+    settings =>
+    {
+        settings.Name = "pcAggregateColumn";
+        settings.Width = 720;
+        settings.CallbackRouteValues = new { Controller = "ViewLayout", Action = "AggregateColumnDlg", layoutId = Model.LayoutID };
+        settings.CloseAction = CloseAction.OuterMouseClick;
+        settings.ShowCloseButton = false;
+        settings.PopupAnimationType = AnimationType.None;
+        settings.ShowHeader = true;
+        settings.Modal = true;
+        settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+        settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+        settings.LoadContentViaCallback = LoadContentViaCallback.OnFirstShow;
+        settings.ControlStyle.CssClass = "k-window";
+        settings.Styles.Header.CssClass = "k-window-titlebar";
+        settings.ClientSideEvents.BeginCallback = "aggregateForm.OnPopupBeginCallback";
+        settings.ClientSideEvents.EndCallback = "aggregateForm.OnPopupEndCallback";
+        settings.AutoUpdatePosition = true;
+        settings.CustomJSProperties = (s, e) => { e.Properties["cpHeaderText"] = Model.SelectedColBandName();
+                                                  e.Properties["cpAggrFunction"] = Model.SelectedColAggrFunction();
+        };
+        settings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+        
+        settings.SetContent(() =>
+        {
+            using (Html.BeginForm("AggregateColumnDlgSave", "ViewLayout", FormMethod.Post, new { id = "popupForm", @style = "width: 720px" }))
+            {
+                var field = Model.SelectedColBandObject();
+
+                ViewContext.Writer.Write("<div class='frame'>");
+                
+                if (BaseSettings.TranslationMode)
+                {
+                    ViewContext.Writer.Write("<input type='hidden' id='aspclassnamePopup' value='" + GetType().FullName + "' />");
+                }
+                
+                ViewContext.Writer.Write("<input type='hidden' name='layoutId' value='" + Model.LayoutID + "' />" +
+                                        "<input type='hidden' name='uniquePath' value='" + field.UniquePath + "' />" +
+                                        "<table  class = 'level1'><tr>" +
+                                        "<td class='actionButtons actionline' colspan = '2'>");
+                if (CanUpdate)
+                    ViewContext.Writer.Write("<input id='btnCancel' class='button' type='button' value='" + Translator.GetMessageString("Cancel") + "' onclick='pcAggregateColumn.Hide();' />");
+
+                //ViewContext.Writer.Write("<input id='btnOk' class='button' type='button' value='" + Translator.GetMessageString("Ok") + "' onclick='aggregateForm.OnSaveChanges();' />");
+                ViewContext.Writer.Write("<input id='btnOk' class='button' type='submit' value='" + Translator.GetMessageString("Ok") + "' />");
+                
+                if (BaseSettings.TranslationMode)
+                {
+                    ViewContext.Writer.Write("<input id='btnTranslationTool' class='button' type='button' value='" + Translator.GetMessageString("btTranslationTool") + "' onclick='avrTranslation.OpenTranslationWindowForPopup();' />");
+                }
+                ViewContext.Writer.Write("<br style='height:0'/><div id='idError' class='errorMessage' style='display:none'>" +
+                                         "<span id='idErrorText'></span>" +
+                                         "</div>");
+                ViewContext.Writer.Write("</td></tr>");
+                
+                if (field.IsAggregate)
+                    ViewContext.Writer.Write("<tr><td class='sectionTitle' colspan = '2' onclick='aggregateForm.OnSettingsClick(this)'>" +
+                                        "<span class='openArrow settingsFields invisible' >&#x25B6;</span><span class='closeArrow settingsFields' >&#x25BC;</span>" +
+                                        "<span class='sectionText' >" + Translator.GetMessageString("Settings") + "</span>" +
+                                        "</td></tr>"
+                                        );
+
+                ViewContext.Writer.Write("<tr class='settingsFields' ><td class='medium firstLabel line' >");
+                
+                Html.DevExpress().Label(
+                    labelSettings =>
+                    {
+                        labelSettings.Text = field.IsBand ? Translator.GetMessageString("BandName") : Translator.GetMessageString("strColumnName");
+                        labelSettings.AssociatedControlName = "displayName";
+                        labelSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                    }
+                    )
+                    .Render();
+                ViewContext.Writer.Write("</td><td class='wide' >");
+                
+                if(CanUpdate)
+                    ViewContext.Writer.Write("<input type='text' name='displayName' class='requiredField wide dxeBase_Office2010Blue' value='" + field.DisplayText + "' />");
+                else
+                    ViewContext.Writer.Write("<input type='text' name='displayName' class='requiredField wide dxeBase_Office2010Blue' value='" + field.DisplayText + "' disabled='disabled' />");
+                
+                ViewContext.Writer.Write("</td></tr>");
+
+                if (field.IsAggregate)
+                {
+                    ViewContext.Writer.Write("<tr class='settingsFields' ><td class='medium firstLabel line' >");
+                    //Row with aggregate function combobox
+                    Html.DevExpress().Label(
+                        labelSettings =>
+                        {
+                            labelSettings.Name = "cbAggregateLabel";
+                            labelSettings.ControlStyle.CssClass = "label";
+                            labelSettings.Text = Translator.GetMessageString("strAggregateFunction");
+                            labelSettings.AssociatedControlName = "cbAggregate";
+                            labelSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                        }
+                    )
+                    .Render();
+                    
+                    ViewContext.Writer.Write("</td><td class='wide'>");
+                    
+                    Html.DevExpress().ComboBox(
+                        comboBoxSettings =>
+                        {
+                            comboBoxSettings.Name = "cbAggregate";
+                            comboBoxSettings.Enabled = CanUpdate;
+                            comboBoxSettings.Properties.ValueType = typeof(long);
+                            comboBoxSettings.Properties.ValueField = "ID";
+                            comboBoxSettings.Properties.TextField = "Name";
+                            comboBoxSettings.Properties.ClientSideEvents.ValueChanged = "aggregateForm.OnAggregateFunctionSelectionChanged";
+                            comboBoxSettings.Properties.EnableClientSideAPI = true;
+                            comboBoxSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                        }
+                    ).BindList(AggrFunctionLookupHelper.GetViewFunctions())
+                    .Bind(field.AggrFunction)
+                    .Render();
+
+                    
+                    ViewContext.Writer.Write("</td></tr>");
+                    //Row with precision spinedit
+                    ViewContext.Writer.Write("<tr class='settingsFields' ><td class='medium firstLabel line' >");
+                    
+                    Html.DevExpress().Label(
+                        labelSettings =>
+                        {
+                            labelSettings.ControlStyle.CssClass = "label";
+                            labelSettings.Text = Translator.GetMessageString("lblPrecision");
+                            labelSettings.AssociatedControlName = "Precision";
+                            labelSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                        }
+                    )
+                    .Render();
+                    ViewContext.Writer.Write("</td><td class='wide' >");
+                    Html.DevExpress().SpinEdit(
+                        spinSettings =>
+                        {
+                            spinSettings.Name = "Precision";
+                            spinSettings.Enabled = CanUpdate;
+                            spinSettings.Properties.MinValue = 0;
+                            spinSettings.Properties.MaxValue = 16;
+                            spinSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                        }
+                    ).Bind(field.Precision)
+                    .Render();
+                    ViewContext.Writer.Write("</td></tr>");
+                    //Parameters
+                    ViewContext.Writer.Write("<tr><td class='sectionTitle' colspan = '2' onclick='aggregateForm.OnParametersClick(this)'>" +
+                                        "<span class='openArrow parametersFields invisible' >&#x25B6;</span><span class='closeArrow parametersFields' >&#x25BC;</span>" +
+                                        "<span class='sectionText' >" + Translator.GetMessageString("titleParameters") + "</span>" +
+                                        "</td></tr>"
+                                        );
+                    //Row with Column combobox
+                    ViewContext.Writer.Write("<tr class='parametersFields' id='trSourceColumn' ><td class='medium firstLabel line' >");
+                    Html.DevExpress().Label(
+                        labelSettings =>
+                        {
+                            labelSettings.Name = "lblSourceColumn";
+                            labelSettings.ControlStyle.CssClass = "label";
+                            labelSettings.Text = Translator.GetMessageString("strColumn");
+                            labelSettings.AssociatedControlName = "cbSourceColumn";
+                            labelSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                        }
+                    )
+                    .Render();
+                    Html.DevExpress().Label(
+                        labelSettings =>
+                        {
+                            labelSettings.Name = "lblNumeratorColumn";
+                            labelSettings.ControlStyle.CssClass = "label invisible";
+                            labelSettings.Text = Translator.GetMessageString("lblNumerator");
+                            labelSettings.AssociatedControlName = "cbSourceColumn";
+                            labelSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                        }
+                    )
+                    .Render();
+                    ViewContext.Writer.Write("</td><td class='wide' >");
+                    Html.DevExpress().ComboBox(
+                        comboBoxSettings =>
+                        {
+                            comboBoxSettings.Name = "cbSourceColumn";
+                            comboBoxSettings.Enabled = CanUpdate;
+                            comboBoxSettings.Properties.ValueType = typeof(string);
+                            comboBoxSettings.Properties.ValueField = "UniquePath";
+                            comboBoxSettings.Properties.TextField = "FullPath";
+                            comboBoxSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                        }
+                    ).BindList(Model.SelectedBand.FillBandColumns())
+                    .Bind(field.SourceColumn)
+                    .Render();
+                    ViewContext.Writer.Write("</td></tr>");
+                    //Row with Denominator combobox
+                    ViewContext.Writer.Write("<tr class='parametersFields' id='trDenominator' ><td class='medium firstLabel line' >");
+                    Html.DevExpress().Label(
+                        labelSettings =>
+                        {
+                            labelSettings.Name = "lblDenominator";
+                            labelSettings.ControlStyle.CssClass = "label";
+                            labelSettings.Text = Translator.GetMessageString("lblDenominator");
+                            labelSettings.AssociatedControlName = "cbDenominator";
+                            labelSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                        }
+                    )
+                    .Render();
+                    ViewContext.Writer.Write("</td><td class='wide' >");
+                    Html.DevExpress().ComboBox(
+                        comboBoxSettings =>
+                        {
+                            comboBoxSettings.Name = "cbDenominator";
+                            comboBoxSettings.Enabled = CanUpdate;
+                            comboBoxSettings.Properties.ValueType = typeof(string);
+                            comboBoxSettings.Properties.ValueField = "UniquePath";
+                            comboBoxSettings.Properties.TextField = "FullPath";
+                            comboBoxSettings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+                        }
+                    ).BindList(Model.SelectedBand.FillBandColumns())
+                    .Bind(field.DenominatorColumn)
+                    .Render();
+                    ViewContext.Writer.Write("</td></tr>");
+                    
+                }
+
+                ViewContext.Writer.Write("<tr class='settingsFields' ><td class='medium firstLabel line' ></td></tr>");
+                ViewContext.Writer.Write("</table></div>");
+            }
+        });
+
+    }).GetHtml()

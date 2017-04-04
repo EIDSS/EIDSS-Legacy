@@ -1,0 +1,4 @@
+﻿@model eidss.model.Schema.Vector
+@*ключом является id сессии, а не вектора*@
+@Html.Action("ShowFlexibleForm", "FlexibleForm", new { root = Model.idfVectorSurveillanceSession, key = Model.idfVector, ffpresenterId = Model.idfObservation.Value }) 
+

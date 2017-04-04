@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="CustomReportRow"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spCustomReportRows_SelectDetail" type= "detaillist" />
+  </storage>
+
+  <tables>
+    <table name="CustomReportRow">
+      <grid>
+        <item name="idfReportRows" visible="false" key="true"/>
+        <item name="idfsCustomReportType" visible="false" />
+        <item name="intRowOrder" sortable="true"/> <!--Row Number-->
+        <item name="idfsDiagnosisOrGroup"  sortable="false"/> <!--Diagnosis Or Group-->
+        <item name="idfsDiagnosisOrReportDiagnosisGroup" sortable="false"/> <!--	Name-->
+        <item name="strUsingType" sortable="false"/>
+        <item name="idfsReportAdditionalText" sortable="false"/>
+        <item name="idfsICDReportAdditionalText" sortable="false"/>
+      </grid>
+      <labels>
+        <item name="idfsDiagnosisOrReportDiagnosisGroup" labelId="strDiagnosisOrReportDiagnosisGroup"/>
+      </labels>
+      <fields>
+        <calculated name="Master" type="CustomReportRowsMaster" depends="Parent" lambda="c=>c.Parent as CustomReportRowsMaster"/>
+      </fields>
+      <fieldtags>
+        <!-- TODO правильные значения
+        <field name="DiagnosisGroupName">
+          <tag name="en" />
+        </field>
+        <field name="DiagnosisGroupNameTranslated">
+          <tag name="def" />
+        </field>
+        -->
+      </fieldtags>
+      <readonly>
+        <fields name="strUsingType" predicate="c => true" />
+      </readonly>
+      <lookups>
+        <lookup name="DiagnosisOrReportGroup" table="DiagnosisOrReportGroupLookup" source="idfsDiagnosisOrGroup" target="idfsReference" />
+        <lookup name="Diagnosis" table="CustomReportGroupsAndDiagnoses" source="idfsDiagnosisOrReportDiagnosisGroup" target="idfsDiagnosisOrDiagnosisGroup" isshowdeleted="true">
+          <params>
+            <param name="HACode" type="int" lambda="c => (int)HACode.HumanLivestockAvianVector"/>
+            <param name="DiagnosisUsingType" type="long" lambda="c => 0"/>
+          </params>
+          <filters>
+            <filter predicate="c => Utils.IsEmpty(obj.idfsDiagnosisOrGroup) ? true :  (obj.idfsDiagnosisOrGroup == 19000019 &amp;&amp; !(bool)c.blnGroup) || (obj.idfsDiagnosisOrGroup == 19000130 &amp;&amp; (bool)c.blnGroup)"/>
+          </filters>
+        </lookup>
+        <lookup name="ReportAdditionalText" table="BaseReference" section="rftReportAdditionalText" source="idfsReportAdditionalText" target="idfsBaseReference"/>
+        <lookup name="ICDReportAdditionalText" table="BaseReference" section="rftReportAdditionalText" source="idfsICDReportAdditionalText" target="idfsBaseReference"/>
+      </lookups>
+      <storage>
+        <post name="spCustomReportRows_Post" />
+      </storage>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfReportRows" class="GetNewIDExtender" />
+          <lambda_extender target="intRowOrder" type="int" lambda="c => c.Parent == null ? 0 : ((CustomReportRowsMaster)c.Parent).GetNewRowNumber()"/>
+        </creating>
+        <loading>
+        </loading>
+        <posting>
+        </posting>
+        <posted>
+        </posted>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+          <lambda_handler field="idfsDiagnosisOrReportDiagnosisGroup" target="strUsingType" type="string" lambda="c => {var d = c.DiagnosisLookup.FirstOrDefault(w => w.idfsDiagnosisOrDiagnosisGroup == c.idfsDiagnosisOrReportDiagnosisGroup); if (d != null) return d.strUsingTypeName; else return c.strUsingType;}" />
+          <lambda_handler field="idfsDiagnosisOrGroup" target="idfsDiagnosisOrReportDiagnosisGroup" type="long" lambda="c => 0" />
+          <!--TODO пересчет номеров строк после изменения intRowOrder-->
+          <lookup_handler lookup="Diagnosis" field="idfsDiagnosisOrGroup" />
+        </fieldhandler>
+      </handlers>
+      <validators>
+        <change>
+        </change>
+        <post>
+          <required_validator target="idfsCustomReportType" />
+          <required_validator target="intRowOrder" />
+          <required_validator target="idfsDiagnosisOrReportDiagnosisGroup" />
+          <custom_validator method="CustomValidations" />
+        </post>
+      </validators>
+    </table>
+
+  </tables>
+</object>

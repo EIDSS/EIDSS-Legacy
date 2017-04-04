@@ -1,0 +1,19 @@
+﻿@model eidss.model.Model.FlexibleForms.FlexNodes.FlexNode
+           
+@if (Model.IsParameter() || Model.IsParametersDeletedFromTemplate())
+{
+    @Html.Partial("ParameterTemplate", Model)
+}
+else if (Model.IsSection())
+{
+    var section = Model.GetSectionTemplate();
+    @(section.blnGrid ? Html.Partial("SectionTemplateTable", Model) : Html.Partial("SectionTemplate", Model))
+}
+else if (Model.IsLabel())
+{
+    @Html.Partial("Label", Model)
+}
+else if (Model.IsString())
+{
+    @Html.Partial("DynamicParametersSection", Model)
+}

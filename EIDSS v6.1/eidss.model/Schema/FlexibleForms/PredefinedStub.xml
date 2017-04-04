@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="PredefinedStub"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+	<storage>
+		<get name="spFFGetPredefinedStub" type="simplelist" />
+	</storage>
+
+	<tables>        
+    <table name="PredefinedStub">
+      <fields>
+        <storage name="intOrder" type="int"/>
+      </fields>
+
+      <actions>
+        <action name="SelectDetailList" type="Loadlist" />
+        <action name="Create" type="Create">
+          <run>
+            <params>
+              <param name="MatrixID" type="long"/>
+              <param name="VersionList" type="string"/>
+            </params>
+          </run>
+        </action>
+      </actions>
+    </table>
+	</tables>
+
+</object>

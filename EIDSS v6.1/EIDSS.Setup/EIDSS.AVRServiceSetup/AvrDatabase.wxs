@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:sql="http://schemas.microsoft.com/wix/SqlExtension">
+
+  <?include "ProductInfo.wxi" ?>
+
+  <Fragment Id="AVR Backup">
+    <Property Id="AVR_BACKUP" Secure="yes" />
+    <SetProperty Id="AVR_BACKUP" Value="[DB_MANAGER_FOLDER]AvrServiceDatabase.bak" After="ExtractDbManager" Sequence="execute" />
+  </Fragment>
+
+  <Fragment Id="Avr Database">
+    <Property Id="DB_INSTALLED_FROM_SETUP" Secure="yes">
+      <RegistrySearch Id="DB_INSTALLED_FROM_SETUP.Rs" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="DbInstalledFromSetup" Type="raw" />"
+    </Property>
+
+    <SetProperty Id="DB_INSTALLED_FROM_SETUP" Value="1" Before="ProcessComponents" Sequence="execute">
+      Not REMOVE~="ALL" And ADMIN_AVR_USER And ADMIN_AVR_PASSWORD And DB_MANAGER
+    </SetProperty>
+
+    <Property Id="ADMIN_DB_USER" Value="sa" Secure="yes" Hidden="yes" />
+    <Property Id="ADMIN_DB_PASSWORD" Secure="yes" Hidden="yes" />
+    <Property Id="ENCRYPTED_ADMIN_DB_USER" Secure="yes" Hidden="yes">
+      <RegistrySearch Id="ENCRYPTED_ADMIN_DB_USER.Rs" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="AdminDbUser" Type="raw" />"
+    </Property>
+    <Property Id="ENCRYPTED_ADMIN_DB_PASSWORD" Secure="yes" Hidden="yes">
+      <RegistrySearch Id="ENCRYPTED_ADMIN_DB_PASSWORD.Rs" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="AdminDbPassword" Type="raw" />
+    </Property>
+
+    <Property Id="ADMIN_AVR_USER" Value="sa" Secure="yes" Hidden="yes" />
+    <Property Id="ADMIN_AVR_PASSWORD" Secure="yes" Hidden="yes" />
+    <Property Id="ENCRYPTED_ADMIN_AVR_USER" Secure="yes" Hidden="yes">
+      <RegistrySearch Id="ENCRYPTED_ADMIN_AVR_USER.Rs" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="AdminAvrUser" Type="raw" />"
+    </Property>
+    <Property Id="ENCRYPTED_ADMIN_AVR_PASSWORD" Secure="yes" Hidden="yes">
+      <RegistrySearch Id="ENCRYPTED_ADMIN_AVR_PASSWORD.Rs" Root="HKLM" Key="$(var.ProductRegistryKey)" Name="AdminAvrPassword" Type="raw" />
+    </Property>
+
+    <ComponentGroup Id="AVR.Database" Directory="APPLICATIONFOLDER">
+      <Component Id="AVR.Database" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.ProductRegistryKey)">
+          <RegistryValue Name="DbInstalledFromSetup" Value="[DB_INSTALLED_FROM_SETUP]" Type="string" KeyPath="yes" />
+        </RegistryKey>
+      </Component>
+
+      <Component Id="DbAdminUser" Guid="{498DB925-946E-422C-BC66-41429D32BFBB}" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.ProductRegistryKey)">
+          <RegistryValue Name="AdminDbUser" Value="[ENCRYPTED_ADMIN_DB_USER]" Type="string" KeyPath="yes" />
+          <RegistryValue Name="AdminDbPassword" Value="[ENCRYPTED_ADMIN_DB_PASSWORD]" Type="string" />
+        </RegistryKey>
+      </Component>
+
+      <Component Id="AvrAdminUser" Guid="{0D1485AB-5AFA-4FD6-A837-059082ABAE62}" MultiInstance="yes">
+        <RegistryKey Root="HKLM" Key="$(var.ProductRegistryKey)">
+          <RegistryValue Name="AdminAvrUser" Value="[ENCRYPTED_ADMIN_AVR_USER]" Type="string" KeyPath="yes" />
+          <RegistryValue Name="AdminAvrPassword" Value="[ENCRYPTED_ADMIN_AVR_PASSWORD]" Type="string" />
+        </RegistryKey>
+      </Component>
+    </ComponentGroup>
+    
+    <CustomAction Id="DecryptAvrUser" DllEntry="DecryptAvrUser" BinaryKey="CustomActions" />
+    <CustomAction Id="DecryptAdminAvrUser" DllEntry="DecryptAdminAvrUser" BinaryKey="CustomActions" />
+    <CustomAction Id="DecryptAdminDbUser" DllEntry="DecryptAdminDbUser" BinaryKey="CustomActions" />
+    <CustomAction Id="PrepareAvrDbDeplymentConfig" DllEntry="PrepareAvrDbDeplymentConfig" BinaryKey="CustomActions" />
+    <CustomAction Id="DeployAvrDatabase" DllEntry="DeployAvrDatabase" BinaryKey="CustomActions" />
+    <CustomAction Id="DropAvrDatabase" DllEntry="DropAvrDatabase" BinaryKey="CustomActions" />
+
+    <InstallExecuteSequence>
+      <Custom Action="DecryptAvrUser" After="AppSearch">1</Custom>
+      <Custom Action="DecryptAdminAvrUser" After="AppSearch">1</Custom>
+      <Custom Action="DecryptAdminDbUser" After="AppSearch">1</Custom>
+      <Custom Action="PrepareAvrDbDeplymentConfig" Before="DeployAvrDatabase">
+        Not REMOVE~="ALL" And ADMIN_AVR_USER And ADMIN_AVR_PASSWORD And DB_MANAGER
+      </Custom>
+      <Custom Action="DeployAvrDatabase" Before="InstallSqlData">
+        Not REMOVE~="ALL" And ADMIN_AVR_USER And ADMIN_AVR_PASSWORD And DB_MANAGER
+      </Custom>
+      <Custom Action="DropAvrDatabase" After="UninstallSqlData">
+        REMOVE~="ALL" And DB_INSTALLED_FROM_SETUP=1 And Not UPGRADINGPRODUCTCODE
+      </Custom>
+    </InstallExecuteSequence>
+
+    <UI>
+      <ProgressText Action="PrepareAvrDbDeplymentConfig">!(loc.DeployAvrDatabase)</ProgressText>
+      <ProgressText Action="DeployAvrDatabase">!(loc.DeployAvrDatabase)</ProgressText>
+    </UI>
+
+  </Fragment>
+</Wix>

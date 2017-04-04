@@ -1,0 +1,35 @@
+﻿@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+@{
+    Layout = null;
+}
+
+@Html.IncludeVersionedCss("~/Content/Styles/ErrorPage.css")
+
+@if ((bool)ViewData["SessionExpired"])
+{
+    <script language="javascript" type="text/javascript">
+        $(document).ready(function () {
+            if (opener) {
+                setTimeout(function () {
+                    window.opener.location = '/' + GetSiteLanguage() + '/Account/Logout';
+                    window.close();
+                }, 5000);
+            }
+            else {
+                setTimeout(function () {
+                    window.location = '/' + GetSiteLanguage() + '/Account/Logout';
+                }, 5000);
+
+            }
+        });
+    </script>
+}
+
+<div class="pnError">
+    <h3>@ViewData["Description"]</h3>
+    <br/><br/>
+    <div class="errorButtonPanel">               
+        <button id="idButtonOk" class="windowButton" onclick="bvPopup.closeDefaultPopup();">@Translator.GetMessageString("Ok")</button> 
+    </div> 
+</div>

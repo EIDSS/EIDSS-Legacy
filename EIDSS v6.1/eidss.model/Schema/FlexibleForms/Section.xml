@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="Section"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+    <storage>
+      <!--get name="spFFGetSections" type="detailone,simplelist" /-->  
+      <get name="spFFGetSections" type="lookuplist"  cache="true" />
+    </storage>
+    <tables>
+        <table name="Section">
+          <fields>
+            <storage name="idfsParameterDummy" type="long?"/>
+          </fields>
+          <relations>
+            <!--relation name="ParentSection" table="Section" internal="false" lazy="false" type="sibling" source="idfsParentSection" target="idfsSection" paramsonly="true">
+                <params>
+                    <param name="idfsFormType" type="Int64?" lambda="c => null" />
+                    <param name="idfsSection" type="Int64?" lambda="c => c.idfsParentSection" />
+                    <param name="idfsParentSection" type="Int64?" lambda="c => null" />
+                </params>
+            </relation-->
+                <!--relation name="Parameters" table="Parameter" internal="false" type="child" source="idfsSection" target="idfsSection" paramsonly="true">
+                    <params>
+                        <param name="idfsSection" type="Int64?" lambda="c => c.idfsSection" />
+                        <param name="idfsFormType" type="Int64?" lambda="c => null" />
+                    </params>
+                </relation-->
+                <!--relation name="FormType" table="FormType" internal="false" type="link" source="idfsFormType" target="idfsFormType" /-->
+            </relations>
+          <lookups>
+            <!--lookup name="ParentSection" table="Section" source="idfsParentSection" target="idfsSection" notaddempty="true">
+              <params>
+                <param name="idfsFormType" type="Int64?" lambda="c => null" />
+                <param name="idfsSection" type="Int64?" lambda="c => c.idfsParentSection" />
+                <param name="idfsParentSection" type="Int64?" lambda="c => null" />
+              </params>
+            </lookup-->
+            <lookup name="Parameters" table="Parameter" source="idfsParameterDummy" target="idfsParameter" notaddempty="true">
+              <params>
+                <param name="idfsSection" type="Int64?" lambda="c => c.idfsSection" />
+                <param name="idfsFormType" type="Int64?" lambda="c => null" />
+              </params>
+            </lookup>
+          </lookups>
+          <!--actions>
+            <action name="SelectDetailList" type="Loadlist" />
+          </actions-->
+        </table>
+    </tables>
+</object>

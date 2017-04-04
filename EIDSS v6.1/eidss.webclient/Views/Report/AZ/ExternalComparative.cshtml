@@ -1,0 +1,60 @@
+﻿@using Kendo.Mvc.UI
+@using bv.common.Configuration
+@using eidss.webclient.Utils
+@model eidss.webclient.Models.Reports.ExternalComparativeModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/ExportButtons", Model)
+    <div class="bluelayout">
+        <div class="tabPanelContent">
+
+            @Html.Partial("Common/BaseFilter", Model)
+
+            @Html.Partial("AZ/FromYearToYearFilter", Model.YearModel)
+            <table id="ExternalComparativeFilterTable" >
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.StartMonth)
+                    </td>
+                    <td class="largereport">
+                
+                        @{
+                            @(Html.Kendo().ComboBox()
+                                  .BindTo(Model.SelectedJanuaryMonthList.ConvertToSelectListItem())
+                                  .Name("StartMonth")
+                                  .Enable(false)
+                                  //.Events(c => c.Change("paperForm.OnMonthChangedAZ"))
+                                  )
+                        }
+                
+                    </td>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.EndMonth)
+                    </td>
+                    <td class="largereport">
+                
+                        @{
+                            @(Html.Kendo().ComboBox()
+                                  .BindTo(Model.SelectedCurrentMonthList.ConvertToSelectListItem())
+                                  .Name("EndMonth")
+                                  //.Events(c => c.Change("paperForm.OnMonthChangedAZ"))
+                                  )
+                        }
+                
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+
+            @Html.Partial("AZ/TransportCHEFilter", Model.Address)
+        </div>
+    </div>
+}

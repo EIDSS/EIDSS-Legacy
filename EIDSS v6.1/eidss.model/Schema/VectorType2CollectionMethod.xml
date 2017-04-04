@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="Vector"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spCollectionMethodForVectorType_SelectDetail" type= "detaillist" />
+  </storage>
+
+  <tables>
+    <table name="VectorType2CollectionMethod">
+      <grid>
+        <item name="idfCollectionMethodForVectorType" visible ="false" type="long"/>
+        <item name="idfsCollectionMethod" type="long" required="true"/>
+      </grid>
+      <labels>
+        <item labelId="strCollectionMethod" name="idfsCollectionMethod"/>
+      </labels>
+
+      <fields>
+
+      </fields>
+      <lookups>
+        <lookup name="CollectionMethod" table="BaseReference" section="rftCollectionMethod" source="idfsCollectionMethod" target="idfsBaseReference" />
+      </lookups>
+      <storage>
+        <post name="spCollectionMethodForVectorType_Post" />
+        <!--<candelete name="spVectorTypeReference_CanDelete" />-->
+      </storage>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfCollectionMethodForVectorType" class="AutoIncrementExtender" />
+        </creating>
+        <loading>
+        </loading>
+        <posting>
+        </posting>
+        <posted>
+        </posted>
+      </extenders>
+      <validators>
+        <change>
+        </change>
+        <post>
+          <required_validator target="idfsCollectionMethod" label="strCollectionMethod" />
+        </post>
+      </validators>
+    </table>
+
+  </tables>
+</object>

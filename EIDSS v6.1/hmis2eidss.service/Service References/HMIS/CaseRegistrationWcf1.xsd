@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/Hmis.Contracts.CommonData.Contracts" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Hmis.Contracts.CommonData.Contracts" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://case.moh.gov.ge/CaseRegistration/Services/CaseRegistrationWcf.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://case.moh.gov.ge/CaseRegistration/Services/CaseRegistrationWcf.svc?xsd=xsd8" namespace="http://schemas.datacontract.org/2004/07/Hmis.Contracts.CommonData.Enums" />
+  <xs:complexType name="AreaContract">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AreaType" nillable="true" type="tns:AreaTypeContract" />
+      <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CraCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DateChanged" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DateCreated" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DateDeleted" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="EngName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="GeoName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ID" type="ser:guid" />
+      <xs:element minOccurs="0" name="NewCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OLD_ID" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="Parent" nillable="true" type="tns:AreaContract" />
+      <xs:element minOccurs="0" name="ParentID" nillable="true" type="ser:guid" />
+      <xs:element minOccurs="0" name="PhoneIndexes" nillable="true" type="tns:ArrayOfPhoneIndexContract" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Hmis.Contracts.CommonData.Enums" minOccurs="0" name="RecordType" type="q1:RecordTypesEnum" />
+      <xs:element minOccurs="0" name="TypeID" type="ser:guid" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AreaContract" nillable="true" type="tns:AreaContract" />
+  <xs:complexType name="AreaTypeContract">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Code" type="xs:int" />
+      <xs:element minOccurs="0" name="DateChanged" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DateCreated" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DateDeleted" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="EngName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="GeoName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ID" type="ser:guid" />
+      <xs:element minOccurs="0" name="Level" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AreaTypeContract" nillable="true" type="tns:AreaTypeContract" />
+  <xs:complexType name="ArrayOfPhoneIndexContract">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PhoneIndexContract" nillable="true" type="tns:PhoneIndexContract" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPhoneIndexContract" nillable="true" type="tns:ArrayOfPhoneIndexContract" />
+  <xs:complexType name="PhoneIndexContract">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DateChanged" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DateCreated" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DateDeleted" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ID" type="ser:guid" />
+      <xs:element minOccurs="0" name="PhoneIndexType" nillable="true" type="tns:PhoneIndexTypeContract" />
+      <xs:element minOccurs="0" name="Value" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PhoneIndexContract" nillable="true" type="tns:PhoneIndexContract" />
+  <xs:complexType name="PhoneIndexTypeContract">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DateChanged" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DateCreated" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DateDeleted" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ID" type="ser:guid" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PhoneIndexTypeContract" nillable="true" type="tns:PhoneIndexTypeContract" />
+  <xs:complexType name="LegalFormContract">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ID" type="ser:guid" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LegalFormContract" nillable="true" type="tns:LegalFormContract" />
+</xs:schema>

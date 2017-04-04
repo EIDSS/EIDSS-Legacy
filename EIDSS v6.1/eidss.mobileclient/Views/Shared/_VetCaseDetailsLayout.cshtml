@@ -1,0 +1,149 @@
+﻿<!DOCTYPE mobile>
+  
+@using eidss.mobileclient.Utils;
+@using bv.model.Model.Core;
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">  
+<head>
+    <meta name="viewport" content="width=device-width,user-scalable=0,inital-scale=1,maximum-scale=1,minimum-scale=1" /> 
+    
+    <title>@ViewBag.Title</title>
+
+    <link href="@Url.Content("~/Content/Styles/Common.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Styles/Details.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Styles/Grid.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Styles/jquery.alerts.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/cupertino/jquery-ui-1.8.16.custom.css")" rel="stylesheet" type="text/css" />
+
+    <script src="@Url.Content("~/Scripts/jquery-1.7.1.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.alerts.js")" type="text/javascript"></script>    
+    <script src="@Url.Content("~/Scripts/ui/jquery-ui-1.8.16.custom.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/ui/jquery.ui.core.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/ui/jquery.ui.widget.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/ui/jquery.ui.tabs.min.js")" type="text/javascript"></script>    
+
+    @*<script src="@Url.Content(String.Format("~/Scripts/Messages/EIDSS.BvMessages.{0}.js", Cultures.GetCulture(ModelUserContext.CurrentLanguage)))" type="text/javascript" ></script>*@
+    <script src="@Url.Action("MessagesScript", "Account", new { version = Extenders.VersionCode() })"></script>
+
+    <script src="@Url.Content("~/Scripts/EIDSS.CommonScript.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/EIDSS.Tabs.js")" type="text/javascript"></script>    
+    <script src="@Url.Content("~/Scripts/EIDSS.VetCase.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/EIDSS.Dialogs.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/EIDSS.FormRefresh.js")" type="text/javascript"></script>
+    
+    <script type="text/javascript">
+        $(window).load(function () {
+            $.ajaxSetup({ cache: false });            
+        });   
+    </script>
+</head>
+
+<body>
+    @{var caseType = Session["CaseType"]; }
+    <div class="page defaultWidth">
+        <div class="header">  
+            <img src="../../../Content/Images/Logo.png" class="headerImage" alt="" />    
+            <span class="headerText">       
+                @Translator.GetMessageString("titleMobileHeader")    
+            </span>                               
+            <a class="headerLink" href='javascript:ShowEidssDialogCancelPromptWithActionCancelExecution(LogOut, null);'>@Translator.GetMessageString("Logout")</a>                                                                         
+            <a class="headerLink" href='javascript:ShowEidssDialogCancelPromptWithActionCancelExecution(OpenMainMenu, null);'>@Translator.GetMessageString("MainMenu")</a>   
+        </div>   
+        <div class="detailHeader">    
+            @if ((int)caseType == (int)eidss.model.Enums.HACode.Livestock)
+            {               
+                <img src="../../../Content/Images/NewLvstk.png" class="headerImage" alt="" />  
+            }
+            else
+            {
+                <img src="../../../Content/Images/NewAvian.png" class="headerImage" alt="" />  
+            }                             
+            <div>       
+                @ViewBag.Title   
+            </div>                                                                                                                                     
+        </div>      
+        <table class="threeParts">
+            <tr>
+                @if ((bool)ViewBag.CanUpdate)
+                {
+                    <td>
+                        <input type="submit" value="@Translator.GetMessageString("btnSaveShort")" onclick="ShowEidssDialogSavePromptWithActionSaveExecution(onSaveVetCase, null);" />         
+                    </td>
+                    <td>
+                        <input type="submit" value="@Translator.GetMessageString("Ok")" onclick="ShowEidssDialogOKPromptWithActionSaveExecutionAndCloseWindow(onSaveAndCloseVetCase, null);" />         
+                    </td>
+                    <td>
+                        <input type="submit" value="@Translator.GetMessageString("btnCancelShort")" onclick="ShowEidssDialogCancelPromptWithActionCancelExecution(onCancelVetCaseEdit, null);" />                                  
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <input type="submit" value="@Translator.GetMessageString("Cancel")" onclick="ShowEidssDialogClosePromptWithActionCloseExecution(onCancelVetCaseEdit, null);" />                                  
+                    </td>
+                }
+            </tr>
+        </table>   
+        @{var IdfCase = Session["IdfCase"]; }              
+        <div class="detailsContent" id="scontent">                                                         
+            <div class="ui-tabs ui-widget ui-widget-content ui-corner-all" style="height:auto" id="tabs">
+                <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">                   
+                   <li class="ui-state-default ui-corner-top ui-tabs-selected ui-state-active">
+                       <a href="javascript:OpenTab('General', 'VetCase', '@IdfCase')">@Translator.GetMessageString("tabTitleGeneral")</a>
+                   </li>
+                   <li class="ui-state-default ui-corner-top"><a href="javascript:OpenTab('FarmDetails', 'VetCase', '@IdfCase')">@Translator.GetMessageString("titleFarmDetails")</a></li>  
+                   @if ((int)caseType == (int)eidss.model.Enums.HACode.Livestock)
+                   {               
+                       <li class="ui-state-default ui-corner-top"><a href="javascript:OpenTab('HerdDetails', 'VetCase', '@IdfCase')">@Translator.GetMessageString("tabTitleHerdDetails")</a></li>
+                   }
+                   else
+                   { 
+                       <li class="ui-state-default ui-corner-top"><a href="javascript:OpenTab('FlockDetails', 'VetCase', '@IdfCase')">@Translator.GetMessageString("tabTitleFlockDetails")</a></li>
+                   }
+                </ul>
+                <div class="ui-tabs-panel ui-widget-content ui-corner-bottom" id="tabs-1">                    
+	                @RenderBody()                             
+                </div>
+                <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">                   
+                   <li class="ui-state-default ui-corner-top ui-tabs-selected ui-state-active">
+                       <a href="javascript:OpenTab('General', 'VetCase', '@IdfCase')">@Translator.GetMessageString("tabTitleGeneral")</a>
+                   </li>
+                   <li class="ui-state-default ui-corner-top"><a href="javascript:OpenTab('FarmDetails', 'VetCase', '@IdfCase')">@Translator.GetMessageString("titleFarmDetails")</a></li>  
+                   @if ((int)caseType == (int)eidss.model.Enums.HACode.Livestock)
+                   {               
+                       <li class="ui-state-default ui-corner-top"><a href="javascript:OpenTab('HerdDetails', 'VetCase', '@IdfCase')">@Translator.GetMessageString("tabTitleHerdDetails")</a></li>
+                   }
+                   else
+                   { 
+                       <li class="ui-state-default ui-corner-top"><a href="javascript:OpenTab('FlockDetails', 'VetCase', '@IdfCase')">@Translator.GetMessageString("tabTitleFlockDetails")</a></li>
+                   }
+                </ul>    
+            </div>                                             
+        </div>    
+        <table class="threeParts">
+            <tr>
+                @if ((bool)ViewBag.CanUpdate)
+                {
+                    <td>
+                        <input type="submit" value="@Translator.GetMessageString("btnSaveShort")" onclick="ShowEidssDialogSavePromptWithActionSaveExecution(onSaveVetCase, null);" />         
+                    </td>
+                    <td>
+                        <input type="submit" value="@Translator.GetMessageString("Ok")" onclick="ShowEidssDialogOKPromptWithActionSaveExecutionAndCloseWindow(onSaveAndCloseVetCase, null);" />         
+                    </td>
+                    <td>
+                        <input type="submit" value="@Translator.GetMessageString("btnCancelShort")" onclick="ShowEidssDialogCancelPromptWithActionCancelExecution(onCancelVetCaseEdit, null);" />                                  
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <input type="submit" value="@Translator.GetMessageString("Cancel")" onclick="ShowEidssDialogClosePromptWithActionCloseExecution(onCancelVetCaseEdit, null);" />                                  
+                    </td>
+                }
+            </tr>
+        </table>       
+        <div class="footer">             
+        </div>
+    </div>
+</body>
+</html>

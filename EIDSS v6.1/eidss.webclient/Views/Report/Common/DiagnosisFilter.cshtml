@@ -1,0 +1,33 @@
+﻿@using Kendo.Mvc.UI
+@using bv.model.Model.Core
+@using eidss.webclient.Utils
+@model eidss.model.Reports.Common.DiagnosisModel
+
+<table class="level1">
+    <tr>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.DiagnosisId)
+        </td>
+        <td class="largereport">
+            @{
+                @(Html.Kendo().ComboBox()
+                      .Events(e => e.Open("function(e) { bvComboBox.onOpen(e, " + (int) EditorControlWidth.Large + "); }"))
+                      .BindTo(Model.ItemsList.ConvertToSelectListItem())
+                      .Name("DiagnosisId")
+                      )
+            }
+            @*
+            @if (Model.ShowClearButton)
+            {
+                var originalName = ViewData["FilterName"].ToString();
+                var kendoName = originalName.Replace(".", "_");
+                var clearLink = "bvCheckedComboBox.onClearCheckedComboBox('" + @kendoName + "')";
+                <button id="@ViewBag.BtnSearchPicker" class="button smallImageButton" style="min-height: 22px;" onclick='@clearLink' type="button">
+                    <img src="@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/clear.png"))" alt="Clear" draggable='false'/>
+                </button>
+            }
+            *@
+        </td>
+        <td ></td>
+    </tr>
+</table>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <UI>
+      <Dialog Id="ErrorConnectionDlg" Width="230" Height="80" Title="!(loc.ErrorDlg_Title)">
+        <Control Id="TestResult_Success" Type="Icon" IconSize="48" X="5" Y="5" Width="50" Height="50" Text="SuccessImg" FixedSize="yes">
+          <Condition Action="hide"><![CDATA[CONNECTION_VALID <> "1"]]></Condition>
+          <Condition Action="show"><![CDATA[CONNECTION_VALID = "1"]]></Condition>
+        </Control>
+        <Control Id="TestResult_Failure" Type="Icon" IconSize="48" X="5" Y="5" Width="50" Height="50" Text="FailureImg" FixedSize="yes">
+          <Condition Action="hide"><![CDATA[CONNECTION_VALID = "1"]]></Condition>
+          <Condition Action="show"><![CDATA[CONNECTION_VALID <> "1"]]></Condition>
+        </Control>
+        <Control Id="ErrorText" Type="Text" X="60" Y="15" Width="160" Height="40" TabSkip="no" Text="[ErrorConnectionText]" />
+        <Control Id="O" Type="PushButton" X="100" Y="60" Width="56" Height="17" TabSkip="yes" Text="!(loc.WixUIOK)">
+          <Publish Event="EndDialog" Value="Return">1</Publish>
+        </Control>
+      </Dialog>
+    </UI>
+  </Fragment>
+</Wix>

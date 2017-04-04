@@ -1,0 +1,23 @@
+﻿@using System.Web.UI.WebControls
+@using eidss.avr.mweb.Utils
+@using eidss.web.common.Utils
+@model eidss.avr.mweb.Models.AvrPivotGridModel
+
+@Html.DevExpress().ComboBox(settings => {
+    settings.Name = "cbFieldsList";
+    settings.Width = Unit.Percentage(100);
+    settings.Properties.DropDownStyle = DropDownStyle.DropDownList;
+    settings.CallbackRouteValues = new { Controller = "Layout", Action = "FieldsListCombo" };
+    //settings.ControlStyle.CssClass = "xlarge";
+    settings.Properties.ValueType = typeof(string);
+    settings.Properties.TextField = "Caption";
+    settings.Properties.ValueField = "FieldName";
+    settings.Properties.TextFormatString = "{0}";
+    settings.Properties.CallbackPageSize = 20;
+    //settings.Enabled = !Model.PivotSettings.IsPublished;
+    settings.Properties.Columns.Add("Caption", Translator.GetMessageString("colFieldName"), 500);
+    settings.Properties.Columns.Add("AggregateFunctionName", Translator.GetMessageString("strAggregateFunction"), 150);
+    settings.Properties.Columns.Add("PrivateGroupIntervalName", Translator.GetMessageString("colGroupInterval"), 150);
+    settings.Properties.ClientSideEvents.ValueChanged = "layoutPivotGrid.onFieldListChanged";
+    settings.RightToLeft = Cultures.IsRtl ? DefaultBoolean.True : DefaultBoolean.False;
+}).BindList(Model.PivotSettings.Fields.Where(c => !c.IsHiddenFilterField)).Bind(Model.PivotSettings.SelectedField).GetHtml()

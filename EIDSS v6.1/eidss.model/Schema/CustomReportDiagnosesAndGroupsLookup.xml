@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="CustomReportDiagnosesAndGroupsLookup"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spCustomReportGroupsAndDiagnoses_SelectLookup" type="lookuplist" cache="true"/>
+  </storage>
+
+  <tables>
+    <table name="CustomReportGroupsAndDiagnoses" tostring="c => c.name" lookupcachename="CustomReportGroupsAndDiagnoses">
+      <keys>
+        <key name="idfsDiagnosisOrDiagnosisGroup" />
+      </keys>
+    </table>
+  </tables>
+
+</object>
+

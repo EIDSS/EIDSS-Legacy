@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">Android</Platform>
+    <ProjectGuid>{B6C06F15-27C5-41F9-8154-DAFC305426C3}</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Android' ">
+    <ConfigurationRecognized>true</ConfigurationRecognized>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Android' ">
+    <ConfigurationRecognized>true</ConfigurationRecognized>
+  </PropertyGroup>
+
+
+  <PropertyGroup>
+    <ProjectName>EIDSS</ProjectName>
+    <TargetExtension>.apk</TargetExtension>
+
+    <TargetDir Condition=" '' == '$(TargetDir)' And '' == '$(OutDir)' ">$(MSBuildProjectDirectory)\bin\$(Platform)\$(Configuration)\</TargetDir>
+    <TargetDir Condition=" '' != '$(OutDir)' " >$(OutDir)</TargetDir>
+    <TargetDir Condition=" !HasTrailingSlash( '$(TargetDir)' ) ">$(TargetDir)\</TargetDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SubConfiguration Include="Am" />
+    <SubConfiguration Include="AmTest" />
+    <SubConfiguration Include="Az" />
+    <SubConfiguration Include="AzTest" />
+    <SubConfiguration Include="Gg" />
+    <SubConfiguration Include="GgTest" />
+    <SubConfiguration Include="Kz" />
+    <SubConfiguration Include="KzTest" />
+    <SubConfiguration Include="Iq" />
+    <SubConfiguration Include="IqTest" />
+    <SubConfiguration Include="Th" />
+    <SubConfiguration Include="ThTest" />
+    <SubConfiguration Include="Uk" />
+    <SubConfiguration Include="UkTest" />
+  </ItemGroup>
+  
+  <Import Project="Version.targets" />
+
+  <Target Name="CheckConfiguration" BeforeTargets="Build">
+    <Message
+      Condition=" 'true' != '$(ConfigurationRecognized)' "
+      Text="Configuration '$(Configuration)' is unsupported. Build will be skipped!" />
+  </Target>
+
+  <PropertyGroup>
+    <BuildDependsOn>
+      BeforeBuild;
+      CoreBuild;
+      AfterBuild
+    </BuildDependsOn>
+  </PropertyGroup>
+  <Target
+    Name="Build"
+    DependsOnTargets="$(BuildDependsOn)"
+    Condition=" 'true' == '$(ConfigurationRecognized)' "
+    Outputs="$(TargetPath)" />
+
+  <Target Name="BeforeBuild" />
+
+
+  <PropertyGroup>
+    <CoreBuildDependsOn>
+      PrepareForBuild;
+      UpdateVersion;
+      PrepareBuildMainConfiguration;
+      PrepareBuildSubConfigurations;
+      RunGradle;
+      PretendAccustomedOutput;
+      GetTargetApplications
+    </CoreBuildDependsOn>
+  </PropertyGroup>
+  <Target
+    Name="CoreBuild"
+    DependsOnTargets="$(CoreBuildDependsOn)" />
+
+
+  <Target Name="PrepareForBuild">
+    <MakeDir Directories="$(OutDir)" />
+  </Target>
+
+  <Target Name="PrepareBuildMainConfiguration" >
+    <ItemGroup>
+      <ConfigurationToBuild Include="$(Configuration)">
+        <SubConfiguration />
+      </ConfigurationToBuild>
+    </ItemGroup>
+  </Target>
+  
+  <Target Name="PrepareBuildSubConfigurations" Outputs="%(SubConfiguration.Identity)">
+    <PropertyGroup >
+      <_configurationToBuild>%(SubConfiguration.Identity)</_configurationToBuild>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ConfigurationToBuild Include="$(Configuration)$(_configurationToBuild)">
+        <SubConfiguration>$(_configurationToBuild)</SubConfiguration>
+      </ConfigurationToBuild>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="RunGradle" Outputs="%(ConfigurationToBuild.Identity)">
+    <PropertyGroup>
+      <_configurationToBuild>%(ConfigurationToBuild.Identity)</_configurationToBuild>
+    </PropertyGroup>
+
+    <Exec
+      WorkingDirectory="$(MSBuildProjectDirectory)"
+      Command="gradlew.bat assemble$(_configurationToBuild)" />
+  </Target>
+
+  <Target Name="PretendAccustomedOutput" Outputs="%(ConfigurationToBuild.Identity)">
+    <PropertyGroup>
+      <_gradleOutDir>$(MSBuildProjectDirectory)\app\build\outputs\</_gradleOutDir>
+      <_builtApk>$(_gradleOutDir)apk\app-%(ConfigurationToBuild.Identity)$(TargetExtension)</_builtApk>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <APKfile Include="$(_builtApk)" Condition=" Exists( '$(_builtApk)' ) " />
+    </ItemGroup>
+    
+    <Message Importance="low" Text="APKfile:%0d%0a%09@(APKfile, '%0d%0a%09')" />
+
+    <Copy
+      SourceFiles="@(APKfile)"
+      DestinationFiles="$(TargetDir)$(ProjectName).%(ConfigurationToBuild.SubConfiguration)$(TargetExtension)"
+      Condition=" '' != '%(ConfigurationToBuild.SubConfiguration)' " />
+  
+  <Copy
+      SourceFiles="@(APKfile)"
+      DestinationFiles="$(TargetDir)$(ProjectName)$(TargetExtension)"
+      Condition=" '' == '%(ConfigurationToBuild.SubConfiguration)' " />
+  </Target>
+
+  <PropertyGroup Label="AfterBuildDependsOn">
+    <AfterBuildDependsOn>
+      PrepareIntermediateDrop
+    </AfterBuildDependsOn>
+  </PropertyGroup>
+  <Target Name="AfterBuild" DependsOnTargets="$(AfterBuildDependsOn)" />
+
+  <Target Name="PrepareIntermediateDrop" Outputs="%(ConfigurationToBuild.Identity)">
+    <PropertyGroup>
+      <_intermediateDistribDir>$(IntermediateDistribDir)Setup\EIDSS_Android\</_intermediateDistribDir>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <_androidApp
+        Include="$(TargetDir)$(ProjectName).%(ConfigurationToBuild.SubConfiguration)$(TargetExtension)"
+        Condition=" '' != '%(ConfigurationToBuild.SubConfiguration)' " />
+      <_androidApp
+        Include="$(TargetDir)$(ProjectName)$(TargetExtension)"
+        Condition=" '' == '%(ConfigurationToBuild.SubConfiguration)' " />
+    </ItemGroup>
+    
+    <MakeDir Directories="$(_intermediateDistribDir)" Condition=" '' != '@(_androidApp)' " />
+    <Copy SourceFiles="@(_androidApp)" DestinationFolder="$(_intermediateDistribDir)" />
+  </Target>
+
+
+  <!--
+  ================================================================================================
+  GetTargetApplications
+
+    This stand-alone target returns the name of the build product (i.e. APK) that would be
+    produced if we built this project.
+  ================================================================================================
+  -->
+  <PropertyGroup>
+    <GetTargetApplicationsDependsOn>
+      PrepareBuildMainConfiguration;
+      PrepareBuildSubConfigurations;
+      EnumerateTargets
+    </GetTargetApplicationsDependsOn>
+  </PropertyGroup>
+  <Target Name="GetTargetApplications" DependsOnTargets="$(GetTargetApplicationsDependsOn)" Outputs="@(TargetApps)">
+    <Error Condition=" '' == '$(OutDir)' " Text="Neither OutDir property nor BinariesRoot is set!" />
+
+    <Message Text="TargetApps:%0d%0a%09@(TargetApps, '%0d%0a%09')" />
+
+    <Error
+      Condition=" !Exists( '%(TargetApps.Identity)' ) "
+      Text="Failed to get TargetApps ('%(TargetApps.Identity)'). Probably project $(MSBuildProjectFile) has not been built yet." />
+  </Target>
+
+  <Target Name="EnumerateTargets">
+    <ItemGroup>
+      <TargetApps
+        Include="$(TargetDir)$(ProjectName).%(ConfigurationToBuild.SubConfiguration)$(TargetExtension)"
+        Condition=" '' != '%(ConfigurationToBuild.SubConfiguration)' ">
+
+        <SubConfiguration>%(ConfigurationToBuild.SubConfiguration)</SubConfiguration>
+      </TargetApps>
+      <TargetApps
+        Include="$(TargetDir)$(ProjectName)$(TargetExtension)"
+        Condition=" '' == '%(ConfigurationToBuild.SubConfiguration)' " />
+
+      <SubConfiguration />
+    </ItemGroup>
+  </Target>
+</Project>

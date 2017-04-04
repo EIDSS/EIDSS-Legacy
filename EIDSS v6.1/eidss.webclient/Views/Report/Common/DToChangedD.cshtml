@@ -1,0 +1,104 @@
+﻿@using bv.common.Configuration
+@using eidss.webclient.Utils
+@using Kendo.Mvc.UI
+@model eidss.webclient.Models.Reports.DToChangedDModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/ExportButtons", Model)
+    <div class="bluelayout">
+        <div class="tabPanelContent">
+            @Html.Partial("Common/BaseFilter", Model)
+            @Html.Partial("Common/BaseDateFilter", Model)
+            @Html.Partial("Common/AddressFilter", Model.Address)
+            
+            <table id="DiagnosisTable" >
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.InitialDiagnoses)
+                    </td>
+                    <td class="largereport">
+                       @Html.Partial("Common/BaseMultipleDiagnosisFilter", Model.InitialDiagnoses,
+                                        new ViewDataDictionary
+                                            {
+                                                {"FilterName", "InitialDiagnosesList"}
+                                            })
+
+@*                        @{
+                            @(Html.Kendo().DropDownList()
+                                  .Name("InitialDiagnosesList")
+                                  .DataTextField("Text")
+                                  .DataValueField("Value")
+                                  .Template("<input type=\"checkbox\"checkedname=\"${ data.Text }\" value=\"${ data.Value }\" class=\"check-item\" id=\"chb${ data.Value }\"/><span>${ data.Text }</span>")
+                                  .Events(e => e.Select("bvCheckedComboBox.onCheckedComboBoxChanged")
+                                                .DataBound("function(e) { bvCheckedComboBox.bindCheckedComboBoxClickEvent('InitialDiagnosesList', '');}"))
+                                  .BindTo(Model.DiagnosisList.ConvertToSelectListItem())
+                                  //Bug 12049 .HtmlAttributes(new {@class = "requiredField"})
+                                  )
+                        }*@
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.FinalDiagnoses)
+                    </td>
+                    <td class="largereport">
+                       @Html.Partial("Common/BaseMultipleDiagnosisFilter", Model.FinalDiagnoses,
+                                        new ViewDataDictionary
+                                            {
+                                                {"FilterName", "FinalDiagnosesList"}
+                                            })
+@*                        @{
+                            @(Html.Kendo().DropDownList()
+                                  .Name("FinalDiagnosesList")
+                                  .DataTextField("Text")
+                                  .DataValueField("Value")
+                                  .Template("<input type=\"checkbox\"checkedname=\"${ data.Text }\" value=\"${ data.Value }\" class=\"check-item\" id=\"chb${ data.Value }\"/><span>${ data.Text }</span>")
+                                  .Events(e => e.Select("bvCheckedComboBox.onCheckedComboBoxChanged")
+                                                .DataBound("function(e) { bvCheckedComboBox.bindCheckedComboBoxClickEvent('FinalDiagnosesList', '');}"))
+                                  .BindTo(Model.DiagnosisList.ConvertToSelectListItem())
+                                  //Bug 12049 .HtmlAttributes(new {@class = "requiredField"})
+                                  )
+                        }*@
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+
+            <table id="ConcordanceFilterTable" >
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.Concordance)
+                    </td>
+                    <td class="largereport">
+                        <div class='tdContainer'>
+                            @{
+                                @(
+                                    Html.Kendo().NumericTextBox()
+                                        .Name("Concordance")
+                                        .Value(Model.Concordance)
+                                        .Min(0)
+                                        .Max(100)
+                                        .Decimals(0)
+                                        .Format("#")
+                                      )
+                            }
+                        </div>
+                    </td>
+                    <td></td>
+      
+                </tr>
+  
+            </table>
+    
+        </div>
+    </div>
+}

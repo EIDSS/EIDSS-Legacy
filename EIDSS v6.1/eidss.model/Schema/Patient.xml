@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="Patient"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+      <get name="spPatient_SelectDetail" />
+      <validate name="spPatient_Validate" />
+    </storage>
+
+    <tables>
+        <table name="Patient">
+          <help web="HC_H04"/>
+          <labels>
+            <item name="datEnteredDate" labelId="datPersonEnteredDate"/>
+            <item name="datModificationDate" labelId="datPersonModificationDate"/>
+          </labels>
+            <fields>
+              <storage name="bSearchMode" type="bool"/>
+              <storage name="bPINMode" type="bool"/>
+              <storage name="idfContactedCasePerson" type="long"/>
+              <storage name="idfsSearchMethod" type="long?"/>
+              <storage name="idfsDocumentType" type="long?"/>
+              <storage name="strDocumentNumber" type="string"/>
+              <storage name="datDocumentDate" type="DateTime?"/>
+
+              <calculated name="HCase" type="HumanCase" depends="Parent" lambda="c => c.Parent as HumanCase" />
+              <!-- In the field Patient the last and the first name of the patient will be displayed -->
+              <calculated name="strName" type="string" depends="strFirstName,strSecondName,strLastName"
+                          lambda='c => Customization.Instance.BuildFullName(c.strLastName, c.strFirstName, c.strSecondName)' />
+              <calculated name="IsReadOnlyParent" depends="HCase" type="bool" 
+                          lambda="c => c.HCase == null ? false : c.HCase.IsClosed || c.HCase.ReadOnly"/>
+              <calculated name="strReadOnlyLastName" type="string" depends="strLastName" lambda='c => c.strLastName' />
+              <calculated name="strReadOnlyFirstName" type="string" depends="strFirstName" lambda='c => c.strFirstName' />
+              <calculated name="strReadOnlySecondName" type="string" depends="strSecondName" lambda='c => c.strSecondName' />
+              <calculated name="strReadOnlyDateofBirth" type="string" depends="datDateofBirth" 
+                          lambda='c => c.datDateofBirth == null ? (string)null : c.datDateofBirth.Value.ToString()' />
+              <calculated name="strReadOnlyHumanGender" type="string" depends="idfsHumanGender" lambda='c => c.idfsHumanGender == null ? (string)null : c.Gender.name' />
+              <calculated name="strReadOnlyNationality" type="string" depends="idfsNationality" lambda='c => c.idfsNationality == null ? (string)null : c.Nationality.name' />
+              <calculated name="strReadOnlyEmployerName" type="string" depends="strEmployerName" lambda='c => c.strEmployerName' />
+              <!--<calculated name="idfHumanActual" type="string" depends="idfHumanActual" lambda='c => c.idfRootHuman' />-->
+              <calculated name="IsRoot" depends="idfRootHuman" type="bool" lambda="c => !c.idfRootHuman.HasValue"/>
+              <calculated name="strEnteredDate" depends="datEnteredDate" type="string" lambda='c => c.datEnteredDate.HasValue ? c.datEnteredDate.Value.ToShortDateString() : ""'/>
+              <calculated name="strModificationDate" depends="datModificationDate" type="string" lambda='c => c.datModificationDate.HasValue ? c.datModificationDate.Value.ToShortDateString() : ""'/>
+            </fields>
+            <readonly>
+                <fields name="strName" predicate="c => true" />              
+                <fields name="strReadOnlyLastName,strReadOnlyFirstName,strReadOnlySecondName,strReadOnlyEmployerName" predicate="c => true" />
+                <fields name="strReadOnlyDateofBirth,strReadOnlyHumanGender,strReadOnlyNationality" predicate="c => true" />
+                <fields name="intPatientAgeFromCase,idfsHumanAgeTypeFromCase,HumanAgeType" predicate="c => c.bPINMode || c.IsReadOnlyParent || c.datDateofBirth != null" />
+                <fields name="strPersonID" predicate="c => c.bPINMode || c.IsReadOnlyParent || !c.idfsPersonIDType.HasValue || c.idfsPersonIDType.Value == (long)eidss.model.Enums.PersonalIDType.Unknown" />
+                <fields name="datEnteredDate,datModificationDate,strEnteredDate,strModificationDate" predicate="c => true" />
+                <fields name="*" predicate="c => c.bPINMode || c.IsReadOnlyParent" />
+            </readonly>
+          <invisible>
+            <fields name="DocumentType,strDocumentNumber" predicate="c => c.idfsSearchMethod != 2"/>
+            <fields name="datDocumentDate" predicate="c => c.idfsSearchMethod != 2 || c.idfsDocumentType != 6"/>
+          </invisible>
+            <relations>
+                <relation name="CurrentResidenceAddress" table="Address" internal="false" type="link" lazy="false" source="idfCurrentResidenceAddress" target="idfGeoLocation" />
+                <relation name="EmployerAddress" table="Address" internal="false" type="link" lazy="false" source="idfEmployerAddress" target="idfGeoLocation" />
+                <relation name="RegistrationAddress" table="Address" internal="false" type="link" lazy="false" source="idfRegistrationAddress" target="idfGeoLocation" />
+            </relations>
+            <lookups>
+                <lookup name="OccupationType" table="BaseReference" section="rftOccupationType" source="idfsOccupationType" target="idfsBaseReference" />
+                <lookup name="Nationality" table="BaseReference" section="rftNationality" source="idfsNationality" target="idfsBaseReference" />
+                <lookup name="Gender" table="BaseReference" section="rftHumanGender" source="idfsHumanGender" target="idfsBaseReference" />
+                <lookup name="PersonIDType" table="BaseReference" section="rftPersonIDType" source="idfsPersonIDType" target="idfsBaseReference" />
+              <lookup name="HumanAgeType" table="BaseReference" section="rftHumanAgeType" source="idfsHumanAgeTypeFromCase" target="idfsBaseReference" >
+                <filters>
+                  <filter predicate="c => c.idfsBaseReference != (long)eidss.model.Enums.HumanAgeTypeEnum.Weeks"/>
+                  <filter predicate="c => (c.intHACode.GetValueOrDefault() &amp; (int)HACode.Human) != 0"/>
+                </filters>
+              </lookup>
+
+              <lookup name="SearchMethod" table="BaseReference" section="rftEmpty" source="idfsSearchMethod" target="idfsBaseReference" notaddempty="true">
+                <items>
+                  <item id="1" name="strSearchMethodByAttribute"/>
+                  <item id="2" name="strSearchMethodByIdentityDocument"/>
+                  <item id="3" name="strSearchMethodByPIN"/>
+                  <!--item id="4" name="Debug"/-->
+                </items>
+              </lookup>
+              <lookup name="DocumentType" table="BaseReference" section="rftEmpty" source="idfsDocumentType" target="idfsBaseReference" notaddempty="true">
+                <items>
+                  <item id="1" name="strDocumentTypeAzPassport"/>
+                  <item id="2" name="strDocumentTypeAzIdCardOver18"/>
+                  <item id="3" name="strDocumentTypeAzIdCardUnder18"/>
+                  <item id="4" name="strDocumentTypeAzTemporaryPermit"/>
+                  <item id="5" name="strDocumentTypeAzPermanentPermit"/>
+                  <item id="6" name="strDocumentTypeAzBirthCertificate"/>
+                </items>
+              </lookup>
+
+            </lookups>
+            <storage>
+              <post />
+              <delete name="spPatientActual_Delete"/>
+              <candelete name="spPatientActual_CanDelete"/>
+            </storage>
+            <postorder>
+                <item name="CurrentResidenceAddress" />
+                <item name="EmployerAddress" />
+                <item name="RegistrationAddress" />
+                <item name="this" />
+            </postorder>
+            <deleteorder>
+                <item name="CurrentResidenceAddress" />
+                <item name="EmployerAddress" />
+                <item name="RegistrationAddress" />
+                <item name="this" />
+            </deleteorder>
+            <extenders>
+                <creating>
+                    <scalar_extender target="idfHuman" class="GetNewIDExtender" />
+                    <scalar_extender target="idfRootHuman" class="GetNewIDExtender" />
+                    <lambda_extender target="datEnteredDate" type="DateTime?" lambda="c => DateTime.Now" />   
+                    <!-- Create addresses -->
+                    <lambda_extender target="CurrentResidenceAddress" type="Address" lambda="c => CurrentResidenceAddressAccessor.CreateNewT(manager, c)" />
+                    <!--lambda_extender target="CurrentResidenceAddress.Region" type="RegionLookup" lambda="c => c.CurrentResidenceAddress.RegionLookup.Where(l => l.idfsRegion == eidss.model.Core.EidssSiteContext.Instance.RegionID).FirstOrDefault()" /-->
+                    <lambda_extender target="EmployerAddress" type="Address" lambda="c => EmployerAddressAccessor.CreateNewT(manager, c)" />
+                    <lambda_extender target="EmployerAddress.Country" type="CountryLookup" lambda="c => null" />
+                    <!--lambda_extender target="EmployerAddress.Region" type="RegionLookup" lambda="c => c.EmployerAddress.RegionLookup.Where(l => l.idfsRegion == eidss.model.Core.EidssSiteContext.Instance.RegionID).FirstOrDefault()" /-->
+                    <lambda_extender target="EmployerAddress.blnNeedForeignAddressStr" type="bool" lambda='c => false' />
+                    <lambda_extender target="RegistrationAddress" type="Address" lambda="c => RegistrationAddressAccessor.CreateNewT(manager, c)" />
+                    <lambda_extender target="RegistrationAddress.Country" type="CountryLookup" lambda="c => null" />
+                    <!--lambda_extender target="RegistrationAddress.Region" type="RegionLookup" lambda="c => c.RegistrationAddress.RegionLookup.Where(l => l.idfsRegion == eidss.model.Core.EidssSiteContext.Instance.RegionID).FirstOrDefault()" /-->
+                    <lambda_extender target="RegistrationAddress.blnNeedForeignAddressStr" type="bool" lambda='c => true' />
+                </creating>
+              <loaded>
+                <lambda_extender target="CurrentResidenceAddress" type="Address" lambda="c => c.CurrentResidenceAddress == null ? CurrentResidenceAddressAccessor.CreateAsSharedOrNot(manager, c, c.IsRoot) : c.CurrentResidenceAddress" />
+                <lambda_extender target="EmployerAddress" type="Address" lambda="c => c.EmployerAddress == null ? EmployerAddressAccessor.CreateAsSharedOrNot(manager, c, c.IsRoot) : c.EmployerAddress" />
+                <lambda_extender target="RegistrationAddress" type="Address" lambda="c => c.RegistrationAddress == null ? RegistrationAddressAccessor.CreateAsSharedOrNot(manager, c, c.IsRoot) : c.RegistrationAddress" />
+              </loaded>
+              <posting>
+                <lambda_extender target="datModificationForArchiveDate" type="DateTime?" lambda="c => c.HasChanges ? DateTime.Now : c.datModificationForArchiveDate"/>
+                
+                <!-- fixing bug 11245 -->
+                <custom_extender>
+                  <text>
+                    obj.FixAddress();
+                  </text>
+                </custom_extender>
+              </posting>
+            </extenders>
+            <handlers>
+              <fieldhandler>
+                <custom_handler field="idfCurrentResidenceAddress">
+                  <text>
+                    obj.CheckAddress();
+                  </text>
+                </custom_handler>
+                <lambda_handler field="idfsPersonIDType" target="strPersonID" type="string" lambda='c => (!c.idfsPersonIDType.HasValue || c.idfsPersonIDType.Value == (long)eidss.model.Enums.PersonalIDType.Unknown) ? "" : c.strPersonID'/>
+              </fieldhandler>
+            </handlers>
+            <validators>
+                <change>
+                  <predicate_validator field="intPatientAgeFromCase" message="mbAgeShallNotExceed"
+                                         predicate='i => i.idfsHumanAgeTypeFromCase == null || i.intPatientAgeFromCase == null
+                                            || (i.idfsHumanAgeTypeFromCase == (long)HumanAgeTypeEnum.Years &amp;&amp; i.intPatientAgeFromCase &lt;= 200)
+                                            || (i.idfsHumanAgeTypeFromCase == (long)HumanAgeTypeEnum.Month &amp;&amp; i.intPatientAgeFromCase &lt;= 60)
+                                            || (i.idfsHumanAgeTypeFromCase == (long)HumanAgeTypeEnum.Days &amp;&amp; i.intPatientAgeFromCase &lt;= 31)
+                                            ' />
+                </change>
+              <post>
+                <required_validator target="strLastName" predicate="c => !c.bSearchMode &amp;&amp; !c.bPINMode"/>
+                <required_validator target="strPersonID" predicate="c => !c.bSearchMode &amp;&amp; !c.bPINMode &amp;&amp; c.idfsPersonIDType.HasValue &amp;&amp; c.idfsPersonIDType.Value != (long)eidss.model.Enums.PersonalIDType.Unknown"/>
+                <required_validator target="intPatientAgeFromCase" predicate="c => !c.bSearchMode &amp;&amp; !c.bPINMode &amp;&amp; (c.idfsHumanAgeTypeFromCase.HasValue || (c.Parent != null &amp;&amp; c.Parent is HumanCase &amp;&amp; EidssSiteContext.Instance.CustomMandatoryFields.Contains(CustomMandatoryField.HumanCase_Patient_Age)))"/>
+                <required_validator target="idfsHumanAgeTypeFromCase" predicate="c => !c.bSearchMode &amp;&amp; !c.bPINMode &amp;&amp; (c.intPatientAgeFromCase.HasValue || (c.Parent != null &amp;&amp; c.Parent is HumanCase &amp;&amp; EidssSiteContext.Instance.CustomMandatoryFields.Contains(CustomMandatoryField.HumanCase_Patient_AgeType)))"/>
+
+                <required_validator target="SearchMethod" predicate="c => c.bSearchMode"/>
+                <required_validator target="DocumentType" predicate="c => c.bSearchMode &amp;&amp; c.idfsSearchMethod == 2"/>
+                <required_validator target="strDocumentNumber" predicate="c => c.bSearchMode &amp;&amp; c.idfsSearchMethod == 2"/>
+                <required_validator target="datDocumentDate" predicate="c => c.bSearchMode &amp;&amp; c.idfsSearchMethod == 2 &amp;&amp; c.idfsDocumentType == 6"/>
+              </post>
+            </validators>
+          <actions>
+            <standard>
+              <remove type="Create"/>
+            </standard>
+            <action name="Create" type="Create">
+              <visual visiblePredicate="(c,a,p,r) => c==null">
+              </visual>
+              <run>
+                <params>
+                  <param name="idfCase" type="long" />
+                </params>
+                <creating>
+                  <lambda_extender target="idfCase" type="long" lambda='c => idfCase' />
+                </creating>
+              </run>
+            </action>
+          </actions>
+        </table>
+    </tables>
+
+</object>

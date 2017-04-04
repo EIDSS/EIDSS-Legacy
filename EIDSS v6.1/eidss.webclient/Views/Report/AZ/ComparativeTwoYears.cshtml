@@ -1,0 +1,67 @@
+﻿
+@using Kendo.Mvc.UI
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+@model eidss.webclient.Models.Reports.ComparativeTwoYearsModel
+
+@{
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/ExportButtons", Model)
+    <div class="bluelayout">
+        <div class="tabPanelContent">
+        
+            @Html.Partial("Common/BaseFilter", Model)
+
+            @Html.Partial("AZ/FromYearToYearFilter", Model.YearModel)
+
+            @Html.Partial("AZ/TransportCHEFilter", Model.Address)
+
+            <table id="ComparativeFilterTable" >
+               
+                <tr>
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.Counter)
+                    </td>
+                    <td class="largereport">
+                        @Html.Partial("AZ/MultipleCounterFilter", Model.Counter, new ViewDataDictionary {{"FilterName", "MultipleCounterFilter.CheckedItems"}})
+
+@*                        @{
+                            @(Html.Kendo().ComboBox()
+                                  .BindTo(Model.Counter.LoadItemList().ConvertToSelectListItem())
+                                  .Name("Counter")
+                                  .HtmlAttributes(new {@class = "requiredField"})
+                                  )
+                        }*@
+
+                    </td>
+
+                    @Html.Partial("Common/DiagnosisFilter", Model.DiagnosisModel, new ViewDataDictionary {{"FilterName", "MultipleDiagnosisFilter.CheckedItems"}})
+
+                    @*
+                    <td class="mediumreport">
+                        @Html.LabelFor(m => m.DiagnosisId)
+                    </td>
+                    <td class="largereport">
+                        @{
+                            @(Html.Kendo().ComboBox()
+                                  .Events(e => e.Open("function(e) { bvComboBox.onOpen(e, " + (int) EditorControlWidth.Large + "); }"))
+                                  .BindTo(Model.DiagnosisList.ConvertToSelectListItem())
+                                  .Name("DiagnosisId")
+                                  )
+                        }
+                    </td>
+                    *@
+                    <td ></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+}

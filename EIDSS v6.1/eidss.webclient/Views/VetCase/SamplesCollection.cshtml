@@ -1,0 +1,25 @@
+﻿@model eidss.model.Schema.VetCase
+
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+<div class="tabPanelContent">
+    <div class="sectionTitle">
+        @Translator.GetMessageString("titleSampleReceivingRegistration")
+    </div>
+    @Html.Action("VetCaseSamplesGrid", "Grids",
+        new
+        {
+            root = Model.idfCase,
+            name = Model.ObjectIdent + "Samples",
+            samples = Model.Samples,
+            isReadOnly = Model.IsReadOnly("Samples") || (Model.GetPermissions() == null ? false : Model.GetPermissions().IsReadOnlyForEdit),
+            intHACode = Model._HACode
+        })
+    <div class="sectionTitle">
+        @Html.BvLabel(Model, m => m.strSampleNotes)
+    </div>
+    <div class="fullPageWidth">
+        @Html.BvTextArea(Model, m => m.strSampleNotes)
+    </div>
+</div>

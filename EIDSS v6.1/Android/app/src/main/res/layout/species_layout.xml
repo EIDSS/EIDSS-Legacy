@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/Scroll"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+        <LinearLayout
+            style="@style/UnderScrollLayout">
+
+            <!--section to paste begin-->
+        
+      <!--Page 0-->
+
+<!--SpeciesType-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+          android:text="@string/Species_idfsSpeciesType" />
+    <Spinner
+          android:id="@+id/idfsSpeciesType"
+        style="@style/DetailItem.Spinner"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--TotalAnimalQty-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+          style="@style/DetailItem.Header"
+          android:text="@string/Species_intTotalAnimalQty" />
+    <EditText
+          android:id="@+id/intTotalAnimalQty"
+          android:inputType="phone"
+          style="@style/DetailItem.Text"/>
+          <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--DeadAnimalQty-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+          style="@style/DetailItem.Header"
+          android:text="@string/Species_intDeadAnimalQty" />
+    <EditText
+          android:id="@+id/intDeadAnimalQty"
+          android:inputType="phone"
+          style="@style/DetailItem.Text"/>
+          <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--SickAnimalQty-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+          style="@style/DetailItem.Header"
+          android:text="@string/Species_intSickAnimalQty" />
+    <EditText
+          android:id="@+id/intSickAnimalQty"
+          android:inputType="phone"
+          style="@style/DetailItem.Text"/>
+          <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--Note-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+          style="@style/DetailItem.Header"
+          android:text="@string/Species_strNote" />
+    <EditText
+          android:id="@+id/strNote"
+          style="@style/DetailItem.Text"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--AverageAge-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+          style="@style/DetailItem.Header"
+          android:text="@string/Species_intAverageAge" />
+    <EditText
+          android:id="@+id/intAverageAge"
+          android:inputType="phone"
+          style="@style/DetailItem.Text"/>
+          <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--StartOfSignsDate-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+          android:text="@string/Species_datStartOfSignsDate" />
+    <LinearLayout
+        style="@style/DetailLayout.Date">
+    <TextView
+        android:id="@+id/datStartOfSignsDate"
+        style="@style/DetailItem.Date"
+        android:enabled="true"
+        />
+    <Button
+        android:id="@+id/datStartOfSignsDateClearButton"
+        style="@style/DetailItem.Date.Button.Clear"/>
+    </LinearLayout>
+    <TextView
+        style="@style/Separator"/>
+</LinearLayout>
+
+
+        
+            <!--section to paste end-->
+            <LinearLayout
+                    android:id="@+id/FFDetailsButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+              <LinearLayout
+
+                    style="@style/DetailLayout.Port"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    >
+                <TextView
+                    style="@style/DetailItem.Text"
+                    android:id="@+id/ffSummaryTextCaption"
+                    android:text="@string/ClinicalSigns" />
+                <TextView
+                    android:id="@+id/ffSummaryText"
+                    style="@style/DetailItem.Header.Italic"
+                    />
+              </LinearLayout>
+              <ImageView
+                        android:id="@+id/ffSummaryIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|right"
+                        android:src="@drawable/ic_action_next_item"
+                      android:contentDescription="@drawable/ic_action_next_item">
+              </ImageView>
+            </LinearLayout>
+
+        </LinearLayout>
+
+</ScrollView>

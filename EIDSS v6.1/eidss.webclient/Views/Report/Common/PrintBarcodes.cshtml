@@ -1,0 +1,51 @@
+﻿@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils
+@using Kendo.Mvc.UI
+@model eidss.webclient.Models.Reports.PrintBarcodesModel
+
+@{
+    ViewBag.Number = "C06";
+    Layout = "~/Views/Shared/_ReportLayout.cshtml";
+}
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Partial("Common/ExportButtonsOnly", Model)
+
+    <div class="tabPanelContent bordered2">
+    <div class="sectionTitle">
+        @Translator.GetMessageString("titleParameters")  
+    </div>
+    <table id="PrintBarcodesTable" class="level1">
+        <tr>
+            <td class="medium firstLabel">
+                @Html.LabelFor(m => m.BarcodeType)
+            </td>
+            <td class="xxlarge">
+                @(Html.Kendo().ComboBox()
+                        .Name("BarcodeType")
+                        .BindTo(Model.GetBarcodeTypes().ConvertToSelectListItem())
+                        .HtmlAttributes(new {@class = "requiredField", style = "width: 100%; max-width: 299px;"})
+                        )
+            </td>
+            <td class="small">
+            </td>
+            <td class="large">
+                @Html.LabelFor(m => m.Quantity)
+            </td>
+            <td class="xxlarge">
+                @(Html.Kendo().NumericTextBoxFor(m => m.Quantity)
+                .Min(1).Step(1).Format("0")
+                .HtmlAttributes(new {@class = "requiredField"})
+                )
+            </td>
+        </tr>
+    </table>
+    </div>
+    
+}

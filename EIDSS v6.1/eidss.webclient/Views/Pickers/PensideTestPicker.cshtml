@@ -1,0 +1,84 @@
+﻿@model eidss.model.Schema.PensideTest
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+<script language="javascript" type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        @Html.Hidden("idfPensideTest", Model.idfPensideTest)
+        <div class="windowButtonsPn">
+            <input id="idButtonOk" type="button" class="windowButton" onclick="sample.saveAndClosePensideTestGridEditWindow('@(Model.CaseObjectIdent)');" value="@Translator.GetMessageString("Ok")"/>                        
+            <input id="idButtonCancel" type="button" class="windowButton" onclick="bvPopup.closeDefaultPopup()" value="@Translator.GetMessageString("Cancel")"/>        
+        </div>   
+        <div class="windowSeparator"></div>  
+        <table class="level1">
+            <tr>
+                <td class="xlarge firstLabel">
+                    @Html.BvLabel(Model, m => m.strPensideTestName)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.PensideTestType)
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strFieldBarcode)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.Samples, false, keyName: "idfMaterial")
+                </td>                            
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.SampleType)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.SampleType)
+                </td>                            
+            </tr>
+            @if (Model._HACode == (int)eidss.model.Enums.HACode.Livestock)
+            {
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.AnimalID)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.AnimalID)
+                </td>                            
+            </tr>
+            }
+            else
+            {
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.Species)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.Species)
+                </td>                            
+            </tr>
+            }
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strPensideTestResultName)
+                </td>
+                <td>
+                    @Html.BvCombobox(Model, m => m.PensideTestResult)
+                </td>                            
+            </tr>
+        </table>
+    }           
+</div>

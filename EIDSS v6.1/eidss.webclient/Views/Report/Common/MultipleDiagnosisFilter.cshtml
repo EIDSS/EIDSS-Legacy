@@ -1,0 +1,23 @@
+﻿@using Kendo.Mvc.UI
+@using bv.model.Model.Core
+@model eidss.model.Reports.Common.MultipleDiagnosisModel
+
+@{
+    var originalName = ViewData["FilterName"].ToString();
+    var kendoName = originalName.Replace(".", "_");
+    var class1 = ViewData["class1"] ?? "level1";
+    var class2 = ViewData["class2"] ?? "mediumreport";
+    var maxCheckedCount = ViewData["maxCheckedCount"] ?? 0;
+    var clearLink = "bvCheckedComboBox.onClearCheckedComboBox('" + @kendoName + "')";
+}
+
+<table class='@class1'>
+    <tr>
+        <td class='@class2'>
+            @ViewData["Caption"]
+        </td>
+        <td class='large'>
+            @Html.Partial("Common/BaseMultipleDiagnosisFilter", Model, ViewData)
+        </td>
+    </tr>
+</table>

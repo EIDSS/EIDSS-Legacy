@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="CustomReportRowsMaster"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spCustomReportRowsMaster_SelectDetail" type= "detailone" />
+  </storage>
+
+  <tables>
+    <table name="CustomReportRowsMaster">
+      <properties auditObject="daoReference" auditTable="trtBaseReference" permissionObject="Reference">
+        <!--<events>
+          <create name="MatrixChanged" predicate="c => c.HasChanges" addinfo="ReportDiagnosesGroup2DiagnosisMasterDetail"/>
+        </events>-->
+      </properties>
+      <help win="EIDSS_Configuration"/>
+      <fields>
+        <storage name="ID" type="long"/>  
+      </fields>
+      <readonly>
+      </readonly>
+      <relations>
+        <relation name="CustomReportRows" table="CustomReportRow" internal="false" type="child" lazy="false" source="ID" target="" />
+      </relations>
+      <lookups>
+        <lookup name="SummaryReportType" table="BaseReference" section="rftSummaryReportType" source="idfsSummaryReportType" target="idfsBaseReference"/>
+      </lookups>
+      <storage>
+        <post  name="spDummy_Post"/>
+        <delete />
+        <candelete name=""/>
+      </storage>
+      <postorder>
+        <item name="CustomReportRows" />
+      </postorder>
+      <deleteorder>
+        <item name="CustomReportRows" />
+      </deleteorder>
+      <extenders>
+        <creating>
+          <custom_extender>
+            <text>
+              obj.m_IsNew = false;
+              var accMaster = CustomReportRowsMaster.Accessor.Instance(null);
+              accMaster._LoadCustomReportRows(manager, obj);
+            </text>
+          </custom_extender>
+        </creating>
+        <created>
+        </created>
+        <loading>
+        </loading>
+        <posting>
+        </posting>
+        <posted>
+        </posted>
+      </extenders>
+      <handlers>
+        <fieldhandler>
+        </fieldhandler>
+        <childhandler>
+          <custom_handler field="intRowOrder" container="CustomReportRows" filter="c => true">
+             <text>obj.RecalculateRowNumber(item);</text>
+          </custom_handler>
+        </childhandler>
+        <!--
+        <childaddlist>
+          <lambda_handler container="CustomReportRows" field="" filter="c => true" target="TestsConducted" type="BaseReference"
+                          lambda="c => (c.CaseTests.Count(i => !i.IsMarkedToDelete) == 0) ? c.TestsConducted : c.TestsConductedLookup.Where(i => i.idfsBaseReference == (long)YesNoUnknownValuesEnum.Yes).SingleOrDefault()"/>
+          <custom_handler field="intRowOrder" container="CustomReportRows" filter="c => true">
+            <text>obj.RecalculateRowNumber(obj.CustomReportRows[e.NewIndex]);</text>
+          </custom_handler>
+        </childaddlist>
+        -->
+      </handlers>
+      <validators>
+        <childchange>
+        </childchange>
+        <post>
+        </post>
+      </validators>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <remove type="Delete"/>
+        </standard>
+        <action name="DeleteItem" type="Action">
+          <visual panel="Main" alignment ="Right" visiblePredicate = "ActionMetaItem.DefaultDeleteGroupItemVisiblePredicate">
+            <regular caption ="strDelete_Id" tooltip ="tooltipDelete_Id" icon ="Delete_Remove"/>
+          </visual>
+          <run>
+            <preUI webType="JScript"/>
+          </run>
+        </action>
+      </actions>
+    </table>
+
+  </tables>
+</object>

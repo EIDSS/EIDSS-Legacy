@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?include "ProductInfo.wxi" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Fragment Id="NotificationService">
+    <Property Id="NOTIFICATION_SERVICE" Secure="yes" />
+    <SetProperty Id="NOTIFICATION_SERVICE" After="AppSearch" Value="!(loc.NotificationServiceName)" Sequence="first">
+      Not NOTIFICATION_SERVICE
+    </SetProperty>
+
+    <Property Id="NOTIFICATION_SERVICE_DISPLAY_NAME" Secure="yes" />
+    <SetProperty Id="NOTIFICATION_SERVICE_DISPLAY_NAME" After="AppSearch" Value="!(loc.NotificationServiceDisplayName)" Sequence="first">
+      Not NOTIFICATION_SERVICE_DISPLAY_NAME
+    </SetProperty>
+
+    <Property Id="NOTIFICATION_SERVICE_DESCRIPTION" Secure="yes" />
+    <SetProperty Id="NOTIFICATION_SERVICE_DESCRIPTION" After="AppSearch" Value="!(loc.NotificationServiceDescription)" Sequence="execute">
+      Not NOTIFICATION_SERVICE_DESCRIPTION
+    </SetProperty>
+
+    <ComponentGroup Id="NotificationService" Directory="APPLICATIONFOLDER">
+      <Component Id="EIDSS60_Ntfy.exe">
+        <File Name="EIDSS60_Ntfy.exe" KeyPath="yes" Checksum="yes" />
+
+        <ServiceInstall
+          Name="[NOTIFICATION_SERVICE]"
+          DisplayName="[NOTIFICATION_SERVICE_DISPLAY_NAME]"
+          Description="[NOTIFICATION_SERVICE_DESCRIPTION]"
+          Type="ownProcess"
+          Start="auto"
+          ErrorControl="normal" />
+        <ServiceControl
+          Id="NotificationService"
+          Name="[NOTIFICATION_SERVICE]"
+          Start="install"
+          Stop="both"
+          Remove="uninstall"
+          Wait="yes" />
+
+        <File Id="ServiceConfig" Name="EIDSS60_Ntfy.exe.config" Hidden="yes" />
+      </Component>
+
+      <Component Id="ServiceRegistrtyConfiguration">
+        <RegistryKey Root="HKLM" Key="SOFTWARE\$(var.ProductFamilyAbbreviation) $(var.ActualVersion)">
+          <RegistryValue Name="nspath" Value="[APPLICATIONFOLDER]" KeyPath="yes" Type="string" />
+        </RegistryKey>
+      </Component>
+    </ComponentGroup>
+
+    <InstallExecuteSequence>
+      <InstallServices>(?EIDSS60_Ntfy.exe = 2) And ($EIDSS60_Ntfy.exe >= 3) Or (?EIDSS60_Ntfy.exe = $EIDSS60_Ntfy.exe)</InstallServices>
+    </InstallExecuteSequence>
+  </Fragment>
+</Wix>

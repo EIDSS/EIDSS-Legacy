@@ -1,0 +1,91 @@
+﻿@model eidss.model.Schema.HumanCase
+@{
+    ViewBag.Title = "Human Case Report Form";
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+}
+@using eidss.webui.Utils
+<h2>
+    Details</h2>
+<script src="../../Scripts/HumanCase/Script.js" type="text/javascript"></script>
+<script src="../../Scripts/Address/Lookups.js" type="text/javascript"></script>
+<script src="../../Scripts/Common/FormRefresh.js" type="text/javascript"></script>
+@using (Html.BeginForm())
+{
+    <table width="100%">
+        <tr>
+            <td>
+                <h2>
+                    Human Case Report Form: idfCase=@Model.idfCase</h2>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table width="100%">
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.strCaseID)
+                        </td>
+                        <td>
+                            @Html.BvEditbox(Model, "strCaseID")
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.idfsCaseProgressStatus)
+                        </td>
+                        <td>
+                            @Html.BvDropdownList(Model, "CaseProgressStatus")
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.datEnteredDate)
+                        </td>
+                        <td>
+                            @Html.BvDatebox(Model, "datEnteredDate")
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.datModificationDate)
+                        </td>
+                        <td>
+                            @Html.BvDatebox(Model, "datModificationDate")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.Patient.strName)
+                        </td>
+                        <td>
+                            @Html.BvEditbox(Model.Patient, "strName")
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.strDiagnosis)
+                        </td>
+                        <td>
+                            @Html.BvEditbox(Model, "strDiagnosis")
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.strCaseClassification)
+                        </td>
+                        <td>
+                            @Html.BvEditbox(Model, "strCaseClassification")
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+         <tr>
+            <td>
+                @(Html.Telerik().TabStrip()
+                     .Name("TabStrip")
+                     .Items(items =>
+                     {
+                         items.Add()
+                           .Text("Notification")
+                           .Content(@<text>
+                                @Html.Partial(@"../HumanCase/Demographic", Model)</text>);                     
+                     }).SelectedIndex(0))
+            </td>
+        </tr>
+    </table>
+}

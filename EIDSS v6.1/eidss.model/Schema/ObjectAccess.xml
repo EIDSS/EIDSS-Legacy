@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="ObjectAccess"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spObjectAccess_SelectDetail" type="detaillist" />
+  </storage>
+
+  <tables>
+    <table name="ObjectAccess">
+      <properties auditObject="daoSystemFunction" auditTable="trtSystemFunction" permissionObject="SystemFunction"/>
+      <help win="UserGroupForm"/>
+      <grid>
+        <item name="idfObjectAccess" visible="false" key="true"/>
+        <item name="FunctionName"  />
+        <item name="ObjectOperationName" />
+        <item name="isDeny"  />
+        <item name="isAllow"  />
+      </grid>
+      <readonly>
+        <fields name="FunctionName" predicate="c => true"/>
+        <fields name="ObjectOperationName" predicate="c => true"/>
+        <fields name="isDeny" predicate="c => false"/>
+        <fields name="isAllow" predicate="c => false"/>
+      </readonly>
+      <lookups>
+        <!--<lookup name="Site" table="SiteLookup" source="idfsSite" target="idfsSite"/>-->
+      </lookups>
+      <storage>
+        <post />
+      </storage>
+      <handlers>
+        <fieldhandler>
+          <custom_handler field="isDeny">
+            <text>if (obj.isDeny.HasValue &amp;&amp; obj.isDeny.Value) obj.isAllow = false;</text>
+          </custom_handler>
+          <custom_handler field="isAllow">
+            <text>if (obj.isAllow.HasValue &amp;&amp; obj.isAllow.Value) obj.isDeny = false;</text>
+          </custom_handler>          
+        </fieldhandler>
+      </handlers>
+      <actions>
+        <standard>
+          <remove type="Create"/>
+          <remove type="Edit"/>
+          <remove type="Delete"/>
+        </standard>
+      </actions>
+    </table>
+  </tables>
+
+</object>

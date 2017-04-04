@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+
+  <util:XmlConfig
+    Id="Config.schedulerConfiguration.$(var.key)"
+    File="[#ServiceConfig]"
+    ElementId="Config.schedulerConfiguration"
+    Name="$(var.key)"
+    Value="$(var.value)" />
+
+  <?undef key?>
+  <?undef value?>
+</Include>

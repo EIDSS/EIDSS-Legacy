@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+
+  <util:XmlConfig
+    Id="$(var.file).$(var.key)"
+    File="[#$(var.file)]"
+    Action="create"
+    ElementPath="/configuration/appSettings"
+    VerifyPath="/configuration/appSettings/add[\[]@key='$(var.key)'[\]]"
+    Name="add"
+    Node="element"
+    On="install"
+    Sequence="$(var.order)">
+
+    <util:XmlConfig Id="$(var.file).$(var.key).Key" File="[#$(var.file)]" ElementId="$(var.file).$(var.key)" Name="key" Value="$(var.key)" />
+    <util:XmlConfig Id="$(var.file).$(var.key).Value" File="[#$(var.file)]" ElementId="$(var.file).$(var.key)" Name="value" Value="$(var.value)" />
+  </util:XmlConfig>
+
+  <?undef order?>
+  <?undef key?>
+  <?undef value?>
+  <?undef file?>
+</Include>

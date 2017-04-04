@@ -1,0 +1,158 @@
+﻿@model eidss.model.Schema.VectorLabTest
+@{
+    Layout = "~/Views/Shared/_DetailsWindowLayout.cshtml";
+}
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+<script type="text/javascript">
+    $(".popupContent").ready(function () {
+        ChangeMessageWindowHeigth();
+    });  
+</script>
+
+<input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+
+@if (BaseSettings.TranslationMode)
+{
+    <input type='hidden' id='aspclassnamePopup' value='@GetType().FullName' />
+}
+<div class="popupContent">
+    @using (Html.BeginForm())
+    {
+        <div class="windowButtonsPn">
+            <input id="idButtonClose" type="button" class="windowButton" onclick="bvPopup.closeDefaultPopup()" value="@Translator.GetMessageString("Close")"/>        
+        </div>
+        
+        <div class="windowSeparator"></div> 
+        
+        @Html.Hidden("idfTesting", Model.idfTesting)  
+                                                     
+        <table class="level1">
+            @*
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strVectorID)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strVectorID)                    
+                </td> 
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strVectorTypeName)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strVectorTypeName)
+                </td> 
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strVectorSubTypeName)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strVectorSubTypeName)
+                </td> 
+            </tr>
+            *@
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strBarcode)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strBarcode)
+                </td> 
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strFieldBarcode)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strFieldBarcode)
+                </td> 
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strSampleType)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strSampleType)
+                </td> 
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.datFieldCollectionDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datFieldCollectionDate)
+                </td> 
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strTestName)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strTestName)
+                </td> 
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strTestCategory)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strTestCategory)
+                </td> 
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.datStartedDate)
+                </td>
+                <td>
+                    @Html.BvDatebox(Model, m => m.datStartedDate)
+                </td> 
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strTestedByOffice)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strTestedByOffice)
+                </td> 
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strTestedByPerson)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strTestedByPerson)
+                </td> 
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strTestResultName)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strTestResultName)
+                </td> 
+            </tr>
+            <tr>
+                <td class="firstLabel">
+                    @Html.BvLabel(Model, m => m.strDiagnosisName)
+                </td>
+                <td>
+                    @Html.BvEditbox(Model, m => m.strDiagnosisName)
+                </td> 
+            </tr>
+        </table>   
+        
+        <div class="sectionTitle">
+            @Translator.GetMessageString("tabTitleAmendmentHistory")  
+        </div>
+        
+        @(Html.BvDetailsFormGrid<eidss.model.Schema.LabTestAmendment.LabTestAmendmentGridModel, eidss.model.Schema.LabTestAmendment.LabTestAmendmentGridModelList>(
+            Model.ObjectIdent + "AmendmentHistory", new eidss.model.Schema.LabTestAmendment.LabTestAmendmentGridModelList(Model.idfTesting, Model.AmendmentHistory),
+            "detailsGrid", null, null, false, false, false, false)
+            )
+    }           
+</div>

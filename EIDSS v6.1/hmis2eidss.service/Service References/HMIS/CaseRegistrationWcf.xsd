@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/Hmis.Contracts.Billing.Contracts" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Hmis.Contracts.Billing.Contracts" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://case.moh.gov.ge/CaseRegistration/Services/CaseRegistrationWcf.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://case.moh.gov.ge/CaseRegistration/Services/CaseRegistrationWcf.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/Hmis.Contracts.CommonData.Contracts" />
+  <xs:import schemaLocation="http://case.moh.gov.ge/CaseRegistration/Services/CaseRegistrationWcf.svc?xsd=xsd9" namespace="http://schemas.datacontract.org/2004/07/Hmis.Contracts.Billing.Enums" />
+  <xs:complexType name="OrganizationContract">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Address" nillable="true" type="tns:AddressContract" />
+      <xs:element minOccurs="0" name="Branches" nillable="true" type="tns:ArrayOfOrganizationContract" />
+      <xs:element minOccurs="0" name="DateChanged" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DateCreated" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DateDeleted" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Departments" nillable="true" type="tns:ArrayOfOrganizationDepartmentContract" />
+      <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EngName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Id" type="ser:guid" />
+      <xs:element minOccurs="0" name="IsMedical" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsParent" type="xs:boolean" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Hmis.Contracts.CommonData.Contracts" minOccurs="0" name="LegalForm" nillable="true" type="q1:LegalFormContract" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OldId" nillable="true" type="xs:decimal" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Hmis.Contracts.Billing.Enums" minOccurs="0" name="OrganizationType" type="q2:OrganizationTypeEnums" />
+      <xs:element minOccurs="0" name="Parent" nillable="true" type="tns:OrganizationContract" />
+      <xs:element minOccurs="0" name="ParentId" nillable="true" type="ser:guid" />
+      <xs:element minOccurs="0" name="ProviderTypeId" type="ser:guid" />
+      <xs:element minOccurs="0" name="ProviderTypeName" nillable="true" type="xs:string" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/Hmis.Contracts.Billing.Enums" minOccurs="0" name="Status" type="q3:OrganizationStatusEnums" />
+      <xs:element minOccurs="0" name="Tax" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Tel" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OrganizationContract" nillable="true" type="tns:OrganizationContract" />
+  <xs:complexType name="AddressContract">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Address" nillable="true" type="xs:string" />
+      <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Hmis.Contracts.CommonData.Contracts" minOccurs="0" name="Settlement" nillable="true" type="q4:AreaContract" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AddressContract" nillable="true" type="tns:AddressContract" />
+  <xs:complexType name="ArrayOfOrganizationContract">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="OrganizationContract" nillable="true" type="tns:OrganizationContract" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOrganizationContract" nillable="true" type="tns:ArrayOfOrganizationContract" />
+  <xs:complexType name="ArrayOfOrganizationDepartmentContract">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="OrganizationDepartmentContract" nillable="true" type="tns:OrganizationDepartmentContract" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOrganizationDepartmentContract" nillable="true" type="tns:ArrayOfOrganizationDepartmentContract" />
+  <xs:complexType name="OrganizationDepartmentContract">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="ser:guid" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OrganizationDepartmentContract" nillable="true" type="tns:OrganizationDepartmentContract" />
+</xs:schema>

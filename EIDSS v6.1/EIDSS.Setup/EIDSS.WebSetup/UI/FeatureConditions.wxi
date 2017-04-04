@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+  <?define Web.ConfigurationRequired        = (((WIX_UPGRADE_DETECTED And Not FEATURE.EIDSS.WEB)    Or (Not WIX_UPGRADE_DETECTED And (?Web.AppPool = 2)))        And ($Web.AppPool >= 3))?>
+  <?define Avr.ConfigurationRequired        = (((WIX_UPGRADE_DETECTED And Not FEATURE.AVR)          Or (Not WIX_UPGRADE_DETECTED And (?AVR.AppPool = 2)))        And ($AVR.AppPool >= 3))?>
+  <?define Mobile.ConfigurationRequired     = (((WIX_UPGRADE_DETECTED And Not FEATURE.EIDSS.MOBILE) Or (Not WIX_UPGRADE_DETECTED And (?MOBILE.AppPool = 2)))     And ($MOBILE.AppPool >= 3))?>
+  <?define Smartphone.ConfigurationRequired = (((WIX_UPGRADE_DETECTED And Not FEATURE.SMARTPHONE)   Or (Not WIX_UPGRADE_DETECTED And (?Smartphone.AppPool = 2))) And ($Smartphone.AppPool >= 3))?>
+  <?define OpenAPI.ConfigurationRequired    = (((WIX_UPGRADE_DETECTED And Not FEATURE.OPENAPI)      Or (Not WIX_UPGRADE_DETECTED And (?OpenAPI.AppPool = 2)))    And ($OpenAPI.AppPool >= 3))?>
+</Include>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/Scroll"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <LinearLayout
+        style="@style/UnderScrollLayout">
+
+        <!--section to paste begin-->
+        
+      <!--Page 1-->
+
+<!--FamilyName-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+          style="@style/DetailItem.Header"
+          android:text="@string/HumanCase_strFamilyName" />
+    <EditText
+          android:id="@+id/strFamilyName"
+          android:inputType="textPersonName|textCapWords"
+          style="@style/DetailItem.Text"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--FirstName-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+          style="@style/DetailItem.Header"
+          android:text="@string/HumanCase_strFirstName" />
+    <EditText
+          android:id="@+id/strFirstName"
+          android:inputType="textPersonName|textCapWords"
+          style="@style/DetailItem.Text"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--SecondName-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+          style="@style/DetailItem.Header"
+          android:text="@string/HumanCase_strSecondName" />
+    <EditText
+          android:id="@+id/strSecondName"
+          android:inputType="textPersonName|textCapWords"
+          style="@style/DetailItem.Text"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--DateofBirth-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+          android:text="@string/HumanCase_datDateofBirth" />
+    <LinearLayout
+        style="@style/DetailLayout.Date">
+    <TextView
+        android:id="@+id/datDateofBirth"
+        style="@style/DetailItem.Date"
+        android:enabled="true"
+        />
+    <Button
+        android:id="@+id/datDateofBirthClearButton"
+        style="@style/DetailItem.Date.Button.Clear"/>
+    </LinearLayout>
+    <TextView
+        style="@style/Separator"/>
+</LinearLayout>
+
+<!--PatientAge-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+      android:text="@string/HumanCase_intPatientAge" />
+    <EditText
+  android:id="@+id/intPatientAge"
+    style="@style/DetailItem.Text"
+    android:inputType="number"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--HumanAgeType-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+          android:text="@string/HumanCase_idfsHumanAgeType" />
+    <Spinner
+          android:id="@+id/idfsHumanAgeType"
+        style="@style/DetailItem.Spinner"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--HumanGender-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+          android:text="@string/HumanCase_idfsHumanGender" />
+    <Spinner
+          android:id="@+id/idfsHumanGender"
+        style="@style/DetailItem.Spinner"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--PersonIDType-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+          android:text="@string/HumanCase_idfsPersonIDType" />
+    <Spinner
+          android:id="@+id/idfsPersonIDType"
+        style="@style/DetailItem.Spinner"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--PersonID-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+          style="@style/DetailItem.Header"
+          android:text="@string/HumanCase_strPersonID" />
+    <EditText
+          android:id="@+id/strPersonID"
+          style="@style/DetailItem.Text"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--Nationality-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+          android:text="@string/HumanCase_idfsNationality" />
+    <Spinner
+          android:id="@+id/idfsNationality"
+        style="@style/DetailItem.Spinner"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+
+        
+        <!--section to paste end-->
+    </LinearLayout>
+</ScrollView>

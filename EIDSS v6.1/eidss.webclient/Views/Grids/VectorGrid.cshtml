@@ -1,0 +1,24 @@
+﻿@model Vector.VectorGridModelList
+@using eidss.model.Schema
+@using eidss.web.common.Utils
+@using eidss.webclient.Configurations
+@using eidss.webclient.Utils;
+
+@(Html.BvDetailsFormGrid<Vector.VectorGridModel, Vector.VectorGridModelList>(
+(string)ViewBag.VectorsName
+,Model, "detailsGrid", "vector.showVectorsGridEditWindow"
+, null
+, (bool)ViewBag.IsReadOnly
+, selectionType: GridRowSelectionType.Single
+).ToolBar(toolBar =>
+                 toolBar.Template(
+                     @<text>
+                          <input id="idButtonNew" type="button" class="button"  data-role="grid-add-button" onclick="bvGrid.addRow('@Model.ListKey', '@ViewBag.VectorsName', vector.showVectorsGridEditWindow)"
+                                 value ="@(Translator.GetMessageString("strNew"))"/>
+
+                          <input id="idButtonCopy" type="button" class="button" data-role="grid-on-row-button"  data-grid-name="@ViewBag.VectorsName"
+                                 onclick="vector.copyVectorEditWindow(bvGrid.getSelectedItemId('@ViewBag.VectorsName'), '@Model.ListKey', '@ViewBag.VectorsName')" value='@(Translator.GetBvMessageString("strCopy_Id"))'/>
+                              
+                          
+                      </text>)
+            ))

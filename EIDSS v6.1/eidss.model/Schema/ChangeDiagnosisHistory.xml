@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="ChangeDiagnosisHistory"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+    <storage>
+        <get name="spChangeDiagnosisHistory_SelectDetail" type="detaillist" />
+    </storage>
+
+    <tables>
+        <table name="ChangeDiagnosisHistory">
+          <grid>
+            <item name="idfChangeDiagnosisHistory" visible="false" key="true"/>
+            <item name="datChangedDate" format="G"/>
+            <item name="strPersonName"/>
+            <item name="Organization"/>
+            <item name="PreviousDiagnosisName"/>
+            <item name="CurrentDiagnosisName"/>
+            <item name="strReason"/>
+          </grid>
+          <labels>
+            <item name="strPersonName" labelId="strChangedByPerson"/>
+            <item name="Organization" labelId="strChangedByOrganization"/>
+            <item name="strReason" labelId="idfsChangeDiagnosisReason"/>
+          </labels>
+            <relations>
+                <!-- idfHumanCase -->
+                <!-- idfUserID -->
+                <!-- idfPerson -->
+            </relations>
+            <lookups>
+                <lookup name="PreviousDiagnosis" table="DiagnosisLookup" source="idfsPreviousDiagnosis" target="idfsDiagnosis">
+                  <filters>
+                    <filter predicate="c => ((c.intHACode &amp; (int)HACode.Human) != 0) || c.idfsDiagnosis == obj.idfsPreviousDiagnosis" />
+                    <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsPreviousDiagnosis" />
+                  </filters>
+                </lookup>
+                <lookup name="CurrentDiagnosis" table="DiagnosisLookup" source="idfsCurrentDiagnosis" target="idfsDiagnosis">
+                  <filters>
+                    <filter predicate="c => ((c.intHACode &amp; (int)HACode.Human) != 0) || c.idfsDiagnosis == obj.idfsCurrentDiagnosis" />
+                    <filter predicate="c => (c.idfsUsingType == (long)DiagnosisUsingTypeEnum.StandardCase) || c.idfsDiagnosis == obj.idfsCurrentDiagnosis" />
+                  </filters>
+                </lookup>
+              <lookup name="ChangeDiagnosisReason" table="BaseReference" section="rftChangeDiagnosisReason" source="idfsChangeDiagnosisReason" target="idfsBaseReference" />
+
+            </lookups>
+            <storage>
+                <post name="spChangeDiagnosisHistory_Post" />
+            </storage>
+            <extenders>
+                <creating>
+                    <scalar_extender target="idfChangeDiagnosisHistory" class="GetNewIDExtender" />
+                    <value_extender target="datChangedDate" value="DateTime.Now"/>
+                    <value_extender target="idfPerson" value="ModelUserContext.Instance == null ? 0 : (long)ModelUserContext.Instance.CurrentUser.EmployeeID"/>
+                    <value_extender target="strPersonName" value="ModelUserContext.Instance == null ? null : ModelUserContext.Instance.CurrentUser.FullName"/>
+                    <value_extender target="Organization" value="ModelUserContext.Instance == null ? null : OrganizationLookup.OrganizationNational"/>
+                </creating>
+            </extenders>
+            <handlers>
+                <fieldhandler>
+                  <lambda_handler field="idfsPreviousDiagnosis" target="PreviousDiagnosisName" type="string"
+                                  lambda="c => c.PreviousDiagnosis == null ? string.Empty : c.PreviousDiagnosis.name"/>
+                  <lambda_handler field="idfsCurrentDiagnosis" target="CurrentDiagnosisName" type="string"
+                                  lambda="c => c.CurrentDiagnosis == null ? string.Empty : c.CurrentDiagnosis.name"/>
+                  <lambda_handler field="idfsChangeDiagnosisReason" target="strReason" type="string"
+                                  lambda="c => c.ChangeDiagnosisReason == null ? string.Empty : c.ChangeDiagnosisReason.name"/>
+                </fieldhandler>
+            </handlers>          
+          <actions>
+            <standard>
+              <remove type="Create"/>
+            </standard>
+            <action name="Create" type="Create">
+              <run>
+                <params>
+                  <param name="idfHumanCase" type="long" />
+                  <param name="idfsPreviousDiagnosis" type="long?" />
+                  <param name="idfsCurrentDiagnosis" type="long?" />
+                </params>
+                <creating>
+                  <value_extender target="idfHumanCase" value="idfHumanCase" />
+                </creating>
+                <created>
+                  <value_extender target="PreviousDiagnosis" value="obj.PreviousDiagnosisLookup.Where(a => a.idfsDiagnosis == idfsPreviousDiagnosis).SingleOrDefault()"/>
+                  <value_extender target="CurrentDiagnosis" value="obj.CurrentDiagnosisLookup.Where(a => a.idfsDiagnosis == idfsCurrentDiagnosis).SingleOrDefault()"/>
+                </created>
+              </run>
+            </action>
+          </actions>
+        </table>
+    </tables>
+
+</object>

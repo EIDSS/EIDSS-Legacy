@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/eidss.model.Reports.TH" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/eidss.model.Reports.TH" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8097/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" />
+  <xs:complexType name="ComparativeSeveralYearsTHSurrogateModel">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" base="q1:BaseModel">
+        <xs:sequence>
+          <xs:element name="_x003C_Counter_x003E_k__BackingField" type="xs:int" />
+          <xs:element name="_x003C_Diagnoses_x003E_k__BackingField" nillable="true" type="q1:MultipleDiagnosisModel" />
+          <xs:element name="_x003C_RayonId_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_RayonName_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_RegionId_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_RegionName_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_YearFrom_x003E_k__BackingField" type="xs:int" />
+          <xs:element name="_x003C_YearTo_x003E_k__BackingField" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ComparativeSeveralYearsTHSurrogateModel" nillable="true" type="tns:ComparativeSeveralYearsTHSurrogateModel" />
+  <xs:complexType name="NumberOfCasesDeathsMorbidityMortalityTHModel">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q2="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" base="q2:BaseIntervalModel">
+        <xs:sequence>
+          <xs:element name="_x003C_CaseClassification_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_Diagnoses_CheckedItems_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_Diagnoses_x003E_k__BackingField" nillable="true" type="q2:MultipleDiagnosisModel" />
+          <xs:element name="_x003C_ProvinceFilter_CheckedItems_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_Provinces_x003E_k__BackingField" nillable="true" type="tns:MultipleProvinceTHModel" />
+          <xs:element name="_x003C_RegionFilter_CheckedItems_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_Regions_x003E_k__BackingField" nillable="true" type="tns:MultipleRegionTHModel" />
+          <xs:element name="_x003C_ZoneFilter_CheckedItems_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_Zones_x003E_k__BackingField" nillable="true" type="tns:MultipleZoneTHModel" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="NumberOfCasesDeathsMorbidityMortalityTHModel" nillable="true" type="tns:NumberOfCasesDeathsMorbidityMortalityTHModel" />
+  <xs:complexType name="MultipleProvinceTHModel">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q3="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" base="q3:BaseMultipleModel">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="MultipleProvinceTHModel" nillable="true" type="tns:MultipleProvinceTHModel" />
+  <xs:complexType name="MultipleRegionTHModel">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q4="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" base="q4:BaseMultipleModel">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="MultipleRegionTHModel" nillable="true" type="tns:MultipleRegionTHModel" />
+  <xs:complexType name="MultipleZoneTHModel">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q5="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" base="q5:BaseMultipleModel">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="MultipleZoneTHModel" nillable="true" type="tns:MultipleZoneTHModel" />
+  <xs:complexType name="NumberOfCasesDeathsMonthTHModel">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseThaiYearModel">
+        <xs:sequence>
+          <xs:element name="_x003C_CaseClassification_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_Diagnoses_CheckedItems_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" name="_x003C_Diagnoses_x003E_k__BackingField" nillable="true" type="q6:MultipleDiagnosisModel" />
+          <xs:element name="_x003C_ProvinceFilter_CheckedItems_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_Provinces_x003E_k__BackingField" nillable="true" type="tns:MultipleProvinceTHModel" />
+          <xs:element name="_x003C_RegionFilter_CheckedItems_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_Regions_x003E_k__BackingField" nillable="true" type="tns:MultipleRegionTHModel" />
+          <xs:element name="_x003C_ZoneFilter_CheckedItems_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_Zones_x003E_k__BackingField" nillable="true" type="tns:MultipleZoneTHModel" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="NumberOfCasesDeathsMonthTHModel" nillable="true" type="tns:NumberOfCasesDeathsMonthTHModel" />
+  <xs:complexType name="BaseThaiYearModel">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q7="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" base="q7:BaseYearModel">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="BaseThaiYearModel" nillable="true" type="tns:BaseThaiYearModel" />
+</xs:schema>

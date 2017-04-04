@@ -1,0 +1,37 @@
+﻿@model eidss.model.Schema.VetAggregateAction
+@{
+    ViewBag.Title = Translator.GetMessageString("titleVetAggregateActionTitle");
+    ViewBag.Number = "V12";
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+}
+
+@using bv.common.Configuration
+@using eidss.web.common.Utils
+@using eidss.webclient.Utils;
+
+<script language="javascript" type="text/javascript">
+    $(window).load(function () {           
+        //aggregateCase.initialDateMinMax();
+        aggregateCase.toFlexFormDiagnosticReload();
+        aggregateCase.toFlexFormProphylacticReload();
+        aggregateCase.toFlexFormSanitaryReload();
+    });
+    
+    $(document).ready(function () {
+    });
+</script>
+
+@if (BaseSettings.TranslationMode){
+    <input type='hidden' id='aspclassname' value='@GetType().FullName' />
+}
+
+@Html.PopupMenu(eidss.model.Schema.VetAggregateAction.Accessor.Instance(null), "SelectReport")
+
+@using (Html.BeginForm())
+{ 
+    @Html.IdentificationAndHeartbeat("idfAggrCase", Model.idfAggrCase) 
+      
+    <div class="tabPanelContent bordered">
+        @Html.Partial("../VetAggregateAction/DetailsContent", Model)
+    </div>    
+}

@@ -1,0 +1,943 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">pirovnebis zebna rogorc online (PersonDataSource = CRA), aseve lokaluri bazidan (PersonDataSource = LocalDB)</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="GetPersonInfoDataUsingPrivateNumber_V01">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="piradiNomeri" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="timeOut" nillable="true" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="monacemebisCkaro" type="tns:PersonDataSource" />
+            <s:element minOccurs="1" maxOccurs="1" name="phototi" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="PersonDataSource">
+        <s:restriction base="s:string">
+          <s:enumeration value="Cra" />
+          <s:enumeration value="LocalDB" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="GetPersonInfoDataUsingPrivateNumber_V01Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPersonInfoDataUsingPrivateNumber_V01Result" type="tns:ResultEntity" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ResultEntity">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="PersonInfoDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataSource" type="tns:PersonDataSource" />
+          <s:element minOccurs="0" maxOccurs="1" name="PersonInformacia" type="tns:PersonInfoSSA" />
+          <s:element minOccurs="0" maxOccurs="1" name="Shedegi" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PersonInfoSSA">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="BirthDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="BirthPlace" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Citizenship" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CitizenshipCode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DocumentID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="DocumentStatusEnum" nillable="true" type="tns:DocumentStatus" />
+          <s:element minOccurs="0" maxOccurs="1" name="DocumentStatusStr" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DoubleCitizenship" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DoubleCitizenshipCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FaLivingPlace" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FirstName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Gender" nillable="true" type="s:short" />
+          <s:element minOccurs="1" maxOccurs="1" name="IdCardIssueDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="IdCardIssuer" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IdCardNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IdCardSerial" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IdCardValidDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsDocumentLost" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsIdCard" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsPersonDead" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="LastName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LivingPlace" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="LivingPlaceID" nillable="true" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="LivingPlaceRegDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="LivingPlaceRegEndDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="MiddleName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PaspIssueDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="PaspIssuer" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PaspNumber" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PaspValidDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="PersonID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="Photos" type="tns:ArrayOfBase64Binary" />
+          <s:element minOccurs="0" maxOccurs="1" name="PrivateNumber" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="RegionID" nillable="true" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="RegionStr" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="RejectedDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="ResponseCode" type="tns:ResponseStatus" />
+          <s:element minOccurs="0" maxOccurs="1" name="ResponseID" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PersonStatus" nillable="true" type="s:short" />
+          <s:element minOccurs="1" maxOccurs="1" name="PersonCondition" nillable="true" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="Condition" nillable="true" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="documentTypeId" type="s:short" />
+          <s:element minOccurs="1" maxOccurs="1" name="DocumentTypeID" type="s:short" />
+          <s:element minOccurs="0" maxOccurs="1" name="RegionStr_" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="DocumentStatus">
+        <s:restriction base="s:string">
+          <s:enumeration value="Rejected" />
+          <s:enumeration value="Active" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ArrayOfBase64Binary">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="base64Binary" nillable="true" type="s:base64Binary" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="ResponseStatus">
+        <s:restriction base="s:string">
+          <s:enumeration value="UNEXPETC_ERROR" />
+          <s:enumeration value="ID_CARD_FORMAT_ERROR" />
+          <s:enumeration value="ID_CARD_PARAMETERS_ERROR" />
+          <s:enumeration value="PRIVATE_NUMBER_FORMAT_ERROR" />
+          <s:enumeration value="OK" />
+          <s:enumeration value="PRIVATE_NUMBER_NOT_FOUND" />
+          <s:enumeration value="ID_CARD_SERIAL_NOT_MATCHED" />
+          <s:enumeration value="ID_CARD_NUMBER_NOT_MATCHED" />
+          <s:enumeration value="ID_CARD_NOT_FOUND" />
+          <s:enumeration value="PERSON_INFO_IS_CLOSED" />
+          <s:enumeration value="Limited_Access" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="GetPersonInfoDataUsingPrivateNumber">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="piradiNomeri" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="timeOut" nillable="true" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="monacemebisCkaro" type="tns:PersonDataSource" />
+            <s:element minOccurs="1" maxOccurs="1" name="phototi" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPersonInfoDataUsingPrivateNumberResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPersonInfoDataUsingPrivateNumberResult" type="tns:ResultEntity" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPersonInfoDataUsingCriteria">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="lastName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="firstName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="year" nillable="true" type="s:short" />
+            <s:element minOccurs="1" maxOccurs="1" name="month" nillable="true" type="s:short" />
+            <s:element minOccurs="1" maxOccurs="1" name="day" nillable="true" type="s:short" />
+            <s:element minOccurs="1" maxOccurs="1" name="timeOut" nillable="true" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="monacemebisCkaro" type="tns:PersonDataSource" />
+            <s:element minOccurs="1" maxOccurs="1" name="phototi" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPersonInfoDataUsingCriteriaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPersonInfoDataUsingCriteriaResult" type="tns:ResultEntityPersonList" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ResultEntityPersonList">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="PersonInfoDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataSource" type="tns:PersonDataSource" />
+          <s:element minOccurs="0" maxOccurs="1" name="PersonInfoList" type="tns:ArrayOfPersonInfoSSA" />
+          <s:element minOccurs="0" maxOccurs="1" name="Shedegi" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPersonInfoSSA">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PersonInfoSSA" nillable="true" type="tns:PersonInfoSSA" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetEventsInfoXML">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="status" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="condition" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="startDate" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="endDate" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetEventsInfoXMLResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetEventsInfoXMLResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetEventsInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="statusID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="conditionID" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="startDate" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="endDate" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetEventsInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetEventsInfoResult" type="tns:ArrayOfPersonEvent" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfPersonEvent">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PersonEvent" nillable="true" type="tns:PersonEvent" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PersonEvent">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CraStatusID" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="CraConditionID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="PersonalID" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="EventDate" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetPersonPhotos">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="piradiNomeri" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="timeOut" nillable="true" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPersonPhotosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPersonPhotosResult" type="tns:ArrayOfBase64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUpdatedPersonList">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="dt" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUpdatedPersonListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUpdatedPersonListResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetNewPersonList">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="dt" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetNewPersonListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetNewPersonListResult" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDataListUsingPrivateNumber">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="piradiNomeri" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="phototi" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="timeOut" nillable="true" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDataListUsingPrivateNumberResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDataListUsingPrivateNumberResult" type="tns:ArrayOfPersonInfoSSA" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPersonDeathInfoByPnBd">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="piradiMNomeri" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="day" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="month" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="year" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="timeOut" nillable="true" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPersonDeathInfoByPnBdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPersonDeathInfoByPnBdResult" type="tns:DeathPersonInfoSSA" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="DeathPersonInfoSSA">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="BirthDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DeathActId" nillable="true" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="DeathActNumber" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DeathActRegistrationDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="DeathConfirmingDescription" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DeathDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DeathMarkDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="DeathPace" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DeathStatus" nillable="true" type="s:short" />
+          <s:element minOccurs="1" maxOccurs="1" name="DocId" nillable="true" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="DocStatus" nillable="true" type="s:short" />
+          <s:element minOccurs="0" maxOccurs="1" name="FirstName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="GenerateDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="LastName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PrivateNumber" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PrivateNumberId" nillable="true" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="ResponceStatus" nillable="true" type="s:short" />
+          <s:element minOccurs="0" maxOccurs="1" name="ResponceStatusDescription" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AddrFindeAddressByName">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="word" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="timeOut" nillable="true" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddrFindeAddressByNameResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddrFindeAddressByNameResult" type="tns:ArrayOfResultsSSA" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfResultsSSA">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ResultsSSA" nillable="true" type="tns:ResultsSSA" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ResultsSSA">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OldName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Path" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Status" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AddrGetAddressByID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="timeOut" nillable="true" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddrGetAddressByIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddrGetAddressByIDResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddrGetAddressInfoByID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="timeOut" nillable="true" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddrGetAddressInfoByIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddrGetAddressInfoByIDResult" type="tns:AddressInfoSSA" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="AddressInfoSSA">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Path" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="RegionID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="RegionName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AddrGetNodesByParentID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="timeOut" nillable="true" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddrGetNodesByParentIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddrGetNodesByParentIDResult" type="tns:ArrayOfNodeInfoSSA" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfNodeInfoSSA">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="NodeInfoSSA" nillable="true" type="tns:NodeInfoSSA" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="NodeInfoSSA">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FullDescription" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="Identificator" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="IdentificatorStr" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IdentificatorType" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="IdentificatorTypeStr" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NodeAdress" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Status" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AddrGetRootNode">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="timeOut" nillable="true" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddrGetRootNodeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddrGetRootNodeResult" type="tns:ArrayOfNodeInfoSSA" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPersonExtendedInfoDataUsingPrivateNumber">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="piradiNomeri" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPersonExtendedInfoDataUsingPrivateNumberResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPersonExtendedInfoDataUsingPrivateNumberResult" type="tns:ResultExtendedEntity" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ResultExtendedEntity">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="PersonInfoDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataSource" type="tns:PersonDataSource" />
+          <s:element minOccurs="0" maxOccurs="1" name="PersonExtendedInformacia" type="tns:PersonExtendedInfoSSA" />
+          <s:element minOccurs="0" maxOccurs="1" name="Shedegi" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PersonExtendedInfoSSA">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PrivateNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FirstName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LastName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Gender" nillable="true" type="s:short" />
+          <s:element minOccurs="1" maxOccurs="1" name="BirthDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="Is_Neitral" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Without_Citizen_Type" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Is_Refugee" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Is_Humanitar" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ResponseCode" type="tns:ResponseStatus" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetPersonInfoDataUsingPrivateNumber_V01SoapIn">
+    <wsdl:part name="parameters" element="tns:GetPersonInfoDataUsingPrivateNumber_V01" />
+  </wsdl:message>
+  <wsdl:message name="GetPersonInfoDataUsingPrivateNumber_V01SoapOut">
+    <wsdl:part name="parameters" element="tns:GetPersonInfoDataUsingPrivateNumber_V01Response" />
+  </wsdl:message>
+  <wsdl:message name="GetPersonInfoDataUsingPrivateNumberSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPersonInfoDataUsingPrivateNumber" />
+  </wsdl:message>
+  <wsdl:message name="GetPersonInfoDataUsingPrivateNumberSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPersonInfoDataUsingPrivateNumberResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPersonInfoDataUsingCriteriaSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPersonInfoDataUsingCriteria" />
+  </wsdl:message>
+  <wsdl:message name="GetPersonInfoDataUsingCriteriaSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPersonInfoDataUsingCriteriaResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetEventsInfoXMLSoapIn">
+    <wsdl:part name="parameters" element="tns:GetEventsInfoXML" />
+  </wsdl:message>
+  <wsdl:message name="GetEventsInfoXMLSoapOut">
+    <wsdl:part name="parameters" element="tns:GetEventsInfoXMLResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetEventsInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetEventsInfo" />
+  </wsdl:message>
+  <wsdl:message name="GetEventsInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetEventsInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPersonPhotosSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPersonPhotos" />
+  </wsdl:message>
+  <wsdl:message name="GetPersonPhotosSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPersonPhotosResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUpdatedPersonListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUpdatedPersonList" />
+  </wsdl:message>
+  <wsdl:message name="GetUpdatedPersonListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUpdatedPersonListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetNewPersonListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetNewPersonList" />
+  </wsdl:message>
+  <wsdl:message name="GetNewPersonListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetNewPersonListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDataListUsingPrivateNumberSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDataListUsingPrivateNumber" />
+  </wsdl:message>
+  <wsdl:message name="GetDataListUsingPrivateNumberSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDataListUsingPrivateNumberResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPersonDeathInfoByPnBdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPersonDeathInfoByPnBd" />
+  </wsdl:message>
+  <wsdl:message name="GetPersonDeathInfoByPnBdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPersonDeathInfoByPnBdResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddrFindeAddressByNameSoapIn">
+    <wsdl:part name="parameters" element="tns:AddrFindeAddressByName" />
+  </wsdl:message>
+  <wsdl:message name="AddrFindeAddressByNameSoapOut">
+    <wsdl:part name="parameters" element="tns:AddrFindeAddressByNameResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddrGetAddressByIDSoapIn">
+    <wsdl:part name="parameters" element="tns:AddrGetAddressByID" />
+  </wsdl:message>
+  <wsdl:message name="AddrGetAddressByIDSoapOut">
+    <wsdl:part name="parameters" element="tns:AddrGetAddressByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddrGetAddressInfoByIDSoapIn">
+    <wsdl:part name="parameters" element="tns:AddrGetAddressInfoByID" />
+  </wsdl:message>
+  <wsdl:message name="AddrGetAddressInfoByIDSoapOut">
+    <wsdl:part name="parameters" element="tns:AddrGetAddressInfoByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddrGetNodesByParentIDSoapIn">
+    <wsdl:part name="parameters" element="tns:AddrGetNodesByParentID" />
+  </wsdl:message>
+  <wsdl:message name="AddrGetNodesByParentIDSoapOut">
+    <wsdl:part name="parameters" element="tns:AddrGetNodesByParentIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddrGetRootNodeSoapIn">
+    <wsdl:part name="parameters" element="tns:AddrGetRootNode" />
+  </wsdl:message>
+  <wsdl:message name="AddrGetRootNodeSoapOut">
+    <wsdl:part name="parameters" element="tns:AddrGetRootNodeResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPersonExtendedInfoDataUsingPrivateNumberSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPersonExtendedInfoDataUsingPrivateNumber" />
+  </wsdl:message>
+  <wsdl:message name="GetPersonExtendedInfoDataUsingPrivateNumberSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPersonExtendedInfoDataUsingPrivateNumberResponse" />
+  </wsdl:message>
+  <wsdl:portType name="PersonInfoServiceSoap">
+    <wsdl:operation name="GetPersonInfoDataUsingPrivateNumber_V01">
+      <wsdl:input message="tns:GetPersonInfoDataUsingPrivateNumber_V01SoapIn" />
+      <wsdl:output message="tns:GetPersonInfoDataUsingPrivateNumber_V01SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPersonInfoDataUsingPrivateNumber">
+      <wsdl:input message="tns:GetPersonInfoDataUsingPrivateNumberSoapIn" />
+      <wsdl:output message="tns:GetPersonInfoDataUsingPrivateNumberSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPersonInfoDataUsingCriteria">
+      <wsdl:input message="tns:GetPersonInfoDataUsingCriteriaSoapIn" />
+      <wsdl:output message="tns:GetPersonInfoDataUsingCriteriaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetEventsInfoXML">
+      <wsdl:input message="tns:GetEventsInfoXMLSoapIn" />
+      <wsdl:output message="tns:GetEventsInfoXMLSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetEventsInfo">
+      <wsdl:input message="tns:GetEventsInfoSoapIn" />
+      <wsdl:output message="tns:GetEventsInfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPersonPhotos">
+      <wsdl:input message="tns:GetPersonPhotosSoapIn" />
+      <wsdl:output message="tns:GetPersonPhotosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUpdatedPersonList">
+      <wsdl:input message="tns:GetUpdatedPersonListSoapIn" />
+      <wsdl:output message="tns:GetUpdatedPersonListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetNewPersonList">
+      <wsdl:input message="tns:GetNewPersonListSoapIn" />
+      <wsdl:output message="tns:GetNewPersonListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDataListUsingPrivateNumber">
+      <wsdl:input message="tns:GetDataListUsingPrivateNumberSoapIn" />
+      <wsdl:output message="tns:GetDataListUsingPrivateNumberSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPersonDeathInfoByPnBd">
+      <wsdl:input message="tns:GetPersonDeathInfoByPnBdSoapIn" />
+      <wsdl:output message="tns:GetPersonDeathInfoByPnBdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddrFindeAddressByName">
+      <wsdl:input message="tns:AddrFindeAddressByNameSoapIn" />
+      <wsdl:output message="tns:AddrFindeAddressByNameSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddrGetAddressByID">
+      <wsdl:input message="tns:AddrGetAddressByIDSoapIn" />
+      <wsdl:output message="tns:AddrGetAddressByIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddrGetAddressInfoByID">
+      <wsdl:input message="tns:AddrGetAddressInfoByIDSoapIn" />
+      <wsdl:output message="tns:AddrGetAddressInfoByIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddrGetNodesByParentID">
+      <wsdl:input message="tns:AddrGetNodesByParentIDSoapIn" />
+      <wsdl:output message="tns:AddrGetNodesByParentIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddrGetRootNode">
+      <wsdl:input message="tns:AddrGetRootNodeSoapIn" />
+      <wsdl:output message="tns:AddrGetRootNodeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPersonExtendedInfoDataUsingPrivateNumber">
+      <wsdl:input message="tns:GetPersonExtendedInfoDataUsingPrivateNumberSoapIn" />
+      <wsdl:output message="tns:GetPersonExtendedInfoDataUsingPrivateNumberSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PersonInfoServiceSoap" type="tns:PersonInfoServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetPersonInfoDataUsingPrivateNumber_V01">
+      <soap:operation soapAction="http://tempuri.org/GetPersonInfoDataUsingPrivateNumber_V01" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPersonInfoDataUsingPrivateNumber">
+      <soap:operation soapAction="http://tempuri.org/GetPersonInfoDataUsingPrivateNumber" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPersonInfoDataUsingCriteria">
+      <soap:operation soapAction="http://tempuri.org/GetPersonInfoDataUsingCriteria" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEventsInfoXML">
+      <soap:operation soapAction="http://tempuri.org/GetEventsInfoXML" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEventsInfo">
+      <soap:operation soapAction="http://tempuri.org/GetEventsInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPersonPhotos">
+      <soap:operation soapAction="http://tempuri.org/GetPersonPhotos" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUpdatedPersonList">
+      <soap:operation soapAction="http://tempuri.org/GetUpdatedPersonList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetNewPersonList">
+      <soap:operation soapAction="http://tempuri.org/GetNewPersonList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataListUsingPrivateNumber">
+      <soap:operation soapAction="http://tempuri.org/GetDataListUsingPrivateNumber" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPersonDeathInfoByPnBd">
+      <soap:operation soapAction="http://tempuri.org/GetPersonDeathInfoByPnBd" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddrFindeAddressByName">
+      <soap:operation soapAction="http://tempuri.org/AddrFindeAddressByName" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddrGetAddressByID">
+      <soap:operation soapAction="http://tempuri.org/AddrGetAddressByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddrGetAddressInfoByID">
+      <soap:operation soapAction="http://tempuri.org/AddrGetAddressInfoByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddrGetNodesByParentID">
+      <soap:operation soapAction="http://tempuri.org/AddrGetNodesByParentID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddrGetRootNode">
+      <soap:operation soapAction="http://tempuri.org/AddrGetRootNode" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPersonExtendedInfoDataUsingPrivateNumber">
+      <soap:operation soapAction="http://tempuri.org/GetPersonExtendedInfoDataUsingPrivateNumber" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="PersonInfoServiceSoap12" type="tns:PersonInfoServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetPersonInfoDataUsingPrivateNumber_V01">
+      <soap12:operation soapAction="http://tempuri.org/GetPersonInfoDataUsingPrivateNumber_V01" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPersonInfoDataUsingPrivateNumber">
+      <soap12:operation soapAction="http://tempuri.org/GetPersonInfoDataUsingPrivateNumber" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPersonInfoDataUsingCriteria">
+      <soap12:operation soapAction="http://tempuri.org/GetPersonInfoDataUsingCriteria" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEventsInfoXML">
+      <soap12:operation soapAction="http://tempuri.org/GetEventsInfoXML" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEventsInfo">
+      <soap12:operation soapAction="http://tempuri.org/GetEventsInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPersonPhotos">
+      <soap12:operation soapAction="http://tempuri.org/GetPersonPhotos" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUpdatedPersonList">
+      <soap12:operation soapAction="http://tempuri.org/GetUpdatedPersonList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetNewPersonList">
+      <soap12:operation soapAction="http://tempuri.org/GetNewPersonList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDataListUsingPrivateNumber">
+      <soap12:operation soapAction="http://tempuri.org/GetDataListUsingPrivateNumber" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPersonDeathInfoByPnBd">
+      <soap12:operation soapAction="http://tempuri.org/GetPersonDeathInfoByPnBd" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddrFindeAddressByName">
+      <soap12:operation soapAction="http://tempuri.org/AddrFindeAddressByName" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddrGetAddressByID">
+      <soap12:operation soapAction="http://tempuri.org/AddrGetAddressByID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddrGetAddressInfoByID">
+      <soap12:operation soapAction="http://tempuri.org/AddrGetAddressInfoByID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddrGetNodesByParentID">
+      <soap12:operation soapAction="http://tempuri.org/AddrGetNodesByParentID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddrGetRootNode">
+      <soap12:operation soapAction="http://tempuri.org/AddrGetRootNode" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPersonExtendedInfoDataUsingPrivateNumber">
+      <soap12:operation soapAction="http://tempuri.org/GetPersonExtendedInfoDataUsingPrivateNumber" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PersonInfoService">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">pirovnebis zebna rogorc online (PersonDataSource = CRA), aseve lokaluri bazidan (PersonDataSource = LocalDB)</wsdl:documentation>
+    <wsdl:port name="PersonInfoServiceSoap" binding="tns:PersonInfoServiceSoap">
+      <soap:address location="http://172.17.8.125:3031/CRA_No_WCF_NCDC/PersonInfoService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="PersonInfoServiceSoap12" binding="tns:PersonInfoServiceSoap12">
+      <soap12:address location="http://172.17.8.125:3031/CRA_No_WCF_NCDC/PersonInfoService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

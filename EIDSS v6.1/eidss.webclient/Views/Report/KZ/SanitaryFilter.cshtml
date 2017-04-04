@@ -1,0 +1,23 @@
+﻿@model eidss.model.Reports.KZ.SanitaryModel
+
+
+<table id="MultiFilterTable" >
+    
+    <tr>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.CheckedMeasureTypes)
+        </td>
+        <td class="largereport">
+            <div class="scrollable largeInternal" >
+                @foreach (var item in Model.MeasureTypeList)
+                {
+                    <input type="checkbox" id="@item.Value" value="@item.Value" name="CheckedMeasureTypes" />
+                    @Html.Label(item.Text)
+                    <br />
+                }
+            </div>
+        </td>
+        
+        <td></td>
+    </tr>
+</table>

@@ -1,0 +1,50 @@
+﻿@using eidss.model.Enums
+@using eidss.web.common.Utils
+@model BLToolkit.EditableObjects.EditableList<eidss.model.Schema.VetFarmTree>
+           
+<script type="text/javascript">
+    $(document).ready(function() {
+        vetCase.onHerdsFlocksLoad('@ViewBag.IsReadOnly');
+    });
+</script>
+
+@*{
+    var isFlock = (bool)ViewBag.IsFlock;
+}*@
+
+<div class="tabPanelContent">
+    <div class="rightAlign">
+        @if ((bool)ViewBag.IsFlock)
+        {
+        <input type='button' id="btnAddHerd" class='button' 
+               value='@Translator.GetMessageString("strNewFlock")' 
+               onclick='vetCase.addNewHerdOrFlock("@ViewBag.Root", "@ViewBag.ListName", true)'/>
+        }
+        else
+        {
+        <input type='button' id="btnAddHerd" class='button' 
+               value='@Translator.GetMessageString("strNewHerd")' 
+               onclick='vetCase.addNewHerdOrFlock("@ViewBag.Root", "@ViewBag.ListName", false)'/>
+        }
+    </div>
+    <div id="herdList">
+        @{
+            var herds = Model.Where(x => x.idfsPartyType == (long)PartyTypeEnum.Herd).ToList();
+        }
+        <div class="tabContentSeparator"></div> 
+            @if (herds.Count != 0)
+            {
+                <div class="tabContentSeparator invisible"></div>
+                foreach (var herd in herds)
+                {
+                    @Html.Action("ShowHerdOrFlock", "VetCase", new
+               {
+                   key = (long)ViewBag.Root,
+                   listName = (string)ViewBag.ListName,
+                   herdOrFlock = herd,
+                   isReadOnly = (bool)ViewBag.IsReadOnly
+               })
+                }
+            }
+    </div>
+</div>

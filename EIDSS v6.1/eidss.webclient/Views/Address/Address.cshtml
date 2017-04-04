@@ -1,0 +1,185 @@
+﻿@model eidss.model.Schema.Address
+
+@using eidss.model.Core
+@using eidss.webclient.Utils
+@using eidss.web.common.Utils
+           
+<input id='@Model.ObjectName' name='@Model.ObjectName' type='hidden' value='@Model.Key' />
+<table class="level1">
+    @if((bool)ViewBag.IsCountryFieldVisible)
+    {
+        <tr>
+            <td class="xmedium firstLabel">
+                @Html.BvLabel(Model, m => m.idfsCountry)
+            </td>
+            <td>
+                @Html.BvCombobox(Model, m => m.Country, true, "address.onCountryChanged", readOnly: Model.IsHiddenPersonalData("Street"))
+            </td>
+            @if ((bool)ViewBag.IsForeignAddressFieldVisible)
+            {
+                <td class="xmedium label">
+                    @Html.BvLabel(Model, m => m.strForeignAddress)
+                </td>
+                <td class="medium">
+                    @Html.BvEditbox(Model, m => m.strForeignAddress, true)
+                </td>
+                <td class="xmedium label">
+                </td>
+                <td class="medium">
+                </td>
+            }
+            else
+            {    
+                <td colspan="4">
+                </td>
+            }
+        </tr>
+    }
+        <tr class="@((string)ViewBag.IsForeignAddressFieldVisibleCss)">
+            <td class="xmedium firstLabel">
+                @Html.BvLabel(Model, m => m.idfsRegion)
+            </td>
+            <td class="medium">
+                @Html.BvCombobox(Model, m => m.Region, false, null /*"address.onRegionChanged"*/, readOnly: Model.IsHiddenPersonalData("Street"))
+            </td>
+            <td class="xmedium label">
+                @Html.BvLabel(Model, m => m.idfsRayon)
+            </td>
+            <td class="medium">
+                @Html.BvCombobox(Model, m => m.Rayon, false, null /*"address.onRayonChanged"*/, readOnly: Model.IsHiddenPersonalData("Street"))
+            </td>
+            <td class="xmedium label">
+                @Html.BvLabel(Model, m => m.idfsSettlement)
+            </td>
+            <td class="medium">
+                @if (Model.IsHiddenPersonalData("Settlement"))
+                {
+                    @Html.BvHiddenPersonalData(Model, m => m.Settlement)
+                }
+                else
+                {
+                    @Html.BvCombobox(Model, m => m.Settlement, false, null /*"address.onSettlementChanged"*/, readOnly: Model.IsHiddenPersonalData("Street"))
+                }
+            </td>
+    </tr>
+    <tr class="@((string)ViewBag.IsForeignAddressFieldVisibleCss)">
+        <td class="firstLabel">
+            @Html.BvLabel(Model, m => m.strStreetName)
+        </td>
+        <td>
+            @if (Model.IsHiddenPersonalData("Street"))
+            {
+                @Html.BvHiddenPersonalData(Model, m => m.Street)
+            }
+            else
+            {
+                @Html.BvCombobox(Model, m => m.Street, false)
+            }
+        </td>
+        @if (eidss.model.Core.EidssSiteContext.Instance.IsIraqCustomization)
+        {
+            <td class="label">
+                @Html.BvLabel(Model, m => m.strBuilding)
+            </td>
+            <td>
+                @Html.BvEditbox(Model, m => m.strBuilding, true)
+            </td>
+        }
+        else if (EidssSiteContext.Instance.IsUsaAddressFormat)
+        {
+            <td class="xmedium label">
+                @Html.BvLabel(Model, m => m.strBuilding)/&shy;@Html.BvLabel(Model, m => m.strHouse)/&shy;@Html.BvLabel(Model, m => m.strApartment)
+            </td>
+            <td class="building">
+                @Html.BvEditbox(Model, m => m.strBuilding, true)
+                @Html.BvEditbox(Model, m => m.strHouse, true)
+                @Html.BvEditbox(Model, m => m.strApartment, true)
+            </td>
+        }
+        else
+        {
+            <td class="xmedium label">
+                @Html.BvLabel(Model, m => m.strHouse)/&shy;@Html.BvLabel(Model, m => m.strBuilding)/&shy;@Html.BvLabel(Model, m => m.strApartment)
+            </td>
+            if (Customization.Instance.VisibilityFeatures.IsOnlyHouseUseInAddress)
+            {
+                <td>
+                    @Html.BvEditbox(Model, m => m.strHouse, true)
+                </td>
+            }
+            else
+            { 
+                <td class="building">
+                    @Html.BvEditbox(Model, m => m.strHouse, true)
+                    @Html.BvEditbox(Model, m => m.strBuilding, true)
+                    @Html.BvEditbox(Model, m => m.strApartment, true)
+                </td>
+            }
+        }
+        <td class="label">
+            @if (eidss.model.Core.EidssSiteContext.Instance.CustomizationPackageID != (long) eidss.model.Enums.CustomizationPackage.Iraq)
+            {
+                @Html.BvLabel(Model, m => m.strPostCode)
+            }
+        </td>
+        <td>
+            @if (eidss.model.Core.EidssSiteContext.Instance.CustomizationPackageID != (long) eidss.model.Enums.CustomizationPackage.Iraq)
+            {
+                if (Model.IsHiddenPersonalData("PostCode"))
+                {
+                    @Html.BvHiddenPersonalData(Model, m => m.PostCode)
+                }
+                else
+                {
+                    @Html.BvCombobox(Model, m => m.PostCode, false)
+                }
+            }
+        </td>
+    </tr>
+    @if ((bool)ViewBag.IsCoordinatesFieldsVisible)
+    {
+    <tr class="@((string)ViewBag.IsForeignAddressFieldVisibleCss)">
+            <td class="firstLabel">
+                @Html.BvLabel(Model, m => m.dblLongitude)<br/>(&#177;&#35;.&#35;&#35;&#35;&#35;&#35;&#176;)
+            </td>
+            <td>
+                @Html.BvNumeric(Model, m => m.dblLongitude, 5, -180, 180, true)
+            </td>
+            <td class="label">
+                @Html.BvLabel(Model, m => m.dblLatitude)<br/>(&#177;&#35;.&#35;&#35;&#35;&#35;&#35;&#176;)
+            </td>
+            <td>
+                @Html.BvNumeric(Model, m => m.dblLatitude, 5, -90, 90, true)
+            </td>
+            <td>
+                @if (!Model.IsHiddenPersonalData("dblLongitude"))
+                {
+                    <button type='button' @(Model.IsReadOnly("dblLongitude") ? "disabled='disabled'" : "") class='button smallImageButton' id='@Model.ObjectIdent' onclick='ShowMap("@Model.ObjectIdent");'>
+                        <img src="@Url.Content(VirtualPathUtility.ToAbsolute("~/Content/Images/globe1.png"))" alt="Select" draggable='false' />
+                    </button>
+                }
+            </td>
+            <td>
+            </td>
+        </tr>
+    }
+    @if (eidss.model.Core.EidssSiteContext.Instance.IsThaiCustomization)
+    {
+        <tr>
+            <td class="firstLabel">
+                @Translator.GetString("strAddressCode")
+            </td>
+            <td>
+                @Html.BvEditbox(Model, m => m.strBuilding, true)
+            </td>
+            <td class="label">
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+    }
+</table>

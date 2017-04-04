@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/eidss.model.Reports.AZ" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/eidss.model.Reports.AZ" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8098/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" />
+  <xs:import schemaLocation="http://localhost:8098/?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:complexType name="FormNo1SurrogateModel">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" base="q1:BaseYearModel">
+        <xs:sequence>
+          <xs:element name="_x003C_EndMonth_x003E_k__BackingField" nillable="true" type="xs:int" />
+          <xs:element name="_x003C_IsA3Format_x003E_k__BackingField" type="xs:boolean" />
+          <xs:element name="_x003C_OrganizationCHEName_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_OrganizationCHE_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_RayonId_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_RayonName_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_RegionId_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_RegionName_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_StartMonth_x003E_k__BackingField" nillable="true" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="FormNo1SurrogateModel" nillable="true" type="tns:FormNo1SurrogateModel" />
+  <xs:complexType name="DataQualityIndicatorsModel">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:AFPModel">
+        <xs:sequence>
+          <xs:element name="_x003C_MultipleDiagnosisFilter_x003E_k__BackingField" nillable="true" type="tns:MultipleDiagnosisModel" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DataQualityIndicatorsModel" nillable="true" type="tns:DataQualityIndicatorsModel" />
+  <xs:complexType name="AFPModel">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q2="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" base="q2:BaseYearModel">
+        <xs:sequence>
+          <xs:element name="_x003C_PeriodType_x003E_k__BackingField" type="xs:int" />
+          <xs:element name="_x003C_Period_x003E_k__BackingField" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AFPModel" nillable="true" type="tns:AFPModel" />
+  <xs:complexType name="MultipleDiagnosisModel">
+    <xs:sequence>
+      <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" name="_x003C_CheckedDiagnosis_x003E_k__BackingField" nillable="true" type="q3:ArrayOfstring" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MultipleDiagnosisModel" nillable="true" type="tns:MultipleDiagnosisModel" />
+  <xs:complexType name="SummaryByRayonDiagnosisAgeGroupsModel">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q4="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" base="q4:BaseIntervalModel">
+        <xs:sequence>
+          <xs:element name="_x003C_MultipleDiagnosisFilter_x003E_k__BackingField" nillable="true" type="tns:MultipleDiagnosisModel" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SummaryByRayonDiagnosisAgeGroupsModel" nillable="true" type="tns:SummaryByRayonDiagnosisAgeGroupsModel" />
+  <xs:complexType name="ComparativeSurrogateModel">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q5="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" base="q5:BaseModel">
+        <xs:sequence>
+          <xs:element name="_x003C_Counter_x003E_k__BackingField" type="xs:int" />
+          <xs:element name="_x003C_EndMonth_x003E_k__BackingField" nillable="true" type="xs:int" />
+          <xs:element name="_x003C_OrganizationCHE_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_Rayon1Id_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_Rayon2Id_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_Region1Id_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_Region2Id_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_StartMonth_x003E_k__BackingField" nillable="true" type="xs:int" />
+          <xs:element name="_x003C_Year1_x003E_k__BackingField" type="xs:int" />
+          <xs:element name="_x003C_Year2_x003E_k__BackingField" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ComparativeSurrogateModel" nillable="true" type="tns:ComparativeSurrogateModel" />
+  <xs:complexType name="ExternalComparativeSurrogateModel">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q6="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" base="q6:BaseModel">
+        <xs:sequence>
+          <xs:element name="_x003C_EndMonth_x003E_k__BackingField" nillable="true" type="xs:int" />
+          <xs:element name="_x003C_RayonId_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_RegionId_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_StartMonth_x003E_k__BackingField" nillable="true" type="xs:int" />
+          <xs:element name="_x003C_Year1_x003E_k__BackingField" type="xs:int" />
+          <xs:element name="_x003C_Year2_x003E_k__BackingField" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ExternalComparativeSurrogateModel" nillable="true" type="tns:ExternalComparativeSurrogateModel" />
+  <xs:complexType name="ComparativeTwoYearsSurrogateModel">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q7="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" base="q7:BaseModel">
+        <xs:sequence>
+          <xs:element name="_x003C_Counter_x003E_k__BackingField" type="xs:int" />
+          <xs:element name="_x003C_DiagnosisId_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_DiagnosisName_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_OrganizationCHEName_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_OrganizationCHE_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_RayonId_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_RayonName_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_RegionId_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_RegionName_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_Year1_x003E_k__BackingField" type="xs:int" />
+          <xs:element name="_x003C_Year2_x003E_k__BackingField" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ComparativeTwoYearsSurrogateModel" nillable="true" type="tns:ComparativeTwoYearsSurrogateModel" />
+  <xs:complexType name="VetCasesSurrogateModel">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q8="http://schemas.datacontract.org/2004/07/eidss.model.Reports.Common" base="q8:BaseModel">
+        <xs:sequence>
+          <xs:element name="_x003C_EndMonth_x003E_k__BackingField" nillable="true" type="xs:int" />
+          <xs:element name="_x003C_OrganizationEnteredById_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_OrganizationEnteredByName_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_RayonId_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_RayonName_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_RegionId_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_RegionName_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_StartMonth_x003E_k__BackingField" nillable="true" type="xs:int" />
+          <xs:element name="m_EndYear" type="xs:int" />
+          <xs:element name="m_StartYear" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="VetCasesSurrogateModel" nillable="true" type="tns:VetCasesSurrogateModel" />
+  <xs:complexType name="VetLabSurrogateModel">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:AFPModel">
+        <xs:sequence>
+          <xs:element name="_x003C_OrganizationEnteredById_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_OrganizationEnteredByName_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_RayonId_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_RayonName_x003E_k__BackingField" nillable="true" type="xs:string" />
+          <xs:element name="_x003C_RegionId_x003E_k__BackingField" nillable="true" type="xs:long" />
+          <xs:element name="_x003C_RegionName_x003E_k__BackingField" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="VetLabSurrogateModel" nillable="true" type="tns:VetLabSurrogateModel" />
+</xs:schema>

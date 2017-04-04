@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<object name="DiagnosisAgeGroup"
+        connection="EidssConnectionString"
+        generator="ObjectGenerator.xslt"
+        xmlns="urn:schemas-bv:objectmodel">
+
+  <storage>
+    <get name="spDiagnosisAgeGroup_SelectDetail" type= "detaillist" />
+  </storage>
+
+  <tables>
+    <table name="DiagnosisAgeGroup">
+      <grid>
+        <item name="idfsDiagnosisAgeGroup" visible ="false" />
+        <item name="DiagnosisAgeGroupName" />
+        <item name="DiagnosisAgeGroupNameTranslated" />
+        <item name="intOrder" />
+        <item name="intLowerBoundary" />
+        <item name="intUpperBoundary" />
+        <item name="idfsAgeType" />
+      </grid>     
+      <fields>
+      </fields>
+      <fieldtags>
+        <field name="DiagnosisAgeGroupName">
+          <tag name="en" />
+        </field>
+        <field name="DiagnosisAgeGroupNameTranslated">
+          <tag name="def" />
+        </field>
+      </fieldtags>
+      <lookups>
+        <lookup name="AgeType" table="BaseReference" section="rftHumanAgeType" source="idfsAgeType" target="idfsBaseReference" />
+      </lookups>
+      <storage>
+        <post name="spDiagnosisAgeGroup_Post" />        
+      </storage>
+      <extenders>
+        <creating>
+          <scalar_extender target="idfsDiagnosisAgeGroup" class="GetNewIDExtender" />
+          <lambda_extender target="intOrder" type="int" lambda="c => 0" />
+          <lambda_extender target="intUpperBoundary" type="int" lambda="c => 0" />
+        </creating>
+        <loading>
+        </loading>
+        <posting>
+        </posting>
+        <posted>
+        </posted>
+      </extenders>
+      <validators>
+        <change>
+        </change>
+        <post>          
+          <required_validator target="DiagnosisAgeGroupName"/>
+          <required_validator target="DiagnosisAgeGroupNameTranslated" predicate ="c => ModelUserContext.CurrentLanguage != Localizer.lngEn"/>
+          <required_validator target="idfsDiagnosisAgeGroup"/>
+          <predicate_validator field="intLowerBoundary" predicate="c => c.intLowerBoundary &lt; c.intUpperBoundary" message="intLowerBoundary and intUpperBoundary" />
+          <predicate_validator field="intUpperBoundary"  predicate="c => c.intLowerBoundary &lt; c.intUpperBoundary" message="intLowerBoundary and intUpperBoundary" />
+          <predicate_validator field="intLowerBoundary" predicate="c => c.intLowerBoundary >= 0"  message="intLowerBoundary"/>
+          <predicate_validator field="intUpperBoundary" predicate="c => c.intUpperBoundary > 0"  message="intUpperBoundary"/>
+          <required_validator target="idfsAgeType" />
+        </post>
+      </validators>
+    </table>
+
+  </tables>
+</object>

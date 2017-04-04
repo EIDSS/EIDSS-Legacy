@@ -1,0 +1,368 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{75A1FF29-BB1F-4376-A548-B98258961633}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>eidss.avr.db</RootNamespace>
+    <AssemblyName>eidss.avr_db</AssemblyName>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>http://localhost/EIDSS.RAM_DB/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\eidss.main\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\eidss.main\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v15.1, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Printing.v15.1.Core, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.PivotGrid.v15.1.Core, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Charts.v15.1.Core, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Utils.v15.1, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraCharts.v15.1.Wizard, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraCharts.v15.1, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v15.1, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPivotGrid.v15.1, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPrinting.v15.1, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraGrid.v15.1, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="Ionic.Zlib, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\dlls\Ionic.Zlib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\EIDSSAssemblyInfo.cs">
+      <Link>EIDSSAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="AvrEventArgs\AvrEventArgs\AvrPostNeededEventArgs.cs" />
+    <Compile Include="AvrEventArgs\AvrEventArgs\AvrTreeSelectedElementEventArgs.cs" />
+    <Compile Include="AvrEventArgs\AvrEventArgs\CommandEventArgs.cs" />
+    <Compile Include="AvrEventArgs\AvrEventArgs\CopyLayoutEventArgs.cs" />
+    <Compile Include="AvrEventArgs\AvrEventArgs\LayoutEventArgs.cs" />
+    <Compile Include="AvrEventArgs\AvrEventArgs\LayoutFieldVisibleChanged.cs" />
+    <Compile Include="AvrEventArgs\AvrEventArgs\PathChangedEventArgs.cs" />
+    <Compile Include="AvrEventArgs\AvrEventArgs\QueryEventArgs.cs" />
+    <Compile Include="AvrEventArgs\DevExpressEventArgsWrappers\BaseGridViewCellDisplayTextEventArgs.cs" />
+    <Compile Include="AvrEventArgs\DevExpressEventArgsWrappers\BasePivotFieldDisplayTextEventArgs.cs" />
+    <Compile Include="AvrEventArgs\DevExpressEventArgsWrappers\BasePivotGridCellBaseEventArgs.cs" />
+    <Compile Include="AvrEventArgs\DevExpressEventArgsWrappers\BasePivotCellDisplayTextEventArgs.cs" />
+    <Compile Include="AvrEventArgs\DevExpressEventArgsWrappers\InternalPivotCellDisplayTextEventArgs.cs" />
+    <Compile Include="CacheReceiver\AvrCacheReceiver.cs" />
+    <Compile Include="CacheReceiver\CachedQueryResult.cs" />
+    <Compile Include="CacheReceiver\AvrCacheConverter.cs" />
+    <Compile Include="CacheReceiver\SerializedViewStub.cs" />
+    <Compile Include="CacheReceiver\ServiceClientHelper.cs" />
+    <Compile Include="CacheReceiver\AvrServiceClientWrapper.cs" />
+    <Compile Include="Common\AggregateFunctionTarget.cs" />
+    <Compile Include="Common\AggrFunctionLookupHelper.cs" />
+    <Compile Include="Common\AvrBinarySettings.cs" />
+    <Compile Include="Common\AvrCellInfo.cs" />
+    <Compile Include="Common\AvrColumnRowIntersectionFinder.cs" />
+    <Compile Include="Common\AvrColumnRowIntersectionPair.cs" />
+    <Compile Include="Common\AvrFieldValueCollectionWithRowsWrapper.cs" />
+    <Compile Include="Complexity\LayoutMissedValuesComplexity.cs" />
+    <Compile Include="Complexity\LayoutEmptyValuesComplexity.cs" />
+    <Compile Include="Complexity\LayoutSilentValidator.cs" />
+    <Compile Include="Common\AvrMissedValue.cs" />
+    <Compile Include="Common\AvrPivotGridData.cs" />
+    <Compile Include="Common\AvrPivotGridFieldExtender.cs" />
+    <Compile Include="Common\AvrPivotGridFieldFilterValues.cs" />
+    <Compile Include="Common\AvrRelatedFieldAttributes.cs" />
+    <Compile Include="Common\AvrServiceAccessability.cs" />
+    <Compile Include="Common\AvrServicePivotResult.cs" />
+    <Compile Include="Common\AvrViewHelper.cs" />
+    <Compile Include="Common\AvrServiceChartResult.cs" />
+    <Compile Include="Common\AvrModelResult.cs" />
+    <Compile Include="Common\AvrAccessExportResult.cs" />
+    <Compile Include="Common\AvrServiceCopyLayoutResult.cs" />
+    <Compile Include="Common\CustomSortHandler.cs" />
+    <Compile Include="Common\DisplayTextTranslations.cs" />
+    <Compile Include="Common\CustomSummaryHandler.cs" />
+    <Compile Include="Common\DateTimeExtender.cs" />
+    <Compile Include="Common\DisplayTextHandler.cs" />
+    <Compile Include="Common\AvrFieldValueCollection.cs" />
+    <Compile Include="Common\AvrFieldValuePair.cs" />
+    <Compile Include="Common\EmptyPostableForm.cs" />
+    <Compile Include="Common\GroupIntervalHelper.cs" />
+    <Compile Include="Common\IAvrPivotGridField.cs" />
+    <Compile Include="Common\AvrMonth.cs" />
+    <Compile Include="Common\QueryProcessor.cs" />
+    <Compile Include="Complexity\LayoutSilentValidatorWaiter.cs" />
+    <Compile Include="DBService\AccessExporter.cs" />
+    <Compile Include="DBService\Access\AccessDataAdapter.cs" />
+    <Compile Include="DBService\Access\AccessTypeConverter.cs" />
+    <Compile Include="DBService\AvrSettings_DB.cs" />
+    <Compile Include="DBService\Folder_DB.cs" />
+    <Compile Include="DBService\DataSource\ViewDetailDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ViewDetailDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DBService\DataTableCopier\AvrDataTableCopier.cs" />
+    <Compile Include="DBService\DataSource\MapDetailDataSet.cs">
+      <DependentUpon>MapDetailDataSet.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DBService\DataSource\MapDetailDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MapDetailDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DBService\WebLayoutDB.cs" />
+    <Compile Include="DBService\WinLayout_DB.cs" />
+    <Compile Include="Interfaces\IAvrInvokable.cs" />
+    <Compile Include="Interfaces\IAvrBasePivotGridView.cs" />
+    <Compile Include="Interfaces\IAvrMainFormView.cs" />
+    <Compile Include="Interfaces\IAvrPivotGridView.cs" />
+    <Compile Include="Interfaces\IBaseAvrView.cs" />
+    <Compile Include="Common\Configuration.cs" />
+    <Compile Include="Common\QueryLookupHelper.cs" />
+    <Compile Include="Common\AvrPivotGridHelper.cs" />
+    <Compile Include="DBService\Chart_DB.cs" />
+    <Compile Include="DBService\DataSource\LayoutDetailDataSet.cs">
+      <DependentUpon>LayoutDetailDataSet.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DBService\DataSource\LayoutDetailDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LayoutDetailDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DBService\DataTableCopier\AvrDataTableCopierMultiThread.cs" />
+    <Compile Include="DBService\Layout_DB.cs" />
+    <Compile Include="DBService\BaseAvrDbService.cs" />
+    <Compile Include="DBService\View_DB.cs" />
+    <Compile Include="AvrEventArgs\DevExpressEventArgsWrappers\BasePivotGridCustomSummaryEventArgs.cs" />
+    <Compile Include="Interfaces\ILayoutInfoView.cs" />
+    <Compile Include="Interfaces\IQueryDetailView.cs" />
+    <Compile Include="Interfaces\IQueryInfoView.cs" />
+    <Compile Include="Interfaces\IRelatedObjectView.cs" />
+    <Compile Include="Interfaces\IViewDetailView.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DBService\QueryBuilder\QueryInfo_DB.cs" />
+    <Compile Include="DBService\QueryBuilder\QuerySearchObject_DB.cs" />
+    <Compile Include="DBService\QueryBuilder\Query_DB.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\AVRCacheService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\bltoolkit.3.2.dev\BLToolkit.4.csproj">
+      <Project>{0C325F5D-E50E-4340-8724-D29896CCC583}</Project>
+      <Name>BLToolkit.4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\bv.common\bv.common.csproj">
+      <Project>{BEE76B17-720D-4B65-996A-5712912B3ACF}</Project>
+      <Name>bv.common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\bv.model\bv.model.csproj">
+      <Project>{9067327E-1960-4326-ACB9-D982DDBEAA76}</Project>
+      <Name>bv.model</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\eidss.core\eidss.core.csproj">
+      <Project>{BF545ECD-F673-4C71-9362-57C01DF13062}</Project>
+      <Name>eidss.core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\eidss.model\eidss.model.csproj">
+      <Project>{E4B87B63-D5F2-4F9F-B39C-A7714896D1DE}</Project>
+      <Name>eidss.model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\bv_common\bvcommon.vbproj">
+      <Project>{BA2844A8-F629-4B02-ACD6-B60063E4D27F}</Project>
+      <Name>bvcommon</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\bv_dbcommon\bvdb_common.vbproj">
+      <Project>{6C48BB93-277D-4804-B280-F6130E29EB81}</Project>
+      <Name>bvdb_common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EIDSS_Common\EIDSS_Common.vbproj">
+      <Project>{119CC05A-2F6C-4FC8-AC74-79BB76E3C1C0}</Project>
+      <Name>EIDSS_Common</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="DBService\DataSource\LayoutDetailDataSet.xsc">
+      <DependentUpon>LayoutDetailDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="DBService\DataSource\LayoutDetailDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LayoutDetailDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DBService\DataSource\LayoutDetailDataSet.xss">
+      <DependentUpon>LayoutDetailDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="DBService\DataSource\MapDetailDataSet.xsc">
+      <DependentUpon>MapDetailDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="DBService\DataSource\MapDetailDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>MapDetailDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DBService\DataSource\MapDetailDataSet.xss">
+      <DependentUpon>MapDetailDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="DBService\DataSource\ViewDetailDataSet.xsc">
+      <DependentUpon>ViewDetailDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="DBService\DataSource\ViewDetailDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ViewDetailDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DBService\DataSource\ViewDetailDataSet.xss">
+      <DependentUpon>ViewDetailDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="Migrated rules for EIDSS.RAM_DB.ruleset" />
+    <None Include="Properties\DataSources\eidss.model.AVR.Db.DatabaseNames.datasource" />
+    <None Include="Properties\DataSources\eidss.model.AVR.ServiceData.ChartExportDTO.datasource" />
+    <None Include="Properties\DataSources\eidss.model.AVR.ServiceData.QueryTableHeaderDTO.datasource" />
+    <None Include="Properties\DataSources\eidss.model.AVR.ServiceData.QueryTablePacketDTO.datasource" />
+    <None Include="Properties\DataSources\eidss.model.AVR.ServiceData.TableHeaderDTO.datasource" />
+    <None Include="Properties\DataSources\eidss.model.AVR.ServiceData.TablePacketDTO.datasource" />
+    <None Include="Properties\DataSources\eidss.model.AVR.ServiceData.ViewDTO.datasource" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\AVRCacheService\AVRFacade.wsdl" />
+    <None Include="Service References\AVRCacheService\item.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\AVRCacheService\item1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\AVRCacheService\item2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\AVRCacheService\item3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\AVRCacheService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\AVRCacheService\item.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\AVRCacheService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\AVRCacheService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\AVRCacheService\item4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\AVRCacheService\item5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\AVRCacheService\item6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\AVRCacheService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AccessTemplate\template.mdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

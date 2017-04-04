@@ -1,0 +1,36 @@
+﻿@using Kendo.Mvc.UI
+@using eidss.webclient.Utils
+@model eidss.model.Reports.TH.ThaiDistrictModel
+
+<table id="DistrictFilterTable" class="level1">
+
+    <tr>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.ProvinceId)
+        </td>
+        <td class="largereport">
+            @{
+                @(Html.Kendo().ComboBox()
+                      .BindTo(Model.GetProvinces().ConvertToSelectListItem())
+                      .Name("District.ProvinceId")
+                      .HtmlAttributes(Model.IsRequired ? new {@class = "requiredField"} : null)
+                      .Events(c => c.Change("paperForm.OnThaiProvinceChanged")))
+            }
+            
+        </td>
+        <td class="mediumreport">
+            @Html.LabelFor(m => m.DistrictId)
+        </td>
+        <td class="largereport">
+            @{
+                @(Html.Kendo().ComboBox()
+                      .BindTo(Model.GetDistricts().ConvertToSelectListItem())
+                      .Name("District.DistrictId")
+                      .HtmlAttributes(Model.IsRequired ? new {@class = "requiredField"} : null)
+                      //.Events(c => c.Change("paperForm.OnThaiDistrictChanged")
+                      )
+            }
+        </td>
+        <td></td>
+    </tr>
+</table>

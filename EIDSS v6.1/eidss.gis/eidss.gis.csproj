@@ -1,0 +1,643 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{20D52400-EAEF-4ECA-A006-242683176310}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>eidss.gis</RootNamespace>
+    <AssemblyName>eidss.gis</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\eidss.main\bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\eidss.main\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v15.1, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Printing.v15.1.Core, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Utils.v15.1, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraBars.v15.1, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v15.1, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraLayout.v15.1, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraPrinting.v15.1, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraGrid.v15.1, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraVerticalGrid.v15.1, Version=15.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DotSpatial.Projections, Version=1.0.0.28088, Culture=neutral, PublicKeyToken=272632bddd08a38b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dlls\gis\DotSpatial.Projections.dll</HintPath>
+    </Reference>
+    <Reference Include="GIS_V6">
+      <HintPath>..\dlls\gis\GIS_V6.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\dlls\gis\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zlib, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dlls\Ionic.Zlib.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.ConnectionInfo, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\dlls\Microsoft.SqlServer.ConnectionInfo.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Management.Sdk.Sfc, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\dlls\Microsoft.SqlServer.Management.Sdk.Sfc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Smo, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\dlls\Microsoft.SqlServer.Smo.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.SqlClrProvider, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Temp\Microsoft.SqlServer.SqlClrProvider.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.SqlEnum, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\dlls\Microsoft.SqlServer.SqlEnum.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpMap, Version=0.9.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dlls\gis\SharpMap.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpMap.Extensions, Version=0.9.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dlls\gis\SharpMap.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\EIDSSAssemblyInfo.cs">
+      <Link>EIDSSAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Data\Providers\EidssEventDataProvider.cs" />
+    <Compile Include="Data\Providers\EidssSqlServer2008.cs" />
+    <Compile Include="Data\Providers\SystemLayersNames.cs" />
+    <Compile Include="Data\SqlServerHelper.cs" />
+    <Compile Include="Data\TableCreator.cs" />
+    <Compile Include="Data\UserDbLayersManager.cs" />
+    <Compile Include="Forms\AvrMapControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\OpenMapForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\OpenMapForm.Designer.cs">
+      <DependentUpon>OpenMapForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SearchResult.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\SearchResult.Designer.cs">
+      <DependentUpon>SearchResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Serializers\LayerSerializers\EidssUserDbLayerSerializer.cs" />
+    <Compile Include="Tools\GeoSearch.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\mtAddDbLayer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\mtAdminMask.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\mtInfo.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\mtNewMap.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\mtOpenMap.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\mtSaveMapAs.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\ToolForms\AdminUnitMaskForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\ToolForms\AdminUnitMaskForm.Designer.cs">
+      <DependentUpon>AdminUnitMaskForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\ToolForms\DbLayersForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\ToolForms\DbLayersForm.Designer.cs">
+      <DependentUpon>DbLayersForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SetCaseMapControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\EidssMapControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\CustomizeMapForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CustomizeMapForm.Designer.cs">
+      <DependentUpon>CustomizeMapForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SaveMapForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SaveMapForm.designer.cs">
+      <DependentUpon>SaveMapForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TemporaryWaitCursor.cs" />
+    <Compile Include="GisInterface.cs" />
+    <Compile Include="Initializer.cs" />
+    <Compile Include="Layers\EidssUserBufZoneLayer.cs" />
+    <Compile Include="Layers\EidssUserDbLayer.cs" />
+    <Compile Include="Layers\EidssExtSystemLabelLayer.cs" />
+    <Compile Include="Layers\EidssExtSystemDbLayer.cs" />
+    <Compile Include="Layers\EidssDbLayer.cs" />
+    <Compile Include="Layers\EidssLabelLayer.cs" />
+    <Compile Include="Layers\EidssSystemLabelLayer.cs" />
+    <Compile Include="Layers\EidssSystemDbLayer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Forms\SetCaseMapForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SetCaseMapForm.Designer.cs">
+      <DependentUpon>SetCaseMapForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Serializers\EidssProviderSerializer.cs" />
+    <Compile Include="Serializers\EidssMapSerializer.cs" />
+    <Compile Include="Serializers\EidssLayerSerializer.cs" />
+    <Compile Include="Serializers\LayerSerializers\EidssLabelLayerSerializer.cs" />
+    <Compile Include="Serializers\LayerSerializers\EidssDbLayerSerializer.cs" />
+    <Compile Include="Serializers\LayerSerializers\EidssGroupLayerSerializer.cs" />
+    <Compile Include="Serializers\ProviderSerializers\EidssSqlServer2008ProviderSerializer.cs" />
+    <Compile Include="Tools\mtAddBufZonesLayer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\mtCircleWithCenterBufZone.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\mtFixedExtent.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\mtIndependentCircleBufferZone.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\mtIndependentPolygonBufferZone.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\mtMapSelector.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\mtPolygonBufferZone.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\mtSelectBufZones.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\mtSaveMap.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\mtExportAsImage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\mtImportMap.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\mtExportMap.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\mtZoneLayerSelector.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Tools\ToolForms\BufZonesLayer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\ToolForms\BufZonesLayer.designer.cs">
+      <DependentUpon>BufZonesLayer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\ToolForms\CircleBufZone.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\ToolForms\CircleBufZone.designer.cs">
+      <DependentUpon>CircleBufZone.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\ToolForms\InfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\ToolForms\InfoForm.Designer.cs">
+      <DependentUpon>InfoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\ToolForms\PolygonBufZone.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\ToolForms\PolygonBufZone.designer.cs">
+      <DependentUpon>PolygonBufZone.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\MapPacker.cs" />
+    <Compile Include="Utils\MapProjectsStorage.cs" />
+    <Compile Include="Utils\TranslationCache.cs" />
+    <Compile Include="Utils\Users.cs" />
+    <Compile Include="Utils\ZoneLayerStorage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\bltoolkit.3.2.dev\BLToolkit.4.csproj">
+      <Project>{0C325F5D-E50E-4340-8724-D29896CCC583}</Project>
+      <Name>BLToolkit.4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\bv.common\bv.common.csproj">
+      <Project>{BEE76B17-720D-4B65-996A-5712912B3ACF}</Project>
+      <Name>bv.common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\bv.model\bv.model.csproj">
+      <Project>{9067327E-1960-4326-ACB9-D982DDBEAA76}</Project>
+      <Name>bv.model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\bv.winclient\bv.winclient.csproj">
+      <Project>{B0163672-F328-4D02-9B71-FB698EDAF815}</Project>
+      <Name>bv.winclient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.core\eidss.core.csproj">
+      <Project>{BF545ECD-F673-4C71-9362-57C01DF13062}</Project>
+      <Name>eidss.core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eidss.gis.common\eidss.gis.common.csproj">
+      <Project>{A9B1EE20-AC3C-404E-B9AD-110AD63BBEA6}</Project>
+      <Name>eidss.gis.common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\EIDSS\EIDSS_Common\EIDSS_Common.vbproj">
+      <Project>{119cc05a-2f6c-4fc8-ac74-79bb76e3c1c0}</Project>
+      <Name>EIDSS_Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\Shared\bv_common\bvcommon.vbproj">
+      <Project>{ba2844a8-f629-4b02-acd6-b60063e4d27f}</Project>
+      <Name>bvcommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vb\Shared\bv_dbcommon\bvdb_common.vbproj">
+      <Project>{6C48BB93-277D-4804-B280-F6130E29EB81}</Project>
+      <Name>bvdb_common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\AvrMapControl.resx">
+      <DependentUpon>AvrMapControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CustomizeMapForm.resx">
+      <DependentUpon>CustomizeMapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EidssMapControl.resx">
+      <DependentUpon>EidssMapControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OpenMapForm.ar-IQ.resx">
+      <DependentUpon>OpenMapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OpenMapForm.az-Latn-AZ.resx">
+      <DependentUpon>OpenMapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OpenMapForm.hy-AM.resx">
+      <DependentUpon>OpenMapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OpenMapForm.ka-GE.resx">
+      <DependentUpon>OpenMapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OpenMapForm.kk-KZ.resx">
+      <DependentUpon>OpenMapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OpenMapForm.resx">
+      <DependentUpon>OpenMapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OpenMapForm.ru-RU.resx">
+      <DependentUpon>OpenMapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OpenMapForm.uk-UA.resx">
+      <DependentUpon>OpenMapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OpenMapForm.th-TH.resx">
+      <DependentUpon>OpenMapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SaveMapForm.ar-IQ.resx">
+      <DependentUpon>SaveMapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SaveMapForm.hy-am.resx">
+      <DependentUpon>SaveMapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SaveMapForm.th-TH.resx">
+      <DependentUpon>SaveMapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SearchResult.resx">
+      <DependentUpon>SearchResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.ar-IQ.resx" />
+    <EmbeddedResource Include="Properties\Resources.az-Latn-AZ.resx" />
+    <EmbeddedResource Include="Properties\Resources.en-IQ-Eidss.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.en-TH-Eidss.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.hy-AM.resx" />
+    <EmbeddedResource Include="Properties\Resources.ka-GE.resx" />
+    <EmbeddedResource Include="Properties\Resources.kk-KZ.resx" />
+    <EmbeddedResource Include="Properties\Resources.ru-RU.resx" />
+    <EmbeddedResource Include="Properties\Resources.th-TH.resx" />
+    <EmbeddedResource Include="Properties\Resources.uk-UA.resx" />
+    <EmbeddedResource Include="Tools\ToolForms\AdminUnitMaskForm.ar-IQ.resx">
+      <DependentUpon>AdminUnitMaskForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\AdminUnitMaskForm.az-Latn-AZ.resx">
+      <DependentUpon>AdminUnitMaskForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\AdminUnitMaskForm.en-IQ-Eidss.resx">
+      <DependentUpon>AdminUnitMaskForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\AdminUnitMaskForm.en-TH-Eidss.resx">
+      <DependentUpon>AdminUnitMaskForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\AdminUnitMaskForm.hy-AM.resx">
+      <DependentUpon>AdminUnitMaskForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\AdminUnitMaskForm.ka-GE.resx">
+      <DependentUpon>AdminUnitMaskForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\AdminUnitMaskForm.kk-KZ.resx">
+      <DependentUpon>AdminUnitMaskForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\AdminUnitMaskForm.resx">
+      <DependentUpon>AdminUnitMaskForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\AdminUnitMaskForm.ru-KZ-Eidss.resx">
+      <DependentUpon>AdminUnitMaskForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\AdminUnitMaskForm.ru-RU.resx">
+      <DependentUpon>AdminUnitMaskForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\AdminUnitMaskForm.th-TH.resx">
+      <DependentUpon>AdminUnitMaskForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\AdminUnitMaskForm.uk-UA.resx">
+      <DependentUpon>AdminUnitMaskForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\BufZonesLayer.ar-IQ.resx">
+      <DependentUpon>BufZonesLayer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\BufZonesLayer.az-latn-az.resx">
+      <DependentUpon>BufZonesLayer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\BufZonesLayer.hy-am.resx">
+      <DependentUpon>BufZonesLayer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\BufZonesLayer.ka-ge.resx">
+      <DependentUpon>BufZonesLayer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\BufZonesLayer.kk-kz.resx">
+      <DependentUpon>BufZonesLayer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\BufZonesLayer.ru-ru.resx">
+      <DependentUpon>BufZonesLayer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\BufZonesLayer.th-TH.resx">
+      <DependentUpon>BufZonesLayer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\BufZonesLayer.uk-ua.resx">
+      <DependentUpon>BufZonesLayer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\CircleBufZone.ar-IQ.resx">
+      <DependentUpon>CircleBufZone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\CircleBufZone.az-latn-az.resx">
+      <DependentUpon>CircleBufZone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\CircleBufZone.hy-am.resx">
+      <DependentUpon>CircleBufZone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\CircleBufZone.ka-ge.resx">
+      <DependentUpon>CircleBufZone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\CircleBufZone.kk-kz.resx">
+      <DependentUpon>CircleBufZone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\CircleBufZone.ru-ru.resx">
+      <DependentUpon>CircleBufZone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\CircleBufZone.th-TH.resx">
+      <DependentUpon>CircleBufZone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\CircleBufZone.uk-ua.resx">
+      <DependentUpon>CircleBufZone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\DbLayersForm.ar-IQ.resx">
+      <DependentUpon>DbLayersForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\DbLayersForm.az-latn-az.resx">
+      <DependentUpon>DbLayersForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\DbLayersForm.hy-am.resx">
+      <DependentUpon>DbLayersForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\DbLayersForm.ka-ge.resx">
+      <DependentUpon>DbLayersForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\DbLayersForm.kk-kz.resx">
+      <DependentUpon>DbLayersForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\DbLayersForm.resx">
+      <DependentUpon>DbLayersForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SaveMapForm.az-Latn-AZ.resx">
+      <DependentUpon>SaveMapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SaveMapForm.ka-GE.resx">
+      <DependentUpon>SaveMapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SaveMapForm.kk-KZ.resx">
+      <DependentUpon>SaveMapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SaveMapForm.resx">
+      <DependentUpon>SaveMapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SaveMapForm.ru-RU.resx">
+      <DependentUpon>SaveMapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SaveMapForm.uk-UA.resx">
+      <DependentUpon>SaveMapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SetCaseMapForm.resx">
+      <DependentUpon>SetCaseMapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\BufZonesLayer.resx">
+      <DependentUpon>BufZonesLayer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\CircleBufZone.resx">
+      <DependentUpon>CircleBufZone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\DbLayersForm.ru-ru.resx">
+      <DependentUpon>DbLayersForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\DbLayersForm.th-TH.resx">
+      <DependentUpon>DbLayersForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\DbLayersForm.uk-ua.resx">
+      <DependentUpon>DbLayersForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\InfoForm.resx">
+      <DependentUpon>InfoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\PolygonBufZone.ar-IQ.resx">
+      <DependentUpon>PolygonBufZone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\PolygonBufZone.az-latn-az.resx">
+      <DependentUpon>PolygonBufZone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\PolygonBufZone.hy-am.resx">
+      <DependentUpon>PolygonBufZone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\PolygonBufZone.ka-ge.resx">
+      <DependentUpon>PolygonBufZone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\PolygonBufZone.kk-kz.resx">
+      <DependentUpon>PolygonBufZone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\PolygonBufZone.resx">
+      <DependentUpon>PolygonBufZone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\PolygonBufZone.ru-ru.resx">
+      <DependentUpon>PolygonBufZone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\PolygonBufZone.th-TH.resx">
+      <DependentUpon>PolygonBufZone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools\ToolForms\PolygonBufZone.uk-ua.resx">
+      <DependentUpon>PolygonBufZone.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="gis_classes.cd" />
+    <None Include="MapProjects\Default.KZ.map">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="MapProjects\Default.map">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="MapProjects\Default.TH.map">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\exportMap.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\exportToJpeg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\importMap.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mActionAddLayer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mActionFileSave.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mActionSaveMapAsImage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mActionZoomFullExtent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Map Customization %28small%29%2855%29.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\add_buff_24x24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Circle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CircleWithCross.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Polygon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PolygonWithCross.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\24-gis-cursor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\new_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\open_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\save_as_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\save_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\filter_icon.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

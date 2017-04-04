@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <PropertyRef Id="SCHEDULER_ENABLED" />
+    <PropertyRef Id="REFRESH_CACHE_IN_DAYS" />
+    <PropertyRef Id="REMOVE_NOT_USED_CACHE_IN_DAYS" />
+    <Property Id="SchedulerEnabled" Value="1" />
+
+    <UI>
+      <Dialog Id="SchedulerSettings1Dlg" Width="370" Height="270" Title="!(loc.SchedulerSettingsDlg_Title)">
+        <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)">
+          <Publish Property="SCHEDULER_ENABLED" Value="false" Order="1"><![CDATA[SchedulerEnabled <> "1"]]></Publish>
+          <Publish Property="SCHEDULER_ENABLED" Value="true" Order="2"><![CDATA[SchedulerEnabled = "1"]]></Publish>
+          <!--<Publish Property="TestNumber" Value="[REFRESH_CACHE_IN_DAYS]" Order="3">1</Publish>
+          <Publish Event="DoAction" Value="MustBeNumber" Order="5">1</Publish>-->
+          <!--<Publish Property="TestNumber" Value="[REMOVE_NOT_USED_CACHE_IN_DAYS]" Order="4">1</Publish>
+          <Publish Event="DoAction" Value="MustBeNumber" Order="5">1</Publish>-->
+          <!--<Publish Event="SpawnDialog" Value="MustBeNumberDlg" Order="5"><![CDATA[BadNumber]]></Publish>-->
+        </Control>
+        <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" />
+        <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+          <Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+        </Control>
+        <Control Id="Description" Type="Text" X="25" Y="23" Width="280" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.SchedulerSettingsDlgDescription)" />
+        <Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" Text="!(loc.SchedulerSettingsDlgTitle)" />
+        <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="!(loc.SchedulerSettingsDlgBannerBitmap)" />
+        <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+        <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+
+        <Control Id="EnabledSchedule" Type="CheckBox" Width="274" Height="17" X="25" Y="108" Text="!(loc.SchedulerSettingsDlgCheckBox)" Property="SchedulerEnabled" CheckBoxValue="1" />
+
+        <Control Id="RefreshCacheInDaysTitle" Type="Text" Width="120" Height="17" X="25" Y="150" Text="!(loc.SchedulerSettingsDlgRefreshCacheInDaysTitle)" />
+        <Control Id="RefreshCacheInDays" Type="Edit" Width="30" Height="17" X="145" Y="146" Property="REFRESH_CACHE_IN_DAYS" />
+        <Control Id="RefreshCacheInDaysTail" Type="Text" Width="130" Height="17" X="180" Y="150" Text="!(loc.SchedulerSettingsDlgRefreshCacheInDaysTail)" />
+
+        <Control Id="RemoveNotUsedCacheInDaysTitle" Type="Text" Width="245" Height="17" X="25" Y="170" Text="!(loc.SchedulerSettingsDlgRemoveNotUsedCacheInDaysTitle)" />
+        <Control Id="RemoveNotUsedCacheInDays" Type="Edit" Width="30" Height="17" X="270" Y="167" Property="REMOVE_NOT_USED_CACHE_IN_DAYS" />
+        <Control Id="RemoveNotUsedCacheInDaysTail" Type="Text" Width="30" Height="17" X="305" Y="170" Text="!(loc.SchedulerSettingsDlgRemoveNotUsedCacheInDays)" />
+      </Dialog>
+
+      <Dialog Id="MustBeNumberDlg" Width="230" Height="80" Title="!(loc.ErrorDlg_Title)">
+        <Control Id="BadNumber" Type="Icon" IconSize="48" X="5" Y="5" Width="50" Height="50" Text="FailureImg" FixedSize="yes" />
+        <Control Id="ErrorText" Type="Text" X="60" Y="15" Width="160" Height="36" TabSkip="no" Text="[BadNumberText]" />
+        <Control Id="O" Type="PushButton" X="100" Y="60" Width="56" Height="17" TabSkip="yes" Text="!(loc.WixUIOK)">
+          <Publish Event="EndDialog" Value="Return">1</Publish>
+        </Control>
+      </Dialog>
+
+      <!--<Property Id="BadNumberText_Empty" Value="!(loc.BadNumberText_Empty)" />
+      <Property Id="BadNumberText_BadNumber" Value="!(loc.BadNumberText_NotNumber)" />-->
+    </UI>
+  </Fragment>
+</Wix>

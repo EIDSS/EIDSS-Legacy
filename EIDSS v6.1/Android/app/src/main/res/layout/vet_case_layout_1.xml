@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/Scroll"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <LinearLayout
+        style="@style/UnderScrollLayout">
+
+        <!--section to paste begin-->
+        
+      <!--Page 1-->
+
+<!--FarmCode-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+          style="@style/DetailItem.Header"
+          android:text="@string/VetCase_strFarmCode" />
+    <EditText
+          android:id="@+id/strFarmCode"
+          style="@style/DetailItem.Text"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--RootFarm-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+          android:text="@string/VetCase_idfRootFarm" />
+    <AutoCompleteTextView
+          android:id="@+id/idfRootFarm"
+        style="@style/DetailItem.AutoComplete"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--OwnerLastName-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+          style="@style/DetailItem.Header"
+          android:text="@string/VetCase_strOwnerLastName" />
+    <EditText
+          android:id="@+id/strOwnerLastName"
+          android:inputType="textPersonName|textCapWords"
+          style="@style/DetailItem.Text"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--OwnerFirstName-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+          style="@style/DetailItem.Header"
+          android:text="@string/VetCase_strOwnerFirstName" />
+    <EditText
+          android:id="@+id/strOwnerFirstName"
+          android:inputType="textPersonName|textCapWords"
+          style="@style/DetailItem.Text"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--OwnerMiddleName-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+          style="@style/DetailItem.Header"
+          android:text="@string/VetCase_strOwnerMiddleName" />
+    <EditText
+          android:id="@+id/strOwnerMiddleName"
+          android:inputType="textPersonName|textCapWords"
+          style="@style/DetailItem.Text"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--Region-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+          android:text="@string/VetCase_idfsRegion" />
+    <Spinner
+          android:id="@+id/idfsRegion"
+        style="@style/DetailItem.Spinner"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--Rayon-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+          android:text="@string/VetCase_idfsRayon" />
+    <Spinner
+          android:id="@+id/idfsRayon"
+        style="@style/DetailItem.Spinner"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--Settlement-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+          android:text="@string/VetCase_idfsSettlement" />
+    <Spinner
+          android:id="@+id/idfsSettlement"
+        style="@style/DetailItem.Spinner"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--StreetName-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+          style="@style/DetailItem.Header"
+          android:text="@string/VetCase_strStreetName" />
+    <EditText
+          android:id="@+id/strStreetName"
+          style="@style/DetailItem.Text"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--Building-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+          style="@style/DetailItem.Header"
+          android:text="@string/VetCase_strBuilding" />
+    <EditText
+          android:id="@+id/strBuilding"
+          style="@style/DetailItem.Text"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--House-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+          style="@style/DetailItem.Header"
+          android:text="@string/VetCase_strHouse" />
+    <EditText
+          android:id="@+id/strHouse"
+          style="@style/DetailItem.Text"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--Apartment-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+          style="@style/DetailItem.Header"
+          android:text="@string/VetCase_strApartment" />
+    <EditText
+          android:id="@+id/strApartment"
+          style="@style/DetailItem.Text"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--PostCode-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+          style="@style/DetailItem.Header"
+          android:text="@string/VetCase_strPostCode" />
+    <EditText
+          android:id="@+id/strPostCode"
+          android:inputType="number"
+          style="@style/DetailItem.Text"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--Longitude-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+      android:text="@string/VetCase_dblLongitude" />
+    <EditText
+  android:id="@+id/dblLongitude"
+    style="@style/DetailItem.Text"
+    android:inputType="numberSigned|numberDecimal"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--Latitude-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+        style="@style/DetailItem.Header"
+      android:text="@string/VetCase_dblLatitude" />
+    <EditText
+  android:id="@+id/dblLatitude"
+    style="@style/DetailItem.Text"
+    android:inputType="numberSigned|numberDecimal"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--GetCoordinates-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <Button
+      android:id="@+id/GetCoordinatesButton"
+      android:text="@string/GetCoordinates"
+    style="@style/CommonButton.Port" />
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+<!--Phone-->
+<LinearLayout
+    style="@style/DetailLayout.Port">
+    <TextView
+          style="@style/DetailItem.Header"
+          android:text="@string/VetCase_strPhone" />
+    <EditText
+          android:id="@+id/strPhone"
+          android:inputType="phone"
+          style="@style/DetailItem.Text"/>
+    <TextView
+    style="@style/Separator"/>
+</LinearLayout>
+
+
+        
+            <!--section to paste end-->
+    </LinearLayout>
+</ScrollView>
